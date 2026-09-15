@@ -1,0 +1,74 @@
+---
+/**
+ * Button — Apogee atom.
+ *
+ * Renders a <button> by default, or an <a> when `href` is set. Styling is
+ * token-driven (CSS custom properties with fallbacks) so a project can theme it
+ * without touching this file.
+ *
+ * @composable
+ */
+interface Props {
+  /** Visual style. */
+  variant?: 'primary' | 'secondary' | 'ghost'
+  /** When set, renders an anchor to this URL instead of a button. */
+  href?: string
+  /** Native button type (ignored when `href` is set). */
+  type?: 'button' | 'submit' | 'reset'
+}
+
+const { variant = 'primary', href, type = 'button', ...rest } = Astro.props
+const Tag = href ? 'a' : 'button'
+---
+
+<Tag
+  class:list={['apogee-btn', `apogee-btn--${variant}`]}
+  href={href}
+  type={href ? undefined : type}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .apogee-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--apogee-btn-gap, 0.5em);
+    padding: var(--apogee-btn-py, 0.6em) var(--apogee-btn-px, 1.1em);
+    border: 1px solid transparent;
+    border-radius: var(--apogee-radius, 0.5rem);
+    font: inherit;
+    font-weight: var(--apogee-btn-weight, 550);
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .apogee-btn:focus-visible {
+    outline: 2px solid var(--apogee-color-focus, #4c6fff);
+    outline-offset: 2px;
+  }
+
+  .apogee-btn--primary {
+    background: var(--apogee-color-accent, #4c6fff);
+    color: var(--apogee-color-on-accent, #fff);
+  }
+
+  .apogee-btn--secondary {
+    background: var(--apogee-color-surface, #f2f3f5);
+    color: var(--apogee-color-text, #14161a);
+    border-color: var(--apogee-color-border, #d8dce2);
+  }
+
+  .apogee-btn--ghost {
+    background: transparent;
+    color: var(--apogee-color-text, #14161a);
+  }
+
+  .apogee-btn--ghost:hover {
+    background: var(--apogee-color-surface, #f2f3f5);
+  }
+</style>

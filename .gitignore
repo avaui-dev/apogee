@@ -1,0 +1,18 @@
+node_modules
+dist
+.astro
+.DS_Store
+*.log
+
+# AI / agent / working files — never publish
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+AGENT.md
+GEMINI.md
+docs/
+.scratch/
+
+# any dotfile or dotfolder (keep .gitignore itself tracked)
+.*
+!.gitignore
