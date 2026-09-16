@@ -1,0 +1,82 @@
+---
+title: Spacing & layout
+description: Fluid page/section spacing vs. Tailwind's fixed scale for component internals, plus the layout primitives.
+group: Foundations
+order: 4
+---
+
+import Preview from '../../components/Preview.astro'
+import Stack from '../../../../registry/components/Stack/Stack.astro'
+import Grid from '../../../../registry/components/Grid/Grid.astro'
+
+Two different spacing systems, deliberately not unified:
+
+- **Page/section rhythm** — fluid `clamp()` tokens, so gutters and vertical
+  spacing scale smoothly with the viewport.
+- **Component internals** — Tailwind's fixed numeric scale (`p-2`, `gap-4`),
+  so a button's own padding doesn't stretch as the window resizes.
+
+## Fluid layout tokens
+
+| Token | Value | Utility | Used for |
+|---|---|---|---|
+| `--spacing-gutter` | `clamp(1rem, 0.55rem + 2.25vw, 2rem)` | `px-gutter` | Page side padding |
+| `--spacing-section-sm` | `clamp(2rem, 1.4rem + 3vw, 3.5rem)` | `py-section-sm` | Tight vertical rhythm |
+| `--spacing-section` | `clamp(3rem, 2rem + 5vw, 6rem)` | `py-section` | Default section rhythm |
+| `--spacing-section-lg` | `clamp(4rem, 2.5rem + 7.5vw, 9rem)` | `py-section-lg` | Generous vertical rhythm |
+
+`Container` applies `px-gutter` directly for its side padding. `Section`'s own
+`space` prop currently maps to a fixed breakpoint step scale (`py-8` up to
+`py-24 sm:py-32`) rather than these fluid tokens — reach for `py-section` /
+`-sm` / `-lg` directly in custom markup when you want the pure fluid rhythm.
+
+## Component internals: the fixed scale
+
+Inside a component, keep Tailwind's ordinary numeric spacing (`p-2`, `gap-4`,
+`px-3`) — never the fluid tokens. A control's own padding shouldn't resize
+with the viewport; only page-level layout should.
+
+```astro
+<!-- page rhythm: fluid -->
+<section class="px-gutter py-section">...</section>
+
+<!-- component internals: fixed -->
+<button class="px-4 py-2 gap-2">...</button>
+```
+
+## Layout primitives
+
+| Component | Purpose | Key props |
+|---|---|---|
+| `Container` | Centers content at a max width with `px-gutter` side padding | `size` (`sm`–`xl`, `full`), `as` |
+| `Section` | Full-width band with vertical padding, wraps a `Container`; `theme` flips tokens for the subtree | `space`, `theme`, `containerSize`, `container`, `as` |
+| `Grid` | Responsive grid — autofit columns from `minItemWidth` by default, or a fixed `cols` count | `minItemWidth`, `cols`, `gap` |
+| `Stack` | Flex column or row with a token gap — the workhorse for spacing groups of elements | `direction`, `gap`, `align`, `justify`, `wrap` |
+
+<Preview code={`<Stack direction="row" gap={4}>
+  <div class="rounded-md bg-muted px-4 py-3 text-sm">One</div>
+  <div class="rounded-md bg-muted px-4 py-3 text-sm">Two</div>
+  <div class="rounded-md bg-muted px-4 py-3 text-sm">Three</div>
+</Stack>`}>
+  <Stack direction="row" gap={4}>
+    <div class="rounded-md bg-muted px-4 py-3 text-sm">One</div>
+    <div class="rounded-md bg-muted px-4 py-3 text-sm">Two</div>
+    <div class="rounded-md bg-muted px-4 py-3 text-sm">Three</div>
+  </Stack>
+</Preview>
+
+`Grid` reflows column count to its own width — no breakpoints needed:
+
+<Preview code={`<Grid minItemWidth="8rem" gap={4}>
+  <div class="rounded-md bg-muted px-4 py-3 text-sm">A</div>
+  <div class="rounded-md bg-muted px-4 py-3 text-sm">B</div>
+  <div class="rounded-md bg-muted px-4 py-3 text-sm">C</div>
+  <div class="rounded-md bg-muted px-4 py-3 text-sm">D</div>
+</Grid>`}>
+  <Grid minItemWidth="8rem" gap={4}>
+    <div class="rounded-md bg-muted px-4 py-3 text-sm">A</div>
+    <div class="rounded-md bg-muted px-4 py-3 text-sm">B</div>
+    <div class="rounded-md bg-muted px-4 py-3 text-sm">C</div>
+    <div class="rounded-md bg-muted px-4 py-3 text-sm">D</div>
+  </Grid>
+</Preview>

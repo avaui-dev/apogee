@@ -1,0 +1,73 @@
+---
+title: Browser support
+description: Which browsers Apogee targets, the modern platform features it relies on, and how each degrades where support isn't there yet.
+group: Foundations
+order: 10
+---
+
+## Policy
+
+- **Evergreen browsers**, current and previous major: Chrome/Edge, Firefox,
+  Safari (desktop + iOS). No IE, no legacy Edge.
+- **Progressive enhancement is the floor.** Every component renders and is
+  usable with zero JavaScript; JS only adds affordances, gated by `no-js:`
+  (see [Progressive enhancement](/progressive-enhancement)). An old or
+  JS-disabled browser gets working content, never a dead control.
+- **Newer CSS degrades, never breaks.** Where a component uses a
+  not-yet-everywhere feature, it falls back to a plain — un-animated or
+  centered — state, listed below.
+
+## Modern features used
+
+| Feature | Support | Components | Fallback |
+|---|---|---|---|
+| `<dialog>` + `showModal()` | Baseline (widely available) | Dialog, CommandPalette | — |
+| Popover API (`[popover]`, `popovertarget`) | Baseline 2024 | Popover | — |
+| Invoker commands (`command`, `commandfor`) | Newer; Baseline ~2026 | Dialog | small `showModal()` script |
+| `closedby="any"` | Chromium-first | Dialog, CommandPalette | JS backdrop-close (shipped) |
+| CSS anchor positioning + `position-try-fallbacks` | Chromium-first | Popover | panel centers on screen |
+| `@starting-style` + `transition-behavior: allow-discrete` / `overlay` | Chrome, Safari 17.4+, Firefox 129+ | Dialog, Popover, Dropdown | appears with no fade |
+| `::details-content` + `interpolate-size: allow-keywords` | Chromium-first | Accordion, Collapsible | opens/closes instantly, no height animation |
+| `<meter>` pseudo-elements (`::-webkit-meter-*`, `::-moz-meter-bar`) | WebKit/Blink + Firefox | Meter | native meter styling |
+| Scroll-snap | Baseline | Carousel | plain horizontal scroll |
+| Container queries (`container-type`, `cqw`) | Baseline 2023 | Marquee | — |
+| `:has()` | Baseline 2023 | DataGrid, several | row tint absent |
+| `color-mix()` | Baseline 2023 | Alert, Toast (tinted borders) | — |
+| `oklch()` colours | Baseline 2023 (Safari 15.4+) | tokens (via Tailwind) | — |
+| `inert` | Baseline 2023 | Marquee (duplicate panel) | — |
+| Logical properties (`*-inline-*`, `ms`/`me`…) | Baseline | all components (RTL) | — |
+| Clipboard API (`navigator.clipboard`) | Secure context | Code (copy) | button no-ops if blocked (caught) |
+| `appearance: none` custom controls | Baseline | Checkbox, Radio, Select, Slider, Meter | — |
+
+"Baseline" here follows the [web-platform Baseline status](https://web.dev/baseline) —
+"widely available" means it's safe to use without a fallback; a dated
+Baseline (e.g. "Baseline 2024") means it shipped in all evergreen engines by
+that year.
+
+## Chromium-first, called out
+
+Three features render best in Chromium today and degrade — never break —
+elsewhere:
+
+- **Popover** — CSS anchor positioning; the panel centers on screen where
+  unsupported instead of anchoring to its trigger.
+- **Dialog** — invoker commands + `closedby="any"`; a tiny JS fallback
+  (already shipped in the component) covers older engines.
+- **Accordion / Collapsible** — `interpolate-size` height animation; the
+  panel snaps open/closed instantly without it.
+
+Everything else in the table above is Baseline or has a transparent
+fallback with no visible loss of function.
+
+## Verifying
+
+There's no automated cross-browser suite yet (Playwright is planned). For
+now, test the `/` playground and `/rtl` page in the target browsers — the
+zero-JS floor means the critical check is "does it work with JavaScript
+off?", and it does.
+
+## Not now
+
+- No automated visual regression or cross-browser CI.
+- No support target below evergreen — no IE, no legacy Edge, no other
+  polyfill target.

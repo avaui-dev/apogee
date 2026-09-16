@@ -1,0 +1,110 @@
+---
+title: RTL & internationalization
+description: How Apogee components mirror automatically under a right-to-left ancestor, using logical CSS properties.
+group: Foundations
+order: 7
+---
+
+import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Breadcrumbs from '../../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
+import { ArrowRight } from '@lucide/astro'
+
+Apogee components are **direction-agnostic**. They're built from CSS logical
+properties, so they mirror automatically under a right-to-left ancestor — no
+per-component RTL prop, no duplicate styles to maintain.
+
+## Turn it on
+
+Set `dir` on the document, or any subtree:
+
+```html
+<html lang="ar" dir="rtl">
+```
+
+Everything inside mirrors. A single LTR island inside an RTL page — a code
+snippet, a phone number — can opt back out with `dir="ltr"`.
+
+## Logical properties, never physical
+
+Components use logical utilities exclusively:
+
+| Logical | Physical (never used) | Purpose |
+|---|---|---|
+| `ms-*` / `me-*` | `ml-*` / `mr-*` | margin start/end |
+| `ps-*` / `pe-*` | `pl-*` / `pr-*` | padding start/end |
+| `start-*` / `end-*` | `left-*` / `right-*` | inset start/end |
+| `text-start` / `text-end` | `text-left` / `text-right` | text alignment |
+| `border-s` / `border-e` | `border-l` / `border-r` | border start/end |
+| `rounded-s` / `rounded-e` | `rounded-l` / `rounded-r` | corner radius start/end |
+
+Scoped `<style>` blocks follow the same rule with their CSS equivalents —
+`inset-inline-start`, `padding-inline`, `margin-inline`, `border-inline-start`.
+
+`left-1/2` (centering) is direction-neutral and stays as-is — centering isn't
+a directional value.
+
+## Directional icons flip
+
+Chevrons and arrows that imply direction carry `rtl:-scale-x-100` so they
+still point the right way. `Breadcrumbs`' separator does this internally —
+nothing for you to add:
+
+```astro
+<ChevronRight class="size-3.5 shrink-0 rtl:-scale-x-100" aria-hidden="true" />
+```
+
+The same pattern applies to any directional icon you pass in yourself — for
+example a leading "continue" arrow on a `Button`.
+
+Both mirror under `dir="rtl"` with no extra prop — try selecting text or
+tabbing through it:
+
+<Preview code={`<div dir="rtl">
+  <Breadcrumbs items={[
+    { label: 'Home', href: '#' },
+    { label: 'Products', href: '#' },
+    { label: 'Item' },
+  ]} />
+  <Button variant="primary"><ArrowRight class="rtl:-scale-x-100" /> Continue</Button>
+</div>`}>
+  <div dir="rtl" class="flex w-full flex-col items-start gap-4">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '#' },
+      { label: 'Products', href: '#' },
+      { label: 'Item' },
+    ]} />
+    <Button variant="primary"><ArrowRight class="rtl:-scale-x-100" /> Continue</Button>
+  </div>
+</Preview>
+
+## Verify on the playground
+
+The full smoke test lives at the playground's [`/rtl`](/rtl) page — a
+real `dir="rtl"` document (`lang="ar"`) with Arabic content running Button,
+Input, Select, Switch, Alert, Dropdown, Blockquote, Steps, Table, and
+Pagination together, so layout, icon flips, and text alignment can all be
+checked mirrored at once.
+
+## Content
+
+- The library ships no user-facing strings — every label, option, and message
+  is passed in by you, so localization is just passing translated content.
+  Keep `aria-label`s translatable too.
+- Format numbers and dates with `Intl` for the locale; `tabular-nums` still
+  keeps digits aligned.
+
+## Known limitations
+
+- **Carousel** scrolls with `scrollBy({ left })`, whose sign is historically
+  inconsistent across browsers in RTL. Arrows and icons mirror correctly; if
+  your target browsers disagree on scroll direction, branch on `dir` in the
+  island.
+- **Dialog `variant="panel"`** takes an explicit `position` (`left`/`right`) —
+  a deliberate side, not auto-flipped. Use `start`/`end` semantics at your own
+  call sites if you want it to follow direction.
+- **Popover** anchor positioning uses the physical `anchor(left)` CSS
+  function (Chromium-only); it falls back to centering elsewhere. Revisit once
+  logical anchor positioning reaches Baseline.
+- **Toast** corners (`top-left`, `top-right`, …) are explicit physical
+  positions by name.

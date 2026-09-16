@@ -1,0 +1,85 @@
+---
+title: Motion
+description: Duration and easing tokens, the default transition wiring, and the mandatory prefers-reduced-motion guard.
+group: Foundations
+order: 5
+---
+
+import Preview from '../../components/Preview.astro'
+
+Motion is token-driven like everything else: two easing curves, three
+durations, wired as the default for every Tailwind `transition-*` utility —
+and every animated component must still respect `prefers-reduced-motion`.
+That last part is not optional.
+
+## Duration & easing tokens
+
+| Token | Value | Used for |
+|---|---|---|
+| `--duration-fast` | `120ms` | Micro-interactions (hover, focus, press) |
+| `--duration-base` | `180ms` | Default transitions |
+| `--duration-slow` | `260ms` | Larger surface changes (dialogs, panels) |
+| `--ease-smooth` | `cubic-bezier(0.16, 1, 0.3, 1)` | Default, calm motion |
+| `--ease-emphasized` | `cubic-bezier(0.65, 0, 0.35, 1)` | Deliberate, attention-drawing motion |
+
+`--ease-smooth` and `--ease-emphasized` become Tailwind utilities directly
+(`ease-smooth`, `ease-emphasized`). The durations stay as CSS variables — use
+them in scoped styles (`transition-duration: var(--duration-base)`) or as a
+Tailwind arbitrary value (`duration-[var(--duration-base)]`); there's no bare
+`duration-fast` utility.
+
+## The default transition is already wired
+
+```css
+--default-transition-duration: var(--duration-fast);
+--default-transition-timing-function: var(--ease-smooth);
+```
+
+Every bare Tailwind `transition-*` utility (`transition-colors`,
+`transition-transform`, …) already resolves to `--duration-fast` +
+`--ease-smooth` — on-brand with zero extra classes. Reach for the arbitrary
+value only when you need `base`/`slow` or `ease-emphasized` instead of the
+default.
+
+```astro
+<!-- default: fast + smooth, free -->
+<button class="transition-colors hover:bg-accent-hover">...</button>
+
+<!-- explicit: base duration, emphasized easing -->
+<div class="transition-transform duration-[var(--duration-base)] ease-emphasized">...</div>
+```
+
+## `prefers-reduced-motion` is mandatory
+
+Every animated component must respect it — not aspirational, a non-negotiable.
+Two ways to apply the guard:
+
+- **Tailwind's `motion-reduce:` variant** for utility-class animations:
+
+```astro
+<button class="active:scale-95 motion-reduce:active:scale-100">...</button>
+```
+
+- **A media query in scoped CSS** for keyframes or anything in an
+  escape-hatch `<style>` block:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .my-component {
+    transition: none;
+    animation: none;
+  }
+}
+```
+
+A component isn't done until motion degrades cleanly under this setting.
+
+## Example
+
+<Preview code={`<div class="inline-flex rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors duration-[var(--duration-base)] ease-smooth hover:bg-accent hover:text-accent-foreground motion-reduce:transition-none">
+  Hover me
+</div>`}>
+  <div class="inline-flex rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors duration-[var(--duration-base)] ease-smooth hover:bg-accent hover:text-accent-foreground motion-reduce:transition-none">
+    Hover me
+  </div>
+</Preview>

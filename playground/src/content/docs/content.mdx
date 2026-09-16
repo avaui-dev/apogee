@@ -1,0 +1,82 @@
+---
+title: Content & voice
+description: The writing rules for text inside components — buttons, labels, errors, empty states, and tone.
+group: Foundations
+order: 8
+---
+
+The rules for the words inside components. Most are cross-cutting — a
+component's own doc only adds what's specific to it (see Button's own
+[Content](/button#content) section for an example). Voice: clear, concise,
+human — no jargon the reader would have to look up.
+
+## Quick reference
+
+| Element | Rule | Example |
+|---|---|---|
+| Button / action label | Verb-led, sentence case, 1–3 words, no ending period | "Save changes" |
+| Label | Always visible, short noun phrase — never replaced by a placeholder | "Email address" |
+| Placeholder | Example or format only, never essential info; vanishes on input | "name@company.com" |
+| Hint | One line — the why or the format; a full sentence takes a period | "We'll never share this." |
+| Error | What's wrong and how to fix it, blame-free, no "Error:" prefix | "Enter a valid email address" |
+| Empty state | Name what would be here + the action to fill it | "No projects yet — create your first to get started." |
+| Toast | Brief, past-tense confirmation | "Project created" |
+
+## Capitalisation
+
+- Sentence case everywhere — buttons, labels, menu items, headings, titles.
+  "Create project", not "Create Project".
+- Capitalise only proper nouns and product names.
+
+## Buttons & actions
+
+- Lead with a verb that names the outcome: "Save changes", "Delete account",
+  "Send invite". Avoid vague "OK" / "Submit" when a real verb fits.
+- Keep to 1–3 words. No ending punctuation.
+- Destructive actions say what they destroy ("Delete 3 files"), paired with a
+  confirmation.
+- Icon-only buttons (Button's `size="icon"`) must have an `aria-label` — the
+  verb, since there's no visible text.
+
+## Labels, placeholders, hints
+
+- **Labels** are always visible and short noun phrases. A placeholder is not
+  a label.
+- **Placeholders** show an example or format, never essential information —
+  they disappear the moment the field has a value.
+- **Hints** are one line: the why or the format. Full sentences take a
+  period.
+
+## Errors
+
+- Say what's wrong and how to fix it, specifically and blame-free: "Enter a
+  valid email address", not "Invalid input".
+- No "Error:" prefix — the styling already signals it.
+- Attach the message to the field (`aria-describedby`), not just a banner.
+
+## Empty states
+
+- Name what would be here and give the action to fill it: "No projects yet —
+  create your first to get started."
+
+## Toasts, alerts, tooltips
+
+- **Toast** — a brief, past-tense confirmation ("Project created"). Never put
+  critical or irreversible information only in a toast — it disappears.
+- **Alert** — persistent; lead with the point, then the detail.
+- **Tooltip** — a supplementary hint only. Never hide essential info or the
+  only label of a control in one — it's unreachable on touch.
+
+## Numbers, dates, truncation
+
+- Align figures with `tabular-nums` — any component whose job is to show
+  numbers that line up (tables, pagination, metrics, prices, counts, timers)
+  uses it. Localise numbers and dates.
+- Prefer wrapping to truncation. When you must ellipsize, keep the full text
+  reachable — a `title` attribute, or the value shown elsewhere.
+
+## Tone
+
+- Confirm, don't congratulate. State outcomes plainly.
+- Second person ("you"), active voice, present tense.
+- No exclamation marks in system text.

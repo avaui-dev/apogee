@@ -23,6 +23,13 @@ interface Props {
 const { title, description, headings = [], nav = [], group } = Astro.props
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3)
 const commands = nav.flatMap((g) => g.items.map((i) => ({ label: i.title, href: i.href, group: g.group })))
+
+// Prev/next across the flattened nav order.
+const norm = (p: string) => p.replace(/\/+$/, '') || '/'
+const flat = nav.flatMap((g) => g.items)
+const idx = flat.findIndex((i) => norm(i.href) === norm(Astro.url.pathname))
+const prev = idx > 0 ? flat[idx - 1] : null
+const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
 ---
 
 <!doctype html>
@@ -113,6 +120,37 @@ const commands = nav.flatMap((g) => g.items.map((i) => ({ label: i.title, href: 
         <Prose class="mt-8">
           <slot />
         </Prose>
+
+        {
+          (prev || next) && (
+            <nav class="mt-12 flex items-stretch justify-between gap-4 border-t border-border pt-6" aria-label="Pagination">
+              {prev ? (
+                <a
+                  href={prev.href}
+                  class="flex flex-col gap-0.5 rounded-lg border border-border px-4 py-3 transition-colors hover:bg-muted/60"
+                  rel="prev"
+                >
+                  <span class="text-xs text-muted-foreground">← Previous</span>
+                  <span class="text-sm font-medium text-foreground">{prev.title}</span>
+                </a>
+              ) : (
+                <span />
+              )}
+              {next ? (
+                <a
+                  href={next.href}
+                  class="flex flex-col gap-0.5 rounded-lg border border-border px-4 py-3 text-end transition-colors hover:bg-muted/60"
+                  rel="next"
+                >
+                  <span class="text-xs text-muted-foreground">Next →</span>
+                  <span class="text-sm font-medium text-foreground">{next.title}</span>
+                </a>
+              ) : (
+                <span />
+              )}
+            </nav>
+          )
+        }
       </main>
 
       {

@@ -1,0 +1,90 @@
+---
+title: Accessibility
+description: The accessibility commitments every Apogee component ships with, and how to verify them.
+group: Foundations
+order: 6
+---
+
+import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+Accessible is a non-negotiable, not a checklist run at the end. A component
+isn't done until it passes: keyboard-operable, correctly announced, visibly
+focused, motion-safe, and contrast-checked against every shipped theme.
+
+## Semantics first
+
+Real elements over div soup — `<button>`, `<a>`, `<nav>`, `<dialog>`,
+`<details>`. ARIA fills genuine gaps; it never replaces a native element.
+
+- `Button` renders a real `<button>`, or a real `<a>` when `href` is set —
+  never a styled `<div>` with a click handler.
+- `Breadcrumbs` is a `<nav aria-label="Breadcrumb">` around an `<ol>`; the
+  current page is a `<span aria-current="page">`, not a link.
+- `SkipLink` is a plain `<a href="#main">`, visually hidden until focused.
+
+Because native elements carry their own keyboard support, focus behavior, and
+accessibility tree entry for free, most Apogee components need **little to no
+extra ARIA** — a role, a live region, or a state attribute (`aria-expanded`,
+`aria-current`, `aria-busy`) to cover what HTML alone can't say.
+
+## Keyboard
+
+Every interaction is reachable and operable by keyboard, with a logical tab
+order. Overlays close on <kbd>Escape</kbd>; menus and tabs support arrow-key
+navigation where users expect it. Interactive targets are at least 24×24px,
+ideally 44×44px.
+
+## Focus
+
+Every interactive element gets an always-visible `:focus-visible` ring, driven
+by the `--ring` token — never suppressed:
+
+```astro
+class="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+```
+
+Tab into the button below to see it:
+
+<Preview code={`<Button variant="primary">Save changes</Button>`}>
+  <Button variant="primary">Save changes</Button>
+</Preview>
+
+Modal dialogs trap focus while open and return it to the trigger on close.
+
+## Motion
+
+Every animated component reads the motion tokens (`--duration-*`,
+`ease-smooth`, `ease-emphasized`) and respects `prefers-reduced-motion` — for
+example, `Button`'s press animation:
+
+```
+active:scale-95 motion-reduce:active:scale-100
+```
+
+No component ships an animation that can't be turned off this way.
+
+## Contrast
+
+Text and UI meet **WCAG AA** against every themed background: 4.5:1 for text,
+3:1 for the focus ring. This is enforced, not assumed — see
+[Color](/docs/color) for the full token-pair table and the
+`npm run check:contrast` gate that fails CI on a miss.
+
+## Names, roles, state
+
+Accessible name, role, and state stay in sync with the UI: `aria-expanded` on
+disclosure triggers, `aria-current="page"` on the active breadcrumb/nav item,
+`aria-selected` on active tabs, `aria-busy` while `Button` is `loading`.
+Meaningful images and icon-only controls (`Button size="icon"`) get a label;
+decorative icons are hidden from assistive tech (`aria-hidden="true"`).
+
+## How we verify
+
+- **Keyboard pass.** Tab through the component; every action reachable, every
+  focus state visible, `Escape` closes overlays.
+- **Screen reader smoke test.** Confirm the announced name, role, and state
+  match what's on screen.
+- **Contrast script.** `npm run check:contrast` after any color token change —
+  it computes real ratios from `theme.css` and fails on a miss.
+- Automated `axe` checks in CI are planned, not yet wired in.

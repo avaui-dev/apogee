@@ -1,0 +1,103 @@
+---
+title: Progressive enhancement
+description: How Apogee decides when a component needs JavaScript, and the mechanical no-js / js system that keeps the fallback real.
+group: Foundations
+order: 9
+---
+
+Apogee ships **zero JavaScript by default**. No UI-framework runtime rides
+along with a component — everything is vanilla HTML, CSS, and (only where
+earned) a small scoped `<script>`. This isn't a performance nice-to-have;
+it's the design constraint that decides how a component gets built at all.
+
+## The rule: JS only when the platform can't do it
+
+For every component, the decision goes in this order:
+
+1. **Can a native element do it?** Use it — zero JS. `<details>` for
+   disclosure, `<dialog>` for modals, the Popover API for floating panels,
+   native `<input>` types for dates and numbers.
+2. **Can CSS do the rest** (open/close animation, state)? Use it.
+3. **Only what's genuinely left** — keyboard navigation, focus management,
+   dynamic content — gets a small scoped island, written so the component
+   still works if the script never loads.
+
+Tabs is the one common component that still needs real JS for full
+accessibility (a real `role="tablist"` pattern has no native element).
+Everything else in Apogee is native-first: Accordion's open/closed state is
+`<details>` with a shared `name` for exclusive open, Dialog opens and closes
+through `<dialog>` and invoker commands, Dropdown and Tooltip lean on the
+Popover API.
+
+## Islands, not a framework
+
+When JS is earned, it ships as a plain `<script>` scoped to the component —
+no React, no Vue, no framework runtime shipped for one interaction. It reads
+`document.querySelectorAll('.apogee-<component>')` and wires up every
+instance on the page.
+
+## The mechanical model: `no-js` / `js`
+
+Progressive enhancement here isn't a guideline to remember — it's wired into
+the base setup so a JS-off page can't show a dead control.
+
+`apogee init` ships `<html class="no-js">` plus an inline head script that
+swaps it to `js` **before paint**:
+
+```html
+<html class="no-js">
+  <head>
+    <script>document.documentElement.classList.replace('no-js', 'js')</script>
+```
+
+Two Tailwind variants key off that class: `no-js:` and `js:`. The rule that
+follows from them:
+
+- A component's **default, no-variant state is the working, JS-off
+  fallback** — it has to be usable on its own.
+- Any **JS-only affordance** — a control that does nothing without the
+  script — is gated with `no-js:hidden`, so it disappears when JS is off
+  instead of sitting there as a dead button. Tag's remove button is the real
+  example:
+
+```astro
+<!-- Tag.astro — the × only works once the island runs, so it's gated -->
+<button
+  type="button"
+  aria-label="Remove"
+  class="... no-js:hidden"
+>
+  <X />
+</button>
+```
+
+- A component that swaps to an **enhanced presentation** once its script
+  runs adds a readiness class to its own root (Lumos's `is-ready`), so
+  nothing flashes and the default CSS state keeps holding as the fallback
+  until then.
+
+No JS-off page should ever show a broken or dead control — worst case, an
+affordance is simply absent and the underlying content still works (Carousel
+without JS is a plain scroll list; Tabs without JS shows every panel
+stacked).
+
+## Finding what ships JS
+
+The docs sidebar marks every component whose registry entry sets
+`usesJs: true` with a **JS** badge — that's your signal a component includes
+a script island, and its doc page opens with a `<JsNote>` explaining what the
+script does and what the no-JS fallback looks like.
+
+## Reduced motion
+
+Every animation — CSS or JS-driven — respects `prefers-reduced-motion`. Not
+optional, checked on every animated component.
+
+## Not now
+
+- No `client:*` hydration directives or framework islands (React/Vue) — an
+  Apogee script is a plain `<script>` bundled with its `.astro` component,
+  not a UI-framework component being hydrated. Keeps the logic portable to a
+  future React/Next port.
+- No automated "does it work with JS off" test suite yet — verified by hand
+  against the playground (see [Browser support](/browser-support)).
