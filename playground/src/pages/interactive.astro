@@ -10,6 +10,7 @@ import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
 import Tabs from '../../../registry/components/Tabs/Tabs.astro'
 import Dropdown from '../../../registry/components/Dropdown/Dropdown.astro'
 import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
+import Toaster from '../../../registry/components/Toast/Toaster.astro'
 import Button from '../../../registry/components/Button/Button.astro'
 import { Settings, User, LogOut } from '@lucide/astro'
 ---
@@ -42,17 +43,33 @@ import { Settings, User, LogOut } from '@lucide/astro'
     </Group>
   </Showcase>
 
-  <Showcase name="Dialog" summary="Native <dialog> opened with invoker commands. Zero JS.">
-    <Group>
-      <Button command="show-modal" commandfor="demo-dialog">Open dialog</Button>
-      <Dialog id="demo-dialog" title="Delete project?">
-        This permanently deletes the project and everything in it. This can't be undone.
-        <Fragment slot="footer">
-          <Button variant="secondary" command="close" commandfor="demo-dialog">Cancel</Button>
-          <Button variant="danger" command="close" commandfor="demo-dialog">Delete</Button>
-        </Fragment>
-      </Dialog>
+  <Showcase name="Dialog" summary="Native <dialog> — modal, edge panel (drawer), or fullscreen.">
+    <Group label="Variants">
+      <Button command="show-modal" commandfor="dlg-modal">Modal</Button>
+      <Button variant="secondary" command="show-modal" commandfor="dlg-right">Panel (right)</Button>
+      <Button variant="secondary" command="show-modal" commandfor="dlg-bottom">Panel (bottom)</Button>
+      <Button variant="secondary" command="show-modal" commandfor="dlg-full">Fullscreen</Button>
     </Group>
+
+    <Dialog id="dlg-modal" title="Delete project?">
+      This permanently deletes the project and everything in it. This can't be undone.
+      <Fragment slot="footer">
+        <Button variant="secondary" command="close" commandfor="dlg-modal">Cancel</Button>
+        <Button variant="danger" command="close" commandfor="dlg-modal">Delete</Button>
+      </Fragment>
+    </Dialog>
+
+    <Dialog id="dlg-right" variant="panel" position="right" title="Details">
+      A right-edge drawer. Slides in from the right, full height.
+    </Dialog>
+
+    <Dialog id="dlg-bottom" variant="panel" position="bottom" title="Share">
+      A bottom sheet. Slides up from the bottom edge.
+    </Dialog>
+
+    <Dialog id="dlg-full" variant="fullscreen" title="Fullscreen">
+      Fills the viewport. Good for immersive flows or mobile.
+    </Dialog>
   </Showcase>
 
   <Showcase name="Tooltip" summary="Hover / focus hint. Zero JS.">
@@ -85,4 +102,27 @@ import { Settings, User, LogOut } from '@lucide/astro'
       </Dropdown>
     </Group>
   </Showcase>
+
+  <Showcase name="Toast" summary="Transient notification via apogeeToast(). Place <Toaster /> once.">
+    <Group>
+      <Button id="toast-info" variant="secondary">Info</Button>
+      <Button id="toast-success" variant="secondary">Success</Button>
+      <Button id="toast-warning" variant="secondary">Warning</Button>
+      <Button id="toast-danger" variant="secondary">Danger</Button>
+    </Group>
+  </Showcase>
 </ShowcasePage>
+
+<Toaster position="bottom-right" />
+
+<script>
+  const toast = (window as unknown as { apogeeToast?: (m: string, o?: object) => void }).apogeeToast
+  const wire = (id: string, message: string, variant: string, title: string) =>
+    document.getElementById(id)?.addEventListener('click', () =>
+      (window as unknown as { apogeeToast: (m: string, o?: object) => void }).apogeeToast(message, { variant, title }),
+    )
+  wire('toast-info', 'Just so you know.', 'info', 'Heads up')
+  wire('toast-success', 'Your changes were saved.', 'success', 'Saved')
+  wire('toast-warning', "This can't be undone.", 'warning', 'Careful')
+  wire('toast-danger', 'Something went wrong.', 'danger', 'Error')
+</script>
