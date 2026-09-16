@@ -6,7 +6,8 @@ import Footer from '../../../registry/components/Footer/Footer.astro'
 import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
 import Prose from '../../../registry/components/Prose/Prose.astro'
 import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
-import { Sun, Moon, Search } from '@lucide/astro'
+import Dialog from '../../../registry/components/Dialog/Dialog.astro'
+import { Sun, Moon, Search, Menu } from '@lucide/astro'
 
 interface NavGroup {
   group: string
@@ -54,6 +55,15 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
       <div slot="actions" class="flex items-center gap-1">
         <button
           type="button"
+          command="show-modal"
+          commandfor="docs-mobile-nav"
+          class="grid size-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+          aria-label="Open navigation"
+        >
+          <Menu class="size-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
           data-command-open="docsearch"
           class="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           aria-label="Search"
@@ -91,7 +101,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
                 <p class="px-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{g.group}</p>
                 <div class="flex flex-col gap-0.5">
                   {g.items.map((i) => (
-                    <NavLink href={i.href} class="!px-2 !py-1.5">
+                    <NavLink href={i.href} class="px-2! py-1.5!">
                       {i.title}
                       {i.js && (
                         <span
@@ -185,6 +195,34 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
         <span>Built with Apogee</span>
       </Fragment>
     </Footer>
+
+    <Dialog id="docs-mobile-nav" variant="panel" position="left" title="Menu" class="md:hidden">
+      <nav aria-label="Docs">
+        {
+          nav.map((g) => (
+            <div class="mb-4">
+              <p class="px-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{g.group}</p>
+              <div class="flex flex-col gap-0.5">
+                {g.items.map((i) => (
+                  <NavLink href={i.href} class="px-2! py-1.5!">
+                    {i.title}
+                    {i.js && (
+                      <span
+                        slot="trailing"
+                        class="rounded bg-muted-foreground/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-muted-foreground"
+                        title="Uses JavaScript"
+                      >
+                        JS
+                      </span>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </nav>
+    </Dialog>
 
     <CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
 
