@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content'
+import DocsLayout from '../../layouts/DocsLayout.astro'
+import Table from '../../../../registry/components/Table/Table.astro'
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs')
+  return docs.map((entry) => ({
+    params: { slug: entry.id === 'index' ? undefined : entry.id },
+    props: { entry },
+  }))
+}
+
+const { entry } = Astro.props
+const { Content, headings } = await render(entry)
+
+// Sidebar nav — group + order from frontmatter.
+const GROUP_ORDER = ['Getting started', 'Foundations', 'Components']
+const all = await getCollection('docs')
+const byGroup = new Map<string, typeof all>()
+for (const d of all) {
+  if (d.id === 'index') continue
+  const g = d.data.group
+  if (!byGroup.has(g)) byGroup.set(g, [])
+  byGroup.get(g).push(d)
+}
+const nav = [...byGroup.entries()]
+  .sort((a, b) => {
+    const ai = GROUP_ORDER.indexOf(a[0])
+    const bi = GROUP_ORDER.indexOf(b[0])
+    return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi) || a[0].localeCompare(b[0])
+  })
+  .map(([groupName, items]) => ({
+    group: groupName,
+    items: items
+      .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
+      .map((d) => ({ title: d.data.title, href: `/docs/${d.id}`, id: d.id })),
+  }))
+---
+
+<DocsLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  headings={headings}
+  nav={nav}
+  group={entry.data.group}
+>
+  <Content components={{ table: Table }} />
+</DocsLayout>

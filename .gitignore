@@ -10,7 +10,8 @@ CLAUDE.local.md
 AGENTS.md
 AGENT.md
 GEMINI.md
-docs/
+# Root design/review docs only — not the docs-site content under playground/
+/docs/
 .scratch/
 
 # any dotfile or dotfolder (keep .gitignore itself tracked)

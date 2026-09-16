@@ -1,0 +1,49 @@
+---
+title: Getting started
+description: Accessible, native-first Astro components you copy into your project and own.
+group: Getting started
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+**Apogee** is the AVA design system for Astro: accessible, responsive components
+with **zero external JavaScript**, copied into your project so you own the code.
+
+<Preview code={`<Button variant="primary">Get started</Button>
+<Button variant="secondary">Docs</Button>`}>
+  <Button variant="primary">Get started</Button>
+  <Button variant="secondary">Docs</Button>
+</Preview>
+
+## Install
+
+Components are copied in (shadcn / Starwind model). Requires Tailwind v4.
+
+```sh
+npx @ava-ui/apogee init                 # tokens + config + setup steps
+npx @ava-ui/apogee add button dialog    # copies components (+ their deps)
+npx @ava-ui/apogee list                 # all available components
+```
+
+`add` resolves dependencies for you and prints any npm packages to install.
+Files land in `src/components/apogee/` — yours to edit.
+
+## Use
+
+```astro
+---
+import Button from '@/components/apogee/Button/Button.astro'
+---
+<Button variant="primary">Get started</Button>
+```
+
+## Principles
+
+- **Accessible** — keyboard, ARIA, visible focus, `prefers-reduced-motion`.
+- **Native-first** — `<details>`, `<dialog>`, popover, real form controls. JS
+  only when the platform can't do it, then as a progressive-enhancement island.
+- **Token-driven** — every value reads a semantic token; theming and dark mode
+  are a token override. Contrast is an enforced AA gate.
+- **RTL-ready** — logical properties throughout.
