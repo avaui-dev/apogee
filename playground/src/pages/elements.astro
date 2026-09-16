@@ -11,9 +11,7 @@ import Divider from '../../../registry/components/Divider/Divider.astro'
 import Icon from '../../../registry/components/Icon/Icon.astro'
 import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.astro'
 import Button from '../../../registry/components/Button/Button.astro'
-
-const check =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+import { Check, Heart, Settings } from '@lucide/astro'
 ---
 
 <ShowcasePage title="Elements">
@@ -44,19 +42,25 @@ const check =
     </Group>
   </Showcase>
 
-  <Showcase name="Icon" summary="Sizes any inline SVG you pass.">
-    <Group label="Sizes">
-      <Icon label="Done" size="sm"><Fragment set:html={check} /></Icon>
-      <Icon label="Done"><Fragment set:html={check} /></Icon>
-      <Icon label="Done" size="lg"><Fragment set:html={check} /></Icon>
+  <Showcase name="Icon" summary="Renders a Lucide icon and forwards its props (size via class, strokeWidth, color).">
+    <Group label="Sizes & props">
+      <Icon icon={Check} label="Done" class="size-4" />
+      <Icon icon={Heart} label="Like" class="size-5 text-accent" />
+      <Icon icon={Settings} label="Settings" class="size-6" stroke-width={1.5} />
     </Group>
   </Showcase>
 
-  <Showcase name="Spinner">
+  <Showcase name="Spinner" summary="Lucide loader, spun. Standalone or inside a loading state.">
     <Group label="Sizes">
       <Spinner size="sm" />
       <Spinner />
       <Spinner size="lg" />
+    </Group>
+    <Group label="In context" stack>
+      <div class="flex items-center gap-2 text-muted-foreground">
+        <Spinner label="Loading" />
+        <span>Loading your data…</span>
+      </div>
     </Group>
   </Showcase>
 

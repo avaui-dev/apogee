@@ -7,11 +7,13 @@
  *
  * @composable
  */
+import Spinner from '../Spinner/Spinner.astro'
+
 interface Props {
   /** Visual style. `link` renders as a plain text link, no button chrome. */
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'link'
-  /** Control size. */
-  size?: 'sm' | 'md' | 'lg'
+  /** Control size. `icon` is a square, icon-only button (pass an `aria-label`). */
+  size?: 'sm' | 'md' | 'lg' | 'icon'
   /** Renders an <a> to this URL instead of a <button>. */
   href?: string
   /** Native button type (ignored with `href`). */
@@ -40,7 +42,7 @@ const isDisabled = disabled || loading
 const isLink = variant === 'link'
 
 const base =
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50'
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0'
 
 // `link` drops all button chrome and renders as inline underlined text.
 const shape = isLink
@@ -56,8 +58,8 @@ const colors = {
 }
 
 const sizes = isLink
-  ? { sm: 'text-sm', md: 'text-sm', lg: 'text-base' }
-  : { sm: 'h-8 px-3 text-sm', md: 'h-10 px-4 text-sm', lg: 'h-12 px-6 text-base' }
+  ? { sm: 'text-sm', md: 'text-sm', lg: 'text-base', icon: 'text-sm' }
+  : { sm: 'h-8 px-3 text-sm', md: 'h-10 px-4 text-sm', lg: 'h-12 px-6 text-base', icon: 'size-10' }
 ---
 
 <Tag
@@ -69,13 +71,6 @@ const sizes = isLink
   aria-busy={loading ? 'true' : undefined}
   {...rest}
 >
-  {
-    loading && (
-      <svg class="size-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.4 0 0 5.4 0 12h4z" />
-      </svg>
-    )
-  }
+  {loading && <Spinner />}
   <slot />
 </Tag>

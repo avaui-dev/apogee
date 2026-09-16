@@ -1,28 +1,27 @@
 ---
 /**
- * Spinner — a loading indicator. Inherits `currentColor`.
+ * Spinner — a loading indicator (Lucide `LoaderCircle`, spun). Inherits
+ * `currentColor`. Use it standalone for loading screens, or inside another
+ * component's loading state (Button uses it).
+ *
+ * Give a `label` for a standalone spinner (announced via `role="status"`);
+ * omit it when the surrounding element already conveys the loading state
+ * (e.g. a Button with `aria-busy`), and it renders decorative.
  *
  * @composable
  */
+import { LoaderCircle } from '@lucide/astro'
+
 interface Props {
   size?: 'sm' | 'md' | 'lg'
-  /** Accessible label. */
+  /** Accessible label. Omit when a parent already announces loading. */
   label?: string
   class?: string
 }
 
-const { size = 'md', label = 'Loading', class: className, ...rest } = Astro.props
+const { size = 'md', label, class: className, ...rest } = Astro.props
 const sizeMap = { sm: 'size-4', md: 'size-5', lg: 'size-8' }
+const a11y = label ? { role: 'status', 'aria-label': label } : { 'aria-hidden': 'true' }
 ---
 
-<svg
-  class:list={['animate-spin text-current', sizeMap[size], className]}
-  viewBox="0 0 24 24"
-  fill="none"
-  role="status"
-  aria-label={label}
-  {...rest}
->
-  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.4 0 0 5.4 0 12h4z" />
-</svg>
+<LoaderCircle class:list={['animate-spin text-current', sizeMap[size], className]} {...a11y} {...rest} />

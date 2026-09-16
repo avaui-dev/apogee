@@ -1,29 +1,46 @@
 ---
 /**
- * Icon — sizes and labels an inline SVG passed as the default slot. Library-
- * agnostic: drop in a Lucide (or any) `<svg>`.
+ * Icon — renders a Lucide (or Lucide-shaped) icon and forwards its props, or a
+ * raw <svg> passed as a slot. Library-agnostic wrapper: it adds accessibility
+ * and a consistent seam, but every Lucide prop (`size`, `strokeWidth`, `color`,
+ * `absoluteStrokeWidth`, `class`, …) passes straight through, so you tweak the
+ * icon where you use it.
  *
- * Give a `label` for meaningful icons; omit it for decorative ones (hidden
+ * Meaningful icon → give a `label` (role="img"). Decorative → omit it (hidden
  * from assistive tech).
+ *
+ *   import { Camera } from '@lucide/astro'
+ *   <Icon icon={Camera} label="Take photo" strokeWidth={2.5} class="text-accent" />
+ *   <Icon icon={ChevronDown} />              // decorative
+ *   <Icon><svg …/></Icon>                    // raw SVG fallback
  *
  * @composable
  */
 interface Props {
+  /** A Lucide icon component. Omit to pass a raw <svg> as the slot. */
+  icon?: any
+  /** Accessible label. Omit for decorative icons. */
   label?: string
-  size?: 'sm' | 'md' | 'lg'
+  /** Lucide size (px). Prefer a Tailwind `size-*` class for consistency. */
+  size?: number | string
+  strokeWidth?: number | string
+  absoluteStrokeWidth?: boolean
+  color?: string
   class?: string
+  [key: string]: any
 }
 
-const { label, size = 'md', class: className, ...rest } = Astro.props
-const sizeMap = { sm: 'size-4', md: 'size-5', lg: 'size-6' }
+const { icon: IconComponent, label, class: className, ...iconProps } = Astro.props
+
+const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true' }
 ---
 
-<span
-  class:list={['inline-flex shrink-0 [&>svg]:size-full', sizeMap[size], className]}
-  role={label ? 'img' : undefined}
-  aria-label={label}
-  aria-hidden={label ? undefined : 'true'}
-  {...rest}
->
-  <slot />
-</span>
+{
+  IconComponent ? (
+    <IconComponent class:list={['shrink-0', className]} {...iconProps} {...a11y} />
+  ) : (
+    <span class:list={['inline-flex shrink-0 [&>svg]:size-full', className]} {...a11y}>
+      <slot />
+    </span>
+  )
+}

@@ -29,5 +29,8 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@lucide/astro": "^1.46.0"
   }
 }
