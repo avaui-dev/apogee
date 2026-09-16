@@ -1,0 +1,108 @@
+---
+/**
+ * Tabs — an accessible tabbed panel. This is the one component that needs a JS
+ * island: it wires the `role="tablist"` keyboard pattern (arrows / Home / End),
+ * roving tabindex, and panel visibility. Without JS every panel shows (stacked),
+ * so no content is lost.
+ *
+ * Pass labels via `tabs`; put each panel in a `panel-<i>` slot.
+ *
+ *   <Tabs tabs={['Account', 'Password']}>
+ *     <div slot="panel-0">…</div>
+ *     <div slot="panel-1">…</div>
+ *   </Tabs>
+ *
+ * @composable
+ */
+interface Props {
+  tabs: string[]
+  class?: string
+}
+
+const { tabs, class: className, ...rest } = Astro.props
+const id = `apogee-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<div class:list={['apogee-tabs', className]} {...rest}>
+  <div role="tablist" class="flex gap-1 border-b border-border">
+    {
+      tabs.map((label, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`${id}-tab-${i}`}
+          aria-controls={`${id}-panel-${i}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          class="-mb-px cursor-pointer border-b-2 border-transparent px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-selected:border-accent aria-selected:text-foreground"
+        >
+          {label}
+        </button>
+      ))
+    }
+  </div>
+  {
+    tabs.map((_, i) => (
+      <div
+        role="tabpanel"
+        id={`${id}-panel-${i}`}
+        aria-labelledby={`${id}-tab-${i}`}
+        hidden={i !== 0}
+        class:list={['pt-4 text-sm', i !== 0 && 'no-js:block']}
+      >
+        <slot name={`panel-${i}`} />
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .apogee-tabs [role='tabpanel']:not([hidden]) {
+    animation: apogee-tab-in 0.2s ease;
+  }
+  @keyframes apogee-tab-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-tabs [role='tabpanel']:not([hidden]) {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.apogee-tabs')) {
+    const buttons = [...root.querySelectorAll<HTMLElement>('[role="tab"]')]
+    const panels = buttons.map((b) =>
+      root.querySelector<HTMLElement>('#' + b.getAttribute('aria-controls')),
+    )
+
+    const select = (index: number) => {
+      buttons.forEach((b, i) => {
+        const on = i === index
+        b.setAttribute('aria-selected', String(on))
+        b.tabIndex = on ? 0 : -1
+        panels[i]?.toggleAttribute('hidden', !on)
+      })
+    }
+
+    buttons.forEach((button, i) => {
+      button.addEventListener('click', () => select(i))
+      button.addEventListener('keydown', (event: KeyboardEvent) => {
+        const last = buttons.length - 1
+        let next: number | null = null
+        if (event.key === 'ArrowRight') next = i === last ? 0 : i + 1
+        else if (event.key === 'ArrowLeft') next = i === 0 ? last : i - 1
+        else if (event.key === 'Home') next = 0
+        else if (event.key === 'End') next = last
+        if (next === null) return
+        event.preventDefault()
+        select(next)
+        buttons[next].focus()
+      })
+    })
+  }
+</script>

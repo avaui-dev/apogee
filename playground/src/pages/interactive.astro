@@ -7,7 +7,11 @@ import Accordion from '../../../registry/components/Accordion/Accordion.astro'
 import AccordionItem from '../../../registry/components/Accordion/AccordionItem.astro'
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
+import Tabs from '../../../registry/components/Tabs/Tabs.astro'
+import Dropdown from '../../../registry/components/Dropdown/Dropdown.astro'
+import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
 import Button from '../../../registry/components/Button/Button.astro'
+import { Settings, User, LogOut } from '@lucide/astro'
 ---
 
 <ShowcasePage title="Interactive">
@@ -59,6 +63,26 @@ import Button from '../../../registry/components/Button/Button.astro'
       <Tooltip text="Settings">
         <Button size="icon" variant="ghost" aria-label="Settings">⚙</Button>
       </Tooltip>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Tabs" summary="Accessible tablist (arrows / Home / End). JS island; panels show stacked without JS.">
+    <Group stack>
+      <Tabs tabs={['Account', 'Password', 'Team']} class="max-w-md">
+        <div slot="panel-0">Manage your account details here.</div>
+        <div slot="panel-1">Change your password here.</div>
+        <div slot="panel-2">Invite and manage your team here.</div>
+      </Tabs>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Dropdown" summary="Menu on <details>; closes on outside-click / Escape.">
+    <Group>
+      <Dropdown label="Options">
+        <DropdownItem href="/"><User /> Profile</DropdownItem>
+        <DropdownItem href="/"><Settings /> Settings</DropdownItem>
+        <DropdownItem><LogOut /> Sign out</DropdownItem>
+      </Dropdown>
     </Group>
   </Showcase>
 </ShowcasePage>

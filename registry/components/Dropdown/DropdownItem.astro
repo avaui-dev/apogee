@@ -1,0 +1,29 @@
+---
+/**
+ * DropdownItem — a menu item. A link when `href` is set, otherwise a button.
+ * Put an optional leading icon (e.g. a Lucide `<svg>`) before the label.
+ *
+ * @composable
+ */
+interface Props {
+  href?: string
+  class?: string
+  [key: string]: any
+}
+
+const { href, class: className, ...rest } = Astro.props
+const Tag = href ? 'a' : 'button'
+---
+
+<Tag
+  href={href}
+  type={href ? undefined : 'button'}
+  role="menuitem"
+  class:list={[
+    'flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-foreground hover:bg-muted focus-visible:bg-muted focus-visible:outline-none [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-muted-foreground',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>
