@@ -1,0 +1,188 @@
+---
+/**
+ * Carousel — a horizontal scroll-snap track. Native scroll / swipe / keyboard
+ * with zero JS; arrows, dots and autoplay are progressive-enhancement islands
+ * (`no-js:hidden`, the track scrolls fine without them). Drop slides in the
+ * default slot; snapping and `shrink-0` are applied for you. Give each slide a
+ * width, or set `itemWidth` for uniform slides.
+ *
+ * @composable
+ */
+import { ChevronLeft, ChevronRight } from '@lucide/astro'
+
+interface Props {
+  /** Show the prev/next arrow buttons. */
+  controls?: boolean
+  /** Show clickable pagination dots (one per slide). */
+  dots?: boolean
+  /** Snap edge of each slide. */
+  align?: 'start' | 'center'
+  /** Fixed width applied to every slide, e.g. "16rem". Omit to size each slide yourself. */
+  itemWidth?: string
+  /** Auto-advance. Pauses on hover / focus; off under reduced-motion. */
+  autoplay?: boolean
+  /** Autoplay delay in ms. */
+  interval?: number
+  /** With autoplay, jump back to the start after the last slide. */
+  loop?: boolean
+  class?: string
+}
+
+const {
+  controls = true,
+  dots = false,
+  align = 'start',
+  itemWidth,
+  autoplay = false,
+  interval = 4000,
+  loop = false,
+  class: className,
+  ...rest
+} = Astro.props
+
+// Render the slot once so dots can be counted from the same markup.
+const items = await Astro.slots.render('default')
+
+// Count top-level elements of the slot (the slides). Depth-tracked so nested
+// markup isn't counted; void elements never open a level.
+const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'])
+const slideCount = dots
+  ? (() => {
+      let depth = 0
+      let n = 0
+      for (const [, closing, name, , self] of items.matchAll(/<(\/?)([a-zA-Z][^\s/>]*)([^>]*?)(\/?)>/g)) {
+        if (closing) {
+          depth = Math.max(0, depth - 1)
+          continue
+        }
+        if (depth === 0) n += 1
+        if (!self && !VOID.has(name.toLowerCase())) depth += 1
+      }
+      return n
+    })()
+  : 0
+---
+
+<div
+  class:list={['apogee-carousel group relative', itemWidth && 'apogee-carousel--fixed', className]}
+  data-align={align}
+  data-autoplay={String(autoplay)}
+  data-interval={interval}
+  data-loop={String(loop)}
+  style={itemWidth ? `--apogee-item-width: ${itemWidth}` : undefined}
+  {...rest}
+>
+  <div
+    class="apogee-carousel-track flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0"
+    tabindex="0"
+  >
+    <Fragment set:html={items} />
+  </div>
+
+  {
+    controls && (
+      <>
+        <button
+          type="button"
+          class="apogee-carousel-prev absolute top-1/2 left-2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-foreground shadow-md no-js:hidden hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          aria-label="Previous"
+        >
+          <ChevronLeft class="size-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          class="apogee-carousel-next absolute top-1/2 right-2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-foreground shadow-md no-js:hidden hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          aria-label="Next"
+        >
+          <ChevronRight class="size-5" aria-hidden="true" />
+        </button>
+      </>
+    )
+  }
+
+  {
+    dots && slideCount > 0 && (
+      <div class="apogee-carousel-dots mt-3 flex justify-center gap-2 no-js:hidden" role="tablist" aria-label="Slides">
+        {Array.from({ length: slideCount }).map((_, i) => (
+          <button
+            type="button"
+            class="apogee-carousel-dot size-2 rounded-full bg-border transition-colors aria-[current=true]:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            aria-label={`Go to slide ${i + 1}`}
+            aria-current={i === 0 ? 'true' : 'false'}
+          />
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .apogee-carousel-track > * {
+    scroll-snap-align: start;
+  }
+  .apogee-carousel[data-align='center'] .apogee-carousel-track > * {
+    scroll-snap-align: center;
+  }
+  /* Uniform slide width (only when itemWidth is set, so consumer widths win otherwise). */
+  .apogee-carousel--fixed .apogee-carousel-track > * {
+    width: var(--apogee-item-width);
+  }
+</style>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+
+  for (const c of document.querySelectorAll<HTMLElement>('.apogee-carousel')) {
+    const track = c.querySelector<HTMLElement>('.apogee-carousel-track')
+    if (!track) continue
+    const slides = [...track.children] as HTMLElement[]
+    const step = () => track.clientWidth * 0.8
+    const go = (dir: number) => track.scrollBy({ left: dir * step(), behavior: 'smooth' })
+
+    c.querySelector('.apogee-carousel-prev')?.addEventListener('click', () => go(-1))
+    c.querySelector('.apogee-carousel-next')?.addEventListener('click', () => go(1))
+
+    // Dots: click to scroll to a slide; IntersectionObserver marks the active one.
+    const dots = [...c.querySelectorAll<HTMLElement>('.apogee-carousel-dot')]
+    if (dots.length) {
+      const scrollToSlide = (el: HTMLElement) => {
+        const left = el.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft
+        track.scrollTo({ left, behavior: 'smooth' })
+      }
+      dots.forEach((dot, i) => slides[i] && dot.addEventListener('click', () => scrollToSlide(slides[i])))
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue
+            const i = slides.indexOf(e.target as HTMLElement)
+            dots.forEach((d, di) => d.setAttribute('aria-current', String(di === i)))
+          }
+        },
+        { root: track, threshold: 0.6 },
+      )
+      slides.forEach((s) => io.observe(s))
+    }
+
+    // Autoplay: advance on a timer, pause on hover/focus, never under reduced-motion.
+    if (c.dataset.autoplay === 'true' && !reduced.matches) {
+      const delay = Number(c.dataset.interval) || 4000
+      const loop = c.dataset.loop === 'true'
+      let timer: number | undefined
+      const tick = () => {
+        const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4
+        if (atEnd) {
+          if (loop) track.scrollTo({ left: 0, behavior: 'smooth' })
+        } else {
+          go(1)
+        }
+      }
+      const start = () => (timer = window.setInterval(tick, delay))
+      const stop = () => clearInterval(timer)
+      start()
+      c.addEventListener('mouseenter', stop)
+      c.addEventListener('mouseleave', start)
+      c.addEventListener('focusin', stop)
+      c.addEventListener('focusout', start)
+    }
+  }
+</script>

@@ -25,7 +25,7 @@ const menuId = `apogee-nav-${Math.random().toString(36).slice(2, 9)}`
       <slot name="brand" />
       <div
         id={menuId}
-        class="apogee-navbar-menu absolute inset-x-0 top-full flex-col gap-1 border-b border-border bg-background p-4 md:static md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0"
+        class="apogee-navbar-menu absolute inset-x-0 top-full flex-col gap-0.5 border-b border-border bg-background p-4 md:static md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0"
       >
         <slot />
       </div>

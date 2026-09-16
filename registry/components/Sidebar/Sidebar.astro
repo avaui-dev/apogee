@@ -1,0 +1,81 @@
+---
+/**
+ * Sidebar — a vertical navigation aside. Sticky, full-height on desktop; the nav
+ * collapses behind a toggle on mobile (one small island, same pattern as Navbar).
+ * Slots: `brand` (top), default (nav links — use NavLink or <a>), `footer`.
+ *
+ * @composable
+ */
+import { Menu } from '@lucide/astro'
+
+interface Props {
+  class?: string
+}
+
+const { class: className, ...rest } = Astro.props
+const navId = `apogee-sidebar-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<aside
+  class:list={[
+    'apogee-sidebar w-full border-border bg-background md:sticky md:top-0 md:h-dvh md:w-64 md:shrink-0 md:border-r',
+    className,
+  ]}
+  {...rest}
+>
+  <div class="flex items-center justify-between gap-4 border-b border-border p-4 md:border-0">
+    <slot name="brand" />
+    <button
+      type="button"
+      class="apogee-sidebar-toggle grid size-9 place-items-center rounded-md text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:hidden"
+      aria-controls={navId}
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <Menu class="size-5" aria-hidden="true" />
+    </button>
+  </div>
+
+  <nav id={navId} class="apogee-sidebar-nav flex-col gap-0.5 p-4 pt-0 md:pt-4">
+    <slot />
+  </nav>
+
+  <div class="mt-auto hidden border-t border-border p-4 md:block">
+    <slot name="footer" />
+  </div>
+</aside>
+
+<style>
+  /* Desktop: a flex column so `footer` can push to the bottom (mt-auto). */
+  @media (min-width: 768px) {
+    .apogee-sidebar {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  /* Nav: collapsed on mobile, a flex column when open, always shown on desktop. */
+  .apogee-sidebar-nav {
+    display: none;
+  }
+  .apogee-sidebar-nav[data-open='true'] {
+    display: flex;
+  }
+  @media (min-width: 768px) {
+    .apogee-sidebar-nav {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  for (const toggle of document.querySelectorAll<HTMLElement>('.apogee-sidebar-toggle')) {
+    const id = toggle.getAttribute('aria-controls')
+    const nav = id ? document.getElementById(id) : null
+    if (!nav) continue
+    toggle.addEventListener('click', () => {
+      const open = nav.dataset.open !== 'true'
+      nav.dataset.open = String(open)
+      toggle.setAttribute('aria-expanded', String(open))
+    })
+  }
+</script>

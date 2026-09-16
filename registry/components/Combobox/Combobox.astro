@@ -1,0 +1,228 @@
+---
+/**
+ * Combobox — a text input with a styled, filterable dropdown of suggestions.
+ * A real editable ARIA combobox (the platform can't style a `<datalist>` popup),
+ * so it's a JS island: without JS the input still works as a plain text field.
+ *
+ * Typing filters the list and highlights the closest match (prefers a prefix
+ * match); Enter or click commits it into the input. Free-typing is allowed.
+ * Renders a full accessible field (label + hint/error) via Field, like Input.
+ *
+ * @composable
+ */
+import Field from '../Field/Field.astro'
+import { ChevronDown } from '@lucide/astro'
+
+interface Props {
+  id?: string
+  label?: string
+  hint?: string
+  error?: string
+  /** Suggestions shown in the dropdown. */
+  options: string[]
+  size?: 'sm' | 'md' | 'lg'
+  required?: boolean
+  /** Show the chevron caret. Set false to hide it. */
+  caret?: boolean
+  class?: string
+  [key: string]: any
+}
+
+const {
+  id: idProp,
+  label,
+  hint,
+  error,
+  options,
+  size = 'md',
+  required = false,
+  caret = true,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const listId = `${id}-list`
+const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+
+const sizeMap = {
+  sm: 'h-8 px-2.5 text-sm',
+  md: 'h-10 px-3 text-sm',
+  lg: 'h-12 px-4 text-base',
+}
+const inputBase =
+  'w-full rounded-md border border-border bg-background text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-danger'
+---
+
+<Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
+  <div class="apogee-combobox relative" data-open="false">
+    <input
+      id={id}
+      type="text"
+      role="combobox"
+      aria-expanded="false"
+      aria-controls={listId}
+      aria-autocomplete="list"
+      autocomplete="off"
+      required={required}
+      aria-describedby={describedby}
+      aria-invalid={error ? 'true' : undefined}
+      class:list={[inputBase, sizeMap[size], caret && 'pr-9']}
+      {...rest}
+    />
+    {
+      caret && (
+        <ChevronDown
+          class="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+          aria-hidden="true"
+        />
+      )
+    }
+    <ul
+      id={listId}
+      role="listbox"
+      class="apogee-combobox-list absolute z-20 flex max-h-60 w-full flex-col gap-0.5 overflow-auto rounded-md border border-border bg-surface p-1 shadow-lg no-js:hidden"
+      hidden
+    >
+      {
+        options.map((opt, i) => (
+          <li
+            id={`${listId}-${i}`}
+            role="option"
+            aria-selected="false"
+            data-value={opt}
+            class="cursor-pointer rounded px-2 py-1.5 text-sm text-foreground hover:bg-muted aria-selected:bg-muted"
+          >
+            {opt}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Field>
+
+<style>
+  /* Opens below the input; flips above when there isn't room (set by the island). */
+  .apogee-combobox-list {
+    top: 100%;
+    margin-top: 0.25rem;
+  }
+  .apogee-combobox--up .apogee-combobox-list {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+</style>
+
+<script>
+  for (const cb of document.querySelectorAll<HTMLElement>('.apogee-combobox')) {
+    const input = cb.querySelector<HTMLInputElement>('input[role="combobox"]')
+    const list = cb.querySelector<HTMLElement>('[role="listbox"]')
+    const options = [...cb.querySelectorAll<HTMLElement>('[role="option"]')]
+    if (!input || !list || !options.length) continue
+
+    let active = -1
+    const visible = () => options.filter((o) => !o.hidden)
+
+    // Flip the list above the input when there isn't room below the viewport.
+    const place = () => {
+      const rect = cb.getBoundingClientRect()
+      const below = window.innerHeight - rect.bottom
+      const above = rect.top
+      const needed = list.offsetHeight + 8
+      cb.classList.toggle('apogee-combobox--up', below < needed && above > below)
+    }
+    const open = () => {
+      list.hidden = false
+      input.setAttribute('aria-expanded', 'true')
+      cb.dataset.open = 'true'
+      place()
+    }
+    const close = () => {
+      list.hidden = true
+      input.setAttribute('aria-expanded', 'false')
+      cb.dataset.open = 'false'
+      setActive(-1)
+    }
+    const setActive = (i: number) => {
+      const vis = visible()
+      options.forEach((o) => o.setAttribute('aria-selected', 'false'))
+      active = i
+      const el = i >= 0 ? vis[i] : undefined
+      if (el) {
+        el.setAttribute('aria-selected', 'true')
+        input.setAttribute('aria-activedescendant', el.id)
+        el.scrollIntoView({ block: 'nearest' })
+      } else {
+        input.removeAttribute('aria-activedescendant')
+      }
+    }
+    const showAll = () => options.forEach((o) => (o.hidden = false))
+    // The option nearest the current text: a prefix match wins, else first.
+    const matchIndex = () => {
+      const q = input.value.trim().toLowerCase()
+      const vis = visible()
+      if (!q) return vis.length ? 0 : -1
+      const pre = vis.findIndex((o) => (o.dataset.value ?? '').toLowerCase().startsWith(q))
+      return pre >= 0 ? pre : vis.length ? 0 : -1
+    }
+    const filter = () => {
+      const q = input.value.trim().toLowerCase()
+      for (const o of options) {
+        const text = (o.dataset.value ?? '').toLowerCase()
+        o.hidden = q !== '' && !text.includes(q)
+      }
+      setActive(matchIndex())
+      place() // list height changed — re-check the flip
+    }
+    const commit = (o: HTMLElement) => {
+      input.value = o.dataset.value ?? ''
+      close()
+    }
+
+    input.addEventListener('focus', () => {
+      open()
+      showAll()
+      setActive(matchIndex())
+    })
+    input.addEventListener('input', () => {
+      open()
+      filter()
+    })
+    input.addEventListener('keydown', (e) => {
+      const vis = visible()
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        if (list.hidden) {
+          open()
+          showAll()
+        }
+        setActive(Math.min(active + 1, vis.length - 1))
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        setActive(Math.max(active - 1, 0))
+      } else if (e.key === 'Enter') {
+        if (!list.hidden && active >= 0 && vis[active]) {
+          e.preventDefault()
+          commit(vis[active])
+        }
+      } else if (e.key === 'Escape') {
+        close()
+      }
+    })
+
+    // Keep focus on the input when clicking an option (so it doesn't close first).
+    list.addEventListener('mousedown', (e) => e.preventDefault())
+    options.forEach((o) =>
+      o.addEventListener('click', () => {
+        commit(o)
+        input.focus()
+      }),
+    )
+
+    // Close when focus leaves the whole widget (Tab away, click elsewhere).
+    cb.addEventListener('focusout', (e) => {
+      if (!cb.contains(e.relatedTarget as Node)) close()
+    })
+  }
+</script>

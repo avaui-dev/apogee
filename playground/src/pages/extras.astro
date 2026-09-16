@@ -9,6 +9,11 @@ import AvatarGroup from '../../../registry/components/AvatarGroup/AvatarGroup.as
 import Steps from '../../../registry/components/Steps/Steps.astro'
 import Slider from '../../../registry/components/Slider/Slider.astro'
 import Popover from '../../../registry/components/Popover/Popover.astro'
+import Combobox from '../../../registry/components/Combobox/Combobox.astro'
+import Carousel from '../../../registry/components/Carousel/Carousel.astro'
+import Marquee from '../../../registry/components/Marquee/Marquee.astro'
+import Sidebar from '../../../registry/components/Sidebar/Sidebar.astro'
+import NavLink from '../../../registry/components/NavLink/NavLink.astro'
 import Button from '../../../registry/components/Button/Button.astro'
 
 const people = [
@@ -97,6 +102,99 @@ const people = [
         <p class="mt-1 text-muted-foreground">Free 2-day shipping on orders over $50. Click away or press Esc to close.</p>
         <Button size="sm" class="mt-3">Got it</Button>
       </Popover>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Combobox">
+    <Group label="With caret" stack>
+      <Combobox
+        label="Framework"
+        hint="Type to filter, or enter your own"
+        class="max-w-sm"
+        options={['Astro', 'Angular', 'Next.js', 'Nuxt', 'SvelteKit', 'Remix', 'SolidStart', 'Qwik']}
+      />
+    </Group>
+    <Group label="No caret" stack>
+      <Combobox
+        label="City"
+        caret={false}
+        class="max-w-sm"
+        options={['Amsterdam', 'Berlin', 'Bucharest', 'London', 'Lisbon', 'Madrid', 'Paris']}
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Carousel">
+    <Group label="Arrows (default)" stack>
+      <Carousel class="max-w-xl">
+        {
+          ['Zinc', 'Blue', 'Green', 'Amber', 'Red', 'Violet'].map((c, i) => (
+            <div class="grid h-32 w-56 place-items-center rounded-lg border border-border bg-surface text-sm font-medium text-muted-foreground">
+              {i + 1}. {c}
+            </div>
+          ))
+        }
+      </Carousel>
+    </Group>
+    <Group label="Dots + centered + fixed itemWidth" stack>
+      <Carousel class="max-w-xl" dots align="center" itemWidth="14rem" controls={false}>
+        {
+          ['One', 'Two', 'Three', 'Four', 'Five'].map((c) => (
+            <div class="grid h-32 place-items-center rounded-lg border border-border bg-surface text-sm font-medium text-muted-foreground">
+              {c}
+            </div>
+          ))
+        }
+      </Carousel>
+    </Group>
+    <Group label="Autoplay + loop (pauses on hover)" stack>
+      <Carousel class="max-w-xl" autoplay interval={2500} loop itemWidth="16rem">
+        {
+          ['Alpha', 'Bravo', 'Charlie', 'Delta'].map((c) => (
+            <div class="grid h-32 place-items-center rounded-lg border border-border bg-accent/10 text-sm font-medium text-accent">
+              {c}
+            </div>
+          ))
+        }
+      </Carousel>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Marquee">
+    <Group label="Forwards" stack>
+      <Marquee label="Logos" class="max-w-xl">
+        {
+          ['Astro', 'Tailwind', 'Vite', 'Lucide', 'Zinc', 'Blue'].map((c) => (
+            <span class="text-lg font-semibold text-muted-foreground">{c}</span>
+          ))
+        }
+      </Marquee>
+    </Group>
+    <Group label="Backwards + faster" stack>
+      <Marquee label="Tags" direction="backwards" speed={2} class="max-w-xl">
+        {
+          ['accessible', 'responsive', 'zero-JS', 'native-first', 'copy-in'].map((c) => (
+            <span class="rounded-full border border-border px-3 py-1 text-sm text-foreground">{c}</span>
+          ))
+        }
+      </Marquee>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Sidebar">
+    <Group stack>
+      <div class="flex max-w-2xl overflow-hidden rounded-lg border border-border">
+        <Sidebar class="md:h-auto md:w-56">
+          <span slot="brand" class="text-sm font-semibold tracking-tight">Apogee</span>
+          <NavLink href="/extras">Overview</NavLink>
+          <NavLink href="/settings">Settings</NavLink>
+          <NavLink href="/billing">Billing</NavLink>
+          <span slot="footer" class="text-xs text-muted-foreground">v1.0.0</span>
+        </Sidebar>
+        <div class="flex-1 p-6 text-sm text-muted-foreground">
+          Main content. Narrow the window to collapse the sidebar nav behind the toggle.
+        </div>
+      </div>
     </Group>
   </Showcase>
 </ShowcasePage>

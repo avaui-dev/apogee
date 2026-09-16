@@ -1,0 +1,171 @@
+---
+/**
+ * Marquee — an endless scrolling strip (logos, tags, testimonials). CSS-driven:
+ * two panels loop seamlessly, and the duration scales with the item count so the
+ * pace stays constant however many you add. Ported from Lumos's marquee.
+ *
+ * Accessible by default: the second panel is `aria-hidden`/`inert` (never read
+ * or tabbed twice), the strip pauses on `:focus-within` so a link can't scroll
+ * out from under a keyboard user, it holds still for `prefers-reduced-motion`,
+ * and a play/pause toggle (JS enhancement) lets anyone stop it.
+ *
+ * @composable
+ */
+import { Play, Pause } from '@lucide/astro'
+
+interface Props {
+  /** Accessible label for the strip. */
+  label?: string
+  /** Travel direction — `forwards` runs leftwards. */
+  direction?: 'forwards' | 'backwards'
+  /** Seconds spent per item — keeps pace constant regardless of count. */
+  speed?: number
+  class?: string
+  [key: string]: any
+}
+
+const { label = 'Marquee', direction = 'forwards', speed = 4, class: className, ...rest } = Astro.props
+
+// Render the slot once, then inject it into both panels (single render, matches
+// Lumos), and count the top-level items so the loop can scale its pace to them.
+const items = await Astro.slots.render('default')
+const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'])
+let depth = 0
+let count = 0
+for (const [, closing, name, , self] of items.matchAll(/<(\/?)([a-zA-Z][^\s/>]*)([^>]*?)(\/?)>/g)) {
+  if (closing) {
+    depth = Math.max(0, depth - 1)
+    continue
+  }
+  if (depth === 0) count += 1
+  if (!self && !VOID.has(name.toLowerCase())) depth += 1
+}
+count = count || 1
+---
+
+<div
+  class:list={['apogee-marquee', direction === 'backwards' && 'apogee-marquee--backwards', className]}
+  style={`--apogee-marquee-count: ${count}; --apogee-marquee-speed: ${speed}s`}
+  data-state="playing"
+  role="group"
+  aria-label={label}
+  {...rest}
+>
+  <div class="apogee-marquee-viewport">
+    <div class="apogee-marquee-track">
+      <div class="apogee-marquee-panel"><Fragment set:html={items} /></div>
+      <div class="apogee-marquee-panel" aria-hidden="true" inert><Fragment set:html={items} /></div>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="apogee-marquee-toggle grid size-9 shrink-0 place-items-center rounded-full border border-border bg-background text-foreground no-js:hidden hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    data-marquee-toggle
+    aria-pressed="true"
+    aria-label="Pause"
+  >
+    <Pause class="apogee-marquee-icon-pause size-4" aria-hidden="true" />
+    <Play class="apogee-marquee-icon-play size-4" aria-hidden="true" />
+  </button>
+</div>
+
+<style>
+  .apogee-marquee {
+    --_gap: 1.5rem;
+    --_speed: var(--apogee-marquee-speed, 4s);
+    --_count: var(--apogee-marquee-count, 1);
+    --_duration: calc(var(--_count) * var(--_speed));
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  /* Clips the strip but not the toggle beside it, and fades both edges. */
+  .apogee-marquee-viewport {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: clip;
+    container-type: inline-size;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  }
+
+  /* Two panels + the gap, moved by exactly one panel and one gap so the copy
+     lands where the original began — a seamless loop. */
+  .apogee-marquee-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: var(--_gap);
+    animation: apogee-marquee var(--_duration) linear infinite;
+  }
+  .apogee-marquee--backwards .apogee-marquee-track {
+    animation-direction: reverse;
+  }
+  .apogee-marquee-track:focus-within,
+  .apogee-marquee[data-state='paused'] .apogee-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .apogee-marquee-panel {
+    display: flex;
+    flex: none;
+    /* Never narrower than the strip, so the copy still covers it when the
+       original has left — a short set spreads instead of bunching. */
+    min-width: 100cqw;
+    justify-content: space-around;
+    align-items: center;
+    gap: var(--_gap);
+  }
+  .apogee-marquee-panel > * {
+    flex: none;
+    margin-block: 0;
+  }
+
+  /* Toggle icon swaps with the play state. */
+  .apogee-marquee-icon-play {
+    display: none;
+  }
+  .apogee-marquee[data-state='paused'] .apogee-marquee-icon-pause {
+    display: none;
+  }
+  .apogee-marquee[data-state='paused'] .apogee-marquee-icon-play {
+    display: inline;
+  }
+
+  @keyframes apogee-marquee {
+    to {
+      translate: calc(-50% - var(--_gap) / 2) 0;
+    }
+  }
+
+  /* Hold still for reduced-motion; only run if someone starts it themselves. */
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-marquee-track {
+      animation-name: none;
+    }
+    .apogee-marquee[data-state='playing'] .apogee-marquee-track {
+      animation-name: apogee-marquee;
+      animation-duration: var(--_duration) !important;
+    }
+  }
+</style>
+
+<script>
+  for (const m of document.querySelectorAll<HTMLElement>('.apogee-marquee')) {
+    const toggle = m.querySelector<HTMLButtonElement>('[data-marquee-toggle]')
+    if (!toggle) continue
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+    const setPlaying = (playing: boolean) => {
+      m.dataset.state = playing ? 'playing' : 'paused'
+      toggle.setAttribute('aria-pressed', String(playing))
+      toggle.setAttribute('aria-label', playing ? 'Pause' : 'Play')
+    }
+    // Reduced-motion starts paused, but stays startable.
+    setPlaying(!reduced.matches)
+    reduced.addEventListener('change', () => setPlaying(!reduced.matches))
+    toggle.addEventListener('click', () => setPlaying(m.dataset.state !== 'playing'))
+  }
+</script>
