@@ -17,6 +17,21 @@
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/* Progressive enhancement. <html> ships class="no-js"; a head script swaps it to
+   "js" before paint. Gate a JS-only affordance with `no-js:hidden` (or the `js:`
+   variant) so it degrades cleanly when JavaScript is unavailable. */
+@custom-variant no-js (html.no-js &);
+@custom-variant js (html.js &);
+
+/* base — global defaults. box-sizing: border-box is already applied to
+   *, ::before, ::after by Tailwind's Preflight, so we only add font smoothing. */
+@layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
 :root {
   /* surfaces & text (neutral ramp = Tailwind zinc; swap to slate/neutral here) */
   --background: var(--color-white);
