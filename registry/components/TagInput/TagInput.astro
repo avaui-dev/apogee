@@ -1,0 +1,104 @@
+---
+/**
+ * TagInput — type and press Enter (or comma) to add removable tags; Backspace on
+ * an empty field removes the last. JS island; without JS it degrades to the
+ * initial tags (which still submit) plus a plain text field. Tags submit as
+ * repeated `name` fields.
+ *
+ * @composable
+ */
+import { X } from '@lucide/astro'
+
+interface Props {
+  name: string
+  /** Initial tags. */
+  value?: string[]
+  placeholder?: string
+  class?: string
+}
+
+const { name, value = [], placeholder = 'Add tag…', class: className, ...rest } = Astro.props
+---
+
+<div
+  class:list={[
+    'apogee-taginput flex flex-wrap items-center gap-1.5 rounded-md border border-border bg-background px-2 py-1.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring',
+    className,
+  ]}
+  data-name={name}
+  {...rest}
+>
+  {
+    value.map((tag) => (
+      <span class="apogee-tag inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-sm text-foreground">
+        <span class="apogee-tag-label">{tag}</span>
+        <input type="hidden" name={name} value={tag} />
+        <button
+          type="button"
+          class="apogee-tag-remove text-muted-foreground no-js:hidden hover:text-foreground"
+          aria-label={`Remove ${tag}`}
+        >
+          <X class="size-3.5" aria-hidden="true" />
+        </button>
+      </span>
+    ))
+  }
+  <input
+    type="text"
+    class="apogee-taginput-field min-w-24 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+    placeholder={placeholder}
+    autocomplete="off"
+  />
+</div>
+
+<template class="apogee-tag-template">
+  <span class="apogee-tag inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-sm text-foreground">
+    <span class="apogee-tag-label"></span>
+    <input type="hidden" />
+    <button type="button" class="apogee-tag-remove text-muted-foreground hover:text-foreground" aria-label="Remove">
+      <X class="size-3.5" aria-hidden="true" />
+    </button>
+  </span>
+</template>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.apogee-taginput')) {
+    const field = root.querySelector<HTMLInputElement>('.apogee-taginput-field')
+    const tpl = root.querySelector<HTMLTemplateElement>('.apogee-tag-template')
+    const name = root.dataset.name || 'tags'
+    if (!field || !tpl) continue
+
+    const removeTag = (tag: Element) => tag.remove()
+
+    const addTag = (raw: string) => {
+      const label = raw.trim().replace(/,$/, '').trim()
+      if (!label) return
+      const node = tpl.content.firstElementChild!.cloneNode(true) as HTMLElement
+      node.querySelector('.apogee-tag-label')!.textContent = label
+      const hidden = node.querySelector<HTMLInputElement>('input[type="hidden"]')!
+      hidden.name = name
+      hidden.value = label
+      const btn = node.querySelector<HTMLButtonElement>('.apogee-tag-remove')!
+      btn.setAttribute('aria-label', `Remove ${label}`)
+      btn.addEventListener('click', () => removeTag(node))
+      root.insertBefore(node, field)
+      field.value = ''
+    }
+
+    field.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault()
+        addTag(field.value)
+      } else if (e.key === 'Backspace' && field.value === '') {
+        const tags = root.querySelectorAll('.apogee-tag')
+        const last = tags[tags.length - 1]
+        if (last) removeTag(last)
+      }
+    })
+
+    // Wire the server-rendered tags' remove buttons.
+    for (const btn of root.querySelectorAll<HTMLButtonElement>('.apogee-tag-remove')) {
+      btn.addEventListener('click', () => btn.closest('.apogee-tag')?.remove())
+    }
+  }
+</script>

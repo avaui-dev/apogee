@@ -1,0 +1,95 @@
+---
+/**
+ * Meter — a native `<meter>` for a measurement in a known range (disk usage,
+ * score, capacity). The value colours by the low/high thresholds
+ * (accent → warning → danger). Zero JS. Use Progress for task progress; Meter
+ * for a static measurement.
+ *
+ * @composable
+ */
+interface Props {
+  value: number
+  min?: number
+  max?: number
+  /** Below this counts as sub-optimal (warning). */
+  low?: number
+  /** Above this counts as sub-optimal (warning). */
+  high?: number
+  /** The ideal point; the browser derives the colour zones from it. */
+  optimum?: number
+  label?: string
+  class?: string
+  [key: string]: any
+}
+
+const { value, min = 0, max = 100, low, high, optimum, label, class: className, ...rest } = Astro.props
+---
+
+<div class:list={['flex flex-col gap-1', className]}>
+  {
+    label && (
+      <div class="flex justify-between text-sm">
+        <span class="text-foreground">{label}</span>
+        <span class="text-muted-foreground tabular-nums">
+          {value}/{max}
+        </span>
+      </div>
+    )
+  }
+  <meter
+    class="apogee-meter"
+    value={value}
+    min={min}
+    max={max}
+    low={low}
+    high={high}
+    optimum={optimum}
+    {...rest}
+  ></meter>
+</div>
+
+<style>
+  /* Styling a <meter> needs vendor pseudo-elements. Track = muted; the value
+     picks up accent / warning / danger from the threshold zones. */
+  .apogee-meter {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--color-muted);
+    overflow: hidden;
+  }
+
+  /* WebKit / Blink */
+  .apogee-meter::-webkit-meter-bar {
+    background: var(--color-muted);
+    border: none;
+    border-radius: 9999px;
+    height: 0.5rem;
+  }
+  .apogee-meter::-webkit-meter-optimum-value {
+    background: var(--color-accent);
+    border-radius: 9999px;
+  }
+  .apogee-meter::-webkit-meter-suboptimum-value {
+    background: var(--color-warning);
+    border-radius: 9999px;
+  }
+  .apogee-meter::-webkit-meter-even-less-good-value {
+    background: var(--color-danger);
+    border-radius: 9999px;
+  }
+
+  /* Firefox */
+  .apogee-meter::-moz-meter-bar {
+    background: var(--color-accent);
+    border-radius: 9999px;
+  }
+  .apogee-meter:-moz-meter-sub-optimum::-moz-meter-bar {
+    background: var(--color-warning);
+  }
+  .apogee-meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+    background: var(--color-danger);
+  }
+</style>

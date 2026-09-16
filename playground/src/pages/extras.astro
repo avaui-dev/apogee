@@ -17,6 +17,10 @@ import NavLink from '../../../registry/components/NavLink/NavLink.astro'
 import SegmentedControl from '../../../registry/components/SegmentedControl/SegmentedControl.astro'
 import Rating from '../../../registry/components/Rating/Rating.astro'
 import EmptyState from '../../../registry/components/EmptyState/EmptyState.astro'
+import Timeline from '../../../registry/components/Timeline/Timeline.astro'
+import Meter from '../../../registry/components/Meter/Meter.astro'
+import FileUpload from '../../../registry/components/FileUpload/FileUpload.astro'
+import TagInput from '../../../registry/components/TagInput/TagInput.astro'
 import Button from '../../../registry/components/Button/Button.astro'
 import { Inbox } from '@lucide/astro'
 
@@ -240,6 +244,39 @@ const people = [
         <Button slot="actions" size="sm">New project</Button>
         <Button slot="actions" size="sm" variant="ghost">Import</Button>
       </EmptyState>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Timeline">
+    <Group stack>
+      <Timeline
+        class="max-w-md"
+        items={[
+          { title: 'Deployed v1.2.0', time: '2h ago', description: 'Rolled out to production.' },
+          { title: 'Merged #482', time: 'Yesterday', description: 'Custom combobox listbox.' },
+          { title: 'Opened the repo', time: 'Sep 15' },
+        ]}
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Meter">
+    <Group stack>
+      <Meter label="Disk" value={35} class="max-w-sm" low={20} high={80} optimum={10} />
+      <Meter label="Memory" value={72} class="max-w-sm" low={20} high={80} optimum={10} />
+      <Meter label="Quota" value={95} class="max-w-sm" low={20} high={80} optimum={10} />
+    </Group>
+  </Showcase>
+
+  <Showcase name="FileUpload">
+    <Group stack>
+      <FileUpload name="doc" class="max-w-sm" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="TagInput">
+    <Group stack>
+      <TagInput name="tags" class="max-w-sm" value={['astro', 'tailwind']} />
     </Group>
   </Showcase>
 </ShowcasePage>
