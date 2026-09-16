@@ -13,18 +13,20 @@ Components are copied into your project — you own the source (shadcn / Starwin
 model). Requires Tailwind v4.
 
 ```sh
-npx @ava-ui/apogee init          # design tokens + Tailwind setup
-npx @ava-ui/apogee add button    # copies Button into your project
+npx @ava-ui/apogee init                 # design tokens + config + setup steps
+npx @ava-ui/apogee add button dialog    # copies components (+ their deps)
+npx @ava-ui/apogee list                 # all available components
 ```
 
-> The CLI is in progress. Today the components live in `registry/`, and the
-> `playground/` app renders them live (`cd playground && npm run dev`).
+`add` resolves dependencies for you — `add data-grid` also pulls in `Checkbox`,
+and prints the npm packages to install (e.g. `@lucide/astro`). Files land in
+`src/components/apogee/` (configurable in `apogee.json`); you own them.
 
 ## Use
 
 ```astro
 ---
-import Button from '@/components/apogee/Button.astro'
+import Button from '@/components/apogee/Button/Button.astro'
 ---
 <Button variant="primary">Get started</Button>
 ```
