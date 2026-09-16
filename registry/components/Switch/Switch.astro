@@ -1,0 +1,25 @@
+---
+/**
+ * Switch — a toggle. A real `<input type="checkbox" role="switch">` (visually
+ * hidden) drives a CSS track + thumb, so it's zero-JS and fully accessible.
+ *
+ * @composable
+ */
+interface Props {
+  id?: string
+  label?: string
+  class?: string
+  [key: string]: any
+}
+
+const { id: idProp, label, class: className, ...rest } = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<label for={id} class:list={['inline-flex items-center gap-2', className]}>
+  <input id={id} type="checkbox" role="switch" class="peer sr-only" {...rest} />
+  <span
+    class="relative h-5 w-9 shrink-0 rounded-full bg-muted transition-colors peer-checked:bg-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring peer-disabled:opacity-50 after:absolute after:left-0.5 after:top-0.5 after:size-4 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:after:translate-x-4"
+  ></span>
+  {label && <span class="text-sm text-foreground">{label}</span>}
+</label>

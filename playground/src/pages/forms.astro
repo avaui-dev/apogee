@@ -1,0 +1,92 @@
+---
+import ShowcasePage from '../showcase/ShowcasePage.astro'
+import Showcase from '../showcase/Showcase.astro'
+import Group from '../showcase/Group.astro'
+import Input from '../../../registry/components/Input/Input.astro'
+import Textarea from '../../../registry/components/Textarea/Textarea.astro'
+import Select from '../../../registry/components/Select/Select.astro'
+import Checkbox from '../../../registry/components/Checkbox/Checkbox.astro'
+import Radio from '../../../registry/components/Radio/Radio.astro'
+import Switch from '../../../registry/components/Switch/Switch.astro'
+import Stack from '../../../registry/components/Stack/Stack.astro'
+---
+
+<ShowcasePage title="Forms">
+  <Showcase name="Input" summary="Sizes, states, and a floating-label variant.">
+    <Group label="States" stack>
+      <Stack gap={4} class="max-w-sm">
+        <Input label="Name" placeholder="Ada Lovelace" />
+        <Input label="Email" type="email" hint="We'll never share it." placeholder="you@example.com" />
+        <Input label="Username" required error="That username is taken." value="ada" />
+        <Input label="Disabled" disabled placeholder="Unavailable" />
+      </Stack>
+    </Group>
+    <Group label="Sizes" stack>
+      <Stack gap={4} class="max-w-sm">
+        <Input size="sm" label="Small" placeholder="Small" />
+        <Input size="md" label="Medium" placeholder="Medium" />
+        <Input size="lg" label="Large" placeholder="Large" />
+      </Stack>
+    </Group>
+    <Group label="Floating label (click a field)" stack>
+      <Stack gap={4} class="max-w-sm">
+        <Input variant="floating" label="Full name" />
+        <Input variant="floating" type="email" label="Email address" hint="The label floats up on focus / when filled." />
+        <Input variant="floating" size="lg" label="Large floating" />
+      </Stack>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Textarea" summary="Sizes.">
+    <Group label="Sizes" stack>
+      <Stack gap={4} class="max-w-sm">
+        <Textarea size="sm" rows={2} label="Small" placeholder="Small" />
+        <Textarea size="md" label="Medium" placeholder="Medium" />
+        <Textarea size="lg" label="Large" placeholder="Large" />
+      </Stack>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Select" summary="Sizes.">
+    <Group label="Sizes" stack>
+      <Stack gap={4} class="max-w-sm">
+        <Select size="sm" label="Small">
+          <option>Developer</option>
+          <option>Designer</option>
+        </Select>
+        <Select size="md" label="Medium">
+          <option>Developer</option>
+          <option>Designer</option>
+        </Select>
+        <Select size="lg" label="Large">
+          <option>Developer</option>
+          <option>Designer</option>
+        </Select>
+      </Stack>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Checkbox">
+    <Group stack>
+      <Checkbox label="Subscribe to the newsletter" />
+      <Checkbox label="Checked by default" checked />
+      <Checkbox label="Disabled" disabled />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Radio" summary="Give a group the same name.">
+    <Group stack>
+      <Radio name="plan" value="free" label="Free" checked />
+      <Radio name="plan" value="pro" label="Pro" />
+      <Radio name="plan" value="team" label="Team" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Switch">
+    <Group stack>
+      <Switch label="Enable notifications" />
+      <Switch label="On by default" checked />
+      <Switch label="Disabled" disabled />
+    </Group>
+  </Showcase>
+</ShowcasePage>

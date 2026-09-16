@@ -1,0 +1,92 @@
+---
+/**
+ * Input — a labeled text input. Renders a full accessible field (label + input
+ * + hint/error) via Field, wiring `for` / `aria-describedby` / `aria-invalid`.
+ *
+ * `variant="floating"` uses the label as a placeholder that animates up onto the
+ * top border on focus / when filled — pure CSS, no JS. (It manages its own
+ * placeholder, so a passed `placeholder` is ignored in that variant.)
+ *
+ * @composable
+ */
+import Field from '../Field/Field.astro'
+
+interface Props {
+  id?: string
+  label?: string
+  hint?: string
+  error?: string
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date'
+  size?: 'sm' | 'md' | 'lg'
+  variant?: 'default' | 'floating'
+  required?: boolean
+  class?: string
+  [key: string]: any
+}
+
+const {
+  id: idProp,
+  label,
+  hint,
+  error,
+  type = 'text',
+  size = 'md',
+  variant = 'default',
+  required = false,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+
+const sizeMap = {
+  sm: 'h-8 px-2.5 text-sm',
+  md: 'h-10 px-3 text-sm',
+  lg: 'h-12 px-4 text-base',
+}
+const labelLeft = { sm: 'left-2.5', md: 'left-3', lg: 'left-4' }
+
+const inputBase =
+  'w-full rounded-md border border-border bg-background text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-danger'
+---
+
+{
+  variant === 'floating' ? (
+    <Field id={id} hint={hint} error={error} class={className}>
+      <div class="relative">
+        <input
+          id={id}
+          type={type}
+          required={required}
+          aria-describedby={describedby}
+          aria-invalid={error ? 'true' : undefined}
+          class:list={['peer', inputBase, sizeMap[size]]}
+          {...rest}
+          placeholder=" "
+        />
+        <label
+          for={id}
+          class:list={[
+            'pointer-events-none absolute top-1/2 -translate-y-1/2 bg-background px-1 text-sm text-muted-foreground transition-all peer-focus:-top-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-accent peer-[:not(:placeholder-shown)]:-top-0.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-disabled:opacity-50',
+            labelLeft[size],
+          ]}
+        >
+          {label}
+          {required && <span class="text-danger" aria-hidden="true"> *</span>}
+        </label>
+      </div>
+    </Field>
+  ) : (
+    <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
+      <input
+        id={id}
+        type={type}
+        required={required}
+        aria-describedby={describedby}
+        aria-invalid={error ? 'true' : undefined}
+        class:list={[inputBase, sizeMap[size]]}
+        {...rest}
+      />
+    </Field>
+  )
+}

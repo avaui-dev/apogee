@@ -1,0 +1,34 @@
+---
+/**
+ * Field — the labeled-field scaffold: label + control + hint/error, wired for
+ * accessibility. Input/Textarea/Select render this with a matching `id`; use it
+ * standalone for a custom control (pass the same `id` to your control and set
+ * its `aria-describedby` to `<id>-hint` / `<id>-error`).
+ *
+ * @composable
+ */
+interface Props {
+  id: string
+  label?: string
+  hint?: string
+  error?: string
+  required?: boolean
+  class?: string
+}
+
+const { id, label, hint, error, required = false, class: className, ...rest } = Astro.props
+---
+
+<div class:list={['flex flex-col gap-1.5', className]} {...rest}>
+  {
+    label && (
+      <label for={id} class="text-sm font-medium text-foreground">
+        {label}
+        {required && <span class="text-danger" aria-hidden="true"> *</span>}
+      </label>
+    )
+  }
+  <slot />
+  {hint && !error && <p id={`${id}-hint`} class="text-sm text-muted-foreground">{hint}</p>}
+  {error && <p id={`${id}-error`} role="alert" class="text-sm text-danger">{error}</p>}
+</div>

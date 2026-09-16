@@ -1,0 +1,59 @@
+---
+/**
+ * Radio — a native radio with a custom look. The real `<input>` is styled
+ * directly (`appearance: none`), so it stays the actual control. Give every
+ * radio in a group the same `name`.
+ *
+ * @composable
+ */
+interface Props {
+  id?: string
+  label?: string
+  name: string
+  value: string
+  class?: string
+  [key: string]: any
+}
+
+const { id: idProp, label, class: className, ...rest } = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<div class:list={['flex items-start gap-2', className]}>
+  <input id={id} type="radio" class="apogee-radio" {...rest} />
+  {label && <label for={id} class="text-sm text-foreground">{label}</label>}
+</div>
+
+<style>
+  .apogee-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    margin-top: 0.125rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 9999px;
+    background-color: var(--background);
+    cursor: pointer;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
+  }
+  .apogee-radio:hover:not(:checked):not(:disabled) {
+    border-color: var(--muted-foreground);
+  }
+  .apogee-radio:checked {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    background-image: radial-gradient(circle at center, #fff 0 32%, transparent 36%);
+  }
+  .apogee-radio:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .apogee-radio:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+</style>

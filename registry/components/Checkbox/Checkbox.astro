@@ -1,0 +1,60 @@
+---
+/**
+ * Checkbox — a native checkbox with a custom look. The real `<input>` is styled
+ * directly (`appearance: none`), so it stays the actual control (keyboard, form
+ * value, a11y) — no JS, no fake proxy element.
+ *
+ * @composable
+ */
+interface Props {
+  id?: string
+  label?: string
+  class?: string
+  [key: string]: any
+}
+
+const { id: idProp, label, class: className, ...rest } = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<div class:list={['flex items-start gap-2', className]}>
+  <input id={id} type="checkbox" class="apogee-checkbox" {...rest} />
+  {label && <label for={id} class="text-sm text-foreground">{label}</label>}
+</div>
+
+<style>
+  .apogee-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    margin-top: 0.125rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 0.3rem;
+    background-color: var(--background);
+    cursor: pointer;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
+  }
+  .apogee-checkbox:hover:not(:checked):not(:disabled) {
+    border-color: var(--muted-foreground);
+  }
+  .apogee-checkbox:checked {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+    background-size: 0.72rem;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .apogee-checkbox:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .apogee-checkbox:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+</style>

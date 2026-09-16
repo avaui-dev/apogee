@@ -1,0 +1,50 @@
+---
+/**
+ * Select — a labeled native `<select>` (styled, with a chevron). Pass `<option>`s
+ * in the slot. Native = zero JS, full keyboard + mobile support.
+ *
+ * @composable
+ */
+import Field from '../Field/Field.astro'
+import { ChevronDown } from '@lucide/astro'
+
+interface Props {
+  id?: string
+  label?: string
+  hint?: string
+  error?: string
+  size?: 'sm' | 'md' | 'lg'
+  required?: boolean
+  class?: string
+  [key: string]: any
+}
+
+const { id: idProp, label, hint, error, size = 'md', required = false, class: className, ...rest } = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+
+const sizeMap = {
+  sm: 'h-8 pl-2.5 pr-9 text-sm',
+  md: 'h-10 pl-3 pr-9 text-sm',
+  lg: 'h-12 pl-4 pr-9 text-base',
+}
+---
+
+<Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
+  <div class="relative">
+    <select
+      id={id}
+      required={required}
+      aria-describedby={describedby}
+      aria-invalid={error ? 'true' : undefined}
+      class:list={[
+        'w-full appearance-none rounded-md border border-border bg-background text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-danger',
+        sizeMap[size],
+      ]}
+      {...rest}
+    >
+      <slot />
+    </select>
+    <ChevronDown class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+  </div>
+</Field>
