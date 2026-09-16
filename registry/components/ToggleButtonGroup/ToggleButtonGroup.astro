@@ -1,0 +1,41 @@
+---
+/**
+ * ToggleButtonGroup — connects ToggleButtons into a segmented bar. `single`
+ * makes them mutually exclusive (radio-like: one or none pressed); `multiple`
+ * lets each toggle independently. Put ToggleButtons in the slot.
+ *
+ * @composable
+ */
+interface Props {
+  type?: 'single' | 'multiple'
+  'aria-label'?: string
+  class?: string
+}
+
+const { type = 'multiple', class: className, ...rest } = Astro.props
+---
+
+<div
+  role="group"
+  data-type={type}
+  class:list={[
+    'apogee-toggle-group inline-flex flex-wrap items-center gap-0.5 rounded-md border border-border bg-background p-0.5',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</div>
+
+<script>
+  // Single-select: clicking one un-presses its siblings (each button still
+  // self-toggles, so clicking the active one clears the group).
+  for (const g of document.querySelectorAll<HTMLElement>('.apogee-toggle-group[data-type="single"]')) {
+    const btns = [...g.querySelectorAll<HTMLButtonElement>('.apogee-toggle')]
+    for (const b of btns) {
+      b.addEventListener('click', () => {
+        for (const o of btns) if (o !== b) o.setAttribute('aria-pressed', 'false')
+      })
+    }
+  }
+</script>

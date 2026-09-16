@@ -1,0 +1,107 @@
+---
+/**
+ * RichTextEditor — a small WYSIWYG editor: a formatting toolbar over a
+ * `contenteditable` region, synced to a hidden field that submits as HTML.
+ * JS island (the toolbar is `no-js:hidden`).
+ *
+ * Uses `document.execCommand` — deprecated but universally supported and
+ * dependency-free, which suits the copy-in model. For a heavy-duty editor bring
+ * TipTap / ProseMirror instead; this is the lightweight default.
+ *
+ * @composable
+ */
+import { Bold, Italic, Underline, Heading2, List, ListOrdered, Link as LinkIcon } from '@lucide/astro'
+import ToggleButton from '../ToggleButton/ToggleButton.astro'
+import ToggleButtonGroup from '../ToggleButtonGroup/ToggleButtonGroup.astro'
+
+interface Props {
+  name?: string
+  /** Initial HTML. */
+  value?: string
+  placeholder?: string
+  class?: string
+  [key: string]: any
+}
+
+const { name = 'content', value = '', placeholder = 'Write something…', class: className, ...rest } = Astro.props
+---
+
+<div class:list={['apogee-rte rounded-md border border-border bg-background', className]} {...rest}>
+  <div class="apogee-rte-toolbar flex flex-wrap items-center gap-2 border-b border-border p-2 no-js:hidden">
+    <ToggleButtonGroup aria-label="Text style">
+      <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="bold" aria-label="Bold"><Bold aria-hidden="true" /></ToggleButton>
+      <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="italic" aria-label="Italic"><Italic aria-hidden="true" /></ToggleButton>
+      <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="underline" aria-label="Underline"><Underline aria-hidden="true" /></ToggleButton>
+    </ToggleButtonGroup>
+    <ToggleButtonGroup aria-label="Blocks">
+      <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="formatBlock" data-value="h2" aria-label="Heading"><Heading2 aria-hidden="true" /></ToggleButton>
+      <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="insertUnorderedList" aria-label="Bulleted list"><List aria-hidden="true" /></ToggleButton>
+      <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="insertOrderedList" aria-label="Numbered list"><ListOrdered aria-hidden="true" /></ToggleButton>
+      <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="createLink" aria-label="Link"><LinkIcon aria-hidden="true" /></ToggleButton>
+    </ToggleButtonGroup>
+  </div>
+
+  <div
+    class="apogee-rte-editor min-h-40 p-3 text-sm text-foreground outline-none [&_a]:text-accent [&_a]:underline [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)]"
+    contenteditable="true"
+    role="textbox"
+    aria-multiline="true"
+    aria-label={placeholder}
+    data-placeholder={placeholder}
+    set:html={value}
+  ></div>
+
+  <input type="hidden" name={name} class="apogee-rte-value" value={value} />
+</div>
+
+<script>
+  for (const rte of document.querySelectorAll<HTMLElement>('.apogee-rte')) {
+    const editor = rte.querySelector<HTMLElement>('.apogee-rte-editor')
+    const hidden = rte.querySelector<HTMLInputElement>('.apogee-rte-value')
+    if (!editor) continue
+
+    const sync = () => hidden && (hidden.value = editor.innerHTML)
+    editor.addEventListener('input', sync)
+
+    const buttons = [...rte.querySelectorAll<HTMLButtonElement>('.apogee-rte-btn')]
+    const STATE_CMDS = ['bold', 'italic', 'underline', 'insertUnorderedList', 'insertOrderedList']
+
+    // Reflect the current selection's formatting on the toggle buttons.
+    const updateStates = () => {
+      for (const btn of buttons) {
+        const cmd = btn.dataset.command!
+        try {
+          if (STATE_CMDS.includes(cmd)) {
+            btn.setAttribute('aria-pressed', String(document.queryCommandState(cmd)))
+          } else if (cmd === 'formatBlock') {
+            const block = document.queryCommandValue('formatBlock').toLowerCase()
+            btn.setAttribute('aria-pressed', String(block === (btn.dataset.value ?? '')))
+          }
+        } catch {
+          /* queryCommand* can throw when the selection is outside the editor */
+        }
+      }
+    }
+    document.addEventListener('selectionchange', () => {
+      if (editor.contains(document.getSelection()?.anchorNode ?? null)) updateStates()
+    })
+
+    for (const btn of buttons) {
+      // Keep the selection in the editor when the toolbar is clicked.
+      btn.addEventListener('mousedown', (e) => e.preventDefault())
+      btn.addEventListener('click', () => {
+        const cmd = btn.dataset.command!
+        let value = btn.dataset.value
+        editor.focus()
+        if (cmd === 'createLink') {
+          const url = prompt('Link URL')
+          if (!url) return
+          value = url
+        }
+        document.execCommand(cmd, false, value)
+        sync()
+        updateStates()
+      })
+    }
+  }
+</script>

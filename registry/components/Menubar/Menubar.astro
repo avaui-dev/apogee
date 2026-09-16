@@ -1,0 +1,106 @@
+---
+/**
+ * Menubar — a desktop-style app menubar (File, Edit, View…). Each top item is a
+ * native `<details>` menu, so open/close works with zero JS; a small island adds
+ * the expected menubar behaviour: opening one closes the siblings, and ← / →
+ * move between menus. Items with `href` navigate; others dispatch `apogee:menu`
+ * (`detail: { id, label }`) on `document`.
+ *
+ * @composable
+ */
+interface MenuItem {
+  label?: string
+  href?: string
+  id?: string
+  separator?: boolean
+}
+interface Props {
+  menus: { label: string; items: MenuItem[] }[]
+  class?: string
+}
+
+const { menus, class: className, ...rest } = Astro.props
+
+const itemClass =
+  'apogee-menubar-item flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-foreground hover:bg-muted focus-visible:bg-muted focus-visible:outline-none'
+---
+
+<div
+  role="menubar"
+  class:list={['apogee-menubar flex items-center gap-0.5 rounded-md border border-border bg-background p-1', className]}
+  {...rest}
+>
+  {
+    menus.map((menu) => (
+      <details class="apogee-menubar-menu relative">
+        <summary
+          role="menuitem"
+          aria-haspopup="true"
+          class="cursor-pointer list-none rounded px-3 py-1.5 text-sm font-medium text-foreground select-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+        >
+          {menu.label}
+        </summary>
+        <div
+          role="menu"
+          class="apogee-menubar-panel absolute top-full left-0 z-30 mt-1 flex min-w-44 flex-col gap-0.5 rounded-md border border-border bg-surface p-1 shadow-lg"
+        >
+          {menu.items.map((item) =>
+            item.separator ? (
+              <hr class="my-1 border-border" />
+            ) : item.href ? (
+              <a href={item.href} role="menuitem" class={itemClass}>
+                {item.label}
+              </a>
+            ) : (
+              <button type="button" role="menuitem" class={itemClass} data-id={item.id}>
+                {item.label}
+              </button>
+            ),
+          )}
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<script>
+  for (const bar of document.querySelectorAll<HTMLElement>('.apogee-menubar')) {
+    const menus = [...bar.querySelectorAll<HTMLDetailsElement>('.apogee-menubar-menu')]
+
+    menus.forEach((d, i) => {
+      // Opening one closes the others.
+      d.addEventListener('toggle', () => {
+        if (d.open) menus.forEach((o) => o !== d && (o.open = false))
+      })
+      // Arrow keys move between top-level menus.
+      const summary = d.querySelector<HTMLElement>('summary')
+      summary?.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault()
+          menus[(i + 1) % menus.length].querySelector<HTMLElement>('summary')?.focus()
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault()
+          menus[(i - 1 + menus.length) % menus.length].querySelector<HTMLElement>('summary')?.focus()
+        }
+      })
+    })
+
+    // Activate an item: close the menu, then navigate (anchor) or dispatch.
+    for (const btn of bar.querySelectorAll<HTMLButtonElement>('.apogee-menubar-item[data-id]')) {
+      btn.addEventListener('click', () => {
+        btn.closest('details')!.open = false
+        document.dispatchEvent(
+          new CustomEvent('apogee:menu', { detail: { id: btn.dataset.id, label: btn.textContent?.trim() } }),
+        )
+      })
+    }
+
+    // Close on outside click / Escape.
+    document.addEventListener('click', (e) => {
+      if (!bar.contains(e.target as Node)) menus.forEach((d) => (d.open = false))
+    })
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') menus.forEach((d) => (d.open = false))
+    })
+  }
+</script>

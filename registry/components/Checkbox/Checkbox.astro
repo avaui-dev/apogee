@@ -49,6 +49,14 @@ const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
     background-position: center;
     background-repeat: no-repeat;
   }
+  .apogee-checkbox:indeterminate {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+    background-size: 0.72rem;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
   .apogee-checkbox:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;

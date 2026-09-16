@@ -28,7 +28,13 @@ import Collapsible from '../../../registry/components/Collapsible/Collapsible.as
 import ContextMenu from '../../../registry/components/ContextMenu/ContextMenu.astro'
 import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
 import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
+import RichTextEditor from '../../../registry/components/RichTextEditor/RichTextEditor.astro'
+import Menubar from '../../../registry/components/Menubar/Menubar.astro'
+import DataGrid from '../../../registry/components/DataGrid/DataGrid.astro'
+import ToggleButton from '../../../registry/components/ToggleButton/ToggleButton.astro'
+import ToggleButtonGroup from '../../../registry/components/ToggleButtonGroup/ToggleButtonGroup.astro'
 import Button from '../../../registry/components/Button/Button.astro'
+import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight } from '@lucide/astro'
 import Kbd from '../../../registry/components/Kbd/Kbd.astro'
 import { Inbox } from '@lucide/astro'
 
@@ -348,6 +354,84 @@ const people = [
           { label: 'Go to Components', group: 'Navigate', href: '/' },
           { label: 'Go to Tokens', group: 'Navigate', href: '/' },
           { label: 'Toggle theme', group: 'Preferences', id: 'theme' },
+        ]}
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="ToggleButton">
+    <Group label="Standalone (self-toggle)">
+      <ToggleButton aria-label="Bold"><Bold aria-hidden="true" /></ToggleButton>
+      <ToggleButton pressed aria-label="Italic"><Italic aria-hidden="true" /></ToggleButton>
+      <ToggleButton aria-label="Bookmark">Bookmark</ToggleButton>
+    </Group>
+  </Showcase>
+
+  <Showcase name="ToggleButtonGroup">
+    <Group label="Multiple (text style)" stack>
+      <ToggleButtonGroup aria-label="Text style">
+        <ToggleButton manual aria-label="Bold"><Bold aria-hidden="true" /></ToggleButton>
+        <ToggleButton manual aria-label="Italic"><Italic aria-hidden="true" /></ToggleButton>
+        <ToggleButton manual aria-label="Underline"><Underline aria-hidden="true" /></ToggleButton>
+      </ToggleButtonGroup>
+    </Group>
+    <Group label="Single (alignment)" stack>
+      <ToggleButtonGroup type="single" aria-label="Align">
+        <ToggleButton pressed aria-label="Align left"><AlignLeft aria-hidden="true" /></ToggleButton>
+        <ToggleButton aria-label="Align center"><AlignCenter aria-hidden="true" /></ToggleButton>
+        <ToggleButton aria-label="Align right"><AlignRight aria-hidden="true" /></ToggleButton>
+      </ToggleButtonGroup>
+    </Group>
+  </Showcase>
+
+  <Showcase name="RichTextEditor">
+    <Group stack>
+      <RichTextEditor
+        name="body"
+        class="max-w-xl"
+        value="<p>Select some text and use the toolbar — <strong>bold</strong>, <em>italic</em>, lists, links.</p>"
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Menubar">
+    <Group stack>
+      <Menubar
+        menus={[
+          { label: 'File', items: [
+            { label: 'New', id: 'new' },
+            { label: 'Open', id: 'open' },
+            { separator: true },
+            { label: 'Settings', href: '#' },
+          ] },
+          { label: 'Edit', items: [
+            { label: 'Undo', id: 'undo' },
+            { label: 'Redo', id: 'redo' },
+          ] },
+          { label: 'View', items: [
+            { label: 'Zoom in', id: 'zoomin' },
+            { label: 'Zoom out', id: 'zoomout' },
+          ] },
+        ]}
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="DataGrid">
+    <Group stack>
+      <DataGrid
+        class="max-w-2xl"
+        selectable
+        columns={[
+          { key: 'name', label: 'Name', sortable: true },
+          { key: 'role', label: 'Role', sortable: true },
+          { key: 'commits', label: 'Commits', sortable: true, align: 'right' },
+        ]}
+        rows={[
+          { name: 'Ada Lovelace', role: 'Developer', commits: 128 },
+          { name: 'Alan Turing', role: 'Designer', commits: 42 },
+          { name: 'Grace Hopper', role: 'Editor', commits: 305 },
+          { name: 'Katherine Johnson', role: 'Developer', commits: 87 },
         ]}
       />
     </Group>
