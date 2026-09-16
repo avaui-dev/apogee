@@ -24,7 +24,12 @@ import TagInput from '../../../registry/components/TagInput/TagInput.astro'
 import NumberInput from '../../../registry/components/NumberInput/NumberInput.astro'
 import ColorPicker from '../../../registry/components/ColorPicker/ColorPicker.astro'
 import PinInput from '../../../registry/components/PinInput/PinInput.astro'
+import Collapsible from '../../../registry/components/Collapsible/Collapsible.astro'
+import ContextMenu from '../../../registry/components/ContextMenu/ContextMenu.astro'
+import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
+import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
 import Button from '../../../registry/components/Button/Button.astro'
+import Kbd from '../../../registry/components/Kbd/Kbd.astro'
 import { Inbox } from '@lucide/astro'
 
 const people = [
@@ -303,6 +308,48 @@ const people = [
     </Group>
     <Group label="Text (4)" stack>
       <PinInput name="pin" length={4} type="text" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Collapsible">
+    <Group stack>
+      <Collapsible class="max-w-md">
+        <span slot="trigger">What's included?</span>
+        <p>Every component ships with a doc, an accessible baseline, and zero external JS. You own the copied code.</p>
+      </Collapsible>
+    </Group>
+  </Showcase>
+
+  <Showcase name="ContextMenu">
+    <Group stack>
+      <ContextMenu>
+        <div class="grid h-24 max-w-md place-items-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
+          Right-click anywhere here
+        </div>
+        <Fragment slot="menu">
+          <DropdownItem>Cut</DropdownItem>
+          <DropdownItem>Copy</DropdownItem>
+          <DropdownItem>Paste</DropdownItem>
+        </Fragment>
+      </ContextMenu>
+    </Group>
+  </Showcase>
+
+  <Showcase name="CommandPalette">
+    <Group stack>
+      <Button data-command-open="cmd" variant="secondary">
+        Open command menu <Kbd class="ml-1">⌘K</Kbd>
+      </Button>
+      <CommandPalette
+        id="cmd"
+        commands={[
+          { label: 'New file', group: 'Actions', href: '#', keywords: 'create add' },
+          { label: 'Search docs', group: 'Actions', href: '#' },
+          { label: 'Go to Components', group: 'Navigate', href: '/' },
+          { label: 'Go to Tokens', group: 'Navigate', href: '/' },
+          { label: 'Toggle theme', group: 'Preferences', id: 'theme' },
+        ]}
+      />
     </Group>
   </Showcase>
 </ShowcasePage>

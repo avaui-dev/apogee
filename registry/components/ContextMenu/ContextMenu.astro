@@ -1,0 +1,63 @@
+---
+/**
+ * ContextMenu — a right-click menu (browsers dropped the native styleable one),
+ * so it's a JS island: opens at the cursor over the target, closes on
+ * outside-click / Escape / scroll. Wrap the target in the default slot and put
+ * `DropdownItem`s in the `menu` slot. Without JS the target's normal right-click
+ * menu is left untouched.
+ *
+ * @composable
+ */
+interface Props {
+  class?: string
+}
+
+const { class: className, ...rest } = Astro.props
+const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<div class:list={['apogee-contextmenu', className]} data-menu={id} {...rest}>
+  <slot />
+  <div
+    id={id}
+    role="menu"
+    class="apogee-contextmenu-panel fixed z-50 flex min-w-44 flex-col gap-0.5 rounded-md border border-border bg-surface p-1 shadow-lg no-js:hidden"
+    hidden
+  >
+    <slot name="menu" />
+  </div>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.apogee-contextmenu')) {
+    const panel = root.querySelector<HTMLElement>('.apogee-contextmenu-panel')
+    if (!panel) continue
+
+    const close = () => {
+      panel.hidden = true
+    }
+    const openAt = (x: number, y: number) => {
+      panel.hidden = false
+      // Clamp inside the viewport now that we can measure it.
+      const { offsetWidth: w, offsetHeight: h } = panel
+      panel.style.left = `${Math.min(x, window.innerWidth - w - 8)}px`
+      panel.style.top = `${Math.min(y, window.innerHeight - h - 8)}px`
+    }
+
+    root.addEventListener('contextmenu', (e) => {
+      if (panel.contains(e.target as Node)) return
+      e.preventDefault()
+      openAt(e.clientX, e.clientY)
+    })
+    // Activating an item closes the menu.
+    panel.addEventListener('click', () => close())
+    document.addEventListener('click', (e) => {
+      if (!panel.hidden && !panel.contains(e.target as Node)) close()
+    })
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close()
+    })
+    window.addEventListener('scroll', close, true)
+    window.addEventListener('resize', close)
+  }
+</script>
