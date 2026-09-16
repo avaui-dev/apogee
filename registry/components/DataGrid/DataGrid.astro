@@ -27,7 +27,7 @@ interface Props {
 
 const { columns, rows, selectable = false, class: className, ...rest } = Astro.props
 
-const alignMap = { left: 'text-left', right: 'text-right', center: 'text-center' }
+const alignMap = { left: 'text-start', right: 'text-end', center: 'text-center' }
 const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
 ---
 

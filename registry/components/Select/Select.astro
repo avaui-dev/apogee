@@ -24,9 +24,9 @@ const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
 
 const sizeMap = {
-  sm: 'h-8 pl-2.5 pr-9 text-sm',
-  md: 'h-10 pl-3 pr-9 text-sm',
-  lg: 'h-12 pl-4 pr-9 text-base',
+  sm: 'h-8 ps-2.5 pe-9 text-sm',
+  md: 'h-10 ps-3 pe-9 text-sm',
+  lg: 'h-12 ps-4 pe-9 text-base',
 }
 ---
 
@@ -45,6 +45,6 @@ const sizeMap = {
     >
       <slot />
     </select>
-    <ChevronDown class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+    <ChevronDown class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
   </div>
 </Field>

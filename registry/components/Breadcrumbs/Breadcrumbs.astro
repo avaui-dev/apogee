@@ -33,7 +33,7 @@ const { items, class: className, ...rest } = Astro.props
                 {item.label}
               </span>
             )}
-            {!last && <ChevronRight class="size-3.5 shrink-0" aria-hidden="true" />}
+            {!last && <ChevronRight class="size-3.5 shrink-0 rtl:-scale-x-100" aria-hidden="true" />}
           </li>
         )
       })

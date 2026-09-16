@@ -1,0 +1,99 @@
+---
+import '../styles/global.css'
+import Button from '../../../registry/components/Button/Button.astro'
+import Input from '../../../registry/components/Input/Input.astro'
+import Select from '../../../registry/components/Select/Select.astro'
+import Switch from '../../../registry/components/Switch/Switch.astro'
+import Alert from '../../../registry/components/Alert/Alert.astro'
+import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
+import Pagination from '../../../registry/components/Pagination/Pagination.astro'
+import Dropdown from '../../../registry/components/Dropdown/Dropdown.astro'
+import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
+import Blockquote from '../../../registry/components/Blockquote/Blockquote.astro'
+import Steps from '../../../registry/components/Steps/Steps.astro'
+import Table from '../../../registry/components/Table/Table.astro'
+import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.astro'
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RTL — Apogee playground</title>
+  </head>
+  <body class="min-h-dvh bg-background p-8 text-foreground">
+    <main class="mx-auto max-w-2xl space-y-8">
+      <div>
+        <a href="/" class="text-sm text-accent underline underline-offset-2" dir="ltr">← index</a>
+        <h1 class="mt-3 text-2xl font-semibold tracking-tight">RTL smoke test</h1>
+        <p class="mt-2 text-muted-foreground">
+          The page is <code>dir="rtl"</code>. Logical properties should mirror layout;
+          directional icons (chevrons, separators) should flip.
+        </p>
+      </div>
+
+      <Breadcrumbs
+        items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'المكوّنات', href: '/' },
+          { label: 'المسار' },
+        ]}
+      />
+
+      <div class="flex flex-wrap items-center gap-3">
+        <Button variant="primary">حفظ التغييرات</Button>
+        <Button variant="secondary">إلغاء</Button>
+        <ButtonGroup>
+          <Button variant="secondary">يوم</Button>
+          <Button variant="secondary">أسبوع</Button>
+          <Button variant="secondary">شهر</Button>
+        </ButtonGroup>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <Input label="البريد الإلكتروني" placeholder="name@company.com" hint="لن نشاركه مع أحد" />
+        <Input variant="floating" label="الاسم الكامل" />
+        <Select label="الدولة" options={['مصر', 'السعودية', 'الإمارات']} />
+        <label class="flex items-center gap-2 text-sm">
+          <Switch name="notify" checked /> الإشعارات
+        </label>
+      </div>
+
+      <Alert variant="info" title="معلومة">
+        النص يبدأ من اليمين، والأيقونة على الجانب الصحيح.
+      </Alert>
+
+      <Dropdown label="إجراءات">
+        <DropdownItem>تعديل</DropdownItem>
+        <DropdownItem>تكرار</DropdownItem>
+        <DropdownItem>حذف</DropdownItem>
+      </Dropdown>
+
+      <Blockquote cite="أدا لوفليس">
+        <p>الآلة التحليلية تنسج الأنماط الجبرية.</p>
+      </Blockquote>
+
+      <Steps
+        current={2}
+        items={[
+          { title: 'الحساب', description: 'أنشئ تسجيل الدخول' },
+          { title: 'الملف', description: 'أضف بياناتك' },
+          { title: 'التأكيد', description: 'راجع وأنهِ' },
+        ]}
+      />
+
+      <Table>
+        <thead>
+          <tr><th>الاسم</th><th>الدور</th><th class="text-end">التعديلات</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>أدا</td><td>مطوّرة</td><td class="text-end tabular-nums">128</td></tr>
+          <tr><td>آلان</td><td>مصمم</td><td class="text-end tabular-nums">42</td></tr>
+        </tbody>
+      </Table>
+
+      <Pagination currentPage={3} totalPages={8} getHref={() => '#'} />
+    </main>
+  </body>
+</html>

@@ -35,11 +35,11 @@ const cell =
   {
     currentPage > 1 ? (
       <a href={getHref(currentPage - 1)} rel="prev" aria-label="Previous page" class:list={[cell, 'text-foreground hover:bg-muted']}>
-        <ChevronLeft class="size-4" aria-hidden="true" />
+        <ChevronLeft class="size-4 rtl:-scale-x-100" aria-hidden="true" />
       </a>
     ) : (
       <span aria-disabled="true" class:list={[cell, 'text-muted-foreground opacity-50']}>
-        <ChevronLeft class="size-4" aria-hidden="true" />
+        <ChevronLeft class="size-4 rtl:-scale-x-100" aria-hidden="true" />
       </span>
     )
   }
@@ -61,11 +61,11 @@ const cell =
   {
     currentPage < totalPages ? (
       <a href={getHref(currentPage + 1)} rel="next" aria-label="Next page" class:list={[cell, 'text-foreground hover:bg-muted']}>
-        <ChevronRight class="size-4" aria-hidden="true" />
+        <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
       </a>
     ) : (
       <span aria-disabled="true" class:list={[cell, 'text-muted-foreground opacity-50']}>
-        <ChevronRight class="size-4" aria-hidden="true" />
+        <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
       </span>
     )
   }

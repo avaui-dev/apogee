@@ -22,7 +22,7 @@ interface Props {
 const { menus, class: className, ...rest } = Astro.props
 
 const itemClass =
-  'apogee-menubar-item flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-foreground transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none'
+  'apogee-menubar-item flex w-full items-center gap-2 rounded px-2 py-1.5 text-start text-sm text-foreground transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none'
 ---
 
 <div
@@ -42,7 +42,7 @@ const itemClass =
         </summary>
         <div
           role="menu"
-          class="apogee-menubar-panel absolute top-full left-0 z-30 mt-1 flex min-w-44 flex-col gap-0.5 rounded-md border border-border bg-surface p-1 shadow-lg"
+          class="apogee-menubar-panel absolute top-full start-0 z-30 mt-1 flex min-w-44 flex-col gap-0.5 rounded-md border border-border bg-surface p-1 shadow-lg"
         >
           {menu.items.map((item) =>
             item.separator ? (

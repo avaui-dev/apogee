@@ -15,7 +15,7 @@ interface Props {
 const { cite, class: className, ...rest } = Astro.props
 ---
 
-<figure class:list={['border-l-2 border-accent pl-4', className]} {...rest}>
+<figure class:list={['border-s-2 border-accent ps-4', className]} {...rest}>
   <blockquote class="text-lg text-foreground italic [&>p]:mt-0">
     <slot />
   </blockquote>
