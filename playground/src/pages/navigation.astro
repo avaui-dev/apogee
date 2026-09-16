@@ -1,0 +1,74 @@
+---
+import '../styles/global.css'
+import SkipLink from '../../../registry/components/SkipLink/SkipLink.astro'
+import Navbar from '../../../registry/components/Navbar/Navbar.astro'
+import NavLink from '../../../registry/components/NavLink/NavLink.astro'
+import Footer from '../../../registry/components/Footer/Footer.astro'
+import Button from '../../../registry/components/Button/Button.astro'
+import Heading from '../../../registry/components/Heading/Heading.astro'
+import Text from '../../../registry/components/Text/Text.astro'
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Navigation — Apogee playground</title>
+  </head>
+  <body class="min-h-dvh bg-background text-foreground">
+    <SkipLink href="#nav-main" />
+
+    <Navbar>
+      <span slot="brand" class="text-base font-semibold tracking-tight">Apogee</span>
+      <NavLink href="/navigation">Home</NavLink>
+      <NavLink href="/components">Components</NavLink>
+      <NavLink href="/docs">Docs</NavLink>
+      <Button slot="actions" size="sm">Sign in</Button>
+    </Navbar>
+
+    <main id="nav-main" tabindex="-1" class="mx-auto max-w-4xl px-4 py-12 focus:outline-none">
+      <a href="/" class="text-sm text-muted-foreground underline underline-offset-2">← index</a>
+      <Heading as="h1" class="mt-3">Navigation</Heading>
+      <Text muted class="mt-2">
+        A live Navbar above (narrow the window for the mobile menu), NavLinks, a SkipLink (press Tab),
+        and a Footer below.
+      </Text>
+
+      <h2 class="mt-10 text-xs font-medium uppercase tracking-wide text-muted-foreground">NavLink</h2>
+      <div class="mt-3 flex gap-1">
+        <NavLink href="/navigation">Active (this page)</NavLink>
+        <NavLink href="/somewhere">Inactive</NavLink>
+        <NavLink href="/else">Inactive</NavLink>
+      </div>
+
+      <h2 class="mt-10 text-xs font-medium uppercase tracking-wide text-muted-foreground">SkipLink</h2>
+      <Text muted size="sm" class="mt-2">
+        Press <kbd>Tab</kbd> from the top of the page — the skip link appears; activating it jumps here.
+      </Text>
+    </main>
+
+    <Footer>
+      <div class="grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <div>
+          <p class="text-sm font-medium text-foreground">Product</p>
+          <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+            <li><a href="/" class="hover:text-foreground">Components</a></li>
+            <li><a href="/" class="hover:text-foreground">Tokens</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-foreground">Docs</p>
+          <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+            <li><a href="/" class="hover:text-foreground">Getting started</a></li>
+            <li><a href="/" class="hover:text-foreground">CLI</a></li>
+          </ul>
+        </div>
+      </div>
+      <Fragment slot="bottom">
+        <span>© 2026 AVA UI</span>
+        <span>Built with Astro</span>
+      </Fragment>
+    </Footer>
+  </body>
+</html>

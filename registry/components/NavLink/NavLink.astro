@@ -1,0 +1,32 @@
+---
+/**
+ * NavLink — a navigation link with an active state. Auto-detects the current
+ * route (`Astro.url.pathname === href`); pass `active` to override. Zero JS.
+ *
+ * @composable
+ */
+interface Props {
+  href: string
+  active?: boolean
+  class?: string
+  [key: string]: any
+}
+
+const { href, active: activeProp, class: className, ...rest } = Astro.props
+// Normalize trailing slashes so `/x` and `/x/` match.
+const norm = (p: string) => p.replace(/\/+$/, '') || '/'
+const active = activeProp ?? norm(Astro.url.pathname) === norm(href)
+---
+
+<a
+  href={href}
+  aria-current={active ? 'page' : undefined}
+  class:list={[
+    'rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+    active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</a>

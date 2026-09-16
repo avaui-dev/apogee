@@ -1,0 +1,76 @@
+---
+/**
+ * Navbar — a responsive site header. Links (default slot) show inline on desktop
+ * and collapse into a stacked panel on mobile (one small island for the toggle).
+ * Slots: `brand` (logo), default (nav links), `actions` (buttons on the right).
+ *
+ * @composable
+ */
+import { Menu } from '@lucide/astro'
+
+interface Props {
+  class?: string
+}
+
+const { class: className, ...rest } = Astro.props
+const menuId = `apogee-nav-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<header
+  class:list={['sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur', className]}
+  {...rest}
+>
+  <nav class="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+    <div class="flex items-center gap-6">
+      <slot name="brand" />
+      <div
+        id={menuId}
+        class="apogee-navbar-menu absolute inset-x-0 top-full flex-col gap-1 border-b border-border bg-background p-4 md:static md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0"
+      >
+        <slot />
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="hidden items-center gap-2 md:flex"><slot name="actions" /></div>
+      <button
+        type="button"
+        class="apogee-navbar-toggle grid size-9 place-items-center rounded-md text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:hidden"
+        aria-controls={menuId}
+        aria-expanded="false"
+        aria-label="Toggle menu"
+      >
+        <Menu class="size-5" aria-hidden="true" />
+      </button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  /* Collapsed by default on mobile; a proper flex column when open, so the
+     links stack (block/inline flow would put them in a row). Always inline on
+     desktop. */
+  .apogee-navbar-menu {
+    display: none;
+  }
+  .apogee-navbar-menu[data-open='true'] {
+    display: flex;
+  }
+  @media (min-width: 768px) {
+    .apogee-navbar-menu {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  for (const toggle of document.querySelectorAll<HTMLElement>('.apogee-navbar-toggle')) {
+    const id = toggle.getAttribute('aria-controls')
+    const menu = id ? document.getElementById(id) : null
+    if (!menu) continue
+    toggle.addEventListener('click', () => {
+      const open = menu.dataset.open !== 'true'
+      menu.dataset.open = String(open)
+      toggle.setAttribute('aria-expanded', String(open))
+    })
+  }
+</script>

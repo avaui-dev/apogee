@@ -1,0 +1,27 @@
+---
+/**
+ * Footer — a site footer shell. Put your columns (a Grid of link lists) in the
+ * default slot, and a copyright / bottom row in the `bottom` slot. Zero JS.
+ *
+ * @composable
+ */
+interface Props {
+  class?: string
+}
+
+const { class: className, ...rest } = Astro.props
+const hasBottom = Astro.slots.has('bottom')
+---
+
+<footer class:list={['border-t border-border', className]} {...rest}>
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <slot />
+    {
+      hasBottom && (
+        <div class="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <slot name="bottom" />
+        </div>
+      )
+    }
+  </div>
+</footer>
