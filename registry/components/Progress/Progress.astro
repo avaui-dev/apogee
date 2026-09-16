@@ -1,0 +1,53 @@
+---
+/**
+ * Progress — a determinate or indeterminate progress bar. Zero JS.
+ *
+ * @composable
+ */
+interface Props {
+  value?: number
+  max?: number
+  label?: string
+  indeterminate?: boolean
+  class?: string
+}
+
+const { value = 0, max = 100, label, indeterminate = false, class: className, ...rest } = Astro.props
+const pct = Math.max(0, Math.min(100, (value / max) * 100))
+---
+
+<div
+  role="progressbar"
+  aria-label={label}
+  aria-valuemin={indeterminate ? undefined : 0}
+  aria-valuemax={indeterminate ? undefined : max}
+  aria-valuenow={indeterminate ? undefined : value}
+  class:list={['h-2 w-full overflow-hidden rounded-full bg-muted', className]}
+  {...rest}
+>
+  <div
+    class:list={['h-full rounded-full bg-accent', indeterminate ? 'apogee-progress-indeterminate' : 'transition-[width] duration-300']}
+    style={indeterminate ? undefined : `width: ${pct}%`}
+  >
+  </div>
+</div>
+
+<style>
+  .apogee-progress-indeterminate {
+    width: 40%;
+    animation: apogee-progress-slide 1.2s ease-in-out infinite;
+  }
+  @keyframes apogee-progress-slide {
+    0% {
+      transform: translateX(-110%);
+    }
+    100% {
+      transform: translateX(360%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-progress-indeterminate {
+      animation-duration: 3s;
+    }
+  }
+</style>

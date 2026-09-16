@@ -1,0 +1,42 @@
+---
+/**
+ * Breadcrumbs — a path trail. The last item is the current page. Zero JS.
+ *
+ * @composable
+ */
+import { ChevronRight } from '@lucide/astro'
+
+interface Props {
+  items: { label: string; href?: string }[]
+  class?: string
+}
+
+const { items, class: className, ...rest } = Astro.props
+---
+
+<nav aria-label="Breadcrumb" class:list={['text-sm', className]} {...rest}>
+  <ol class="flex flex-wrap items-center gap-1.5 text-muted-foreground">
+    {
+      items.map((item, i) => {
+        const last = i === items.length - 1
+        return (
+          <li class="flex items-center gap-1.5">
+            {item.href && !last ? (
+              <a
+                href={item.href}
+                class="rounded-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <span class:list={[last && 'font-medium text-foreground']} aria-current={last ? 'page' : undefined}>
+                {item.label}
+              </span>
+            )}
+            {!last && <ChevronRight class="size-3.5 shrink-0" aria-hidden="true" />}
+          </li>
+        )
+      })
+    }
+  </ol>
+</nav>

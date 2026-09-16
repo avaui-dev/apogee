@@ -1,0 +1,72 @@
+---
+/**
+ * Pagination — page links with prev/next and ellipses. Links only, zero JS.
+ * `getHref` builds each page's URL (default `?page=<n>`).
+ *
+ * @composable
+ */
+import { ChevronLeft, ChevronRight } from '@lucide/astro'
+
+interface Props {
+  currentPage: number
+  totalPages: number
+  getHref?: (page: number) => string
+  class?: string
+}
+
+const { currentPage, totalPages, getHref = (p: number) => `?page=${p}`, class: className, ...rest } = Astro.props
+
+// First, last, current and its neighbours; gaps become an ellipsis.
+const wanted = [1, totalPages, currentPage, currentPage - 1, currentPage + 1]
+const shown = [...new Set(wanted)].filter((p) => p >= 1 && p <= totalPages).sort((a, b) => a - b)
+const pages: (number | '…')[] = []
+let prev = 0
+for (const p of shown) {
+  if (p - prev > 1) pages.push('…')
+  pages.push(p)
+  prev = p
+}
+
+const cell =
+  'inline-flex h-9 min-w-9 items-center justify-center rounded-md px-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'
+---
+
+<nav aria-label="Pagination" class:list={['flex items-center gap-1', className]} {...rest}>
+  {
+    currentPage > 1 ? (
+      <a href={getHref(currentPage - 1)} rel="prev" aria-label="Previous page" class:list={[cell, 'text-foreground hover:bg-muted']}>
+        <ChevronLeft class="size-4" aria-hidden="true" />
+      </a>
+    ) : (
+      <span aria-disabled="true" class:list={[cell, 'text-muted-foreground opacity-50']}>
+        <ChevronLeft class="size-4" aria-hidden="true" />
+      </span>
+    )
+  }
+  {
+    pages.map((p) =>
+      p === '…' ? (
+        <span class:list={[cell, 'text-muted-foreground']}>…</span>
+      ) : (
+        <a
+          href={getHref(p)}
+          aria-current={p === currentPage ? 'page' : undefined}
+          class:list={[cell, p === currentPage ? 'bg-accent text-accent-foreground' : 'text-foreground hover:bg-muted']}
+        >
+          {p}
+        </a>
+      ),
+    )
+  }
+  {
+    currentPage < totalPages ? (
+      <a href={getHref(currentPage + 1)} rel="next" aria-label="Next page" class:list={[cell, 'text-foreground hover:bg-muted']}>
+        <ChevronRight class="size-4" aria-hidden="true" />
+      </a>
+    ) : (
+      <span aria-disabled="true" class:list={[cell, 'text-muted-foreground opacity-50']}>
+        <ChevronRight class="size-4" aria-hidden="true" />
+      </span>
+    )
+  }
+</nav>

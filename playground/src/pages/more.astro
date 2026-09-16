@@ -1,0 +1,76 @@
+---
+import ShowcasePage from '../showcase/ShowcasePage.astro'
+import Showcase from '../showcase/Showcase.astro'
+import Group from '../showcase/Group.astro'
+import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
+import Pagination from '../../../registry/components/Pagination/Pagination.astro'
+import Progress from '../../../registry/components/Progress/Progress.astro'
+import Stat from '../../../registry/components/Stat/Stat.astro'
+import Kbd from '../../../registry/components/Kbd/Kbd.astro'
+import Table from '../../../registry/components/Table/Table.astro'
+import Grid from '../../../registry/components/Grid/Grid.astro'
+---
+
+<ShowcasePage title="More">
+  <Showcase name="Breadcrumbs">
+    <Group stack>
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Components', href: '/' },
+          { label: 'Breadcrumbs' },
+        ]}
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Pagination">
+    <Group stack>
+      <Pagination currentPage={4} totalPages={10} getHref={() => '#'} />
+      <Pagination currentPage={1} totalPages={3} getHref={() => '#'} />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Progress">
+    <Group label="Determinate" stack>
+      <Progress value={30} label="30%" class="max-w-sm" />
+      <Progress value={70} label="70%" class="max-w-sm" />
+    </Group>
+    <Group label="Indeterminate" stack>
+      <Progress indeterminate label="Loading" class="max-w-sm" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Stat">
+    <Group stack>
+      <Grid minItemWidth="12rem" class="max-w-lg">
+        <Stat label="Revenue" value="$48.2k" change="+12%" trend="up" />
+        <Stat label="Churn" value="1.8%" change="-0.4%" trend="down" />
+        <Stat label="Users" value="12,480" />
+      </Grid>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Kbd">
+    <Group>
+      <span class="text-sm text-muted-foreground">
+        Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to search, <Kbd>Esc</Kbd> to close.
+      </span>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Table">
+    <Group stack>
+      <Table class="max-w-lg">
+        <thead>
+          <tr><th>Name</th><th>Role</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ada Lovelace</td><td>Developer</td><td>Active</td></tr>
+          <tr><td>Alan Turing</td><td>Designer</td><td>Active</td></tr>
+          <tr><td>Grace Hopper</td><td>Content editor</td><td>Invited</td></tr>
+        </tbody>
+      </Table>
+    </Group>
+  </Showcase>
+</ShowcasePage>

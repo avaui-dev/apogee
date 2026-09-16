@@ -1,0 +1,33 @@
+---
+/**
+ * Stat — a metric with a label and an optional trend. Zero JS.
+ *
+ * @composable
+ */
+import { TrendingUp, TrendingDown } from '@lucide/astro'
+
+interface Props {
+  label: string
+  value: string
+  /** Optional change, e.g. "+12%". */
+  change?: string
+  trend?: 'up' | 'down'
+  class?: string
+}
+
+const { label, value, change, trend, class: className, ...rest } = Astro.props
+const Trend = trend === 'down' ? TrendingDown : TrendingUp
+---
+
+<div class:list={['flex flex-col gap-1', className]} {...rest}>
+  <span class="text-sm text-muted-foreground">{label}</span>
+  <span class="text-2xl font-semibold tracking-tight text-foreground">{value}</span>
+  {
+    change && (
+      <span class:list={['inline-flex items-center gap-1 text-sm', trend === 'down' ? 'text-danger' : 'text-success']}>
+        <Trend class="size-4" aria-hidden="true" />
+        {change}
+      </span>
+    )
+  }
+</div>
