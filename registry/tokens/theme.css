@@ -32,7 +32,8 @@
   }
 }
 
-:root {
+:root,
+[data-theme="light"] {
   /* surfaces & text (neutral ramp = Tailwind zinc; swap to slate/neutral here) */
   --background: var(--color-white);
   --foreground: var(--color-zinc-900);

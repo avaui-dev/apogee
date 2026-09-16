@@ -1,0 +1,52 @@
+---
+/**
+ * Stack — lays children out in a column or row with a token gap. The workhorse
+ * for spacing groups of elements.
+ *
+ * @composable
+ */
+interface Props {
+  as?: string
+  direction?: 'col' | 'row'
+  gap?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+  align?: 'start' | 'center' | 'end' | 'stretch'
+  justify?: 'start' | 'center' | 'end' | 'between'
+  wrap?: boolean
+  class?: string
+}
+
+const {
+  as = 'div',
+  direction = 'col',
+  gap = 4,
+  align,
+  justify,
+  wrap = false,
+  class: className,
+  ...rest
+} = Astro.props
+const Tag = as
+
+// Literal classes (Tailwind can't see `gap-${n}`).
+const gapMap = {
+  0: 'gap-0', 1: 'gap-1', 2: 'gap-2', 3: 'gap-3', 4: 'gap-4',
+  5: 'gap-5', 6: 'gap-6', 8: 'gap-8', 10: 'gap-10', 12: 'gap-12',
+}
+const alignMap = { start: 'items-start', center: 'items-center', end: 'items-end', stretch: 'items-stretch' }
+const justifyMap = { start: 'justify-start', center: 'justify-center', end: 'justify-end', between: 'justify-between' }
+---
+
+<Tag
+  class:list={[
+    'flex',
+    direction === 'row' ? 'flex-row' : 'flex-col',
+    gapMap[gap],
+    wrap && 'flex-wrap',
+    align && alignMap[align],
+    justify && justifyMap[justify],
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>

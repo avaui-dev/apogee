@@ -1,0 +1,40 @@
+---
+/**
+ * ContentWrapper — arranges content in one column or two, switched by one prop.
+ * The default slot is the first column; the `secondary` slot is the second.
+ *
+ * - `stack` — one column (default)
+ * - `columns` — two even columns from `md` up
+ * - `sticky` — two columns; the second sticks as the first scrolls
+ *
+ * `reverse` shows the second column first (from `md` up).
+ *
+ * @composable
+ */
+interface Props {
+  variant?: 'stack' | 'columns' | 'sticky'
+  reverse?: boolean
+  gap?: 4 | 6 | 8 | 10 | 12
+  class?: string
+}
+
+const { variant = 'stack', reverse = false, gap = 8, class: className, ...rest } = Astro.props
+const gapMap = { 4: 'gap-4', 6: 'gap-6', 8: 'gap-8', 10: 'gap-10', 12: 'gap-12' }
+---
+
+{
+  variant === 'stack' ? (
+    <div class:list={['flex flex-col', gapMap[gap], className]} {...rest}>
+      <slot />
+    </div>
+  ) : (
+    <div class:list={['grid items-start md:grid-cols-2', gapMap[gap], className]} {...rest}>
+      <div class:list={[reverse && 'md:order-2']}>
+        <slot />
+      </div>
+      <div class:list={[reverse && 'md:order-1', variant === 'sticky' && 'md:sticky md:top-8']}>
+        <slot name="secondary" />
+      </div>
+    </div>
+  )
+}

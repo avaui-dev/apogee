@@ -1,0 +1,67 @@
+---
+import ShowcasePage from '../showcase/ShowcasePage.astro'
+import Showcase from '../showcase/Showcase.astro'
+import Group from '../showcase/Group.astro'
+import Container from '../../../registry/components/Container/Container.astro'
+import Section from '../../../registry/components/Section/Section.astro'
+import Stack from '../../../registry/components/Stack/Stack.astro'
+import Grid from '../../../registry/components/Grid/Grid.astro'
+import ContentWrapper from '../../../registry/components/ContentWrapper/ContentWrapper.astro'
+import Heading from '../../../registry/components/Heading/Heading.astro'
+import Text from '../../../registry/components/Text/Text.astro'
+import Button from '../../../registry/components/Button/Button.astro'
+---
+
+<ShowcasePage title="Layout">
+  <Showcase name="Container" summary="Centers content at a max width with gutters. Section uses it inside.">
+    <Group stack>
+      <Container size="sm" class="rounded-lg border border-border py-6 text-center text-muted-foreground">
+        Centered · max-width · side gutters
+      </Container>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Stack" summary="Column or row with a token gap.">
+    <Group label="Column" stack>
+      <Stack gap={3} class="rounded-lg border border-border p-4">
+        <div class="rounded bg-muted p-3">One</div>
+        <div class="rounded bg-muted p-3">Two</div>
+        <div class="rounded bg-muted p-3">Three</div>
+      </Stack>
+    </Group>
+    <Group label="Row (wrap)" stack>
+      <Stack direction="row" gap={3} wrap class="rounded-lg border border-border p-4">
+        <div class="rounded bg-muted px-3 py-2">A</div>
+        <div class="rounded bg-muted px-3 py-2">B</div>
+        <div class="rounded bg-muted px-3 py-2">C</div>
+      </Stack>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Grid" summary="Autofit — as many columns as fit from a min width, no breakpoints.">
+    <Group stack>
+      <Grid minItemWidth="10rem">
+        {[1, 2, 3, 4, 5].map((n) => <div class="rounded-lg bg-muted p-6 text-center">{n}</div>)}
+      </Grid>
+    </Group>
+  </Showcase>
+
+  <Showcase name="ContentWrapper" summary="One column or two, switched by a prop.">
+    <Group label="columns" stack>
+      <ContentWrapper variant="columns">
+        <div class="rounded-lg bg-muted p-6">Column 1 (default slot)</div>
+        <div slot="secondary" class="rounded-lg bg-muted p-6">Column 2 (secondary slot)</div>
+      </ContentWrapper>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Section" summary="Themed band with vertical rhythm. theme flips tokens for the whole subtree.">
+    <Group stack>
+      <Section theme="dark" space="md" containerSize="md" class="overflow-hidden rounded-xl">
+        <Heading as="h3" size="h4">Dark section</Heading>
+        <Text muted size="sm" class="mt-1">Everything inside recolors automatically — no per-child props.</Text>
+        <Button size="sm" class="mt-4">Action</Button>
+      </Section>
+    </Group>
+  </Showcase>
+</ShowcasePage>

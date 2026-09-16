@@ -1,0 +1,31 @@
+---
+/**
+ * Grid — a responsive grid. By default it's **autofit**: as many columns as fit
+ * from `minItemWidth`, reflowing to the grid's own width (no breakpoints needed).
+ * Pass `cols` for a fixed column count instead.
+ *
+ * @composable
+ */
+interface Props {
+  /** Autofit: smallest a column may get before the count drops. */
+  minItemWidth?: string
+  /** Fixed column count (overrides autofit). */
+  cols?: number
+  gap?: 0 | 2 | 4 | 6 | 8 | 10
+  class?: string
+}
+
+const { minItemWidth = '16rem', cols, gap = 6, class: className, ...rest } = Astro.props
+
+const gapMap = { 0: 'gap-0', 2: 'gap-2', 4: 'gap-4', 6: 'gap-6', 8: 'gap-8', 10: 'gap-10' }
+
+// Inline style keeps the template dynamic without fighting Tailwind's scanner.
+// `min(width, 100%)` stops a wide min from overflowing a narrow grid.
+const templateColumns = cols
+  ? `repeat(${cols}, minmax(0, 1fr))`
+  : `repeat(auto-fit, minmax(min(${minItemWidth}, 100%), 1fr))`
+---
+
+<div class:list={['grid', gapMap[gap], className]} style={`grid-template-columns: ${templateColumns}`} {...rest}>
+  <slot />
+</div>

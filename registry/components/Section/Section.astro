@@ -1,0 +1,62 @@
+---
+/**
+ * Section — a full-width band with vertical rhythm, wrapping its content in a
+ * Container. `theme` colors the whole section and everything inside it (it flips
+ * the design tokens for the subtree — Lumos's context theming). A `background`
+ * slot renders behind the content, full-bleed.
+ *
+ * @composable
+ */
+import Container from '../Container/Container.astro'
+
+interface Props {
+  as?: string
+  /** Colors this section and its children by flipping the tokens. */
+  theme?: 'inherit' | 'light' | 'dark'
+  /** Vertical padding. */
+  space?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  /** Inner Container width. */
+  containerSize?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  /** Set false to skip the inner Container (content spans full width). */
+  container?: boolean
+  class?: string
+}
+
+const {
+  as = 'section',
+  theme = 'inherit',
+  space = 'lg',
+  containerSize = 'lg',
+  container = true,
+  class: className,
+  ...rest
+} = Astro.props
+const Tag = as
+
+const spaces = {
+  none: '',
+  sm: 'py-8',
+  md: 'py-12',
+  lg: 'py-16 sm:py-24',
+  xl: 'py-24 sm:py-32',
+}
+const themed = theme !== 'inherit'
+const hasBackground = Astro.slots.has('background')
+---
+
+<Tag
+  class:list={['relative', themed && 'bg-background text-foreground', spaces[space], className]}
+  data-theme={themed ? theme : undefined}
+  {...rest}
+>
+  {hasBackground && <div class="absolute inset-0 -z-10"><slot name="background" /></div>}
+  {
+    container ? (
+      <Container size={containerSize}>
+        <slot />
+      </Container>
+    ) : (
+      <slot />
+    )
+  }
+</Tag>
