@@ -1,0 +1,142 @@
+---
+title: Input
+description: A labeled text field with hint/error messaging, wired for accessibility — plus a pure-CSS floating-label variant.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Input from '../../../../registry/components/Input/Input.astro'
+
+<Preview code={`<Input label="Email" type="email" placeholder="you@example.com" />`}>
+  <Input label="Email" type="email" placeholder="you@example.com" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add input
+```
+
+Pulls in `Field` (label/hint/error wiring).
+
+## Usage
+
+```astro
+---
+import Input from '@/components/apogee/Input/Input.astro'
+---
+<Input label="Email" type="email" required />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<input>`
+attribute (`placeholder`, `name`, `value`, `min`/`max`, `autocomplete`,
+`pattern`, `disabled`, …) passes through to the `<input>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | auto-generated (`apogee-<random>`) | Field id; also used to derive the `aria-describedby` target. |
+| `label` | `string` | — | Field label. In `variant="floating"`, doubles as the floating placeholder text. |
+| `hint` | `string` | — | Helper text below the field. Hidden when `error` is set. |
+| `error` | `string` | — | Error text below the field. Sets `aria-invalid="true"` on the input and `role="alert"` on the message. |
+| `type` | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search' \| 'date'` | `'text'` | Native input type. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control height, padding, and text size. |
+| `variant` | `'default' \| 'floating'` | `'default'` | `floating` animates the label onto the border on focus / when filled — pure CSS. Ignores a passed `placeholder` (it manages its own). |
+| `required` | `boolean` | `false` | Marks the field required (native `required` + a visible `*` next to the label). |
+| `class` | `string` | — | Extra classes, merged onto the outer field wrapper. |
+
+## Variants
+
+<Preview code={`<Input label="Email" type="email" placeholder="you@example.com" />
+<Input label="Email" type="email" variant="floating" />`}>
+  <Input label="Email" type="email" placeholder="you@example.com" />
+  <Input label="Email" type="email" variant="floating" />
+</Preview>
+
+## Sizes
+
+Every size. Sizes interact with the floating variant — the label's inset
+shifts with the control's padding — shown together:
+
+<Preview code={`<Input label="Small" size="sm" />
+<Input label="Medium" size="md" />
+<Input label="Large" size="lg" />
+<Input label="Small" size="sm" variant="floating" />
+<Input label="Medium" size="md" variant="floating" />
+<Input label="Large" size="lg" variant="floating" />`}>
+  <Input label="Small" size="sm" />
+  <Input label="Medium" size="md" />
+  <Input label="Large" size="lg" />
+  <Input label="Small" size="sm" variant="floating" />
+  <Input label="Medium" size="md" variant="floating" />
+  <Input label="Large" size="lg" variant="floating" />
+</Preview>
+
+## States
+
+- **Hover / focus** — border/token shift on hover; a visible `focus-visible`
+  ring on focus.
+- **Disabled** — dimmed, `disabled:cursor-not-allowed disabled:opacity-50`.
+- **Required** — a `--danger`-coloured `*` next to the label.
+- **Error** — `--danger` border, `aria-invalid="true"`, error message replaces
+  the hint.
+
+<Preview code={`<Input label="Disabled" disabled value="Can't edit" />
+<Input label="Email" required error="Enter a valid email address" value="not-an-email" />
+<Input label="Username" hint="Letters, numbers, and underscores only" />`}>
+  <Input label="Disabled" disabled value="Can't edit" />
+  <Input label="Email" required error="Enter a valid email address" value="not-an-email" />
+  <Input label="Username" hint="Letters, numbers, and underscores only" />
+</Preview>
+
+## Examples
+
+<Preview code={`<Input label="Password" type="password" hint="At least 8 characters" required />
+<Input label="Search" type="search" variant="floating" />`}>
+  <Input label="Password" type="password" hint="At least 8 characters" required />
+  <Input label="Search" type="search" variant="floating" />
+</Preview>
+
+## Accessibility
+
+- Real `<label for>` / `<input id>` pairing — always programmatically
+  associated, including in `variant="floating"`.
+- `aria-describedby` points to the hint or error message id
+  (`<id>-hint` / `<id>-error`); error takes priority when both are set.
+- `error` sets `aria-invalid="true"` on the input and `role="alert"` on the
+  message, so screen readers announce it immediately.
+- Focus shows a visible `focus-visible` ring (`--ring`).
+- `variant="floating"` is pure CSS (`:placeholder-shown` + `peer`) — works
+  identically with JS off.
+- No JS.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` / `--background` / `--foreground` | Input border, fill, text |
+| `--muted-foreground` | Placeholder, hint text, floating label (idle) |
+| `--danger` | Error border, error text, required `*` |
+| `--accent` | Floating label colour on focus |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** always pass a `label` — it's the field's accessible name; don't rely
+  on `placeholder` alone.
+- **Do** use `hint` for guidance before an error occurs, and `error` to
+  replace it once validation fails.
+- **Don't** pass `placeholder` with `variant="floating"` — it's ignored; the
+  label fills that role.
+- **Don't** mark a field `required` without validating it — surface real
+  errors via `error`, not just the asterisk.
+
+## Content
+
+- Labels are short noun phrases, sentence case, no colon ("Email", not
+  "Email:").
+- `hint` states the rule before it's broken ("At least 8 characters");
+  `error` states what's wrong and how to fix it ("Enter a valid email
+  address"), never a generic "Invalid input".

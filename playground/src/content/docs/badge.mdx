@@ -1,0 +1,108 @@
+---
+title: Badge
+description: A small status label — for counts, tags, and state indicators.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import { Check } from '@lucide/astro'
+
+<Preview code={`<Badge variant="accent">New</Badge>
+<Badge variant="danger">Error</Badge>`}>
+  <Badge variant="accent">New</Badge>
+  <Badge variant="danger">Error</Badge>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add badge
+```
+
+No component dependencies.
+
+## Usage
+
+```astro
+---
+import Badge from '@/components/apogee/Badge/Badge.astro'
+---
+<Badge variant="accent">New</Badge>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<span>`
+attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'neutral' \| 'accent' \| 'danger' \| 'outline'` | `'neutral'` | Visual style. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+No `size` prop — Badge has one fixed size.
+
+## Variants
+
+Every variant:
+
+<Preview code={`<Badge variant="neutral">Neutral</Badge>
+<Badge variant="accent">Accent</Badge>
+<Badge variant="danger">Danger</Badge>
+<Badge variant="outline">Outline</Badge>`}>
+  <Badge variant="neutral">Neutral</Badge>
+  <Badge variant="accent">Accent</Badge>
+  <Badge variant="danger">Danger</Badge>
+  <Badge variant="outline">Outline</Badge>
+</Preview>
+
+## States
+
+Static — a `<span>`, not a control. No hover/focus/disabled states. If a badge
+needs to be clickable (a removable filter chip), wrap it in a `<button>`
+yourself; Badge doesn't provide one.
+
+## Examples
+
+With a leading icon — like Button, the child SVG auto-sizes:
+
+<Preview code={`<Badge variant="accent"><Check /> Verified</Badge>`}>
+  <Badge variant="accent"><Check /> Verified</Badge>
+</Preview>
+
+As a count next to a label:
+
+```astro
+<span class="flex items-center gap-2">
+  Inbox
+  <Badge variant="danger">12</Badge>
+</span>
+```
+
+## Accessibility
+
+Native semantics, no extra ARIA needed for a static label. If a badge's count
+updates live (e.g. an unread counter), pass `aria-live="polite"` via passthrough
+so assistive tech picks up the change.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted` / `--muted-foreground` | Neutral variant |
+| `--accent` / `--accent-foreground` | Accent variant |
+| `--danger` / `--danger-foreground` | Danger variant |
+| `--border` / `--foreground` | Outline variant |
+
+## Do / Don't
+
+- **Do** keep badge text to one or two words, or a short number.
+- **Do** reserve `danger` for genuinely negative states (errors, overdue) — not just to draw attention.
+- **Don't** use Badge as a button — it has no focus or press states.
+- **Don't** wrap long sentences in a Badge; it doesn't wrap gracefully and isn't meant to hold prose.
+
+## Content
+
+- Sentence case or a single number, no ending period. Prefer a status word ("Active", "Beta", "12") over a phrase.

@@ -1,0 +1,135 @@
+---
+title: Timeline
+description: A vertical list of events with a connecting line — activity log, history, changelog.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Timeline from '../../../../registry/components/Timeline/Timeline.astro'
+
+<Preview code={`<Timeline items={[
+  { title: 'Order placed', time: 'Jan 4', description: 'Order #1234 was created.' },
+  { title: 'Shipped', time: 'Jan 5', description: 'Left the warehouse.' },
+  { title: 'Delivered', time: 'Jan 7' },
+]} />`}>
+  <Timeline items={[
+    { title: 'Order placed', time: 'Jan 4', description: 'Order #1234 was created.' },
+    { title: 'Shipped', time: 'Jan 5', description: 'Left the warehouse.' },
+    { title: 'Delivered', time: 'Jan 7' },
+  ]} />
+</Preview>
+
+For a stepper with progress state (current / upcoming step), use `Steps` instead.
+
+## Add
+
+```sh
+npx @ava-ui/apogee add timeline
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Timeline from '@/components/apogee/Timeline/Timeline.astro'
+---
+<Timeline items={[
+  { title: 'Order placed', time: 'Jan 4' },
+  { title: 'Shipped', time: 'Jan 5' },
+]} />
+```
+
+## Anatomy
+
+`Timeline` is data-driven (an `items` array), not slot-based — each entry
+renders the same fixed structure:
+
+- **List** — an `<ol>` of events.
+- **Connector** — a vertical line (`bg-border`) running between markers; omitted
+  after the last item.
+- **Marker** — a dot per item, outlined in `--accent`.
+- **Title** — `item.title`, always shown.
+- **Time** — `item.time`, shown next to the title when present (`<time>`,
+  tabular numerals).
+- **Description** — `item.description`, shown below the title when present.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<ol>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `{ title: string; time?: string; description?: string }[]` | — | Events, in display order. |
+| `class` | `string` | — | Extra classes on the root `<ol>`, merged last. |
+
+## States
+
+Static, zero-JS — no interactive states.
+
+## Examples
+
+Title only, no time or description:
+
+<Preview code={`<Timeline items={[
+  { title: 'Draft created' },
+  { title: 'Submitted for review' },
+  { title: 'Approved' },
+]} />`}>
+  <Timeline items={[
+    { title: 'Draft created' },
+    { title: 'Submitted for review' },
+    { title: 'Approved' },
+  ]} />
+</Preview>
+
+Mixed — some entries with a time and/or description, some without:
+
+<Preview code={`<Timeline items={[
+  { title: 'Account created', time: '2024' },
+  { title: 'Upgraded to Pro', time: 'Mar 2025', description: 'Switched to annual billing.' },
+  { title: 'Invited 3 teammates' },
+]} />`}>
+  <Timeline items={[
+    { title: 'Account created', time: '2024' },
+    { title: 'Upgraded to Pro', time: 'Mar 2025', description: 'Switched to annual billing.' },
+    { title: 'Invited 3 teammates' },
+  ]} />
+</Preview>
+
+## Accessibility
+
+Native semantics — an ordered list (`<ol>`/`<li>`) for the events and `<time>`
+for the timestamp. Markers and the connecting line are `aria-hidden`
+(decorative). No extra ARIA needed.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Connecting line between markers |
+| `--accent` | Marker outline |
+| `--background` | Marker fill |
+| `--foreground` | Title text |
+| `--muted-foreground` | Time + description text |
+
+## Do / Don't
+
+- **Do** keep titles short — one line, event-first ("Order shipped").
+- **Do** order `items` chronologically (oldest first or newest first —
+  consistent with the surrounding page).
+- **Don't** use `Timeline` for a multi-step form or progress indicator — use
+  `Steps`, which tracks current/upcoming state.
+- **Don't** pack long paragraphs into `description` — link out to detail
+  instead.
+
+## Content
+
+- `title` is a short past-tense event statement ("Payment received"), sentence
+  case, no ending period.
+- `time` is a compact date/time string — format it before passing it in (the
+  component renders it verbatim).
+- `description`, when present, is one short sentence of context.

@@ -1,0 +1,83 @@
+---
+title: Eyebrow
+description: A small label above a heading, for section tags and category kickers.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Eyebrow from '../../../../registry/components/Eyebrow/Eyebrow.astro'
+
+<Preview code={`<Eyebrow>New</Eyebrow>`}>
+  <Eyebrow>New</Eyebrow>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add eyebrow
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Eyebrow from '@/components/apogee/Eyebrow/Eyebrow.astro'
+---
+<Eyebrow>Case study</Eyebrow>
+<h2>How Acme cut checkout time in half</h2>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native attribute
+for the rendered tag (e.g. `id`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `'p' \| 'span' \| 'div'` | `'p'` | Tag to render. |
+| `muted` | `boolean` | `false` | Neutral (muted-foreground) colour instead of the accent colour. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+<Preview code={`<Eyebrow>Accent</Eyebrow>
+<Eyebrow muted>Muted</Eyebrow>`}>
+  <Eyebrow>Accent</Eyebrow>
+  <Eyebrow muted>Muted</Eyebrow>
+</Preview>
+
+## Examples
+
+Inline, ahead of a heading (`as="span"` when it must sit inside other flow content):
+
+```astro
+<Eyebrow as="span">Update</Eyebrow> Apogee 2.0 is out
+```
+
+## Accessibility
+
+Native semantics, no extra ARIA needed. It's plain text — pick `as` to fit the
+surrounding document outline (e.g. `span` inside a heading, not a block-level `p`).
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--accent` | Default (non-muted) text colour |
+| `--muted-foreground` | `muted` text colour |
+
+## Do / Don't
+
+- **Do** keep it to one short word or phrase ("New", "Case study", "Step 1 of 3").
+- **Do** pair it with a heading directly below — it's a kicker, not a standalone label.
+- **Don't** end it with punctuation.
+- **Don't** use it as a substitute for a real heading level — it carries no heading semantics.
+
+## Content
+
+- All caps is applied by CSS (`uppercase`) — write the text in normal sentence
+  case or title case, not literal caps.
+- One to three words. No ending period.

@@ -1,0 +1,103 @@
+---
+title: Progress
+description: A determinate or indeterminate progress bar.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Progress from '../../../../registry/components/Progress/Progress.astro'
+
+<Preview code={`<Progress value={60} label="Upload progress" />`}>
+  <Progress value={60} label="Upload progress" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add progress
+```
+
+No Apogee component dependencies, no icons. Zero JS.
+
+## Usage
+
+```astro
+---
+import Progress from '@/components/apogee/Progress/Progress.astro'
+---
+<Progress value={40} max={100} label="Profile completeness" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div role="progressbar">`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` | `0` | Current value, `0`–`max`. Ignored visually when `indeterminate`. |
+| `max` | `number` | `100` | Maximum value. |
+| `label` | `string` | — | Accessible label (`aria-label`) — there's no visible text otherwise. |
+| `indeterminate` | `boolean` | `false` | Shows a sliding animated fill instead of a value-based width; drops `aria-valuemin` / `aria-valuemax` / `aria-valuenow`. |
+| `class` | `string` | — | Extra classes on the root track, merged last. |
+
+## States
+
+Determinate, at a few values:
+
+<Preview code={`<Progress value={0} label="0%" />
+<Progress value={40} label="40%" />
+<Progress value={100} label="100%" />`}>
+  <Progress value={0} label="0%" />
+  <Progress value={40} label="40%" />
+  <Progress value={100} label="100%" />
+</Preview>
+
+Indeterminate — a 40%-wide fill slides on a loop:
+
+<Preview code={`<Progress indeterminate label="Loading" />`}>
+  <Progress indeterminate label="Loading" />
+</Preview>
+
+## Examples
+
+A step counter using a non-percentage `max`:
+
+```astro
+<Progress value={2} max={4} label="Step 2 of 4" />
+```
+
+## Accessibility
+
+- `role="progressbar"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow`;
+  all three are omitted when `indeterminate`, matching the ARIA spec for an
+  indeterminate progress meter.
+- `label` sets `aria-label` — always pass one; the bar has no visible text.
+- The indeterminate slide respects `prefers-reduced-motion`: its 1.2s loop
+  slows to 3s. The determinate fill's width transition has no separate
+  reduced-motion guard.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted` | Track background |
+| `--accent` | Fill |
+| `--duration-slow` | Determinate width transition duration |
+| `--ease-smooth` | Transition / animation easing |
+
+## Do / Don't
+
+- **Do** always pass `label` — the bar has no visible text of its own.
+- **Do** use `indeterminate` only when a percentage genuinely can't be computed;
+  switch to determinate the moment you can.
+- **Don't** put text inside or over the track — it's a pure visual indicator
+  with an accessible label, not a container.
+- **Don't** animate `value` faster than users can perceive as real progress
+  rather than decoration.
+
+## Content
+
+- `label` states what's progressing ("Uploading…", "Step 2 of 4"), not the
+  percentage — the number is already conveyed through ARIA.

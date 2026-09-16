@@ -1,0 +1,110 @@
+---
+title: Radio
+description: A single option in a mutually exclusive set — pair radios sharing the same name into a group.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Radio from '../../../../registry/components/Radio/Radio.astro'
+
+<Preview code={`<Radio name="plan-hero" value="free" label="Free" checked />
+<Radio name="plan-hero" value="pro" label="Pro" />
+<Radio name="plan-hero" value="team" label="Team" />`}>
+  <Radio name="plan-hero" value="free" label="Free" checked />
+  <Radio name="plan-hero" value="pro" label="Pro" />
+  <Radio name="plan-hero" value="team" label="Team" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add radio
+```
+
+No Apogee component dependencies.
+
+## Usage
+
+```astro
+---
+import Radio from '@/components/apogee/Radio/Radio.astro'
+---
+<Radio name="plan" value="free" label="Free" checked />
+<Radio name="plan" value="pro" label="Pro" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<input>`
+attribute (e.g. `checked`, `disabled`, `required`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | — | Group name — give every radio in the set the same value. |
+| `value` | `string` | — | This radio's value, submitted when checked. |
+| `label` | `string` | — | Visible label, rendered in a `<label>` next to the input. |
+| `id` | `string` | auto-generated | Ties the label to the input; set your own to target it elsewhere. |
+| `class` | `string` | — | Extra classes on the wrapping `<div>`. |
+
+## States
+
+- **Unchecked / Checked** — native `:checked`; a filled accent dot fades in.
+- **Hover** — border darkens on an unchecked, enabled radio.
+- **Focus** — a visible `focus-visible` ring (`--ring`).
+- **Disabled** — dimmed, pointer becomes `not-allowed`. Pass the native
+  `disabled` attribute.
+
+<Preview code={`<Radio name="states" value="a" label="Unchecked" />
+<Radio name="states" value="b" label="Checked" checked />
+<Radio name="states" value="c" label="Disabled" disabled />
+<Radio name="states" value="d" label="Checked, disabled" checked disabled />`}>
+  <Radio name="states" value="a" label="Unchecked" />
+  <Radio name="states" value="b" label="Checked" checked />
+  <Radio name="states" value="c" label="Disabled" disabled />
+  <Radio name="states" value="d" label="Checked, disabled" checked disabled />
+</Preview>
+
+## Examples
+
+A full group sharing one `name`:
+
+```astro
+<Radio name="delivery" value="standard" label="Standard (5–7 days)" checked />
+<Radio name="delivery" value="express" label="Express (1–2 days)" />
+```
+
+## Accessibility
+
+- Real `<input type="radio">` — keyboard and AT support for free: `Tab` moves
+  into the group, arrow keys move and select between radios that share a
+  `name`.
+- Focus ring is always visible on keyboard focus.
+- Every radio needs a label — pass `label`, or an `aria-label` if you supply
+  your own markup instead.
+- Give every radio in a group the exact same `name` so the browser treats
+  them as one set.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Unchecked border |
+| `--muted-foreground` | Hover border (unchecked, enabled) |
+| `--accent` | Checked border + fill |
+| `--background` | Unchecked fill |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** use Radio for a single choice from 2–5 mutually exclusive,
+  always-visible options.
+- **Do** give every radio in a group the same `name`.
+- **Don't** use a lone Radio outside a group — a single yes/no choice is a
+  `Checkbox` or `Switch`.
+- **Don't** let the option list grow past ~6 — switch to `Select`.
+
+## Content
+
+- Label is a short noun phrase naming the option (not a question), sentence
+  case, no ending punctuation.

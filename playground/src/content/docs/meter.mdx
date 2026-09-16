@@ -1,0 +1,112 @@
+---
+title: Meter
+description: A native meter gauge for a measurement in a known range, like disk usage or a score.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Meter from '../../../../registry/components/Meter/Meter.astro'
+
+<Preview code={`<Meter value={72} label="Disk usage" />
+<Meter value={40} max={50} label="Score" />`}>
+  <Meter value={72} label="Disk usage" />
+  <Meter value={40} max={50} label="Score" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add meter
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Meter from '@/components/apogee/Meter/Meter.astro'
+---
+<Meter value={72} label="Disk usage" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native
+`<meter>` attribute passes through (`...rest`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` | — | The current measurement. |
+| `min` | `number` | `0` | Range floor. |
+| `max` | `number` | `100` | Range ceiling. |
+| `low` | `number` | — | Below this counts as sub-optimal (warning colour). |
+| `high` | `number` | — | Above this counts as sub-optimal (warning colour). |
+| `optimum` | `number` | — | The ideal point — the browser derives the good / warning / danger zones from it. |
+| `label` | `string` | — | Visible label, shown with a `value/max` readout. Omit for an unlabelled bar. |
+| `class` | `string` | — | Extra classes on the wrapper, merged last. |
+
+## Variants
+
+Colour zones, driven by `low` / `high` / `optimum` (here a "smaller is better"
+gauge — `optimum={0}`):
+
+<Preview code={`<Meter value={30} low={50} high={80} optimum={0} label="Disk usage — healthy" />
+<Meter value={65} low={50} high={80} optimum={0} label="Disk usage — high" />
+<Meter value={92} low={50} high={80} optimum={0} label="Disk usage — critical" />`}>
+  <Meter value={30} low={50} high={80} optimum={0} label="Disk usage — healthy" />
+  <Meter value={65} low={50} high={80} optimum={0} label="Disk usage — high" />
+  <Meter value={92} low={50} high={80} optimum={0} label="Disk usage — critical" />
+</Preview>
+
+With and without a `label`:
+
+<Preview code={`<Meter value={72} label="Disk usage" />
+<Meter value={72} />`}>
+  <Meter value={72} label="Disk usage" />
+  <Meter value={72} />
+</Preview>
+
+## States
+
+No interactive states — Meter is a static, read-only gauge (not focusable).
+
+## Examples
+
+A "bigger is better" gauge — `optimum` at the top of the range:
+
+```astro
+<Meter value={82} low={40} high={70} optimum={100} label="Score" />
+```
+
+## Accessibility
+
+Native semantics, no extra ARIA needed — `<meter>` exposes its value, range,
+and zone to assistive tech on its own. Pair it with a visible `label` when the
+measurement's meaning isn't obvious from context.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted` | Track background |
+| `--accent` | Optimum-zone fill |
+| `--warning` | Sub-optimal zone fill |
+| `--danger` | Even-less-good zone fill |
+
+## Do / Don't
+
+- **Do** use Meter for a static measurement against a known range (disk
+  usage, a score, capacity).
+- **Do** set `low` / `high` / `optimum` whenever "good" and "bad" have a
+  real meaning — the colour zones are meaningless without them.
+- **Don't** use Meter for task completion — use `Progress` instead.
+- **Don't** omit `label` when the number alone is ambiguous (what's being
+  measured, and its unit).
+
+## Content
+
+- Label names the thing being measured, not the number ("Disk usage", not
+  "72%").
+- Keep the label to a few words — the value/max readout sits next to it.

@@ -1,0 +1,145 @@
+---
+title: Accordion
+description: A stack of collapsible disclosure panels; expand one to read it, collapse it to reclaim space.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Accordion from '../../../../registry/components/Accordion/Accordion.astro'
+import AccordionItem from '../../../../registry/components/Accordion/AccordionItem.astro'
+
+<Preview code={`<Accordion>
+  <AccordionItem title="What is Apogee?">
+    A copy-in Astro component library, styled with Tailwind and design tokens.
+  </AccordionItem>
+  <AccordionItem title="Does it ship JavaScript?">
+    Only when a component genuinely needs it. Accordion is zero-JS — it's a native \`<details>\`.
+  </AccordionItem>
+</Accordion>`}>
+  <Accordion>
+    <AccordionItem title="What is Apogee?">
+      A copy-in Astro component library, styled with Tailwind and design tokens.
+    </AccordionItem>
+    <AccordionItem title="Does it ship JavaScript?">
+      Only when a component genuinely needs it. Accordion is zero-JS — it's a native `<details>`.
+    </AccordionItem>
+  </Accordion>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add accordion
+```
+
+`AccordionItem` uses `@lucide/astro` (`ChevronDown`) for the disclosure icon.
+
+## Usage
+
+```astro
+---
+import Accordion from '@/components/apogee/Accordion/Accordion.astro'
+import AccordionItem from '@/components/apogee/Accordion/AccordionItem.astro'
+---
+<Accordion>
+  <AccordionItem title="Section one">Panel content.</AccordionItem>
+  <AccordionItem title="Section two">Panel content.</AccordionItem>
+</Accordion>
+```
+
+## Anatomy
+
+- **`Accordion`** — the bordered, divided container. Default slot holds one or more `AccordionItem`s.
+- **`AccordionItem`** — a native `<details>`. Its `title` prop renders the `<summary>` row (label + chevron); its default slot is the panel body.
+
+## API
+
+`@composable` — both exposed to Content Editors in AVA. Any other native attribute
+(e.g. `id`, `data-*`) passes through on either component.
+
+**`Accordion`**
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Extra classes, merged last. |
+
+**`AccordionItem`**
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | — | Required. Rendered as the `<summary>` label. |
+| `group` | `string` | — | Shared across items → single-open (exclusive): opening one closes the rest with the same `group`. Maps to `<details name>`. |
+| `open` | `boolean` | `false` | Open on load. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## States
+
+Default closed, open on load (`open`), and exclusive group (shared `group` — opening one closes its siblings):
+
+<Preview code={`<Accordion>
+  <AccordionItem title="Closed by default">Collapsed until clicked.</AccordionItem>
+  <AccordionItem title="Open on load" open>Visible immediately.</AccordionItem>
+</Accordion>
+<Accordion>
+  <AccordionItem title="One" group="faq">Only one of these three stays open.</AccordionItem>
+  <AccordionItem title="Two" group="faq">Opening this closes "One" and "Three".</AccordionItem>
+  <AccordionItem title="Three" group="faq">Exclusive via the shared \`group\` name.</AccordionItem>
+</Accordion>`}>
+  <Accordion>
+    <AccordionItem title="Closed by default">Collapsed until clicked.</AccordionItem>
+    <AccordionItem title="Open on load" open>Visible immediately.</AccordionItem>
+  </Accordion>
+  <Accordion>
+    <AccordionItem title="One" group="faq">Only one of these three stays open.</AccordionItem>
+    <AccordionItem title="Two" group="faq">Opening this closes "One" and "Three".</AccordionItem>
+    <AccordionItem title="Three" group="faq">Exclusive via the shared `group` name.</AccordionItem>
+  </Accordion>
+</Preview>
+
+## Examples
+
+A single-panel FAQ, exclusive within itself, pre-opening the first item:
+
+```astro
+<Accordion>
+  <AccordionItem title="Shipping times" group="faq" open>
+    3–5 business days domestic.
+  </AccordionItem>
+  <AccordionItem title="Return policy" group="faq">
+    30 days, unworn, with tags.
+  </AccordionItem>
+</Accordion>
+```
+
+## Accessibility
+
+- Native `<details>`/`<summary>` — full keyboard support for free: <kbd>Tab</kbd> to
+  the summary, <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle.
+- The chevron is `aria-hidden`; the visible label is the accessible name.
+- Exclusive grouping uses the native `<details name>` attribute — no JS, no ARIA
+  wiring needed.
+- Height animation respects `prefers-reduced-motion` (transitions are removed).
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Container border + divider between items |
+| `--foreground` | Summary label text |
+| `--muted-foreground` | Chevron icon + panel body text |
+| `--ring` | Focus ring on the summary |
+| `--duration-base` / `ease-smooth` | Chevron rotation |
+| `--duration-slow` / `ease-smooth` | Panel height/reveal transition |
+
+## Do / Don't
+
+- **Do** use a shared `group` for FAQ-style lists where only one answer should show at a time.
+- **Do** pre-open the most relevant item with `open` rather than making users hunt.
+- **Don't** nest interactive controls (another accordion, a form) inside a panel without checking focus order.
+- **Don't** rely on JS for toggling — there isn't any; it's native disclosure.
+
+## Content
+
+- Titles are short questions or labels, sentence case, no ending period.
+- Panel body writes complete sentences — it's read as prose once opened, not a label.

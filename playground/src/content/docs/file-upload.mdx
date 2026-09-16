@@ -1,0 +1,107 @@
+---
+title: FileUpload
+description: A styled file input / dropzone for selecting a file to upload.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import FileUpload from '../../../../registry/components/FileUpload/FileUpload.astro'
+
+<JsNote fallback="The native picker still works — clicking or tabbing to the label opens it, and the field submits with the form. The selected-file-name text stays hidden (`no-js:hidden`), and drag-and-drop isn't available.">
+  Shows the selected file name(s) after a pick, and adds drag-and-drop: dropping
+  a file onto the dropzone sets it on the input and displays its name.
+</JsNote>
+
+<Preview jsToggle code={`<FileUpload name="file" accept="image/*" />`}>
+  <FileUpload name="file" accept="image/*" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add file-upload
+```
+
+Bundles `@lucide/astro` for the `UploadCloud` glyph. No Apogee dependencies.
+Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import FileUpload from '@/components/apogee/FileUpload/FileUpload.astro'
+---
+<FileUpload name="avatar" accept="image/png,image/jpeg" />
+```
+
+## API
+
+Any other native `<input type="file">` attribute (e.g. `required`, `disabled`,
+`capture`) passes through via the catch-all `[key: string]: any`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | — | Form field name, forwarded to the native input. |
+| `accept` | `string` | — | Accepted file types, forwarded to the native input (e.g. `"image/*"`). |
+| `multiple` | `boolean` | `false` | Allow selecting more than one file, forwarded to the native input. |
+| `class` | `string` | — | Extra classes on the label (dropzone), merged last. |
+
+## Examples
+
+Multiple files:
+
+<Preview jsToggle code={`<FileUpload name="attachments" multiple />`}>
+  <FileUpload name="attachments" multiple />
+</Preview>
+
+Restricted to a type, marked required:
+
+```astro
+<FileUpload name="resume" accept=".pdf,.doc,.docx" required />
+```
+
+## States
+
+- **Hover** — dropzone border shifts to `--accent`.
+- **Drag-over** (JS) — border and a faint accent background via `data-drag="true"`.
+- **No JS** — filename text is hidden (`no-js:hidden`); the native picker and
+  form submission still work. See the toggle above.
+
+## Accessibility
+
+- The visible control is a `<label>` wrapping a visually-hidden (`sr-only`)
+  native `<input type="file">` — full keyboard support: `Tab` to focus,
+  `Enter`/`Space` opens the OS file picker.
+- The `UploadCloud` icon is `aria-hidden`.
+- A consumer-passed `id` is used for both the `<input>` and the `<label for>`,
+  so the association stays correct; omit it and the component generates its
+  own. It isn't designed to be wrapped in `Field`; add a visible label of your
+  own above it if you need one.
+- **No JS:** the picker and form submission are unaffected — only the
+  filename echo and drag-and-drop are lost. See the `JsNote` above.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` / `--accent` | Dropzone border (default / hover / drag-over) |
+| `--background` | Dropzone fill |
+| `--accent` (at 5% opacity) | Drag-over background tint |
+| `--muted-foreground` | Helper text and filename echo |
+| `--foreground` | "or drag a file here" text |
+| `--radius-lg` | Corner radius |
+
+## Do / Don't
+
+- **Do** set `accept` to steer file type even though it isn't enforced server-side.
+- **Do** add a heading or text above it when a hint or error message is needed — it doesn't wire into `Field`.
+- **Don't** rely on drag-and-drop as the only way in — the label/click path (and no-JS path) must always work.
+- **Don't** remove the visible "Browse" text — it's the only affordance once drag-and-drop is unavailable.
+
+## Content
+
+- Keep the static copy as-is ("Browse or drag a file here") unless the accepted
+  types need calling out — add that as separate text near the component, not by editing its copy.
+- Nearby helper text should state format and size limits, e.g. "PNG or JPG, up to 5 MB."

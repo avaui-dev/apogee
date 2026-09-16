@@ -1,0 +1,115 @@
+---
+title: Avatar
+description: A user image, with an initials fallback derived from name.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+
+<Preview code={`<Avatar src="https://i.pravatar.cc/80?img=12" name="Jordan Lee" />
+<Avatar name="Priya Nair" />`}>
+  <Avatar src="https://i.pravatar.cc/80?img=12" name="Jordan Lee" />
+  <Avatar name="Priya Nair" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add avatar
+```
+
+Uses `@lucide/astro` (`User`) for the icon shown when neither `src` nor `name`
+is set. Ships one scoped JS island (progressive enhancement) that swaps a
+broken image for the initials fallback.
+
+## Usage
+
+```astro
+---
+import Avatar from '@/components/apogee/Avatar/Avatar.astro'
+---
+<Avatar src="/users/jordan.jpg" name="Jordan Lee" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<span>`
+attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `src` | `string` | — | Image URL. Omit to always show the initials fallback. |
+| `alt` | `string` | `name ?? ''` | Alt text for the image. |
+| `name` | `string` | — | Used for the initials fallback (first letter of up to the first two words) and as the fallback's `aria-label`. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Avatar diameter + text size. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Sizes
+
+<Preview code={`<Avatar size="sm" name="Sam Ito" />
+<Avatar size="md" name="Sam Ito" />
+<Avatar size="lg" name="Sam Ito" />`}>
+  <Avatar size="sm" name="Sam Ito" />
+  <Avatar size="md" name="Sam Ito" />
+  <Avatar size="lg" name="Sam Ito" />
+</Preview>
+
+## States
+
+With an image vs. the initials fallback (no `src`):
+
+<Preview code={`<Avatar src="https://i.pravatar.cc/80?img=5" name="Casey Wren" />
+<Avatar name="Casey Wren" />`}>
+  <Avatar src="https://i.pravatar.cc/80?img=5" name="Casey Wren" />
+  <Avatar name="Casey Wren" />
+</Preview>
+
+If `src` fails to load, a small JS island removes the `<img>` and shows the
+initials fallback instead — it also catches images that had already errored
+before the script ran. Without JS, a broken `src` still shows the browser's
+broken-image icon; that's inherent to an `<img>` with no fallback path.
+
+## Examples
+
+Grouped in a list row:
+
+```astro
+<div class="flex items-center gap-2">
+  <Avatar src="/users/jordan.jpg" name="Jordan Lee" size="sm" />
+  <span class="text-sm font-medium">Jordan Lee</span>
+</div>
+```
+
+For a stack of overlapping avatars, use [`AvatarGroup`](/avatar-group).
+
+## Accessibility
+
+- With `src`: a real `<img>` with `alt` (falls back to `name`, then empty). Pass
+  `alt` explicitly for a name-less avatar in a meaningful image context.
+- Without `src`, with `name`: the initials fallback gets `role="img"` and
+  `aria-label={name}`.
+- Without `src` and without `name`: a generic Lucide `User` glyph stands in,
+  marked `aria-hidden` as purely decorative — pass `name` (and ideally `src`)
+  whenever the avatar needs to identify someone rather than just fill space.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted` | Initials-fallback background |
+| `--muted-foreground` | Initials-fallback text |
+
+## Do / Don't
+
+- **Do** pass `name` even when you have `src` — it powers the fallback and the accessible label.
+- **Do** use consistent `size` across a single list or group.
+- **Don't** omit both `src` and `name` if the avatar needs to identify someone
+  — without either, it falls back to a generic decorative icon with no
+  accessible label.
+- **Don't** put a long name in `alt` when `name` already labels the fallback — keep alt text about the image, not the person's full title.
+
+## Content
+
+- `name` is the person's display name as used elsewhere in the UI — it drives both the initials and the accessible label, so keep it consistent (don't abbreviate here and spell out elsewhere).

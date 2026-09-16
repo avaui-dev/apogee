@@ -1,0 +1,105 @@
+---
+title: Link
+description: An inline text link — for a link that should look like a button, use Button with href instead.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Link from '../../../../registry/components/Link/Link.astro'
+import { ExternalLink } from '@lucide/astro'
+
+<Preview code={`<Link href="#">Default link</Link>
+<Link href="#" underline="hover">Hover underline</Link>`}>
+  <Link href="#">Default link</Link>
+  <Link href="#" underline="hover">Hover underline</Link>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add link
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Link from '@/components/apogee/Link/Link.astro'
+---
+<Link href="/docs">Read the docs</Link>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<a>`
+attribute (e.g. `download`, `hreflang`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | — | Required. Link destination. |
+| `underline` | `'always' \| 'hover' \| 'none'` | `'always'` | Underline behaviour. |
+| `external` | `boolean` | `false` | Opens in a new tab (`target="_blank"`) with `rel="noopener noreferrer"`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+Every `underline` value:
+
+<Preview code={`<Link href="#" underline="always">Always underlined</Link>
+<Link href="#" underline="hover">Underline on hover</Link>
+<Link href="#" underline="none">Never underlined</Link>`}>
+  <Link href="#" underline="always">Always underlined</Link>
+  <Link href="#" underline="hover">Underline on hover</Link>
+  <Link href="#" underline="none">Never underlined</Link>
+</Preview>
+
+## States
+
+- **Hover** — colour shifts to `--accent-hover`; `underline="hover"` reveals
+  its underline.
+- **Focus** — a visible `focus-visible` ring (`--ring`).
+
+## Examples
+
+External link, with a trailing icon as the visual cue:
+
+<Preview code={`<Link href="https://example.com" external underline="hover">Visit example.com <ExternalLink class="inline size-3.5" /></Link>`}>
+  <Link href="https://example.com" external underline="hover">Visit example.com <ExternalLink class="inline size-3.5" /></Link>
+</Preview>
+
+## Accessibility
+
+- Real `<a href>` — full keyboard and assistive-tech support; reachable via
+  `Tab`, activates with `Enter`.
+- Focus ring always visible on keyboard focus.
+- `external` sets `rel="noopener noreferrer"` (the new tab can't access
+  `window.opener`) — pair it with a visual cue (e.g. an icon) so users aren't
+  surprised it left the site.
+- No JS.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--accent` / `--accent-hover` | Link colour / hover colour |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** use `Link` for inline, in-sentence navigation; use `Button` with
+  `href` for a link that should look like a call-to-action.
+- **Do** set `external` (and ideally show an icon) for links that leave the
+  site.
+- **Don't** rely on colour alone to distinguish a link from surrounding text —
+  keep `underline="always"` (the default) for body copy.
+- **Don't** use `underline="none"` outside nav/UI chrome where the link is
+  already visually distinct (e.g. a menu item).
+
+## Content
+
+- Link text describes the destination ("Read the pricing guide"), never
+  "click here" or a bare URL.
+- Keep it concise — a few words, not a full sentence.

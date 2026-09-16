@@ -1,0 +1,125 @@
+---
+title: Icon
+description: A library-agnostic icon wrapper — forwards a Lucide icon's props, or accepts a raw SVG slot, with built-in accessibility.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Icon from '../../../../registry/components/Icon/Icon.astro'
+import { Camera, ChevronDown } from '@lucide/astro'
+
+<Preview code={`<Icon icon={Camera} label="Take photo" />
+<Icon icon={ChevronDown} />`}>
+  <Icon icon={Camera} label="Take photo" />
+  <Icon icon={ChevronDown} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add icon
+```
+
+No Apogee dependencies. Recommends `@lucide/astro` as the default icon set —
+bring your own via the raw SVG slot if you prefer a different one.
+
+## Usage
+
+With a Lucide (or Lucide-shaped) icon component, via the `icon` prop:
+
+```astro
+---
+import Icon from '@/components/apogee/Icon/Icon.astro'
+import { Camera } from '@lucide/astro'
+---
+<Icon icon={Camera} label="Take photo" />
+```
+
+With any other icon set, pass a raw `<svg>` as the default slot instead — omit
+`icon`:
+
+```astro
+<Icon label="Star this repo">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z" /></svg>
+</Icon>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other Lucide prop
+(`fill`, `stroke-linecap`, …) or attribute passes through, to whichever
+element renders — the icon component, or the wrapping `<span>` for the raw
+SVG slot.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `icon` | `any` — a Lucide icon component | — | The icon to render. Omit to render a raw `<svg>` slot instead. |
+| `label` | `string` | — | Accessible label. Sets `role="img"` + `aria-label`. Omit for decorative icons (sets `aria-hidden="true"` instead). |
+| `size` | `number \| string` | — (Lucide's default) | Icon size in px. Prefer a Tailwind `size-*` class for consistency with surrounding text. |
+| `strokeWidth` | `number \| string` | — (Lucide's default) | Stroke width. |
+| `absoluteStrokeWidth` | `boolean` | — (Lucide's default) | Keep stroke width constant regardless of `size`. |
+| `color` | `string` | `currentColor` | Icon colour. |
+| `class` | `string` | — | Extra classes, merged last (`shrink-0` is always applied). |
+
+## Variants
+
+The two render modes — a Lucide icon via `icon`, or a raw SVG via the slot —
+render identically once styled:
+
+<Preview code={`<Icon icon={ChevronDown} class="text-accent" />
+<Icon class="text-accent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
+</Icon>`}>
+  <Icon icon={ChevronDown} class="text-accent" />
+  <Icon class="text-accent">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
+  </Icon>
+</Preview>
+
+## Examples
+
+Inherits `currentColor`, so it picks up surrounding text colour:
+
+<Preview code={`<span class="text-danger"><Icon icon={Camera} label="Camera" /> Camera off</span>`}>
+  <span class="text-danger"><Icon icon={Camera} label="Camera" /> Camera off</span>
+</Preview>
+
+Sizing with a Tailwind class instead of the `size` prop, to stay in step with
+surrounding type:
+
+```astro
+<Icon icon={Camera} class="size-4 text-muted-foreground" />
+```
+
+## Accessibility
+
+- Meaningful icon (conveys information on its own — e.g. inside an icon-only
+  button) → pass `label`; renders `role="img"` + `aria-label`.
+- Decorative icon (sits next to visible text) → omit `label`; sets
+  `aria-hidden="true"` so assistive tech skips it.
+- The raw-SVG slot gets the same treatment via its wrapping `<span>` — the
+  inner `<svg>` itself needs no extra ARIA.
+- No JS.
+
+## Tokens
+
+None directly. `Icon` renders `currentColor` by default — set its colour with
+a Tailwind `text-*` utility (which reads the same tokens as the rest of
+Apogee) or the `color` prop, rather than a fixed value.
+
+## Do / Don't
+
+- **Do** give a `label` to any icon that stands alone (icon-only buttons,
+  status indicators).
+- **Do** omit `label` for icons next to visible text — otherwise screen
+  readers announce the icon and the text twice.
+- **Don't** hand-roll `<svg>` paths for Apogee's own UI chrome — use Lucide
+  for that; the raw slot is for consumers' own icon sets.
+- **Don't** mix `strokeWidth`/`size` inconsistently across an interface — pick
+  one weight and stick to it.
+
+## Content
+
+- `label` names the action or meaning ("Take photo"), not the icon itself
+  ("camera icon").

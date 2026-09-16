@@ -56,6 +56,12 @@ const { placement = 'bottom', class: className, ...rest } = Astro.props
     opacity: 1;
     transform: translateY(0);
   }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-popover {
+      transition: none;
+      transform: none;
+    }
+  }
   @starting-style {
     .apogee-popover:popover-open {
       opacity: 0;

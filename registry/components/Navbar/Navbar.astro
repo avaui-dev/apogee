@@ -1,8 +1,10 @@
 ---
 /**
  * Navbar — a responsive site header. Links (default slot) show inline on desktop
- * and collapse into a stacked panel on mobile (one small island for the toggle).
- * Slots: `brand` (logo), default (nav links), `actions` (buttons on the right).
+ * and collapse into a toggled panel on mobile (one small island for the toggle).
+ * Without JS the toggle is hidden and the links stay expanded (`no-js:`), so the
+ * nav is never a dead control. Slots: `brand` (logo), default (nav links),
+ * `actions` (buttons on the right).
  *
  * @composable
  */
@@ -25,7 +27,7 @@ const menuId = `apogee-nav-${Math.random().toString(36).slice(2, 9)}`
       <slot name="brand" />
       <div
         id={menuId}
-        class="apogee-navbar-menu absolute inset-x-0 top-full flex-col gap-0.5 border-b border-border bg-background p-4 md:static md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0"
+        class="apogee-navbar-menu absolute inset-x-0 top-full flex-col gap-0.5 border-b border-border bg-background p-4 no-js:flex md:static md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0"
       >
         <slot />
       </div>
@@ -34,7 +36,7 @@ const menuId = `apogee-nav-${Math.random().toString(36).slice(2, 9)}`
       <div class="hidden items-center gap-2 md:flex"><slot name="actions" /></div>
       <button
         type="button"
-        class="apogee-navbar-toggle grid size-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:hidden"
+        class="apogee-navbar-toggle grid size-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring no-js:hidden md:hidden"
         aria-controls={menuId}
         aria-expanded="false"
         aria-label="Toggle menu"

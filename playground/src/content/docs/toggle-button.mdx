@@ -1,0 +1,140 @@
+---
+title: ToggleButton
+description: A two-state button (aria-pressed) — icon and/or text, on or off.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import ToggleButton from '../../../../registry/components/ToggleButton/ToggleButton.astro'
+import { Bold } from '@lucide/astro'
+
+<JsNote fallback="The button renders at its initial pressed state (from the pressed prop) and stays there — clicking it does nothing, since only the script flips aria-pressed.">
+  Wires a click listener that flips `aria-pressed` on every self-toggling
+  (non-`manual`) `ToggleButton`.
+</JsNote>
+
+<Preview code={`<ToggleButton aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton pressed aria-label="Bold (pressed)"><Bold /></ToggleButton>`}>
+  <ToggleButton aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton pressed aria-label="Bold (pressed)"><Bold /></ToggleButton>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add toggle-button
+```
+
+No Apogee dependencies. Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import ToggleButton from '@/components/apogee/ToggleButton/ToggleButton.astro'
+---
+<ToggleButton aria-label="Bold"><Bold /></ToggleButton>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<button>`
+attribute (e.g. `disabled`, `name`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `pressed` | `boolean` | `false` | Initial (and, in `manual` mode, current) pressed state. |
+| `manual` | `boolean` | `false` | Don't self-toggle on click — a parent (e.g. `ToggleButtonGroup`) owns `aria-pressed`. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size. |
+| `aria-label` | `string` | — | Label when the button is icon-only. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Sizes
+
+Every size:
+
+<Preview code={`<ToggleButton size="sm" aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton size="md" aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton size="lg" aria-label="Bold"><Bold /></ToggleButton>`}>
+  <ToggleButton size="sm" aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton size="md" aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton size="lg" aria-label="Bold"><Bold /></ToggleButton>
+</Preview>
+
+## States
+
+<Preview code={`<ToggleButton>Off</ToggleButton>
+<ToggleButton pressed>On</ToggleButton>
+<ToggleButton disabled>Disabled</ToggleButton>`}>
+  <ToggleButton>Off</ToggleButton>
+  <ToggleButton pressed>On</ToggleButton>
+  <ToggleButton disabled>Disabled</ToggleButton>
+</Preview>
+
+- **Pressed** — muted background fill, foreground text (`aria-pressed:bg-muted
+  aria-pressed:text-foreground`).
+- **Hover** — a lighter muted fill on unpressed buttons.
+- **Focus** — visible `focus-visible` ring (`--ring`).
+- **Disabled** — dimmed, not interactive.
+- **No JS** — click does nothing; the button stays at its initial `pressed` value.
+
+## Examples
+
+Text-only and icon-plus-text:
+
+<Preview code={`<ToggleButton>Bold</ToggleButton>
+<ToggleButton><Bold /> Bold</ToggleButton>`}>
+  <ToggleButton>Bold</ToggleButton>
+  <ToggleButton><Bold /> Bold</ToggleButton>
+</Preview>
+
+`manual` for a toolbar that reads external state (e.g. the current text
+selection) instead of toggling itself:
+
+```astro
+<ToggleButton manual pressed={isBoldAtSelection} aria-label="Bold">
+  <Bold />
+</ToggleButton>
+```
+
+`ToggleButtonGroup` sets `manual` behavior for its children automatically for
+single-select — see the [ToggleButtonGroup](/toggle-button-group) docs.
+
+## Accessibility
+
+- Real `<button type="button">` with `aria-pressed` — the native two-state
+  pattern, full keyboard support for free.
+- **Keyboard** — `Tab` to focus, `Enter` / `Space` to toggle (native button
+  behavior).
+- **Focus** — a visible `focus-visible` ring.
+- Icon-only usage (no visible text) always needs `aria-label`.
+- **No JS** — the button is present and focusable but inert; `aria-pressed`
+  never changes. Don't ship an icon-only, JS-dependent toggle as the only way
+  to reach a piece of functionality.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted-foreground` / `--foreground` | Unpressed vs. pressed label color |
+| `--muted` | Hover + pressed fill |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** pass `aria-label` on every icon-only `ToggleButton`.
+- **Do** use `manual` when something other than a click drives the state
+  (selection, external data) — don't fight the self-toggle script.
+- **Don't** use `ToggleButton` for navigation or single-fire actions — that's
+  `Button`. A toggle must represent a persistent on/off state.
+- **Don't** rely on color alone to show pressed — the fill + text-color pair
+  already carries it; don't strip that via `class`.
+
+## Content
+
+- Icon-only: no visible label, `aria-label` names the action, not the state
+  ("Bold", not "Toggle bold").
+- With text: a short noun or verb naming the setting ("Bold", "Show grid"), not
+  its state ("On"/"Off") — the pressed style already shows that.

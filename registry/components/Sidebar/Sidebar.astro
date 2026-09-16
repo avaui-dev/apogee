@@ -2,7 +2,9 @@
 /**
  * Sidebar — a vertical navigation aside. Sticky, full-height on desktop; the nav
  * collapses behind a toggle on mobile (one small island, same pattern as Navbar).
- * Slots: `brand` (top), default (nav links — use NavLink or <a>), `footer`.
+ * Without JS the toggle is hidden and the nav + footer stay expanded (`no-js:`),
+ * so nothing is unreachable. On mobile with JS, opening the nav also reveals the
+ * footer. Slots: `brand` (top), default (nav links — use NavLink or <a>), `footer`.
  *
  * @composable
  */
@@ -27,7 +29,7 @@ const navId = `apogee-sidebar-${Math.random().toString(36).slice(2, 9)}`
     <slot name="brand" />
     <button
       type="button"
-      class="apogee-sidebar-toggle grid size-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:hidden"
+      class="apogee-sidebar-toggle grid size-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring no-js:hidden md:hidden"
       aria-controls={navId}
       aria-expanded="false"
       aria-label="Toggle navigation"
@@ -36,11 +38,11 @@ const navId = `apogee-sidebar-${Math.random().toString(36).slice(2, 9)}`
     </button>
   </div>
 
-  <nav id={navId} class="apogee-sidebar-nav flex-col gap-0.5 p-4 pt-0 md:pt-4">
+  <nav id={navId} class="apogee-sidebar-nav flex-col gap-0.5 p-4 pt-0 no-js:flex md:pt-4">
     <slot />
   </nav>
 
-  <div class="mt-auto hidden border-t border-border p-4 md:block">
+  <div class="apogee-sidebar-footer mt-auto border-t border-border p-4 no-js:block">
     <slot name="footer" />
   </div>
 </aside>
@@ -60,9 +62,20 @@ const navId = `apogee-sidebar-${Math.random().toString(36).slice(2, 9)}`
   .apogee-sidebar-nav[data-open='true'] {
     display: flex;
   }
+  /* Footer: hidden on mobile until the nav is opened; always shown on desktop. */
+  .apogee-sidebar-footer {
+    display: none;
+  }
+  .apogee-sidebar-nav[data-open='true'] ~ .apogee-sidebar-footer {
+    display: block;
+  }
   @media (min-width: 768px) {
-    .apogee-sidebar-nav {
+    .apogee-sidebar-nav,
+    .apogee-sidebar-footer {
       display: flex;
+    }
+    .apogee-sidebar-footer {
+      display: block;
     }
   }
 </style>

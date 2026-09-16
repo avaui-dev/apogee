@@ -1,0 +1,149 @@
+---
+title: Tag
+description: A chip for labels and categories. Optionally a link, optionally removable.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Tag from '../../../../registry/components/Tag/Tag.astro'
+import { Mail } from '@lucide/astro'
+
+<JsNote fallback="The remove button is hidden entirely — tags render as static, non-removable chips (a link tag still works, since links need no JS).">
+  A document-level click listener wires every `removable` tag's remove
+  button: clicking it dispatches a cancelable `apogee:tag-remove` event
+  (`detail: { value, tag }`) on the tag. Listen for it to update your own
+  state; set `dismissOnClick` to also remove the element from the DOM when
+  the event isn't cancelled.
+</JsNote>
+
+<Preview jsToggle code={`<Tag>Design</Tag>
+<Tag removable value="engineering">Engineering</Tag>
+<Tag href="#">Docs</Tag>`}>
+  <Tag>Design</Tag>
+  <Tag removable value="engineering">Engineering</Tag>
+  <Tag href="#">Docs</Tag>
+</Preview>
+
+Flip the **No-JS preview** switch above to see the fallback: the remove
+button disappears (in a sandboxed iframe with no scripts — the real `no-js`
+behaviour, not a fake).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add tag
+```
+
+No Apogee component dependencies. Depends on `@lucide/astro` (renders the
+remove icon). Ships one delegated, document-level JS listener (progressive
+enhancement).
+
+## Usage
+
+```astro
+---
+import Tag from '@/components/apogee/Tag/Tag.astro'
+---
+<Tag removable value="engineering">Engineering</Tag>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the root `<span data-apogee-tag>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | — | Renders the inner label as an `<a>` instead of a `<span>`. |
+| `removable` | `boolean` | `false` | Shows a remove button (hidden without JS). |
+| `value` | `string` | — | Identifies this tag in the `apogee:tag-remove` event's `detail`. |
+| `dismissOnClick` | `boolean` | `false` | Also removes the element from the DOM when the remove event isn't cancelled — for cosmetic lists with no backing state. |
+| `removeLabel` | `string` | `'Remove'` | Accessible label for the remove button. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+<Preview code={`<Tag>Plain</Tag>
+<Tag href="#">Link</Tag>
+<Tag removable value="removable">Removable</Tag>`}>
+  <Tag>Plain</Tag>
+  <Tag href="#">Link</Tag>
+  <Tag removable value="removable">Removable</Tag>
+</Preview>
+
+## States
+
+- **Hover / focus** — the label (link or plain text) and the remove button
+  each get a visible `focus-visible` ring.
+- **No JS** — the remove button doesn't render at all (`no-js:hidden`); see
+  the toggle above.
+- **Removed** — clicking remove dispatches `apogee:tag-remove`; the tag only
+  leaves the DOM if your handler calls `.remove()` (or you set
+  `dismissOnClick`).
+
+## Examples
+
+With an icon:
+
+<Preview code={`<Tag><Mail class="size-3.5" /> Email</Tag>`}>
+  <Tag><Mail class="size-3.5" /> Email</Tag>
+</Preview>
+
+A cosmetic list with no backing state, self-removing on click:
+
+```astro
+<Tag removable dismissOnClick>Draft</Tag>
+```
+
+Controlled removal — update your own state from the event instead of
+letting the DOM change on its own:
+
+```astro
+<script>
+  document.addEventListener('apogee:tag-remove', (e) => {
+    const { value } = (e as CustomEvent).detail
+    // remove `value` from your state/store, then re-render
+  })
+</script>
+```
+
+## Accessibility
+
+- The label renders a real `<a>` (when `href` is set) or a plain `<span>` —
+  links get full keyboard and AT navigation.
+- The remove button is a real `<button type="button">` with an `aria-label`
+  (`removeLabel`, default `"Remove"`) — pass a specific one (e.g. `"Remove
+  Engineering"`) when several tags are on the page.
+- **Keyboard** — `Tab` moves through the label (if a link) and the remove
+  button in source order; `Enter` / `Space` activates either.
+- **No JS** — the remove button is hidden entirely rather than shown
+  non-functional; a link tag (`href`) still works with JS off.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Tag border |
+| `--surface` / `--surface-foreground` | Tag background / text |
+| `--muted-foreground` / `--foreground` | Remove icon default / hover color |
+| `--ring` | Focus ring (label + remove button) |
+
+## Do / Don't
+
+- **Do** pass `value` on every removable tag — the remove event's
+  `detail.value` is how you know which one to drop from state.
+- **Do** write a specific `removeLabel` ("Remove Engineering") when several
+  tags share a page.
+- **Don't** use Tag for a single dismissible message — that's an `Alert`
+  with a close action.
+- **Don't** reach for `dismissOnClick` on tags backed by real data — handle
+  `apogee:tag-remove` and re-render from state instead.
+
+## Content
+
+- Tag text is a short noun or noun phrase (one to three words), sentence
+  case, no ending punctuation.
+- Match the label wording to the data it represents exactly — a tag is
+  often a filter or category key, not free copy.

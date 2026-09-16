@@ -1,0 +1,219 @@
+---
+title: DataGrid
+description: A data table with client-side column sorting and optional row selection.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import DataGrid from '../../../../registry/components/DataGrid/DataGrid.astro'
+
+<JsNote fallback="Rows render in the order given by the rows prop. Sort buttons and the select-all checkbox render but don't respond to clicks — nothing is hidden, the data is still fully readable.">
+  Wires client-side column sorting (numbers sort numerically, everything else as
+  text) and, when `selectable`, row checkboxes with an indeterminate select-all.
+</JsNote>
+
+<Preview code={`<DataGrid
+  selectable
+  columns={[
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'role', label: 'Role' },
+    { key: 'joined', label: 'Joined', sortable: true, align: 'right' },
+  ]}
+  rows={[
+    { name: 'Ada Lovelace', role: 'Engineer', joined: 2021 },
+    { name: 'Grace Hopper', role: 'Admiral', joined: 1943 },
+    { name: 'Alan Turing', role: 'Mathematician', joined: 1936 },
+  ]}
+/>`}>
+  <DataGrid
+    selectable
+    columns={[
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'role', label: 'Role' },
+      { key: 'joined', label: 'Joined', sortable: true, align: 'right' },
+    ]}
+    rows={[
+      { name: 'Ada Lovelace', role: 'Engineer', joined: 2021 },
+      { name: 'Grace Hopper', role: 'Admiral', joined: 1943 },
+      { name: 'Alan Turing', role: 'Mathematician', joined: 1936 },
+    ]}
+  />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add data-grid
+```
+
+Pulls in `Checkbox` (row selection). Ships one scoped JS island. Uses
+`@lucide/astro` (`ChevronsUpDown`, `ChevronUp`, `ChevronDown` sort icons).
+
+## Usage
+
+```astro
+---
+import DataGrid from '@/components/apogee/DataGrid/DataGrid.astro'
+---
+<DataGrid
+  columns={[{ key: 'name', label: 'Name' }]}
+  rows={[{ name: 'Ada Lovelace' }]}
+/>
+```
+
+## Anatomy
+
+- **Header row** — one `<th>` per column; `sortable` columns get a button with a
+  three-state chevron (unsorted / ascending / descending) and `aria-sort`.
+- **Select-all checkbox** — header cell, shown when `selectable`; a `Checkbox`
+  wired to an indeterminate state.
+- **Body rows** — one `<tr>` per item in `rows`; a checked row's `<tr>` tints
+  (`bg-muted/40`).
+- **Row checkbox** — shown per row when `selectable`; a `Checkbox`.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root wrapper `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `columns` | `Column[]` | — | Column definitions, in order. |
+| `rows` | `Record<string, any>[]` | — | Row data; each row's keys match `columns[].key`. |
+| `selectable` | `boolean` | `false` | Adds a checkbox column with an indeterminate select-all. |
+| `class` | `string` | — | Extra classes on the wrapper, merged last. |
+
+### `Column` shape
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `key` | `string` | — | Key read from each row's data. |
+| `label` | `string` | — | Column header text. |
+| `sortable` | `boolean` | `false` | Adds a sort button to the header. |
+| `align` | `'left' \| 'right' \| 'center'` | `'left'` | Header + cell text alignment. |
+
+## Variants
+
+Sortable columns (click a header to cycle unsorted → ascending → descending):
+
+<Preview code={`<DataGrid
+  columns={[
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'score', label: 'Score', sortable: true, align: 'right' },
+  ]}
+  rows={[
+    { name: 'Charlie', score: 88 },
+    { name: 'Alice', score: 95 },
+    { name: 'Bob', score: 72 },
+  ]}
+/>`}>
+  <DataGrid
+    columns={[
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'score', label: 'Score', sortable: true, align: 'right' },
+    ]}
+    rows={[
+      { name: 'Charlie', score: 88 },
+      { name: 'Alice', score: 95 },
+      { name: 'Bob', score: 72 },
+    ]}
+  />
+</Preview>
+
+Column alignment — `left`, `right`, `center`:
+
+<Preview code={`<DataGrid
+  columns={[
+    { key: 'a', label: 'Left', align: 'left' },
+    { key: 'b', label: 'Center', align: 'center' },
+    { key: 'c', label: 'Right', align: 'right' },
+  ]}
+  rows={[{ a: 'aligned', b: 'aligned', c: 42 }]}
+/>`}>
+  <DataGrid
+    columns={[
+      { key: 'a', label: 'Left', align: 'left' },
+      { key: 'b', label: 'Center', align: 'center' },
+      { key: 'c', label: 'Right', align: 'right' },
+    ]}
+    rows={[{ a: 'aligned', b: 'aligned', c: 42 }]}
+  />
+</Preview>
+
+## States
+
+- **Unsorted / ascending / descending** — the header chevron swaps to match
+  `aria-sort` and the sort button's `data-sort`.
+- **Row checked** — the row background tints.
+- **Indeterminate select-all** — shown when some, but not all, rows are checked.
+- **No JS** — see the JsNote above.
+
+## Examples
+
+Selectable rows, numeric column right-aligned with `tabular-nums`:
+
+<Preview code={`<DataGrid
+  selectable
+  columns={[
+    { key: 'item', label: 'Item' },
+    { key: 'qty', label: 'Qty', align: 'right' },
+  ]}
+  rows={[
+    { item: 'Widget', qty: 12 },
+    { item: 'Gadget', qty: 4 },
+  ]}
+/>`}>
+  <DataGrid
+    selectable
+    columns={[
+      { key: 'item', label: 'Item' },
+      { key: 'qty', label: 'Qty', align: 'right' },
+    ]}
+    rows={[
+      { item: 'Widget', qty: 12 },
+      { item: 'Gadget', qty: 4 },
+    ]}
+  />
+</Preview>
+
+## Accessibility
+
+- Semantic `<table>` / `<thead>` / `<tbody>`.
+- Each sortable header keeps `aria-sort` (`none` / `ascending` / `descending`) in
+  sync with the active sort.
+- The sort trigger is a real `<button>` — reachable with `Tab`, activated with
+  `Enter` / `Space`.
+- The select-all `Checkbox` sets the native `indeterminate` property when some
+  but not all rows are checked.
+- Checkboxes carry `aria-label="Select all"` / `"Select row"`.
+- **No JS** — rows render in the order given by `rows`; sort buttons and the
+  select-all checkbox render but are inert. Nothing is hidden, so the data
+  itself is always readable.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Wrapper border, header/row dividers |
+| `--muted` | Header background, checked-row tint |
+| `--muted-foreground` | Header label color, inactive sort icon |
+| `--foreground` | Cell text, hovered sort label |
+
+## Do / Don't
+
+- **Do** mark only genuinely sortable columns `sortable` — a chevron implies a
+  working sort.
+- **Do** keep each column's `key` stable and unique — the client sort matches
+  rows by it.
+- **Don't** put rich interactive content in a `sortable` cell — sort compares
+  the cell's text/number value, not markup.
+- **Don't** rely on `selectable` alone for bulk actions — pair it with a visible
+  action bar that reacts to the checked rows.
+
+## Content
+
+- Column labels are short nouns, sentence case, no ending punctuation.
+- Numeric columns right-align (`align="right"`) and inherit `tabular-nums`
+  automatically.

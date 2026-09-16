@@ -1,0 +1,177 @@
+---
+title: Dialog
+description: A native <dialog> opened and closed with invoker commands — modal, edge panel, or fullscreen.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Dialog from '../../../../registry/components/Dialog/Dialog.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+<JsNote fallback="Opening, closing via the ✕ button, and Escape all still work — they're native dialog + Invoker Commands behaviour, not authored JS. Only the backdrop-click-to-close fallback is lost, and only in browsers that don't yet support the native closedby attribute.">
+  A small script closes the dialog on backdrop click, as a fallback for browsers
+  without native `closedby` support.
+</JsNote>
+
+<Preview code={`<Button command="show-modal" commandfor="demo-dialog">Open dialog</Button>
+<Dialog id="demo-dialog" title="Edit profile">
+  <p>Update your profile details below.</p>
+  <Button variant="ghost" command="close" commandfor="demo-dialog" slot="footer">Cancel</Button>
+  <Button command="close" commandfor="demo-dialog" slot="footer">Save</Button>
+</Dialog>`}>
+  <Button command="show-modal" commandfor="demo-dialog">Open dialog</Button>
+  <Dialog id="demo-dialog" title="Edit profile">
+    <p>Update your profile details below.</p>
+    <Button variant="ghost" command="close" commandfor="demo-dialog" slot="footer">Cancel</Button>
+    <Button command="close" commandfor="demo-dialog" slot="footer">Save</Button>
+  </Dialog>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add dialog
+```
+
+No Apogee dependencies. Uses `@lucide/astro` (`X` close icon). Pair with
+`Button` (`command` / `commandfor`) to open and close it.
+
+## Usage
+
+```astro
+---
+import Dialog from '@/components/apogee/Dialog/Dialog.astro'
+import Button from '@/components/apogee/Button/Button.astro'
+---
+<Button command="show-modal" commandfor="d">Open</Button>
+<Dialog id="d" title="Confirm">
+  <p>Are you sure?</p>
+</Dialog>
+```
+
+## Anatomy
+
+- **Header** — auto-generated from `title`; always includes a close button
+  (`✕`, `command="close"`).
+- **Body** — default slot; the dialog's main content.
+- `footer` slot — optional; renders as a bottom action row, only when content
+  is passed to it.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute (e.g.
+`aria-describedby`) passes through to the root `<dialog>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | — | Required — matches the trigger's `commandfor`. |
+| `title` | `string` | — | Renders as the header `<h2>`. |
+| `variant` | `'modal' \| 'panel' \| 'fullscreen'` | `'modal'` | `modal`: centered. `panel`: edge drawer (see `position`). `fullscreen`: fills the viewport. |
+| `position` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Drawer edge — only applies when `variant="panel"`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+Every `variant`, and every `position` for `panel`:
+
+<Preview code={`<Button command="show-modal" commandfor="v-modal">Modal</Button>
+<Dialog id="v-modal" title="Modal">Centered dialog content.</Dialog>
+
+<Button command="show-modal" commandfor="v-panel-right">Panel — right</Button>
+<Dialog id="v-panel-right" variant="panel" position="right" title="Panel (right)">Right-edge drawer.</Dialog>
+
+<Button command="show-modal" commandfor="v-panel-left">Panel — left</Button>
+<Dialog id="v-panel-left" variant="panel" position="left" title="Panel (left)">Left-edge drawer.</Dialog>
+
+<Button command="show-modal" commandfor="v-panel-top">Panel — top</Button>
+<Dialog id="v-panel-top" variant="panel" position="top" title="Panel (top)">Top-edge drawer.</Dialog>
+
+<Button command="show-modal" commandfor="v-panel-bottom">Panel — bottom</Button>
+<Dialog id="v-panel-bottom" variant="panel" position="bottom" title="Panel (bottom)">Bottom-edge drawer.</Dialog>
+
+<Button command="show-modal" commandfor="v-full">Fullscreen</Button>
+<Dialog id="v-full" variant="fullscreen" title="Fullscreen">Fills the viewport.</Dialog>`}>
+  <Button command="show-modal" commandfor="v-modal">Modal</Button>
+  <Dialog id="v-modal" title="Modal">Centered dialog content.</Dialog>
+
+  <Button command="show-modal" commandfor="v-panel-right">Panel — right</Button>
+  <Dialog id="v-panel-right" variant="panel" position="right" title="Panel (right)">Right-edge drawer.</Dialog>
+
+  <Button command="show-modal" commandfor="v-panel-left">Panel — left</Button>
+  <Dialog id="v-panel-left" variant="panel" position="left" title="Panel (left)">Left-edge drawer.</Dialog>
+
+  <Button command="show-modal" commandfor="v-panel-top">Panel — top</Button>
+  <Dialog id="v-panel-top" variant="panel" position="top" title="Panel (top)">Top-edge drawer.</Dialog>
+
+  <Button command="show-modal" commandfor="v-panel-bottom">Panel — bottom</Button>
+  <Dialog id="v-panel-bottom" variant="panel" position="bottom" title="Panel (bottom)">Bottom-edge drawer.</Dialog>
+
+  <Button command="show-modal" commandfor="v-full">Fullscreen</Button>
+  <Dialog id="v-full" variant="fullscreen" title="Fullscreen">Fills the viewport.</Dialog>
+</Preview>
+
+## States
+
+- **Open / closed** — the native `[open]` attribute; enter/exit fades and
+  slides (`@starting-style`), respects `prefers-reduced-motion`.
+- **Backdrop** — fades to 50% black on open (`::backdrop`).
+
+Try each state via the triggers in the Variants preview above.
+
+## Examples
+
+A destructive confirm, with a `danger` footer button:
+
+```astro
+<Button variant="danger" command="show-modal" commandfor="confirm-delete">Delete account</Button>
+<Dialog id="confirm-delete" title="Delete account">
+  <p>This can't be undone.</p>
+  <Button variant="ghost" command="close" commandfor="confirm-delete" slot="footer">Cancel</Button>
+  <Button variant="danger" command="close" commandfor="confirm-delete" slot="footer">Delete</Button>
+</Dialog>
+```
+
+## Accessibility
+
+- Native `<dialog>` opened via `showModal()` (through `command="show-modal"`) —
+  the browser traps focus inside it and returns focus to the invoking button on
+  close, for free.
+- The `title` renders as an `<h2 id="${id}-title">`, wired to `aria-labelledby`
+  on the `<dialog>` — when `title` is set, it's announced as the dialog's
+  accessible name on open.
+- The close button has `aria-label="Close"`.
+- **Keyboard** — `Escape` closes it (native `showModal()` behavior); the close
+  and footer buttons are reachable with `Tab`.
+- **No JS** — opening, closing via the buttons, and `Escape` all still work
+  (native). Only the backdrop-click-to-close fallback is unavailable, and only
+  in browsers without native `closedby` support.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Dialog border |
+| `--surface` / `--surface-foreground` | Background / default text color |
+| `--foreground` | Title text |
+| `--muted-foreground` / `--muted` | Close button icon / hover background |
+| `--ring` | Close button focus ring |
+| `--radius-lg` | Corner radius |
+| `--duration-slow` / `--ease-smooth` | Open/close and backdrop transition |
+
+## Do / Don't
+
+- **Do** give every dialog a clear `title` — it's the only heading users get.
+- **Do** match `commandfor` to the dialog's `id` exactly — a mismatch silently
+  no-ops.
+- **Don't** stack multiple modal dialogs — the design isn't built for it.
+- **Don't** use `fullscreen` for something that isn't itself a full task (a
+  short confirm) — reserve it for immersive flows.
+
+## Content
+
+- Title is a short noun phrase naming the task ("Edit profile", "Delete
+  account"), sentence case, no ending punctuation.
+- Footer buttons: the affirmative/primary action trailing, a neutral "Cancel"
+  leading.

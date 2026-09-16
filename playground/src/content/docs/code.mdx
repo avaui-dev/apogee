@@ -1,0 +1,137 @@
+---
+title: Code
+description: Inline code or a code block, with an optional copy-to-clipboard button.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Code from '../../../../registry/components/Code/Code.astro'
+
+<JsNote fallback="The copy button (`no-js:hidden`) doesn't render — the code stays visible and selectable, so it's still copyable by hand.">
+  Copies the block's text to the clipboard on click, then swaps the icon to a
+  checkmark and shows a "Copied" label for 3 seconds.
+</JsNote>
+
+<Preview jsToggle code={`<Code copy>npm install @ava-ui/apogee</Code>`}>
+  <Code copy>npm install @ava-ui/apogee</Code>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add code
+```
+
+No Apogee dependencies. Uses `@lucide/astro` internally (`Copy`, `Check`) for
+the copy button — no icon import needed in your usage.
+
+## Usage
+
+```astro
+---
+import Code from '@/components/apogee/Code/Code.astro'
+---
+Run <Code>npm i</Code> to install.
+
+<Code block>const x = 1</Code>
+<Code copy>const x = 1</Code>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<code>` /
+`<pre>` / `<div>` attribute (e.g. `aria-label`) passes through to the root
+element.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `block` | `boolean` | `false` | Renders a block `<pre>` panel instead of inline `<code>`. |
+| `copy` | `boolean` | `false` | Adds a copy-to-clipboard button. Implies `block`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+The three render modes — inline, block, and block with copy:
+
+<Preview code={`<Code>npm i</Code>
+<Code block>{'{ "name": "apogee" }'}</Code>
+<Code copy>npm install @ava-ui/apogee</Code>`}>
+  <Code>npm i</Code>
+  <Code block>{'{ "name": "apogee" }'}</Code>
+  <Code copy>npm install @ava-ui/apogee</Code>
+</Preview>
+
+## States
+
+- **Default** — copy button shows a copy icon, muted-foreground colour.
+- **Hover / focus** — button background shifts to `--muted`; a visible
+  `focus-visible` ring on keyboard focus.
+- **Copied** — icon swaps to a checkmark, button turns `--success`, and a
+  "Copied" label fades in for 3 seconds (`role="status"`).
+
+<Preview jsToggle code={`<Code copy>git commit -m "fix: copy button"</Code>`}>
+  <Code copy>git commit -m "fix: copy button"</Code>
+</Preview>
+
+## Examples
+
+Inline, in prose:
+
+```astro
+Run <Code>npm i</Code> before starting the dev server.
+```
+
+Block, no copy button (e.g. read-only output):
+
+<Preview code={`<Code block>✓ 12 tests passed</Code>`}>
+  <Code block>✓ 12 tests passed</Code>
+</Preview>
+
+Block with copy, for install commands and config snippets:
+
+<Preview jsToggle code={`<Code copy>pnpm add -D @ava-ui/apogee</Code>`}>
+  <Code copy>pnpm add -D @ava-ui/apogee</Code>
+</Preview>
+
+## Accessibility
+
+- The copy button is a real `<button>` — focusable and operable with
+  Enter/Space, and has `aria-label="Copy code"`.
+- The "Copied" confirmation is a `role="status"` label so it's announced to
+  screen readers without stealing focus.
+- **No JS:** the copy button carries `no-js:hidden` and never renders — the
+  code text itself is always selectable, so copying by hand still works.
+- The copied-state transition respects `prefers-reduced-motion`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Inline `<code>` and block `<pre>` border |
+| `--muted` | Inline/block background; copy button hover background |
+| `--background` | Copy button background |
+| `--foreground` | Code text; copy button hover/copied text |
+| `--muted-foreground` | Copy button default icon/text colour |
+| `--success` | Copy button "copied" colour |
+| `--ring` | Focus ring |
+| `--duration-fast` / `--ease-smooth` | "Copied" label fade transition |
+
+## Do / Don't
+
+- **Do** use `copy` for anything a reader will paste elsewhere — install
+  commands, config, CLI output.
+- **Do** use inline `<Code>` for short identifiers, flags, and filenames in
+  prose.
+- **Don't** use `Code` for large syntax-highlighted files — pair Astro's
+  built-in Shiki / Expressive Code in Markdown for that; this is the bare
+  styled element.
+- **Don't** pad the content with extra leading/trailing whitespace — it gets
+  copied along with the code.
+
+## Content
+
+- Keep inline code to short tokens (a command, a flag, a filename); move
+  anything longer into a block.
+- Block content is literal source — no explanatory prose inside the block.

@@ -1,0 +1,146 @@
+---
+title: Popover
+description: Rich content on click, built on the native Popover API — top layer and light dismiss for free.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Popover from '../../../../registry/components/Popover/Popover.astro'
+
+<Preview code={`<Popover>
+  <span slot="trigger">More info</span>
+  <p>Extra detail shown in the panel.</p>
+</Popover>`}>
+  <Popover>
+    <span slot="trigger">More info</span>
+    <p>Extra detail shown in the panel.</p>
+  </Popover>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add popover
+```
+
+No Apogee component dependencies, no icons. Zero JS — the native Popover API
+(`popover`, `popovertarget`) plus CSS anchor positioning do the work.
+
+## Usage
+
+```astro
+---
+import Popover from '@/components/apogee/Popover/Popover.astro'
+---
+<Popover>
+  <span slot="trigger">Filters</span>
+  <p>Panel content goes here.</p>
+</Popover>
+```
+
+## Anatomy
+
+- **Trigger** — the `<button popovertarget>`; its label is the `trigger` slot
+  (defaults to "Open").
+- **Panel** — the `<div popover>` anchored to the trigger; its content is the
+  default slot.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the trigger `<button>` (not the panel).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `placement` | `'bottom' \| 'top'` | `'bottom'` | Which side of the trigger the panel opens on, where CSS anchor positioning is supported. `position-try-fallbacks: flip-block` swaps sides automatically when there's no room. |
+| `class` | `string` | — | Extra classes on the trigger button, merged last. |
+
+## Variants
+
+<Preview code={`<Popover placement="bottom">
+  <span slot="trigger">Bottom</span>
+  <p>Opens below the trigger.</p>
+</Popover>
+<Popover placement="top">
+  <span slot="trigger">Top</span>
+  <p>Opens above the trigger.</p>
+</Popover>`}>
+  <Popover placement="bottom">
+    <span slot="trigger">Bottom</span>
+    <p>Opens below the trigger.</p>
+  </Popover>
+  <Popover placement="top">
+    <span slot="trigger">Top</span>
+    <p>Opens above the trigger.</p>
+  </Popover>
+</Preview>
+
+## States
+
+- **Closed → open** — a fade + slight upward slide (`--duration-fast`,
+  `--ease-smooth`), using `@starting-style` for the entry transition; driven
+  entirely by the browser's `:popover-open` pseudo-class.
+- **Unsupported anchor positioning** (no `@supports (anchor-name: --x)`) — the
+  panel falls back to the popover API's default centered position, still fully
+  usable.
+
+## Examples
+
+A short list inside the panel:
+
+```astro
+<Popover>
+  <span slot="trigger">Share</span>
+  <ul class="flex flex-col gap-1">
+    <li><a href="/copy-link">Copy link</a></li>
+    <li><a href="/email">Email</a></li>
+  </ul>
+</Popover>
+```
+
+## Accessibility
+
+- The trigger is a real `<button popovertarget>` — fully keyboard-operable
+  (`Enter` / `Space` toggles it).
+- `Esc` closes the panel and clicking outside closes it — both are the
+  browser's native light-dismiss behaviour (`popover="auto"`, the implicit
+  default), no JS involved.
+- The panel paints in the native top layer, above everything else, with no
+  `z-index` needed.
+- The panel has no implicit ARIA role — if its content behaves like a dialog or
+  menu, add `role="dialog"` / `role="menu"` (and a label) yourself.
+- Opening doesn't move focus into the panel — there's no `autofocus`. Add one to
+  a focusable child if the panel needs immediate keyboard interaction.
+- The open/close fade-and-slide is disabled under `prefers-reduced-motion: reduce`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Trigger + panel border |
+| `--background` | Trigger + panel background |
+| `--foreground` | Trigger + panel text |
+| `--muted` | Trigger hover background |
+| `--ring` | Focus ring |
+| `--duration-fast` / `--ease-smooth` | Open/close transition |
+| `--radius-md` | Trigger corner radius |
+| `--radius-lg` | Panel corner radius |
+
+## Do / Don't
+
+- **Do** keep the panel's first interactive element reachable by `Tab` — there's
+  no focus trap, so keyboard order just follows DOM order.
+- **Do** use `placement="top"` when the trigger sits near the bottom of the
+  viewport.
+- **Don't** put a page's primary content only in a Popover — a stray click or
+  `Esc` dismisses it.
+- **Don't** rely on `placement` alone everywhere — anchor positioning isn't
+  supported in every browser yet; the fallback is a screen-centered panel, so
+  test that path too.
+
+## Content
+
+- Trigger label is a short verb or noun for the panel's purpose ("Filters",
+  "Share", "More info").
+- Panel copy stays short — it's a lightweight aside, not a page.

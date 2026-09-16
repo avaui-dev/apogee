@@ -1,0 +1,141 @@
+---
+title: ContextMenu
+description: A styleable right-click menu — opens at the cursor over a target, closes on outside click, Escape, or scroll.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import ContextMenu from '../../../../registry/components/ContextMenu/ContextMenu.astro'
+import DropdownItem from '../../../../registry/components/Dropdown/DropdownItem.astro'
+import { Scissors, Copy, ClipboardPaste } from '@lucide/astro'
+
+<JsNote fallback="The panel stays hidden and the target's normal browser right-click menu opens instead — nothing is broken or lost.">
+  Opens a custom menu at the cursor on right-click, and closes it on outside click,
+  Escape, or scroll.
+</JsNote>
+
+<Preview jsToggle code={`<ContextMenu>
+  <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+    Right-click here
+  </div>
+  <DropdownItem slot="menu">Cut</DropdownItem>
+  <DropdownItem slot="menu">Copy</DropdownItem>
+  <DropdownItem slot="menu">Paste</DropdownItem>
+</ContextMenu>`}>
+  <ContextMenu>
+    <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+      Right-click here
+    </div>
+    <DropdownItem slot="menu">Cut</DropdownItem>
+    <DropdownItem slot="menu">Copy</DropdownItem>
+    <DropdownItem slot="menu">Paste</DropdownItem>
+  </ContextMenu>
+</Preview>
+
+Flip the **No-JS preview** switch above to see the fallback: with JavaScript off
+the panel is hidden (`no-js:hidden`, in a sandboxed iframe with no scripts) and
+right-clicking falls through to the browser's own menu.
+
+## Add
+
+```sh
+npx @ava-ui/apogee add context-menu
+```
+
+No Apogee dependencies. Pair with `DropdownItem` for menu entries.
+
+## Usage
+
+```astro
+---
+import ContextMenu from '@/components/apogee/ContextMenu/ContextMenu.astro'
+import DropdownItem from '@/components/apogee/Dropdown/DropdownItem.astro'
+---
+<ContextMenu>
+  <div>Right-click target</div>
+  <DropdownItem slot="menu">Copy</DropdownItem>
+  <DropdownItem slot="menu">Paste</DropdownItem>
+</ContextMenu>
+```
+
+## Anatomy
+
+- **Target** — default slot; the element(s) that trigger the menu on right-click.
+- **Menu panel** — `slot="menu"`; a `role="menu"` panel positioned at the cursor.
+  Fill it with `DropdownItem`s (`role="menuitem"`).
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Extra classes on the root wrapper, merged last. |
+
+## States
+
+- **Closed** (default) — the panel is `hidden`.
+- **Open** — right-click (or the keyboard context-menu key / Shift+F10) shows the
+  panel at the cursor, clamped inside the viewport. Try it in the hero preview
+  above.
+- **No JS** — the panel stays hidden; the browser's native context menu opens
+  instead.
+
+## Examples
+
+With leading icons:
+
+<Preview code={`<ContextMenu>
+  <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+    Right-click here
+  </div>
+  <DropdownItem slot="menu"><Scissors /> Cut</DropdownItem>
+  <DropdownItem slot="menu"><Copy /> Copy</DropdownItem>
+  <DropdownItem slot="menu"><ClipboardPaste /> Paste</DropdownItem>
+</ContextMenu>`}>
+  <ContextMenu>
+    <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+      Right-click here
+    </div>
+    <DropdownItem slot="menu"><Scissors /> Cut</DropdownItem>
+    <DropdownItem slot="menu"><Copy /> Copy</DropdownItem>
+    <DropdownItem slot="menu"><ClipboardPaste /> Paste</DropdownItem>
+  </ContextMenu>
+</Preview>
+
+## Accessibility
+
+- The panel has `role="menu"`; give items `role="menuitem"` (what `DropdownItem`
+  renders).
+- **Keyboard** — the native context-menu key / Shift+F10 fires the same
+  `contextmenu` event as a right-click, so keyboard-only users can still open it.
+  On open, focus moves to the first menu item. `ArrowDown` / `ArrowUp` navigate
+  between items, wrapping from last to first and back; `Home` / `End` jump to
+  the first / last item. Escape closes it.
+- **No JS** — the panel stays hidden (`no-js:hidden`); the browser's native
+  context menu opens instead, so the actions remain reachable through it.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Panel border |
+| `--surface` | Panel background |
+| `--duration-fast` / `--ease-smooth` | Panel open fade/scale animation |
+
+## Do / Don't
+
+- **Do** keep items short and task-focused (Cut, Copy, Paste, Delete).
+- **Do** offer the same actions somewhere else too (a toolbar, a keyboard
+  shortcut) — right-click alone isn't discoverable for every user.
+- **Don't** nest anything but menu items (`DropdownItem`) in the panel.
+- **Don't** treat it as the only way to reach an action — no-JS visitors fall
+  back to the native menu, which won't show your custom entries.
+
+## Content
+
+- Item labels are short verbs (Cut, Copy, Paste, Delete), sentence case, no
+  ending punctuation — same rules as `DropdownItem`.

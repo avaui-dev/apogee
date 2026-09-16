@@ -1,0 +1,108 @@
+---
+title: Text
+description: Body copy with a size scale and a muted variant. Renders p, span, or div.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Text from '../../../../registry/components/Text/Text.astro'
+
+<Preview code={`<Text>Body copy at the base size.</Text>
+<Text muted>Muted secondary copy.</Text>`}>
+  <Text>Body copy at the base size.</Text>
+  <Text muted>Muted secondary copy.</Text>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add text
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Text from '@/components/apogee/Text/Text.astro'
+---
+<Text>Body copy.</Text>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native attribute
+for the rendered tag (e.g. `id`, `aria-label`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `'p' \| 'span' \| 'div'` | `'p'` | Element rendered. |
+| `size` | `'sm' \| 'base' \| 'lg'` | `'base'` | Font size. |
+| `muted` | `boolean` | `false` | Secondary (muted) color instead of foreground. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+`muted` on and off:
+
+<Preview code={`<Text>Foreground text.</Text>
+<Text muted>Muted text.</Text>`}>
+  <Text>Foreground text.</Text>
+  <Text muted>Muted text.</Text>
+</Preview>
+
+## Sizes
+
+Every size:
+
+<Preview code={`<Text size="sm">Small text.</Text>
+<Text size="base">Base text.</Text>
+<Text size="lg">Large text.</Text>`}>
+  <Text size="sm">Small text.</Text>
+  <Text size="base">Base text.</Text>
+  <Text size="lg">Large text.</Text>
+</Preview>
+
+## States
+
+Static text — no interactive states.
+
+## Examples
+
+Rendered as a different element (`span` inline, `div` block):
+
+<Preview code={`<Text as="span">Inline span.</Text>
+<Text as="div" size="sm" muted>Block div, small, muted.</Text>`}>
+  <Text as="span">Inline span.</Text>
+  <Text as="div" size="sm" muted>Block div, small, muted.</Text>
+</Preview>
+
+## Accessibility
+
+Native semantics, no extra ARIA needed. `as` picks a plain, non-semantic tag
+(`p` / `span` / `div`) — for headings, lists, or other meaningful structure, use
+the tag or component that carries that meaning instead of `Text`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground` | Default text color |
+| `--muted-foreground` | `muted` text color |
+
+## Do / Don't
+
+- **Do** use `muted` for secondary/supporting copy (timestamps, helper text).
+- **Do** pick `as` to match the surrounding flow (`span` inside a line, `div` /
+  `p` as a block).
+- **Don't** use `Text` for headings — it has no heading semantics or size scale
+  for that.
+- **Don't** hard-code font size or color classes — use `size` and `muted`.
+
+## Content
+
+- Sentence case. No filler ("please note", "simply") — say the thing.
+- Keep line length readable; let `leading-relaxed` do the work rather than
+  forcing breaks.

@@ -1,0 +1,135 @@
+---
+title: TagInput
+description: Type and press Enter to add removable tags. Submits as repeated hidden inputs.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import TagInput from '../../../../registry/components/TagInput/TagInput.astro'
+
+<JsNote fallback="Initial tags render as plain, non-removable chips (their remove buttons are hidden) and still submit via their hidden inputs. The free-text field keeps its `name`, so whatever's typed but not yet added also submits alongside the tags.">
+  Lets you type a tag and press Enter or comma to add it as a removable
+  chip, and Backspace on an empty field to remove the last one. Each tag
+  submits as a repeated `name` hidden input; JS un-names the free-text
+  field so it stops double-submitting once it's just for typing.
+</JsNote>
+
+<Preview jsToggle code={`<TagInput name="skills" value={['Astro', 'Tailwind']} placeholder="Add a skill…" />`}>
+  <TagInput name="skills" value={['Astro', 'Tailwind']} placeholder="Add a skill…" />
+</Preview>
+
+Flip the **No-JS preview** switch above to see the fallback: the seeded
+tags' remove buttons disappear, and the free-text field keeps its `name`
+so anything typed there submits too (in a sandboxed iframe with no
+scripts — the real `no-js` behaviour, not a fake).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add tag-input
+```
+
+No Apogee component dependencies. Depends on `@lucide/astro` (renders the
+remove icon). Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import TagInput from '@/components/apogee/TagInput/TagInput.astro'
+---
+<TagInput name="skills" value={['Astro', 'Tailwind']} />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the root `<div>` (not the free-text `<input>`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | — | Field name each tag submits under, as a repeated hidden input. |
+| `value` | `string[]` | `[]` | Initial tags, rendered as removable chips. |
+| `placeholder` | `string` | `'Add tag…'` | Placeholder on the free-text field. |
+| `class` | `string` | — | Extra classes on the root `<div>`, merged last. |
+
+## States
+
+- **Empty vs. seeded** — start with `value` for pre-set tags, or omit it for
+  an empty field.
+- **Focus-within** — the whole container gets a visible ring when the
+  free-text field has focus.
+- **Hover** on a chip's remove button — the icon darkens from
+  `--muted-foreground` to `--foreground`.
+- **No JS** — remove buttons on the initial tags are hidden (see the toggle
+  above); the free-text field keeps its `name`, so typed-but-not-yet-added
+  text still submits alongside the tags.
+
+<Preview jsToggle code={`<TagInput name="tags" value={['Design', 'Engineering', 'Marketing']} />`}>
+  <TagInput name="tags" value={['Design', 'Engineering', 'Marketing']} />
+</Preview>
+
+## Examples
+
+Empty, ready for input:
+
+<Preview code={`<TagInput name="skills" />`}>
+  <TagInput name="skills" />
+</Preview>
+
+Custom placeholder:
+
+```astro
+<TagInput name="topics" placeholder="Add a topic and press Enter…" />
+```
+
+Each tag submits as a separate `name` entry — reading it server-side yields
+an array:
+
+```js
+const skills = formData.getAll('skills') // ['Astro', 'Tailwind', …]
+```
+
+## Accessibility
+
+- The free-text field is a real `<input type="text">`; each tag's remove
+  control is a real `<button type="button" aria-label="Remove {tag}">` —
+  both keyboard-reachable via `Tab` in source order.
+- **Keyboard** — type then `Enter` or `,` adds a tag; `Backspace` on an
+  empty field removes the last tag; `Tab` to any remove button then
+  `Enter` / `Space` removes that specific tag (not only the last one).
+- The focus-within ring shows the whole control is active, not just the
+  text field.
+- **No JS** — initial tags still submit (hidden inputs), and the free-text
+  field keeps its `name`, so typed-but-not-yet-added text submits too; the
+  remove buttons are hidden, so nothing can be removed without JS.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Container border |
+| `--background` | Container + field background |
+| `--ring` | Focus-within ring |
+| `--muted` | Chip background |
+| `--foreground` | Chip text + remove icon (hover) |
+| `--muted-foreground` | Field placeholder + remove icon (default) |
+
+## Do / Don't
+
+- **Do** seed `value` with existing tags when editing — they submit even
+  before JS finishes loading.
+- **Do** keep `placeholder` short and action-oriented ("Add a skill…").
+- **Don't** assume typed text is lost without JS — the free-text field
+  keeps its `name` and submits as one entry, though it won't be split into
+  separate tags server-side unless you parse it yourself (Enter/comma
+  splitting is JS-only).
+- **Don't** use TagInput for a single value — that's a plain text `<input>`.
+
+## Content
+
+- Placeholder names what's being added ("Add a skill…"), not "Type here".
+- Tags are short, sentence case, no ending punctuation — same rules as
+  `Tag`.

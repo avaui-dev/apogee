@@ -1,0 +1,149 @@
+---
+title: ContentWrapper
+description: Arranges content in one column or two, with an optional sticky second column.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import ContentWrapper from '../../../../registry/components/ContentWrapper/ContentWrapper.astro'
+
+<Preview code={`<ContentWrapper variant="columns">
+  <div>
+    <h3 class="mb-2 text-sm font-semibold text-foreground">Primary</h3>
+    <p class="text-sm text-muted-foreground">Main column content.</p>
+  </div>
+  <div slot="secondary">
+    <h3 class="mb-2 text-sm font-semibold text-foreground">Secondary</h3>
+    <p class="text-sm text-muted-foreground">Second column content.</p>
+  </div>
+</ContentWrapper>`}>
+  <ContentWrapper variant="columns">
+    <div>
+      <h3 class="mb-2 text-sm font-semibold text-foreground">Primary</h3>
+      <p class="text-sm text-muted-foreground">Main column content.</p>
+    </div>
+    <div slot="secondary">
+      <h3 class="mb-2 text-sm font-semibold text-foreground">Secondary</h3>
+      <p class="text-sm text-muted-foreground">Second column content.</p>
+    </div>
+  </ContentWrapper>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add content-wrapper
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import ContentWrapper from '@/components/apogee/ContentWrapper/ContentWrapper.astro'
+---
+<ContentWrapper>
+  <p>Page content, one column.</p>
+</ContentWrapper>
+```
+
+## Anatomy
+
+- Default slot — the first (primary) column; always rendered.
+- `secondary` slot — the second column; only rendered when `variant` is `columns` or `sticky`.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root element.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'stack' \| 'columns' \| 'sticky'` | `'stack'` | `stack`: one column. `columns`: two even columns from `md` up. `sticky`: two columns; the second sticks as the first scrolls. |
+| `reverse` | `boolean` | `false` | Shows the second column first (from `md` up). No effect on `stack`. |
+| `gap` | `4 \| 6 \| 8 \| 10 \| 12` | `8` | Gap between columns (Tailwind spacing scale). |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+Every `variant`:
+
+<Preview code={`<ContentWrapper variant="stack">
+  <div>First</div>
+  <div>Second</div>
+</ContentWrapper>`}>
+  <ContentWrapper variant="stack">
+    <div class="rounded-md border border-border p-4 text-sm">First</div>
+    <div class="rounded-md border border-border p-4 text-sm">Second</div>
+  </ContentWrapper>
+</Preview>
+
+<Preview code={`<ContentWrapper variant="columns">
+  <div>Primary column</div>
+  <div slot="secondary">Secondary column</div>
+</ContentWrapper>`}>
+  <ContentWrapper variant="columns">
+    <div class="rounded-md border border-border p-4 text-sm">Primary column</div>
+    <div class="rounded-md border border-border p-4 text-sm" slot="secondary">Secondary column</div>
+  </ContentWrapper>
+</Preview>
+
+<Preview code={`<ContentWrapper variant="sticky">
+  <div>Scrolls</div>
+  <div slot="secondary">Stays put (md and up)</div>
+</ContentWrapper>`}>
+  <ContentWrapper variant="sticky">
+    <div class="rounded-md border border-border p-4 text-sm">Scrolls</div>
+    <div class="rounded-md border border-border p-4 text-sm" slot="secondary">Stays put (md and up)</div>
+  </ContentWrapper>
+</Preview>
+
+`reverse` flips which column shows first (visually, from `md` up); `gap` accepts
+`4 | 6 | 8 | 10 | 12` — the default (`8`) is used above, tighten or loosen by
+passing another value:
+
+<Preview code={`<ContentWrapper variant="columns" reverse gap={4}>
+  <div>Shows second on desktop</div>
+  <div slot="secondary">Shows first on desktop</div>
+</ContentWrapper>`}>
+  <ContentWrapper variant="columns" reverse gap={4}>
+    <div class="rounded-md border border-border p-4 text-sm">Shows second on desktop</div>
+    <div class="rounded-md border border-border p-4 text-sm" slot="secondary">Shows first on desktop</div>
+  </ContentWrapper>
+</Preview>
+
+## States
+
+No interactive states — a plain layout container.
+
+## Examples
+
+A sidebar article layout: sticky secondary column, tight gap.
+
+```astro
+<ContentWrapper variant="sticky" gap={6}>
+  <article>…</article>
+  <aside slot="secondary">Table of contents, related links…</aside>
+</ContentWrapper>
+```
+
+## Accessibility
+
+Native semantics — no ARIA role, no focus management. DOM order is always
+default slot first, `secondary` slot second; `reverse` only changes the
+*visual* order (`md:order-2` / `md:order-1`), so tab and reading order follow
+the DOM, not the visual layout.
+
+## Tokens
+
+No CSS custom properties — spacing uses Tailwind's fixed scale (`gap-4`…`gap-12`), not a themed token.
+
+## Do / Don't
+
+Layout primitive — exempt from Do/Don't guidance (no misuse surface).
+
+## Content
+
+Layout primitive — exempt from content guidance (no text of its own).

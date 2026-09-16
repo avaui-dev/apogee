@@ -1,0 +1,94 @@
+---
+title: AspectRatio
+description: Locks its content to a fixed width-to-height ratio — media, embeds, maps.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import AspectRatio from '../../../../registry/components/AspectRatio/AspectRatio.astro'
+
+<Preview code={`<AspectRatio ratio="16 / 9" class="w-64 rounded-lg bg-muted">
+  <img src="https://picsum.photos/640/360" alt="" />
+</AspectRatio>`}>
+  <AspectRatio ratio="16 / 9" class="w-64 rounded-lg bg-muted">
+    <img src="https://picsum.photos/640/360" alt="" />
+  </AspectRatio>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add aspect-ratio
+```
+
+No component dependencies.
+
+## Usage
+
+```astro
+---
+import AspectRatio from '@/components/apogee/AspectRatio/AspectRatio.astro'
+---
+<AspectRatio ratio="16 / 9">
+  <img src="/hero.jpg" alt="Product photo" />
+</AspectRatio>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<div>`
+attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `ratio` | `string` | `'16 / 9'` | Raw CSS `aspect-ratio` value, e.g. `"16 / 9"`, `"4 / 3"`, `"1 / 1"`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+`ratio` is a free-form CSS value, not an enum — common ratios shown below.
+
+## Examples
+
+<Preview code={`<AspectRatio ratio="1 / 1" class="w-40 rounded-lg bg-muted">
+  <img src="https://picsum.photos/id/1/400/400" alt="" />
+</AspectRatio>
+<AspectRatio ratio="4 / 3" class="w-40 rounded-lg bg-muted">
+  <img src="https://picsum.photos/id/2/400/300" alt="" />
+</AspectRatio>
+<AspectRatio ratio="21 / 9" class="w-64 rounded-lg bg-muted">
+  <img src="https://picsum.photos/id/3/840/360" alt="" />
+</AspectRatio>`}>
+  <AspectRatio ratio="1 / 1" class="w-40 rounded-lg bg-muted">
+    <img src="https://picsum.photos/id/1/400/400" alt="" />
+  </AspectRatio>
+  <AspectRatio ratio="4 / 3" class="w-40 rounded-lg bg-muted">
+    <img src="https://picsum.photos/id/2/400/300" alt="" />
+  </AspectRatio>
+  <AspectRatio ratio="21 / 9" class="w-64 rounded-lg bg-muted">
+    <img src="https://picsum.photos/id/3/840/360" alt="" />
+  </AspectRatio>
+</Preview>
+
+Any content fills the box — `<img>` gets `object-cover`, other children (an
+`<iframe>` embed, a `<canvas>`) get `size-full`:
+
+```astro
+<AspectRatio ratio="16 / 9">
+  <iframe src="https://www.youtube.com/embed/…" title="Demo video" allowfullscreen />
+</AspectRatio>
+```
+
+## Accessibility
+
+Native semantics, no extra ARIA needed. It's a plain `<div>` sizing a
+CSS `aspect-ratio` box — the content inside (an `<img alt>`, an `<iframe title>`)
+carries its own accessibility requirements as usual.
+
+## Tokens
+
+No color or spacing tokens — sizing comes from the CSS `aspect-ratio` property
+via the `ratio` prop, not from the token system.
+
+---
+
+Layout primitive — exempt from Do/Don't and Content (no wording or misuse surface of its own).

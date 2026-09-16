@@ -1,0 +1,148 @@
+---
+title: Collapsible
+description: A single show/hide region, built on native <details>. Zero JS.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Collapsible from '../../../../registry/components/Collapsible/Collapsible.astro'
+
+<Preview code={`<Collapsible>
+  <span slot="trigger">What's included?</span>
+  Everything in the Pro plan, plus priority support and SSO.
+</Collapsible>`}>
+  <Collapsible>
+    <span slot="trigger">What's included?</span>
+    Everything in the Pro plan, plus priority support and SSO.
+  </Collapsible>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add collapsible
+```
+
+No Apogee dependencies. Uses `@lucide/astro` internally (`ChevronDown`) for
+the trigger icon — no icon import needed in your usage.
+
+## Usage
+
+```astro
+---
+import Collapsible from '@/components/apogee/Collapsible/Collapsible.astro'
+---
+<Collapsible>
+  <span slot="trigger">What's included?</span>
+  Everything in the Pro plan, plus priority support and SSO.
+</Collapsible>
+```
+
+## Anatomy
+
+- **Trigger** — the `<summary>`, from `slot="trigger"` (defaults to "Details"
+  if omitted).
+- **Content** — the revealed region, the default slot.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native
+`<details>` attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | `false` | Initial open state (native `open` attribute). |
+| `class` | `string` | — | Extra classes on the root `<details>`, merged last. |
+
+## States
+
+- **Closed** — default; content is hidden and unmeasured (`content-visibility: hidden`).
+- **Open** — content animates open (`block-size` + `content-visibility`
+  transition); the trigger's chevron rotates 180°.
+
+<Preview code={`<Collapsible open>
+  <span slot="trigger">Open by default</span>
+  This one starts expanded.
+</Collapsible>
+<Collapsible>
+  <span slot="trigger">Closed by default</span>
+  This one starts collapsed.
+</Collapsible>`}>
+  <Collapsible open>
+    <span slot="trigger">Open by default</span>
+    This one starts expanded.
+  </Collapsible>
+  <Collapsible>
+    <span slot="trigger">Closed by default</span>
+    This one starts collapsed.
+  </Collapsible>
+</Preview>
+
+## Examples
+
+Stacked, independent regions (each opens on its own):
+
+<Preview code={`<Collapsible>
+  <span slot="trigger">Shipping</span>
+  Ships in 3–5 business days.
+</Collapsible>
+<Collapsible>
+  <span slot="trigger">Returns</span>
+  Free returns within 30 days.
+</Collapsible>`}>
+  <Collapsible>
+    <span slot="trigger">Shipping</span>
+    Ships in 3–5 business days.
+  </Collapsible>
+  <Collapsible>
+    <span slot="trigger">Returns</span>
+    Free returns within 30 days.
+  </Collapsible>
+</Preview>
+
+Default trigger text (no `trigger` slot):
+
+```astro
+<Collapsible>More detail below.</Collapsible>
+```
+
+## Accessibility
+
+- Native `<details>` / `<summary>` — keyboard support, expanded/collapsed
+  state, and disclosure semantics come from the browser for free. No ARIA
+  needed.
+- **Keyboard** — the summary is natively focusable; `Enter` / `Space` toggles
+  it.
+- **Focus** — a visible `focus-visible` ring on the summary.
+- The chevron icon is `aria-hidden`; the browser's own details marker is
+  hidden via CSS so it isn't announced twice.
+- The open/close animation respects `prefers-reduced-motion`.
+- **No JS:** works identically — `<details>` is a zero-JS element, so nothing
+  changes with scripts off.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground` | Trigger label colour |
+| `--muted-foreground` | Chevron icon; content text |
+| `--ring` | Focus ring |
+| `--duration-base` / `--ease-smooth` | Chevron rotate transition |
+| `--duration-slow` | Content open/close transition |
+
+## Do / Don't
+
+- **Do** use Collapsible for one independent show/hide region (FAQ entry,
+  optional detail).
+- **Do** write the trigger label so it stands alone, collapsed or expanded.
+- **Don't** use Collapsible for a set of mutually exclusive panels — use
+  `Accordion` for grouped, single-open sections.
+- **Don't** put a page's primary content behind a Collapsible — it's for
+  optional detail, not gatekeeping.
+
+## Content
+
+- Trigger label is a specific phrase describing what's revealed — not a
+  generic "Click here" or "Show more".
+- No ending punctuation on the trigger label.

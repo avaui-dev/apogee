@@ -1,0 +1,128 @@
+---
+title: Breadcrumbs
+description: A path trail showing where the current page sits in the site hierarchy.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Breadcrumbs from '../../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
+
+<Preview code={`<Breadcrumbs items={[
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products' },
+  { label: 'Apogee' },
+]} />`}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '/products' },
+    { label: 'Apogee' },
+  ]} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add breadcrumbs
+```
+
+No Apogee dependencies. Uses `@lucide/astro` for the chevron separator.
+
+## Usage
+
+```astro
+---
+import Breadcrumbs from '@/components/apogee/Breadcrumbs/Breadcrumbs.astro'
+---
+<Breadcrumbs items={[
+  { label: 'Home', href: '/' },
+  { label: 'Settings' },
+]} />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<nav>`
+attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `{ label: string; href?: string }[]` | — | The trail, in order. An item without `href` (or the last item) renders as plain text. |
+| `class` | `string` | — | Extra classes on the root `<nav>`, merged last. |
+
+The last item in `items` is always treated as the current page: it renders as
+a `<span aria-current="page">`, even if it has an `href`.
+
+## States
+
+- **Hover / focus** — linked crumbs (all but the last, when `href` is set)
+  lighten on hover; keyboard focus shows a visible ring (`--ring`).
+- **Current page** — the last item is bold text, never a link, with
+  `aria-current="page"`.
+
+<Preview code={`<Breadcrumbs items={[
+  { label: 'Home', href: '/' },
+  { label: 'Current page' },
+]} />`}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: 'Current page' },
+  ]} />
+</Preview>
+
+## Examples
+
+A deep trail wraps instead of overflowing:
+
+<Preview code={`<Breadcrumbs items={[
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products' },
+  { label: 'Design systems', href: '/products/design-systems' },
+  { label: 'Apogee', href: '/products/design-systems/apogee' },
+  { label: 'Components' },
+]} />`}>
+  <Breadcrumbs items={[
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '/products' },
+    { label: 'Design systems', href: '/products/design-systems' },
+    { label: 'Apogee', href: '/products/design-systems/apogee' },
+    { label: 'Components' },
+  ]} />
+</Preview>
+
+A single-item trail (just the current page, no links):
+
+<Preview code={`<Breadcrumbs items={[{ label: 'Dashboard' }]} />`}>
+  <Breadcrumbs items={[{ label: 'Dashboard' }]} />
+</Preview>
+
+## Accessibility
+
+- Wrapped in `<nav aria-label="Breadcrumb">` so assistive tech can jump to it
+  as a landmark.
+- The trail is a real `<ol>` — order is conveyed to screen readers, not just
+  visually.
+- The current page uses `aria-current="page"`, not a visual cue alone.
+- The separator chevron is `aria-hidden="true"` (decorative) and flips
+  (`rtl:-scale-x-100`) under `dir="rtl"`.
+- **Keyboard** — native link semantics; `Tab` moves through linked crumbs in
+  order, `Enter` navigates.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted-foreground` | Default crumb text |
+| `--foreground` | Hovered crumb + current-page text |
+| `--ring` | Focus ring on linked crumbs |
+
+## Do / Don't
+
+- **Do** end the trail with the current page as plain text, not a link to itself.
+- **Do** keep labels short — this is a navigation aid, not a page title.
+- **Don't** use Breadcrumbs as the only way to reach a parent page — pair with primary nav.
+
+## Content
+
+- Labels match the target page's title (or a shortened form of it), sentence case.
+- No ending punctuation, no separators typed into the label — the component renders the chevron.

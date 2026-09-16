@@ -1,0 +1,135 @@
+---
+title: Slider
+description: A styled native range input with a live percentage badge.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Slider from '../../../../registry/components/Slider/Slider.astro'
+
+<JsNote fallback="The range input itself needs no JS — it's a native range input, fully draggable and keyboard-operable, and its initial coloured fill is rendered server-side from value/min/max. Only the floating percentage badge is JS-driven; it's hidden via no-js:hidden when scripts don't run.">
+  A small island updates the badge text and the track's fill percentage on every
+  `input` event, and repositions the badge to stay centered over the thumb.
+</JsNote>
+
+<Preview jsToggle code={`<Slider aria-label="Volume" value={40} />`}>
+  <Slider aria-label="Volume" value={40} />
+</Preview>
+
+Flip the **No-JS preview** switch above to see the fallback: the badge disappears
+but the input and its fill stay exactly as usable.
+
+## Add
+
+```sh
+npx @ava-ui/apogee add slider
+```
+
+No Apogee component dependencies.
+
+## Usage
+
+```astro
+---
+import Slider from '@/components/apogee/Slider/Slider.astro'
+---
+<Slider name="volume" min={0} max={100} value={40} aria-label="Volume" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other `<input>` attribute
+(e.g. `id`, `aria-labelledby`, `data-*`) passes through onto the range input.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | — | Form field name. |
+| `min` | `number` | `0` | Minimum value. |
+| `max` | `number` | `100` | Maximum value. |
+| `step` | `number` | `1` | Step increment. |
+| `value` | `number` | midpoint of `min`/`max` | Initial value. |
+| `disabled` | `boolean` | `false` | Disables the input. |
+| `labelPosition` | `'top' \| 'bottom'` | `'top'` | Where the live percentage badge sits relative to the track. |
+| `aria-label` | `string` | — | Accessible name. No visible `<label>` is rendered — set this or associate an external `<label>` via `id` / `aria-labelledby`. |
+| `class` | `string` | — | Extra classes on the wrapping `<div>`, merged last. |
+
+## Variants
+
+`labelPosition` — the only stylistic variant:
+
+<Preview jsToggle code={`<Slider aria-label="Top badge" labelPosition="top" value={30} />
+<Slider aria-label="Bottom badge" labelPosition="bottom" value={70} />`}>
+  <Slider aria-label="Top badge" labelPosition="top" value={30} />
+  <Slider aria-label="Bottom badge" labelPosition="bottom" value={70} />
+</Preview>
+
+## States
+
+- **Default** — track fill matches `value` (or the midpoint if `value` is unset),
+  rendered server-side so there's no flash before JS loads.
+- **Hover** — pointer cursor over the track/thumb.
+- **Focus** — visible ring on the thumb (`focus-visible`).
+- **Disabled** — dimmed (50% opacity), `cursor-not-allowed`; native `disabled`
+  blocks interaction and removes it from the tab order.
+- **No JS** — badge hidden (`no-js:hidden`); input and fill stay fully usable.
+
+<Preview jsToggle code={`<Slider aria-label="Disabled" value={50} disabled />`}>
+  <Slider aria-label="Disabled" value={50} disabled />
+</Preview>
+
+## Examples
+
+With a visible, associated label:
+
+```astro
+<label for="volume-slider">Volume</label>
+<Slider id="volume-slider" name="volume" value={60} />
+```
+
+Controlled range with a fractional step:
+
+```astro
+<Slider name="rating" min={0} max={5} step={0.5} value={2.5} aria-label="Rating" />
+```
+
+## Accessibility
+
+- Native `<input type="range">` — full keyboard support for free: `←`/`→`
+  (or `↓`/`↑`) step by `step`, `Home`/`End` jump to `min`/`max`.
+- No visible `<label>` is rendered — always pass `aria-label`, or associate an
+  external `<label for>` with `id`.
+- The badge is `aria-hidden` — it echoes the input's value visually; screen
+  readers announce the native input's value/min/max, not the badge text.
+- Visible focus ring on keyboard focus.
+- No JS: the badge disappears (`no-js:hidden`) but the slider stays fully
+  operable — value, min, max, and the coloured fill are all rendered server-side.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--accent` | Filled portion of the track, thumb fill |
+| `--muted` | Unfilled portion of the track |
+| `--background` | Thumb border, badge text |
+| `--border` | Thumb outer shadow ring |
+| `--ring` | Focus ring on the thumb |
+| `--foreground` | Badge background |
+
+## Do / Don't
+
+- **Do** pair the slider with a visible value or unit nearby when precision
+  matters — the badge is a nice-to-have echo, not a substitute for feedback.
+- **Do** set sensible `min`/`max`/`step` for the value being edited (percentages:
+  0–100 step 1; ratings: 0–5 step 0.5).
+- **Don't** rely on the badge alone to communicate the value to screen reader
+  users — it's decorative.
+- **Don't** omit `aria-label` (or an associated `<label>`) — without one the
+  slider has no accessible name.
+
+## Content
+
+No visible label text is rendered by the component — write `aria-label` (or an
+external label) as a short noun phrase ("Volume", "Price range"), not an
+instruction ("Drag to adjust volume").

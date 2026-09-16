@@ -1,0 +1,125 @@
+---
+title: Alert
+description: An inline message with a status color and icon — info, success, warning, or danger.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Alert from '../../../../registry/components/Alert/Alert.astro'
+
+<Preview code={`<Alert variant="info" title="Heads up">
+  A new version of this page is available.
+</Alert>`}>
+  <Alert variant="info" title="Heads up">
+    A new version of this page is available.
+  </Alert>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add alert
+```
+
+Uses `@lucide/astro` (`Info`, `CircleCheck`, `TriangleAlert`, `CircleAlert`) for the per-variant icon.
+
+## Usage
+
+```astro
+---
+import Alert from '@/components/apogee/Alert/Alert.astro'
+---
+<Alert variant="success" title="Saved">Your changes were saved.</Alert>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute (e.g.
+`role`, `aria-live`, `id`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'info' \| 'success' \| 'warning' \| 'danger'` | `'info'` | Status color + icon. |
+| `title` | `string` | — | Optional bold heading above the message. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+Every variant, each with its fixed icon:
+
+<Preview code={`<Alert variant="info" title="Info">Informational message.</Alert>
+<Alert variant="success" title="Success">Action completed.</Alert>
+<Alert variant="warning" title="Warning">Check this before continuing.</Alert>
+<Alert variant="danger" title="Danger">Something went wrong.</Alert>`}>
+  <Alert variant="info" title="Info">Informational message.</Alert>
+  <Alert variant="success" title="Success">Action completed.</Alert>
+  <Alert variant="warning" title="Warning">Check this before continuing.</Alert>
+  <Alert variant="danger" title="Danger">Something went wrong.</Alert>
+</Preview>
+
+## States
+
+Alert is static — no hover/focus/disabled states. The one behavioral distinction
+is static (page) vs dynamic (result of an action), which changes the ARIA role
+you pass in, not the markup:
+
+<Preview code={`<Alert variant="warning" title="Limited availability">
+  Only 2 left in stock.
+</Alert>
+<Alert variant="danger" title="Couldn't save" role="alert">
+  Check the highlighted fields and try again.
+</Alert>`}>
+  <Alert variant="warning" title="Limited availability">
+    Only 2 left in stock.
+  </Alert>
+  <Alert variant="danger" title="Couldn't save" role="alert">
+    Check the highlighted fields and try again.
+  </Alert>
+</Preview>
+
+## Examples
+
+Without a title — the message alone takes the primary text color:
+
+<Preview code={`<Alert variant="info">No title, just a message.</Alert>`}>
+  <Alert variant="info">No title, just a message.</Alert>
+</Preview>
+
+With a link in the body:
+
+```astro
+<Alert variant="warning" title="Update required">
+  Your plan expires soon. <a href="/billing" class="underline">Renew now</a>.
+</Alert>
+```
+
+## Accessibility
+
+- Icons are `aria-hidden` — the status is conveyed by the adjacent text, not color/icon alone.
+- Static, page-authored alerts need no role.
+- A dynamically-shown alert (e.g. a form result) should get `role="alert"` (passed
+  through via `...rest`) so assistive tech announces it on insertion.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--accent` / `--accent` (10% bg, 25% border) | Info icon + surface |
+| `--success` | Success icon + surface |
+| `--warning` | Warning icon + surface |
+| `--danger` | Danger icon + surface |
+| `--foreground` | Title text |
+| `--muted-foreground` | Body text (when a title is present) |
+
+## Do / Don't
+
+- **Do** match the variant to the message's actual severity — don't use `danger` for a neutral notice.
+- **Do** keep the title short; put detail in the body.
+- **Don't** stack more than one Alert for the same event — pick the highest-severity one.
+- **Don't** use `danger` for destructive-action confirmation — that's a dialog's job, not an inline alert's.
+
+## Content
+
+- Title: 2–5 words, sentence case, no ending period, states the outcome ("Couldn't save", not "Error").
+- Body: one or two short sentences. Say what happened and, for warnings/danger, what to do next.

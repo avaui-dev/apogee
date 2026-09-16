@@ -1,0 +1,115 @@
+---
+title: Skeleton
+description: A pulsing placeholder shown in place of content while it loads. Zero JS.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Skeleton from '../../../../registry/components/Skeleton/Skeleton.astro'
+
+<Preview code={`<Skeleton class="size-10 rounded-full" />
+<div class="flex flex-col gap-2">
+  <Skeleton class="h-4 w-40" />
+  <Skeleton class="h-4 w-24" />
+</div>`}>
+  <Skeleton class="size-10 rounded-full" />
+  <div class="flex flex-col gap-2">
+    <Skeleton class="h-4 w-40" />
+    <Skeleton class="h-4 w-24" />
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add skeleton
+```
+
+No Apogee component dependencies.
+
+## Usage
+
+```astro
+---
+import Skeleton from '@/components/apogee/Skeleton/Skeleton.astro'
+---
+<Skeleton class="h-4 w-48" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other `<div>` attribute
+passes through (spread after `aria-hidden="true"`, so it can be overridden if needed).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Sizes and shapes the placeholder (`h-4 w-48`, `size-12 rounded-full`, …). Merged last. |
+
+Skeleton has no `variant` or `size` prop — every shape comes from `class`.
+
+## Examples
+
+Common shapes: a text line, a paragraph of lines, an avatar circle, and a card
+composed from a few Skeletons.
+
+<Preview code={`<Skeleton class="h-4 w-48" />
+<div class="flex flex-col gap-2">
+  <Skeleton class="h-4 w-full" />
+  <Skeleton class="h-4 w-full" />
+  <Skeleton class="h-4 w-2/3" />
+</div>
+<Skeleton class="size-12 rounded-full" />
+<div class="flex flex-col gap-3 rounded-lg border border-border p-4">
+  <div class="flex items-center gap-3">
+    <Skeleton class="size-10 rounded-full" />
+    <Skeleton class="h-4 w-32" />
+  </div>
+  <Skeleton class="h-24 w-full rounded-md" />
+</div>`}>
+  <Skeleton class="h-4 w-48" />
+  <div class="flex flex-col gap-2">
+    <Skeleton class="h-4 w-full" />
+    <Skeleton class="h-4 w-full" />
+    <Skeleton class="h-4 w-2/3" />
+  </div>
+  <Skeleton class="size-12 rounded-full" />
+  <div class="flex flex-col gap-3 rounded-lg border border-border p-4">
+    <div class="flex items-center gap-3">
+      <Skeleton class="size-10 rounded-full" />
+      <Skeleton class="h-4 w-32" />
+    </div>
+    <Skeleton class="h-24 w-full rounded-md" />
+  </div>
+</Preview>
+
+## Accessibility
+
+- `aria-hidden="true"` by default — hidden from assistive tech, since it carries
+  no content of its own.
+- Non-interactive: no role, no focus stop.
+- To announce a loading state to screen readers, wrap the group in your own
+  `role="status"` region with a visually-hidden label (or use `Spinner` with a
+  `label`, which does this for you) — Skeleton itself stays silent.
+- The pulse animation (Tailwind's `animate-pulse`) is paired with
+  `motion-reduce:animate-none`, so it stops under `prefers-reduced-motion`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted` | Placeholder fill |
+| `--radius-md` | Default corner rounding (override via `class`, e.g. `rounded-full`) |
+
+## Do / Don't
+
+- **Do** match a Skeleton's shape and size to the content it replaces (same
+  line-height, same avatar size) so layout doesn't jump when real content arrives.
+- **Do** group Skeletons to mirror a card or list row, not one undifferentiated block.
+- **Don't** leave a Skeleton on screen after data has loaded — swap it for the
+  real content immediately.
+- **Don't** use Skeleton for a single, whole-page loading state — use `Spinner`.
+
+## Content
+
+No text — Skeleton is decorative (`aria-hidden`) and carries no copy.

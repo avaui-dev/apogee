@@ -1,0 +1,91 @@
+---
+title: Blockquote
+description: A pull quote with optional attribution. Use to set a quoted passage apart from body copy.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Blockquote from '../../../../registry/components/Blockquote/Blockquote.astro'
+
+<Preview code={`<Blockquote cite="Ada Lovelace">
+  The Analytical Engine has no pretensions whatever to originate anything.
+</Blockquote>`}>
+  <Blockquote cite="Ada Lovelace">
+    The Analytical Engine has no pretensions whatever to originate anything.
+  </Blockquote>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blockquote
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Blockquote from '@/components/apogee/Blockquote/Blockquote.astro'
+---
+<Blockquote cite="Ada Lovelace">The Analytical Engine …</Blockquote>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<figure>`
+attribute (e.g. `id`, `aria-label`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `cite` | `string` | — | Attribution shown below the quote. Omit to render the quote alone. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## States
+
+No interactive states — Blockquote is static content.
+
+<Preview code={`<Blockquote>No attribution — the quote stands alone.</Blockquote>`}>
+  <Blockquote>No attribution — the quote stands alone.</Blockquote>
+</Preview>
+
+## Examples
+
+A quote spanning multiple paragraphs:
+
+<Preview code={`<Blockquote cite="Grace Hopper">
+  <p>The most dangerous phrase in the language is "we've always done it this way."</p>
+  <p>One accurate measurement is worth a thousand expert opinions.</p>
+</Blockquote>`}>
+  <Blockquote cite="Grace Hopper">
+    <p>The most dangerous phrase in the language is "we've always done it this way."</p>
+    <p>One accurate measurement is worth a thousand expert opinions.</p>
+  </Blockquote>
+</Preview>
+
+## Accessibility
+
+- Renders a real `<figure>` / `<blockquote>` / `<figcaption>` — screen readers
+  announce the quote and its attribution correctly.
+- No extra ARIA needed.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--accent` | Left border rule |
+| `--foreground` | Quote text |
+| `--muted-foreground` | Attribution (`cite`) text |
+
+## Do / Don't
+
+- **Do** use it for an actual quoted passage — not to emphasize your own copy.
+- **Do** pass `cite` when the source is known; readers expect attribution.
+- **Don't** nest interactive controls (buttons, links) inside — it's a content block.
+
+## Content
+
+- Quote text keeps the source's original wording — don't paraphrase.
+- Attribution is a name (and optionally a role/source), not a full sentence: "Ada Lovelace", not "As said by Ada Lovelace".

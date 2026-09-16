@@ -1,0 +1,131 @@
+---
+title: ColorPicker
+description: A styled native color swatch with a synced hex text field.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import ColorPicker from '../../../../registry/components/ColorPicker/ColorPicker.astro'
+
+<JsNote fallback="The swatch and hex field each still work on their own — the native color input opens the system picker, and the hex field accepts typed input — they just don't stay in sync with each other.">
+  Keeps the swatch and hex field in sync both ways: picking a color updates
+  the hex text, and typing a valid 6-digit hex (`#RRGGBB`) updates the swatch.
+</JsNote>
+
+<Preview code={`<ColorPicker label="Accent color" name="accent" value="#3b82f6" />`}>
+  <ColorPicker label="Accent color" name="accent" value="#3b82f6" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add color-picker
+```
+
+Pulls in `Field` (label, hint, error scaffold).
+
+## Usage
+
+```astro
+---
+import ColorPicker from '@/components/apogee/ColorPicker/ColorPicker.astro'
+---
+<ColorPicker label="Accent color" name="accent" value="#3b82f6" />
+```
+
+## Anatomy
+
+- **Label / hint / error** — from `Field`.
+- **Swatch** — native `<input type="color">`; opens the system color picker.
+- **Hex field** — text input, submits under `name`; kept in sync with the
+  swatch.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the swatch (`<input type="color">`) — e.g. `disabled`, or an
+`aria-label` override (it defaults to `"Color picker"`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | auto-generated | Id for the hex field; wires `Field`'s label and `aria-describedby`. |
+| `label` | `string` | — | Field label. |
+| `hint` | `string` | — | Helper text under the control (hidden when `error` is set). |
+| `error` | `string` | — | Error text; sets `aria-invalid` on the hex field and renders via `role="alert"`. |
+| `name` | `string` | — | Name attribute for the hex text field (this is what submits). |
+| `value` | `string` | `'#3b82f6'` | Initial color, applied to both the swatch and hex field. |
+| `class` | `string` | — | Extra classes, passed to the `Field` wrapper. |
+
+## States
+
+- **Default** — swatch + hex field, in sync.
+- **Focus** — the hex field shows a visible `focus-visible` ring; the swatch
+  uses the browser's native focus indicator.
+- **Hint** — helper text under the field.
+- **Error** — hex field border turns `--danger`, `aria-invalid="true"`, and the
+  error text replaces the hint.
+
+<Preview code={`<ColorPicker label="Brand color" hint="Used for buttons and links." />
+<ColorPicker label="Brand color" value="#ff0000zz" error="Enter a valid hex color (#RRGGBB)." />`}>
+  <ColorPicker label="Brand color" hint="Used for buttons and links." />
+  <ColorPicker label="Brand color" value="#ff0000zz" error="Enter a valid hex color (#RRGGBB)." />
+</Preview>
+
+## Examples
+
+Without a label (still pass one where possible — see Accessibility):
+
+```astro
+<ColorPicker name="highlight" value="#22c55e" />
+```
+
+Required field, wired into a form:
+
+```astro
+<ColorPicker label="Theme color" name="theme" required value="#3b82f6" />
+```
+
+## Accessibility
+
+- **Keyboard** — `Tab` moves from the swatch to the hex field. The native
+  color input opens the system picker on `Enter` / `Space` in most browsers;
+  the hex field is a plain text input.
+- The swatch has `aria-label="Color picker"` by default — override it via a
+  passthrough `aria-label` when the field's `label` alone doesn't say enough
+  (e.g. multiple swatches on one page).
+- `hint` / `error` are wired to the hex field via `aria-describedby`;
+  `error` also sets `aria-invalid="true"`.
+- **No JS:** the swatch and hex field still each work independently — the
+  color picker opens natively, and the hex field still submits under `name`
+  — they just don't sync live with each other. See the note above.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Swatch and hex field border |
+| `--background` | Hex field background |
+| `--foreground` | Hex field text |
+| `--muted-foreground` | Hint text |
+| `--danger` | Error border + error text |
+| `--ring` | Hex field focus ring |
+
+## Do / Don't
+
+- **Do** always pass `label` — a bare swatch/hex pair isn't self-describing
+  without one.
+- **Do** validate the submitted hex value server-side; the hex field accepts
+  any typed text, not just a valid hex string.
+- **Don't** rely on the swatch alone for keyboard or AT users — the hex field
+  is the reliable keyboard path.
+- **Don't** clear `error` without fixing the underlying value —
+  `aria-invalid` on its own isn't a fix.
+
+## Content
+
+- Label names what the color controls ("Accent color"), not the control
+  itself ("Color").
+- Error copy states the expected format, e.g. "Enter a valid hex color
+  (#RRGGBB)."

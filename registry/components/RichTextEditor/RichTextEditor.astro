@@ -2,7 +2,10 @@
 /**
  * RichTextEditor — a small WYSIWYG editor: a formatting toolbar over a
  * `contenteditable` region, synced to a hidden field that submits as HTML.
- * JS island (the toolbar is `no-js:hidden`).
+ * JS island. Without JS the toolbar and editable region are hidden and a plain
+ * `<textarea>` fallback (same `name`) takes over — so a no-JS user can still
+ * write and submit (as plain text). The island hides the textarea, un-names it,
+ * and names the hidden field instead.
  *
  * Uses `document.execCommand` — deprecated but universally supported and
  * dependency-free, which suits the copy-in model. For a heavy-duty editor bring
@@ -26,7 +29,7 @@ interface Props {
 const { name = 'content', value = '', placeholder = 'Write something…', class: className, ...rest } = Astro.props
 ---
 
-<div class:list={['apogee-rte rounded-md border border-border bg-background', className]} {...rest}>
+<div class:list={['apogee-rte rounded-md border border-border bg-background', className]} data-name={name} {...rest}>
   <div class="apogee-rte-toolbar flex flex-wrap items-center gap-2 border-b border-border p-2 no-js:hidden">
     <ToggleButtonGroup aria-label="Text style">
       <ToggleButton manual size="sm" class="apogee-rte-btn" data-command="bold" aria-label="Bold"><Bold aria-hidden="true" /></ToggleButton>
@@ -42,7 +45,7 @@ const { name = 'content', value = '', placeholder = 'Write something…', class:
   </div>
 
   <div
-    class="apogee-rte-editor min-h-40 p-3 text-sm text-foreground outline-none [&_a]:text-accent [&_a]:underline [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5 empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)]"
+    class="apogee-rte-editor min-h-40 p-3 text-sm text-foreground outline-none no-js:hidden [&_a]:text-accent [&_a]:underline [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5 empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)]"
     contenteditable="true"
     role="textbox"
     aria-multiline="true"
@@ -51,14 +54,25 @@ const { name = 'content', value = '', placeholder = 'Write something…', class:
     set:html={value}
   ></div>
 
-  <input type="hidden" name={name} class="apogee-rte-value" value={value} />
+  <textarea
+    name={name}
+    class="apogee-rte-fallback hidden min-h-40 w-full resize-y bg-transparent p-3 text-sm text-foreground outline-none no-js:block placeholder:text-muted-foreground"
+    placeholder={placeholder}
+    aria-label={placeholder}>{value}</textarea>
+
+  <input type="hidden" class="apogee-rte-value" value={value} />
 </div>
 
 <script>
   for (const rte of document.querySelectorAll<HTMLElement>('.apogee-rte')) {
     const editor = rte.querySelector<HTMLElement>('.apogee-rte-editor')
     const hidden = rte.querySelector<HTMLInputElement>('.apogee-rte-value')
+    const fallback = rte.querySelector<HTMLTextAreaElement>('.apogee-rte-fallback')
     if (!editor) continue
+
+    // JS submits the synced hidden field; the textarea fallback is inert now.
+    if (hidden) hidden.name = rte.dataset.name || 'content'
+    fallback?.removeAttribute('name')
 
     const sync = () => hidden && (hidden.value = editor.innerHTML)
     editor.addEventListener('input', sync)

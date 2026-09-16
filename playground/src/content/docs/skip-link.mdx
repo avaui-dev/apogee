@@ -1,0 +1,120 @@
+---
+title: SkipLink
+description: A "skip to content" link, hidden until focused, that jumps keyboard users past repeated navigation. Zero JS.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import SkipLink from '../../../../registry/components/SkipLink/SkipLink.astro'
+
+<Preview code={`<SkipLink href="#main-example" />`}>
+  <SkipLink href="#main-example" />
+</Preview>
+
+The link is visually hidden (`sr-only`) until it receives keyboard focus — click
+into the preview above, then press <kbd>Tab</kbd> to reveal it.
+
+## Add
+
+```sh
+npx @ava-ui/apogee add skip-link
+```
+
+No Apogee component dependencies.
+
+## Usage
+
+```astro
+---
+import SkipLink from '@/components/apogee/SkipLink/SkipLink.astro'
+---
+<body>
+  <SkipLink />
+  <Navbar />
+  <main id="main">
+    <!-- page content -->
+  </main>
+</body>
+```
+
+Put it first in `<body>`, before any nav/header. `href` defaults to `#main` —
+point it at your main content's id.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other `<a>` attribute
+passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | `'#main'` | Target id to jump to. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+The link's text comes from the default slot — omit it for the built-in
+"Skip to content" label.
+
+## States
+
+- **Hidden (default)** — visually hidden via `sr-only`, but present in the DOM
+  and reachable by keyboard.
+- **Focused** — `focus:not-sr-only` reveals it as a fixed pill, top-start of the
+  viewport, with a visible focus ring. The only visible state.
+
+## Examples
+
+Custom label and target:
+
+```astro
+<SkipLink href="#page-content">Skip to main content</SkipLink>
+```
+
+Skipping past a combined header + sidebar:
+
+```astro
+<body>
+  <SkipLink href="#main" />
+  <Navbar />
+  <Sidebar>...</Sidebar>
+  <main id="main" tabindex="-1">
+    <!-- page content -->
+  </main>
+</body>
+```
+
+## Accessibility
+
+- Must be the first focusable element in `<body>` so it's the very first `Tab` stop.
+- Uses the standard `sr-only` / `focus:not-sr-only` pattern — present for
+  assistive tech always, visible only on keyboard focus.
+- Native `<a href="#id">` — `Enter` activates it and jumps to the target. Make
+  sure the target can actually receive focus: a plain `<main id="main">` isn't
+  focusable by default, so add `tabindex="-1"` if you want focus (not just
+  scroll position) to move there.
+- Visible focus ring once revealed.
+- No JS: this component ships zero JavaScript — it behaves identically with
+  scripts on or off.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--accent` / `--accent-foreground` | Revealed pill background / text |
+| `--ring` | Focus ring |
+| `--radius-md` | Pill corner radius |
+
+## Do / Don't
+
+- **Do** place it as the very first element in `<body>`.
+- **Do** point `href` at a real landmark id, and give that element `tabindex="-1"`
+  if it isn't natively focusable.
+- **Don't** style it visible at all times — it's meant to stay hidden until a
+  keyboard user needs it.
+- **Don't** use it as a general in-page anchor link — it's the accessibility skip
+  pattern, not a table-of-contents link.
+
+## Content
+
+Default label "Skip to content" covers most cases. With multiple skip targets
+(skip to search, skip to content), be specific: "Skip to main content",
+sentence case, no ending punctuation.

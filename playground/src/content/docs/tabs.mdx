@@ -1,0 +1,137 @@
+---
+title: Tabs
+description: Switch between panels of related content in the same space.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
+
+<JsNote fallback="Every panel renders stacked and reachable — no content is hidden, so nothing is lost.">
+  Wires the WAI-ARIA tablist pattern: roving tabindex, arrow / Home / End keys, and
+  panel visibility (only the selected panel shows).
+</JsNote>
+
+<Preview jsToggle code={`<Tabs tabs={['Account', 'Password', 'Team']}>
+  <div slot="panel-0">Manage your account details.</div>
+  <div slot="panel-1">Change your password.</div>
+  <div slot="panel-2">Invite and manage members.</div>
+</Tabs>`}>
+  <Tabs tabs={['Account', 'Password', 'Team']}>
+    <div slot="panel-0">Manage your account details.</div>
+    <div slot="panel-1">Change your password.</div>
+    <div slot="panel-2">Invite and manage members.</div>
+  </Tabs>
+</Preview>
+
+Flip the **No-JS preview** switch above to see the fallback: with JavaScript off,
+every panel is shown stacked (in a sandboxed iframe with no scripts — the real
+`no-js` behaviour, not a fake).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add tabs
+```
+
+No Apogee dependencies. Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import Tabs from '@/components/apogee/Tabs/Tabs.astro'
+---
+<Tabs tabs={['Account', 'Password']}>
+  <div slot="panel-0">Account settings…</div>
+  <div slot="panel-1">Password settings…</div>
+</Tabs>
+```
+
+Labels come from the `tabs` array; each panel goes in a matching `panel-<i>` slot
+(0-indexed, same order as the labels).
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `tabs` | `string[]` | — | Tab labels, in order. Panel count must match. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+Panels are passed as slots: `slot="panel-0"`, `slot="panel-1"`, … matching each
+label by index.
+
+## Anatomy
+
+- **Tablist** — the row of `role="tab"` buttons (the labels).
+- **Tabpanel** — one `role="tabpanel"` per tab; the first is shown, the rest are
+  `hidden` until selected.
+
+## States
+
+- **Selected** — the active tab has an accent underline and `aria-selected="true"`;
+  its panel is visible.
+- **Hover / focus** — inactive tabs lighten on hover; keyboard focus shows a visible
+  ring (`focus-visible:outline-ring`).
+- **No JS** — every panel is shown (the `no-js:block` fallback). See the toggle above.
+
+## Examples
+
+More than a handful of tabs — they wrap; the pattern is unchanged:
+
+<Preview jsToggle code={`<Tabs tabs={['Overview', 'Analytics', 'Reports', 'Notifications']}>
+  <div slot="panel-0">At-a-glance summary.</div>
+  <div slot="panel-1">Charts and trends.</div>
+  <div slot="panel-2">Exportable reports.</div>
+  <div slot="panel-3">Alert preferences.</div>
+</Tabs>`}>
+  <Tabs tabs={['Overview', 'Analytics', 'Reports', 'Notifications']}>
+    <div slot="panel-0">At-a-glance summary.</div>
+    <div slot="panel-1">Charts and trends.</div>
+    <div slot="panel-2">Exportable reports.</div>
+    <div slot="panel-3">Alert preferences.</div>
+  </Tabs>
+</Preview>
+
+## Accessibility
+
+- Full **WAI-ARIA tabs pattern**: `role="tablist"` / `role="tab"` /
+  `role="tabpanel"`, wired with `aria-selected`, `aria-controls`, and
+  `aria-labelledby`.
+- **Keyboard** — `Tab` moves into the tablist (roving tabindex, so only the active
+  tab is in the tab order); `←` / `→` move between tabs and select; `Home` / `End`
+  jump to first / last.
+- **Focus** — a visible `focus-visible` ring on each tab.
+- **No JS** — panels are never trapped: with scripts off every panel renders, so
+  the content is fully reachable.
+- The panel enter animation respects `prefers-reduced-motion`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Tablist bottom rule + inactive tab border |
+| `--accent` | Selected tab underline |
+| `--foreground` / `--muted-foreground` | Active vs. inactive label colour |
+| `--ring` | Focus ring |
+| `--duration-base` / `--ease-smooth` | Panel enter animation |
+
+## Do / Don't
+
+- **Do** keep labels to one or two words so the tablist stays scannable.
+- **Do** use tabs for parallel, peer-level content — not for a sequence (use
+  `Steps`) or for progressive disclosure of one thing (use `Accordion`).
+- **Don't** put a form that must submit as a whole across multiple tabs — a user
+  can't see all fields at once.
+- **Don't** hide critical content behind a non-default tab if a no-JS user must
+  act on it immediately (though it stays reachable, it's below the fold).
+
+## Content
+
+- Labels are nouns, sentence case, one or two words ("Account", "Billing history").
+- No ending punctuation. Don't number them — the order is the sequence.

@@ -1,0 +1,170 @@
+---
+title: CommandPalette
+description: A ⌘K / Ctrl+K searchable command menu in a native dialog.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import CommandPalette from '../../../../registry/components/CommandPalette/CommandPalette.astro'
+
+<JsNote fallback="There is no fallback — the dialog and shortcut don't run at all. Always pair a trigger with a real, independently reachable link or menu.">
+  Opens on ⌘K / Ctrl+K (or a configurable `shortcut`), or from any element
+  with `data-command-open="<id>"`. Typing filters commands by label and
+  keywords; arrow keys move the highlight, Enter activates it — navigating to
+  `href`, or dispatching an `apogee:command` event on `document`.
+</JsNote>
+
+<Preview code={`<button type="button" data-command-open="apogee-command" class="rounded-md border border-border px-3 py-2 text-sm">Open (⌘K)</button>
+<CommandPalette
+  commands={[
+    { label: 'Create project', group: 'Actions', keywords: 'new add' },
+    { label: 'Settings', href: '/settings', group: 'Navigate' },
+    { label: 'Documentation', href: '/docs', group: 'Navigate' },
+  ]}
+/>`}>
+  <button type="button" data-command-open="apogee-command" class="rounded-md border border-border px-3 py-2 text-sm">Open (⌘K)</button>
+  <CommandPalette
+    commands={[
+      { label: 'Create project', group: 'Actions', keywords: 'new add' },
+      { label: 'Settings', href: '/settings', group: 'Navigate' },
+      { label: 'Documentation', href: '/docs', group: 'Navigate' },
+    ]}
+  />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add command-palette
+```
+
+No Apogee dependencies. Uses `@lucide/astro` internally (`Search`) for the
+input icon — no icon import needed in your usage.
+
+## Usage
+
+```astro
+---
+import CommandPalette from '@/components/apogee/CommandPalette/CommandPalette.astro'
+---
+<button type="button" data-command-open="apogee-command">Search…</button>
+<CommandPalette
+  commands={[
+    { label: 'Create project', group: 'Actions' },
+    { label: 'Settings', href: '/settings', group: 'Navigate' },
+  ]}
+/>
+```
+
+## Anatomy
+
+- **Dialog** — native `<dialog>`; modal, backdrop, and `closedby="any"` come
+  free.
+- **Search input** — `role="combobox"`, filters commands as you type.
+- **Groups** — commands grouped by `group`, in first-seen order; ungrouped
+  commands render without a heading.
+- **Options** — `role="option"` buttons, one per command; an empty-state
+  message shows when nothing matches.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. No passthrough attrs — the
+dialog doesn't spread `...rest`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | `'apogee-command'` | Dialog id; also the target for `data-command-open="<id>"` triggers. |
+| `commands` | `{ label: string; href?: string; group?: string; keywords?: string; id?: string }[]` | — | The command list. Required. |
+| `placeholder` | `string` | `'Type a command or search…'` | Search input placeholder. |
+| `shortcut` | `string` | `'k'` | Key pressed with ⌘ / Ctrl to open. |
+| `class` | `string` | — | Extra classes on the `<dialog>`. |
+
+## States
+
+- **Closed** — default; the dialog isn't rendered visibly until opened.
+- **Open** — backdrop + dialog fade in (`@starting-style`).
+- **Highlighted option** — the active result (`aria-selected`), moved with
+  arrow keys or reset to the first result on every filter.
+- **Empty** — "No results." shows when nothing matches the query; empty
+  groups hide their heading.
+
+## Examples
+
+Grouped commands with keywords (aliases the label doesn't contain):
+
+```astro
+<CommandPalette
+  commands={[
+    { label: 'Create project', group: 'Actions', keywords: 'new add' },
+    { label: 'Invite teammate', group: 'Actions', keywords: 'member user' },
+    { label: 'Settings', href: '/settings', group: 'Navigate' },
+  ]}
+/>
+```
+
+A command with no `href` dispatches `apogee:command` for the app to handle:
+
+```astro
+---
+// listen on the client:
+// document.addEventListener('apogee:command', (e) => { ... e.detail.id })
+---
+<CommandPalette
+  id="app-command"
+  commands={[{ label: 'Toggle theme', id: 'toggle-theme' }]}
+/>
+```
+
+Custom shortcut key:
+
+```astro
+<CommandPalette shortcut="/" commands={[{ label: 'Search docs', href: '/docs' }]} />
+```
+
+## Accessibility
+
+- Native `<dialog>` gives a focus trap, `Esc`-to-close, and
+  `closedby="any"` backdrop-click-to-close for free.
+- `role="combobox"` input wired with `aria-expanded`, `aria-controls`,
+  `aria-autocomplete="list"`; results are `role="option"` with
+  `aria-selected`.
+- **Keyboard** — `⌘`/`Ctrl` + `shortcut` opens it; `↓` / `↑` move the
+  highlighted option; `Enter` activates it; `Esc` closes it (native dialog
+  behaviour).
+- **No JS:** there is no fallback — the dialog, shortcut, and filtering are
+  entirely JS-driven with no `no-js:` variant. Always give commands a real,
+  independently reachable trigger (a visible link or menu item) alongside the
+  palette.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Dialog border, header divider |
+| `--background` | Dialog background |
+| `--foreground` | Option text |
+| `--muted-foreground` | Search icon, group heading, placeholder, empty state |
+| `--muted` | Option hover / selected background |
+| `--duration-fast` / `--ease-smooth` | Open/close transition |
+
+## Do / Don't
+
+- **Do** keep `commands` reasonably sized — filtering is a client-side
+  substring match against label + keywords, so very large lists get
+  sluggish.
+- **Do** use `keywords` for synonyms a user might type instead of the exact
+  label.
+- **Don't** mount two palettes with the same `shortcut` on one page — the
+  first keydown listener wired wins.
+- **Don't** treat the palette as the only way to reach a command — always
+  pair it with a visible trigger.
+
+## Content
+
+- Command labels are short: verb-led when they act ("Create project"),
+  noun-led when they navigate ("Settings").
+- Group names are short category nouns, sentence case.
+- `placeholder` states what can be typed; the default ("Type a command or
+  search…") works for most cases.

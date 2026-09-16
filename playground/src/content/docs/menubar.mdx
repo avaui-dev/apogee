@@ -1,0 +1,197 @@
+---
+title: Menubar
+description: A desktop-style app menubar (File, Edit, View…) with keyboard navigation between menus.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Menubar from '../../../../registry/components/Menubar/Menubar.astro'
+
+<JsNote fallback="Each menu is a native details/summary disclosure — it still opens and closes with a click. Without JS, sibling menus don't auto-close and arrow keys / outside-click won't close a menu, but nothing is hidden or broken.">
+  Wires the expected desktop menubar behaviour: opening one menu closes its
+  siblings, ← / → move between top-level menus, Escape and outside-click
+  close any open menu, and activating an item dispatches `apogee:menu`.
+</JsNote>
+
+<Preview code={`<Menubar menus={[
+  {
+    label: 'File',
+    items: [
+      { label: 'New', id: 'new' },
+      { label: 'Open…', id: 'open' },
+      { separator: true },
+      { label: 'Exit', id: 'exit' },
+    ],
+  },
+  {
+    label: 'Edit',
+    items: [
+      { label: 'Undo', id: 'undo' },
+      { label: 'Redo', id: 'redo' },
+    ],
+  },
+]} />`}>
+  <Menubar menus={[
+    {
+      label: 'File',
+      items: [
+        { label: 'New', id: 'new' },
+        { label: 'Open…', id: 'open' },
+        { separator: true },
+        { label: 'Exit', id: 'exit' },
+      ],
+    },
+    {
+      label: 'Edit',
+      items: [
+        { label: 'Undo', id: 'undo' },
+        { label: 'Redo', id: 'redo' },
+      ],
+    },
+  ]} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add menubar
+```
+
+No Apogee dependencies. Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import Menubar from '@/components/apogee/Menubar/Menubar.astro'
+---
+<Menubar menus={[
+  {
+    label: 'File',
+    items: [
+      { label: 'New', id: 'new' },
+      { label: 'Open…', id: 'open' },
+    ],
+  },
+]} />
+```
+
+## Anatomy
+
+- **Menubar root** — `role="menubar"`, a row of top-level menus.
+- **Menu** — one `<details>` per top-level entry (`menus[i]`).
+  - **Summary (trigger)** — `role="menuitem"`, `aria-haspopup="true"`; the
+    visible label. Native `<details>` open/close, zero JS required.
+  - **Panel** — `role="menu"`, positioned under the trigger; holds the
+    items.
+    - **Item** — `role="menuitem"`; an `<a>` when `item.href` is set,
+      otherwise a `<button data-id>` that dispatches `apogee:menu` on
+      click.
+    - **Separator** — an `<hr>`, rendered when `item.separator` is `true`
+      (other fields on that item are ignored).
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the root (`role="menubar"`) div.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `menus` | `{ label: string; items: MenuItem[] }[]` | — | Top-level menus, in order. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+`MenuItem`:
+
+| Field | Type | Description |
+|---|---|---|
+| `label` | `string` | Item text. |
+| `href` | `string` | Renders the item as an `<a>` (navigates). Omit for an action item. |
+| `id` | `string` | Passed back in the `apogee:menu` event detail when a `href`-less item is clicked. |
+| `separator` | `boolean` | Renders a divider instead of an item. |
+
+## States
+
+<Preview code={`<Menubar menus={[
+  {
+    label: 'View',
+    items: [
+      { label: 'Zoom in', id: 'zoom-in' },
+      { label: 'Zoom out', id: 'zoom-out' },
+    ],
+  },
+]} />`}>
+  <Menubar menus={[
+    {
+      label: 'View',
+      items: [
+        { label: 'Zoom in', id: 'zoom-in' },
+        { label: 'Zoom out', id: 'zoom-out' },
+      ],
+    },
+  ]} />
+</Preview>
+
+- **Closed** (default) — each menu's `<details>` is collapsed.
+- **Open** — click, or `Enter` / `Space` on a trigger; siblings auto-close
+  (JS); the panel fades and slides in (`--duration-fast`, respects reduced
+  motion).
+- **Hover / focus** — triggers and items lighten on hover; a visible
+  `focus-visible` ring on triggers.
+- **No JS** — see the JsNote above: menus still open individually; the
+  cross-menu behaviour is JS-only.
+
+## Examples
+
+Listening for item activation:
+
+```astro
+<script>
+  document.addEventListener('apogee:menu', (e) => {
+    console.log(e.detail.id, e.detail.label)
+  })
+</script>
+```
+
+## Accessibility
+
+- `role="menubar"` root; each trigger `role="menuitem"` with
+  `aria-haspopup="true"`; panel `role="menu"`; items `role="menuitem"`.
+- **Keyboard** — native `<details>` gives `Enter` / `Space` to toggle a
+  menu; JS adds `←` / `→` to move focus between top-level triggers, and
+  `Escape` or an outside click closes any open menu.
+- Focus-visible ring on triggers and items.
+- **No JS** — every menu still opens and closes on its own (native
+  disclosure); auto-closing siblings, arrow-key navigation, and
+  outside-click close are JS-only enhancements — nothing is hidden.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Root and panel border |
+| `--background` | Root background |
+| `--surface` | Panel background |
+| `--foreground` | Trigger and item text |
+| `--muted` | Hover / focus background on triggers and items |
+| `--ring` | Focus ring |
+| `--duration-fast` / `--ease-smooth` | Panel open animation |
+
+## Do / Don't
+
+- **Do** keep top-level labels to one word ("File", "Edit", "View") — this
+  is a menubar, not primary navigation.
+- **Do** group related actions with a separator instead of one undivided
+  list.
+- **Don't** nest a Menubar inside another, or use it for page navigation —
+  use `Navbar` / `NavLink`.
+- **Don't** reuse an item `id` across menus if you handle `apogee:menu`
+  globally — give every action item a distinct `id`.
+
+## Content
+
+- Top-level labels: one word, title case ("File", "Edit", "View").
+- Item labels: sentence case, verb-led for actions ("New file").
+- Trailing `…` on an item that opens another step before acting
+  ("Open…").

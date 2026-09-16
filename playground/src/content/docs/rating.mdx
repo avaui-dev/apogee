@@ -1,0 +1,125 @@
+---
+title: Rating
+description: A star rating on native radios — pick a value on a scale, or display one read-only.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Rating from '../../../../registry/components/Rating/Rating.astro'
+
+<Preview code={`<Rating name="hero-rating" value={3} />`}>
+  <Rating name="hero-rating" value={3} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add rating
+```
+
+Pulls in `@lucide/astro` for the star icon. No Apogee component dependencies.
+
+## Usage
+
+```astro
+---
+import Rating from '@/components/apogee/Rating/Rating.astro'
+---
+<Rating name="stars" value={3} />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the root `<div>` (the `radiogroup`, or the read-only
+display wrapper).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | `'rating'` | Radio group name (interactive mode only). |
+| `max` | `number` | `5` | Number of stars. |
+| `value` | `number` | `0` | Selected (interactive) or displayed (`readonly`) rating. |
+| `readonly` | `boolean` | `false` | Renders a static display instead of radio inputs. |
+| `aria-label` | `string` | `'Rating'` (interactive) / `` `${value} out of ${max}` `` (readonly) | Accessible label for the group/display. |
+| `class` | `string` | — | Extra classes on the root. |
+
+## Variants
+
+Interactive (a `radiogroup` of native radios) vs. read-only (a static
+`role="img"` display):
+
+<Preview code={`<Rating name="variant-interactive" value={3} />
+<Rating readonly value={4} aria-label="4 out of 5" />`}>
+  <Rating name="variant-interactive" value={3} />
+  <Rating readonly value={4} aria-label="4 out of 5" />
+</Preview>
+
+## States
+
+- **Hover preview** — hovering a star fills it and every star before it (the
+  reverse-order CSS trick); moving off clears the preview back to the
+  checked value.
+- **Checked** — the selected star and every star before it fill amber.
+- **Focus** — a visible outline on the focused star's `label`.
+- Read-only mode has no interactive states.
+
+<Preview code={`<Rating name="states-empty" value={0} />
+<Rating name="states-checked" value={2} />
+<Rating readonly value={5} aria-label="5 out of 5" />`}>
+  <Rating name="states-empty" value={0} />
+  <Rating name="states-checked" value={2} />
+  <Rating readonly value={5} aria-label="5 out of 5" />
+</Preview>
+
+## Examples
+
+A different `max`:
+
+```astro
+<Rating name="difficulty" max={3} value={2} aria-label="Difficulty" />
+```
+
+A read-only aggregate score:
+
+```astro
+<Rating readonly value={4} aria-label="4.2 out of 5, 328 reviews" />
+```
+
+## Accessibility
+
+- Interactive mode is a native `role="radiogroup"` of radio inputs — arrow
+  keys move and select, `Tab` enters/exits the group, all for free.
+- Each star's `<label>` carries `aria-label="N star(s)"`; the group itself
+  takes `aria-label` (default `'Rating'`).
+- Read-only mode uses `role="img"` with an `aria-label` describing the value
+  (default `"${value} out of ${max}"`) — screen readers get one summary, not
+  five decorative icons.
+- The star glyphs are `aria-hidden`; the labels carry the meaning.
+- Native semantics otherwise — no extra ARIA needed.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--color-border` | Unfilled star |
+| `--color-amber-400` | Filled star (checked or hovered) |
+| `--ring` | Focus outline on the focused star |
+
+## Do / Don't
+
+- **Do** use Rating for a 1–5 (or `max`) scale where more stars mean a
+  stronger rating.
+- **Do** pass `readonly` when displaying an aggregate or average score users
+  can't edit.
+- **Don't** rely on color alone — the `aria-label`s already carry the
+  numeric value for assistive tech.
+- **Don't** use Rating as a generic multi-select — it's one value on a
+  scale, not several independent toggles.
+
+## Content
+
+- `aria-label` on interactive mode defaults to "Rating" — override with what's
+  being rated ("Rate this product").
+- Read-only `aria-label` defaults to "`{value}` out of `{max}`" — override to
+  add context ("4.2 out of 5, 128 reviews").

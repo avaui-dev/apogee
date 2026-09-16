@@ -1,0 +1,114 @@
+---
+title: Stat
+description: Displays a labelled metric with an optional trend indicator. For dashboards and summary rows.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Stat from '../../../../registry/components/Stat/Stat.astro'
+
+<Preview code={`<Stat label="Revenue" value="$48,900" change="+12%" trend="up" />
+<Stat label="Refunds" value="$1,204" change="-4%" trend="down" />
+<Stat label="Active users" value="2,318" />`}>
+  <Stat label="Revenue" value="$48,900" change="+12%" trend="up" />
+  <Stat label="Refunds" value="$1,204" change="-4%" trend="down" />
+  <Stat label="Active users" value="2,318" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add stat
+```
+
+No Apogee component dependencies. Depends on `@lucide/astro` (renders the trend
+arrow internally).
+
+## Usage
+
+```astro
+---
+import Stat from '@/components/apogee/Stat/Stat.astro'
+---
+<Stat label="Revenue" value="$48,900" change="+12%" trend="up" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | The metric's name. |
+| `value` | `string` | — | The metric's value, rendered large and bold. Not formatted — bring your own currency/percent formatting. |
+| `change` | `string` | — | Optional change indicator text, e.g. `"+12%"`. |
+| `trend` | `'up' \| 'down'` | — | Colors the change text/icon and picks the icon direction. Only `'down'` is checked explicitly, so omitting it behaves like `'up'` (success color, up arrow) whenever `change` is set. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+The only meaningful configuration is whether — and which way — `change` moves:
+
+<Preview code={`<Stat label="Signups" value="1,204" change="+18%" trend="up" />
+<Stat label="Churn" value="2.1%" change="+0.4%" trend="down" />
+<Stat label="Sessions" value="9,540" />`}>
+  <Stat label="Signups" value="1,204" change="+18%" trend="up" />
+  <Stat label="Churn" value="2.1%" change="+0.4%" trend="down" />
+  <Stat label="Sessions" value="9,540" />
+</Preview>
+
+## States
+
+Static display — Stat renders plain text and an icon, no hover, focus,
+disabled, or loading state applies.
+
+## Examples
+
+Stats stack cleanly in a row or column — `tabular-nums` keeps the digits
+aligned:
+
+<Preview code={`<div class="flex flex-col gap-4">
+  <Stat label="This month" value="$48,900" change="+12%" trend="up" />
+  <Stat label="Last month" value="$43,650" change="+6%" trend="up" />
+</div>`}>
+  <div class="flex flex-col gap-4">
+    <Stat label="This month" value="$48,900" change="+12%" trend="up" />
+    <Stat label="Last month" value="$43,650" change="+6%" trend="up" />
+  </div>
+</Preview>
+
+## Accessibility
+
+- Label, value, and change render as plain text in DOM order — a screen
+  reader announces all three, not just the icon.
+- The trend is conveyed by the `change` text itself (`"+12%"` / `"-4%"`), not
+  color alone; the arrow icon is `aria-hidden`.
+- Native semantics, no extra ARIA needed.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted-foreground` | Label color |
+| `--foreground` | Value color |
+| `--success` | Positive change text + icon (default when `trend` is omitted) |
+| `--danger` | Negative change text + icon (`trend="down"`) |
+
+## Do / Don't
+
+- **Do** keep `label` to one to three words so it reads at a glance.
+- **Do** pass `trend="down"` together with a negative `change` — the color
+  and the number should agree.
+- **Don't** vary the `value` format (currency symbol, decimal places) across
+  stats shown together — keep a group consistent.
+- **Don't** use Stat for a number with no context — always give it a `label`.
+
+## Content
+
+- `value` is shown exactly as passed — format currency, percentages, and
+  separators before handing it to the component.
+- `change` reads best as a signed delta or percentage (`"+12%"`, `"-4%"`,
+  `"+128"`).
+- Labels are short nouns, sentence case, no ending punctuation.

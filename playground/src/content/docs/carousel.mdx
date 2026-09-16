@@ -1,0 +1,203 @@
+---
+title: Carousel
+description: A horizontal scroll-snap track for browsing slides. Native scroll and swipe work with zero JS; arrows, dots, and autoplay are progressive enhancement.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Carousel from '../../../../registry/components/Carousel/Carousel.astro'
+
+<JsNote fallback="The track scrolls fine without it — native scroll-snap, touch swipe, and (once focused) arrow-key scrolling all work. Only the arrow buttons and dots disappear (`no-js:hidden`).">
+  Wires the prev/next arrow buttons (scroll by 80% of the track width), the
+  pagination dots (click to scroll to a slide, plus an `IntersectionObserver`
+  that marks the active dot as you scroll), and autoplay (advances on a timer,
+  pauses on hover/focus, and never starts under `prefers-reduced-motion`).
+</JsNote>
+
+<Preview jsToggle code={`<Carousel itemWidth="14rem">
+  <div class="rounded-lg border border-border bg-muted p-6">Slide 1</div>
+  <div class="rounded-lg border border-border bg-muted p-6">Slide 2</div>
+  <div class="rounded-lg border border-border bg-muted p-6">Slide 3</div>
+  <div class="rounded-lg border border-border bg-muted p-6">Slide 4</div>
+</Carousel>`}>
+  <Carousel itemWidth="14rem">
+    <div class="rounded-lg border border-border bg-muted p-6">Slide 1</div>
+    <div class="rounded-lg border border-border bg-muted p-6">Slide 2</div>
+    <div class="rounded-lg border border-border bg-muted p-6">Slide 3</div>
+    <div class="rounded-lg border border-border bg-muted p-6">Slide 4</div>
+  </Carousel>
+</Preview>
+
+Flip the **No-JS preview** switch above: arrows disappear, but the track still
+scrolls (drag it, or focus it and use the arrow keys).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add carousel
+```
+
+No Apogee dependencies. Uses `@lucide/astro` for the prev/next chevrons.
+
+## Usage
+
+```astro
+---
+import Carousel from '@/components/apogee/Carousel/Carousel.astro'
+---
+<Carousel itemWidth="16rem" dots>
+  <div>Slide 1</div>
+  <div>Slide 2</div>
+  <div>Slide 3</div>
+</Carousel>
+```
+
+## Anatomy
+
+- **Track** — the scrollable, `scroll-snap-x` element holding your slides (the
+  default slot). Always present, always usable, never gated behind JS.
+- **Prev / Next buttons** (optional, `controls`) — absolutely positioned arrow
+  buttons that scroll the track. A progressive-enhancement island:
+  `no-js:hidden`.
+- **Dots** (optional, `dots`) — one pagination dot per top-level slide,
+  `role="tablist"`. Also an island: `no-js:hidden`. Dot count is derived by
+  parsing the slotted markup at build time, not passed as a prop.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<div>`
+attribute passes through to the root.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `controls` | `boolean` | `true` | Show the prev/next arrow buttons. |
+| `dots` | `boolean` | `false` | Show clickable pagination dots (one per slide). |
+| `align` | `'start' \| 'center'` | `'start'` | Snap edge of each slide. |
+| `itemWidth` | `string` | — | Fixed width applied to every slide (e.g. `"16rem"`). Omit to size each slide yourself. |
+| `autoplay` | `boolean` | `false` | Auto-advance. Pauses on hover/focus; never runs under `prefers-reduced-motion`. |
+| `interval` | `number` | `4000` | Autoplay delay in ms. |
+| `loop` | `boolean` | `false` | With autoplay, jump back to the start after the last slide. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+Slides go in the default slot, one top-level element per slide. Give each
+slide its own width, or set `itemWidth` for uniform slides.
+
+## Variants
+
+Snap alignment — `start` (default) vs `center`:
+
+<Preview code={`<Carousel itemWidth="10rem" align="start">
+  <div class="rounded-lg border border-border bg-muted p-6">A</div>
+  <div class="rounded-lg border border-border bg-muted p-6">B</div>
+  <div class="rounded-lg border border-border bg-muted p-6">C</div>
+</Carousel>
+<Carousel itemWidth="10rem" align="center">
+  <div class="rounded-lg border border-border bg-muted p-6">A</div>
+  <div class="rounded-lg border border-border bg-muted p-6">B</div>
+  <div class="rounded-lg border border-border bg-muted p-6">C</div>
+</Carousel>`}>
+  <Carousel itemWidth="10rem" align="start">
+    <div class="rounded-lg border border-border bg-muted p-6">A</div>
+    <div class="rounded-lg border border-border bg-muted p-6">B</div>
+    <div class="rounded-lg border border-border bg-muted p-6">C</div>
+  </Carousel>
+  <Carousel itemWidth="10rem" align="center">
+    <div class="rounded-lg border border-border bg-muted p-6">A</div>
+    <div class="rounded-lg border border-border bg-muted p-6">B</div>
+    <div class="rounded-lg border border-border bg-muted p-6">C</div>
+  </Carousel>
+</Preview>
+
+## States
+
+- **Hover / focus** — arrow buttons and dots lighten/highlight on hover; a
+  visible `focus-visible` ring (`--ring`) on keyboard focus.
+- **Active dot** — the dot for the in-view slide gets `aria-current="true"`
+  and an accent fill; tracked live via `IntersectionObserver` as the user
+  scrolls (not just on click).
+- **No JS** — arrows and dots are hidden (`no-js:hidden`); the track itself
+  has no disabled state, it's always scrollable.
+
+## Examples
+
+With pagination dots:
+
+<Preview code={`<Carousel itemWidth="10rem" dots>
+  <div class="rounded-lg border border-border bg-muted p-6">1</div>
+  <div class="rounded-lg border border-border bg-muted p-6">2</div>
+  <div class="rounded-lg border border-border bg-muted p-6">3</div>
+</Carousel>`}>
+  <Carousel itemWidth="10rem" dots>
+    <div class="rounded-lg border border-border bg-muted p-6">1</div>
+    <div class="rounded-lg border border-border bg-muted p-6">2</div>
+    <div class="rounded-lg border border-border bg-muted p-6">3</div>
+  </Carousel>
+</Preview>
+
+Autoplay, looping, no arrow controls:
+
+<Preview code={`<Carousel itemWidth="10rem" controls={false} autoplay loop interval={2500}>
+  <div class="rounded-lg border border-border bg-muted p-6">1</div>
+  <div class="rounded-lg border border-border bg-muted p-6">2</div>
+  <div class="rounded-lg border border-border bg-muted p-6">3</div>
+</Carousel>`}>
+  <Carousel itemWidth="10rem" controls={false} autoplay loop interval={2500}>
+    <div class="rounded-lg border border-border bg-muted p-6">1</div>
+    <div class="rounded-lg border border-border bg-muted p-6">2</div>
+    <div class="rounded-lg border border-border bg-muted p-6">3</div>
+  </Carousel>
+</Preview>
+
+Self-sized slides (no `itemWidth` — each slide sets its own width):
+
+<Preview code={`<Carousel>
+  <div class="w-40 rounded-lg border border-border bg-muted p-6">Narrow</div>
+  <div class="w-64 rounded-lg border border-border bg-muted p-6">Wide</div>
+  <div class="w-40 rounded-lg border border-border bg-muted p-6">Narrow</div>
+</Carousel>`}>
+  <Carousel>
+    <div class="w-40 rounded-lg border border-border bg-muted p-6">Narrow</div>
+    <div class="w-64 rounded-lg border border-border bg-muted p-6">Wide</div>
+    <div class="w-40 rounded-lg border border-border bg-muted p-6">Narrow</div>
+  </Carousel>
+</Preview>
+
+## Accessibility
+
+- **Keyboard** — the track has `tabindex="0"`: once focused, arrow keys scroll
+  it natively (browser default for a scrollable region) — works with or
+  without JS. `Tab` also reaches the Prev/Next buttons and each dot when
+  present.
+- Prev/Next buttons carry `aria-label="Previous"` / `aria-label="Next"`.
+- Dots sit in a `role="tablist"` (`aria-label="Slides"`); each dot button has
+  `aria-label="Go to slide N"` and `aria-current` reflecting the in-view slide.
+- **No JS** — arrows and dots are hidden entirely (`no-js:hidden`), not shown
+  disabled; nothing is lost, since the track scrolls by touch, trackpad, or
+  focused arrow keys regardless.
+- Autoplay pauses on hover and on focus, and never starts under
+  `prefers-reduced-motion: reduce`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Arrow button border; default (inactive) dot fill |
+| `--background` | Arrow button background |
+| `--foreground` | Arrow icon color |
+| `--muted` | Arrow button hover background |
+| `--accent` | Active dot fill |
+| `--ring` | Focus ring on arrows and dots |
+
+## Do / Don't
+
+- **Do** set `itemWidth` for uniform slides, or size each slide yourself for a mixed-width track.
+- **Do** enable `dots` when there are few enough slides that a dot-per-slide stays scannable.
+- **Don't** put content a user *must* see behind autoplay — they may miss a slide, and no-JS users never get it advancing at all.
+- **Don't** rely on the carousel as the only path to its content if any slide holds critical, unique information — link to it elsewhere too.
+
+## Content
+
+- Keep slide content self-contained — a user may land on any slide first (via a dot or a scroll), not always the first one.
+- Alt text on slide images should describe the image, not "slide 1 of 4" — the dots already convey position.

@@ -1,0 +1,172 @@
+---
+title: Card
+description: A surface container for grouped content. Compose freely inside — heading, text, button, an optional media block.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import Heading from '../../../../registry/components/Heading/Heading.astro'
+import Text from '../../../../registry/components/Text/Text.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+<Preview code={`<Card>
+  <Heading as="h3">Card title</Heading>
+  <Text muted>A short supporting description of what this card links to or explains.</Text>
+</Card>`}>
+  <Card>
+    <Heading as="h3">Card title</Heading>
+    <Text muted>A short supporting description of what this card links to or explains.</Text>
+  </Card>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add card
+```
+
+No Apogee dependencies. Commonly composed with `Heading`, `Text`, `Button`, and `Image`.
+
+## Usage
+
+```astro
+---
+import Card from '@/components/apogee/Card/Card.astro'
+import Heading from '@/components/apogee/Heading/Heading.astro'
+---
+<Card>
+  <Heading as="h3">Card title</Heading>
+  <p>Body copy.</p>
+</Card>
+```
+
+## Anatomy
+
+Card is a single component with one optional named slot, not a
+Card.Header/Card.Body family:
+
+- **Root** — the `<a>` (when `href` is set) or `<div>` surface: border, radius,
+  background. Any content you pass goes directly inside its `p-5` padded body,
+  in the default slot.
+- **`slot="media"`** (optional) — renders flush at the top, above the padded
+  body, clipped to a 16:9 (`aspect-video`) box. Meant for an `<img>` — the slot
+  content is sized to fill it (`size-full object-cover`).
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<a>` /
+`<div>` attribute (e.g. `target`, `rel`, `aria-label`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | — | Renders the card as an `<a>` and makes the whole surface a link (hover/focus states apply). Omit for a static `<div>`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+The only structural variant is presence of the `media` slot:
+
+<Preview code={`<Card>
+  <img slot="media" src="https://picsum.photos/seed/apogee/640/360" alt="" />
+  <Heading as="h3">With media</Heading>
+  <Text muted size="sm">An image slotted above the body, flush to the card's edges.</Text>
+</Card>
+<Card>
+  <Heading as="h3">Without media</Heading>
+  <Text muted size="sm">Just the padded body.</Text>
+</Card>`}>
+  <Card>
+    <img slot="media" src="https://picsum.photos/seed/apogee/640/360" alt="" />
+    <Heading as="h3">With media</Heading>
+    <Text muted size="sm">An image slotted above the body, flush to the card's edges.</Text>
+  </Card>
+  <Card>
+    <Heading as="h3">Without media</Heading>
+    <Text muted size="sm">Just the padded body.</Text>
+  </Card>
+</Preview>
+
+## States
+
+Interactive states only apply when `href` is set (the whole card is a link):
+
+- **Hover** — background shifts to `--muted`.
+- **Focus** — a visible `focus-visible` ring (`--ring`).
+- **Static** (no `href`) — no hover/focus treatment; it's a plain container.
+
+<Preview code={`<Card href="#">
+  <Heading as="h3">Clickable card</Heading>
+  <Text muted size="sm">Hover or focus to see the interactive state.</Text>
+</Card>`}>
+  <Card href="#">
+    <Heading as="h3">Clickable card</Heading>
+    <Text muted size="sm">Hover or focus to see the interactive state.</Text>
+  </Card>
+</Preview>
+
+## Examples
+
+As a link card with media and a call to action:
+
+<Preview code={`<Card href="#">
+  <img slot="media" src="https://picsum.photos/seed/apogee2/640/360" alt="" />
+  <Heading as="h3">Ship faster with Apogee</Heading>
+  <Text muted size="sm">Copy-in, accessible Astro components.</Text>
+</Card>`}>
+  <Card href="#">
+    <img slot="media" src="https://picsum.photos/seed/apogee2/640/360" alt="" />
+    <Heading as="h3">Ship faster with Apogee</Heading>
+    <Text muted size="sm">Copy-in, accessible Astro components.</Text>
+  </Card>
+</Preview>
+
+Composed with a Button (card itself is static — the button is the click target):
+
+<Preview code={`<Card>
+  <Heading as="h3">Upgrade your plan</Heading>
+  <Text muted size="sm">Unlock more seats and priority support.</Text>
+  <Button variant="primary" class="mt-4">Upgrade</Button>
+</Card>`}>
+  <Card>
+    <Heading as="h3">Upgrade your plan</Heading>
+    <Text muted size="sm">Unlock more seats and priority support.</Text>
+    <Button variant="primary" class="mt-4">Upgrade</Button>
+  </Card>
+</Preview>
+
+## Accessibility
+
+- With `href`, the whole surface is a real `<a>` — keyboard-focusable,
+  `Enter` navigates, no `div` click-handler faked.
+- Without `href`, it's a plain `<div>` — don't add a click handler to fake
+  navigation; use `href` instead so it stays keyboard-operable.
+- If a linked card also contains its own interactive children (a Button),
+  avoid nesting a second link/button *inside* an `href` card — nested
+  interactive controls are invalid HTML and confuse both mouse and keyboard
+  users. Keep linked cards content-only, or keep the card static and put the
+  single action inside.
+- `media` images need real `alt` text (or `alt=""` if purely decorative).
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Card outline |
+| `--surface` / `--surface-foreground` | Card background / default text color |
+| `--muted` | Hover background (linked cards only) |
+| `--ring` | Focus ring (linked cards only) |
+| `--radius-lg` | Corner radius |
+
+## Do / Don't
+
+- **Do** use `href` when the whole card should be one click target — don't bury the only action in a nested link.
+- **Do** keep card content short — a heading, a line or two, maybe one action.
+- **Don't** nest another link or button inside an `href` card.
+- **Don't** mix unrelated content types in a grid of cards — keep each card's shape consistent within a set.
+
+## Content
+
+- Title is a short noun phrase (`Heading`, 2–6 words), not a full sentence.
+- Supporting text is one to two lines — truncate or link to "Read more" rather than letting a card grow tall in a grid.

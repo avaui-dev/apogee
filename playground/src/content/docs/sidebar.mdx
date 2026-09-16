@@ -1,0 +1,144 @@
+---
+title: Sidebar
+description: A vertical navigation aside, sticky and full-height on desktop, collapsible behind a toggle on mobile.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Sidebar from '../../../../registry/components/Sidebar/Sidebar.astro'
+import { Settings } from '@lucide/astro'
+
+<JsNote fallback="The toggle is hidden (`no-js:hidden`) and the nav stays expanded (`no-js:flex`), and the footer stays expanded too (`no-js:block`) — so below the `md:` breakpoint everything is reachable without a working control to click. Desktop is unaffected: the nav is always visible above the `md:` breakpoint, shown by CSS alone.">
+  A small island toggles `data-open` on the nav and `aria-expanded` on the button
+  when the mobile toggle is clicked, showing or hiding the nav below the header row;
+  a sibling CSS rule also reveals the footer once the nav is open.
+</JsNote>
+
+<Preview jsToggle code={`<Sidebar>
+  <a slot="brand" href="/" class="font-semibold">Acme</a>
+  <a href="/dashboard">Dashboard</a>
+  <a href="/projects">Projects</a>
+  <a href="/settings">Settings</a>
+  <div slot="footer">v1.2.0</div>
+</Sidebar>`}>
+  <Sidebar>
+    <a slot="brand" href="/" class="font-semibold">Acme</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/projects">Projects</a>
+    <a href="/settings">Settings</a>
+    <div slot="footer">v1.2.0</div>
+  </Sidebar>
+</Preview>
+
+Resize below `md` (768px) to see the mobile header + toggle; the nav and footer
+behave differently at that width (see Anatomy).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sidebar
+```
+
+Ships `@lucide/astro` (for the toggle's `Menu` icon). No Apogee component dependencies.
+
+## Usage
+
+```astro
+---
+import Sidebar from '@/components/apogee/Sidebar/Sidebar.astro'
+---
+<Sidebar>
+  <a slot="brand" href="/">Acme</a>
+  <a href="/dashboard">Dashboard</a>
+  <a href="/settings">Settings</a>
+</Sidebar>
+```
+
+## Anatomy
+
+- **Header row** — always visible; holds `brand` and the mobile toggle. On desktop
+  the toggle is hidden (`md:hidden`) and the row loses its bottom border.
+- **`brand`** (`slot="brand"`) — logo or product name, left-aligned in the header row.
+- **Nav** (default slot) — links or `NavLink`-like items, stacked with a 2px gap.
+  Collapsed by default on mobile; always shown on desktop.
+- **`footer`** (`slot="footer"`) — pinned to the bottom on desktop (`mt-auto`).
+  On mobile with JS, hidden until the nav is opened, then revealed via a
+  sibling CSS rule. Without JS (`no-js:block`) it's always shown.
+- **Toggle button** — auto-rendered, `md:hidden`. Controls the nav via
+  `aria-controls` (a generated id) and `aria-expanded`.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other `<aside>` attribute
+passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Extra classes on the root `<aside>`, merged last. |
+
+## States
+
+- **Mobile, closed (default)** — nav hidden (`display: none`), toggle `aria-expanded="false"`.
+- **Mobile, open** — clicking the toggle sets the nav's `data-open="true"` and the
+  toggle's `aria-expanded="true"`; the nav becomes a flex column below the header.
+- **Desktop (`md:` and up)** — nav always visible (`md:flex`); toggle hidden.
+
+## Examples
+
+Nav links with an icon, and a footer used for a persistent action:
+
+<Preview code={`<Sidebar>
+  <a slot="brand" href="/" class="font-semibold">Acme</a>
+  <a href="/dashboard">Dashboard</a>
+  <a href="/settings" class="flex items-center gap-2"><Settings class="size-4" /> Settings</a>
+  <div slot="footer" class="text-sm text-muted-foreground">Signed in as jane@acme.com</div>
+</Sidebar>`}>
+  <Sidebar>
+    <a slot="brand" href="/" class="font-semibold">Acme</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/settings" class="flex items-center gap-2"><Settings class="size-4" /> Settings</a>
+    <div slot="footer" class="text-sm text-muted-foreground">Signed in as jane@acme.com</div>
+  </Sidebar>
+</Preview>
+
+## Accessibility
+
+- Toggle is a real `<button>` — full keyboard support (`Tab`, `Enter`/`Space`) for
+  free. It carries `aria-controls` (pointing at the nav's id), `aria-expanded`,
+  and `aria-label="Toggle navigation"`.
+- Nav links are plain `<a>` elements in normal tab order.
+- Visible `focus-visible` ring on the toggle.
+- **No JS:** the toggle is `no-js:hidden`, and the nav (`no-js:flex`) and
+  footer (`no-js:block`) both stay expanded — so on a small viewport without
+  JavaScript, the nav and every link in it, plus the footer, are reachable
+  without a working control. Desktop viewports are unaffected, since the nav
+  is always shown there by CSS alone.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Aside end border (desktop), header bottom border (mobile), footer top border |
+| `--background` | Aside background |
+| `--foreground` | Toggle icon colour |
+| `--muted` | Toggle hover background |
+| `--ring` | Toggle focus ring |
+
+## Do / Don't
+
+- **Do** put the most-used links first — they're always visible on desktop,
+  and stay expanded on mobile without JS too.
+- **Do** use `brand` for a logo or product name only, not another nav item.
+- **Don't** worry about the mobile toggle as a hard dependency — without JS
+  it's hidden and the nav/footer fall back to expanded, so content stays
+  reachable either way.
+- **Don't** put page content in `footer` — it's for persistent bits (account
+  switcher, version, sign out); on mobile with JS it only shows once the nav
+  is opened.
+
+## Content
+
+- Nav labels: nouns, sentence case, one to three words ("Dashboard", "Team settings").
+- Footer content stays short — a name, plan, or single action; it's cramped in the rail.

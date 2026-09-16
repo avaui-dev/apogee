@@ -1,0 +1,153 @@
+---
+title: ToggleButtonGroup
+description: Connects ToggleButtons into a segmented bar — single-select or multi-select.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import ToggleButtonGroup from '../../../../registry/components/ToggleButtonGroup/ToggleButtonGroup.astro'
+import ToggleButton from '../../../../registry/components/ToggleButton/ToggleButton.astro'
+import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight } from '@lucide/astro'
+
+<JsNote fallback="Each ToggleButton stays at its initial pressed state and doesn't respond to clicks (see ToggleButton), so single-select mutual exclusivity never kicks in either.">
+  For `type="single"`, wires a click listener on each child button that
+  un-presses its siblings, so only one stays pressed at a time.
+</JsNote>
+
+<Preview code={`<ToggleButtonGroup type="single" aria-label="Text alignment">
+  <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
+  <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
+  <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+</ToggleButtonGroup>`}>
+  <ToggleButtonGroup type="single" aria-label="Text alignment">
+    <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
+    <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
+    <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+  </ToggleButtonGroup>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add toggle-button-group
+```
+
+Pulls in `ToggleButton`. Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import ToggleButtonGroup from '@/components/apogee/ToggleButtonGroup/ToggleButtonGroup.astro'
+import ToggleButton from '@/components/apogee/ToggleButton/ToggleButton.astro'
+---
+<ToggleButtonGroup type="single" aria-label="Text alignment">
+  <ToggleButton aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton aria-label="Italic"><Italic /></ToggleButton>
+</ToggleButtonGroup>
+```
+
+## Anatomy
+
+- **Group** — a `role="group"` wrapper (`data-type="single" | "multiple"`)
+  holding the buttons in its default slot.
+- **ToggleButton** (×N) — each child is a plain [`ToggleButton`](/toggle-button);
+  the group doesn't render or own them directly, it just reads and (in
+  `single` mode) coordinates their `aria-pressed`.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `type` | `'single' \| 'multiple'` | `'multiple'` | `single`: mutually exclusive (one or none pressed). `multiple`: each button toggles independently. |
+| `aria-label` | `string` | — | Label for the group (e.g. "Text alignment"). |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+Both `type` values:
+
+<Preview code={`<ToggleButtonGroup type="single" aria-label="Alignment">
+  <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
+  <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
+  <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+</ToggleButtonGroup>
+<ToggleButtonGroup type="multiple" aria-label="Formatting">
+  <ToggleButton pressed aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton pressed aria-label="Italic"><Italic /></ToggleButton>
+  <ToggleButton aria-label="Underline"><Underline /></ToggleButton>
+</ToggleButtonGroup>`}>
+  <ToggleButtonGroup type="single" aria-label="Alignment">
+    <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
+    <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
+    <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+  </ToggleButtonGroup>
+  <ToggleButtonGroup type="multiple" aria-label="Formatting">
+    <ToggleButton pressed aria-label="Bold"><Bold /></ToggleButton>
+    <ToggleButton pressed aria-label="Italic"><Italic /></ToggleButton>
+    <ToggleButton aria-label="Underline"><Underline /></ToggleButton>
+  </ToggleButtonGroup>
+</Preview>
+
+## States
+
+- **Single-select** — clicking a button un-presses every sibling; clicking the
+  already-pressed one clears the group (each button still self-toggles).
+- **Multiple-select** — each button toggles independently, no coordination.
+- **No JS** — buttons render at their initial `pressed` values and don't
+  respond to clicks (see [`ToggleButton`](/toggle-button)).
+
+## Examples
+
+Mixed sizes pass straight through to each `ToggleButton`:
+
+<Preview code={`<ToggleButtonGroup type="single" aria-label="Size">
+  <ToggleButton size="sm" pressed aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton size="sm" aria-label="Italic"><Italic /></ToggleButton>
+</ToggleButtonGroup>`}>
+  <ToggleButtonGroup type="single" aria-label="Size">
+    <ToggleButton size="sm" pressed aria-label="Bold"><Bold /></ToggleButton>
+    <ToggleButton size="sm" aria-label="Italic"><Italic /></ToggleButton>
+  </ToggleButtonGroup>
+</Preview>
+
+## Accessibility
+
+- `role="group"` with `aria-label` names the whole bar for AT users; each
+  child keeps its own `aria-pressed` and `aria-label`.
+- **Keyboard** — no roving tabindex: each button is a normal tab stop
+  (`Tab` moves through all of them); `Enter` / `Space` toggles the focused one.
+  For a fully single-select semantic pattern (roving tabindex, arrow-key
+  navigation, `radiogroup`), a future variant may add that — today this is a
+  group of independent buttons, coordinated visually.
+- **Focus** — each button shows its own visible `focus-visible` ring.
+- **No JS** — the group renders (a `role="group"` of plain buttons); with
+  scripts off none of them toggle, in either mode.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` / `--background` | Group container border + fill |
+| (see [`ToggleButton`](/toggle-button)) | Individual button colors |
+
+## Do / Don't
+
+- **Do** always set `aria-label` on the group describing what it controls
+  ("Text alignment", "View").
+- **Do** use `type="single"` for mutually-exclusive choices (alignment, view
+  mode) and `type="multiple"` for independent toggles (bold/italic/underline).
+- **Don't** mix unrelated actions in one group — every button should belong to
+  the same setting.
+- **Don't** forget each child `ToggleButton` still needs its own `aria-label`
+  when icon-only.
+
+## Content
+
+- See [`ToggleButton`](/toggle-button) content rules — each child button's
+  label/`aria-label` follows the same guidance.

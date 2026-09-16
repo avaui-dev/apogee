@@ -1,0 +1,121 @@
+---
+title: SegmentedControl
+description: A row of connected, mutually exclusive options backed by native radios — pick one from a small, always-visible set.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import SegmentedControl from '../../../../registry/components/SegmentedControl/SegmentedControl.astro'
+
+<Preview code={`<SegmentedControl name="view" options={['List', 'Board', 'Calendar']} value="List" />`}>
+  <SegmentedControl name="view" options={['List', 'Board', 'Calendar']} value="List" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add segmented-control
+```
+
+No Apogee component dependencies.
+
+## Usage
+
+```astro
+---
+import SegmentedControl from '@/components/apogee/SegmentedControl/SegmentedControl.astro'
+---
+<SegmentedControl name="view" options={['List', 'Board', 'Calendar']} value="List" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the root `<div role="group">`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | — | Shared `name` for the underlying radio inputs. |
+| `options` | `(string \| { label: string; value: string })[]` | — | Options, in order. A plain string is used as both label and value. |
+| `value` | `string` | — | Selected value. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size. |
+| `aria-label` | `string` | — | Accessible name for the group. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Sizes
+
+Every size:
+
+<Preview code={`<SegmentedControl name="size-sm" size="sm" options={['List', 'Board', 'Calendar']} value="List" />
+<SegmentedControl name="size-md" size="md" options={['List', 'Board', 'Calendar']} value="List" />
+<SegmentedControl name="size-lg" size="lg" options={['List', 'Board', 'Calendar']} value="List" />`}>
+  <SegmentedControl name="size-sm" size="sm" options={['List', 'Board', 'Calendar']} value="List" />
+  <SegmentedControl name="size-md" size="md" options={['List', 'Board', 'Calendar']} value="List" />
+  <SegmentedControl name="size-lg" size="lg" options={['List', 'Board', 'Calendar']} value="List" />
+</Preview>
+
+## States
+
+- **Selected** — the active option has a raised background (`bg-background`,
+  `shadow-sm`) and full-contrast text.
+- **Hover** — inactive options darken their text on hover.
+- **Focus** — the focused option's `label` shows a visible outline
+  (`peer-focus-visible`).
+- No `disabled` state — the component doesn't expose one (passthrough
+  attributes land on the group container, not the individual inputs).
+
+<Preview code={`<SegmentedControl name="states" options={['One', 'Two', 'Three']} value="Two" />`}>
+  <SegmentedControl name="states" options={['One', 'Two', 'Three']} value="Two" />
+</Preview>
+
+## Examples
+
+Options as `{ label, value }`, when the display text and submitted value
+differ:
+
+```astro
+<SegmentedControl
+  name="sort"
+  options={[
+    { label: 'Newest', value: 'created_desc' },
+    { label: 'Oldest', value: 'created_asc' },
+  ]}
+  value="created_desc"
+/>
+```
+
+## Accessibility
+
+- Built on native radio inputs inside a `role="group"` — arrow keys move
+  and select between options, `Tab` enters/exits the group.
+- Each option's visible label is a real `<label for>`, not decorative text.
+- Give the group an `aria-label` when no visible heading identifies what it
+  controls.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Track border |
+| `--muted` | Track background |
+| `--background` | Selected option fill |
+| `--muted-foreground` | Unselected label |
+| `--foreground` | Selected / hovered label |
+| `--ring` | Focus outline |
+
+## Do / Don't
+
+- **Do** use SegmentedControl for 2–5 mutually exclusive, always-visible
+  options where seeing every choice at once helps (view modes, a small set
+  of filters).
+- **Do** keep labels to one word when possible — the control reads best as
+  a compact bar.
+- **Don't** use it for more than ~5 options — it wraps ungracefully; use
+  `Select` or `Tabs` instead.
+- **Don't** use it as a multi-select — one radio group, one value.
+
+## Content
+
+- Labels are short nouns or verbs, sentence case, no ending punctuation
+  ("List", "Board", not "List view").

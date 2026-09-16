@@ -1,0 +1,180 @@
+---
+title: Dropdown
+description: A menu on native <details> — the trigger opens a list of DropdownItems.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Dropdown from '../../../../registry/components/Dropdown/Dropdown.astro'
+import DropdownItem from '../../../../registry/components/Dropdown/DropdownItem.astro'
+import Divider from '../../../../registry/components/Divider/Divider.astro'
+import { Pencil, Copy, Trash2 } from '@lucide/astro'
+
+<JsNote fallback="The menu is a native details/summary disclosure — it still opens and closes by clicking the trigger. It just won't auto-close on outside click or Escape, and won't flip above the trigger when space below is tight.">
+  Adds close-on-outside-click and Escape-to-close, and flips the menu above the
+  trigger when there isn't room below the viewport.
+</JsNote>
+
+<Preview code={`<Dropdown label="Options">
+  <DropdownItem href="#">Edit</DropdownItem>
+  <DropdownItem href="#">Duplicate</DropdownItem>
+  <DropdownItem href="#">Delete</DropdownItem>
+</Dropdown>`}>
+  <Dropdown label="Options">
+    <DropdownItem href="#">Edit</DropdownItem>
+    <DropdownItem href="#">Duplicate</DropdownItem>
+    <DropdownItem href="#">Delete</DropdownItem>
+  </Dropdown>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add dropdown
+```
+
+Uses `@lucide/astro` (`ChevronDown`). Ships `DropdownItem.astro` (same folder)
+for menu entries.
+
+## Usage
+
+```astro
+---
+import Dropdown from '@/components/apogee/Dropdown/Dropdown.astro'
+import DropdownItem from '@/components/apogee/Dropdown/DropdownItem.astro'
+---
+<Dropdown label="Options">
+  <DropdownItem href="/edit">Edit</DropdownItem>
+  <DropdownItem>Delete</DropdownItem>
+</Dropdown>
+```
+
+## Anatomy
+
+- **Trigger** — the `<summary>`; shows `label` and a chevron that rotates on
+  open.
+- **Menu** — `role="menu"` panel; default slot. Fill it with `DropdownItem`s
+  (`role="menuitem"`).
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<details>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Trigger text. |
+| `align` | `'start' \| 'end'` | `'start'` | Which edge the menu aligns to. |
+| `class` | `string` | — | Extra classes on the root `<details>`, merged last. |
+
+### `DropdownItem` props
+
+A link when `href` is set, otherwise a `<button>`. `@composable`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | — | Renders an `<a>` instead of a `<button>`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+Any other attribute passes through; `role="menuitem"` is fixed.
+
+## Variants
+
+Every `align`:
+
+<Preview code={`<div class="flex w-full justify-between">
+  <Dropdown label="Start" align="start">
+    <DropdownItem href="#">Edit</DropdownItem>
+    <DropdownItem href="#">Delete</DropdownItem>
+  </Dropdown>
+  <Dropdown label="End" align="end">
+    <DropdownItem href="#">Edit</DropdownItem>
+    <DropdownItem href="#">Delete</DropdownItem>
+  </Dropdown>
+</div>`}>
+  <div class="flex w-full justify-between">
+    <Dropdown label="Start" align="start">
+      <DropdownItem href="#">Edit</DropdownItem>
+      <DropdownItem href="#">Delete</DropdownItem>
+    </Dropdown>
+    <Dropdown label="End" align="end">
+      <DropdownItem href="#">Edit</DropdownItem>
+      <DropdownItem href="#">Delete</DropdownItem>
+    </Dropdown>
+  </div>
+</Preview>
+
+## States
+
+- **Closed / open** — the native `<details>` toggle; the chevron rotates 180°
+  when open.
+- **Flipped** — the island adds `.apogee-dropdown--up` when there isn't room
+  below the viewport, opening the menu upward instead.
+- **Hover / focus** — the trigger tints on hover; keyboard focus shows a
+  visible ring.
+- **No JS** — see the JsNote above.
+
+## Examples
+
+With leading icons, and a destructive item set off by a `Divider`:
+
+<Preview code={`<Dropdown label="Options">
+  <DropdownItem href="#"><Pencil /> Edit</DropdownItem>
+  <DropdownItem href="#"><Copy /> Duplicate</DropdownItem>
+  <Divider class="my-1" />
+  <DropdownItem><Trash2 /> Delete</DropdownItem>
+</Dropdown>`}>
+  <Dropdown label="Options">
+    <DropdownItem href="#"><Pencil /> Edit</DropdownItem>
+    <DropdownItem href="#"><Copy /> Duplicate</DropdownItem>
+    <Divider class="my-1" />
+    <DropdownItem><Trash2 /> Delete</DropdownItem>
+  </Dropdown>
+</Preview>
+
+## Accessibility
+
+- The panel has `role="menu"`; `DropdownItem`s carry `role="menuitem"`.
+- Native `<details>` / `<summary>` — keyboard-operable out of the box (`Enter` /
+  `Space` toggles it), no script required for the base open/close.
+- `Escape` closes it and returns focus to the trigger (`summary`) — JS behavior,
+  only with JS enabled.
+- `ArrowDown` / `ArrowUp` move focus between menu items, wrapping from last to
+  first and back; `Home` / `End` jump to the first / last item — JS behavior,
+  only with JS enabled.
+- **No JS** — fully usable: `<details>` opens and closes without any script;
+  items stay reachable via `Tab` in document order, but the outside-click/Escape
+  auto-close, viewport flip, and arrow-key navigation are lost.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Trigger + menu panel border |
+| `--background` | Trigger background |
+| `--muted` | Trigger hover background |
+| `--foreground` | Trigger label + item text |
+| `--muted-foreground` | Chevron + item icon color |
+| `--surface` | Menu panel background |
+| `--ring` | Trigger focus ring |
+| `--duration-fast` / `--ease-smooth` | Menu open fade/scale animation |
+
+## Do / Don't
+
+- **Do** keep the trigger `label` short — it's the only cue for what the menu
+  holds.
+- **Do** order items by frequency of use, with destructive actions last
+  (optionally set off with a `Divider`).
+- **Don't** pack more than a handful of items in one menu — use a full page or
+  `Combobox` / `CommandPalette` for long lists.
+- **Don't** nest another `Dropdown` inside the menu — one level of disclosure
+  only.
+
+## Content
+
+- Item labels are short verbs or verb phrases ("Edit", "Duplicate", "Delete"),
+  sentence case, no ending punctuation.
+- The trigger `label` names what the menu contains, not a bare "Menu" or
+  "Options" when a more specific noun fits.

@@ -1,0 +1,104 @@
+---
+title: Container
+description: Centers content at a max width with fluid side gutters.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Container from '../../../../registry/components/Container/Container.astro'
+
+<Preview code={`<Container size="md">
+  <div class="bg-muted p-4 text-center text-sm">Centered content</div>
+</Container>`}>
+  <Container size="md">
+    <div class="bg-muted p-4 text-center text-sm">Centered content</div>
+  </Container>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add container
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Container from '@/components/apogee/Container/Container.astro'
+---
+<Container size="lg">
+  <p>Page content, centered with side gutters.</p>
+</Container>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root element.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `string` | `'div'` | Element/tag to render (e.g. `'section'`, `'main'`). |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'lg'` | Max width: `sm`=`max-w-3xl`, `md`=`max-w-5xl`, `lg`=`max-w-7xl`, `xl`=`max-w-[90rem]`, `full`=`max-w-none`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Sizes
+
+Every size, each with a marker block so the max-width is visible:
+
+<Preview code={`<Container size="sm"><div class="bg-muted p-2 text-center text-sm">sm — max-w-3xl</div></Container>
+<Container size="md"><div class="bg-muted p-2 text-center text-sm">md — max-w-5xl</div></Container>
+<Container size="lg"><div class="bg-muted p-2 text-center text-sm">lg — max-w-7xl</div></Container>
+<Container size="xl"><div class="bg-muted p-2 text-center text-sm">xl — max-w-[90rem]</div></Container>
+<Container size="full"><div class="bg-muted p-2 text-center text-sm">full — max-w-none</div></Container>`}>
+  <Container size="sm"><div class="bg-muted p-2 text-center text-sm">sm — max-w-3xl</div></Container>
+  <Container size="md"><div class="bg-muted p-2 text-center text-sm">md — max-w-5xl</div></Container>
+  <Container size="lg"><div class="bg-muted p-2 text-center text-sm">lg — max-w-7xl</div></Container>
+  <Container size="xl"><div class="bg-muted p-2 text-center text-sm">xl — max-w-[90rem]</div></Container>
+  <Container size="full"><div class="bg-muted p-2 text-center text-sm">full — max-w-none</div></Container>
+</Preview>
+
+## States
+
+None — Container is a static layout primitive, no interactive or visual
+states.
+
+## Examples
+
+Rendered as a semantic landmark instead of a `<div>`:
+
+```astro
+<Container as="main" size="lg">
+  <h1>Page title</h1>
+</Container>
+```
+
+Nested, for a full-width band with a narrower content column inside:
+
+```astro
+<Container size="full" class="bg-muted">
+  <Container size="md">
+    <p>Narrower content inside a full-bleed background.</p>
+  </Container>
+</Container>
+```
+
+## Accessibility
+
+Native semantics, no extra ARIA needed. Pick `as` to match the correct
+landmark or semantic element for context (`main`, `section`, `article`, …).
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--spacing-gutter` (via the `px-gutter` utility) | Fluid side padding, clamps across viewport width |
+
+## Do / Don't + Content
+
+Layout primitive with no content or misuse surface — exempt from Do/Don't and
+Content (see the [docs standard](/docs/10-component-docs-standard)).

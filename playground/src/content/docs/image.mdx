@@ -1,0 +1,104 @@
+---
+title: Image
+description: A responsive, lazy-loaded image — wraps astro:assets Image with sensible defaults.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Image from '../../../../registry/components/Image/Image.astro'
+import placeholder from '../../assets/placeholder.png'
+
+<Preview code={`<Image src={placeholder} alt="Placeholder" />`}>
+  <Image src={placeholder} alt="Placeholder" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add image
+```
+
+No Apogee dependencies. Wraps Astro's built-in `astro:assets` `Image` — not an
+added dependency.
+
+## Usage
+
+```astro
+---
+import Image from '@/components/apogee/Image/Image.astro'
+import hero from '../assets/hero.jpg'
+---
+<Image src={hero} alt="Team meeting around a table" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other `astro:assets`
+`Image` prop — `width`, `height`, `widths`, `sizes`, `format`, `quality`,
+`densities`, … — passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `src` | `ImageMetadata` | — | Required. A local image import. |
+| `alt` | `string` | — | Required. Alt text (`""` for decorative images). |
+| `loading` | `'lazy' \| 'eager'` | `'lazy'` | Native lazy-loading. Use `eager` for the page's LCP image. |
+| `decoding` | `'async' \| 'sync' \| 'auto'` | `'async'` | Native image decoding hint. |
+| `class` | `string` | — | Extra classes, merged last (`h-auto max-w-full` is always applied). |
+
+## Examples
+
+Eager-loaded hero image, so it isn't deferred:
+
+```astro
+<Image src={hero} alt="Product screenshot" loading="eager" />
+```
+
+Responsive sizing:
+
+```astro
+<Image
+  src={hero}
+  alt="Product screenshot"
+  widths={[400, 800, 1200]}
+  sizes="(min-width: 768px) 50vw, 100vw"
+/>
+```
+
+Format + quality override:
+
+```astro
+<Image src={hero} alt="Product screenshot" format="avif" quality={80} />
+```
+
+## Accessibility
+
+- `alt` is required — describe the image's content or purpose; pass `alt=""`
+  only for purely decorative images.
+- `loading="lazy"` (the default) defers offscreen images without JS. Set
+  `loading="eager"` on the page's LCP image so it isn't deferred.
+- No JS — `astro:assets` processes the image ahead of time; output is a plain
+  `<img>`.
+
+## Tokens
+
+None. `Image` has no themeable colour/spacing tokens of its own —
+`h-auto max-w-full` keeps it responsive by default; override sizing via
+`class`, `width`, or `height`.
+
+## Do / Don't
+
+- **Do** always import a local image (`ImageMetadata`) so `astro:assets` can
+  optimize it — don't pass a raw URL string.
+- **Do** set `loading="eager"` on the one image that's the page's LCP; leave
+  everything else `lazy`.
+- **Don't** upscale a small source image via `width`/`height` — `astro:assets`
+  will warn or error.
+- **Don't** skip `alt` — pass `alt=""` explicitly for decorative images
+  rather than omitting it.
+
+## Content
+
+- Alt text describes what's in the image or its purpose (not "image of…"),
+  kept short, no ending period unless it's a full sentence.
+- Decorative images get `alt=""`, never omitted.

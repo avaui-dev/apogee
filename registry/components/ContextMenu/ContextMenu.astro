@@ -60,7 +60,28 @@ const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
       const { offsetWidth: w, offsetHeight: h } = panel
       panel.style.left = `${Math.min(x, window.innerWidth - w - 8)}px`
       panel.style.top = `${Math.min(y, window.innerHeight - h - 8)}px`
+      panel.querySelector<HTMLElement>('[role="menuitem"]')?.focus()
     }
+
+    // Arrow-key navigation between items (WAI-ARIA menu pattern).
+    panel.addEventListener('keydown', (e) => {
+      const items = [...panel.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])')]
+      if (!items.length) return
+      const idx = items.indexOf(document.activeElement as HTMLElement)
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        items[idx < items.length - 1 ? idx + 1 : 0].focus()
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        items[idx > 0 ? idx - 1 : items.length - 1].focus()
+      } else if (e.key === 'Home') {
+        e.preventDefault()
+        items[0].focus()
+      } else if (e.key === 'End') {
+        e.preventDefault()
+        items[items.length - 1].focus()
+      }
+    })
 
     root.addEventListener('contextmenu', (e) => {
       if (panel.contains(e.target as Node)) return

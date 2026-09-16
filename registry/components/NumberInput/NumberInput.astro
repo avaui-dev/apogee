@@ -32,6 +32,7 @@ const {
   error,
   size = 'md',
   required = false,
+  disabled = false,
   class: className,
   ...rest
 } = Astro.props
@@ -51,18 +52,19 @@ const btn =
     ]}
     aria-invalid={error ? 'true' : undefined}
   >
-    <button type="button" class={btn} data-step="-1" aria-label="Decrease" tabindex="-1">
+    <button type="button" class={btn} data-step="-1" aria-label="Decrease" tabindex="-1" disabled={disabled}>
       <Minus class="size-4" aria-hidden="true" />
     </button>
     <input
       id={id}
       type="number"
       required={required}
+      disabled={disabled}
       aria-describedby={describedby}
-      class="apogee-number-input w-full min-w-0 bg-transparent px-2 text-center text-foreground outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      class="apogee-number-input w-full min-w-0 bg-transparent px-2 text-center text-foreground outline-none disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       {...rest}
     />
-    <button type="button" class={btn} data-step="1" aria-label="Increase" tabindex="-1">
+    <button type="button" class={btn} data-step="1" aria-label="Increase" tabindex="-1" disabled={disabled}>
       <Plus class="size-4" aria-hidden="true" />
     </button>
   </div>

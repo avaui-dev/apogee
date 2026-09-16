@@ -1,0 +1,132 @@
+---
+title: RichTextEditor
+description: A small WYSIWYG editor — a formatting toolbar over a contenteditable region, synced to a hidden field for form submission.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import RichTextEditor from '../../../../registry/components/RichTextEditor/RichTextEditor.astro'
+
+<JsNote fallback="The toolbar and contenteditable region are both hidden (`no-js:hidden`); a plain `<textarea>` with the same `name` takes over (`no-js:block`), so a no-JS user writes and submits plain text instead of HTML.">
+  Wires each toolbar button to `document.execCommand`, syncs the editor's HTML
+  into a hidden field on every keystroke, and reflects the current
+  selection's formatting back onto the buttons (`aria-pressed`). Also hides
+  and un-names the textarea fallback, naming the hidden field instead.
+</JsNote>
+
+<Preview jsToggle code={`<RichTextEditor name="bio" placeholder="Tell us about yourself" />`}>
+  <RichTextEditor name="bio" placeholder="Tell us about yourself" />
+</Preview>
+
+Flip the **No-JS preview** switch above to see the fallback: the toolbar
+and editor disappear (`no-js:hidden`) and a plain `<textarea>` takes over
+(`no-js:block`), rendered in a sandboxed iframe with no scripts — the real
+`no-js` behaviour, not a fake.
+
+## Add
+
+```sh
+npx @ava-ui/apogee add rich-text-editor
+```
+
+Pulls in `ToggleButton` and `ToggleButtonGroup`. Bring `@lucide/astro` for
+the toolbar icons. Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import RichTextEditor from '@/components/apogee/RichTextEditor/RichTextEditor.astro'
+---
+<RichTextEditor name="bio" placeholder="Tell us about yourself" />
+```
+
+## Anatomy
+
+- **Toolbar** (`no-js:hidden`) — two `ToggleButtonGroup`s of `ToggleButton`s:
+  - *Text style* — Bold, Italic, Underline (`execCommand` state commands).
+  - *Blocks* — Heading, Bulleted list, Numbered list, Link (prompts for a
+    URL via native `prompt()`).
+- **Editor** (`no-js:hidden`) — the `contenteditable` region (`role="textbox"`,
+  `aria-multiline="true"`), seeded from `value`, shows `placeholder` when
+  empty.
+- **Textarea fallback** (`no-js:block`, hidden with JS) — a plain `<textarea>`
+  with the same `name`, so a no-JS user can still write and submit plain text.
+- **Hidden field** — `<input type="hidden">`, named and kept in sync with the
+  editor's HTML on every `input` event once JS runs (the textarea is un-named
+  then, so only one field submits).
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the root wrapper `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | `'content'` | `name` of the hidden field submitted with the form. |
+| `value` | `string` | `''` | Initial HTML, seeded into the editor and the hidden field. |
+| `placeholder` | `string` | `'Write something…'` | Shown when the editor is empty; also the editor's `aria-label`. |
+| `class` | `string` | — | Extra classes on the root wrapper. |
+
+## States
+
+- **Toolbar button pressed** — `aria-pressed` reflects the current
+  selection's formatting (bold/italic/underline/lists) or block type
+  (heading), updated on `selectionchange`.
+- **Empty** — the placeholder shows via
+  `empty:before:content-[attr(data-placeholder)]`.
+- **Focus** — the editor is natively focusable (`contenteditable`); toolbar
+  buttons show `ToggleButton`'s own focus ring.
+- No `disabled` state — the component doesn't expose one.
+
+## Examples
+
+Prefilled with initial HTML:
+
+```astro
+<RichTextEditor name="bio" value="<p>Already <strong>bold</strong>.</p>" />
+```
+
+## Accessibility
+
+- The editor region is `role="textbox"` with `aria-multiline="true"` and an
+  `aria-label` (the `placeholder`).
+- Toolbar buttons report their state via `aria-pressed`, kept live as the
+  selection changes.
+- **Keyboard** — the editor is a native `contenteditable` region (standard
+  text-editing keys apply); toolbar buttons are ordinary `<button>`s in DOM
+  tab order (no roving tabindex).
+- The "Link" button uses the browser's native `prompt()` for the URL — no
+  custom dialog to manage focus for.
+- **No JS:** the toolbar and `contenteditable` region are both
+  `no-js:hidden`. A plain `<textarea>` with the same `name` takes over
+  (`no-js:block`), so a no-JS user edits plain text and their edits submit
+  under `name` — just without rich formatting or the toolbar's HTML markup.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Wrapper border + toolbar bottom rule |
+| `--background` | Wrapper fill |
+| `--foreground` | Editor text |
+| `--accent` | Links inside the editor content |
+| `--muted-foreground` | Placeholder text |
+
+## Do / Don't
+
+- **Do** use RichTextEditor for short-form formatted content — bios,
+  comments, descriptions.
+- **Do** treat its output as user-authored HTML — sanitize on the server
+  before storing or rendering it back.
+- **Don't** expect rich formatting without JS — the no-JS fallback is a
+  plain `<textarea>` (same `name`), so submissions are plain text, not HTML.
+- **Don't** reach for it for a heavy document-editing surface — bring
+  TipTap/ProseMirror instead.
+
+## Content
+
+- `placeholder` is an instruction, not a label ("Tell us about yourself"),
+  sentence case, no ending period.

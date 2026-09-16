@@ -1,0 +1,87 @@
+---
+title: Kbd
+description: A single keyboard key or shortcut, styled like a physical key.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Kbd from '../../../../registry/components/Kbd/Kbd.astro'
+
+<Preview code={`Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to open the command palette.`}>
+  Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to open the command palette.
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add kbd
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Kbd from '@/components/apogee/Kbd/Kbd.astro'
+---
+Press <Kbd>Esc</Kbd> to close.
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<kbd>`
+attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Extra classes, merged last. |
+
+`Kbd` has no `variant` or `size` prop — one fixed appearance.
+
+## Examples
+
+Single key:
+
+```astro
+Press <Kbd>Esc</Kbd> to close.
+```
+
+Chord (multiple keys held together):
+
+<Preview code={`<Kbd>⌘</Kbd> <Kbd>Shift</Kbd> <Kbd>P</Kbd>`}>
+  <Kbd>⌘</Kbd> <Kbd>Shift</Kbd> <Kbd>P</Kbd>
+</Preview>
+
+## Accessibility
+
+- Renders the semantic `<kbd>` element — the correct HTML for representing a
+  keyboard key.
+- Purely presentational, no ARIA needed — keep the surrounding sentence
+  meaningful; don't rely on the key alone to convey the shortcut's purpose.
+- No JS.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Key border |
+| `--muted` | Key background fill |
+| `--muted-foreground` | Key label colour |
+
+## Do / Don't
+
+- **Do** match the label to the user's platform where relevant (`⌘` vs
+  `Ctrl`).
+- **Do** separate chord keys with a visible `+` or space, not adjacent
+  `Kbd`s with no gap.
+- **Don't** put a full instruction inside one `Kbd` ("Press Enter") — one key
+  (or modifier) per `Kbd`.
+- **Don't** use `Kbd` for anything that isn't literally a keyboard key (mouse
+  buttons, gestures).
+
+## Content
+
+- Use the key's actual glyph or name as printed on a keyboard ("Esc", "⌘",
+  "Shift") — short, no punctuation.

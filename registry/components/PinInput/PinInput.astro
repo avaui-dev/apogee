@@ -1,9 +1,10 @@
 ---
 /**
  * PinInput — a row of single-character boxes for short codes (OTP, 2FA). JS
- * island: auto-advance, backspace, arrow keys and paste-to-fill. The joined
- * value submits under `name` (hidden field). JS-required to submit; without it
- * the boxes render and accept input but the code isn't collected.
+ * island: auto-advance, backspace, arrow keys and paste-to-fill, plus it joins
+ * the boxes into one hidden field that submits under `name`. Without JS each box
+ * submits its own character as a repeated `name` field (join them server-side) —
+ * so the code is never lost.
  *
  * @composable
  */
@@ -30,11 +31,13 @@ const {
   role="group"
   aria-label={ariaLabel ?? 'Verification code'}
   data-type={type}
+  data-name={name}
 >
   {
     Array.from({ length }).map((_, i) => (
       <input
         type="text"
+        name={name}
         inputmode={type === 'numeric' ? 'numeric' : 'text'}
         autocomplete={i === 0 ? 'one-time-code' : 'off'}
         maxlength="1"
@@ -43,7 +46,7 @@ const {
       />
     ))
   }
-  <input type="hidden" class="apogee-pin-value" name={name} />
+  <input type="hidden" class="apogee-pin-value" />
 </div>
 
 <script>
@@ -52,6 +55,11 @@ const {
     const hidden = root.querySelector<HTMLInputElement>('.apogee-pin-value')
     const numeric = root.dataset.type === 'numeric'
     if (!boxes.length || !hidden) continue
+
+    // JS collects one joined value: name the hidden field, un-name the boxes so
+    // they no longer submit individually (the no-JS fallback).
+    hidden.name = root.dataset.name || 'code'
+    boxes.forEach((b) => b.removeAttribute('name'))
 
     const sync = () => (hidden.value = boxes.map((b) => b.value).join(''))
     const clean = (s: string) => (numeric ? s.replace(/\D/g, '') : s)

@@ -1,9 +1,14 @@
 ---
 /**
- * Avatar — a user image, with an initials fallback from `name`.
+ * Avatar — a user image, with an initials fallback from `name`. If the image
+ * fails to load (404, offline), a tiny island swaps it for the initials fallback
+ * instead of leaving a broken-image icon. With neither `src` nor `name`, a
+ * generic person glyph stands in rather than an empty circle.
  *
  * @composable
  */
+import { User } from '@lucide/astro'
+
 interface Props {
   /** Image URL. */
   src?: string
@@ -35,19 +40,35 @@ const initials = name
 
 <span
   class:list={[
-    'inline-flex items-center justify-center overflow-hidden rounded-full bg-muted font-medium text-muted-foreground select-none',
+    'apogee-avatar relative inline-flex items-center justify-center overflow-hidden rounded-full bg-muted font-medium text-muted-foreground select-none',
     sizeMap[size],
     className,
   ]}
   {...rest}
 >
-  {
-    src ? (
-      <img src={src} alt={alt ?? name ?? ''} class="size-full object-cover" />
-    ) : (
-      <span role={name ? 'img' : undefined} aria-label={name}>
-        {initials}
-      </span>
-    )
-  }
+  {src && <img src={src} alt={alt ?? name ?? ''} class="apogee-avatar-img size-full object-cover" />}
+  <span
+    class="apogee-avatar-fallback inline-flex size-full items-center justify-center"
+    role={name ? 'img' : undefined}
+    aria-label={name}
+  >
+    {initials || <User class="size-1/2" aria-hidden="true" />}
+  </span>
 </span>
+
+<style>
+  /* While the image is present (loading or loaded), the fallback is hidden. The
+     island removes the <img> on error, which reveals the fallback. */
+  .apogee-avatar-img + .apogee-avatar-fallback {
+    display: none;
+  }
+</style>
+
+<script>
+  for (const img of document.querySelectorAll<HTMLImageElement>('.apogee-avatar-img')) {
+    const fail = () => img.remove()
+    // Catch images that already errored before this script ran.
+    if (img.complete && img.naturalWidth === 0) fail()
+    else img.addEventListener('error', fail)
+  }
+</script>

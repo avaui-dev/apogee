@@ -1,0 +1,165 @@
+---
+title: Marquee
+description: An endless scrolling strip for logos, tags, or testimonials, with a play/pause toggle.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Marquee from '../../../../registry/components/Marquee/Marquee.astro'
+
+<JsNote fallback="The play/pause button is hidden (no-js:hidden) — the strip keeps looping and can't be paused via the button. It still pauses on :focus-within and holds still for prefers-reduced-motion.">
+  Adds a play/pause toggle that pauses the CSS scroll animation. The loop
+  itself is pure CSS — always animating — JS only adds the pause control.
+</JsNote>
+
+<Preview jsToggle code={`<Marquee label="Client logos">
+  <span>Acme</span>
+  <span>Globex</span>
+  <span>Initech</span>
+  <span>Umbrella</span>
+</Marquee>`}>
+  <Marquee label="Client logos">
+    <span>Acme</span>
+    <span>Globex</span>
+    <span>Initech</span>
+    <span>Umbrella</span>
+  </Marquee>
+</Preview>
+
+Flip the **No-JS preview** switch above to see the fallback: the toggle
+button disappears (in a sandboxed iframe with no scripts — the real `no-js`
+behaviour, not a fake).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add marquee
+```
+
+No Apogee dependencies. Bring `@lucide/astro` for the play/pause toggle
+icons. Ships one scoped JS island (progressive enhancement).
+
+## Usage
+
+```astro
+---
+import Marquee from '@/components/apogee/Marquee/Marquee.astro'
+---
+<Marquee label="Client logos">
+  <img src="/logo-1.svg" alt="Acme" />
+  <img src="/logo-2.svg" alt="Globex" />
+  <img src="/logo-3.svg" alt="Initech" />
+</Marquee>
+```
+
+The default slot is rendered once and duplicated into two looping panels
+internally — don't wrap your items in extra markup expecting a single copy.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the root (`[key: string]: any`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | `'Marquee'` | Accessible label for the strip (`aria-label` on the `role="group"` root). |
+| `direction` | `'forwards' \| 'backwards'` | `'forwards'` | Scroll direction. `backwards` reverses the animation. |
+| `speed` | `number` | `4` | Seconds per item. Total loop duration scales with item count, so pace stays constant regardless of how many items you add. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+Both directions:
+
+<Preview jsToggle code={`<Marquee label="Forwards" direction="forwards">
+  <span>One</span>
+  <span>Two</span>
+  <span>Three</span>
+</Marquee>
+<Marquee label="Backwards" direction="backwards">
+  <span>One</span>
+  <span>Two</span>
+  <span>Three</span>
+</Marquee>`}>
+  <Marquee label="Forwards" direction="forwards">
+    <span>One</span>
+    <span>Two</span>
+    <span>Three</span>
+  </Marquee>
+  <Marquee label="Backwards" direction="backwards">
+    <span>One</span>
+    <span>Two</span>
+    <span>Three</span>
+  </Marquee>
+</Preview>
+
+## States
+
+- **Playing** (default) — the track animates on a CSS loop; duration is
+  `speed × item count`.
+- **Paused** — click the toggle, or focus anything inside the strip
+  (`:focus-within` auto-pauses, so a keyboard user can't lose a focused link
+  off-screen).
+- **Reduced motion** — starts paused; still startable via the toggle.
+- **No JS** — toggle button hidden; the strip keeps looping. See the JsNote
+  above.
+
+## Examples
+
+A slower strip of longer content:
+
+<Preview jsToggle code={`<Marquee label="Headlines" speed={6}>
+  <span>Ship the release notes</span>
+  <span>Design review at 3pm</span>
+  <span>New docs are live</span>
+</Marquee>`}>
+  <Marquee label="Headlines" speed={6}>
+    <span>Ship the release notes</span>
+    <span>Design review at 3pm</span>
+    <span>New docs are live</span>
+  </Marquee>
+</Preview>
+
+## Accessibility
+
+- `role="group"` with `aria-label={label}` on the root.
+- The duplicated panel (the seamless-loop copy) is `aria-hidden` and
+  `inert` — never read or tabbed to twice.
+- The strip pauses on `:focus-within`, so a keyboard user can read a
+  focused link without it scrolling away.
+- Holds still for `prefers-reduced-motion` by default; the toggle can still
+  start it.
+- **Keyboard** — `Tab` reaches items inside the strip (links, buttons) in
+  document order, then the play/pause toggle; `Enter` / `Space` on the
+  toggle switches play state.
+- **No JS** — the toggle is hidden (`no-js:hidden`); the strip still loops
+  via CSS and still pauses on focus and for reduced motion — only the
+  manual pause control is unavailable.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Toggle button border |
+| `--background` | Toggle button background |
+| `--foreground` | Toggle button icon colour |
+| `--muted` | Toggle button hover background |
+| `--ring` | Toggle button focus ring |
+
+## Do / Don't
+
+- **Do** keep the item count reasonable — very short lists loop awkwardly
+  even with pace-scaling.
+- **Do** give images real `alt` text, or `alt=""` if purely decorative.
+- **Don't** put content someone must read carefully inside a Marquee —
+  motion undermines reading; reserve it for decorative or ambient content.
+- **Don't** rely on the marquee alone for critical information — a no-JS or
+  fast-scrolling user may not catch it.
+
+## Content
+
+- Pass a `label` describing the strip's purpose ("Client logos", "Latest
+  headlines") — it's announced once via the root's `aria-label`.
+- Keep items short — long strings force a longer loop and awkward wrapping.

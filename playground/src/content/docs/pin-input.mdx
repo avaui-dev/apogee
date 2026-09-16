@@ -1,0 +1,111 @@
+---
+title: PinInput
+description: A row of single-character boxes for short codes (OTP, 2FA).
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import PinInput from '../../../../registry/components/PinInput/PinInput.astro'
+
+<JsNote fallback="Each box keeps its own `name` attribute, so without JS every character submits as a repeated `code` field — join them server-side (`formData.getAll('code').join('')`) to reconstruct the code. With JS, the boxes are un-named and the joined value submits via the single hidden field instead.">
+  Auto-advances focus to the next box on input, moves back on `Backspace` from
+  an empty box, supports arrow-key navigation, and distributes a pasted code
+  across the boxes — then joins every box's value into the hidden `code` field
+  (and un-names the boxes so they don't double-submit).
+</JsNote>
+
+<Preview code={`<PinInput />`}>
+  <PinInput />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pin-input
+```
+
+No Apogee dependencies, no icons. Ships one scoped JS island that joins the boxes
+into a single value; without it each character still submits as a repeated `name`
+field (see the note above).
+
+## Usage
+
+```astro
+---
+import PinInput from '@/components/apogee/PinInput/PinInput.astro'
+---
+<PinInput name="code" length={6} />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. `PinInput`'s `Props` has no
+index signature, so — unlike other components on this page — attributes beyond
+those below are **not** forwarded to the DOM.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | `'code'` | `name` of the hidden `<input type="hidden">` that carries the joined value. |
+| `length` | `number` | `6` | Number of character boxes. |
+| `type` | `'numeric' \| 'text'` | `'numeric'` | `numeric` shows a number keypad and strips non-digits as you type; `text` allows any character. |
+| `aria-label` | `string` | `'Verification code'` | Label on the `role="group"` wrapper. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+<Preview code={`<PinInput type="numeric" aria-label="Numeric code" />
+<PinInput type="text" aria-label="Text code" />`}>
+  <PinInput type="numeric" aria-label="Numeric code" />
+  <PinInput type="text" aria-label="Text code" />
+</Preview>
+
+## Examples
+
+A shorter PIN with a custom field name:
+
+```astro
+<PinInput length={4} name="pin" aria-label="4-digit PIN" />
+```
+
+## Accessibility
+
+- `role="group"` with `aria-label` (defaults to "Verification code") groups the
+  boxes for assistive tech.
+- Each box carries `aria-label="Character N"` (1-indexed) — there's no visible
+  per-box label.
+- **Keyboard** — typing auto-advances to the next box; `Backspace` on an empty
+  box moves focus back; `←` / `→` move between boxes without changing values;
+  pasting a full code fills forward from the focused box.
+- The first box gets `autocomplete="one-time-code"`, so browsers/OS can offer
+  SMS-code autofill.
+- **No JS:** every box renders, is labeled, and accepts a character; each box
+  keeps its `name`, so it submits as a repeated field — join the values
+  server-side to reconstruct the code.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Box border |
+| `--background` | Box background |
+| `--foreground` | Box text |
+| `--accent` | Focus-visible border |
+| `--ring` | Focus ring |
+| `--radius-md` | Box corner radius |
+
+## Do / Don't
+
+- **Do** set `type="numeric"` for OTP/PIN codes — it filters input and shows a
+  numeric keypad on mobile.
+- **Do** keep `length` matched to the real code length the backend expects.
+- **Don't** forget the no-JS path submits separate characters, not a joined
+  string — join `formData.getAll(name)` server-side to reconstruct the code.
+- **Don't** add a visible label or border around the group — the boxes are the
+  label.
+
+## Content
+
+- `aria-label` names what the code is for ("Verification code", "2FA code") —
+  keep it short; it's announced once for the whole group.

@@ -1,0 +1,103 @@
+---
+title: Divider
+description: A separator between content, horizontal or vertical.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Divider from '../../../../registry/components/Divider/Divider.astro'
+
+<Preview code={`<p>Section one</p>
+<Divider />
+<p>Section two</p>`}>
+  <div class="w-full">
+    <p class="text-sm">Section one</p>
+    <Divider class="my-3" />
+    <p class="text-sm">Section two</p>
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add divider
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Divider from '@/components/apogee/Divider/Divider.astro'
+---
+<Divider />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root element.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | `horizontal` renders an `<hr>`; `vertical` renders a `<div>` sized to stretch its flex/grid container. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+Every `orientation`:
+
+<Preview code={`<Divider orientation="horizontal" />`}>
+  <Divider orientation="horizontal" />
+</Preview>
+
+<Preview code={`<div class="flex h-12 items-center gap-4">
+  <span>Left</span>
+  <Divider orientation="vertical" />
+  <span>Right</span>
+</div>`}>
+  <div class="flex h-12 items-center gap-4 text-sm">
+    <span>Left</span>
+    <Divider orientation="vertical" />
+    <span>Right</span>
+  </div>
+</Preview>
+
+## States
+
+No interactive states — a static separator.
+
+## Examples
+
+Between toolbar items:
+
+```astro
+<div class="flex h-10 items-center gap-3">
+  <Button variant="ghost" size="icon" aria-label="Bold">B</Button>
+  <Divider orientation="vertical" />
+  <Button variant="ghost" size="icon" aria-label="Italic">I</Button>
+</div>
+```
+
+## Accessibility
+
+- `horizontal` is a real `<hr>` — implicit `separator` role, no extra ARIA
+  needed.
+- `vertical` is a `<div role="separator" aria-orientation="vertical">`, since
+  `<hr>` only carries horizontal semantics.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Line color |
+
+## Do / Don't
+
+Layout primitive — exempt from Do/Don't guidance (no misuse surface).
+
+## Content
+
+Layout primitive — exempt from content guidance (no text of its own).

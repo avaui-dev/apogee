@@ -32,11 +32,12 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
   closedby="any"
   data-variant={variant}
   data-position={variant === 'panel' ? position : undefined}
+  aria-labelledby={title ? `${id}-title` : undefined}
   class:list={['apogee-dialog border border-border bg-surface p-0 text-surface-foreground', className]}
   {...rest}
 >
   <div class="flex items-start justify-between gap-4 p-5 pb-2">
-    {title && <h2 class="text-lg font-semibold text-foreground">{title}</h2>}
+    {title && <h2 id={`${id}-title`} class="text-lg font-semibold text-foreground">{title}</h2>}
     <button
       type="button"
       command="close"

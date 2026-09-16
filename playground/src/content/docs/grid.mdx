@@ -1,0 +1,160 @@
+---
+title: Grid
+description: A responsive grid — autofit by default, or a fixed column count.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Grid from '../../../../registry/components/Grid/Grid.astro'
+
+Layout primitive — exempt from Do/Don't and Content (no misuse or wording surface).
+
+<Preview code={`<Grid minItemWidth="10rem" gap={4}>
+  <div class="rounded-md border border-border p-4 text-sm">1</div>
+  <div class="rounded-md border border-border p-4 text-sm">2</div>
+  <div class="rounded-md border border-border p-4 text-sm">3</div>
+  <div class="rounded-md border border-border p-4 text-sm">4</div>
+</Grid>`}>
+  <Grid minItemWidth="10rem" gap={4}>
+    <div class="rounded-md border border-border p-4 text-sm">1</div>
+    <div class="rounded-md border border-border p-4 text-sm">2</div>
+    <div class="rounded-md border border-border p-4 text-sm">3</div>
+    <div class="rounded-md border border-border p-4 text-sm">4</div>
+  </Grid>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add grid
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Grid from '@/components/apogee/Grid/Grid.astro'
+---
+<Grid>
+  <Card />
+  <Card />
+  <Card />
+</Grid>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `minItemWidth` | `string` | `'16rem'` | Autofit mode: the smallest a column may get before the count drops. Ignored when `cols` is set. |
+| `cols` | `number` | — | Fixed column count. Overrides autofit. |
+| `gap` | `0 \| 2 \| 4 \| 6 \| 8 \| 10` | `6` | Gap size (Tailwind `gap-*` scale). |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+Autofit (default) — columns reflow to the grid's width, no breakpoints:
+
+<Preview code={`<Grid minItemWidth="8rem">
+  <div class="rounded-md border border-border p-4 text-sm">A</div>
+  <div class="rounded-md border border-border p-4 text-sm">B</div>
+  <div class="rounded-md border border-border p-4 text-sm">C</div>
+  <div class="rounded-md border border-border p-4 text-sm">D</div>
+  <div class="rounded-md border border-border p-4 text-sm">E</div>
+</Grid>`}>
+  <Grid minItemWidth="8rem">
+    <div class="rounded-md border border-border p-4 text-sm">A</div>
+    <div class="rounded-md border border-border p-4 text-sm">B</div>
+    <div class="rounded-md border border-border p-4 text-sm">C</div>
+    <div class="rounded-md border border-border p-4 text-sm">D</div>
+    <div class="rounded-md border border-border p-4 text-sm">E</div>
+  </Grid>
+</Preview>
+
+Fixed columns (`cols` overrides autofit):
+
+<Preview code={`<Grid cols={3}>
+  <div class="rounded-md border border-border p-4 text-sm">1</div>
+  <div class="rounded-md border border-border p-4 text-sm">2</div>
+  <div class="rounded-md border border-border p-4 text-sm">3</div>
+</Grid>`}>
+  <Grid cols={3}>
+    <div class="rounded-md border border-border p-4 text-sm">1</div>
+    <div class="rounded-md border border-border p-4 text-sm">2</div>
+    <div class="rounded-md border border-border p-4 text-sm">3</div>
+  </Grid>
+</Preview>
+
+Every `gap` value (two columns, so the gap is easy to compare):
+
+<Preview code={`<div class="flex w-full flex-col gap-6">
+  <Grid cols={2} gap={0}>
+    <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
+    <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
+  </Grid>
+  <Grid cols={2} gap={2}>
+    <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
+    <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
+  </Grid>
+  <Grid cols={2} gap={4}>
+    <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
+    <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
+  </Grid>
+  <Grid cols={2} gap={6}>
+    <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
+    <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
+  </Grid>
+  <Grid cols={2} gap={8}>
+    <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
+    <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
+  </Grid>
+  <Grid cols={2} gap={10}>
+    <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
+    <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
+  </Grid>
+</div>`}>
+  <div class="flex w-full flex-col gap-6">
+    <Grid cols={2} gap={0}>
+      <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
+      <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
+    </Grid>
+    <Grid cols={2} gap={2}>
+      <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
+      <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
+    </Grid>
+    <Grid cols={2} gap={4}>
+      <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
+      <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
+    </Grid>
+    <Grid cols={2} gap={6}>
+      <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
+      <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
+    </Grid>
+    <Grid cols={2} gap={8}>
+      <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
+      <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
+    </Grid>
+    <Grid cols={2} gap={10}>
+      <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
+      <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
+    </Grid>
+  </div>
+</Preview>
+
+## Accessibility
+
+Native semantics, no extra ARIA needed. A `<div class="grid">` carries no
+implicit role — if the children form a meaningful list, use a list element
+(`ul`/`ol`) inside or around it as appropriate.
+
+## Tokens
+
+No CSS custom properties. Column width comes from an inline `grid-template-columns`
+(computed from `minItemWidth` or `cols`); gap comes from Tailwind's built-in
+`gap-*` spacing scale, not a bespoke token.

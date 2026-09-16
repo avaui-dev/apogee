@@ -1,0 +1,148 @@
+---
+title: Footer
+description: A site footer shell for link columns and a bottom copyright row.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Footer from '../../../../registry/components/Footer/Footer.astro'
+import Grid from '../../../../registry/components/Grid/Grid.astro'
+
+<Preview code={`<Footer>
+  <Grid cols={3} gap={6}>
+    <div>
+      <p class="text-sm font-medium text-foreground">Product</p>
+      <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Pricing</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-sm font-medium text-foreground">Company</p>
+      <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-sm font-medium text-foreground">Legal</p>
+      <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+    </div>
+  </Grid>
+  <p slot="bottom">© 2026 Acme, Inc.</p>
+</Footer>`}>
+  <Footer>
+    <Grid cols={3} gap={6}>
+      <div>
+        <p class="text-sm font-medium text-foreground">Product</p>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-foreground">Company</p>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-foreground">Legal</p>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+    </Grid>
+    <p slot="bottom">© 2026 Acme, Inc.</p>
+  </Footer>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footer
+```
+
+No Apogee dependencies. Pairs well with `Grid` for the column layout.
+
+## Usage
+
+```astro
+---
+import Footer from '@/components/apogee/Footer/Footer.astro'
+---
+<Footer>
+  <nav>…link columns…</nav>
+  <p slot="bottom">© 2026 Acme, Inc.</p>
+</Footer>
+```
+
+## Anatomy
+
+- **Default slot** — the main content, typically a `Grid` of link-list columns.
+- **`bottom`** slot (optional) — a row below a top divider, laid out as a
+  column on mobile and a row (space-between) from `sm:` up. Renders only when passed.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<footer>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Examples
+
+Without a bottom row:
+
+<Preview code={`<Footer>
+  <p class="text-sm text-muted-foreground">A single-column footer, no bottom row.</p>
+</Footer>`}>
+  <Footer>
+    <p class="text-sm text-muted-foreground">A single-column footer, no bottom row.</p>
+  </Footer>
+</Preview>
+
+Bottom row with multiple items (space-between on wider screens):
+
+```astro
+<Footer>
+  <Grid cols={2}>…</Grid>
+  <p slot="bottom">© 2026 Acme, Inc.</p>
+  <div slot="bottom" class="flex gap-4">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</Footer>
+```
+
+## Accessibility
+
+Native semantics — renders a real `<footer>` landmark, no extra ARIA needed.
+Links inside it keep their own keyboard behaviour.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Top border of the footer and of the `bottom` row |
+| `--muted-foreground` | `bottom` row text colour |
+
+## Do / Don't
+
+- **Do** use `Grid` (or another layout primitive) inside the default slot for multi-column links.
+- **Do** keep the `bottom` row to copyright + a short legal link list.
+- **Don't** put primary navigation or a CTA that belongs in the header here.
+- **Don't** nest another `Footer` inside it.
+
+## Content
+
+- Column headings are short nouns ("Product", "Company"), sentence case, no ending punctuation.
+- Bottom copyright line: `© {year} {name}`, no trailing period.

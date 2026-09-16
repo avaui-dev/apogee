@@ -1,0 +1,135 @@
+---
+title: Steps
+description: A vertical progress list for onboarding, checkout, and wizard flows.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Steps from '../../../../registry/components/Steps/Steps.astro'
+
+<Preview code={`<Steps
+  items={[
+    { title: 'Cart', description: 'Review your items' },
+    { title: 'Shipping', description: 'Add your address' },
+    { title: 'Payment', description: 'Enter payment details' },
+    { title: 'Confirm' },
+  ]}
+  current={2}
+/>`}>
+  <Steps
+    items={[
+      { title: 'Cart', description: 'Review your items' },
+      { title: 'Shipping', description: 'Add your address' },
+      { title: 'Payment', description: 'Enter payment details' },
+      { title: 'Confirm' },
+    ]}
+    current={2}
+  />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add steps
+```
+
+No Apogee component dependencies. Depends on `@lucide/astro` (renders the
+done-step check icon).
+
+## Usage
+
+```astro
+---
+import Steps from '@/components/apogee/Steps/Steps.astro'
+---
+<Steps
+  items={[
+    { title: 'Cart' },
+    { title: 'Shipping' },
+    { title: 'Payment' },
+  ]}
+  current={2}
+/>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<ol>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `{ title: string; description?: string }[]` | — | Steps in order. Each renders an indicator and title, with an optional description. |
+| `current` | `number` | `1` | 1-based index of the active step. Earlier steps render as done. |
+| `class` | `string` | — | Extra classes on the root `<ol>`, merged last. |
+
+## States
+
+A step's visual state is derived from its position relative to `current`:
+
+- **Done** (`n < current`) — filled accent indicator with a check icon.
+- **Current** (`n === current`) — accent-outlined indicator with the step
+  number, `aria-current="step"`.
+- **Upcoming** (`n > current`) — muted indicator with the step number, muted
+  title.
+
+<Preview code={`<Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={1} />`}>
+  <Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={1} />
+</Preview>
+
+<Preview code={`<Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={2} />`}>
+  <Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={2} />
+</Preview>
+
+<Preview code={`<Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={4} />`}>
+  <Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={4} />
+</Preview>
+
+## Examples
+
+Compact, without descriptions:
+
+<Preview code={`<Steps items={[{ title: 'Draft' }, { title: 'Review' }, { title: 'Publish' }]} current={3} />`}>
+  <Steps items={[{ title: 'Draft' }, { title: 'Review' }, { title: 'Publish' }]} current={3} />
+</Preview>
+
+Mark the whole flow complete by setting `current` past the last step:
+
+```astro
+<Steps items={steps} current={steps.length + 1} />
+```
+
+## Accessibility
+
+- The `<ol>` conveys the sequence to assistive tech on its own — it's a real
+  ordered list.
+- The active step's indicator gets `aria-current="step"`.
+- The connector line and the check icon inside a done indicator are
+  `aria-hidden` — decorative.
+- Native semantics, no extra ARIA needed beyond `aria-current`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--accent` / `--accent-foreground` | Done + current indicator border/fill, current step's number color |
+| `--background` | Current/upcoming indicator background |
+| `--border` | Upcoming indicator border + connector line |
+| `--foreground` / `--muted-foreground` | Title color (current/done vs. upcoming) + description color |
+
+## Do / Don't
+
+- **Do** keep `title` to one to three words; put detail in `description`.
+- **Do** set `current` to `items.length + 1` once the flow is complete, so
+  every step shows done.
+- **Don't** use Steps for parallel, unordered content — use `Tabs`.
+- **Don't** skip numbers in the sequence — `current` is a plain 1-based index
+  into `items`.
+
+## Content
+
+- `title` is a short noun phrase naming the step ("Shipping"), sentence
+  case, no ending punctuation.
+- `description` is one short sentence or fragment — skip the trailing period
+  for fragments, use it for full sentences.

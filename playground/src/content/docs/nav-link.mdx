@@ -1,0 +1,101 @@
+---
+title: NavLink
+description: A navigation link that auto-detects and styles the current route.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
+
+<Preview code={`<NavLink href="/docs">Docs</NavLink>
+<NavLink href="/pricing">Pricing</NavLink>
+<NavLink href="/about" active>About</NavLink>`}>
+  <NavLink href="/docs">Docs</NavLink>
+  <NavLink href="/pricing">Pricing</NavLink>
+  <NavLink href="/about" active>About</NavLink>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add nav-link
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import NavLink from '@/components/apogee/NavLink/NavLink.astro'
+---
+<NavLink href="/docs">Docs</NavLink>
+```
+
+The active state is automatic: it compares `Astro.url.pathname` to `href`
+(trailing slashes normalized), so the current page's link lights up with no
+extra markup. Pass `active` to override.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<a>`
+attribute passes through (`...rest`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | — | Link target. |
+| `active` | `boolean` | auto-detected | Forces the active state. Default compares the current URL's pathname to `href`. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## States
+
+<Preview code={`<NavLink href="/docs">Inactive</NavLink>
+<NavLink href="/docs" active>Active</NavLink>`}>
+  <NavLink href="/docs">Inactive</NavLink>
+  <NavLink href="/docs" active>Active</NavLink>
+</Preview>
+
+- **Inactive** (default) — muted text, brightens on hover.
+- **Active** — `aria-current="page"` and full-contrast text; auto-detected
+  from the URL, or forced via `active`.
+- **Focus** — a visible `focus-visible` ring.
+
+## Examples
+
+A link row, built for use inside `Navbar`'s default slot:
+
+```astro
+<NavLink href="/docs">Docs</NavLink>
+<NavLink href="/pricing">Pricing</NavLink>
+<NavLink href="/blog">Blog</NavLink>
+```
+
+## Accessibility
+
+- Real `<a>` — full keyboard + AT support for free.
+- `aria-current="page"` is set on the active link, so assistive tech
+  announces it as the current page (not just visually distinct).
+- Focus ring is always visible on keyboard focus.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground` | Active link text |
+| `--muted-foreground` | Inactive link text |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** let the active state auto-detect — only pass `active` when the
+  route can't be matched by pathname (e.g. a hash-based section link).
+- **Do** use NavLink for site navigation, inside `Navbar` or a `Sidebar`.
+- **Don't** use NavLink for an action — use `Button`.
+- **Don't** hard-code the active state on every page; that defeats the
+  point of auto-detection and drifts out of sync.
+
+## Content
+
+- Labels are nouns, sentence case, one or two words ("Docs", "Pricing").
+- No ending punctuation.

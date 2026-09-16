@@ -1,0 +1,148 @@
+---
+title: List
+description: A styled ordered or unordered list for grouped item content — not for layout rows.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import List from '../../../../registry/components/List/List.astro'
+
+<Preview code={`<List>
+  <li>First item</li>
+  <li>Second item</li>
+  <li>Third item</li>
+</List>`}>
+  <List>
+    <li>First item</li>
+    <li>Second item</li>
+    <li>Third item</li>
+  </List>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add list
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import List from '@/components/apogee/List/List.astro'
+---
+<List>
+  <li>First item</li>
+  <li>Second item</li>
+</List>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<ul>` /
+`<ol>` attribute passes through (`...rest`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `'ul' \| 'ol'` | `'ul'` | Element tag — unordered or ordered list. |
+| `marker` | `'default' \| 'none'` | `'default'` | `none` drops the marker and its start indent. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+`as` × `marker`, every combination:
+
+<Preview code={`<List as="ul">
+  <li>Unordered</li>
+  <li>Bulleted</li>
+</List>
+<List as="ol">
+  <li>Ordered</li>
+  <li>Numbered</li>
+</List>
+<List as="ul" marker="none">
+  <li>Unordered, no marker</li>
+  <li>Flush to the edge</li>
+</List>
+<List as="ol" marker="none">
+  <li>Ordered, no marker</li>
+  <li>Flush to the edge</li>
+</List>`}>
+  <List as="ul">
+    <li>Unordered</li>
+    <li>Bulleted</li>
+  </List>
+  <List as="ol">
+    <li>Ordered</li>
+    <li>Numbered</li>
+  </List>
+  <List as="ul" marker="none">
+    <li>Unordered, no marker</li>
+    <li>Flush to the edge</li>
+  </List>
+  <List as="ol" marker="none">
+    <li>Ordered, no marker</li>
+    <li>Flush to the edge</li>
+  </List>
+</Preview>
+
+## States
+
+No interactive states — List renders static markup.
+
+## Examples
+
+Nested list, and a list of longer content:
+
+<Preview code={`<List as="ol">
+  <li>
+    Set up the project
+    <List marker="none" class="mt-1 ms-4">
+      <li>Install dependencies</li>
+      <li>Copy the env file</li>
+    </List>
+  </li>
+  <li>Ship it</li>
+</List>`}>
+  <List as="ol">
+    <li>
+      Set up the project
+      <List marker="none" class="mt-1 ms-4">
+        <li>Install dependencies</li>
+        <li>Copy the env file</li>
+      </List>
+    </li>
+    <li>Ship it</li>
+  </List>
+</Preview>
+
+## Accessibility
+
+Native semantics, no extra ARIA needed. `<ul>` / `<ol>` with real `<li>`
+children already gives assistive tech the list role, item count, and position.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted-foreground` | Marker (bullet / number) colour |
+
+## Do / Don't
+
+- **Do** use List for a set of related items where a marker or order carries
+  meaning.
+- **Do** pass `marker="none"` when nesting a List inside a layout that
+  supplies its own bullets or icons.
+- **Don't** use List for layout rows or navigation — use `Stack` or `Navbar`.
+- **Don't** put non-`<li>` children directly in the slot — the marker and
+  indent styling target `<li>`.
+
+## Content
+
+- Keep items short — sentence case, no ending period unless the item is a
+  full sentence.
+- Keep phrasing parallel across items (all start with the same part of
+  speech).

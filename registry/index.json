@@ -37,7 +37,9 @@
         "Avatar/Avatar.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [
+        "@lucide/astro"
+      ]
     },
     "AvatarGroup": {
       "name": "AvatarGroup",

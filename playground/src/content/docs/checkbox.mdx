@@ -1,0 +1,126 @@
+---
+title: Checkbox
+description: A native checkbox with a custom look. Toggle a single option, or one item in a multi-select list.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Checkbox from '../../../../registry/components/Checkbox/Checkbox.astro'
+
+<Preview code={`<Checkbox label="Email me about product updates" />`}>
+  <Checkbox label="Email me about product updates" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add checkbox
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Checkbox from '@/components/apogee/Checkbox/Checkbox.astro'
+---
+<Checkbox label="Accept terms and conditions" name="terms" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Every prop other than
+`id`, `label`, and `class` passes straight through to the underlying
+`<input type="checkbox">` (the `Props` interface has an open index signature,
+so `checked`, `disabled`, `required`, `name`, `value`, `aria-*`, etc. are all
+valid and unchecked by the type system).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | auto-generated (`apogee-<random>`) | Id on the `<input>`, and `for` on the `<label>`. Set your own if you need a stable id (e.g. to target it from a `<label for>` elsewhere). |
+| `label` | `string` | — | Visible label text, rendered in a real `<label>`. Omit to render the checkbox alone (then supply your own `aria-label`). |
+| `class` | `string` | — | Extra classes on the wrapping `<div>`, merged last. |
+| `...rest` | `any` | — | Passed straight to the `<input>` — e.g. `checked`, `disabled`, `required`, `name`, `value`. |
+
+## States
+
+The real `<input>` is styled directly (`appearance: none`) — it stays the
+actual control, so every state below is native, not simulated:
+
+- **Unchecked** — bordered box, `--border`.
+- **Hover** (unchecked, enabled) — border darkens to `--muted-foreground`.
+- **Checked** — filled `--accent` with an inline checkmark icon.
+- **Indeterminate** — filled `--accent` with a dash icon. This is a DOM
+  property, not an HTML attribute (`el.indeterminate = true`), so it can only
+  be set via script — it can't be demonstrated in a static `<Preview>` here.
+- **Focus** — visible `focus-visible` ring, `--ring`.
+- **Disabled** — 50% opacity, `not-allowed` cursor.
+
+<Preview code={`<Checkbox label="Unchecked" />
+<Checkbox label="Checked" checked />
+<Checkbox label="Disabled" disabled />
+<Checkbox label="Checked and disabled" checked disabled />`}>
+  <Checkbox label="Unchecked" />
+  <Checkbox label="Checked" checked />
+  <Checkbox label="Disabled" disabled />
+  <Checkbox label="Checked and disabled" checked disabled />
+</Preview>
+
+## Examples
+
+Without a visible label (icon-only context — always add an `aria-label`):
+
+<Preview code={`<Checkbox aria-label="Select row" />`}>
+  <Checkbox aria-label="Select row" />
+</Preview>
+
+As part of a form, with `name` and `value`:
+
+```astro
+<form>
+  <Checkbox name="newsletter" value="yes" label="Subscribe to the newsletter" />
+</form>
+```
+
+Setting indeterminate from script (list "select all" pattern):
+
+```html
+<script>
+  document.querySelector('#select-all').indeterminate = true
+</script>
+```
+
+## Accessibility
+
+- Real `<input type="checkbox">` — full keyboard support, correct AT
+  announcement, and native form participation for free. No JS, no fake proxy
+  element.
+- **Keyboard** — `Tab` to focus, `Space` to toggle.
+- Pass `label` for a proper `<label for>` association; if you omit it,
+  provide your own `aria-label` (see the icon-only example above).
+- Focus ring is always visible on keyboard focus (`focus-visible`, not `:focus`).
+- Native semantics — no extra ARIA needed beyond a label.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Unchecked border |
+| `--background` | Unchecked fill |
+| `--muted-foreground` | Hover border (unchecked, enabled) |
+| `--accent` | Checked / indeterminate fill and border |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** always pair the checkbox with a `label` (or `aria-label`) — never leave it unlabeled.
+- **Do** use `indeterminate` only for a "select all" control that spans a partially-selected set.
+- **Don't** use a Checkbox for a single on/off setting that takes effect immediately — use `Switch`.
+- **Don't** disable a checked checkbox to communicate "this is locked" without also explaining why nearby — disabled alone reads as broken to some users.
+
+## Content
+
+- Label states the setting being toggled, not a question ("Email me updates", not "Do you want emails?").
+- Sentence case, no ending period, ideally one line.

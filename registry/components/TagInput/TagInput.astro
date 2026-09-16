@@ -2,8 +2,8 @@
 /**
  * TagInput — type and press Enter (or comma) to add removable tags; Backspace on
  * an empty field removes the last. JS island; without JS it degrades to the
- * initial tags (which still submit) plus a plain text field. Tags submit as
- * repeated `name` fields.
+ * initial tags plus a plain text field that also submits (both under `name`), so
+ * typed text is never lost. Tags submit as repeated `name` fields.
  *
  * @composable
  */
@@ -45,6 +45,7 @@ const { name, value = [], placeholder = 'Add tag…', class: className, ...rest 
   }
   <input
     type="text"
+    name={name}
     class="apogee-taginput-field min-w-24 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
     placeholder={placeholder}
     autocomplete="off"
@@ -67,6 +68,10 @@ const { name, value = [], placeholder = 'Add tag…', class: className, ...rest 
     const tpl = root.querySelector<HTMLTemplateElement>('.apogee-tag-template')
     const name = root.dataset.name || 'tags'
     if (!field || !tpl) continue
+
+    // With JS, tags submit via their own hidden inputs — the live field is just
+    // for typing, so drop its name (it carries the no-JS fallback value).
+    field.removeAttribute('name')
 
     const removeTag = (tag: Element) => tag.remove()
 

@@ -1,0 +1,121 @@
+---
+title: Pagination
+description: Page links with prev/next and ellipses for long page ranges.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Pagination from '../../../../registry/components/Pagination/Pagination.astro'
+
+<Preview code={`<Pagination currentPage={4} totalPages={10} />`}>
+  <Pagination currentPage={4} totalPages={10} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pagination
+```
+
+No Apogee component dependencies. Ships `@lucide/astro` for the prev/next
+chevrons. Zero JS — plain links.
+
+## Usage
+
+```astro
+---
+import Pagination from '@/components/apogee/Pagination/Pagination.astro'
+---
+<Pagination currentPage={1} totalPages={5} />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<nav>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `currentPage` | `number` | — | Current page, 1-indexed. |
+| `totalPages` | `number` | — | Total number of pages. |
+| `getHref` | `(page: number) => string` | `` (p) => `?page=${p}` `` | Builds each page link's `href`. |
+| `class` | `string` | — | Extra classes on the root `<nav>`, merged last. |
+
+Page list shown: first, last, current, and current's immediate neighbours; any
+gap between them collapses to a single `…`.
+
+## States
+
+First page — the prev control is a disabled, non-interactive `<span>`:
+
+<Preview code={`<Pagination currentPage={1} totalPages={10} />`}>
+  <Pagination currentPage={1} totalPages={10} />
+</Preview>
+
+Last page — same treatment on next:
+
+<Preview code={`<Pagination currentPage={10} totalPages={10} />`}>
+  <Pagination currentPage={10} totalPages={10} />
+</Preview>
+
+Few pages — no ellipsis needed:
+
+<Preview code={`<Pagination currentPage={2} totalPages={3} />`}>
+  <Pagination currentPage={2} totalPages={3} />
+</Preview>
+
+Current page in the middle of a long range — ellipses on both sides:
+
+<Preview code={`<Pagination currentPage={12} totalPages={24} />`}>
+  <Pagination currentPage={12} totalPages={24} />
+</Preview>
+
+## Examples
+
+Route-based links instead of a query param:
+
+```astro
+<Pagination currentPage={2} totalPages={8} getHref={(p) => `/blog/page/${p}`} />
+```
+
+## Accessibility
+
+- `<nav aria-label="Pagination">` landmark.
+- Every page is a real `<a>` — keyboard and AT navigable with no custom key
+  handling.
+- Current page gets `aria-current="page"`.
+- Disabled edges (`currentPage === 1` / `=== totalPages`) render as
+  `<span aria-disabled="true">`, not links — non-focusable by default, so they
+  drop out of the tab order naturally.
+- `rel="prev"` / `rel="next"` on the adjacent links hint the sequential
+  relationship to browsers and AT.
+- Chevron icons are `aria-hidden`; the links carry `aria-label="Previous page"` /
+  `"Next page"`.
+- No JS — server-rendered links, identical behaviour with JS off.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--radius-md` | Cell corner radius |
+| `--ring` | Focus ring |
+| `--muted` | Hover background |
+| `--accent` / `--accent-foreground` | Current-page fill |
+| `--foreground` | Link text |
+| `--muted-foreground` | Ellipsis + disabled-edge colour |
+
+## Do / Don't
+
+- **Do** keep `getHref` pure — a real, navigable, crawlable URL, not a
+  client-only stub.
+- **Do** use it for genuine paginated routes/lists, not to fake a "load more"
+  interaction.
+- **Don't** intercept the links with a click handler for client-side-only
+  paging — it breaks no-JS and deep-linking.
+- **Don't** render it when there's only one page.
+
+## Content
+
+- No editable copy — page numbers are the content, kept `tabular-nums` so
+  digit widths stay equal as the current page changes.

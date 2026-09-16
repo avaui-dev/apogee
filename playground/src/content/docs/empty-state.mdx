@@ -1,0 +1,114 @@
+---
+title: EmptyState
+description: A centered placeholder for empty views — no results, first run, a cleared list.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import EmptyState from '../../../../registry/components/EmptyState/EmptyState.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import { Inbox, SearchX } from '@lucide/astro'
+
+<Preview code={`<EmptyState title="No messages yet" description="When someone sends you a message, it'll show up here.">
+  <Inbox slot="icon" />
+  <Button slot="actions" variant="primary" size="sm">Compose</Button>
+</EmptyState>`}>
+  <EmptyState title="No messages yet" description="When someone sends you a message, it'll show up here.">
+    <Inbox slot="icon" />
+    <Button slot="actions" variant="primary" size="sm">Compose</Button>
+  </EmptyState>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add empty-state
+```
+
+No Apogee dependencies. Commonly composed with `Button` in the `actions` slot
+and a `@lucide/astro` icon in the `icon` slot.
+
+## Usage
+
+```astro
+---
+import EmptyState from '@/components/apogee/EmptyState/EmptyState.astro'
+---
+<EmptyState title="No results" description="Try a different search." />
+```
+
+## Anatomy
+
+- **`icon`** slot (optional) — a leading glyph above the title. Sized via
+  `[&_svg]:size-8`; pass any SVG (Lucide recommended).
+- **Title** — required, always rendered.
+- **Description** — optional, rendered under the title when passed.
+- **`actions`** slot (optional) — buttons or links, wrapped and centered below the text.
+
+```astro
+<EmptyState title="No projects" description="Create your first project to get started.">
+  <FolderOpen slot="icon" />
+  <Button slot="actions" variant="primary" size="sm">New project</Button>
+  <Button slot="actions" variant="ghost" size="sm">Import</Button>
+</EmptyState>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | — | Required. The primary message. |
+| `description` | `string` | — | Optional supporting line, shown under the title. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Examples
+
+Title only, no icon or actions:
+
+<Preview code={`<EmptyState title="Nothing here yet" />`}>
+  <EmptyState title="Nothing here yet" />
+</Preview>
+
+No results after a search or filter:
+
+<Preview code={`<EmptyState title="No results found" description="Try adjusting your filters.">
+  <SearchX slot="icon" />
+</EmptyState>`}>
+  <EmptyState title="No results found" description="Try adjusting your filters.">
+    <SearchX slot="icon" />
+  </EmptyState>
+</Preview>
+
+## Accessibility
+
+Native semantics, no extra ARIA needed — a heading-less block of text and
+optional interactive children (icon is `aria-hidden` by convention if decorative;
+pass `aria-hidden="true"` on the icon yourself, since the component doesn't add
+it). Any `Button`/link placed in `actions` keeps its own keyboard behaviour.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Dashed border around the block |
+| `--foreground` | Title text |
+| `--muted-foreground` | Icon colour and description text |
+| `--radius-lg` | Corner radius |
+
+## Do / Don't
+
+- **Do** pair the title with a next step in `actions` when there's one obvious action.
+- **Do** keep the description to one sentence explaining why the view is empty.
+- **Don't** stack more than two actions — pick the primary path.
+- **Don't** use it for error states with a retry — that reads better as an `Alert`.
+
+## Content
+
+- Title is a short noun phrase stating what's missing ("No messages yet",
+  "No results found"), not an apology.
+- Description (if any) explains why or what to do next, one sentence, no ending period.
+- Action label follows Button's content rules (verb + outcome, sentence case).

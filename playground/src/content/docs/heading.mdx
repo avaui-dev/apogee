@@ -1,0 +1,107 @@
+---
+title: Heading
+description: A semantic, fluid-sized heading — pick the tag with `as`, the visual size with `size`.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Heading from '../../../../registry/components/Heading/Heading.astro'
+
+<Preview code={`<Heading as="h1">Ship faster with Apogee</Heading>
+<Heading as="h2" size="h3">Same order, a smaller visual weight</Heading>`}>
+  <Heading as="h1">Ship faster with Apogee</Heading>
+  <Heading as="h2" size="h3">Same order, a smaller visual weight</Heading>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add heading
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Heading from '@/components/apogee/Heading/Heading.astro'
+---
+<Heading as="h1">Page title</Heading>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native heading/text
+attribute (e.g. `id`, `aria-level`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6' \| 'p' \| 'div'` | `'h2'` | Semantic tag rendered. |
+| `size` | `'display' \| 'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6'` | mirrors `as` (falls back to `h2` when `as` is `p`/`div`) | Visual size, independent of the semantic tag. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Sizes
+
+Every size. Rendered here on `as="div"` so the outline stays clean — in real
+pages, prefer picking the right `as` first.
+
+<Preview code={`<Heading as="div" size="display">Display</Heading>
+<Heading as="div" size="h1">Heading 1</Heading>
+<Heading as="div" size="h2">Heading 2</Heading>
+<Heading as="div" size="h3">Heading 3</Heading>
+<Heading as="div" size="h4">Heading 4</Heading>
+<Heading as="div" size="h5">Heading 5</Heading>
+<Heading as="div" size="h6">Heading 6</Heading>`}>
+  <Heading as="div" size="display">Display</Heading>
+  <Heading as="div" size="h1">Heading 1</Heading>
+  <Heading as="div" size="h2">Heading 2</Heading>
+  <Heading as="div" size="h3">Heading 3</Heading>
+  <Heading as="div" size="h4">Heading 4</Heading>
+  <Heading as="div" size="h5">Heading 5</Heading>
+  <Heading as="div" size="h6">Heading 6</Heading>
+</Preview>
+
+## Examples
+
+Decouple visual weight from document order — a card title that's semantically
+an `h3` but should look smaller than the page's other `h3`s:
+
+```astro
+<Heading as="h3" size="h5">Card title</Heading>
+```
+
+## Accessibility
+
+- Renders the real tag passed to `as` — screen readers get an accurate heading
+  outline.
+- Keep heading order sequential (h1 → h2 → h3, no skipping) even when `size`
+  makes the visual weight diverge from `as`.
+- `as="p"` / `as="div"` removes the element from the heading outline entirely —
+  use it when text should merely *look* like a heading without appearing in
+  the page's structure.
+- Native semantics, no extra ARIA needed.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--text-display` / `--text-h1` … `--text-h6` (each paired with its own line-height) | Fluid font size + line height per `size` |
+| `--foreground` | Text colour |
+
+## Do / Don't
+
+- **Do** choose `as` for correct document outline first, then adjust `size`
+  for visual weight.
+- **Do** keep exactly one `h1` per page.
+- **Don't** skip heading levels for visual reasons — use `size` instead of
+  jumping from `h2` to `h5`.
+- **Don't** use `Heading` to style body copy — reach for `as="p"`/`as="div"`
+  only when the text is heading-like but shouldn't join the outline.
+
+## Content
+
+- Short, front-loaded phrases — lead with the key word, sentence case, no
+  ending period.
+- Avoid vague headings ("More information") — name the actual content.

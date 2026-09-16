@@ -1,0 +1,33 @@
+---
+/**
+ * ToastDemo — the live Toast example for the docs. Toast is imperative
+ * (`window.apogeeToast(...)`), and MDX can't host an inline <script> with object
+ * literals, so the wiring lives here in a real Astro island.
+ */
+import Toaster from '../../../registry/components/Toast/Toaster.astro'
+
+const btn =
+  'rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/60'
+---
+
+<Toaster />
+<button type="button" data-toast="info" class={btn}>Show info</button>
+<button type="button" data-toast="success" class={btn}>Show success</button>
+<button type="button" data-toast="warning" class={btn}>Show warning</button>
+<button type="button" data-toast="danger" class={btn}>Show danger</button>
+
+<script>
+  const messages = {
+    info: { message: 'Changes are saved automatically.', title: 'Heads up' },
+    success: { message: 'Your changes have been saved.', title: 'Saved' },
+    warning: { message: 'Your session expires in 5 minutes.', title: 'Heads up' },
+    danger: { message: 'Could not save your changes.', title: 'Error' },
+  } as const
+  for (const el of document.querySelectorAll<HTMLElement>('[data-toast]')) {
+    const variant = el.dataset.toast as keyof typeof messages
+    el.addEventListener('click', () => {
+      const { message, title } = messages[variant]
+      ;(window as any).apogeeToast?.(message, { variant, title })
+    })
+  }
+</script>

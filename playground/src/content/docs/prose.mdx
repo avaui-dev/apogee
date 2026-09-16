@@ -1,0 +1,146 @@
+---
+title: Prose
+description: Typography styling for a block of rich, CMS, or markdown HTML you don't control element by element.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Prose from '../../../../registry/components/Prose/Prose.astro'
+
+<Preview code={`<Prose>
+  <h2>Getting started</h2>
+  <p>Prose styles any block of rich or CMS-authored HTML you don't hand-style
+  element by element — token-driven, so it themes with everything else.</p>
+  <ul>
+    <li>Works with <code>set:html</code> or plain children</li>
+    <li>Links, lists, quotes, and code all get consistent spacing</li>
+  </ul>
+</Prose>`}>
+  <Prose>
+    <h2>Getting started</h2>
+    <p>Prose styles any block of rich or CMS-authored HTML you don't hand-style
+    element by element — token-driven, so it themes with everything else.</p>
+    <ul>
+      <li>Works with <code>set:html</code> or plain children</li>
+      <li>Links, lists, quotes, and code all get consistent spacing</li>
+    </ul>
+  </Prose>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add prose
+```
+
+No Apogee component dependencies, no icons. Zero JS — a global,
+`.apogee-prose`-scoped CSS layer.
+
+## Usage
+
+```astro
+---
+import Prose from '@/components/apogee/Prose/Prose.astro'
+---
+<Prose set:html={article.body} />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Accepts any other attribute
+(e.g. `set:html`, `id`), which passes through to the wrapper `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Extra classes on the wrapper, merged last. |
+
+## Examples
+
+Trusted/sanitized CMS or markdown HTML:
+
+```astro
+<Prose set:html={renderedMarkdown} />
+```
+
+Authored inline as children instead:
+
+```astro
+<Prose>
+  <h2>Release notes</h2>
+  <p>What changed in this version.</p>
+</Prose>
+```
+
+The styled element catalogue — headings, links, emphasis, lists, quotes, code:
+
+<Preview code={`<Prose>
+  <h2>Heading two</h2>
+  <h3>Heading three</h3>
+  <p>A paragraph with a <a href="#">link</a> and <strong>bold text</strong>.</p>
+  <ul>
+    <li>Unordered item</li>
+    <li>Another item</li>
+  </ul>
+  <ol>
+    <li>Ordered item</li>
+    <li>Another item</li>
+  </ol>
+  <blockquote>A quoted aside.</blockquote>
+  <pre><code>const x = 1</code></pre>
+  <hr />
+</Prose>`}>
+  <Prose>
+    <h2>Heading two</h2>
+    <h3>Heading three</h3>
+    <p>A paragraph with a <a href="#">link</a> and <strong>bold text</strong>.</p>
+    <ul>
+      <li>Unordered item</li>
+      <li>Another item</li>
+    </ul>
+    <ol>
+      <li>Ordered item</li>
+      <li>Another item</li>
+    </ol>
+    <blockquote>A quoted aside.</blockquote>
+    <pre><code>const x = 1</code></pre>
+    <hr />
+  </Prose>
+</Preview>
+
+## Accessibility
+
+- Native semantics, no extra ARIA needed — Prose is a CSS layer over your own
+  markup; semantics come entirely from the HTML you put inside (or the CMS HTML
+  you render).
+- Using `set:html`: sanitize the source yourself — Prose only styles, it never
+  sanitizes.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground` | Body + heading text |
+| `--accent` / `--accent-hover` | Link colour / hover |
+| `--muted-foreground` | List marker colour, blockquote text |
+| `--border` | Blockquote rule, `<hr>` |
+| `--muted` | Inline `code` and `pre` background |
+| `--radius-sm` | Inline `code` corner radius |
+| `--radius-md` | `pre` and `img` corner radius |
+
+## Do / Don't
+
+- **Do** use it for any block of HTML you don't style element by element — CMS
+  output, rendered markdown, long-form copy.
+- **Do** sanitize untrusted HTML before `set:html` — Prose doesn't clean input,
+  it only styles it.
+- **Don't** reach for Prose to style one isolated element (a lone `<p>` or
+  `<a>`) — style it directly instead.
+- **Don't** nest interactive app UI (buttons, forms) inside — it's a typography
+  layer, not a layout system.
+
+## Content
+
+- No wording rules of its own — copy follows whatever produced it (CMS,
+  markdown, hand-authored). Keep headings short enough that the built-in
+  `text-wrap: balance` reads well.

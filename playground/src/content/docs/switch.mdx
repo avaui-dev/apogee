@@ -1,0 +1,119 @@
+---
+title: Switch
+description: A toggle for an immediately-applied binary setting. A real checkbox under the hood, zero JS.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Switch from '../../../../registry/components/Switch/Switch.astro'
+
+<Preview code={`<Switch label="Enable notifications" />
+<Switch label="Auto-renew" checked />`}>
+  <Switch label="Enable notifications" />
+  <Switch label="Auto-renew" checked />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add switch
+```
+
+No Apogee component dependencies. Zero JS.
+
+## Usage
+
+```astro
+---
+import Switch from '@/components/apogee/Switch/Switch.astro'
+---
+<Switch id="notifications" name="notifications" label="Enable notifications" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. The `Props` interface is
+an open index signature (`[key: string]: any`), so any native `<input>`
+attribute not listed below (`checked`, `disabled`, `name`, `value`,
+`required`, `aria-label`, …) passes through to the underlying checkbox.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | auto-generated (`apogee-<random>`) | Connects the `<label>` to the `<input>`. Set your own to target it from elsewhere (a separate `<label for>`, a test selector). |
+| `label` | `string` | — | Visible label text, rendered after the track. |
+| `class` | `string` | — | Extra classes on the root `<label>`, merged last. |
+| …rest | — | — | Any other attribute passes through to the `<input type="checkbox" role="switch">`. |
+
+## States
+
+<Preview code={`<Switch label="Off" />
+<Switch label="On" checked />
+<Switch label="Disabled" disabled />
+<Switch label="Disabled, on" checked disabled />`}>
+  <Switch label="Off" />
+  <Switch label="On" checked />
+  <Switch label="Disabled" disabled />
+  <Switch label="Disabled, on" checked disabled />
+</Preview>
+
+- **Unchecked / checked** — the track fill and thumb position flip on
+  `peer-checked`.
+- **Focus** — a visible ring on the track when the hidden input has keyboard
+  focus (`peer-focus-visible:outline`).
+- **Disabled** — the track dims (`peer-disabled:opacity-50`); pass the
+  native `disabled` attribute.
+- **RTL** — the thumb translates the other direction under a `dir="rtl"`
+  ancestor.
+
+## Examples
+
+No visible label — pass `aria-label` instead:
+
+```astro
+<Switch aria-label="Enable notifications" />
+```
+
+In a form, submitting a value when checked:
+
+```astro
+<Switch name="notifications" value="on" label="Enable notifications" />
+```
+
+## Accessibility
+
+- A real `<input type="checkbox" role="switch">`, visually hidden
+  (`sr-only`) but present in the tab order — full keyboard and AT support
+  for free.
+- The `<label for>` wraps the whole control, so clicking the track or the
+  label text both toggle it.
+- **Keyboard** — `Tab` to focus, `Space` to toggle (native checkbox
+  behavior).
+- No visible `label`? Pass `aria-label` or `aria-labelledby` via
+  passthrough — without one the switch has no accessible name.
+- Zero JS — no no-JS fallback to note.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--muted` | Track background (unchecked) |
+| `--accent` | Track background (checked) |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** use Switch for a setting that applies immediately (e.g.
+  "Auto-renew").
+- **Do** pass a `label` or `aria-label` — never ship a switch with no
+  accessible name.
+- **Don't** use Switch for an action that needs a confirm step — that's a
+  `Button`.
+- **Don't** pair a Switch with a separate "Save" button for that one
+  setting — if it applies instantly, say so in nearby copy instead.
+
+## Content
+
+- Label states the setting being turned on, not the action ("Auto-renew",
+  not "Toggle auto-renew").
+- Sentence case, no ending punctuation.

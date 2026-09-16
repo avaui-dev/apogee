@@ -1,0 +1,128 @@
+---
+title: Field
+description: The labeled-field scaffold — label, control, and hint/error — wired for accessibility.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Field from '../../../../registry/components/Field/Field.astro'
+
+<Preview code={`<Field id="email" label="Email" hint="We'll never share it.">
+  <input id="email" type="email" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+</Field>`}>
+  <Field id="email" label="Email" hint="We'll never share it.">
+    <input id="email" type="email" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+  </Field>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add field
+```
+
+No Apogee dependencies. `Input`, `Textarea`, and `Select` render `Field`
+internally with a matching `id` — use `Field` standalone only for a custom
+control.
+
+## Usage
+
+```astro
+---
+import Field from '@/components/apogee/Field/Field.astro'
+---
+<Field id="name" label="Name" required>
+  <input id="name" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+</Field>
+```
+
+## Anatomy
+
+- **Label** — rendered when `label` is passed, `for={id}`; appends a
+  `aria-hidden` `*` when `required` is true.
+- **Control** — the default slot. Pass your own input/textarea/select with a
+  matching `id`, and set its `aria-describedby` to `${id}-hint` or `${id}-error`
+  to wire the association yourself.
+- **Hint** — rendered at `${id}-hint` when `hint` is set and there's no `error`.
+- **Error** — rendered at `${id}-error` with `role="alert"` when `error` is set
+  (takes priority over `hint`).
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | — | Required. Matches the control's `id`; used to derive `${id}-hint` / `${id}-error`. |
+| `label` | `string` | — | Optional label text. |
+| `hint` | `string` | — | Optional helper text, hidden when `error` is set. |
+| `error` | `string` | — | Optional error message; replaces `hint` and renders with `role="alert"`. |
+| `required` | `boolean` | `false` | Shows a `*` next to the label (visual only — set `required`/`aria-required` on the control itself). |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Examples
+
+With a hint:
+
+<Preview code={`<Field id="username" label="Username" hint="Letters, numbers, and dashes only.">
+  <input id="username" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+</Field>`}>
+  <Field id="username" label="Username" hint="Letters, numbers, and dashes only.">
+    <input id="username" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+  </Field>
+</Preview>
+
+With an error (overrides the hint):
+
+<Preview code={`<Field id="pw" label="Password" required error="Must be at least 8 characters.">
+  <input id="pw" type="password" class="w-full rounded-md border border-danger bg-background px-3 py-2 text-sm" />
+</Field>`}>
+  <Field id="pw" label="Password" required error="Must be at least 8 characters.">
+    <input id="pw" type="password" class="w-full rounded-md border border-danger bg-background px-3 py-2 text-sm" />
+  </Field>
+</Preview>
+
+Custom control (a `Field` wrapping something other than a native input) — set
+`aria-describedby` yourself since `Field` only renders the ids, it doesn't wire them:
+
+```astro
+<Field id="plan" label="Plan">
+  <select id="plan" aria-describedby="plan-hint" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
+    <option>Free</option>
+    <option>Pro</option>
+  </select>
+</Field>
+```
+
+## Accessibility
+
+- `label` is a real `<label for={id}>` — clicking it focuses the control.
+- The error message uses `role="alert"` so screen readers announce it when it appears.
+- `Field` renders the hint/error ids but doesn't set `aria-describedby` on your
+  control — since the control is an opaque slot, wire that attribute yourself
+  (`Input`/`Textarea`/`Select` do this for you).
+- The `*` for `required` is `aria-hidden` (decorative) — set the real
+  `required`/`aria-required` attribute on the control.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground` | Label text |
+| `--muted-foreground` | Hint text |
+| `--danger` | Required `*` and error text |
+
+## Do / Don't
+
+- **Do** keep the `id` on `Field` and your control in sync — it's how hint/error ids line up.
+- **Do** use `error` instead of `hint` once a field is invalid; don't show both.
+- **Don't** nest more than one control per `Field` — one label should describe one input.
+- **Don't** rely on the visual `*` alone to mark a field required — set the attribute on the control too.
+
+## Content
+
+- Label is a short noun phrase (1–3 words), sentence case, no ending colon or period.
+- Hint is one short sentence explaining format or constraints, not a duplicate of the label.
+- Error names the specific problem and, where possible, the fix ("Must be at least 8 characters"), one sentence.

@@ -1,0 +1,122 @@
+---
+title: Textarea
+description: A labeled multiline input, wired the same way as Input — label, hint, and error.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Textarea from '../../../../registry/components/Textarea/Textarea.astro'
+
+<Preview code={`<Textarea label="Message" hint="Markdown is supported." placeholder="Write something…" />`}>
+  <Textarea label="Message" hint="Markdown is supported." placeholder="Write something…" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add textarea
+```
+
+Pulls in `Field` (label / hint / error scaffold).
+
+## Usage
+
+```astro
+---
+import Textarea from '@/components/apogee/Textarea/Textarea.astro'
+---
+<Textarea label="Message" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<textarea>`
+attribute (e.g. `placeholder`, `disabled`, `maxlength`, `name`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | auto-generated | Field id, shared by the label and the textarea. |
+| `label` | `string` | — | Field label. |
+| `hint` | `string` | — | Helper text below the field (hidden when `error` is set). |
+| `error` | `string` | — | Error text; sets `aria-invalid` and swaps in for `hint`. |
+| `rows` | `number` | `4` | Visible row count. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Padding and font size. |
+| `required` | `boolean` | `false` | Marks the field required (native `required` + label asterisk). |
+| `class` | `string` | — | Extra classes on the `Field` wrapper, merged last. |
+
+## Anatomy
+
+`Textarea` renders a `Field` (label + hint/error scaffold) around a native
+`<textarea>`:
+
+- **Field** — label (with required asterisk), the control, then hint or error.
+- **Textarea** — the native `<textarea>`, sized by `size` and `rows`.
+
+## Sizes
+
+Every size:
+
+<Preview code={`<Textarea label="Small" size="sm" placeholder="Small" />
+<Textarea label="Medium" size="md" placeholder="Medium" />
+<Textarea label="Large" size="lg" placeholder="Large" />`}>
+  <Textarea label="Small" size="sm" placeholder="Small" />
+  <Textarea label="Medium" size="md" placeholder="Medium" />
+  <Textarea label="Large" size="lg" placeholder="Large" />
+</Preview>
+
+## States
+
+<Preview code={`<Textarea label="Disabled" disabled placeholder="Disabled" />
+<Textarea label="Bio" error="Bio is required." />
+<Textarea label="Bio" required hint="Tell us about yourself." />`}>
+  <Textarea label="Disabled" disabled placeholder="Disabled" />
+  <Textarea label="Bio" error="Bio is required." />
+  <Textarea label="Bio" required hint="Tell us about yourself." />
+</Preview>
+
+- **Hover** — border unchanged; no hover-specific style.
+- **Focus** — visible `focus-visible` ring (`--ring`).
+- **Disabled** — dimmed, not focusable, native `disabled`.
+- **Invalid** (`error` set) — `--danger` border, `aria-invalid="true"`, hint text
+  replaced by the error message with `role="alert"`.
+
+## Examples
+
+More rows for longer content:
+
+```astro
+<Textarea label="Notes" rows={8} />
+```
+
+## Accessibility
+
+- Real `<label for>` / `<textarea id>` pairing via `Field`.
+- `aria-describedby` points to the hint or error paragraph; `aria-invalid` is
+  set when `error` is present.
+- The error paragraph has `role="alert"` so it's announced.
+- Focus ring is always visible on keyboard focus.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` / `--background` / `--foreground` | Field border, fill, text |
+| `--muted-foreground` | Placeholder + hint text |
+| `--danger` | Invalid border + error text |
+| `--ring` | Focus ring |
+
+## Do / Don't
+
+- **Do** pair every `Textarea` with a `label` — placeholder text is not a label.
+- **Do** use `hint` for format guidance, `error` for validation failures — not
+  both at once (error takes over).
+- **Don't** disable a field without explaining why elsewhere on the page.
+- **Don't** rely on `rows` alone for very long content — consider letting it
+  grow or linking to a fuller editor.
+
+## Content
+
+- Label is a short noun phrase, sentence case, no colon.
+- Error copy states what's wrong and how to fix it ("Bio is required.").
+- Hint text is one line, no ending period unless it's a full sentence.

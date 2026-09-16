@@ -1,0 +1,135 @@
+---
+title: NumberInput
+description: A labeled numeric field with styled −/+ steppers, wired like Input.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import NumberInput from '../../../../registry/components/NumberInput/NumberInput.astro'
+
+<JsNote fallback="The −/+ buttons are hidden (`no-js:hidden`); the field stays a plain native number input — type a value, or use the keyboard's Up/Down arrows, which still step the value natively.">
+  Wires the −/+ buttons to the input's native `stepUp()` / `stepDown()`, then
+  dispatches `input` and `change` events so the value stays in sync with anything
+  listening for it.
+</JsNote>
+
+<Preview jsToggle code={`<NumberInput label="Quantity" value={2} min={0} max={10} />`}>
+  <NumberInput label="Quantity" value={2} min={0} max={10} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add number-input
+```
+
+Pulls in `Field`. Ships `@lucide/astro` for the stepper icons. One scoped JS
+island (progressive enhancement) for the −/+ buttons.
+
+## Usage
+
+```astro
+---
+import NumberInput from '@/components/apogee/NumberInput/NumberInput.astro'
+---
+<NumberInput label="Quantity" name="qty" value={1} min={0} max={99} />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<input>`
+attribute (`name`, `min`, `max`, `step`, `value`, `disabled`, `placeholder`,
+`aria-label`, …) passes through to the input itself. `class` is applied to the
+outer `Field` wrapper, not the input group.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | `apogee-<random>` | Field id; auto-generated if omitted. |
+| `label` | `string` | — | Field label. |
+| `hint` | `string` | — | Helper text below the field (hidden when `error` is set). |
+| `error` | `string` | — | Error text; sets `aria-invalid="true"` on the group. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control height. |
+| `required` | `boolean` | `false` | Marks the field required (label asterisk + native `required`). |
+| `class` | `string` | — | Extra classes on the `Field` wrapper, merged last. |
+
+## Sizes
+
+<Preview code={`<NumberInput label="Small" size="sm" value={1} />
+<NumberInput label="Medium" size="md" value={1} />
+<NumberInput label="Large" size="lg" value={1} />`}>
+  <NumberInput label="Small" size="sm" value={1} />
+  <NumberInput label="Medium" size="md" value={1} />
+  <NumberInput label="Large" size="lg" value={1} />
+</Preview>
+
+## States
+
+<Preview code={`<NumberInput label="Amount" hint="In USD" value={10} />
+<NumberInput label="Amount" error="Enter a value between 1 and 10" value={0} />
+<NumberInput label="Amount" value={5} disabled />
+<NumberInput label="Amount" value={1} required />`}>
+  <NumberInput label="Amount" hint="In USD" value={10} />
+  <NumberInput label="Amount" error="Enter a value between 1 and 10" value={0} />
+  <NumberInput label="Amount" value={5} disabled />
+  <NumberInput label="Amount" value={1} required />
+</Preview>
+
+## Examples
+
+Bounded with `min` / `max` / `step`:
+
+```astro
+<NumberInput label="Party size" value={2} min={1} max={8} step={1} />
+```
+
+Unlabeled, identified for assistive tech only:
+
+```astro
+<NumberInput aria-label="Quantity" value={1} min={1} />
+```
+
+## Accessibility
+
+- Real `<input type="number">` — typing, native validation, and `↑` / `↓`
+  keyboard stepping all work independent of JS.
+- The −/+ buttons carry `tabindex="-1"` — deliberately out of the tab order
+  (pointer-only); keyboard users get the same result from the native arrow-key
+  stepping, so nothing is lost.
+- `label`, `hint`, and `error` wire through `Field`: `for`/`id`, and
+  `aria-describedby` pointing at the hint or error text (`role="alert"` on the
+  error).
+- **No JS:** the −/+ buttons are hidden (`no-js:hidden`); the input remains a
+  fully working native number field.
+- `disabled` propagates to both the `<input>` and the −/+ buttons — they
+  disable together, and a disabled button can't fire. The input also gets
+  `disabled:cursor-not-allowed`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Group border |
+| `--background` | Group + input background |
+| `--ring` | Focus ring (group `focus-within`, button `focus-visible`) |
+| `--muted` | Stepper hover background |
+| `--muted-foreground` | Stepper icon colour (default) |
+| `--foreground` | Stepper icon colour (hover), input text |
+| `--danger` | Invalid border (`aria-invalid`) |
+| `--radius-md` | Corner radius |
+
+## Do / Don't
+
+- **Do** pass `min` / `max` / `step` so native validation matches the stepping
+  behaviour.
+- **Do** use `size="lg"` for touch-first or prominent quantity pickers.
+- **Don't** add `readonly` — it blocks typing for no-JS and keyboard-only users,
+  who otherwise get a fully working field.
+- **Don't** omit `label` (or `aria-label`) — the field is unlabeled without one.
+
+## Content
+
+- Label is a noun for what's being counted ("Quantity", "Seats"), sentence case.
+- Hint states a constraint, not a repeat of the label ("Between 1 and 10").
+- Error names the fix ("Enter a value between 1 and 10").

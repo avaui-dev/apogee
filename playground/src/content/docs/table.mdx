@@ -1,0 +1,215 @@
+---
+title: Table
+description: A styled, horizontally-scrollable table. Write plain thead/tbody markup — Table only styles it.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Table from '../../../../registry/components/Table/Table.astro'
+
+<Preview code={`<Table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ada Lovelace</td>
+      <td>Engineer</td>
+      <td>Active</td>
+    </tr>
+    <tr>
+      <td>Grace Hopper</td>
+      <td>Engineer</td>
+      <td>Active</td>
+    </tr>
+  </tbody>
+</Table>`}>
+  <Table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ada Lovelace</td>
+        <td>Engineer</td>
+        <td>Active</td>
+      </tr>
+      <tr>
+        <td>Grace Hopper</td>
+        <td>Engineer</td>
+        <td>Active</td>
+      </tr>
+    </tbody>
+  </Table>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add table
+```
+
+No Apogee component dependencies. Zero JS.
+
+## Usage
+
+```astro
+---
+import Table from '@/components/apogee/Table/Table.astro'
+---
+<Table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ada Lovelace</td>
+      <td>Engineer</td>
+    </tr>
+  </tbody>
+</Table>
+```
+
+## Anatomy
+
+Table has no sub-components or named slots — it styles the real table
+elements you write, via descendant selectors scoped to an internal
+`.apogee-table` class:
+
+- **Default slot** — write a plain `<thead>` / `<tbody>` (and optional
+  `<tfoot>`) with `<tr>` / `<th>` / `<td>` inside, exactly as you would in
+  raw HTML.
+- **`<th>`** — gets padding and semibold weight; a `<thead>`'s `<th>`
+  additionally gets the bottom border rule that separates it from the body.
+- **`<td>`** — gets padding and a top border rule, which reads as the row
+  separator.
+- Every cell (`th` and `td`) is start-aligned by default — including `<th>`,
+  overriding the browser's default centering — via a `@layer components`
+  rule, so a `text-end` / `text-center` utility on any individual cell still
+  wins.
+- The whole table is wrapped in an `overflow-x-auto` `<div>` automatically,
+  so wide tables scroll horizontally instead of breaking the page layout —
+  no prop needed.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute
+passes through to the `<table>` element (not the scroll wrapper `<div>`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `class` | `string` | — | Extra classes on the `<table>`, merged last. |
+
+## States
+
+Hover a row in the live preview above — `tbody tr:hover` gets a
+`bg-muted/40` fill.
+
+## Examples
+
+End-align a numeric column:
+
+<Preview code={`<Table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th class="text-end">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Widget</td>
+      <td class="text-end">$12.00</td>
+    </tr>
+    <tr>
+      <td>Gadget</td>
+      <td class="text-end">$34.50</td>
+    </tr>
+  </tbody>
+</Table>`}>
+  <Table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th class="text-end">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Widget</td>
+        <td class="text-end">$12.00</td>
+      </tr>
+      <tr>
+        <td>Gadget</td>
+        <td class="text-end">$34.50</td>
+      </tr>
+    </tbody>
+  </Table>
+</Preview>
+
+A captioned table (caption hidden visually, still announced):
+
+```astro
+<Table>
+  <caption class="sr-only">Team members</caption>
+  <thead>
+    <tr><th scope="col">Name</th><th scope="col">Role</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Ada Lovelace</td><td>Engineer</td></tr>
+  </tbody>
+</Table>
+```
+
+## Accessibility
+
+- Real `<table>` / `<thead>` / `<tbody>` / `<tr>` / `<th>` / `<td>` — full
+  table semantics for free; Table only adds styling.
+- Give every `<th>` a `scope="col"` (column header) or `scope="row"` (row
+  header) — Table styles headers but doesn't add `scope` for you.
+- Add a `<caption>` (visually hidden with `sr-only` if you don't want it
+  shown) to name the table for screen readers.
+- For a wide table relying on the horizontal-scroll wrapper, consider adding
+  `tabindex="0"` and a `role="region"` with an `aria-label` on the scroll
+  container if it needs to be reachable and announced as its own scrollable
+  region.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground` | Header + cell text |
+| `--border` | Header bottom rule + row top rule |
+| `--muted` | Row hover fill (`bg-muted/40`) |
+
+## Do / Don't
+
+- **Do** write real `<th scope="col">` headers — Table styles them but
+  doesn't add `scope` for you.
+- **Do** end-align numeric columns (`text-end` on the `<td>`/`<th>`) — the
+  default is start-aligned.
+- **Don't** put interactive controls (buttons, inputs) in cells without
+  their own visible focus state — Table doesn't style them.
+- **Don't** rely on horizontal scroll alone for a critical column — put the
+  most important column first (reading order follows source order, and
+  mirrors under RTL).
+
+## Content
+
+- Header labels are short nouns, sentence case, no ending punctuation.
+- Truncate long cell text with an explicit `title` attribute holding the
+  full value, not silent CSS overflow with no fallback.
+- Show a neutral placeholder ("—") for an empty cell rather than leaving it
+  blank, so a value isn't mistaken for missing data.

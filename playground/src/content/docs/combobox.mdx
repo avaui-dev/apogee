@@ -1,0 +1,149 @@
+---
+title: Combobox
+description: A text input with a styled, filterable dropdown of suggestions.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Combobox from '../../../../registry/components/Combobox/Combobox.astro'
+
+<JsNote fallback="The dropdown (`no-js:hidden`) never appears — the field still works as a plain text input, free-typed and submitted under its `name`.">
+  Wires a real ARIA combobox: typing filters the list and highlights the
+  closest match (prefers a prefix match); arrow keys move the highlight,
+  Enter or a click commits it into the input. Free-typing is always allowed.
+</JsNote>
+
+<Preview jsToggle code={`<Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />`}>
+  <Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add combobox
+```
+
+Pulls in `Field` (label, hint, error scaffold). Uses `@lucide/astro`
+internally (`ChevronDown`) for the caret — no icon import needed in your
+usage.
+
+## Usage
+
+```astro
+---
+import Combobox from '@/components/apogee/Combobox/Combobox.astro'
+---
+<Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />
+```
+
+## Anatomy
+
+- **Label / hint / error** — from `Field`.
+- **Input** — the visible text field, `role="combobox"`.
+- **Caret** — optional chevron icon (toggle with `caret`).
+- **Listbox** — `role="listbox"` dropdown of `role="option"` suggestions,
+  filtered as you type.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the input (e.g. `placeholder`, `disabled`, `name`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | auto-generated | Input id; drives the listbox id (`${id}-list`) and `Field` wiring. |
+| `label` | `string` | — | Field label. |
+| `hint` | `string` | — | Helper text (hidden when `error` is set). |
+| `error` | `string` | — | Error text; sets `aria-invalid` and renders via `role="alert"`. |
+| `options` | `string[]` | — | Suggestions shown in the dropdown. Required. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size. |
+| `required` | `boolean` | `false` | Marks the input required (native + `Field`'s `*` indicator). |
+| `caret` | `boolean` | `true` | Shows the chevron caret. Set `false` to hide it. |
+| `class` | `string` | — | Extra classes, passed to the `Field` wrapper. |
+
+## Sizes
+
+<Preview jsToggle code={`<Combobox label="Small" size="sm" options={['One', 'Two', 'Three']} />
+<Combobox label="Medium" size="md" options={['One', 'Two', 'Three']} />
+<Combobox label="Large" size="lg" options={['One', 'Two', 'Three']} />`}>
+  <Combobox label="Small" size="sm" options={['One', 'Two', 'Three']} />
+  <Combobox label="Medium" size="md" options={['One', 'Two', 'Three']} />
+  <Combobox label="Large" size="lg" options={['One', 'Two', 'Three']} />
+</Preview>
+
+## States
+
+- **Default** — closed, empty or pre-filled input.
+- **Open** — focusing or typing in the input opens the listbox; the closest
+  match is highlighted (`aria-selected` + `aria-activedescendant`).
+- **Error** — border turns `--danger`, `aria-invalid="true"`, error text
+  replaces the hint.
+- **Disabled** — via passthrough `disabled`; dimmed, not interactive.
+- **No JS** — listbox stays `hidden`; the input is a plain text field.
+
+<Preview jsToggle code={`<Combobox label="Country" options={['Canada', 'France']} error="Pick a country from the list." />
+<Combobox label="Country" options={['Canada', 'France']} disabled value="Canada" />`}>
+  <Combobox label="Country" options={['Canada', 'France']} error="Pick a country from the list." />
+  <Combobox label="Country" options={['Canada', 'France']} disabled value="Canada" />
+</Preview>
+
+## Examples
+
+Without the caret:
+
+```astro
+<Combobox label="Tag" options={['bug', 'feature', 'docs']} caret={false} />
+```
+
+Required, wired into a form with a submit name:
+
+```astro
+<Combobox label="Country" name="country" required options={['Canada', 'France', 'Germany']} />
+```
+
+## Accessibility
+
+- Full ARIA combobox pattern: `role="combobox"` on the input, wired with
+  `aria-expanded`, `aria-controls`, `aria-autocomplete="list"`, and
+  `aria-activedescendant` on the highlighted option; `role="listbox"` /
+  `role="option"` with `aria-selected` on the dropdown.
+- **Keyboard** — focus opens the list and shows every option; typing filters
+  and highlights the closest prefix match; `↓` / `↑` move the highlight
+  (opens the list first if closed); `Enter` commits the highlighted option;
+  `Escape` closes the list.
+- Clicking an option commits it without losing input focus.
+- Focus leaving the whole widget (tab away, click elsewhere) closes the list.
+- **No JS:** the listbox carries `no-js:hidden` and never opens — the input
+  still works as a plain, free-typed text field that submits under its
+  `name`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` | Input and listbox border |
+| `--background` | Input background |
+| `--surface` | Listbox panel background |
+| `--foreground` | Input and option text |
+| `--muted-foreground` | Placeholder text, caret |
+| `--muted` | Option hover / selected background |
+| `--danger` | Error border |
+| `--ring` | Focus ring |
+| `--duration-fast` / `--ease-smooth` | Listbox open animation |
+
+## Do / Don't
+
+- **Do** keep `options` short and relevant — it's a suggestion list, not a
+  full dataset; filter server-side before passing in a large set.
+- **Do** allow free text — Combobox never forces a value from `options`.
+- **Don't** use Combobox when the value must be constrained to the list — use
+  `Select` instead.
+- **Don't** rely on `disabled` to lock in a submitted value — a disabled
+  input doesn't submit at all.
+
+## Content
+
+- Label names the field ("Country"), not the widget ("Combobox").
+- Error copy states what's wrong or what format is expected.

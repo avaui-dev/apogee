@@ -1,0 +1,192 @@
+---
+title: Toast
+description: A transient notification, fired imperatively from anywhere on the page.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Toaster from '../../../../registry/components/Toast/Toaster.astro'
+import ToastDemo from '../../components/ToastDemo.astro'
+
+<JsNote fallback="apogeeToast is never defined — nothing fires, and no notification appears. Don't make Toast the only feedback for an action; pair it with a non-JS path (redirect, inline message) where that matters.">
+  Mounts the toast host (`Toaster`) and defines `window.apogeeToast(message, options)`.
+  Calling it clones a `<template>`, fills in the icon/title/message, and appends it
+  to the host — stacked, auto-dismissing, dismissible by a close button.
+</JsNote>
+
+Place one `<Toaster />` on the page (commonly in the base layout), then fire
+toasts from anywhere:
+
+<Preview code={`<Toaster />
+
+<button id="toast-info">Show info</button>
+<button id="toast-success">Show success</button>
+<button id="toast-warning">Show warning</button>
+<button id="toast-danger">Show danger</button>
+
+<script>
+  document.getElementById('toast-info')?.addEventListener('click', () =>
+    apogeeToast('Changes are saved automatically.', { variant: 'info', title: 'Heads up' }))
+  document.getElementById('toast-success')?.addEventListener('click', () =>
+    apogeeToast('Your changes have been saved.', { variant: 'success', title: 'Saved' }))
+  document.getElementById('toast-warning')?.addEventListener('click', () =>
+    apogeeToast('Your session expires in 5 minutes.', { variant: 'warning', title: 'Heads up' }))
+  document.getElementById('toast-danger')?.addEventListener('click', () =>
+    apogeeToast('Could not save your changes.', { variant: 'danger', title: 'Error' }))
+</script>`}>
+  <ToastDemo />
+</Preview>
+
+The `<Toaster />` mounted above stays for the rest of this page — every button
+below fires into that same instance.
+
+## Add
+
+```sh
+npx @ava-ui/apogee add toast
+```
+
+Bring `@lucide/astro` for the status icons (`Info`, `CircleCheck`,
+`TriangleAlert`, `CircleAlert`). No other Apogee dependencies. Requires
+JavaScript — a toast is inherently imperative, so there's no no-JS fallback
+markup to fall back to.
+
+## Usage
+
+```astro
+---
+import Toaster from '@/components/apogee/Toast/Toaster.astro'
+---
+<!-- once, e.g. in your base layout -->
+<Toaster />
+```
+
+```js
+// anywhere, client-side
+apogeeToast('Saved', { variant: 'success', title: 'Done' })
+```
+
+Mount **exactly one** `<Toaster />` per page — its region, template, and icon
+set use fixed element ids, so a second instance won't get its own toasts.
+
+## Anatomy
+
+`Toast` has two pieces. Individual toasts aren't slots — the script clones a
+`<template>` and fills it in per call:
+
+- **Toaster** — the fixed, positioned host region (`role="region"`) that toasts
+  are appended to.
+- **Toast** — icon (by variant) + optional title + message + close button.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the `Toaster` root.
+
+### `<Toaster>` props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'bottom-right'` | Where the host (and its toasts) sits on screen. |
+| `class` | `string` | — | Extra classes on the host, merged last. |
+
+### `apogeeToast(message, options)`
+
+The imperative function `Toaster` defines on `window`, not an Astro prop —
+call it after the `Toaster` has mounted.
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `message` | `string` | — | Toast body text. |
+| `options.variant` | `'info' \| 'success' \| 'warning' \| 'danger'` | `'info'` | Icon + accent border. `warning`/`danger` use `role="alert"`; others use `role="status"`. |
+| `options.title` | `string` | — | Bold title line above the message. Omitted entirely if not passed. |
+| `options.duration` | `number` (ms) | `4000` | Auto-dismiss delay. `0` makes it sticky (stays until closed). |
+
+## Variants
+
+Every `variant`, shown in the hero preview above — click each button to fire
+`info`, `success`, `warning`, and `danger` toasts.
+
+## Positions
+
+All six `position` values (shown as code, not live — only one `Toaster` can be
+mounted on this page at a time):
+
+```astro
+<Toaster position="top-left" />
+<Toaster position="top-center" />
+<Toaster position="top-right" />
+<Toaster position="bottom-left" />
+<Toaster position="bottom-center" />
+<Toaster position="bottom-right" />
+```
+
+## States
+
+- **Enter** — fades and scales in (`apogee-toast-in`, `--duration-base` /
+  `--ease-smooth`).
+- **Exit** — fades and scales out (`apogee-toast--out`,
+  `--duration-fast` / `--ease-smooth`) on close-button click or auto-dismiss.
+- **Sticky** (`duration: 0`) — never auto-dismisses; only the close button
+  removes it.
+- **Reduced motion** — enter/exit animations are disabled under
+  `prefers-reduced-motion: reduce`.
+
+## Examples
+
+A sticky error that needs manual dismissal:
+
+```js
+apogeeToast('Payment failed — update your card.', { variant: 'danger', title: 'Action needed', duration: 0 })
+```
+
+A quick, title-less confirmation:
+
+```js
+apogeeToast('Link copied to clipboard.')
+```
+
+## Accessibility
+
+- The host is `role="region"` with `aria-label="Notifications"`.
+- Each toast is `role="alert"` (`warning` / `danger` — assertive) or
+  `role="status"` (`info` / `success` — polite), so it's announced without any
+  extra `aria-live` wiring.
+- **Keyboard** — the close button is a real `<button>`, reachable with `Tab`
+  and activated with `Enter` / `Space`; it has a visible `focus-visible` ring
+  and an `aria-label="Dismiss"` (icon-only).
+- **No JS** — `apogeeToast` is never defined, so nothing renders. Never make a
+  toast the only feedback for an action a no-JS user can take.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border` / `--surface` / `--foreground` | Toast border, fill, text |
+| `--muted-foreground` | Message text + close-button icon |
+| `--accent` | Info icon + border tint |
+| `--success` | Success icon + border tint |
+| `--warning` | Warning icon + border tint |
+| `--danger` | Danger icon + border tint |
+| `--ring` | Close-button focus ring |
+| `--duration-base` / `--duration-fast` / `--ease-smooth` | Enter / exit animation |
+
+## Do / Don't
+
+- **Do** mount exactly one `Toaster` per page, in a layout shared by every
+  route that fires toasts.
+- **Do** use `danger` / `warning` for anything the user must notice; `info` /
+  `success` for routine confirmation.
+- **Don't** put content the user must act on (a form, a required decision)
+  only in a toast — it auto-dismisses and isn't reachable after.
+- **Don't** fire toasts for every minor state change — reserve them for things
+  worth interrupting the user for.
+
+## Content
+
+- `title` is one or two words ("Saved", "Error", "Heads up").
+- `message` is one short sentence, plain language, states what happened (and,
+  for errors, what to do next).
+- No ending period on `title`; `message` gets one if it's a full sentence.
