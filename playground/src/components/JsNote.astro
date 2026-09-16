@@ -1,0 +1,25 @@
+---
+/**
+ * JsNote — the docs banner for a component that uses a JS island. Drop it at the
+ * top of the page. Explain what the JS does and how the component behaves with
+ * JS off (its `no-js:` fallback). Uses the real Alert component.
+ *
+ *   <JsNote fallback="Panels render stacked and all reachable.">
+ *     Wires the tablist keyboard pattern (arrows / Home / End).
+ *   </JsNote>
+ */
+import Alert from '../../../registry/components/Alert/Alert.astro'
+
+interface Props {
+  /** One line on the no-JS behaviour; rendered after the slot as "Without JS: …". */
+  fallback?: string
+}
+const { fallback } = Astro.props
+---
+
+<Alert variant="info" title="Uses JavaScript" class="not-content my-6">
+  <slot />
+  {fallback && (
+    <p class="mt-1"><strong class="font-medium">Without JS:</strong> {fallback}</p>
+  )}
+</Alert>

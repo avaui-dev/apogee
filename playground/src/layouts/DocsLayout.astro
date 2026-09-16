@@ -1,0 +1,220 @@
+---
+import '../styles/global.css'
+import Navbar from '../../../registry/components/Navbar/Navbar.astro'
+import NavLink from '../../../registry/components/NavLink/NavLink.astro'
+import Footer from '../../../registry/components/Footer/Footer.astro'
+import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
+import Prose from '../../../registry/components/Prose/Prose.astro'
+import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
+import { Sun, Moon, Search } from '@lucide/astro'
+
+interface NavGroup {
+  group: string
+  items: { title: string; href: string; id: string }[]
+}
+interface Props {
+  title: string
+  description?: string
+  headings?: { depth: number; slug: string; text: string }[]
+  nav?: NavGroup[]
+  group?: string
+}
+
+const { title, description, headings = [], nav = [], group } = Astro.props
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3)
+const commands = nav.flatMap((g) => g.items.map((i) => ({ label: i.title, href: i.href, group: g.group })))
+---
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Apogee</title>
+    {description && <meta name="description" content={description} />}
+    <script is:inline>
+      document.documentElement.classList.replace('no-js', 'js')
+      // Set theme before paint (stored choice, else system).
+      const t = localStorage.getItem('apogee-theme')
+      document.documentElement.dataset.theme =
+        t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    </script>
+  </head>
+  <body class="min-h-dvh bg-background text-foreground">
+    <Navbar>
+      <a slot="brand" href="/docs" class="text-base font-semibold tracking-tight">Apogee</a>
+      <NavLink href="/docs">Docs</NavLink>
+      <div slot="actions" class="flex items-center gap-1">
+        <button
+          type="button"
+          data-command-open="docsearch"
+          class="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          aria-label="Search"
+        >
+          <Search class="size-4" aria-hidden="true" />
+          <kbd class="hidden rounded border border-border px-1 text-xs sm:inline">⌘K</kbd>
+        </button>
+        <a
+          href="https://github.com/avaui-dev/apogee"
+          class="grid size-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="GitHub"
+        >
+          <svg class="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.47.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.58.24 2.75.12 3.04.74.82 1.19 1.85 1.19 3.11 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.2.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>
+          </svg>
+        </a>
+        <button
+          id="theme-toggle"
+          type="button"
+          class="grid size-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Toggle theme"
+        >
+          <Sun class="size-4 hidden dark:block" aria-hidden="true" />
+          <Moon class="size-4 dark:hidden" aria-hidden="true" />
+        </button>
+      </div>
+    </Navbar>
+
+    <div class="mx-auto flex w-full max-w-7xl gap-8 px-4">
+      <aside class="hidden w-56 shrink-0 md:block">
+        <nav class="sticky top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto py-8 pe-2" aria-label="Docs">
+          {
+            nav.map((g) => (
+              <div class="mb-4">
+                <p class="px-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{g.group}</p>
+                <div class="flex flex-col gap-0.5">
+                  {g.items.map((i) => (
+                    <NavLink href={i.href} class="!px-2 !py-1.5">{i.title}</NavLink>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </nav>
+      </aside>
+
+      <main class="min-w-0 flex-1 py-10">
+        <Breadcrumbs
+          items={[{ label: 'Docs', href: '/docs' }, ...(group ? [{ label: group }] : []), { label: title }]}
+        />
+        <h1 class="mt-4 text-3xl font-semibold tracking-tight">{title}</h1>
+        {description && <p class="mt-2 text-lg text-muted-foreground">{description}</p>}
+        <Prose class="mt-8">
+          <slot />
+        </Prose>
+      </main>
+
+      {
+        toc.length > 0 && (
+          <aside class="hidden w-52 shrink-0 xl:block">
+            <nav class="sticky top-16 py-10 text-sm" aria-label="On this page">
+              <p class="pb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">On this page</p>
+              <ul class="flex flex-col" data-toc>
+                {toc.map((h) => (
+                  <li>
+                    <a
+                      href={`#${h.slug}`}
+                      class:list={[
+                        'block border-s border-border py-1.5 text-muted-foreground transition-colors hover:text-foreground data-[active=true]:border-accent data-[active=true]:font-medium data-[active=true]:text-accent',
+                        h.depth === 3 ? 'ps-6' : 'ps-3',
+                      ]}
+                    >
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        )
+      }
+    </div>
+
+    <Footer>
+      <Fragment slot="bottom">
+        <span>© 2026 AVA UI · MIT</span>
+        <span>Built with Apogee</span>
+      </Fragment>
+    </Footer>
+
+    <CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
+
+    <script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const el = document.documentElement
+        const next = el.dataset.theme === 'dark' ? 'light' : 'dark'
+        el.dataset.theme = next
+        localStorage.setItem('apogee-theme', next)
+      })
+
+      // Add a `#` anchor to each prose heading (progressive enhancement).
+      for (const h of document.querySelectorAll<HTMLElement>(
+        '.apogee-prose h2, .apogee-prose h3, .apogee-prose h4',
+      )) {
+        if (!h.id || h.querySelector('.heading-anchor')) continue
+        const a = document.createElement('a')
+        a.href = `#${h.id}`
+        a.className = 'heading-anchor'
+        a.textContent = '#'
+        a.setAttribute('aria-hidden', 'true')
+        a.tabIndex = -1
+        h.prepend(a)
+      }
+
+      // Add a copy button to every code block (mirrors the Code component).
+      const ICON_COPY =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>'
+      const ICON_CHECK =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+      for (const pre of document.querySelectorAll<HTMLElement>('pre.astro-code')) {
+        if (pre.parentElement?.classList.contains('code-block')) continue
+        const wrap = document.createElement('div')
+        wrap.className = 'code-block'
+        pre.parentNode?.insertBefore(wrap, pre)
+        wrap.appendChild(pre)
+
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = 'code-copy'
+        btn.setAttribute('aria-label', 'Copy code')
+        btn.innerHTML = ICON_COPY
+        let timer: number | undefined
+        btn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(pre.textContent ?? '')
+          } catch {
+            return
+          }
+          btn.innerHTML = ICON_CHECK
+          btn.classList.add('copied')
+          clearTimeout(timer)
+          timer = window.setTimeout(() => {
+            btn.innerHTML = ICON_COPY
+            btn.classList.remove('copied')
+          }, 2000)
+        })
+        wrap.appendChild(btn)
+      }
+
+      // Scroll-spy: highlight the TOC link for the heading currently in view.
+      const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc] a')]
+      if (tocLinks.length) {
+        const byId = new Map(tocLinks.map((l) => [decodeURIComponent(l.hash.slice(1)), l]))
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue
+              tocLinks.forEach((l) => l.removeAttribute('data-active'))
+              byId.get(e.target.id)?.setAttribute('data-active', 'true')
+            }
+          },
+          { rootMargin: '-80px 0px -70% 0px' },
+        )
+        for (const id of byId.keys()) {
+          const el = document.getElementById(id)
+          if (el) io.observe(el)
+        }
+      }
+    </script>
+  </body>
+</html>

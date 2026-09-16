@@ -3,3 +3,82 @@
    Tailwind to scan them so their utilities get generated. */
 @source "../../../registry/components";
 @import "../../../registry/tokens/theme.css";
+
+/* Docs: anchor jumps clear the sticky navbar (h-16 = 4rem). */
+html {
+  scroll-padding-top: 5rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Docs: a `#` anchor that appears on heading hover. */
+.apogee-prose :where(h2, h3, h4) {
+  position: relative;
+}
+.heading-anchor {
+  position: absolute;
+  inset-inline-start: -1.1em;
+  opacity: 0;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+.apogee-prose :where(h2, h3, h4):hover .heading-anchor,
+.heading-anchor:focus-visible {
+  opacity: 1;
+}
+.heading-anchor:hover {
+  color: var(--accent);
+}
+
+/* Code blocks: Shiki dual theme (token colours switch by our data-theme; inline
+   styles hold the light colours + --shiki-dark, so overrides need !important).
+   Background uses our --muted surface in both themes so the block reads as an
+   elevated panel, not flat against the page (github-light's bg ≈ the page). */
+.astro-code {
+  background-color: var(--muted) !important;
+}
+[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+}
+
+/* Copy button injected onto each code block (client-side). */
+.code-block {
+  position: relative;
+}
+.code-copy {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--background) 85%, transparent);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--duration-fast) var(--ease-smooth),
+    color var(--duration-fast) var(--ease-smooth);
+}
+.code-block:hover .code-copy,
+.code-copy:focus-visible {
+  opacity: 1;
+}
+.code-copy:hover {
+  color: var(--foreground);
+}
+.code-copy.copied {
+  color: var(--success);
+  opacity: 1;
+}
+.code-copy svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}

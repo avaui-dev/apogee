@@ -1,0 +1,31 @@
+---
+/**
+ * Preview — a live component example (default slot) over its source, which the
+ * reader can reveal. Source is Shiki-highlighted at build via astro:components.
+ * Dogfoods the design system's own surfaces (border, tokens, Code styling).
+ */
+import { Code } from 'astro:components'
+
+interface Props {
+  code: string
+  lang?: string
+}
+const { code, lang = 'astro' } = Astro.props
+---
+
+<div class="not-content my-6 overflow-hidden rounded-lg border border-border">
+  <div class="flex min-h-28 flex-wrap items-center gap-4 bg-background p-6">
+    <slot />
+  </div>
+  <details class="group border-t border-border">
+    <summary
+      class="flex cursor-pointer list-none items-center justify-between bg-muted/40 px-4 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground [&::-webkit-details-marker]:hidden"
+    >
+      <span class="group-open:hidden">Show code</span>
+      <span class="hidden group-open:inline">Hide code</span>
+    </summary>
+    <div class="overflow-x-auto border-t border-border [&_pre]:m-0 [&_pre]:p-4 [&_pre]:text-sm">
+      <Code code={code} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} />
+    </div>
+  </details>
+</div>
