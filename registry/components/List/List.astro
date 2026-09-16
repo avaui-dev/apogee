@@ -1,0 +1,25 @@
+---
+/**
+ * List — a styled ordered or unordered list. Put `<li>`s in the slot.
+ *
+ * @composable
+ */
+interface Props {
+  as?: 'ul' | 'ol'
+  /** `none` drops the marker and indent. */
+  marker?: 'default' | 'none'
+  class?: string
+}
+
+const { as = 'ul', marker = 'default', class: className, ...rest } = Astro.props
+const Tag = as
+
+const markerClass =
+  marker === 'none'
+    ? 'list-none'
+    : `${as === 'ol' ? 'list-decimal' : 'list-disc'} ps-5 marker:text-muted-foreground`
+---
+
+<Tag class:list={['space-y-1', markerClass, className]} {...rest}>
+  <slot />
+</Tag>

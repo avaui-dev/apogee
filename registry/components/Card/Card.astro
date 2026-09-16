@@ -1,0 +1,41 @@
+---
+/**
+ * Card — a surface container. Compose freely inside (Heading, Text, Button…).
+ * Optional `media` slot renders flush at the top (for a card image). Set `href`
+ * to make the whole card an interactive link.
+ *
+ * @composable
+ */
+interface Props {
+  href?: string
+  class?: string
+}
+
+const { href, class: className, ...rest } = Astro.props
+const Tag = href ? 'a' : 'div'
+const interactive = href
+  ? 'transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'
+  : ''
+const hasMedia = Astro.slots.has('media')
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'block overflow-hidden rounded-lg border border-border bg-surface text-surface-foreground',
+    interactive,
+    className,
+  ]}
+  {...rest}
+>
+  {
+    hasMedia && (
+      <div class="aspect-video overflow-hidden [&>img]:size-full [&>img]:object-cover">
+        <slot name="media" />
+      </div>
+    )
+  }
+  <div class="p-5">
+    <slot />
+  </div>
+</Tag>

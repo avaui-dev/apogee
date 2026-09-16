@@ -1,0 +1,84 @@
+---
+/**
+ * Prose — styles a block of rich/CMS/markdown HTML you don't control element by
+ * element. Token-driven, so it themes with everything else. Pass rendered HTML:
+ *
+ *   <Prose set:html={article.body} />
+ *   <Prose><h2>…</h2><p>…</p></Prose>
+ *
+ * Escape-hatch CSS (a global, `.apogee-prose`-scoped block) — Tailwind utilities
+ * can't reach slotted/injected HTML, so this is the right tool here. `:where()`
+ * keeps specificity at zero so you can still override.
+ *
+ * @composable
+ */
+interface Props {
+  class?: string
+  [key: string]: any
+}
+const { class: className, ...rest } = Astro.props
+---
+
+<div class:list={['apogee-prose', className]} {...rest}>
+  <slot />
+</div>
+
+<style is:global>
+  @layer components {
+    .apogee-prose {
+      color: var(--foreground);
+      line-height: 1.7;
+    }
+    .apogee-prose :where(:first-child) {
+      margin-top: 0;
+    }
+    .apogee-prose :where(h1, h2, h3, h4) {
+      color: var(--foreground);
+      font-weight: 600;
+      line-height: 1.25;
+      text-wrap: balance;
+      margin-block: 1.6em 0.5em;
+    }
+    .apogee-prose :where(h2) { font-size: 1.5em; }
+    .apogee-prose :where(h3) { font-size: 1.25em; }
+    .apogee-prose :where(p, ul, ol, blockquote, pre, table) {
+      margin-block: 0.9em 0;
+    }
+    .apogee-prose :where(a) {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .apogee-prose :where(a):hover { color: var(--accent-hover); }
+    .apogee-prose :where(strong) { font-weight: 600; }
+    .apogee-prose :where(ul) { list-style: disc; padding-inline-start: 1.5em; }
+    .apogee-prose :where(ol) { list-style: decimal; padding-inline-start: 1.5em; }
+    .apogee-prose :where(li) { margin-block: 0.3em; }
+    .apogee-prose :where(li)::marker { color: var(--muted-foreground); }
+    .apogee-prose :where(blockquote) {
+      border-inline-start: 3px solid var(--border);
+      padding-inline-start: 1em;
+      color: var(--muted-foreground);
+    }
+    .apogee-prose :where(code) {
+      font-family: ui-monospace, monospace;
+      font-size: 0.9em;
+      background: var(--muted);
+      padding: 0.1em 0.3em;
+      border-radius: var(--radius-sm);
+    }
+    .apogee-prose :where(pre) {
+      background: var(--muted);
+      padding: 1em;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+    }
+    .apogee-prose :where(pre code) { background: none; padding: 0; }
+    .apogee-prose :where(img) { border-radius: var(--radius-md); }
+    .apogee-prose :where(hr) {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin-block: 1.6em;
+    }
+  }
+</style>

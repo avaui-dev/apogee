@@ -1,0 +1,31 @@
+---
+/**
+ * Image — wraps `astro:assets` Image with sensible defaults (lazy, async
+ * decode, responsive). Pass a local image import (ImageMetadata); every
+ * astro:assets prop (`widths`, `sizes`, `format`, `quality`, `width`,
+ * `height`, …) forwards through.
+ *
+ * @composable
+ */
+import { Image as AstroImage } from 'astro:assets'
+
+interface Props {
+  src: ImageMetadata
+  alt: string
+  loading?: 'lazy' | 'eager'
+  decoding?: 'async' | 'sync' | 'auto'
+  class?: string
+  [key: string]: any
+}
+
+const { src, alt, loading = 'lazy', decoding = 'async', class: className, ...rest } = Astro.props
+---
+
+<AstroImage
+  src={src}
+  alt={alt}
+  loading={loading}
+  decoding={decoding}
+  class:list={['h-auto max-w-full', className]}
+  {...rest}
+/>
