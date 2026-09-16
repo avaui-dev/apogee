@@ -58,7 +58,7 @@ const id = `apogee-${Math.random().toString(36).slice(2, 9)}`
 
 <style>
   .apogee-tabs [role='tabpanel']:not([hidden]) {
-    animation: apogee-tab-in 0.2s ease;
+    animation: apogee-tab-in var(--duration-base) var(--ease-smooth);
   }
   @keyframes apogee-tab-in {
     from {

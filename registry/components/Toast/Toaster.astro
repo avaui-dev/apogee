@@ -67,7 +67,7 @@ const positions = {
     </div>
     <button
       type="button"
-      class="apogee-toast-close -mr-1 -mt-1 grid size-6 shrink-0 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      class="apogee-toast-close -mr-1 -mt-1 grid size-6 shrink-0 place-items-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       aria-label="Dismiss"
     >
       <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -79,7 +79,7 @@ const positions = {
 
 <style is:global>
   .apogee-toast {
-    animation: apogee-toast-in 0.2s ease;
+    animation: apogee-toast-in var(--duration-base) var(--ease-smooth);
   }
   .apogee-toast[data-variant='info'] {
     border-color: color-mix(in oklab, var(--accent) 35%, var(--border));
@@ -94,12 +94,12 @@ const positions = {
     border-color: color-mix(in oklab, var(--danger) 35%, var(--border));
   }
   .apogee-toast--out {
-    animation: apogee-toast-out 0.15s ease forwards;
+    animation: apogee-toast-out var(--duration-fast) var(--ease-smooth) forwards;
   }
   @keyframes apogee-toast-in {
     from {
       opacity: 0;
-      transform: scale(0.96);
+      transform: translateY(0.5rem) scale(0.98);
     }
   }
   @keyframes apogee-toast-out {

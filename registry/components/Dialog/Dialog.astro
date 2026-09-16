@@ -64,10 +64,10 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
     overflow-y: auto;
     opacity: 0;
     transition:
-      opacity 0.25s ease,
-      transform 0.25s ease,
-      overlay 0.25s ease allow-discrete,
-      display 0.25s ease allow-discrete;
+      opacity var(--duration-slow) var(--ease-smooth),
+      transform var(--duration-slow) var(--ease-smooth),
+      overlay var(--duration-slow) var(--ease-smooth) allow-discrete,
+      display var(--duration-slow) var(--ease-smooth) allow-discrete;
   }
 
   /* --- layout per variant (state-independent) --- */
@@ -167,9 +167,9 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
   .apogee-dialog::backdrop {
     background-color: rgb(0 0 0 / 0);
     transition:
-      background-color 0.25s ease,
-      overlay 0.25s ease allow-discrete,
-      display 0.25s ease allow-discrete;
+      background-color var(--duration-slow) var(--ease-smooth),
+      overlay var(--duration-slow) var(--ease-smooth) allow-discrete,
+      display var(--duration-slow) var(--ease-smooth) allow-discrete;
   }
   .apogee-dialog[open]::backdrop {
     background-color: rgb(0 0 0 / 0.5);

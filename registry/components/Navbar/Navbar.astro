@@ -34,7 +34,7 @@ const menuId = `apogee-nav-${Math.random().toString(36).slice(2, 9)}`
       <div class="hidden items-center gap-2 md:flex"><slot name="actions" /></div>
       <button
         type="button"
-        class="apogee-navbar-toggle grid size-9 place-items-center rounded-md text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:hidden"
+        class="apogee-navbar-toggle grid size-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:hidden"
         aria-controls={menuId}
         aria-expanded="false"
         aria-label="Toggle menu"

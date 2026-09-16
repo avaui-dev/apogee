@@ -68,7 +68,7 @@ const uid = Math.random().toString(36).slice(2, 9)
      clears the checked state so the hover preview wins. */
   .apogee-rating label {
     color: var(--color-border);
-    transition: color 0.1s ease;
+    transition: color var(--duration-fast) var(--ease-smooth);
   }
   .apogee-rating input:checked ~ label {
     color: var(--color-amber-400);

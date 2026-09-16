@@ -22,7 +22,7 @@ interface Props {
 const { menus, class: className, ...rest } = Astro.props
 
 const itemClass =
-  'apogee-menubar-item flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-foreground hover:bg-muted focus-visible:bg-muted focus-visible:outline-none'
+  'apogee-menubar-item flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm text-foreground transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none'
 ---
 
 <div
@@ -36,7 +36,7 @@ const itemClass =
         <summary
           role="menuitem"
           aria-haspopup="true"
-          class="cursor-pointer list-none rounded px-3 py-1.5 text-sm font-medium text-foreground select-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+          class="cursor-pointer list-none rounded px-3 py-1.5 text-sm font-medium text-foreground transition-colors select-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
         >
           {menu.label}
         </summary>
@@ -62,6 +62,24 @@ const itemClass =
     ))
   }
 </div>
+
+<style>
+  /* Fade + slide in when a menu opens. */
+  .apogee-menubar-menu[open] .apogee-menubar-panel {
+    animation: apogee-menubar-in var(--duration-fast) var(--ease-smooth);
+  }
+  @keyframes apogee-menubar-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.25rem);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-menubar-panel {
+      animation: none;
+    }
+  }
+</style>
 
 <script>
   for (const bar of document.querySelectorAll<HTMLElement>('.apogee-menubar')) {

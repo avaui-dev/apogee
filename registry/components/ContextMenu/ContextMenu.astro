@@ -28,6 +28,24 @@ const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
   </div>
 </div>
 
+<style>
+  /* Fade + scale in when the menu opens at the cursor. */
+  .apogee-contextmenu-panel:not([hidden]) {
+    animation: apogee-contextmenu-in var(--duration-fast) var(--ease-smooth);
+  }
+  @keyframes apogee-contextmenu-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-contextmenu-panel {
+      animation: none;
+    }
+  }
+</style>
+
 <script>
   for (const root of document.querySelectorAll<HTMLElement>('.apogee-contextmenu')) {
     const panel = root.querySelector<HTMLElement>('.apogee-contextmenu-panel')

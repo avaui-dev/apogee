@@ -35,7 +35,7 @@ const { name, value = [], placeholder = 'Add tag…', class: className, ...rest 
         <input type="hidden" name={name} value={tag} />
         <button
           type="button"
-          class="apogee-tag-remove text-muted-foreground no-js:hidden hover:text-foreground"
+          class="apogee-tag-remove text-muted-foreground transition-colors no-js:hidden hover:text-foreground"
           aria-label={`Remove ${tag}`}
         >
           <X class="size-3.5" aria-hidden="true" />
@@ -55,7 +55,7 @@ const { name, value = [], placeholder = 'Add tag…', class: className, ...rest 
   <span class="apogee-tag inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-sm text-foreground">
     <span class="apogee-tag-label"></span>
     <input type="hidden" />
-    <button type="button" class="apogee-tag-remove text-muted-foreground hover:text-foreground" aria-label="Remove">
+    <button type="button" class="apogee-tag-remove text-muted-foreground transition-colors hover:text-foreground" aria-label="Remove">
       <X class="size-3.5" aria-hidden="true" />
     </button>
   </span>

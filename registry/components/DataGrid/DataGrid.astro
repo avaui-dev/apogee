@@ -50,7 +50,7 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
               {col.sortable ? (
                 <button
                   type="button"
-                  class="apogee-datagrid-sort inline-flex items-center gap-1 hover:text-foreground"
+                  class="apogee-datagrid-sort inline-flex items-center gap-1 transition-colors hover:text-foreground"
                   data-key={col.key}
                   data-sort="none"
                 >

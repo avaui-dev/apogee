@@ -24,7 +24,7 @@ const { items, class: className, ...rest } = Astro.props
             {item.href && !last ? (
               <a
                 href={item.href}
-                class="rounded-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                class="rounded-sm transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
                 {item.label}
               </a>

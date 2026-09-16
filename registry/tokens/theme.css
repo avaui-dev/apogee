@@ -140,6 +140,10 @@
   --duration-fast: 120ms;
   --duration-base: 180ms;
   --duration-slow: 260ms;
+  /* Make every Tailwind `transition-*` utility use the tokens by default, so a
+     bare `transition-colors` is already on-brand (fast + smooth). */
+  --default-transition-duration: var(--duration-fast);
+  --default-transition-timing-function: var(--ease-smooth);
 
   /* fluid layout spacing — clamp(min @~320px → max @~1440px), Lumos-style. These
      add named utilities: `px-gutter` (page side padding), `py-section` /

@@ -47,7 +47,7 @@ const base =
 // `link` drops all button chrome and renders as inline underlined text.
 const shape = isLink
   ? 'inline rounded-sm underline underline-offset-4'
-  : 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors'
+  : 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition active:scale-95 motion-reduce:active:scale-100'
 
 const colors = {
   primary: 'bg-accent text-accent-foreground hover:bg-accent-hover',

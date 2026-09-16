@@ -112,6 +112,21 @@ const inputBase =
     margin-top: 0;
     margin-bottom: 0.25rem;
   }
+  /* Fade + slide in each time the list opens. */
+  .apogee-combobox-list:not([hidden]) {
+    animation: apogee-combobox-in var(--duration-fast) var(--ease-smooth);
+  }
+  @keyframes apogee-combobox-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.25rem);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-combobox-list {
+      animation: none;
+    }
+  }
 </style>
 
 <script>

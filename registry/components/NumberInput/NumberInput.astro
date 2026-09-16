@@ -40,7 +40,7 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
 
 const sizeMap = { sm: 'h-8 text-sm', md: 'h-10 text-sm', lg: 'h-12 text-base' }
 const btn =
-  'apogee-number-step grid aspect-square place-items-center text-muted-foreground no-js:hidden hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring disabled:opacity-50'
+  'apogee-number-step grid aspect-square place-items-center text-muted-foreground transition-colors no-js:hidden hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring disabled:opacity-50'
 ---
 
 <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
