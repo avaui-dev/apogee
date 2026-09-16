@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Apogee — the AVA design system for Astro. Atomic components, sections, and patterns, native to Astro: minimal JS, accessible, ready to compose.",
   "type": "module",
+  "scripts": {
+    "check:contrast": "node scripts/check-contrast.mjs"
+  },
   "license": "MIT",
   "author": "AVA UI (https://avaui.dev)",
   "homepage": "https://apogee.avaui.dev",

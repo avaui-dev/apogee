@@ -40,7 +40,7 @@
   --surface: var(--color-zinc-50);
   --surface-foreground: var(--color-zinc-900);
   --muted: var(--color-zinc-100);
-  --muted-foreground: var(--color-zinc-500);
+  --muted-foreground: var(--color-zinc-600);
   --border: var(--color-zinc-200);
 
   /* brand accent — PLACEHOLDER (Tailwind blue). Replace with AVA's brand color. */
@@ -54,7 +54,7 @@
   --danger-foreground: var(--color-white);
 
   /* status */
-  --success: var(--color-green-600);
+  --success: var(--color-green-700);
   --success-foreground: var(--color-white);
   --warning: var(--color-amber-500);
   --warning-foreground: var(--color-zinc-950);
@@ -74,11 +74,15 @@
 
   --accent: var(--color-blue-500);
   --accent-hover: var(--color-blue-400);
+  /* Bright 500-level fills → dark text for AA (same idea as warning). */
+  --accent-foreground: var(--color-zinc-950);
 
   --danger: var(--color-red-500);
   --danger-hover: var(--color-red-400);
+  --danger-foreground: var(--color-zinc-950);
 
   --success: var(--color-green-500);
+  --success-foreground: var(--color-zinc-950);
   --warning: var(--color-amber-400);
 
   --ring: var(--color-blue-500);
