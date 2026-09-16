@@ -1,0 +1,28 @@
+---
+/**
+ * Tooltip — a hint shown on hover / focus. Zero JS (CSS only). Wrap a focusable
+ * trigger (button/link) so keyboard users get it too.
+ *
+ * @composable
+ */
+interface Props {
+  text: string
+  class?: string
+}
+
+const { text, class: className, ...rest } = Astro.props
+const id = `apogee-tt-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<span class:list={['group relative inline-flex', className]} {...rest}>
+  <span class="inline-flex" aria-describedby={id}>
+    <slot />
+  </span>
+  <span
+    role="tooltip"
+    id={id}
+    class="pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-xs text-background opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
+  >
+    {text}
+  </span>
+</span>

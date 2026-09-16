@@ -1,0 +1,20 @@
+---
+/**
+ * Accordion — a styled container for AccordionItems. For single-open behavior
+ * (opening one closes the others), give every item the same `group` name.
+ *
+ * @composable
+ */
+interface Props {
+  class?: string
+}
+
+const { class: className, ...rest } = Astro.props
+---
+
+<div
+  class:list={['divide-y divide-border overflow-hidden rounded-lg border border-border', className]}
+  {...rest}
+>
+  <slot />
+</div>

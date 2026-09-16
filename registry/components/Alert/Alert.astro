@@ -1,0 +1,38 @@
+---
+/**
+ * Alert — an inline message with a status color and icon. Zero JS.
+ *
+ * For a dynamically-shown alert (e.g. a form result), add `role="alert"` so it's
+ * announced; a static callout needs no role.
+ *
+ * @composable
+ */
+import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro'
+
+interface Props {
+  variant?: 'info' | 'success' | 'warning' | 'danger'
+  title?: string
+  class?: string
+  [key: string]: any
+}
+
+const { variant = 'info', title, class: className, ...rest } = Astro.props
+
+const config = {
+  info: { icon: Info, box: 'border-accent/25 bg-accent/10', tint: 'text-accent' },
+  success: { icon: CircleCheck, box: 'border-success/25 bg-success/10', tint: 'text-success' },
+  warning: { icon: TriangleAlert, box: 'border-warning/30 bg-warning/10', tint: 'text-warning' },
+  danger: { icon: CircleAlert, box: 'border-danger/25 bg-danger/10', tint: 'text-danger' },
+}
+const { icon: Icon, box, tint } = config[variant]
+---
+
+<div class:list={['flex gap-3 rounded-lg border p-4', box, className]} {...rest}>
+  <Icon class:list={['mt-0.5 size-5 shrink-0', tint]} aria-hidden="true" />
+  <div class="text-sm">
+    {title && <p class="font-medium text-foreground">{title}</p>}
+    <div class:list={[title ? 'mt-0.5 text-muted-foreground' : 'text-foreground']}>
+      <slot />
+    </div>
+  </div>
+</div>

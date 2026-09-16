@@ -1,0 +1,113 @@
+---
+/**
+ * Dialog — a native `<dialog>` modal. Open and close with **invoker commands**
+ * (Baseline 2026) — no JS for the core:
+ *
+ *   <Button command="show-modal" commandfor="my-dialog">Open</Button>
+ *   <Dialog id="my-dialog" title="…">…</Dialog>
+ *
+ * Closes on the built-in ×, any `command="close"` button, Escape, and a
+ * backdrop click (`closedby="any"` + a tiny fallback for older browsers).
+ * Animated with CSS (`@starting-style`), degrading to no animation.
+ *
+ * @composable
+ */
+import { X } from '@lucide/astro'
+
+interface Props {
+  id: string
+  title?: string
+  class?: string
+  [key: string]: any
+}
+
+const { id, title, class: className, ...rest } = Astro.props
+---
+
+<dialog
+  id={id}
+  closedby="any"
+  class:list={[
+    'apogee-dialog m-auto max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-surface p-0 text-surface-foreground',
+    className,
+  ]}
+  {...rest}
+>
+  <div class="flex items-start justify-between gap-4 p-5 pb-2">
+    {title && <h2 class="text-lg font-semibold text-foreground">{title}</h2>}
+    <button
+      type="button"
+      command="close"
+      commandfor={id}
+      aria-label="Close"
+      class="-mr-1 -mt-1 ml-auto grid size-8 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    >
+      <X class="size-4" aria-hidden="true" />
+    </button>
+  </div>
+  <div class="px-5 pb-5 text-sm text-muted-foreground">
+    <slot />
+  </div>
+  {
+    Astro.slots.has('footer') && (
+      <div class="flex justify-end gap-2 border-t border-border px-5 py-4">
+        <slot name="footer" />
+      </div>
+    )
+  }
+</dialog>
+
+<style>
+  .apogee-dialog {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      overlay 0.2s ease allow-discrete,
+      display 0.2s ease allow-discrete;
+  }
+  .apogee-dialog[open] {
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    .apogee-dialog[open] {
+      opacity: 0;
+      transform: scale(0.97) translateY(6px);
+    }
+  }
+  .apogee-dialog::backdrop {
+    background-color: rgb(0 0 0 / 0);
+    transition:
+      background-color 0.2s ease,
+      overlay 0.2s ease allow-discrete,
+      display 0.2s ease allow-discrete;
+  }
+  .apogee-dialog[open]::backdrop {
+    background-color: rgb(0 0 0 / 0.5);
+  }
+  @starting-style {
+    .apogee-dialog[open]::backdrop {
+      background-color: rgb(0 0 0 / 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-dialog,
+    .apogee-dialog::backdrop {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Backdrop click closes it. `closedby="any"` does this natively where
+  // supported; this covers browsers that don't yet. A click on the backdrop has
+  // the dialog itself as target (the panel has no padding, so content clicks
+  // land on children).
+  for (const dialog of document.querySelectorAll('dialog.apogee-dialog')) {
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close()
+    })
+  }
+</script>
