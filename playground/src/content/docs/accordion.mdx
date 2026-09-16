@@ -17,14 +17,16 @@ import AccordionItem from '../../../../registry/components/Accordion/AccordionIt
     Only when a component genuinely needs it. Accordion is zero-JS — it's a native \`<details>\`.
   </AccordionItem>
 </Accordion>`}>
-  <Accordion>
-    <AccordionItem title="What is Apogee?">
-      A copy-in Astro component library, styled with Tailwind and design tokens.
-    </AccordionItem>
-    <AccordionItem title="Does it ship JavaScript?">
-      Only when a component genuinely needs it. Accordion is zero-JS — it's a native `<details>`.
-    </AccordionItem>
-  </Accordion>
+  <div class="w-full max-w-[500px]">
+    <Accordion>
+      <AccordionItem title="What is Apogee?">
+        A copy-in Astro component library, styled with Tailwind and design tokens.
+      </AccordionItem>
+      <AccordionItem title="Does it ship JavaScript?">
+        Only when a component genuinely needs it. Accordion is zero-JS — it's a native `<details>`.
+      </AccordionItem>
+    </Accordion>
+  </div>
 </Preview>
 
 ## Add
@@ -86,15 +88,17 @@ Default closed, open on load (`open`), and exclusive group (shared `group` — o
   <AccordionItem title="Two" group="faq">Opening this closes "One" and "Three".</AccordionItem>
   <AccordionItem title="Three" group="faq">Exclusive via the shared \`group\` name.</AccordionItem>
 </Accordion>`}>
-  <Accordion>
-    <AccordionItem title="Closed by default">Collapsed until clicked.</AccordionItem>
-    <AccordionItem title="Open on load" open>Visible immediately.</AccordionItem>
-  </Accordion>
-  <Accordion>
-    <AccordionItem title="One" group="faq">Only one of these three stays open.</AccordionItem>
-    <AccordionItem title="Two" group="faq">Opening this closes "One" and "Three".</AccordionItem>
-    <AccordionItem title="Three" group="faq">Exclusive via the shared `group` name.</AccordionItem>
-  </Accordion>
+  <div class="flex w-full max-w-[500px] flex-col gap-4">
+    <Accordion>
+      <AccordionItem title="Closed by default">Collapsed until clicked.</AccordionItem>
+      <AccordionItem title="Open on load" open>Visible immediately.</AccordionItem>
+    </Accordion>
+    <Accordion>
+      <AccordionItem title="One" group="faq">Only one of these three stays open.</AccordionItem>
+      <AccordionItem title="Two" group="faq">Opening this closes "One" and "Three".</AccordionItem>
+      <AccordionItem title="Three" group="faq">Exclusive via the shared `group` name.</AccordionItem>
+    </Accordion>
+  </div>
 </Preview>
 
 ## Examples

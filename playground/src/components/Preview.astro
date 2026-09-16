@@ -4,92 +4,35 @@
  * reader can reveal. Source is Shiki-highlighted at build via astro:components.
  * Dogfoods the design system's own surfaces (border, tokens, Code styling).
  *
- * `jsToggle` adds a "No-JS preview" switch (for JS-island components). It renders
- * the *pristine server HTML* of the example inside a sandboxed iframe WITHOUT
- * `allow-scripts` — so the island never runs and `no-js:` variants apply. This is
- * the only faithful way: an in-page class toggle can't un-run scripts that have
- * already enhanced the live DOM, and `no-js:` keys off `html.no-js`, which only
- * exists in a real document.
+ * The live area does NOT clip overflow, so absolutely-positioned popups (Combobox
+ * listbox, Dropdown menu, Popover) can escape the box; only the code block clips.
+ * Prose typography is neutralised inside the live area (see global.css) so the
+ * rendered component is the real component, not prose-styled HTML.
  */
 import { Code } from 'astro:components'
 
 interface Props {
   code: string
   lang?: string
-  /** JS-island components: show a switch that renders the no-JS fallback. */
-  jsToggle?: boolean
 }
-const { code, lang = 'astro', jsToggle = false } = Astro.props
-
-// Pristine, pre-script HTML of the example — fed to the sandboxed iframe.
-const rendered = jsToggle ? await Astro.slots.render('default') : ''
+const { code, lang = 'astro' } = Astro.props
 ---
 
-<div class="not-content my-6 overflow-hidden rounded-lg border border-border" data-preview>
-  {
-    jsToggle && (
-      <div class="flex items-center justify-between border-b border-border bg-muted/40 px-4 py-2">
-        <span class="text-xs font-medium text-muted-foreground">Preview</span>
-        <label class="flex cursor-pointer items-center gap-1.5 text-xs font-medium text-muted-foreground select-none">
-          <input type="checkbox" data-preview-toggle class="size-3.5 accent-[var(--accent)]" />
-          No-JS preview
-        </label>
-      </div>
-    )
-  }
-  <div class="flex min-h-28 flex-wrap items-center gap-4 bg-background p-6" data-preview-live>
+<div class="my-6 rounded-lg border border-border" data-preview>
+  <div class="flex min-h-28 flex-wrap items-start gap-4 rounded-t-lg bg-background p-6" data-preview-live>
     <slot />
   </div>
-  {jsToggle && <template data-preview-html set:html={rendered} />}
   <details class="group border-t border-border">
     <summary
-      class="flex cursor-pointer list-none items-center justify-between bg-muted/40 px-4 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground [&::-webkit-details-marker]:hidden"
+      class="flex cursor-pointer list-none items-center justify-between rounded-b-lg bg-muted/40 px-4 py-2 text-xs font-medium text-muted-foreground transition-colors group-open:rounded-b-none hover:text-foreground [&::-webkit-details-marker]:hidden"
     >
       <span class="group-open:hidden">Show code</span>
       <span class="hidden group-open:inline">Hide code</span>
     </summary>
-    <div class="overflow-x-auto border-t border-border [&_pre]:m-0 [&_pre]:p-4 [&_pre]:text-sm">
-      <Code code={code} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} />
+    <div class="overflow-hidden rounded-b-lg border-t border-border">
+      <div class="overflow-x-auto [&_pre]:m-0 [&_pre]:p-4 [&_pre]:text-sm">
+        <Code code={code} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} />
+      </div>
     </div>
   </details>
 </div>
-
-<script>
-  // No-JS preview: swap the live example for a sandboxed iframe (no allow-scripts,
-  // so islands can't run) whose <html> carries `no-js` — making the fallback real.
-  for (const root of document.querySelectorAll<HTMLElement>('[data-preview]')) {
-    const toggle = root.querySelector<HTMLInputElement>('[data-preview-toggle]')
-    const live = root.querySelector<HTMLElement>('[data-preview-live]')
-    const tpl = root.querySelector<HTMLTemplateElement>('[data-preview-html]')
-    if (!toggle || !live || !tpl) continue
-
-    // Carry the page's real stylesheets + theme into the frame so tokens apply.
-    const head = [...document.querySelectorAll('link[rel="stylesheet"], style')]
-      .map((n) => n.outerHTML)
-      .join('')
-    let frame: HTMLIFrameElement | null = null
-
-    toggle.addEventListener('change', () => {
-      if (toggle.checked) {
-        const theme = document.documentElement.dataset.theme ?? 'light'
-        frame = document.createElement('iframe')
-        // allow-same-origin (to measure height) but NOT allow-scripts.
-        frame.setAttribute('sandbox', 'allow-same-origin')
-        frame.className = 'block w-full border-0'
-        frame.style.height = '160px'
-        frame.srcdoc = `<!doctype html><html class="no-js" data-theme="${theme}"><head><meta charset="utf-8">${head}</head><body class="bg-background text-foreground"><div class="flex min-h-28 flex-wrap items-center gap-4 p-6">${tpl.innerHTML}</div></body></html>`
-        frame.addEventListener('load', () => {
-          try {
-            frame!.style.height = frame!.contentDocument!.documentElement.scrollHeight + 'px'
-          } catch {}
-        })
-        live.hidden = true
-        live.after(frame)
-      } else {
-        frame?.remove()
-        frame = null
-        live.hidden = false
-      }
-    })
-  }
-</script>

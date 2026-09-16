@@ -14,12 +14,9 @@ import Slider from '../../../../registry/components/Slider/Slider.astro'
   `input` event, and repositions the badge to stay centered over the thumb.
 </JsNote>
 
-<Preview jsToggle code={`<Slider aria-label="Volume" value={40} />`}>
+<Preview code={`<Slider aria-label="Volume" value={40} />`}>
   <Slider aria-label="Volume" value={40} />
 </Preview>
-
-Flip the **No-JS preview** switch above to see the fallback: the badge disappears
-but the input and its fill stay exactly as usable.
 
 ## Add
 
@@ -59,7 +56,7 @@ import Slider from '@/components/apogee/Slider/Slider.astro'
 
 `labelPosition` — the only stylistic variant:
 
-<Preview jsToggle code={`<Slider aria-label="Top badge" labelPosition="top" value={30} />
+<Preview code={`<Slider aria-label="Top badge" labelPosition="top" value={30} />
 <Slider aria-label="Bottom badge" labelPosition="bottom" value={70} />`}>
   <Slider aria-label="Top badge" labelPosition="top" value={30} />
   <Slider aria-label="Bottom badge" labelPosition="bottom" value={70} />
@@ -75,7 +72,7 @@ import Slider from '@/components/apogee/Slider/Slider.astro'
   blocks interaction and removes it from the tab order.
 - **No JS** — badge hidden (`no-js:hidden`); input and fill stay fully usable.
 
-<Preview jsToggle code={`<Slider aria-label="Disabled" value={50} disabled />`}>
+<Preview code={`<Slider aria-label="Disabled" value={50} disabled />`}>
   <Slider aria-label="Disabled" value={50} disabled />
 </Preview>
 

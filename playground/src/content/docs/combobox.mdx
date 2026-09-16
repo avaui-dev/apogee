@@ -15,7 +15,7 @@ import Combobox from '../../../../registry/components/Combobox/Combobox.astro'
   Enter or a click commits it into the input. Free-typing is always allowed.
 </JsNote>
 
-<Preview jsToggle code={`<Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />`}>
+<Preview code={`<Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />`}>
   <Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />
 </Preview>
 
@@ -65,7 +65,7 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 
 ## Sizes
 
-<Preview jsToggle code={`<Combobox label="Small" size="sm" options={['One', 'Two', 'Three']} />
+<Preview code={`<Combobox label="Small" size="sm" options={['One', 'Two', 'Three']} />
 <Combobox label="Medium" size="md" options={['One', 'Two', 'Three']} />
 <Combobox label="Large" size="lg" options={['One', 'Two', 'Three']} />`}>
   <Combobox label="Small" size="sm" options={['One', 'Two', 'Three']} />
@@ -83,7 +83,7 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 - **Disabled** — via passthrough `disabled`; dimmed, not interactive.
 - **No JS** — listbox stays `hidden`; the input is a plain text field.
 
-<Preview jsToggle code={`<Combobox label="Country" options={['Canada', 'France']} error="Pick a country from the list." />
+<Preview code={`<Combobox label="Country" options={['Canada', 'France']} error="Pick a country from the list." />
 <Combobox label="Country" options={['Canada', 'France']} disabled value="Canada" />`}>
   <Combobox label="Country" options={['Canada', 'France']} error="Pick a country from the list." />
   <Combobox label="Country" options={['Canada', 'France']} disabled value="Canada" />

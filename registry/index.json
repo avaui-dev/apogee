@@ -11,7 +11,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "Alert": {
       "name": "Alert",
@@ -21,7 +22,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "AspectRatio": {
       "name": "AspectRatio",
@@ -29,7 +31,8 @@
         "AspectRatio/AspectRatio.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Avatar": {
       "name": "Avatar",
@@ -39,7 +42,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "AvatarGroup": {
       "name": "AvatarGroup",
@@ -49,7 +53,8 @@
       "registryDependencies": [
         "Avatar"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Badge": {
       "name": "Badge",
@@ -57,7 +62,8 @@
         "Badge/Badge.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Blockquote": {
       "name": "Blockquote",
@@ -65,7 +71,8 @@
         "Blockquote/Blockquote.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Breadcrumbs": {
       "name": "Breadcrumbs",
@@ -75,7 +82,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "Button": {
       "name": "Button",
@@ -85,7 +93,8 @@
       "registryDependencies": [
         "Spinner"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "ButtonGroup": {
       "name": "ButtonGroup",
@@ -93,7 +102,8 @@
         "ButtonGroup/ButtonGroup.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Card": {
       "name": "Card",
@@ -101,7 +111,8 @@
         "Card/Card.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Carousel": {
       "name": "Carousel",
@@ -111,7 +122,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Checkbox": {
       "name": "Checkbox",
@@ -119,7 +131,8 @@
         "Checkbox/Checkbox.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Code": {
       "name": "Code",
@@ -129,7 +142,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Collapsible": {
       "name": "Collapsible",
@@ -139,7 +153,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "ColorPicker": {
       "name": "ColorPicker",
@@ -149,7 +164,8 @@
       "registryDependencies": [
         "Field"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "Combobox": {
       "name": "Combobox",
@@ -161,7 +177,8 @@
       ],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "CommandPalette": {
       "name": "CommandPalette",
@@ -171,7 +188,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Container": {
       "name": "Container",
@@ -179,7 +197,8 @@
         "Container/Container.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "ContentWrapper": {
       "name": "ContentWrapper",
@@ -187,7 +206,8 @@
         "ContentWrapper/ContentWrapper.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "ContextMenu": {
       "name": "ContextMenu",
@@ -195,7 +215,8 @@
         "ContextMenu/ContextMenu.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "DataGrid": {
       "name": "DataGrid",
@@ -207,7 +228,8 @@
       ],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Dialog": {
       "name": "Dialog",
@@ -217,7 +239,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Divider": {
       "name": "Divider",
@@ -225,7 +248,8 @@
         "Divider/Divider.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Dropdown": {
       "name": "Dropdown",
@@ -236,7 +260,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "EmptyState": {
       "name": "EmptyState",
@@ -244,7 +269,8 @@
         "EmptyState/EmptyState.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Eyebrow": {
       "name": "Eyebrow",
@@ -252,7 +278,8 @@
         "Eyebrow/Eyebrow.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Field": {
       "name": "Field",
@@ -260,7 +287,8 @@
         "Field/Field.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "FileUpload": {
       "name": "FileUpload",
@@ -270,7 +298,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Footer": {
       "name": "Footer",
@@ -278,7 +307,8 @@
         "Footer/Footer.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Grid": {
       "name": "Grid",
@@ -286,7 +316,8 @@
         "Grid/Grid.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Heading": {
       "name": "Heading",
@@ -294,7 +325,8 @@
         "Heading/Heading.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Icon": {
       "name": "Icon",
@@ -304,7 +336,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "Image": {
       "name": "Image",
@@ -312,7 +345,8 @@
         "Image/Image.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Input": {
       "name": "Input",
@@ -322,7 +356,8 @@
       "registryDependencies": [
         "Field"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Kbd": {
       "name": "Kbd",
@@ -330,7 +365,8 @@
         "Kbd/Kbd.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Link": {
       "name": "Link",
@@ -338,7 +374,8 @@
         "Link/Link.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "List": {
       "name": "List",
@@ -346,7 +383,8 @@
         "List/List.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Marquee": {
       "name": "Marquee",
@@ -356,7 +394,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Menubar": {
       "name": "Menubar",
@@ -364,7 +403,8 @@
         "Menubar/Menubar.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "Meter": {
       "name": "Meter",
@@ -372,7 +412,8 @@
         "Meter/Meter.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "NavLink": {
       "name": "NavLink",
@@ -380,7 +421,8 @@
         "NavLink/NavLink.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Navbar": {
       "name": "Navbar",
@@ -390,7 +432,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "NumberInput": {
       "name": "NumberInput",
@@ -402,7 +445,8 @@
       ],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Pagination": {
       "name": "Pagination",
@@ -412,7 +456,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "PinInput": {
       "name": "PinInput",
@@ -420,7 +465,8 @@
         "PinInput/PinInput.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "Popover": {
       "name": "Popover",
@@ -428,7 +474,8 @@
         "Popover/Popover.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Progress": {
       "name": "Progress",
@@ -436,7 +483,8 @@
         "Progress/Progress.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Prose": {
       "name": "Prose",
@@ -444,7 +492,8 @@
         "Prose/Prose.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Radio": {
       "name": "Radio",
@@ -452,7 +501,8 @@
         "Radio/Radio.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Rating": {
       "name": "Rating",
@@ -462,7 +512,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "RichTextEditor": {
       "name": "RichTextEditor",
@@ -475,7 +526,8 @@
       ],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Section": {
       "name": "Section",
@@ -485,7 +537,8 @@
       "registryDependencies": [
         "Container"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "SegmentedControl": {
       "name": "SegmentedControl",
@@ -493,7 +546,8 @@
         "SegmentedControl/SegmentedControl.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Select": {
       "name": "Select",
@@ -505,7 +559,8 @@
       ],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "Sidebar": {
       "name": "Sidebar",
@@ -515,7 +570,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Skeleton": {
       "name": "Skeleton",
@@ -523,7 +579,8 @@
         "Skeleton/Skeleton.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "SkipLink": {
       "name": "SkipLink",
@@ -531,7 +588,8 @@
         "SkipLink/SkipLink.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Slider": {
       "name": "Slider",
@@ -539,7 +597,8 @@
         "Slider/Slider.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "Spinner": {
       "name": "Spinner",
@@ -549,7 +608,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "Stack": {
       "name": "Stack",
@@ -557,7 +617,8 @@
         "Stack/Stack.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Stat": {
       "name": "Stat",
@@ -567,7 +628,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "Steps": {
       "name": "Steps",
@@ -577,7 +639,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": false
     },
     "Switch": {
       "name": "Switch",
@@ -585,7 +648,8 @@
         "Switch/Switch.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Table": {
       "name": "Table",
@@ -593,7 +657,8 @@
         "Table/Table.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Tabs": {
       "name": "Tabs",
@@ -601,7 +666,8 @@
         "Tabs/Tabs.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "Tag": {
       "name": "Tag",
@@ -611,7 +677,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "TagInput": {
       "name": "TagInput",
@@ -621,7 +688,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "Text": {
       "name": "Text",
@@ -629,7 +697,8 @@
         "Text/Text.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Textarea": {
       "name": "Textarea",
@@ -639,7 +708,8 @@
       "registryDependencies": [
         "Field"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Timeline": {
       "name": "Timeline",
@@ -647,7 +717,8 @@
         "Timeline/Timeline.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     },
     "Toast": {
       "name": "Toast",
@@ -657,7 +728,8 @@
       "registryDependencies": [],
       "dependencies": [
         "@lucide/astro"
-      ]
+      ],
+      "usesJs": true
     },
     "ToggleButton": {
       "name": "ToggleButton",
@@ -665,7 +737,8 @@
         "ToggleButton/ToggleButton.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "ToggleButtonGroup": {
       "name": "ToggleButtonGroup",
@@ -673,7 +746,8 @@
         "ToggleButtonGroup/ToggleButtonGroup.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": true
     },
     "Tooltip": {
       "name": "Tooltip",
@@ -681,7 +755,8 @@
         "Tooltip/Tooltip.astro"
       ],
       "registryDependencies": [],
-      "dependencies": []
+      "dependencies": [],
+      "usesJs": false
     }
   }
 }

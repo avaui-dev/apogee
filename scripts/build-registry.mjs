@@ -22,9 +22,11 @@ for (const dir of dirs) {
   const files = readdirSync(dirPath).filter((f) => f.endsWith('.astro'))
   const registryDeps = new Set()
   const npmDeps = new Set()
+  let usesJs = false
 
   for (const file of files) {
     const src = readFileSync(join(dirPath, file), 'utf8')
+    if (src.includes('<script')) usesJs = true
     for (const m of src.matchAll(IMPORT_RE)) {
       const spec = m[1] ?? m[2]
       if (!spec) continue
@@ -42,6 +44,7 @@ for (const dir of dirs) {
     files: files.map((f) => `${dir}/${f}`).sort(),
     registryDependencies: [...registryDeps].sort(),
     dependencies: [...npmDeps].sort(),
+    usesJs,
   }
 }
 

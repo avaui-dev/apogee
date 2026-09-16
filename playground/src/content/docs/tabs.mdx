@@ -14,7 +14,7 @@ import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
   panel visibility (only the selected panel shows).
 </JsNote>
 
-<Preview jsToggle code={`<Tabs tabs={['Account', 'Password', 'Team']}>
+<Preview code={`<Tabs tabs={['Account', 'Password', 'Team']}>
   <div slot="panel-0">Manage your account details.</div>
   <div slot="panel-1">Change your password.</div>
   <div slot="panel-2">Invite and manage members.</div>
@@ -25,10 +25,6 @@ import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
     <div slot="panel-2">Invite and manage members.</div>
   </Tabs>
 </Preview>
-
-Flip the **No-JS preview** switch above to see the fallback: with JavaScript off,
-every panel is shown stacked (in a sandboxed iframe with no scripts — the real
-`no-js` behaviour, not a fake).
 
 ## Add
 
@@ -78,13 +74,13 @@ label by index.
   its panel is visible.
 - **Hover / focus** — inactive tabs lighten on hover; keyboard focus shows a visible
   ring (`focus-visible:outline-ring`).
-- **No JS** — every panel is shown (the `no-js:block` fallback). See the toggle above.
+- **No JS** — every panel is shown (the `no-js:block` fallback).
 
 ## Examples
 
 More than a handful of tabs — they wrap; the pattern is unchanged:
 
-<Preview jsToggle code={`<Tabs tabs={['Overview', 'Analytics', 'Reports', 'Notifications']}>
+<Preview code={`<Tabs tabs={['Overview', 'Analytics', 'Reports', 'Notifications']}>
   <div slot="panel-0">At-a-glance summary.</div>
   <div slot="panel-1">Charts and trends.</div>
   <div slot="panel-2">Exportable reports.</div>

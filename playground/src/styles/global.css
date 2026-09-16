@@ -34,6 +34,36 @@ html {
   color: var(--accent);
 }
 
+/* Live component previews sit inside .apogee-prose (the MDX body) but must render
+   the raw component, not prose-styled HTML. Neutralise prose's element defaults in
+   the live area only (not the code block). `:is()` keeps specificity above prose's
+   zero-specificity `:where()` rules; component utilities (higher layer) still win
+   wherever they set a value, so this only strips the leaked prose defaults. */
+@layer components {
+  :is([data-preview-live], .not-content) :is(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre, table, figure, hr, li) {
+    margin: 0;
+  }
+  :is([data-preview-live], .not-content) :is(ul, ol) {
+    padding: 0;
+    list-style: none;
+  }
+  :is([data-preview-live], .not-content) :is(blockquote) {
+    border: 0;
+    padding: 0;
+    color: inherit;
+  }
+  :is([data-preview-live], .not-content) :is(a) {
+    color: inherit;
+    text-decoration: none;
+  }
+  :is([data-preview-live], .not-content) :is(code) {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+  }
+}
+
 /* Code blocks: Shiki dual theme (token colours switch by our data-theme; inline
    styles hold the light colours + --shiki-dark, so overrides need !important).
    Background uses our --muted surface in both themes so the block reads as an

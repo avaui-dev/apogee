@@ -6,7 +6,13 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+
+<JsNote fallback="A broken `src` shows the browser's default broken-image icon. Everything else is unaffected: loaded images, the initials fallback, and the generic glyph all render server-side — the component's core is zero-JS.">
+  Only for image error recovery: a tiny island removes an image that fails to load
+  so the initials fallback shows instead of a broken-image icon.
+</JsNote>
 
 <Preview code={`<Avatar src="https://i.pravatar.cc/80?img=12" name="Jordan Lee" />
 <Avatar name="Priya Nair" />`}>

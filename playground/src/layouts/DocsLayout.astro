@@ -10,7 +10,7 @@ import { Sun, Moon, Search } from '@lucide/astro'
 
 interface NavGroup {
   group: string
-  items: { title: string; href: string; id: string }[]
+  items: { title: string; href: string; id: string; js?: boolean }[]
 }
 interface Props {
   title: string
@@ -84,7 +84,18 @@ const commands = nav.flatMap((g) => g.items.map((i) => ({ label: i.title, href: 
                 <p class="px-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{g.group}</p>
                 <div class="flex flex-col gap-0.5">
                   {g.items.map((i) => (
-                    <NavLink href={i.href} class="!px-2 !py-1.5">{i.title}</NavLink>
+                    <NavLink href={i.href} class="!px-2 !py-1.5">
+                      {i.title}
+                      {i.js && (
+                        <span
+                          slot="trailing"
+                          class="rounded bg-muted-foreground/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-muted-foreground"
+                          title="Uses JavaScript"
+                        >
+                          JS
+                        </span>
+                      )}
+                    </NavLink>
                   ))}
                 </div>
               </div>

@@ -16,7 +16,7 @@ import { Scissors, Copy, ClipboardPaste } from '@lucide/astro'
   Escape, or scroll.
 </JsNote>
 
-<Preview jsToggle code={`<ContextMenu>
+<Preview code={`<ContextMenu class="w-full">
   <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
     Right-click here
   </div>
@@ -24,7 +24,7 @@ import { Scissors, Copy, ClipboardPaste } from '@lucide/astro'
   <DropdownItem slot="menu">Copy</DropdownItem>
   <DropdownItem slot="menu">Paste</DropdownItem>
 </ContextMenu>`}>
-  <ContextMenu>
+  <ContextMenu class="w-full">
     <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
       Right-click here
     </div>
@@ -33,10 +33,6 @@ import { Scissors, Copy, ClipboardPaste } from '@lucide/astro'
     <DropdownItem slot="menu">Paste</DropdownItem>
   </ContextMenu>
 </Preview>
-
-Flip the **No-JS preview** switch above to see the fallback: with JavaScript off
-the panel is hidden (`no-js:hidden`, in a sandboxed iframe with no scripts) and
-right-clicking falls through to the browser's own menu.
 
 ## Add
 

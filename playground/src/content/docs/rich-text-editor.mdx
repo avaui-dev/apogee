@@ -16,14 +16,9 @@ import RichTextEditor from '../../../../registry/components/RichTextEditor/RichT
   and un-names the textarea fallback, naming the hidden field instead.
 </JsNote>
 
-<Preview jsToggle code={`<RichTextEditor name="bio" placeholder="Tell us about yourself" />`}>
+<Preview code={`<RichTextEditor name="bio" placeholder="Tell us about yourself" />`}>
   <RichTextEditor name="bio" placeholder="Tell us about yourself" />
 </Preview>
-
-Flip the **No-JS preview** switch above to see the fallback: the toolbar
-and editor disappear (`no-js:hidden`) and a plain `<textarea>` takes over
-(`no-js:block`), rendered in a sandboxed iframe with no scripts — the real
-`no-js` behaviour, not a fake.
 
 ## Add
 

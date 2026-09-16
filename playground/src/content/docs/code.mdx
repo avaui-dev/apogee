@@ -14,7 +14,7 @@ import Code from '../../../../registry/components/Code/Code.astro'
   checkmark and shows a "Copied" label for 3 seconds.
 </JsNote>
 
-<Preview jsToggle code={`<Code copy>npm install @ava-ui/apogee</Code>`}>
+<Preview code={`<Code copy>npm install @ava-ui/apogee</Code>`}>
   <Code copy>npm install @ava-ui/apogee</Code>
 </Preview>
 
@@ -71,7 +71,7 @@ The three render modes — inline, block, and block with copy:
 - **Copied** — icon swaps to a checkmark, button turns `--success`, and a
   "Copied" label fades in for 3 seconds (`role="status"`).
 
-<Preview jsToggle code={`<Code copy>git commit -m "fix: copy button"</Code>`}>
+<Preview code={`<Code copy>git commit -m "fix: copy button"</Code>`}>
   <Code copy>git commit -m "fix: copy button"</Code>
 </Preview>
 
@@ -91,7 +91,7 @@ Block, no copy button (e.g. read-only output):
 
 Block with copy, for install commands and config snippets:
 
-<Preview jsToggle code={`<Code copy>pnpm add -D @ava-ui/apogee</Code>`}>
+<Preview code={`<Code copy>pnpm add -D @ava-ui/apogee</Code>`}>
   <Code copy>pnpm add -D @ava-ui/apogee</Code>
 </Preview>
 

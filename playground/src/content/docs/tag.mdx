@@ -18,17 +18,13 @@ import { Mail } from '@lucide/astro'
   the event isn't cancelled.
 </JsNote>
 
-<Preview jsToggle code={`<Tag>Design</Tag>
+<Preview code={`<Tag>Design</Tag>
 <Tag removable value="engineering">Engineering</Tag>
 <Tag href="#">Docs</Tag>`}>
   <Tag>Design</Tag>
   <Tag removable value="engineering">Engineering</Tag>
   <Tag href="#">Docs</Tag>
 </Preview>
-
-Flip the **No-JS preview** switch above to see the fallback: the remove
-button disappears (in a sandboxed iframe with no scripts — the real `no-js`
-behaviour, not a fake).
 
 ## Add
 
@@ -77,8 +73,7 @@ passes through to the root `<span data-apogee-tag>`.
 
 - **Hover / focus** — the label (link or plain text) and the remove button
   each get a visible `focus-visible` ring.
-- **No JS** — the remove button doesn't render at all (`no-js:hidden`); see
-  the toggle above.
+- **No JS** — the remove button doesn't render at all (`no-js:hidden`).
 - **Removed** — clicking remove dispatches `apogee:tag-remove`; the tag only
   leaves the DOM if your handler calls `.remove()` (or you set
   `dismissOnClick`).

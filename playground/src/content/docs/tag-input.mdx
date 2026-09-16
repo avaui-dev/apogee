@@ -16,14 +16,9 @@ import TagInput from '../../../../registry/components/TagInput/TagInput.astro'
   field so it stops double-submitting once it's just for typing.
 </JsNote>
 
-<Preview jsToggle code={`<TagInput name="skills" value={['Astro', 'Tailwind']} placeholder="Add a skill…" />`}>
+<Preview code={`<TagInput name="skills" value={['Astro', 'Tailwind']} placeholder="Add a skill…" />`}>
   <TagInput name="skills" value={['Astro', 'Tailwind']} placeholder="Add a skill…" />
 </Preview>
-
-Flip the **No-JS preview** switch above to see the fallback: the seeded
-tags' remove buttons disappear, and the free-text field keeps its `name`
-so anything typed there submits too (in a sandboxed iframe with no
-scripts — the real `no-js` behaviour, not a fake).
 
 ## Add
 
@@ -63,11 +58,11 @@ passes through to the root `<div>` (not the free-text `<input>`).
   free-text field has focus.
 - **Hover** on a chip's remove button — the icon darkens from
   `--muted-foreground` to `--foreground`.
-- **No JS** — remove buttons on the initial tags are hidden (see the toggle
-  above); the free-text field keeps its `name`, so typed-but-not-yet-added
-  text still submits alongside the tags.
+- **No JS** — remove buttons on the initial tags are hidden (`no-js:hidden`);
+  the free-text field keeps its `name`, so typed-but-not-yet-added text still
+  submits alongside the tags.
 
-<Preview jsToggle code={`<TagInput name="tags" value={['Design', 'Engineering', 'Marketing']} />`}>
+<Preview code={`<TagInput name="tags" value={['Design', 'Engineering', 'Marketing']} />`}>
   <TagInput name="tags" value={['Design', 'Engineering', 'Marketing']} />
 </Preview>
 

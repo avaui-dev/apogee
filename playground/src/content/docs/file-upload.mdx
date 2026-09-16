@@ -14,7 +14,7 @@ import FileUpload from '../../../../registry/components/FileUpload/FileUpload.as
   a file onto the dropzone sets it on the input and displays its name.
 </JsNote>
 
-<Preview jsToggle code={`<FileUpload name="file" accept="image/*" />`}>
+<Preview code={`<FileUpload name="file" accept="image/*" />`}>
   <FileUpload name="file" accept="image/*" />
 </Preview>
 
@@ -52,7 +52,7 @@ Any other native `<input type="file">` attribute (e.g. `required`, `disabled`,
 
 Multiple files:
 
-<Preview jsToggle code={`<FileUpload name="attachments" multiple />`}>
+<Preview code={`<FileUpload name="attachments" multiple />`}>
   <FileUpload name="attachments" multiple />
 </Preview>
 
@@ -67,7 +67,7 @@ Restricted to a type, marked required:
 - **Hover** — dropzone border shifts to `--accent`.
 - **Drag-over** (JS) — border and a faint accent background via `data-drag="true"`.
 - **No JS** — filename text is hidden (`no-js:hidden`); the native picker and
-  form submission still work. See the toggle above.
+  form submission still work.
 
 ## Accessibility
 
