@@ -51,7 +51,7 @@ const { label, align = 'start', class: className, ...rest } = Astro.props
     transform-origin: bottom;
   }
   .apogee-dropdown[open] .apogee-dropdown-menu {
-    animation: apogee-dropdown-in 0.15s ease;
+    animation: apogee-dropdown-in var(--duration-fast) var(--ease-smooth);
   }
   @keyframes apogee-dropdown-in {
     from {

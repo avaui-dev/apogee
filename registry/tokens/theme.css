@@ -129,4 +129,24 @@
   --text-h5--line-height: 1.4;
   --text-h6: clamp(0.875rem, 0.85rem + 0.15vw, 1rem);
   --text-h6--line-height: 1.45;
+
+  /* motion — `ease-smooth` / `ease-emphasized` become utilities; the durations
+     are CSS vars for scoped styles (`transition-duration: var(--duration-base)`)
+     and arbitrary values (`duration-[var(--duration-fast)]`). Every animated
+     component reads these instead of hard-coded times, and still honours
+     prefers-reduced-motion. */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-emphasized: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 260ms;
+
+  /* fluid layout spacing — clamp(min @~320px → max @~1440px), Lumos-style. These
+     add named utilities: `px-gutter` (page side padding), `py-section` /
+     `-section-sm` / `-section-lg` (vertical rhythm). Component internals keep the
+     fixed numeric scale; these are for page/section layout only. */
+  --spacing-gutter: clamp(1rem, 0.55rem + 2.25vw, 2rem);
+  --spacing-section-sm: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --spacing-section: clamp(3rem, 2rem + 5vw, 6rem);
+  --spacing-section-lg: clamp(4rem, 2.5rem + 7.5vw, 9rem);
 }
