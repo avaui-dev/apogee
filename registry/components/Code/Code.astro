@@ -1,0 +1,108 @@
+---
+/**
+ * Code — inline `<code>` or a `block` code panel. Zero JS by default.
+ * No syntax highlighting — pair with Astro's built-in Shiki / Expressive Code
+ * in Markdown for that; this is the bare styled element.
+ *
+ *   Run <Code>npm i</Code>            →  inline
+ *   <Code block>{snippet}</Code>      →  block
+ *   <Code copy>{snippet}</Code>       →  block + copy button (small JS island)
+ *
+ * `copy` adds a copy-to-clipboard button (progressive enhancement — hidden with
+ * `no-js:hidden` when JS is off, since the code is still selectable).
+ *
+ * @composable
+ */
+import { Copy, Check } from '@lucide/astro'
+
+interface Props {
+  block?: boolean
+  /** Add a copy-to-clipboard button (implies block). */
+  copy?: boolean
+  class?: string
+}
+
+const { block = false, copy = false, class: className, ...rest } = Astro.props
+const isBlock = block || copy
+---
+
+{
+  !isBlock ? (
+    <code
+      class:list={[
+        'rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-foreground',
+        className,
+      ]}
+      {...rest}
+    ><slot /></code>
+  ) : copy ? (
+    <div class:list={['apogee-code relative', className]} {...rest}>
+      <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 pr-12 text-sm"><code class="apogee-code-src font-mono text-foreground"><slot /></code></pre>
+      <button
+        type="button"
+        class="apogee-code-copy absolute top-2 right-2 grid size-8 place-items-center rounded-md border border-border bg-background text-muted-foreground no-js:hidden hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        aria-label="Copy code"
+      >
+        <Copy class="apogee-code-icon-copy size-4" aria-hidden="true" />
+        <Check class="apogee-code-icon-check size-4 text-success" aria-hidden="true" />
+        <span class="apogee-code-label absolute top-full right-0 mt-1.5 rounded-md bg-foreground px-2 py-1 text-xs text-background" role="status">Copied</span>
+      </button>
+    </div>
+  ) : (
+    <pre
+      class:list={[
+        'overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm',
+        className,
+      ]}
+      {...rest}
+    ><code class="font-mono text-foreground"><slot /></code></pre>
+  )
+}
+
+<style>
+  /* Copy button state, driven by data-copied on the button. */
+  .apogee-code-icon-check {
+    display: none;
+  }
+  .apogee-code-label {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .apogee-code-copy[data-copied='true'] .apogee-code-icon-copy {
+    display: none;
+  }
+  .apogee-code-copy[data-copied='true'] .apogee-code-icon-check {
+    display: inline;
+  }
+  .apogee-code-copy[data-copied='true'] {
+    color: var(--color-success);
+  }
+  .apogee-code-copy[data-copied='true'] .apogee-code-label {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  // Copy the block's source; flip to a checkmark + "Copied" label for 3s.
+  const timers = new WeakMap<HTMLElement, number>()
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('.apogee-code-copy')) {
+    btn.addEventListener('click', async () => {
+      const src = btn.closest('.apogee-code')?.querySelector('.apogee-code-src')?.textContent ?? ''
+      try {
+        await navigator.clipboard.writeText(src)
+      } catch {
+        return // clipboard blocked (insecure context / denied) — leave button as-is
+      }
+      btn.dataset.copied = 'true'
+      const prev = timers.get(btn)
+      if (prev) clearTimeout(prev)
+      timers.set(
+        btn,
+        window.setTimeout(() => {
+          btn.dataset.copied = 'false'
+        }, 3000),
+      )
+    })
+  }
+</script>

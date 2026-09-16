@@ -1,0 +1,25 @@
+---
+/**
+ * AspectRatio — locks its content to a fixed ratio (media, embeds, maps).
+ * Zero JS — CSS `aspect-ratio`.
+ *
+ *   <AspectRatio ratio="16 / 9"><img … /></AspectRatio>
+ *
+ * @composable
+ */
+interface Props {
+  /** CSS aspect ratio, e.g. "16 / 9", "4 / 3", "1 / 1". */
+  ratio?: string
+  class?: string
+}
+
+const { ratio = '16 / 9', class: className, ...rest } = Astro.props
+---
+
+<div
+  class:list={['overflow-hidden [&>*]:size-full [&>img]:object-cover', className]}
+  style={`aspect-ratio: ${ratio}`}
+  {...rest}
+>
+  <slot />
+</div>

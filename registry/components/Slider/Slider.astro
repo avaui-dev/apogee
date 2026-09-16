@@ -1,0 +1,133 @@
+---
+/**
+ * Slider — a styled native range input with a live percentage badge.
+ * The input works with zero JS; the badge is a small island (progressive
+ * enhancement — `no-js:hidden`, since the range is fully usable without it).
+ *
+ * @composable
+ */
+interface Props {
+  name?: string
+  min?: number
+  max?: number
+  step?: number
+  value?: number
+  disabled?: boolean
+  /** Where the live % badge sits relative to the track. */
+  labelPosition?: 'top' | 'bottom'
+  'aria-label'?: string
+  class?: string
+}
+
+const {
+  min = 0,
+  max = 100,
+  step = 1,
+  value,
+  labelPosition = 'top',
+  class: className,
+  ...rest
+} = Astro.props
+---
+
+<div class:list={['apogee-slider-field relative', className]} data-label-position={labelPosition}>
+  <input
+    type="range"
+    class="apogee-slider w-full"
+    min={min}
+    max={max}
+    step={step}
+    value={value}
+    {...rest}
+  />
+  <span
+    class="apogee-slider-badge pointer-events-none absolute -translate-x-1/2 rounded-md bg-foreground px-1.5 py-0.5 text-xs font-medium text-background tabular-nums no-js:hidden"
+    aria-hidden="true">0%</span>
+</div>
+
+<style>
+  /* Custom track + thumb. Native range styling needs vendor pseudo-elements —
+     the one place Tailwind can't reach, so scoped CSS reads the tokens directly.
+     Thumb is sized for touch (1.5rem). */
+  .apogee-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 1.5rem;
+    background: transparent;
+    cursor: pointer;
+  }
+  .apogee-slider:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .apogee-slider::-webkit-slider-runnable-track {
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--color-muted);
+  }
+  .apogee-slider::-moz-range-track {
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--color-muted);
+  }
+
+  .apogee-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -0.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    border: 3px solid var(--color-background);
+    box-shadow: 0 0 0 1px var(--color-border);
+  }
+  .apogee-slider::-moz-range-thumb {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    border: 3px solid var(--color-background);
+    box-shadow: 0 0 0 1px var(--color-border);
+  }
+
+  .apogee-slider:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+  .apogee-slider:focus-visible::-moz-range-thumb {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  /* Badge sits above (default) or below the track. Anchored to the track's
+     centre (50%) and pushed clear of the 1.5rem thumb, so it never covers it. */
+  .apogee-slider-field[data-label-position='top'] .apogee-slider-badge {
+    bottom: 50%;
+    margin-bottom: 1.25rem;
+  }
+  .apogee-slider-field[data-label-position='bottom'] .apogee-slider-badge {
+    top: 50%;
+    margin-top: 1.25rem;
+  }
+</style>
+
+<script>
+  const THUMB = 24 // px — keep in sync with the thumb size above
+  for (const field of document.querySelectorAll<HTMLElement>('.apogee-slider-field')) {
+    const input = field.querySelector<HTMLInputElement>('.apogee-slider')
+    const badge = field.querySelector<HTMLElement>('.apogee-slider-badge')
+    if (!input || !badge) continue
+    const update = () => {
+      const min = Number(input.min || 0)
+      const max = Number(input.max || 100)
+      const fraction = max > min ? (Number(input.value) - min) / (max - min) : 0
+      badge.textContent = `${Math.round(fraction * 100)}%`
+      // Center the badge over the thumb, correcting for the thumb's own width.
+      badge.style.left = `calc(${fraction * 100}% + ${(0.5 - fraction) * THUMB}px)`
+    }
+    update()
+    input.addEventListener('input', update)
+  }
+</script>

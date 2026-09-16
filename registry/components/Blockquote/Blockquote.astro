@@ -1,0 +1,27 @@
+---
+/**
+ * Blockquote — a pull quote with optional attribution. Zero JS.
+ *
+ *   <Blockquote cite="Ada Lovelace">The Analytical Engine …</Blockquote>
+ *
+ * @composable
+ */
+interface Props {
+  /** Attribution shown below the quote. */
+  cite?: string
+  class?: string
+}
+
+const { cite, class: className, ...rest } = Astro.props
+---
+
+<figure class:list={['border-l-2 border-accent pl-4', className]} {...rest}>
+  <blockquote class="text-lg text-foreground italic [&>p]:mt-0">
+    <slot />
+  </blockquote>
+  {
+    cite && (
+      <figcaption class="mt-2 text-sm text-muted-foreground not-italic">— {cite}</figcaption>
+    )
+  }
+</figure>

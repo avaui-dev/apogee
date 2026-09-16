@@ -1,0 +1,62 @@
+---
+/**
+ * Steps — a vertical progress list (onboarding, checkout, wizards). Zero JS.
+ * `current` is the 1-based active step; earlier steps render as done.
+ *
+ * @composable
+ */
+import { Check } from '@lucide/astro'
+
+interface Props {
+  items: { title: string; description?: string }[]
+  /** 1-based index of the active step. */
+  current?: number
+  class?: string
+}
+
+const { items, current = 1, class: className, ...rest } = Astro.props
+---
+
+<ol class:list={['flex flex-col', className]} {...rest}>
+  {
+    items.map((step, i) => {
+      const n = i + 1
+      const state = n < current ? 'done' : n === current ? 'current' : 'upcoming'
+      const last = i === items.length - 1
+      return (
+        <li class="relative flex gap-4 pb-8 last:pb-0">
+          {!last && (
+            <span
+              class="absolute top-8 left-4 -ml-px h-full w-px bg-border"
+              aria-hidden="true"
+            />
+          )}
+          <span
+            class:list={[
+              'relative z-10 grid size-8 shrink-0 place-items-center rounded-full border text-sm font-medium tabular-nums',
+              state === 'done' && 'border-accent bg-accent text-accent-foreground',
+              state === 'current' && 'border-accent bg-background text-accent',
+              state === 'upcoming' && 'border-border bg-background text-muted-foreground',
+            ]}
+            aria-current={state === 'current' ? 'step' : undefined}
+          >
+            {state === 'done' ? <Check class="size-4" aria-hidden="true" /> : n}
+          </span>
+          <div class="pt-1">
+            <p
+              class:list={[
+                'text-sm font-medium',
+                state === 'upcoming' ? 'text-muted-foreground' : 'text-foreground',
+              ]}
+            >
+              {step.title}
+            </p>
+            {step.description && (
+              <p class="mt-0.5 text-sm text-muted-foreground">{step.description}</p>
+            )}
+          </div>
+        </li>
+      )
+    })
+  }
+</ol>

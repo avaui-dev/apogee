@@ -1,0 +1,102 @@
+---
+import ShowcasePage from '../showcase/ShowcasePage.astro'
+import Showcase from '../showcase/Showcase.astro'
+import Group from '../showcase/Group.astro'
+import AspectRatio from '../../../registry/components/AspectRatio/AspectRatio.astro'
+import Blockquote from '../../../registry/components/Blockquote/Blockquote.astro'
+import Code from '../../../registry/components/Code/Code.astro'
+import AvatarGroup from '../../../registry/components/AvatarGroup/AvatarGroup.astro'
+import Steps from '../../../registry/components/Steps/Steps.astro'
+import Slider from '../../../registry/components/Slider/Slider.astro'
+import Popover from '../../../registry/components/Popover/Popover.astro'
+import Button from '../../../registry/components/Button/Button.astro'
+
+const people = [
+  { name: 'Ada Lovelace' },
+  { name: 'Alan Turing' },
+  { name: 'Grace Hopper' },
+  { name: 'Katherine Johnson' },
+  { name: 'Linus Torvalds' },
+]
+---
+
+<ShowcasePage title="Extras">
+  <Showcase name="AspectRatio">
+    <Group label="16 / 9" stack>
+      <AspectRatio ratio="16 / 9" class="max-w-sm rounded-lg bg-muted">
+        <div class="grid place-items-center text-sm text-muted-foreground">16 / 9</div>
+      </AspectRatio>
+    </Group>
+    <Group label="1 / 1" stack>
+      <AspectRatio ratio="1 / 1" class="w-40 rounded-lg bg-muted">
+        <div class="grid place-items-center text-sm text-muted-foreground">1 / 1</div>
+      </AspectRatio>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Blockquote">
+    <Group stack>
+      <Blockquote cite="Ada Lovelace" class="max-w-lg">
+        <p>The Analytical Engine weaves algebraic patterns, just as the Jacquard loom weaves flowers and leaves.</p>
+      </Blockquote>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Code">
+    <Group label="Inline">
+      <span class="text-sm text-muted-foreground">Install with <Code>npm i @ava-ui/apogee</Code>.</span>
+    </Group>
+    <Group label="Block" stack>
+      <Code block class="max-w-lg">npx @ava-ui/apogee add button</Code>
+    </Group>
+    <Group label="Block + copy" stack>
+      <Code copy class="max-w-lg">npx @ava-ui/apogee add code</Code>
+    </Group>
+  </Showcase>
+
+  <Showcase name="AvatarGroup">
+    <Group label="All" stack>
+      <AvatarGroup items={people} />
+    </Group>
+    <Group label="max = 3" stack>
+      <AvatarGroup items={people} max={3} />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Steps">
+    <Group stack>
+      <Steps
+        class="max-w-sm"
+        current={2}
+        items={[
+          { title: 'Account', description: 'Create your login' },
+          { title: 'Profile', description: 'Add your details' },
+          { title: 'Confirm', description: 'Review and finish' },
+        ]}
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Slider">
+    <Group label="Badge on top" stack>
+      <Slider value={40} aria-label="Volume" class="max-w-sm" />
+    </Group>
+    <Group label="Badge on bottom" stack>
+      <Slider value={65} labelPosition="bottom" aria-label="Brightness" class="max-w-sm" />
+    </Group>
+    <Group label="Disabled" stack>
+      <Slider value={70} disabled aria-label="Disabled" class="max-w-sm" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Popover">
+    <Group>
+      <Popover>
+        <span slot="trigger">Details</span>
+        <p class="font-medium text-foreground">Shipping</p>
+        <p class="mt-1 text-muted-foreground">Free 2-day shipping on orders over $50. Click away or press Esc to close.</p>
+        <Button size="sm" class="mt-3">Got it</Button>
+      </Popover>
+    </Group>
+  </Showcase>
+</ShowcasePage>
