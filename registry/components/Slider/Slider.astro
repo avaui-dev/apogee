@@ -28,6 +28,11 @@ const {
   class: className,
   ...rest
 } = Astro.props
+
+// Initial fill, so the coloured track is correct before (and without) JS.
+// A range with no `value` sits at its midpoint.
+const current = value ?? (min + max) / 2
+const fill = max > min ? ((current - min) / (max - min)) * 100 : 0
 ---
 
 <div class:list={['apogee-slider-field relative', className]} data-label-position={labelPosition}>
@@ -38,6 +43,7 @@ const {
     max={max}
     step={step}
     value={value}
+    style={`--apogee-fill: ${fill}%`}
     {...rest}
   />
   <span
@@ -61,15 +67,25 @@ const {
     opacity: 0.5;
   }
 
+  /* Filled portion (accent) up to the thumb, unfilled (muted) after — driven by
+     --apogee-fill (set server-side, updated live by the island). */
   .apogee-slider::-webkit-slider-runnable-track {
     height: 0.5rem;
     border-radius: 9999px;
-    background: var(--color-muted);
+    background: linear-gradient(
+      to right,
+      var(--color-accent) 0 var(--apogee-fill, 0%),
+      var(--color-muted) var(--apogee-fill, 0%) 100%
+    );
   }
   .apogee-slider::-moz-range-track {
     height: 0.5rem;
     border-radius: 9999px;
-    background: var(--color-muted);
+    background: linear-gradient(
+      to right,
+      var(--color-accent) 0 var(--apogee-fill, 0%),
+      var(--color-muted) var(--apogee-fill, 0%) 100%
+    );
   }
 
   .apogee-slider::-webkit-slider-thumb {
@@ -123,9 +139,11 @@ const {
       const min = Number(input.min || 0)
       const max = Number(input.max || 100)
       const fraction = max > min ? (Number(input.value) - min) / (max - min) : 0
-      badge.textContent = `${Math.round(fraction * 100)}%`
+      const percent = fraction * 100
+      badge.textContent = `${Math.round(percent)}%`
+      input.style.setProperty('--apogee-fill', `${percent}%`)
       // Center the badge over the thumb, correcting for the thumb's own width.
-      badge.style.left = `calc(${fraction * 100}% + ${(0.5 - fraction) * THUMB}px)`
+      badge.style.left = `calc(${percent}% + ${(0.5 - fraction) * THUMB}px)`
     }
     update()
     input.addEventListener('input', update)
