@@ -1,0 +1,103 @@
+/* Apogee design tokens.
+ *
+ * The single source of truth for the design language. `apogee init` copies this
+ * into a project; the playground imports it directly. Consumers add
+ * `@import "tailwindcss";` before this file so Tailwind's palette variables
+ * (--color-slate-*, --color-blue-*, …) exist for the semantic tokens below.
+ *
+ * Model (Tailwind v4):
+ *  - Semantic tokens are plain CSS variables that REFERENCE Tailwind's tuned
+ *    palette, re-declared under [data-theme="dark"] so a theme is one attribute
+ *    flip, no rebuild. Swap a neutral ramp (slate → zinc) or the brand accent in
+ *    one place; components never change.
+ *  - `@theme inline` maps them to utilities that reference the runtime var
+ *    (bg-accent -> background: var(--accent)), so dark mode flows through.
+ *  - Static scales (radius) live in a normal `@theme` block.
+ */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  /* surfaces & text (neutral ramp = Tailwind zinc; swap to slate/neutral here) */
+  --background: var(--color-white);
+  --foreground: var(--color-zinc-900);
+  --surface: var(--color-zinc-50);
+  --surface-foreground: var(--color-zinc-900);
+  --muted: var(--color-zinc-100);
+  --muted-foreground: var(--color-zinc-500);
+  --border: var(--color-zinc-200);
+
+  /* brand accent — PLACEHOLDER (Tailwind blue). Replace with AVA's brand color. */
+  --accent: var(--color-blue-600);
+  --accent-hover: var(--color-blue-700);
+  --accent-foreground: var(--color-white);
+
+  /* danger */
+  --danger: var(--color-red-600);
+  --danger-hover: var(--color-red-700);
+  --danger-foreground: var(--color-white);
+
+  /* focus ring */
+  --ring: var(--color-blue-600);
+}
+
+[data-theme="dark"] {
+  --background: var(--color-zinc-950);
+  --foreground: var(--color-zinc-50);
+  --surface: var(--color-zinc-900);
+  --surface-foreground: var(--color-zinc-50);
+  --muted: var(--color-zinc-800);
+  --muted-foreground: var(--color-zinc-400);
+  --border: var(--color-zinc-800);
+
+  --accent: var(--color-blue-500);
+  --accent-hover: var(--color-blue-400);
+
+  --danger: var(--color-red-500);
+  --danger-hover: var(--color-red-400);
+
+  --ring: var(--color-blue-500);
+}
+
+/* runtime-overridable color tokens -> Tailwind utilities */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-ring: var(--ring);
+}
+
+/* static scales */
+@theme {
+  --radius-sm: 0.3rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* fluid type scale — clamp(min @320px, +vw, max @1440px), Lumos min/max idea.
+     Generates text-display / text-h1 … text-h6 with paired line-heights. */
+  --text-display: clamp(2.5rem, 1.6rem + 4.5vw, 4.5rem);
+  --text-display--line-height: 1.05;
+  --text-h1: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  --text-h1--line-height: 1.1;
+  --text-h2: clamp(1.625rem, 1.35rem + 1.4vw, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h3: clamp(1.375rem, 1.2rem + 0.9vw, 1.75rem);
+  --text-h3--line-height: 1.2;
+  --text-h4: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-h4--line-height: 1.3;
+  --text-h5: clamp(1rem, 0.97rem + 0.2vw, 1.125rem);
+  --text-h5--line-height: 1.4;
+  --text-h6: clamp(0.875rem, 0.85rem + 0.15vw, 1rem);
+  --text-h6--line-height: 1.45;
+}

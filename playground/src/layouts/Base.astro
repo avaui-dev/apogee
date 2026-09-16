@@ -1,0 +1,37 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+}
+const { title = 'Apogee playground' } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-dvh bg-background text-foreground antialiased">
+    <button
+      id="theme-toggle"
+      type="button"
+      class="fixed right-4 top-4 rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-surface-foreground hover:bg-muted"
+    >
+      Toggle theme
+    </button>
+    <main class="mx-auto max-w-3xl px-4 py-12">
+      <slot />
+    </main>
+
+    <script>
+      // Playground dev convenience only — not shipped with any component.
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const el = document.documentElement
+        el.dataset.theme = el.dataset.theme === 'dark' ? 'light' : 'dark'
+      })
+    </script>
+  </body>
+</html>

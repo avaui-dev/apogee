@@ -24,16 +24,9 @@
     "apogee"
   ],
   "files": [
-    "src"
+    "registry",
+    "cli"
   ],
-  "exports": {
-    ".": "./src/index.ts",
-    "./components/*": "./src/components/*",
-    "./styles/*": "./src/styles/*"
-  },
-  "peerDependencies": {
-    "astro": ">=5"
-  },
   "publishConfig": {
     "access": "public"
   }

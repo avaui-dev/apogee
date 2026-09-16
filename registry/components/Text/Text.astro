@@ -1,0 +1,31 @@
+---
+/**
+ * Text — body copy.
+ *
+ * @composable
+ */
+interface Props {
+  as?: 'p' | 'span' | 'div'
+  size?: 'sm' | 'base' | 'lg'
+  /** Muted (secondary) color. */
+  muted?: boolean
+  class?: string
+}
+
+const { as = 'p', size = 'base', muted = false, class: className, ...rest } = Astro.props
+const Tag = as
+
+const sizeMap = { sm: 'text-sm', base: 'text-base', lg: 'text-lg' }
+---
+
+<Tag
+  class:list={[
+    sizeMap[size],
+    'leading-relaxed',
+    muted ? 'text-muted-foreground' : 'text-foreground',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>

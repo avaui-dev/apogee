@@ -1,0 +1,27 @@
+---
+/**
+ * Eyebrow — a small label above a heading.
+ *
+ * @composable
+ */
+interface Props {
+  as?: 'p' | 'span' | 'div'
+  /** Neutral instead of the accent color. */
+  muted?: boolean
+  class?: string
+}
+
+const { as = 'p', muted = false, class: className, ...rest } = Astro.props
+const Tag = as
+---
+
+<Tag
+  class:list={[
+    'text-sm font-medium uppercase tracking-wide',
+    muted ? 'text-muted-foreground' : 'text-accent',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>

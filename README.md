@@ -7,22 +7,26 @@ Apogee ships as the default kit inside **[AVA](https://avaui.dev)** (Astro Visua
 Admin) and stands alone as a package you can drop into any new or existing Astro
 project.
 
-## Install
+## Install (copy-in)
+
+Components are copied into your project — you own the source (shadcn / Starwind
+model). Requires Tailwind v4.
 
 ```sh
-npm i @ava-ui/apogee
+npx @ava-ui/apogee init          # design tokens + Tailwind setup
+npx @ava-ui/apogee add button    # copies Button into your project
 ```
+
+> The CLI is in progress. Today the components live in `registry/`, and the
+> `playground/` app renders them live (`cd playground && npm run dev`).
 
 ## Use
 
 ```astro
 ---
-import Button from '@ava-ui/apogee/components/Button.astro'
-// or, from the barrel:
-// import { Button } from '@ava-ui/apogee'
+import Button from '@/components/apogee/Button.astro'
 ---
 <Button variant="primary">Get started</Button>
-<Button href="/docs" variant="ghost">Read the docs</Button>
 ```
 
 With AVA, Apogee is offered at scaffold time — no separate install.

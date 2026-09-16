@@ -1,0 +1,5 @@
+@import "tailwindcss";
+/* Button and friends live in ../registry, outside the playground — tell
+   Tailwind to scan them so their utilities get generated. */
+@source "../../../registry/components";
+@import "../../../registry/tokens/theme.css";

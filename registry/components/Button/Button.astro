@@ -1,0 +1,81 @@
+---
+/**
+ * Button — Apogee element.
+ *
+ * Renders a <button>, or an <a> when `href` is set. Tailwind utilities read
+ * design tokens; theming happens via token override, not per-component classes.
+ *
+ * @composable
+ */
+interface Props {
+  /** Visual style. `link` renders as a plain text link, no button chrome. */
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'link'
+  /** Control size. */
+  size?: 'sm' | 'md' | 'lg'
+  /** Renders an <a> to this URL instead of a <button>. */
+  href?: string
+  /** Native button type (ignored with `href`). */
+  type?: 'button' | 'submit' | 'reset'
+  /** Disables the control. */
+  disabled?: boolean
+  /** Shows a spinner and blocks interaction. */
+  loading?: boolean
+  /** Extra classes, merged last. */
+  class?: string
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  loading = false,
+  class: className,
+  ...rest
+} = Astro.props
+
+const Tag = href ? 'a' : 'button'
+const isDisabled = disabled || loading
+const isLink = variant === 'link'
+
+const base =
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50'
+
+// `link` drops all button chrome and renders as inline underlined text.
+const shape = isLink
+  ? 'inline rounded-sm underline underline-offset-4'
+  : 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors'
+
+const colors = {
+  primary: 'bg-accent text-accent-foreground hover:bg-accent-hover',
+  secondary: 'border border-border bg-surface text-surface-foreground hover:bg-muted',
+  ghost: 'bg-transparent text-foreground hover:bg-muted',
+  danger: 'bg-danger text-danger-foreground hover:bg-danger-hover',
+  link: 'text-accent hover:text-accent-hover',
+}
+
+const sizes = isLink
+  ? { sm: 'text-sm', md: 'text-sm', lg: 'text-base' }
+  : { sm: 'h-8 px-3 text-sm', md: 'h-10 px-4 text-sm', lg: 'h-12 px-6 text-base' }
+---
+
+<Tag
+  class:list={[base, shape, colors[variant], sizes[size], className]}
+  href={Tag === 'a' ? (isDisabled ? undefined : href) : undefined}
+  type={Tag === 'button' ? type : undefined}
+  disabled={Tag === 'button' ? isDisabled : undefined}
+  aria-disabled={Tag === 'a' && isDisabled ? 'true' : undefined}
+  aria-busy={loading ? 'true' : undefined}
+  {...rest}
+>
+  {
+    loading && (
+      <svg class="size-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.4 0 0 5.4 0 12h4z" />
+      </svg>
+    )
+  }
+  <slot />
+</Tag>

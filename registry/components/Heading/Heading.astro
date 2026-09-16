@@ -1,0 +1,39 @@
+---
+/**
+ * Heading — Apogee typography.
+ *
+ * Semantic level via `as` (the tag), visual size via `size` (defaults to the
+ * level). Sizes are fluid, from the type-scale tokens. Keep heading order
+ * correct for accessibility even when the visual size differs.
+ *
+ * @composable
+ */
+interface Props {
+  /** Semantic tag. */
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'div'
+  /** Visual size; defaults to `as` when it's a heading, else h2. */
+  size?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  class?: string
+}
+
+const { as = 'h2', size, class: className, ...rest } = Astro.props
+const Tag = as
+
+const sizeMap = {
+  display: 'text-display',
+  h1: 'text-h1',
+  h2: 'text-h2',
+  h3: 'text-h3',
+  h4: 'text-h4',
+  h5: 'text-h5',
+  h6: 'text-h6',
+}
+const visual = (size ?? (as[0] === 'h' ? as : 'h2')) as keyof typeof sizeMap
+---
+
+<Tag
+  class:list={['text-balance font-semibold tracking-tight text-foreground', sizeMap[visual], className]}
+  {...rest}
+>
+  <slot />
+</Tag>

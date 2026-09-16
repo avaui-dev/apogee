@@ -1,0 +1,40 @@
+---
+/**
+ * Link — inline text link.
+ *
+ * For a link that looks like a button, use `Button` with `href`; for a
+ * button that looks like a link, use `Button variant="link"`.
+ *
+ * @composable
+ */
+interface Props {
+  href: string
+  /** Underline behavior. */
+  underline?: 'always' | 'hover' | 'none'
+  /** Opens in a new tab with safe rel. */
+  external?: boolean
+  class?: string
+}
+
+const { href, underline = 'always', external = false, class: className, ...rest } = Astro.props
+
+const underlineMap = {
+  always: 'underline underline-offset-4',
+  hover: 'no-underline hover:underline underline-offset-4',
+  none: 'no-underline',
+}
+const ext = external ? { target: '_blank', rel: 'noopener noreferrer' } : {}
+---
+
+<a
+  href={href}
+  class:list={[
+    'rounded-sm text-accent transition-colors hover:text-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+    underlineMap[underline],
+    className,
+  ]}
+  {...ext}
+  {...rest}
+>
+  <slot />
+</a>

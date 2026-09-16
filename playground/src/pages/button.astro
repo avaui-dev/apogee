@@ -1,0 +1,43 @@
+---
+import ShowcasePage from '../showcase/ShowcasePage.astro'
+import Showcase from '../showcase/Showcase.astro'
+import Group from '../showcase/Group.astro'
+import Button from '../../../registry/components/Button/Button.astro'
+---
+
+<ShowcasePage title="Button">
+  <Showcase name="Button" summary="Triggers an action. Renders a button, or a link when href is set.">
+    <Group label="Variants">
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="danger">Delete</Button>
+      <Button variant="link" href="/">Link</Button>
+    </Group>
+
+    <Group label="Link variant (inline)" stack>
+      <p class="text-sm text-muted-foreground">
+        A link-styled button flows inline in text —
+        <Button variant="link" href="/">just like this</Button> — with no button chrome.
+      </p>
+    </Group>
+
+    <Group label="Sizes">
+      <Button size="sm">Small</Button>
+      <Button size="md">Medium</Button>
+      <Button size="lg">Large</Button>
+    </Group>
+
+    <Group label="States">
+      <Button>Default</Button>
+      <Button disabled>Disabled</Button>
+      <Button loading>Saving…</Button>
+    </Group>
+
+    <Group label="As link">
+      <Button href="/" variant="ghost">Back home</Button>
+      <Button href="/" variant="primary">Go</Button>
+      <Button href="/" disabled>Disabled link</Button>
+    </Group>
+  </Showcase>
+</ShowcasePage>
