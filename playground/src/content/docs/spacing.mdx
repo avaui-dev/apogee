@@ -24,11 +24,13 @@ Two different spacing systems, deliberately not unified:
 | `--spacing-section-sm` | `clamp(2rem, 1.4rem + 3vw, 3.5rem)` | `py-section-sm` | Tight vertical rhythm |
 | `--spacing-section` | `clamp(3rem, 2rem + 5vw, 6rem)` | `py-section` | Default section rhythm |
 | `--spacing-section-lg` | `clamp(4rem, 2.5rem + 7.5vw, 9rem)` | `py-section-lg` | Generous vertical rhythm |
+| `--spacing-section-xl` | `clamp(5rem, 3rem + 10vw, 12rem)` | `py-section-xl` | Hero / feature rhythm |
 
-`Container` applies `px-gutter` directly for its side padding. `Section`'s own
-`space` prop currently maps to a fixed breakpoint step scale (`py-8` up to
-`py-24 sm:py-32`) rather than these fluid tokens — reach for `py-section` /
-`-sm` / `-lg` directly in custom markup when you want the pure fluid rhythm.
+`Container` applies `px-gutter` directly for its side padding. `Section`'s
+`space` prop maps straight onto these fluid tokens — `sm` → `py-section-sm`,
+`md` → `py-section`, `lg` → `py-section-lg`, `xl` → `py-section-xl` — so a section
+breathes with the viewport. Use the `py-section*` utilities directly in custom
+markup for the same rhythm without the component.
 
 ## Component internals: the fixed scale
 

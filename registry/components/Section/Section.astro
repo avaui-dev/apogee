@@ -33,12 +33,14 @@ const {
 } = Astro.props
 const Tag = as
 
+// Fluid vertical rhythm — the --spacing-section* tokens (clamp-based), so a
+// section breathes with the viewport instead of stepping at breakpoints.
 const spaces = {
   none: '',
-  sm: 'py-8',
-  md: 'py-12',
-  lg: 'py-16 sm:py-24',
-  xl: 'py-24 sm:py-32',
+  sm: 'py-section-sm',
+  md: 'py-section',
+  lg: 'py-section-lg',
+  xl: 'py-section-xl',
 }
 const themed = theme !== 'inherit'
 const hasBackground = Astro.slots.has('background')

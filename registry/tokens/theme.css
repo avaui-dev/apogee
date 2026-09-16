@@ -112,6 +112,14 @@
 
 /* static scales */
 @theme {
+  /* font families — explicit, overridable tokens (default to the platform system
+     stacks Tailwind ships, so this changes nothing visually until a themer swaps
+     one). `--font-sans` drives body text; `--font-mono` drives code. */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
   --radius-sm: 0.3rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
@@ -157,4 +165,5 @@
   --spacing-section-sm: clamp(2rem, 1.4rem + 3vw, 3.5rem);
   --spacing-section: clamp(3rem, 2rem + 5vw, 6rem);
   --spacing-section-lg: clamp(4rem, 2.5rem + 7.5vw, 9rem);
+  --spacing-section-xl: clamp(5rem, 3rem + 10vw, 12rem);
 }

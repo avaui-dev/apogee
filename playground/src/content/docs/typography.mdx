@@ -73,10 +73,22 @@ by default; `muted` switches the color to `--muted-foreground`.
 
 ## Font stack
 
-`theme.css` doesn't define a `--font-*` token, so Apogee inherits Tailwind's
-default `font-sans` (the system UI stack) everywhere. To brand it, add
-`--font-sans: ...` to the `@theme` block — same override pattern as color
-tokens, one place, no component changes.
+`theme.css` defines two font tokens in `@theme`, defaulting to the platform
+system stacks (so text looks native out of the box):
+
+| Token | Used for |
+|---|---|
+| `--font-sans` | Body / UI text (the `font-sans` utility and the default body font) |
+| `--font-mono` | Code (`font-mono`, `Code`, `Kbd`) |
+
+To brand the type, override `--font-sans` (or `--font-mono`) in your own `@theme`
+block — same one-place pattern as the color tokens, no component changes:
+
+```css
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+```
 
 ## Prose
 
