@@ -1,0 +1,87 @@
+---
+/**
+ * PinInput — a row of single-character boxes for short codes (OTP, 2FA). JS
+ * island: auto-advance, backspace, arrow keys and paste-to-fill. The joined
+ * value submits under `name` (hidden field). JS-required to submit; without it
+ * the boxes render and accept input but the code isn't collected.
+ *
+ * @composable
+ */
+interface Props {
+  name?: string
+  length?: number
+  /** Numeric shows a number keypad + digit filtering; text allows any character. */
+  type?: 'numeric' | 'text'
+  'aria-label'?: string
+  class?: string
+}
+
+const {
+  name = 'code',
+  length = 6,
+  type = 'numeric',
+  'aria-label': ariaLabel,
+  class: className,
+} = Astro.props
+---
+
+<div
+  class:list={['apogee-pin flex gap-2', className]}
+  role="group"
+  aria-label={ariaLabel ?? 'Verification code'}
+  data-type={type}
+>
+  {
+    Array.from({ length }).map((_, i) => (
+      <input
+        type="text"
+        inputmode={type === 'numeric' ? 'numeric' : 'text'}
+        autocomplete={i === 0 ? 'one-time-code' : 'off'}
+        maxlength="1"
+        class="apogee-pin-box size-11 rounded-md border border-border bg-background text-center text-lg font-medium text-foreground tabular-nums focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        aria-label={`Character ${i + 1}`}
+      />
+    ))
+  }
+  <input type="hidden" class="apogee-pin-value" name={name} />
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.apogee-pin')) {
+    const boxes = [...root.querySelectorAll<HTMLInputElement>('.apogee-pin-box')]
+    const hidden = root.querySelector<HTMLInputElement>('.apogee-pin-value')
+    const numeric = root.dataset.type === 'numeric'
+    if (!boxes.length || !hidden) continue
+
+    const sync = () => (hidden.value = boxes.map((b) => b.value).join(''))
+    const clean = (s: string) => (numeric ? s.replace(/\D/g, '') : s)
+
+    boxes.forEach((box, i) => {
+      box.addEventListener('input', () => {
+        box.value = clean(box.value).slice(-1)
+        if (box.value && i < boxes.length - 1) boxes[i + 1].focus()
+        sync()
+      })
+      box.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !box.value && i > 0) {
+          boxes[i - 1].focus()
+        } else if (e.key === 'ArrowLeft' && i > 0) {
+          e.preventDefault()
+          boxes[i - 1].focus()
+        } else if (e.key === 'ArrowRight' && i < boxes.length - 1) {
+          e.preventDefault()
+          boxes[i + 1].focus()
+        }
+      })
+      box.addEventListener('paste', (e) => {
+        e.preventDefault()
+        const chars = clean(e.clipboardData?.getData('text') ?? '').split('')
+        for (let j = 0; j < chars.length && i + j < boxes.length; j++) {
+          boxes[i + j].value = chars[j]
+        }
+        boxes[Math.min(i + chars.length, boxes.length - 1)].focus()
+        sync()
+      })
+    })
+  }
+</script>

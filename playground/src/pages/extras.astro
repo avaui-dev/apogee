@@ -21,6 +21,9 @@ import Timeline from '../../../registry/components/Timeline/Timeline.astro'
 import Meter from '../../../registry/components/Meter/Meter.astro'
 import FileUpload from '../../../registry/components/FileUpload/FileUpload.astro'
 import TagInput from '../../../registry/components/TagInput/TagInput.astro'
+import NumberInput from '../../../registry/components/NumberInput/NumberInput.astro'
+import ColorPicker from '../../../registry/components/ColorPicker/ColorPicker.astro'
+import PinInput from '../../../registry/components/PinInput/PinInput.astro'
 import Button from '../../../registry/components/Button/Button.astro'
 import { Inbox } from '@lucide/astro'
 
@@ -277,6 +280,29 @@ const people = [
   <Showcase name="TagInput">
     <Group stack>
       <TagInput name="tags" class="max-w-sm" value={['astro', 'tailwind']} />
+    </Group>
+  </Showcase>
+
+  <Showcase name="NumberInput">
+    <Group label="Sizes" stack>
+      <NumberInput label="Quantity" size="sm" value={1} min={0} max={99} class="max-w-40" />
+      <NumberInput label="Seats" value={4} min={1} max={20} class="max-w-40" />
+      <NumberInput label="Amount" size="lg" value={10} step={5} class="max-w-40" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="ColorPicker">
+    <Group stack>
+      <ColorPicker label="Brand color" name="brand" value="#3b82f6" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="PinInput">
+    <Group label="Numeric (6)" stack>
+      <PinInput name="otp" />
+    </Group>
+    <Group label="Text (4)" stack>
+      <PinInput name="pin" length={4} type="text" />
     </Group>
   </Showcase>
 </ShowcasePage>

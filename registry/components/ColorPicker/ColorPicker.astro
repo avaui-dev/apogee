@@ -1,0 +1,87 @@
+---
+/**
+ * ColorPicker — a styled native color swatch with a synced hex field. The color
+ * input works with zero JS; a small island keeps the hex text field in sync both
+ * ways. The hex field submits under `name`. Field-wired like Input.
+ *
+ * @composable
+ */
+import Field from '../Field/Field.astro'
+
+interface Props {
+  id?: string
+  label?: string
+  hint?: string
+  error?: string
+  name?: string
+  value?: string
+  class?: string
+  [key: string]: any
+}
+
+const {
+  id: idProp,
+  label,
+  hint,
+  error,
+  name,
+  value = '#3b82f6',
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+---
+
+<Field id={id} label={label} hint={hint} error={error} class={className}>
+  <div class="apogee-color flex items-center gap-2">
+    <input
+      type="color"
+      value={value}
+      class="apogee-color-swatch size-10 shrink-0 cursor-pointer rounded-md border border-border"
+      aria-label="Color picker"
+      {...rest}
+    />
+    <input
+      id={id}
+      type="text"
+      name={name}
+      value={value}
+      aria-describedby={describedby}
+      aria-invalid={error ? 'true' : undefined}
+      spellcheck="false"
+      class="apogee-color-hex h-10 w-28 rounded-md border border-border bg-background px-3 font-mono text-sm text-foreground uppercase focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-[invalid=true]:border-danger"
+    />
+  </div>
+</Field>
+
+<style>
+  .apogee-color-swatch {
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 0;
+  }
+  .apogee-color-swatch::-webkit-color-swatch-wrapper {
+    padding: 2px;
+  }
+  .apogee-color-swatch::-webkit-color-swatch {
+    border: none;
+    border-radius: 0.3rem;
+  }
+  .apogee-color-swatch::-moz-color-swatch {
+    border: none;
+    border-radius: 0.3rem;
+  }
+</style>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.apogee-color')) {
+    const swatch = root.querySelector<HTMLInputElement>('.apogee-color-swatch')
+    const hex = root.querySelector<HTMLInputElement>('.apogee-color-hex')
+    if (!swatch || !hex) continue
+    swatch.addEventListener('input', () => (hex.value = swatch.value.toUpperCase()))
+    hex.addEventListener('input', () => {
+      if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) swatch.value = hex.value
+    })
+  }
+</script>

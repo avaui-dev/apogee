@@ -1,0 +1,83 @@
+---
+/**
+ * NumberInput — a native number field with styled −/+ steppers. The input works
+ * with zero JS (type a value, native validation on submit); the buttons are a
+ * progressive-enhancement island (`no-js:hidden`). Field-wired like Input.
+ *
+ * @composable
+ */
+import Field from '../Field/Field.astro'
+import { Minus, Plus } from '@lucide/astro'
+
+interface Props {
+  id?: string
+  label?: string
+  hint?: string
+  error?: string
+  name?: string
+  min?: number
+  max?: number
+  step?: number
+  value?: number
+  size?: 'sm' | 'md' | 'lg'
+  required?: boolean
+  class?: string
+  [key: string]: any
+}
+
+const {
+  id: idProp,
+  label,
+  hint,
+  error,
+  size = 'md',
+  required = false,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+
+const sizeMap = { sm: 'h-8 text-sm', md: 'h-10 text-sm', lg: 'h-12 text-base' }
+const btn =
+  'apogee-number-step grid aspect-square place-items-center text-muted-foreground no-js:hidden hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring disabled:opacity-50'
+---
+
+<Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
+  <div
+    class:list={[
+      'apogee-number flex items-stretch overflow-hidden rounded-md border border-border bg-background focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring aria-[invalid=true]:border-danger',
+      sizeMap[size],
+    ]}
+    aria-invalid={error ? 'true' : undefined}
+  >
+    <button type="button" class={btn} data-step="-1" aria-label="Decrease" tabindex="-1">
+      <Minus class="size-4" aria-hidden="true" />
+    </button>
+    <input
+      id={id}
+      type="number"
+      required={required}
+      aria-describedby={describedby}
+      class="apogee-number-input w-full min-w-0 bg-transparent px-2 text-center text-foreground outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      {...rest}
+    />
+    <button type="button" class={btn} data-step="1" aria-label="Increase" tabindex="-1">
+      <Plus class="size-4" aria-hidden="true" />
+    </button>
+  </div>
+</Field>
+
+<script>
+  for (const group of document.querySelectorAll<HTMLElement>('.apogee-number')) {
+    const input = group.querySelector<HTMLInputElement>('.apogee-number-input')
+    if (!input) continue
+    for (const b of group.querySelectorAll<HTMLButtonElement>('.apogee-number-step')) {
+      b.addEventListener('click', () => {
+        input[b.dataset.step === '-1' ? 'stepDown' : 'stepUp']()
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+        input.dispatchEvent(new Event('change', { bubbles: true }))
+      })
+    }
+  }
+</script>
