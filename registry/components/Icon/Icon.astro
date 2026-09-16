@@ -1,0 +1,29 @@
+---
+/**
+ * Icon — sizes and labels an inline SVG passed as the default slot. Library-
+ * agnostic: drop in a Lucide (or any) `<svg>`.
+ *
+ * Give a `label` for meaningful icons; omit it for decorative ones (hidden
+ * from assistive tech).
+ *
+ * @composable
+ */
+interface Props {
+  label?: string
+  size?: 'sm' | 'md' | 'lg'
+  class?: string
+}
+
+const { label, size = 'md', class: className, ...rest } = Astro.props
+const sizeMap = { sm: 'size-4', md: 'size-5', lg: 'size-6' }
+---
+
+<span
+  class:list={['inline-flex shrink-0 [&>svg]:size-full', sizeMap[size], className]}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  {...rest}
+>
+  <slot />
+</span>

@@ -1,0 +1,93 @@
+---
+import ShowcasePage from '../showcase/ShowcasePage.astro'
+import Showcase from '../showcase/Showcase.astro'
+import Group from '../showcase/Group.astro'
+import Badge from '../../../registry/components/Badge/Badge.astro'
+import Tag from '../../../registry/components/Tag/Tag.astro'
+import Avatar from '../../../registry/components/Avatar/Avatar.astro'
+import Spinner from '../../../registry/components/Spinner/Spinner.astro'
+import Skeleton from '../../../registry/components/Skeleton/Skeleton.astro'
+import Divider from '../../../registry/components/Divider/Divider.astro'
+import Icon from '../../../registry/components/Icon/Icon.astro'
+import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.astro'
+import Button from '../../../registry/components/Button/Button.astro'
+
+const check =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+---
+
+<ShowcasePage title="Elements">
+  <Showcase name="Badge">
+    <Group label="Variants">
+      <Badge>Neutral</Badge>
+      <Badge variant="accent">Accent</Badge>
+      <Badge variant="danger">Danger</Badge>
+      <Badge variant="outline">Outline</Badge>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Tag" summary="Chip; optionally a link or removable.">
+    <Group label="Variants">
+      <Tag>Design</Tag>
+      <Tag href="/">Link tag</Tag>
+      <Tag removable value="astro" dismissOnClick>Removable</Tag>
+      <Tag removable value="tailwind" dismissOnClick>Click the ×</Tag>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Avatar">
+    <Group label="Sizes & fallback">
+      <Avatar name="Ada Lovelace" size="sm" />
+      <Avatar name="Ada Lovelace" />
+      <Avatar name="Ada Lovelace" size="lg" />
+      <Avatar src="/favicon.svg" alt="Logo" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Icon" summary="Sizes any inline SVG you pass.">
+    <Group label="Sizes">
+      <Icon label="Done" size="sm"><Fragment set:html={check} /></Icon>
+      <Icon label="Done"><Fragment set:html={check} /></Icon>
+      <Icon label="Done" size="lg"><Fragment set:html={check} /></Icon>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Spinner">
+    <Group label="Sizes">
+      <Spinner size="sm" />
+      <Spinner />
+      <Spinner size="lg" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Skeleton">
+    <Group label="Shapes" stack>
+      <Skeleton class="h-4 w-48" />
+      <Skeleton class="h-4 w-full" />
+      <Skeleton class="size-12 rounded-full" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Divider">
+    <Group label="Horizontal" stack>
+      <Divider />
+    </Group>
+    <Group label="Vertical">
+      <div class="flex h-6 items-center gap-3">
+        <span>A</span>
+        <Divider orientation="vertical" />
+        <span>B</span>
+      </div>
+    </Group>
+  </Showcase>
+
+  <Showcase name="ButtonGroup">
+    <Group>
+      <ButtonGroup label="Alignment">
+        <Button variant="secondary">Left</Button>
+        <Button variant="secondary">Center</Button>
+        <Button variant="secondary">Right</Button>
+      </ButtonGroup>
+    </Group>
+  </Showcase>
+</ShowcasePage>

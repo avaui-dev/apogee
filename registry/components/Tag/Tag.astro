@@ -1,0 +1,89 @@
+---
+/**
+ * Tag — a chip. Optionally a link (`href`) or removable.
+ *
+ * `removable` renders a remove button that emits a cancelable, bubbling
+ * `apogee:tag-remove` event (`detail: { value, tag }`). Handle it to update
+ * your state — a tag usually reflects data your app owns, so removing it is a
+ * state change, not just a DOM edit. For a purely cosmetic list with no backing
+ * state, set `dismissOnClick` to also remove the element from the DOM.
+ *
+ * @composable
+ */
+interface Props {
+  href?: string
+  removable?: boolean
+  /** Identifies this tag in the remove event's `detail`. */
+  value?: string
+  /** Also remove the element on click — cosmetic lists with no backing state. */
+  dismissOnClick?: boolean
+  /** Accessible label for the remove button. */
+  removeLabel?: string
+  class?: string
+}
+
+const {
+  href,
+  removable = false,
+  value,
+  dismissOnClick = false,
+  removeLabel = 'Remove',
+  class: className,
+  ...rest
+} = Astro.props
+const Label = href ? 'a' : 'span'
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-0.5 text-sm text-surface-foreground',
+    className,
+  ]}
+  data-apogee-tag
+  data-value={value}
+  data-dismiss-on-click={dismissOnClick ? '' : undefined}
+  {...rest}
+>
+  <Label
+    href={href}
+    class="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+  >
+    <slot />
+  </Label>
+  {
+    removable && (
+      <button
+        type="button"
+        aria-label={removeLabel}
+        data-tag-remove
+        class="-mr-0.5 grid size-4 place-items-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      >
+        <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+        </svg>
+      </button>
+    )
+  }
+</span>
+
+<script>
+  // Delegated once per page (Astro dedupes this module). The app owns removal:
+  // emit a cancelable event and let state drive the re-render. `dismissOnClick`
+  // opts a cosmetic tag into removing its own element.
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return
+    const button = event.target.closest('[data-tag-remove]')
+    if (!button) return
+    const tag = button.closest<HTMLElement>('[data-apogee-tag]')
+    if (!tag) return
+
+    const notCancelled = tag.dispatchEvent(
+      new CustomEvent('apogee:tag-remove', {
+        bubbles: true,
+        cancelable: true,
+        detail: { value: tag.dataset.value, tag },
+      }),
+    )
+    if (notCancelled && tag.hasAttribute('data-dismiss-on-click')) tag.remove()
+  })
+</script>

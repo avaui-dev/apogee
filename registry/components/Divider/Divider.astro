@@ -1,0 +1,21 @@
+---
+/**
+ * Divider — a separator between content.
+ *
+ * @composable
+ */
+interface Props {
+  orientation?: 'horizontal' | 'vertical'
+  class?: string
+}
+
+const { orientation = 'horizontal', class: className, ...rest } = Astro.props
+---
+
+{
+  orientation === 'vertical' ? (
+    <div role="separator" aria-orientation="vertical" class:list={['w-px self-stretch bg-border', className]} {...rest} />
+  ) : (
+    <hr class:list={['h-px w-full border-0 bg-border', className]} {...rest} />
+  )
+}

@@ -1,0 +1,27 @@
+---
+/**
+ * ButtonGroup — joins adjacent Buttons into a single control, collapsing the
+ * inner corners and overlapping borders.
+ *
+ * @composable
+ */
+interface Props {
+  /** Accessible label for the group. */
+  label?: string
+  class?: string
+}
+
+const { label, class: className, ...rest } = Astro.props
+---
+
+<div
+  role="group"
+  aria-label={label}
+  class:list={[
+    'inline-flex [&>*:not(:first-child)]:-ml-px [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</div>

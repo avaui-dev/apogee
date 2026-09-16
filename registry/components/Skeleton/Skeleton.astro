@@ -1,0 +1,15 @@
+---
+/**
+ * Skeleton — a content placeholder while data loads. Size it with classes
+ * (`h-4 w-48`, `size-12 rounded-full`, …).
+ *
+ * @composable
+ */
+interface Props {
+  class?: string
+}
+
+const { class: className, ...rest } = Astro.props
+---
+
+<div class:list={['animate-pulse rounded-md bg-muted', className]} aria-hidden="true" {...rest}></div>
