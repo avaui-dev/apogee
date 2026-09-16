@@ -1,0 +1,62 @@
+---
+/**
+ * SegmentedControl — a row of connected options backed by native radios. Zero JS.
+ * One selection, submits with the form under `name`. Full keyboard support and
+ * a11y come from the native radio group.
+ *
+ * @composable
+ */
+interface Props {
+  name: string
+  /** Options as strings, or `{ label, value }` when they differ. */
+  options: (string | { label: string; value: string })[]
+  /** Selected value. */
+  value?: string
+  size?: 'sm' | 'md' | 'lg'
+  'aria-label'?: string
+  class?: string
+}
+
+const { name, options, value, size = 'md', class: className, ...rest } = Astro.props
+const items = options.map((o) => (typeof o === 'string' ? { label: o, value: o } : o))
+const uid = Math.random().toString(36).slice(2, 9)
+
+const sizeMap = {
+  sm: 'h-8 px-2.5 text-xs',
+  md: 'h-9 px-3 text-sm',
+  lg: 'h-11 px-4 text-base',
+}
+---
+
+<div
+  role="group"
+  class:list={['inline-flex gap-0.5 rounded-md border border-border bg-muted p-0.5', className]}
+  {...rest}
+>
+  {
+    items.map((o) => {
+      const oid = `${name}-${o.value}-${uid}`
+      return (
+        <>
+          <input
+            type="radio"
+            name={name}
+            id={oid}
+            value={o.value}
+            checked={value === o.value}
+            class="peer sr-only"
+          />
+          <label
+            for={oid}
+            class:list={[
+              'flex cursor-pointer items-center justify-center rounded font-medium text-muted-foreground transition-colors hover:text-foreground peer-checked:bg-background peer-checked:text-foreground peer-checked:shadow-sm peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring',
+              sizeMap[size],
+            ]}
+          >
+            {o.label}
+          </label>
+        </>
+      )
+    })
+  }
+</div>

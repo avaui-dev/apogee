@@ -1,0 +1,83 @@
+---
+/**
+ * Rating — a star rating on native radios (zero JS). `readonly` renders a static
+ * display instead of inputs. Uses the reverse-order CSS trick so hovering /
+ * checking a star fills it and every lower one.
+ *
+ * @composable
+ */
+import { Star } from '@lucide/astro'
+
+interface Props {
+  name?: string
+  max?: number
+  /** Selected (or displayed, when readonly) rating. */
+  value?: number
+  readonly?: boolean
+  'aria-label'?: string
+  class?: string
+}
+
+const {
+  name = 'rating',
+  max = 5,
+  value = 0,
+  readonly = false,
+  'aria-label': ariaLabel,
+  class: className,
+  ...rest
+} = Astro.props
+const uid = Math.random().toString(36).slice(2, 9)
+---
+
+{
+  readonly ? (
+    <div
+      class:list={['inline-flex', className]}
+      role="img"
+      aria-label={ariaLabel ?? `${value} out of ${max}`}
+      {...rest}
+    >
+      {Array.from({ length: max }).map((_, i) => (
+        <Star
+          class:list={['size-5 fill-current', i < value ? 'text-amber-400' : 'text-border']}
+          aria-hidden="true"
+        />
+      ))}
+    </div>
+  ) : (
+    <div class:list={['apogee-rating inline-flex flex-row-reverse', className]} role="radiogroup" aria-label={ariaLabel ?? 'Rating'} {...rest}>
+      {Array.from({ length: max }).map((_, i) => {
+        const v = max - i
+        const oid = `${name}-${v}-${uid}`
+        return (
+          <>
+            <input type="radio" name={name} id={oid} value={v} checked={value === v} class="peer sr-only" />
+            <label for={oid} class="cursor-pointer px-0.5 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring" aria-label={`${v} star${v === 1 ? '' : 's'}`}>
+              <Star class="size-6 fill-current" aria-hidden="true" />
+            </label>
+          </>
+        )
+      })}
+    </div>
+  )
+}
+
+<style>
+  /* Reverse-order fill: a star and every lower one light up. Container hover
+     clears the checked state so the hover preview wins. */
+  .apogee-rating label {
+    color: var(--color-border);
+    transition: color 0.1s ease;
+  }
+  .apogee-rating input:checked ~ label {
+    color: var(--color-amber-400);
+  }
+  .apogee-rating:hover label {
+    color: var(--color-border);
+  }
+  .apogee-rating label:hover,
+  .apogee-rating label:hover ~ label {
+    color: var(--color-amber-400);
+  }
+</style>

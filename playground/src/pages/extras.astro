@@ -14,7 +14,11 @@ import Carousel from '../../../registry/components/Carousel/Carousel.astro'
 import Marquee from '../../../registry/components/Marquee/Marquee.astro'
 import Sidebar from '../../../registry/components/Sidebar/Sidebar.astro'
 import NavLink from '../../../registry/components/NavLink/NavLink.astro'
+import SegmentedControl from '../../../registry/components/SegmentedControl/SegmentedControl.astro'
+import Rating from '../../../registry/components/Rating/Rating.astro'
+import EmptyState from '../../../registry/components/EmptyState/EmptyState.astro'
 import Button from '../../../registry/components/Button/Button.astro'
+import { Inbox } from '@lucide/astro'
 
 const people = [
   { name: 'Ada Lovelace' },
@@ -195,6 +199,47 @@ const people = [
           Main content. Narrow the window to collapse the sidebar nav behind the toggle.
         </div>
       </div>
+    </Group>
+  </Showcase>
+
+  <Showcase name="SegmentedControl">
+    <Group label="Sizes" stack>
+      <SegmentedControl name="view-sm" size="sm" value="list" options={['list', 'board', 'calendar']} aria-label="View" />
+      <SegmentedControl name="view-md" value="board" options={['list', 'board', 'calendar']} aria-label="View" />
+      <SegmentedControl
+        name="range"
+        size="lg"
+        value="month"
+        options={[
+          { label: 'Day', value: 'day' },
+          { label: 'Week', value: 'week' },
+          { label: 'Month', value: 'month' },
+        ]}
+        aria-label="Range"
+      />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Rating">
+    <Group label="Interactive" stack>
+      <Rating name="rate" value={3} aria-label="Rate this" />
+    </Group>
+    <Group label="Read-only" stack>
+      <Rating readonly value={4} />
+    </Group>
+  </Showcase>
+
+  <Showcase name="EmptyState">
+    <Group stack>
+      <EmptyState
+        class="max-w-md"
+        title="No projects yet"
+        description="Create your first project to get started — it only takes a minute."
+      >
+        <Inbox slot="icon" aria-hidden="true" />
+        <Button slot="actions" size="sm">New project</Button>
+        <Button slot="actions" size="sm" variant="ghost">Import</Button>
+      </EmptyState>
     </Group>
   </Showcase>
 </ShowcasePage>
