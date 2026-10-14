@@ -91,6 +91,19 @@ optional hint or error paragraph the fieldset is described by.
   </CheckboxGroup>
 </Preview>
 
+## Error tint
+
+The group's `error` tints every control inside it; the children need no
+`hasError` of their own.
+
+<Preview code={`<CheckboxGroup legend="Channels" error="Pick at least one">
+  <Checkbox label="Email" />
+  <Checkbox label="SMS" />
+</CheckboxGroup>`}>
+  <div data-apogee-checkbox-group="error"><CheckboxGroup legend="Channels" error="Pick at least one"><Checkbox label="Email" /><Checkbox label="SMS" /></CheckboxGroup></div>
+  <div data-apogee-checkbox-group="plain"><CheckboxGroup legend="Channels"><Checkbox label="Email" /><Checkbox label="SMS" /></CheckboxGroup></div>
+</Preview>
+
 ## Accessibility
 
 - Native `<fieldset>`/`<legend>`: screen readers announce the legend with each control.

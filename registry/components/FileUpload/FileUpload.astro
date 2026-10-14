@@ -13,25 +13,33 @@ interface Props extends HTMLAttributes<'input'> {
   name?: string
   accept?: string
   multiple?: boolean
+  /** `headless` drops the dashed box so the slot is the whole look. @category layout */
+  variant?: 'default' | 'headless'
+  /** A single row (icon + text) instead of a stacked zone. @category layout */
+  inline?: boolean
   class?: string
 }
 
-const { id: idProp, class: className, ...rest } = Astro.props
+const { id: idProp, variant = 'default', inline = false, class: className, ...rest } = Astro.props
 const id = idProp ?? uid(Astro.locals, 'apogee-file')
 ---
 
 <label
   for={id}
   class:list={[
-    'apogee-file flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-neutral bg-page p-6 text-center transition-colors hover:border-primary data-[drag=true]:border-primary data-[drag=true]:bg-primary-faded-highlighted',
+    'apogee-file flex cursor-pointer items-center justify-center gap-2 transition-colors data-[drag=true]:border-primary data-[drag=true]:bg-primary-faded-highlighted',
+    inline ? 'flex-row p-3 text-start' : 'flex-col p-6 text-center',
+    variant === 'default' && 'rounded-lg border border-dashed border-neutral bg-page hover:border-primary',
     className,
   ]}
 >
   <input id={id} type="file" class="apogee-file-input sr-only" {...rest} />
-  <UploadCloud class="size-6 text-neutral-faded" aria-hidden="true" />
-  <span class="text-sm text-neutral">
-    <span class="font-medium text-primary">Browse</span> or drag a file here
-  </span>
+  <slot>
+    <UploadCloud class="size-6 shrink-0 text-neutral-faded" aria-hidden="true" />
+    <span class="text-sm text-neutral">
+      <span class="font-medium text-primary">Browse</span> or drag a file here
+    </span>
+  </slot>
   <span class="apogee-file-name text-xs text-neutral-faded no-js:hidden"></span>
 </label>
 

@@ -46,13 +46,24 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'title'> {
   class?: string
 }
 
-const { color = 'neutral', variant = 'faded', title, inline = false, class: className, ...rest } = Astro.props
+const { color = 'neutral', variant = 'faded', title, inline = false, role, class: className, ...rest } = Astro.props
 const Icon = icons[color]
 const solid = variant === 'solid'
+// Critical and warning alerts announce themselves; pass `role` to override.
+const liveRole = role ?? (color === 'critical' || color === 'warning' ? 'alert' : undefined)
 ---
 
-<div class:list={['flex gap-3 rounded-lg border p-4', styles[variant][color], className]} {...rest}>
-  {!inline && <Icon class:list={['mt-0.5 size-5 shrink-0', solid ? 'text-current' : tints[color]]} aria-hidden="true" />}
+<div role={liveRole} class:list={['flex gap-3 rounded-lg border p-4', styles[variant][color], className]} {...rest}>
+  {
+    !inline &&
+      (Astro.slots.has('icon') ? (
+        <span class:list={['mt-0.5 inline-flex shrink-0 [&_svg]:size-5', solid ? 'text-current' : tints[color]]} aria-hidden="true">
+          <slot name="icon" />
+        </span>
+      ) : (
+        <Icon class:list={['mt-0.5 size-5 shrink-0', solid ? 'text-current' : tints[color]]} aria-hidden="true" />
+      ))
+  }
   <div class="min-w-0 flex-1 text-sm">
     {title && <p class:list={['font-medium', solid ? 'text-current' : 'text-neutral']}>{title}</p>}
     <div class:list={[title && 'mt-0.5', solid ? 'text-current' : title ? 'text-neutral-faded' : 'text-neutral']}>

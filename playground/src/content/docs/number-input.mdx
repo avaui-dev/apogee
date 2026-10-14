@@ -53,6 +53,8 @@ outer `Field` wrapper, not the input group.
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
+| `prefix` / `suffix` | `string` | — | Text inside the box before / after the value. |
+| `increaseLabel` / `decreaseLabel` | `string` | `'Increase'` / `'Decrease'` | Accessible names of the steppers (localise them). |
 | `required` | `boolean` | `false` | Marks the field required (label asterisk + native `required`). |
 | `class` | `string` | — | Extra classes on the `Field` wrapper, merged last. |
 
@@ -64,6 +66,17 @@ outer `Field` wrapper, not the input group.
   <NumberInput label="Small" size="small" value={1} />
   <NumberInput label="Medium" value={1} />
   <NumberInput label="Large" size="large" value={1} />
+</Preview>
+
+## Hold, clamp and affixes
+
+Hold a stepper to repeat (after 400 ms, every 60 ms; release or leave to stop).
+A typed value outside `min` / `max` is clamped when the field commits.
+
+<Preview code={`<NumberInput label="Quantity" value={3} min={0} max={10} />
+<NumberInput label="Budget" prefix="€" suffix="/mo" value={20} step={5} />`} block>
+  <div data-apogee-number="hold"><NumberInput label="Quantity" value={3} min={0} max={10} hint="Hold + to count up; type 999 to see the clamp." /></div>
+  <div data-apogee-number="affix"><NumberInput label="Budget" prefix="€" suffix="/mo" value={20} step={5} /></div>
 </Preview>
 
 ## States

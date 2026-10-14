@@ -1,0 +1,114 @@
+---
+title: IconToggle
+description: Two icons in one box that swap with a scale and fade, driven by a ToggleButton or your own state.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import IconToggle from '../../../../registry/components/IconToggle/IconToggle.astro'
+import ToggleButton from '../../../../registry/components/ToggleButton/ToggleButton.astro'
+import { Heart, Star, Play, Pause, Volume2, VolumeX } from '@lucide/astro'
+
+<JsNote fallback="The icon for the initial on value shows and stays; nothing swaps.">
+  None of its own. ToggleButton's island flips `data-on` on every IconToggle
+  inside it when the button toggles; set `data-on` yourself anywhere else.
+</JsNote>
+
+<Preview code={`<ToggleButton iconOnly aria-label="Favourite">
+  <IconToggle>
+    <Heart slot="off" />
+    <Heart slot="on" class="fill-current" />
+  </IconToggle>
+</ToggleButton>`}>
+  <div data-apogee-icon-toggle="button" class="contents">
+    <ToggleButton iconOnly aria-label="Favourite" selectedColor="critical" selectedVariant="faded">
+      <IconToggle>
+        <Heart slot="off" />
+        <Heart slot="on" class="fill-current" />
+      </IconToggle>
+    </ToggleButton>
+  </div>
+  <ToggleButton iconOnly aria-label="Play">
+    <IconToggle>
+      <Play slot="off" />
+      <Pause slot="on" />
+    </IconToggle>
+  </ToggleButton>
+  <ToggleButton iconOnly aria-label="Mute">
+    <IconToggle>
+      <Volume2 slot="off" />
+      <VolumeX slot="on" />
+    </IconToggle>
+  </ToggleButton>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add icon-toggle
+```
+
+No dependencies; pair it with `toggle-button`.
+
+## Usage
+
+```astro
+---
+import IconToggle from '@/components/apogee/IconToggle/IconToggle.astro'
+import ToggleButton from '@/components/apogee/ToggleButton/ToggleButton.astro'
+import { Star } from '@lucide/astro'
+---
+<ToggleButton iconOnly aria-label="Star">
+  <IconToggle><Star slot="off" /><Star slot="on" class="fill-current" /></IconToggle>
+</ToggleButton>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<span>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `on` | `boolean` | `false` | Which icon shows. Rendered as `data-on`; flip that attribute to swap. |
+| `label` | `string` | — | Accessible name (`role="img"`). Omit inside a labelled control, where the toggle is decorative. |
+| `class` | `string` | — | Extra classes; set the size here (`size-5`). |
+
+Slots: `off` and `on`, one icon each.
+
+## Variants
+
+Both `on` values, standalone:
+
+<Preview code={`<IconToggle label="Not starred"><Star slot="off" /><Star slot="on" class="fill-current" /></IconToggle>
+<IconToggle on label="Starred"><Star slot="off" /><Star slot="on" class="fill-current" /></IconToggle>`}>
+  <IconToggle label="Not starred" class="size-6 text-warning"><Star slot="off" /><Star slot="on" class="fill-current" /></IconToggle>
+  <IconToggle on label="Starred" class="size-6 text-warning"><Star slot="off" /><Star slot="on" class="fill-current" /></IconToggle>
+</Preview>
+
+## States
+
+- **Off / on** — the hidden icon is scaled to 60% and transparent; the swap
+  takes `--duration-fast`.
+- **Reduced motion** — the swap is instant.
+
+## Accessibility
+
+- Inside a ToggleButton the state is the button's `aria-pressed`; the toggle
+  is `aria-hidden`.
+- Standalone, give it a `label` that names the current state, and update it
+  when you flip `data-on`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--duration-fast` / `--ease-standard` | Swap transition |
+
+## Do / Don't
+
+- **Do** pair outline and filled versions of the same glyph (heart, star,
+  bookmark) so the swap reads as one control changing state.
+- **Don't** use two unrelated icons for an on/off pair; use two buttons.

@@ -27,6 +27,14 @@ interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
   size?: FieldSize
   /** @category layout */
   variant?: FieldVariant
+  /** Text before the value. @category content */
+  prefix?: string
+  /** Text after the value. @category content */
+  suffix?: string
+  /** @category content */
+  increaseLabel?: string
+  /** @category content */
+  decreaseLabel?: string
   required?: boolean
   class?: string
 }
@@ -39,6 +47,10 @@ const {
   hasError = false,
   size = 'medium',
   variant = 'outline',
+  prefix,
+  suffix,
+  increaseLabel = 'Increase',
+  decreaseLabel = 'Decrease',
   required = false,
   disabled = false,
   class: className,
@@ -62,9 +74,10 @@ const btn =
     ]}
     aria-invalid={invalid ? 'true' : undefined}
   >
-    <button type="button" class={btn} data-step="-1" aria-label="Decrease" tabindex="-1" disabled={disabled}>
+    <button type="button" class={btn} data-step="-1" aria-label={decreaseLabel} tabindex="-1" disabled={disabled}>
       <Minus class="size-4" aria-hidden="true" />
     </button>
+    {prefix && <span class="self-center ps-2 text-sm text-neutral-faded">{prefix}</span>}
     <input
       id={id}
       type="number"
@@ -74,7 +87,8 @@ const btn =
       class="apogee-number-input w-full min-w-0 bg-transparent px-2 text-center text-neutral outline-none disabled:cursor-not-allowed [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       {...rest}
     />
-    <button type="button" class={btn} data-step="1" aria-label="Increase" tabindex="-1" disabled={disabled}>
+    {suffix && <span class="self-center pe-2 text-sm text-neutral-faded">{suffix}</span>}
+    <button type="button" class={btn} data-step="1" aria-label={increaseLabel} tabindex="-1" disabled={disabled}>
       <Plus class="size-4" aria-hidden="true" />
     </button>
   </div>
@@ -86,12 +100,50 @@ const btn =
   island('.apogee-number', (group) => {
     const input = group.querySelector<HTMLInputElement>('.apogee-number-input')
     if (!input) return
-    for (const b of group.querySelectorAll<HTMLButtonElement>('.apogee-number-step')) {
-      b.addEventListener('click', () => {
-        input[b.dataset.step === '-1' ? 'stepDown' : 'stepUp']()
-        input.dispatchEvent(new Event('input', { bubbles: true }))
-        input.dispatchEvent(new Event('change', { bubbles: true }))
-      })
+    const fire = () => {
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      input.dispatchEvent(new Event('change', { bubbles: true }))
     }
+    for (const b of group.querySelectorAll<HTMLButtonElement>('.apogee-number-step')) {
+      const step = () => input[b.dataset.step === '-1' ? 'stepDown' : 'stepUp']()
+      let delay: number | undefined
+      let timer: number | undefined
+      const stop = () => {
+        clearTimeout(delay)
+        clearInterval(timer)
+        delay = timer = undefined
+      }
+      b.addEventListener('click', () => {
+        step()
+        fire()
+      })
+      // Hold to repeat: after 400 ms, every 60 ms, until release or leave.
+      b.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return
+        stop()
+        b.setPointerCapture(e.pointerId)
+        delay = window.setTimeout(() => {
+          timer = window.setInterval(() => {
+            if (b.disabled || input.disabled) return stop()
+            const before = input.value
+            step()
+            if (input.value !== before) fire()
+          }, 60)
+        }, 400)
+      })
+      for (const ev of ['pointerup', 'pointerleave', 'pointercancel', 'blur']) b.addEventListener(ev, stop)
+    }
+    // Clamp a typed value into min/max on commit.
+    input.addEventListener('change', () => {
+      const v = Number(input.value)
+      if (input.value === '' || Number.isNaN(v)) return
+      const min = input.min === '' ? -Infinity : Number(input.min)
+      const max = input.max === '' ? Infinity : Number(input.max)
+      const c = Math.min(max, Math.max(min, v))
+      if (c !== v) {
+        input.value = String(c)
+        input.dispatchEvent(new Event('input', { bubbles: true }))
+      }
+    })
   })
 </script>

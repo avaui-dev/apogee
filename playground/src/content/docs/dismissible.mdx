@@ -60,6 +60,9 @@ Leave room for the button at the end edge of your content (`pe-10`).
 |---|---|---|---|
 | `timeout` | `number` | — | Auto-dismiss after this many milliseconds. |
 | `closeLabel` | `string` | `'Dismiss'` | Accessible name of the close button. |
+| `align` | `'top' \| 'center'` | `'top'` | Where the close button sits on the end edge. |
+| `variant` | `'default' \| 'media'` | `'default'` | `media` gives the button an opaque pill for use over images. |
+| `hideClose` | `boolean` | `false` | No close button; `timeout` and your own `apogee:dismiss` still work. |
 | `class` | `string` | — | Extra classes on the wrapper, merged last. |
 
 ## Variants
@@ -72,6 +75,16 @@ Leave room for the button at the end edge of your content (`pe-10`).
   <Dismissible timeout={5000} class="w-full max-w-md">
     <Alert color="warning" title="Timed">Goes away by itself after five seconds.</Alert>
   </Dismissible>
+</Preview>
+
+## Align, media and hideClose
+
+<Preview code={`<Dismissible align="center">…</Dismissible>
+<Dismissible variant="media"><img … /></Dismissible>
+<Dismissible hideClose timeout={8000}>…</Dismissible>`} block>
+  <Dismissible align="center"><Alert color="primary" title="Centred close">The button sits mid-height.</Alert></Dismissible>
+  <Dismissible variant="media" class="overflow-hidden rounded-lg"><div class="h-24 bg-primary-faded" aria-hidden="true"></div></Dismissible>
+  <div data-apogee-dismissible="no-close"><Dismissible hideClose><Alert color="neutral" title="No close button">Dismissed by a timeout or your own event.</Alert></Dismissible></div>
 </Preview>
 
 ## Accessibility

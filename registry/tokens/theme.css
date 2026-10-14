@@ -321,4 +321,18 @@
       transform: none;
     }
   }
+
+  /* Page scroll lock: every modal dialog (Dialog, CommandPalette, your own) and
+     overlays that call lockScroll(). Dialog overlay="transparent" opts out. */
+  body:has(dialog:modal:not([data-overlay='transparent'])),
+  html[data-scroll-locked] {
+    overflow: hidden;
+  }
+  /* setTheme() suppresses transitions for two frames so a mode switch does not
+     tween every colour. */
+  html.apogee-no-transitions *,
+  html.apogee-no-transitions *::before,
+  html.apogee-no-transitions *::after {
+    transition: none !important;
+  }
 }

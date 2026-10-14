@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Actionable from '../../../../registry/components/Actionable/Actionable.astro'
 
 <Preview code={`<Actionable class="rounded-lg border border-neutral p-4 hover:bg-neutral-faded-highlighted">
@@ -34,6 +35,10 @@ semantics, the focus ring and the disabled state.
 ```astro
 ---
 import Actionable from '@/components/apogee/Actionable/Actionable.astro'
+
+<JsNote fallback="The div is still focusable and clickable; only Enter and Space activation is missing. Prefer as='button' when you can.">
+  A div rendered as a button (`as="div"`) activates on Enter and Space through one document listener.
+</JsNote>
 ---
 <Actionable href="/plans/pro" class="rounded-lg border border-neutral p-4">
   <strong>Pro</strong>, $12/month
@@ -50,6 +55,8 @@ import Actionable from '@/components/apogee/Actionable/Actionable.astro'
 | `as` | `'button' \| 'div'` | `'button'` | Element when there is no `href`. A `div` gets `tabindex="0"`. |
 | `disabled` | `boolean` | `false` | `disabled` on a button; `aria-disabled` and no href otherwise. |
 | `fullWidth` | `boolean` | `false` | Stretches to the container width. |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Native button type (ignored with `href` or `as="div"`). |
+| `insetFocus` | `boolean` | `false` | Focus ring inside the edge, for tiles that touch their neighbours. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
@@ -64,6 +71,13 @@ import Actionable from '@/components/apogee/Actionable/Actionable.astro'
   <Actionable as="div" class="rounded-md border border-neutral px-3 py-2">Div</Actionable>
   <Actionable disabled class="rounded-md border border-neutral px-3 py-2">Disabled</Actionable>
   <Actionable href="#" disabled class="rounded-md border border-neutral px-3 py-2">Disabled link</Actionable>
+</Preview>
+
+## Inset focus
+
+<Preview code={`<Actionable insetFocus class="rounded-md border border-neutral p-4">Tile</Actionable>`}>
+  <Actionable class="rounded-md border border-neutral p-4">Default ring</Actionable>
+  <Actionable insetFocus class="rounded-md border border-neutral p-4">Inset ring</Actionable>
 </Preview>
 
 ## States

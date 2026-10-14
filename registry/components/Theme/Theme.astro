@@ -1,0 +1,39 @@
+---
+/**
+ * Theme — a subtree in a colour mode: `light`, `dark`, or `inverted` (the
+ * opposite of whatever surrounds it). Light and dark are pure CSS; inverted is
+ * resolved by a ten-line island at page load (and again after setTheme()).
+ * Without JS an inverted region renders in its parent's mode.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
+  /** @category layout */
+  mode: 'light' | 'dark' | 'inverted'
+  as?: string
+  class?: string
+}
+const { mode, as = 'div', class: className, ...rest } = Astro.props
+const Tag = as
+---
+
+<Tag
+  data-theme={mode}
+  data-theme-inverted={mode === 'inverted' ? '' : undefined}
+  class:list={['apogee-theme bg-page text-neutral', className]}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<script>
+  import { resolveInverted } from '../utils/theme.ts'
+  resolveInverted(document)
+  document.addEventListener('astro:page-load', () => resolveInverted(document))
+  // Any toggle that writes <html data-theme> directly (not only setTheme) re-resolves inverted regions.
+  new MutationObserver(() => resolveInverted(document)).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  })
+</script>

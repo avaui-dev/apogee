@@ -91,6 +91,19 @@ optional hint or error paragraph the fieldset is described by.
   </RadioGroup>
 </Preview>
 
+## Error tint
+
+The group's `error` tints every control inside it; the children need no
+`hasError` of their own.
+
+<Preview code={`<RadioGroup legend="Channels" error="Pick at least one">
+  <Radio label="Email" name="tint" value="a" />
+  <Radio label="SMS" name="tint" value="b" />
+</RadioGroup>`}>
+  <div data-apogee-radio-group="error"><RadioGroup legend="Channels" error="Pick at least one"><Radio label="Email" name="tint" value="a" /><Radio label="SMS" name="tint" value="b" /></RadioGroup></div>
+  <div data-apogee-radio-group="plain"><RadioGroup legend="Channels"><Radio label="Email" name="plain" value="a" /><Radio label="SMS" name="plain" value="b" /></RadioGroup></div>
+</Preview>
+
 ## Accessibility
 
 - Native `<fieldset>`/`<legend>`: screen readers announce the legend with each control.

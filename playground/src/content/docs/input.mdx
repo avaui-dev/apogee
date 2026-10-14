@@ -46,6 +46,8 @@ attribute (`placeholder`, `name`, `value`, `min`/`max`, `autocomplete`,
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `labelPosition` | `'top' \| 'floating'` | `'top'` | `floating` animates the label onto the border on focus / when filled — pure CSS. Ignores a passed `placeholder` (it manages its own). |
+| `prefix` | `string` | — | Text before the value (currency sign, protocol); takes the `start` slot's place. |
+| `suffix` | `string` | — | Text after the value (unit); takes the `end` slot's place. |
 | `required` | `boolean` | `false` | Marks the field required (native `required` + a visible `*` next to the label). |
 | `class` | `string` | — | Extra classes, merged onto the outer field wrapper. |
 
@@ -74,6 +76,16 @@ shifts with the control's padding — shown together:
   <Input label="Small" size="small" labelPosition="floating" />
   <Input label="Medium" labelPosition="floating" />
   <Input label="Large" size="large" labelPosition="floating" />
+</Preview>
+
+## Affixes
+
+<Preview code={`<Input label="Price" prefix="€" type="number" />
+<Input label="Weight" suffix="kg" type="number" />
+<Input label="Site" prefix="https://" />`} block>
+  <Input label="Price" prefix="€" type="number" />
+  <Input label="Weight" suffix="kg" type="number" />
+  <Input label="Site" prefix="https://" />
 </Preview>
 
 ## States

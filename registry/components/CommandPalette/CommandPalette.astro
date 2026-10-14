@@ -128,6 +128,7 @@ for (const c of commands) {
 
 <script>
   import { island } from '../utils/island.ts'
+  import { hotkey } from '../utils/hotkey.ts'
 
   island<HTMLDialogElement>('.apogee-command', (dialog) => {
     const input = dialog.querySelector<HTMLInputElement>('.apogee-command-input')
@@ -181,13 +182,9 @@ for (const c of commands) {
       input.focus()
     }
 
-    // Shortcut (⌘/Ctrl + key) and any trigger with data-command-open.
-    document.addEventListener('keydown', (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === (dialog.dataset.shortcut ?? 'k')) {
-        e.preventDefault()
-        open()
-      }
-    })
+    // Shortcut (mod + key) and any trigger with data-command-open.
+    const unbind = hotkey(`mod+${dialog.dataset.shortcut ?? 'k'}`, open, { ignoreInputs: false })
+    document.addEventListener('astro:before-swap', unbind, { once: true })
     for (const trigger of document.querySelectorAll(`[data-command-open="${dialog.id}"]`)) {
       trigger.addEventListener('click', open)
     }

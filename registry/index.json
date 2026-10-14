@@ -112,11 +112,13 @@
       "files": [
         "Breadcrumbs/Breadcrumbs.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
-      "usesJs": false
+      "usesJs": true
     },
     "Button": {
       "name": "Button",
@@ -175,7 +177,7 @@
         "utils"
       ],
       "dependencies": [],
-      "usesJs": false
+      "usesJs": true
     },
     "CheckboxGroup": {
       "name": "CheckboxGroup",
@@ -266,6 +268,18 @@
       "registryDependencies": [],
       "dependencies": [],
       "usesJs": false
+    },
+    "ContentToggle": {
+      "name": "ContentToggle",
+      "kind": "component",
+      "files": [
+        "ContentToggle/ContentToggle.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": true
     },
     "ContentWrapper": {
       "name": "ContentWrapper",
@@ -470,6 +484,16 @@
       ],
       "usesJs": false
     },
+    "IconToggle": {
+      "name": "IconToggle",
+      "kind": "component",
+      "files": [
+        "IconToggle/IconToggle.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
     "Image": {
       "name": "Image",
       "kind": "component",
@@ -520,6 +544,16 @@
       "kind": "component",
       "files": [
         "List/List.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "LoaderText": {
+      "name": "LoaderText",
+      "kind": "component",
+      "files": [
+        "LoaderText/LoaderText.astro"
       ],
       "registryDependencies": [],
       "dependencies": [],
@@ -726,9 +760,11 @@
       "files": [
         "ScrollArea/ScrollArea.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
-      "usesJs": false
+      "usesJs": true
     },
     "Section": {
       "name": "Section",
@@ -895,9 +931,11 @@
       "files": [
         "Table/Table.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
-      "usesJs": false
+      "usesJs": true
     },
     "Tabs": {
       "name": "Tabs",
@@ -960,7 +998,19 @@
         "utils"
       ],
       "dependencies": [],
-      "usesJs": false
+      "usesJs": true
+    },
+    "Theme": {
+      "name": "Theme",
+      "kind": "component",
+      "files": [
+        "Theme/Theme.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": true
     },
     "Timeline": {
       "name": "Timeline",
@@ -1027,7 +1077,9 @@
       "name": "utils",
       "kind": "component",
       "files": [
+        "utils/fade.ts",
         "utils/field.ts",
+        "utils/hotkey.ts",
         "utils/island.ts",
         "utils/menu.ts",
         "utils/panel.ts",
@@ -1035,6 +1087,8 @@
         "utils/responsive-tables.ts",
         "utils/responsive.ts",
         "utils/roving.ts",
+        "utils/scroll.ts",
+        "utils/theme.ts",
         "utils/uid.ts"
       ],
       "registryDependencies": [],

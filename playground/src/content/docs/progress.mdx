@@ -40,7 +40,16 @@ through to the root `<div role="progressbar">`.
 | `max` | `number` | `100` | Maximum value. |
 | `label` | `string` | — | Accessible label (`aria-label`) — there's no visible text otherwise. |
 | `indeterminate` | `boolean` | `false` | Shows a sliding animated fill instead of a value-based width; drops `aria-valuemin` / `aria-valuemax` / `aria-valuenow`. |
+| `size` | `'small' \| 'medium'` | `'medium'` | Bar thickness: 4 / 8px. |
 | `class` | `string` | — | Extra classes on the root track, merged last. |
+
+## Sizes
+
+<Preview code={`<Progress value={40} size="small" label="Small" />
+<Progress value={40} size="medium" label="Medium" />`} block>
+  <Progress value={40} size="small" label="Small" />
+  <Progress value={40} size="medium" label="Medium" />
+</Preview>
 
 ## States
 

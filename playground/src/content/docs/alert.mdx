@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import { Rocket } from '@lucide/astro'
 import Alert from '../../../../registry/components/Alert/Alert.astro'
 
 <Preview block code={`<Alert color="primary" title="Heads up">
@@ -44,6 +45,7 @@ import Alert from '@/components/apogee/Alert/Alert.astro'
 | `variant` | `'faded' \| 'solid'` | `'faded'` | Tinted (default) or filled. |
 | `title` | `string` | — | Optional bold heading above the message. |
 | `inline` | `boolean` | `false` | Hides the icon column. |
+| `role` | `string` | `'alert'` for critical and warning | Live-region role. Critical and warning alerts announce themselves; pass `role` (or `role="status"`) to override. |
 | `class` | `string` | — | Extra classes, appended last. |
 
 Slots: default for the message, `actions` for buttons under it.
@@ -74,6 +76,19 @@ Every `color`, each with its fixed icon, tinted and filled:
     <Alert variant="solid" color="warning" title="Warning">Check this before continuing.</Alert>
     <Alert variant="solid" color="critical" title="Error">Something went wrong.</Alert>
   </div>
+</Preview>
+
+## Icon slot and roles
+
+A custom icon replaces the colour's default; critical and warning get
+`role="alert"` automatically.
+
+<Preview code={`<Alert color="primary" title="New release"><Rocket slot="icon" />Version 0.4 is out.</Alert>
+<Alert color="critical" title="Payment failed">Announced as an alert.</Alert>
+<Alert color="primary" title="Note">No role: a static callout.</Alert>`} block>
+  <Alert color="primary" title="New release"><Rocket slot="icon" />Version 0.4 is out.</Alert>
+  <div data-apogee-alert="critical"><Alert color="critical" title="Payment failed">Announced as an alert.</Alert></div>
+  <div data-apogee-alert="info"><Alert color="primary" title="Note">No role: a static callout.</Alert></div>
 </Preview>
 
 ## States

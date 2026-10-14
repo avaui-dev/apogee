@@ -321,6 +321,8 @@ test('dropdown submenu: ArrowLeft and Escape return focus to the triggers; hover
   await expect(menu).not.toBeVisible()
   await expect(trigger).toBeFocused()
   // Mouse: hover opens the submenu; the click that follows must not toggle it closed.
+  // Scroll first: a scroll during hover moves the anchored panel from under the pointer.
+  await root.scrollIntoViewIfNeeded()
   await trigger.click()
   await subTrigger.hover()
   await expect(sub).toBeVisible()
@@ -571,4 +573,212 @@ test('dialog: a click on empty space inside a drawer or full-screen dialog keeps
       await expect(dialog).toBeHidden()
     }
   }
+})
+
+test('theme: inverted flips relative to the nearest themed ancestor; command palette locks page scroll', async ({ page }) => {
+  await page.goto('/docs/theme')
+  await expect(page.locator('#t-inv-a')).toHaveAttribute('data-theme', 'light')
+  await expect(page.locator('#t-inv-b')).toHaveAttribute('data-theme', 'dark')
+  await page.locator('[data-apogee-theme="toggle"]').click()
+  const mode = await page.evaluate(() => document.documentElement.dataset.theme)
+  expect(await page.evaluate(() => localStorage.getItem('apogee-theme'))).toBe(mode)
+  await expect(page.locator('#t-inv-b')).toHaveAttribute('data-theme', 'dark')
+  await page.keyboard.press('ControlOrMeta+k')
+  await expect(page.locator('dialog.apogee-command')).toBeVisible()
+  expect(await page.evaluate(() => getComputedStyle(document.body).overflow)).toBe('hidden')
+  await page.keyboard.press('Escape')
+})
+
+test('theme: without JS an inverted region keeps the inverted attribute (parent mode applies)', async ({ browser }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false })
+  const page = await ctx.newPage()
+  await page.goto('/docs/theme')
+  await expect(page.locator('#t-inv-a')).toHaveAttribute('data-theme', 'inverted')
+  await ctx.close()
+})
+
+test('toggle group still roves after the helper swap; tabs still fade', async ({ page }) => {
+  await page.goto('/docs/toggle-button-group')
+  const btns = page.locator('[data-apogee-toggle-group="form"] .apogee-toggle')
+  expect(await btns.evaluateAll((els) => els.filter((b) => b.tabIndex === 0).length)).toBe(1)
+  await btns.first().focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(btns.nth(1)).toBeFocused()
+  await page.goto('/docs/tabs')
+  await expect(page.locator('[data-apogee-tabs="overflow"] [role="tablist"]')).toHaveAttribute('data-fade', 'right')
+})
+
+test('icon toggle swaps icons with ToggleButton; loader text crossfades to completedText', async ({ page }) => {
+  await page.goto('/docs/icon-toggle')
+  const btn = page.locator('[data-apogee-icon-toggle="button"] .apogee-toggle')
+  const it = btn.locator('[data-apogee-icon-toggle]')
+  await expect(it).toHaveAttribute('data-on', 'false')
+  await btn.click()
+  await expect(it).toHaveAttribute('data-on', 'true')
+  await page.goto('/docs/loader-text')
+  const lt = page.locator('[data-apogee-loader-text="done"] .apogee-loader-text')
+  await expect(lt).toHaveAttribute('data-completed', 'true')
+  await expect(lt.locator('.apogee-loader-text-done')).toHaveText('Done')
+  expect(await lt.locator('.apogee-loader-text-done').evaluate((el) => getComputedStyle(el).opacity)).toBe('1')
+})
+
+test('content toggle shows only the active key, animates the swap and reports it', async ({ page }) => {
+  await page.goto('/docs/content-toggle')
+  const root = page.locator('[data-apogee-content-toggle="pager"] .apogee-content-toggle')
+  await expect(root.locator('[data-key]:visible')).toHaveCount(1)
+  await expect(root.locator('[data-key="1"]')).toBeVisible()
+  const detail = await root.evaluate(
+    (el) =>
+      new Promise((resolve) => {
+        el.addEventListener('apogee:content-toggle-change', (e) => resolve(e.detail), { once: true })
+        el.dataset.active = '2'
+      }),
+  )
+  expect(detail).toEqual({ active: '2' })
+  await expect(root.locator('[data-key="2"]')).toBeVisible()
+  await expect.poll(() => root.locator('[data-key="1"]:visible').count()).toBe(0)
+})
+
+test('number input: hold-to-repeat stops on release outside; clamp on blur; affixes render', async ({ page }) => {
+  await page.goto('/docs/number-input')
+  const box = page.locator('[data-apogee-number="hold"] .apogee-number')
+  const input = box.locator('input')
+  const plus = box.locator('[data-step="1"]')
+  await box.scrollIntoViewIfNeeded()
+  const b = await plus.boundingBox()
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
+  await page.mouse.down()
+  await page.waitForTimeout(900)
+  await page.mouse.move(b.x - 60, b.y - 60)
+  await page.mouse.up()
+  const after = Number(await input.inputValue())
+  expect(after).toBeGreaterThan(3)
+  await page.waitForTimeout(300)
+  expect(Number(await input.inputValue())).toBe(after)
+  await input.fill('999')
+  await input.blur()
+  await expect(input).toHaveValue('10')
+  await expect(page.locator('[data-apogee-number="affix"] .apogee-number')).toContainText('€')
+})
+
+test('checkbox indeterminate, switch reversed, textarea auto-grow, pin alphabetic, group error tint', async ({ page }) => {
+  await page.goto('/docs/checkbox')
+  expect(await page.locator('[data-apogee-checkbox="mixed"] input').evaluate((i) => i.indeterminate)).toBe(true)
+  await page.goto('/docs/switch')
+  expect(await page.locator('[data-apogee-switch="reversed"] label').evaluate((l) => getComputedStyle(l).flexDirection)).toBe('row-reverse')
+  await page.goto('/docs/textarea')
+  const ta = page.locator('[data-apogee-textarea="auto"] textarea')
+  const h1 = (await ta.boundingBox()).height
+  await ta.fill('one\ntwo\nthree\nfour\nfive\nsix\nseven\neight')
+  await expect.poll(async () => (await ta.boundingBox()).height).toBeGreaterThan(h1)
+  await page.goto('/docs/pin-input')
+  const pin = page.locator('[data-apogee-pin="alpha"] .apogee-pin-box').first()
+  await pin.fill('7')
+  await expect(pin).toHaveValue('')
+  await pin.fill('q')
+  await expect(pin).toHaveValue('q')
+  await page.goto('/docs/checkbox-group')
+  const tint = await page.locator('[data-apogee-checkbox-group="error"] .apogee-checkbox').first().evaluate((el) => getComputedStyle(el).borderColor)
+  const plain = await page.locator('[data-apogee-checkbox-group="plain"] .apogee-checkbox').first().evaluate((el) => getComputedStyle(el).borderColor)
+  expect(tint).not.toBe(plain)
+})
+
+test('table and scroll area fade their hidden edges; alert colours set role; dismissible hideClose', async ({ page }) => {
+  await page.goto('/docs/table')
+  await expect(page.locator('[data-apogee-table="wide"] .apogee-table-wrap')).toHaveAttribute('data-fade', 'right')
+  await page.goto('/docs/scroll-area')
+  await expect(page.locator('[data-apogee-scroll-area="fade"] .apogee-scroll-area')).toHaveAttribute('data-fade', 'bottom')
+  await page.goto('/docs/alert')
+  await expect(page.locator('[data-apogee-alert="critical"] > div').first()).toHaveAttribute('role', 'alert')
+  await expect(page.locator('[data-apogee-alert="info"] > div').first()).not.toHaveAttribute('role', /./)
+  await page.goto('/docs/dismissible')
+  await expect(page.locator('[data-apogee-dismissible="no-close"] [data-dismiss]')).toHaveCount(0)
+})
+
+test('breadcrumbs maxVisible collapses the middle and expands on click', async ({ page }) => {
+  await page.goto('/docs/breadcrumbs')
+  const nav = page.locator('[data-apogee-breadcrumbs="collapsed"] nav')
+  await expect(nav.locator('li:visible')).toHaveCount(4)
+  await expect(nav.locator('li:visible').first()).toContainText('Home')
+  await nav.locator('button[aria-expanded]').click()
+  await expect(nav.locator('li:visible')).toHaveCount(6)
+  await expect(nav.locator('button[aria-expanded]')).toHaveCount(0)
+})
+
+test('carousel visibleItems sizes slides per breakpoint', async ({ browser }) => {
+  for (const [width, items] of [[390, 1], [1024, 3]]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 800 } })
+    const page = await ctx.newPage()
+    await page.goto('/docs/carousel')
+    const track = page.locator('[data-apogee-carousel="visible"] .apogee-carousel-track')
+    const tw = (await track.boundingBox()).width
+    const sw = (await track.locator('> *').first().boundingBox()).width
+    const gap = 16
+    expect(Math.round(sw)).toBe(Math.round((tw - (items - 1) * gap) / items))
+    await ctx.close()
+  }
+})
+
+test('pagination keeps seven cells; file upload headless has no dashed box', async ({ page }) => {
+  await page.goto('/docs/pagination')
+  for (const c of ['1', '5', '20']) await expect(page.locator(`[data-apogee-pagination="p${c}"] nav > :not([rel]):not([aria-label]):not([aria-disabled])`)).toHaveCount(7)
+  await page.goto('/docs/file-upload')
+  await expect(page.locator('[data-apogee-file="headless"] .apogee-file')).not.toHaveClass(/border-dashed/)
+})
+
+
+test('breadcrumbs without JS show every item and no expand button; with JS the expand keeps focus', async ({ browser, page }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false })
+  const noJs = await ctx.newPage()
+  await noJs.goto('/docs/breadcrumbs')
+  const nav = noJs.locator('[data-apogee-breadcrumbs="collapsed"] nav')
+  await expect(nav.locator('li:visible')).toHaveCount(6)
+  await expect(nav.locator('button[aria-expanded]:visible')).toHaveCount(0)
+  await ctx.close()
+  await page.goto('/docs/breadcrumbs')
+  const jsNav = page.locator('[data-apogee-breadcrumbs="collapsed"] nav')
+  await jsNav.locator('button[aria-expanded]').click()
+  await expect(jsNav.locator('a').nth(1)).toBeFocused()
+})
+
+test('content toggle under reduced motion keeps exactly one child visible across swaps', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/docs/content-toggle')
+  const root = page.locator('[data-apogee-content-toggle="pager"] .apogee-content-toggle')
+  for (const k of ['2', '3', '1']) {
+    await root.evaluate((el, key) => { el.dataset.active = key }, k)
+    await expect(root.locator('[data-key]:visible')).toHaveCount(1)
+    await expect(root.locator(`[data-key="${k}"]`)).toBeVisible()
+  }
+})
+
+test('avatar fallback sits on an opaque base; loader text hides the inactive label from AT; theme re-resolves on a direct toggle', async ({ page }) => {
+  await page.goto('/docs/avatar')
+  const bg = await page.locator('.apogee-avatar').first().evaluate((el) => getComputedStyle(el).backgroundColor)
+  expect(bg).not.toMatch(/rgba\(.*, 0\)|transparent/)
+  expect(bg).not.toMatch(/\/ 0\.|rgba\(\d+, \d+, \d+, 0\./)
+  await page.goto('/docs/loader-text')
+  const lt = page.locator('[data-apogee-loader-text="done"] .apogee-loader-text')
+  await expect.poll(() => lt.locator('.apogee-loader-text-loading').evaluate((el) => getComputedStyle(el).visibility)).toBe('hidden')
+  await page.goto('/docs/theme')
+  const top = page.locator('#t-inv-top')
+  const before = await top.getAttribute('data-theme')
+  await page.locator('[data-theme-toggle]:visible').first().click()
+  await expect(top).toHaveAttribute('data-theme', before === 'dark' ? 'light' : 'dark')
+})
+
+test('number input ignores a right-button hold', async ({ page }) => {
+  await page.goto('/docs/number-input')
+  const box = page.locator('[data-apogee-number="hold"] .apogee-number')
+  await box.scrollIntoViewIfNeeded()
+  const input = box.locator('input')
+  const start = await input.inputValue()
+  const b = await box.locator('[data-step="1"]').boundingBox()
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
+  await page.mouse.down({ button: 'right' })
+  await page.waitForTimeout(900)
+  await page.mouse.up({ button: 'right' })
+  await page.keyboard.press('Escape')
+  await page.waitForTimeout(200)
+  await expect(input).toHaveValue(start)
 })

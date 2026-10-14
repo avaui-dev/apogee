@@ -11,22 +11,34 @@
 import type { ComponentProps } from 'astro/types'
 import { LoaderCircle } from '@lucide/astro'
 
+const tones = {
+  inherit: 'text-current',
+  primary: 'text-primary',
+  neutral: 'text-neutral',
+  critical: 'text-critical',
+  positive: 'text-positive',
+  warning: 'text-warning',
+} as const
+
 /** @composable */
 interface Props extends Omit<ComponentProps<typeof LoaderCircle>, 'size'> {
   size?: 'small' | 'medium' | 'large'
   /** Accessible label. Omit when a parent already announces loading. */
   label?: string
+  /** @category layout */
+  color?: keyof typeof tones
   class?: string
 }
 
-const { size = 'medium', label, class: className, ...rest } = Astro.props
+const { size = 'medium', label, color = 'inherit', class: className, ...rest } = Astro.props
 const sizeMap = { small: 'size-4', medium: 'size-5', large: 'size-8' }
 const a11y = label ? ({ role: 'status', 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const)
 ---
 
 <LoaderCircle
   class:list={[
-    'animate-spin text-current motion-reduce:[animation-duration:1.6s]',
+    'animate-spin motion-reduce:[animation-duration:1.6s]',
+    tones[color],
     sizeMap[size],
     className,
   ]}

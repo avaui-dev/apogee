@@ -72,7 +72,7 @@ const sizeClasses = iconOnly
   data-toggle={String(!manual)}
   value={value}
   class:list={[
-    'apogee-toggle inline-flex items-center justify-center whitespace-nowrap font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0',
+    'apogee-toggle inline-flex items-center justify-center whitespace-nowrap font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0',
     buttonStyles[variant][color],
     pressedStyles[selectedVariant][selectedColor],
     sizeClasses,
@@ -92,6 +92,7 @@ const sizeClasses = iconOnly
     b.addEventListener('click', () => {
       const pressed = b.getAttribute('aria-pressed') !== 'true'
       b.setAttribute('aria-pressed', String(pressed))
+      for (const it of b.querySelectorAll<HTMLElement>('[data-apogee-icon-toggle]')) it.dataset.on = String(pressed)
       const hidden = b.nextElementSibling
       if (hidden instanceof HTMLInputElement && hidden.type === 'hidden') hidden.disabled = !pressed
       b.dispatchEvent(new CustomEvent('apogee:toggle-change', { bubbles: true, detail: { pressed, value: b.value } }))

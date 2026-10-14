@@ -124,7 +124,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
 
       <main class="min-w-0 flex-1 py-10">
         <Breadcrumbs
-          items={[{ label: 'Docs', href: '/docs' }, ...(group ? [{ label: group }] : []), { label: title }]}
+          items={[{ label: 'Docs', href: '/docs' }, ...(group && group !== title ? [{ label: group }] : []), { label: title }]}
         />
         <h1 class="mt-4 text-3xl font-semibold tracking-tight">{title}</h1>
         {description && <p class="mt-2 text-lg text-neutral-faded">{description}</p>}

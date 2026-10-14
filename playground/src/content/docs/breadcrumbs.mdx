@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Breadcrumbs from '../../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
 
 <Preview code={`<Breadcrumbs items={[
@@ -33,6 +34,10 @@ No Apogee dependencies. Uses `@lucide/astro` for the chevron separator.
 ```astro
 ---
 import Breadcrumbs from '@/components/apogee/Breadcrumbs/Breadcrumbs.astro'
+
+<JsNote fallback="Every item renders and the … button is hidden, so nothing is unreachable.">
+  With `maxVisible`, the "…" button reveals the collapsed items and moves focus to the first of them.
+</JsNote>
 ---
 <Breadcrumbs items={[
   { label: 'Home', href: '/' },
@@ -48,10 +53,24 @@ attribute passes through.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `items` | `{ label: string; href?: string }[]` | — | The trail, in order. An item without `href` (or the last item) renders as plain text. |
+| `items[].disabled` | `boolean` | `false` | Renders the item as plain text with `aria-disabled`. |
+| `maxVisible` | `number` | — | Show at most this many items: the first, an "…" button that reveals the rest, and the last ones. |
 | `class` | `string` | — | Extra classes on the root `<nav>`, merged last. |
 
 The last item in `items` is always treated as the current page: it renders as
 a `<span aria-current="page">`, even if it has an `href`.
+
+## Collapsed, separator and disabled
+
+<Preview code={`<Breadcrumbs maxVisible={4} items={[{ label: 'Home', href: '/' }, { label: 'Library', href: '#' }, { label: 'Shelf', href: '#' }, { label: 'Series', href: '#' }, { label: 'Volume', href: '#' }, { label: 'Chapter' }]} />
+<Breadcrumbs items={[…]}><span slot="separator">/</span></Breadcrumbs>
+<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Archive', disabled: true }, { label: 'Entry' }]} />`} block>
+  <div data-apogee-breadcrumbs="collapsed">
+    <Breadcrumbs maxVisible={4} items={[{ label: 'Home', href: '/' }, { label: 'Library', href: '#' }, { label: 'Shelf', href: '#' }, { label: 'Series', href: '#' }, { label: 'Volume', href: '#' }, { label: 'Chapter' }]} />
+  </div>
+  <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '#' }, { label: 'Breadcrumbs' }]}><span slot="separator" class="text-neutral-faded" aria-hidden="true">/</span></Breadcrumbs>
+  <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Archive', disabled: true }, { label: 'Entry' }]} />
+</Preview>
 
 ## States
 

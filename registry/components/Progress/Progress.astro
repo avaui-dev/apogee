@@ -12,11 +12,14 @@ interface Props extends HTMLAttributes<'div'> {
   indeterminate?: boolean
   /** Bar hue. @category layout */
   color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
+  /** Bar thickness. @category layout */
+  size?: 'small' | 'medium'
   class?: string
 }
+const heights = { small: 'h-1', medium: 'h-2' } as const
 const fills = { primary: 'bg-primary', neutral: 'bg-neutral', critical: 'bg-critical', positive: 'bg-positive', warning: 'bg-warning' } as const
 
-const { value = 0, max = 100, label, indeterminate = false, color = 'primary', class: className, ...rest } = Astro.props
+const { value = 0, max = 100, label, indeterminate = false, color = 'primary', size = 'medium', class: className, ...rest } = Astro.props
 const pct = Math.max(0, Math.min(100, (value / max) * 100))
 ---
 
@@ -26,7 +29,7 @@ const pct = Math.max(0, Math.min(100, (value / max) * 100))
   aria-valuemin={indeterminate ? undefined : 0}
   aria-valuemax={indeterminate ? undefined : max}
   aria-valuenow={indeterminate ? undefined : value}
-  class:list={['h-2 w-full overflow-hidden rounded-full bg-neutral-faded', className]}
+  class:list={['w-full overflow-hidden rounded-full bg-neutral-faded', heights[size], className]}
   {...rest}
 >
   <div

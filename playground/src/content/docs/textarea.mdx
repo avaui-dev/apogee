@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Textarea from '../../../../registry/components/Textarea/Textarea.astro'
 
 <Preview code={`<Textarea label="Message" hint="Markdown is supported." placeholder="Write something…" />`}>
@@ -25,6 +26,10 @@ Pulls in `Field` (label / hint / error scaffold).
 ```astro
 ---
 import Textarea from '@/components/apogee/Textarea/Textarea.astro'
+
+<JsNote fallback="The box keeps its rows height and the resize handle.">
+  `resize="auto"` grows the box to its content on input in browsers without `field-sizing: content` (Chromium has it natively).
+</JsNote>
 ---
 <Textarea label="Message" />
 ```
@@ -41,6 +46,7 @@ attribute (e.g. `placeholder`, `disabled`, `maxlength`, `name`) passes through.
 | `hint` | `string` | — | Helper text below the field (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid` and swaps in for `hint`. |
 | `rows` | `number` | `4` | Visible row count. |
+| `resize` | `'none' \| 'vertical' \| 'auto'` | `'vertical'` | Resize handle, or `auto` to grow with the content (`field-sizing: content`; a small island elsewhere). |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Padding and text size from the shared scale, 28 / 36 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
@@ -65,6 +71,18 @@ Every size:
   <Textarea label="Small" size="small" placeholder="Small" />
   <Textarea label="Medium" placeholder="Medium" />
   <Textarea label="Large" size="large" placeholder="Large" />
+</Preview>
+
+## Resize
+
+Every `resize` value:
+
+<Preview code={`<Textarea label="None" resize="none" rows={2} />
+<Textarea label="Vertical" resize="vertical" rows={2} />
+<Textarea label="Auto" resize="auto" rows={2} />`} block>
+  <Textarea label="None" resize="none" rows={2} />
+  <Textarea label="Vertical" resize="vertical" rows={2} />
+  <div data-apogee-textarea="auto"><Textarea label="Auto" resize="auto" rows={2} hint="Grows as you type." /></div>
 </Preview>
 
 ## States

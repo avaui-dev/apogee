@@ -20,6 +20,8 @@ import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import Carousel from '../../../registry/components/Carousel/Carousel.astro'
 import Tabs from '../../../registry/components/Tabs/Tabs.astro'
 import Slider from '../../../registry/components/Slider/Slider.astro'
+import Theme from '../../../registry/components/Theme/Theme.astro'
+import ContentToggle from '../../../registry/components/ContentToggle/ContentToggle.astro'
 import Toaster from '../../../registry/components/Toast/Toaster.astro'
 import CheckboxGroup from '../../../registry/components/CheckboxGroup/CheckboxGroup.astro'
 import Checkbox from '../../../registry/components/Checkbox/Checkbox.astro'
@@ -157,6 +159,20 @@ import { picture } from '../components/demo-data'
       </Tabs>
 
       <Slider range name="السعر" minValue={20} maxValue={60} aria-label="السعر" class="max-w-sm" />
+
+      <Theme mode="inverted" class="rounded-lg p-4 text-sm">منطقة معكوسة: عكس ما يحيط بها.</Theme>
+      <ContentToggle active="1" direction="start" class="rounded-lg border border-neutral p-4 text-sm">
+        <p data-key="1">الفصل الأول.</p>
+        <p data-key="2">الفصل الثاني.</p>
+      </ContentToggle>
+      <Breadcrumbs maxVisible={3} items={[{ label: 'الرئيسية', href: '#' }, { label: 'المكتبة', href: '#' }, { label: 'الرف', href: '#' }, { label: 'المجلد', href: '#' }, { label: 'الفصل' }]} />
+      <Table border columnBorder>
+        <thead><tr><th>الاسم</th><th>الدور</th><th>المكتب</th></tr></thead>
+        <tbody><tr><td>آنا</td><td>تصميم</td><td>لشبونة</td></tr></tbody>
+      </Table>
+      <Carousel visibleItems={{ base: 1, md: 2 }} controls={false} label="عرض">
+        {[1, 2, 3, 4].map((i) => <div class="h-16 rounded-lg bg-neutral-faded p-3 text-sm">شريحة {i}</div>)}
+      </Carousel>
 
       <Carousel dots itemWidth="14rem">
         {['١', '٢', '٣', '٤', '٥'].map((n) => (

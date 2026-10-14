@@ -7,20 +7,29 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
-interface Props extends HTMLAttributes<'table'> {
+interface Props extends Omit<HTMLAttributes<'table'>, 'border'> {
   /** Header text style. @category layout */
   headerStyle?: 'normal' | 'caps'
+  /** Outer border and rounded corners. @category layout */
+  border?: boolean
+  /** Hairline between columns. @category layout */
+  columnBorder?: boolean
   class?: string
 }
 
-const { headerStyle = 'normal', class: className, ...rest } = Astro.props
+const { headerStyle = 'normal', border = false, columnBorder = false, class: className, ...rest } = Astro.props
 const headers = {
   normal: '[&_th]:text-sm [&_th]:font-semibold [&_th]:text-neutral [&_th]:normal-case',
   caps: '[&_th]:text-xs [&_th]:font-medium [&_th]:tracking-wide [&_th]:text-neutral-faded [&_th]:uppercase',
 } as const
 ---
 
-<div class="w-full overflow-x-auto">
+<div
+  class:list={[
+    'apogee-table-wrap w-full overflow-x-auto data-[fade~=left]:mask-l-from-90% data-[fade~=right]:mask-r-from-90% focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+    border && 'rounded-lg border border-neutral',
+  ]}
+>
   <table
     class:list={[
       'apogee-table w-full border-collapse text-start text-sm tabular-nums',
@@ -29,6 +38,7 @@ const headers = {
       '[&_td]:border-t [&_td]:border-neutral [&_td]:px-3 [&_td]:py-2.5 [&_td]:text-neutral',
       '[&_thead_th]:border-b [&_thead_th]:border-neutral',
       '[&_tbody_tr:hover]:bg-neutral-faded',
+      columnBorder && '[&_td+td]:border-s [&_td+td]:border-neutral [&_th+th]:border-s [&_th+th]:border-neutral',
       className,
     ]}
     {...rest}
@@ -47,3 +57,20 @@ const headers = {
     }
   }
 </style>
+
+<script>
+  import { island } from '../utils/island.ts'
+  import { edgeFade } from '../utils/fade.ts'
+
+  // Fade the edge that hides columns while the table scrolls sideways, and
+  // make the wrapper a tab stop only while it actually scrolls.
+  island('.apogee-table-wrap', (wrap) => {
+    edgeFade(wrap)
+    const focusable = () => {
+      if (wrap.scrollWidth > wrap.clientWidth + 1) wrap.tabIndex = 0
+      else wrap.removeAttribute('tabindex')
+    }
+    focusable()
+    new ResizeObserver(focusable).observe(wrap)
+  })
+</script>

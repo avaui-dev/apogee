@@ -59,6 +59,8 @@ through to the root `<div>`.
 | `label` | `string` | — | Optional label text. |
 | `hint` | `string` | — | Optional helper text, hidden when `error` is set. |
 | `error` | `string` | — | Optional error message; replaces `hint` and renders with `role="alert"`. |
+| `disabled` | `boolean` | `false` | Dims the label and marks the wrapper `aria-disabled`; disable the control too. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Label text size, matching the control's size. |
 | `required` | `boolean` | `false` | Shows a `*` next to the label (visual only — set `required`/`aria-required` on the control itself). |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
@@ -95,6 +97,21 @@ Custom control (a `Field` wrapping something other than a native input) — set
   </select>
 </Field>
 ```
+
+## Sizes and disabled
+
+<Preview code={`<Field id="f-s" label="Small" size="small"><input id="f-s" class="…" /></Field>
+… medium, large, xlarge …
+<Field id="f-d" label="Disabled" disabled><input id="f-d" disabled class="…" /></Field>`} block>
+  {['small', 'medium', 'large', 'xlarge'].map((size) => (
+    <Field id={`f-size-${size}`} label={`Label ${size}`} size={size}>
+      <input id={`f-size-${size}`} class="h-9 rounded-md border border-neutral bg-page px-3 text-sm text-neutral" placeholder={size} />
+    </Field>
+  ))}
+  <Field id="f-disabled" label="Disabled" disabled hint="The control is disabled too.">
+    <input id="f-disabled" disabled class="h-9 rounded-md border border-disabled bg-disabled px-3 text-sm text-disabled" />
+  </Field>
+</Preview>
 
 ## Accessibility
 

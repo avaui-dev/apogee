@@ -38,7 +38,12 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **Slider** — `range` (two thumbs, `minValue` / `maxValue`, submits `<name>-min` / `<name>-max` or `minName` / `maxName`), the badge shows the value with `format` (`'{value}%'`, `false` hides it), `orientation="vertical"`; the initial value snaps to `step`.
 - **ToggleButton** — on the Button tables: `color`, `variant`, four `size`s, `rounded`, `iconOnly`; pressed look from `selectedColor` × `selectedVariant` (solid, faded); `value` + `name` submit through a hidden input while pressed.
 - **ToggleButtonGroup** — roving tabindex with arrow / Home / End keys; keeps each button's hidden input in sync in `single` mode.
-- **utils/roving** — `stepIndex` keyboard helper (Tabs, ToggleButtonGroup).
+- **Checkbox** `indeterminate` + slot label; **Radio** slot label; **Switch** `reversed`, slot label; **CheckboxGroup / RadioGroup** tint their controls on `error`; **Textarea** `resize` (none, vertical, auto); **Input** `prefix` / `suffix`; **NumberInput** hold-to-repeat, clamp on commit, `prefix` / `suffix`, `increaseLabel` / `decreaseLabel`; **PinInput** `pattern` (numeric, alphabetic, alphanumeric); **Field** `disabled`, `size`.
+- **Avatar** `color`, `variant`, `squared`; **Alert** `icon` slot, `role="alert"` for critical and warning; **Icon** token `color`, `autoWidth`; **Spinner** `color`; **Progress** `size`; **ProgressIndicator** `variant="dots"`; **Container** `padding`; **Dismissible** `align`, `variant="media"`, `hideClose`; **Table** `border`, `columnBorder`, edge fade; **ScrollArea** `fade`, `scrollbar`, `maxHeight`.
+- **AccordionItem** `trigger` slot, `iconPosition`; **Actionable** `type`, `insetFocus`; **Breadcrumbs** `maxVisible`, `separator` slot, disabled items; **Button** `highlighted`, icon size per `size`; **Carousel** responsive `visibleItems`, `gap`, `bleed`; **Pagination** a constant seven cells, `previousLabel` / `nextLabel`; **FileUpload** default slot, `variant="headless"`, `inline`.
+- **LoaderText**, **IconToggle**, **ContentToggle** — new components (shimmer text with a done crossfade; two-icon swap that ToggleButton drives; keyed content pager with directional slide).
+- **Theme** — `mode="light | dark | inverted"` wrapper; `utils/theme` (`getTheme`, `setTheme`, `toggleTheme`, `apogee:theme-change`), transitions suppressed for two frames on switch.
+- **Helpers** — `utils/hotkey` (`hotkey('mod+k', fn)`, used by CommandPalette), `utils/roving` `stepIndex` and `rovingTabindex` (Tabs, ToggleButtonGroup), `utils/fade` `edgeFade` (Tabs, Table, ScrollArea), `utils/scroll` `lockScroll` / `unlockScroll`.
 - **utils/radius** — `innerRadius` table for concentric corners inside rounded trays.
 - **Gates** — `npm run check:strict` (consumer-grade strictest typecheck) and `npm run test:behaviour` (browser suite).
 
@@ -48,11 +53,14 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **Prose** — headings use the fluid type tokens, lists show markers, quotes and code match the Blockquote and Code components, roomier rhythm.
 - Form controls are at least 16px text below the `md` breakpoint, so phones never zoom on focus.
 - Avatar fallbacks and the AvatarGroup overflow chip use opaque fills.
+- Avatar fallback fills (`variant="faded"`, the default) sit on an opaque page-coloured base, so overlapping avatars never show through each other.
+- ToggleButton icons follow the Button size scale (14px at `small`, 20px at `xlarge`).
 - Dialog drawers, sheets and full-screen have no border; only the centred modal keeps one.
 - Slider: neutral track, higher-contrast thumb, logical fill direction.
 - Slider badge shows the value, not a percentage.
 - ToggleButton icon-only buttons need `iconOnly` for a square; the resting text colour is the hue's text, not the faded one.
 - `apogee:toggle-group-change` detail is `{ value: string[] }` (was `pressed`).
+- Page scroll lock moved to the tokens file: every modal dialog locks the page (`body:has(dialog:modal)`). **Migration:** re-run `init` (or copy the block) when you update Dialog or CommandPalette.
 - ToggleButtonGroup, SegmentedControl and Menubar chips use concentric inner radii.
 - Tooltip wraps long text (max 20rem) and renders nothing when `text` is empty.
 

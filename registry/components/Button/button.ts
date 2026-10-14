@@ -1,10 +1,10 @@
 // Button class tables. Shared with ToggleButton and NavLink so every
 // button-shaped control sits on the same height scale.
 export const buttonSizes = {
-  small: 'h-7 px-2 text-xs gap-1.5 rounded-sm',
-  medium: 'h-9 px-3 text-sm gap-2 rounded-md',
-  large: 'h-12 px-4 text-base gap-2 rounded-md',
-  xlarge: 'h-14 px-5 text-lg gap-2.5 rounded-md',
+  small: 'h-7 px-2 text-xs gap-1.5 rounded-sm [&_svg]:size-3.5',
+  medium: 'h-9 px-3 text-sm gap-2 rounded-md [&_svg]:size-4',
+  large: 'h-12 px-4 text-base gap-2 rounded-md [&_svg]:size-4',
+  xlarge: 'h-14 px-5 text-lg gap-2.5 rounded-md [&_svg]:size-5',
 } as const
 export const iconOnlySizes = { small: 'size-7', medium: 'size-9', large: 'size-12', xlarge: 'size-14' } as const
 
@@ -37,6 +37,37 @@ export const buttonStyles = {
     critical: 'text-critical hover:bg-critical-faded-highlighted',
     positive: 'text-positive hover:bg-positive-faded-highlighted',
     warning: 'text-warning hover:bg-warning-faded-highlighted',
+  },
+} as const
+// `highlighted`: the variant's hover fill made permanent (an active filter, a menu that is open).
+export const highlightedStyles = {
+  solid: {
+    primary: 'bg-primary-highlighted',
+    neutral: 'bg-neutral-highlighted',
+    critical: 'bg-critical-highlighted',
+    positive: 'bg-positive-highlighted',
+    warning: 'bg-warning-highlighted',
+  },
+  faded: {
+    primary: 'bg-primary-faded-highlighted',
+    neutral: 'bg-neutral-faded-highlighted',
+    critical: 'bg-critical-faded-highlighted',
+    positive: 'bg-positive-faded-highlighted',
+    warning: 'bg-warning-faded-highlighted',
+  },
+  outline: {
+    primary: 'bg-primary-faded-highlighted',
+    neutral: 'bg-neutral-faded-highlighted',
+    critical: 'bg-critical-faded-highlighted',
+    positive: 'bg-positive-faded-highlighted',
+    warning: 'bg-warning-faded-highlighted',
+  },
+  ghost: {
+    primary: 'bg-primary-faded-highlighted',
+    neutral: 'bg-neutral-faded-highlighted',
+    critical: 'bg-critical-faded-highlighted',
+    positive: 'bg-positive-faded-highlighted',
+    warning: 'bg-warning-faded-highlighted',
   },
 } as const
 export type ButtonColor = keyof typeof buttonStyles.solid

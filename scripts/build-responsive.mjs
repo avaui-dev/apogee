@@ -30,6 +30,8 @@ export const defs = {
     'row-reverse': '[&>*+*]:border-s [&>*+*]:border-t-0',
     'column-reverse': '[&>*+*]:border-t [&>*+*]:border-s-0',
   },
+  // Carousel: slides per view, as a CSS variable the track's width rule reads.
+  carouselItems: { 1: '[--apogee-items:1]', 2: '[--apogee-items:2]', 3: '[--apogee-items:3]', 4: '[--apogee-items:4]', 5: '[--apogee-items:5]', 6: '[--apogee-items:6]' },
   // Dialog placement. Each cell sets every axis so a later breakpoint fully
   // overrides an earlier one; --apogee-dx/dy/scale feed the closed-state slide
   // in Dialog.astro (the component mirrors dx under :dir(rtl)).

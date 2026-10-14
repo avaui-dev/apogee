@@ -15,22 +15,41 @@ interface Props extends HTMLAttributes<'div'> {
   timeout?: number
   /** Accessible label for the close button. @category content */
   closeLabel?: string
+  /** Where the button sits on the end edge. @category layout */
+  align?: 'top' | 'center'
+  /** `media` gives the button an opaque pill for use over images. @category layout */
+  variant?: 'default' | 'media'
+  /** No close button; `timeout` and your own `apogee:dismiss` still work. */
+  hideClose?: boolean
   class?: string
 }
 
-const { timeout, closeLabel = 'Dismiss', class: className, ...rest } = Astro.props
+const { timeout, closeLabel = 'Dismiss', align = 'top', variant = 'default', hideClose = false, class: className, ...rest } = Astro.props
+const aligns = { top: 'top-2', center: 'top-1/2 -translate-y-1/2' } as const
+const looks = {
+  default: 'text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral',
+  media: 'bg-page text-neutral shadow-raised hover:bg-page-faded',
+} as const
 ---
 
 <div class:list={['relative', className]} data-apogee-dismissible data-timeout={timeout} {...rest}>
   <slot />
-  <button
-    type="button"
-    aria-label={closeLabel}
-    data-dismiss
-    class="absolute end-2 top-2 grid size-7 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary no-js:hidden"
-  >
-    <X class="size-4" aria-hidden="true" />
-  </button>
+  {
+    !hideClose && (
+      <button
+        type="button"
+        aria-label={closeLabel}
+        data-dismiss
+        class:list={[
+          'absolute end-2 grid size-7 place-items-center rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary no-js:hidden',
+          aligns[align],
+          looks[variant],
+        ]}
+      >
+        <X class="size-4" aria-hidden="true" />
+      </button>
+    )
+  }
 </div>
 
 <script>

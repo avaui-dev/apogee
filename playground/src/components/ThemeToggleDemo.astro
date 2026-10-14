@@ -1,0 +1,14 @@
+---
+/**
+ * ThemeToggleDemo — a docs button wired to the registry's `toggleTheme()`,
+ * so the Theme page can show the helper working.
+ */
+import Button from '../../../registry/components/Button/Button.astro'
+---
+
+<Button variant="outline" color="neutral" data-apogee-theme="toggle">Toggle theme</Button>
+
+<script>
+  import { toggleTheme } from '../../../registry/components/utils/theme.ts'
+  for (const b of document.querySelectorAll('[data-apogee-theme="toggle"]')) b.addEventListener('click', () => toggleTheme())
+</script>

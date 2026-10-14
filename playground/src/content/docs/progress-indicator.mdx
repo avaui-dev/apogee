@@ -41,6 +41,7 @@ Use Progress for a continuous percentage; ProgressIndicator for discrete steps.
 | `current` | `number` | — | Steps done, clamped to `0..total`. |
 | `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | Hue of the done segments. |
 | `aria-label` | `string` | `'Progress'` | Accessible name. |
+| `variant` | `'segments' \| 'dots'` | `'segments'` | Segments fill up to the current step; dots mark only the current one, in a window of seven when there are more. |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
 ## Variants
@@ -55,6 +56,14 @@ Use Progress for a continuous percentage; ProgressIndicator for discrete steps.
   <ProgressIndicator total={5} current={3} color="critical" class="max-w-sm" />
   <ProgressIndicator total={5} current={3} color="positive" class="max-w-sm" />
   <ProgressIndicator total={5} current={3} color="warning" class="max-w-sm" />
+</Preview>
+
+## Dots
+
+<Preview code={`<ProgressIndicator variant="dots" total={5} current={2} aria-label="Slide 2 of 5" />
+<ProgressIndicator variant="dots" total={12} current={9} aria-label="Slide 9 of 12" />`} block>
+  <ProgressIndicator variant="dots" total={5} current={2} aria-label="Slide 2 of 5" />
+  <ProgressIndicator variant="dots" total={12} current={9} aria-label="Slide 9 of 12" />
 </Preview>
 
 ## States

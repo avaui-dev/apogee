@@ -43,11 +43,18 @@ attribute (e.g. `checked`, `disabled`, `required`) passes through.
 |---|---|---|---|
 | `name` | `string` | — | Group name — give every radio in the set the same value. |
 | `value` | `string` | — | This radio's value, submitted when checked. |
-| `label` | `string` | — | Visible label, rendered in a `<label>` next to the input. |
+| `label` | `string` | — | Visible label, rendered in a `<label>` next to the input. Rich labels go in the default slot instead. |
 | `id` | `string` | auto-generated | Ties the label to the input; set your own to target it elsewhere. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control and label size. |
 | `hasError` | `boolean` | `false` | Marks the control invalid (`aria-invalid`, critical border). |
 | `class` | `string` | — | Extra classes on the wrapping `<div>`. |
+
+## Slot label
+
+<Preview code={`<Radio name="plan" value="pro"><span><strong>Pro</strong> — €12 / month</span></Radio>`}>
+  <Radio name="plan-slot" value="pro"><span><strong>Pro</strong> — €12 / month</span></Radio>
+  <Radio name="plan-slot" value="team"><span><strong>Team</strong> — €40 / month</span></Radio>
+</Preview>
 
 ## States
 

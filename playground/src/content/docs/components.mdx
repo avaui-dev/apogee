@@ -1,0 +1,20 @@
+---
+title: Components
+navTitle: Overview
+description: Every component, copied into your project with the CLI and yours to edit.
+group: Components
+order: -1
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each page shows every variant and size, the props, the states, the keyboard
+map and the tokens it reads. A **JS** badge in the sidebar marks the few
+components that ship a script island; each of those opens with a note on what
+the script does and how the component behaves without it.
+
+```sh
+npx @ava-ui/apogee add button dialog   # copies the components and their dependencies
+```
+
+<DocsIndex group="Components" self="components" />

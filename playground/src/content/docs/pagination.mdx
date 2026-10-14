@@ -40,10 +40,23 @@ through to the root `<nav>`.
 | `currentPage` | `number` | — | Current page, 1-indexed. |
 | `totalPages` | `number` | — | Total number of pages. |
 | `getHref` | `(page: number) => string` | `` (p) => `?page=${p}` `` | Builds each page link's `href`. |
+| `previousLabel` / `nextLabel` | `string` | `'Previous page'` / `'Next page'` | Accessible names of the arrows (localise them). |
 | `class` | `string` | — | Extra classes on the root `<nav>`, merged last. |
 
-Page list shown: first, last, current, and current's immediate neighbours; any
-gap between them collapses to a single `…`.
+Page list shown: always seven cells from seven pages up (first, last, a
+three-page run around the current page, and an ellipsis or the neighbour on
+each side), so the row never changes width as the user pages through.
+
+## Constant width
+
+With seven or more pages the row always has seven cells, so it never jumps
+as the user pages through.
+
+<Preview code={`<Pagination currentPage={1} totalPages={20} />
+<Pagination currentPage={5} totalPages={20} />
+<Pagination currentPage={20} totalPages={20} />`} block>
+  {[1, 5, 20].map((p) => <div data-apogee-pagination={`p${p}`}><Pagination currentPage={p} totalPages={20} /></div>)}
+</Preview>
 
 ## States
 

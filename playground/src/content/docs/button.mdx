@@ -54,6 +54,7 @@ through to the root `<button>` or `<a>`.
 | `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Native button type (ignored with `href`). |
 | `loading` | `boolean` | `false` | Shows a spinner in the `start` slot and blocks interaction. |
 | `disabled` | `boolean` | `false` | Disables the control (`aria-disabled` on links). |
+| `highlighted` | `boolean` | `false` | Keeps the hover fill on: an active filter, an open menu's trigger. |
 | `class` | `string` | — | Extra classes, appended last. |
 
 Slots: `start` and `end` for icons; the default slot is the label.
@@ -117,6 +118,20 @@ Every `variant` for every `color`:
       <Button variant="ghost" color="warning">Warning</Button>
     </div>
   </div>
+</Preview>
+
+## Highlighted
+
+Every variant with `highlighted`:
+
+<Preview code={`<Button variant="solid" highlighted>Solid</Button>
+<Button variant="faded" highlighted>Faded</Button>
+<Button variant="outline" highlighted>Outline</Button>
+<Button variant="ghost" highlighted>Ghost</Button>`}>
+  <Button variant="solid" highlighted>Solid</Button>
+  <Button variant="faded" highlighted>Faded</Button>
+  <Button variant="outline" highlighted>Outline</Button>
+  <Button variant="ghost" highlighted>Ghost</Button>
 </Preview>
 
 ## Sizes

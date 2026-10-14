@@ -7,6 +7,8 @@ import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
 import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 
+const resizes = { none: 'resize-none', vertical: 'resize-y', auto: 'resize-none [field-sizing:content]' } as const
+
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'textarea'>, 'size'> {
   id?: string
@@ -22,6 +24,8 @@ interface Props extends Omit<HTMLAttributes<'textarea'>, 'size'> {
   size?: FieldSize
   /** @category layout */
   variant?: FieldVariant
+  /** `auto` grows with the content (`field-sizing: content`, with a small island where unsupported). @category layout */
+  resize?: keyof typeof resizes
   required?: boolean
   class?: string
 }
@@ -36,6 +40,7 @@ const {
   hasError = false,
   size = 'medium',
   variant = 'outline',
+  resize = 'vertical',
   required = false,
   class: className,
   ...rest
@@ -54,6 +59,22 @@ const sizeClasses = fieldSizes[size].replace(/\bh-\S+/, 'py-2')
     required={required}
     aria-describedby={describedby}
     aria-invalid={invalid ? 'true' : undefined}
-    class:list={['resize-y', fieldBase, fieldVariants[variant], sizeClasses]}
+    class:list={[resizes[resize], fieldBase, fieldVariants[variant], sizeClasses]}
+    data-resize={resize === 'auto' ? 'auto' : undefined}
     {...rest}>{value ?? <slot />}</textarea>
 </Field>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  // Fallback for browsers without field-sizing: grow to the content on input.
+  if (!CSS.supports('field-sizing', 'content'))
+    island<HTMLTextAreaElement>('textarea[data-resize="auto"]', (ta) => {
+      const grow = () => {
+        ta.style.height = 'auto'
+        ta.style.height = `${ta.scrollHeight}px`
+      }
+      grow()
+      ta.addEventListener('input', grow)
+    })
+</script>

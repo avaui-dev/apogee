@@ -1,8 +1,8 @@
 ---
 title: Browser support
 description: Which browsers Apogee targets, the modern platform features it relies on, and how each degrades where support isn't there yet.
-group: Foundations
-order: 10
+group: Getting started
+order: 2
 ---
 
 ## Policy
@@ -40,7 +40,9 @@ order: 10
 | Clipboard API (`navigator.clipboard`) | Secure context | Code (copy) | button no-ops if blocked (caught) |
 | `appearance: none` custom controls | Baseline | Checkbox, Radio, Select, Slider, Meter | — |
 | Vertical range input (`writing-mode` on form controls) | Chrome 124, Firefox 120, Safari 17.4 | Slider `orientation="vertical"` | shows horizontal |
-| `:has()` scroll lock | Chrome 105, Firefox 121, Safari 15.4 | Dialog | page behind can scroll |
+| `:has()` scroll lock (`body:has(dialog:modal)`) | Chrome 105, Firefox 121, Safari 15.4 | Dialog, CommandPalette, `lockScroll()` | page behind can scroll |
+| `field-sizing: content` | Chromium only | Textarea `resize="auto"` | a four-line island grows it on input |
+| Scroll-driven animations (`animation-timeline: scroll()`) | not used: behind a flag in Firefox | Tabs, Table, ScrollArea edge fades run on a small island instead | — |
 
 "Baseline" here follows the [web-platform Baseline status](https://web.dev/baseline) —
 "widely available" means it's safe to use without a fallback; a dated

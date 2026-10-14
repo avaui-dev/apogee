@@ -1,0 +1,42 @@
+---
+/**
+ * DocsIndex — the card grid on a category overview page: every docs page in
+ * `group` (except the overview itself), with its sidebar icon, title and a
+ * two-line description. Four per row on wide screens.
+ */
+import { getCollection } from 'astro:content'
+import Card from '../../../registry/components/Card/Card.astro'
+import { Box } from '@lucide/astro'
+import { docsIcons } from './docs-icons'
+
+interface Props {
+  group: string
+  /** The overview page's own id, left out of the grid. */
+  self: string
+}
+const { group, self } = Astro.props
+const pages = (await getCollection('docs'))
+  .filter((d) => d.data.group === group && d.id !== self)
+  .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
+---
+
+<div class="not-content mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {
+    pages.map((d) => {
+      const Icon = docsIcons[d.id] ?? Box
+      return (
+        <Card href={d.id === 'index' ? '/docs' : `/docs/${d.id}`} padding="small">
+          <span class="flex items-start gap-3">
+            <span class="grid size-8 shrink-0 place-items-center rounded-md bg-neutral-faded text-neutral">
+              <Icon class="size-4" aria-hidden="true" />
+            </span>
+            <span class="flex min-w-0 flex-col gap-0.5">
+              <span class="text-sm font-medium text-neutral">{d.data.title}</span>
+              {d.data.description && <span class="line-clamp-2 text-xs leading-5 text-neutral-faded">{d.data.description}</span>}
+            </span>
+          </span>
+        </Card>
+      )
+    })
+  }
+</div>

@@ -59,7 +59,8 @@ SVG slot.
 | `size` | `number \| string` | — (Lucide's default) | Icon size in px. Prefer a Tailwind `size-*` class for consistency with surrounding text. |
 | `strokeWidth` | `number \| string` | — (Lucide's default) | Stroke width. |
 | `absoluteStrokeWidth` | `boolean` | — (Lucide's default) | Keep stroke width constant regardless of `size`. |
-| `color` | `string` | `currentColor` | Icon colour. |
+| `color` | token name or any colour string | — | A token (`primary`, `neutral`, `neutral-faded`, `critical`, `positive`, `warning`, `inherit`) maps to its text colour; anything else passes to the SVG. |
+| `autoWidth` | `boolean` | `false` | Keep the glyph's own aspect ratio instead of a square box. |
 | `class` | `string` | — | Extra classes, merged last (`shrink-0` is always applied). |
 
 ## Variants
@@ -75,6 +76,26 @@ render identically once styled:
   <Icon class="text-primary">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
   </Icon>
+</Preview>
+
+## Colours
+
+Every token `color`:
+
+<Preview code={`<Icon icon={Camera} color="primary" class="size-6" />
+<Icon icon={Camera} color="neutral" class="size-6" />
+<Icon icon={Camera} color="neutral-faded" class="size-6" />
+<Icon icon={Camera} color="critical" class="size-6" />
+<Icon icon={Camera} color="positive" class="size-6" />
+<Icon icon={Camera} color="warning" class="size-6" />
+<Icon icon={Camera} color="inherit" class="size-6" />`}>
+  <Icon icon={Camera} color="primary" class="size-6" label="primary" />
+  <Icon icon={Camera} color="neutral" class="size-6" label="neutral" />
+  <Icon icon={Camera} color="neutral-faded" class="size-6" label="neutral-faded" />
+  <Icon icon={Camera} color="critical" class="size-6" label="critical" />
+  <Icon icon={Camera} color="positive" class="size-6" label="positive" />
+  <Icon icon={Camera} color="warning" class="size-6" label="warning" />
+  <Icon icon={Camera} color="inherit" class="size-6" label="inherit" />
 </Preview>
 
 ## Examples

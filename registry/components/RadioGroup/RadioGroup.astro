@@ -41,3 +41,10 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
   {hint && !error && <p id={`${id}-hint`} class="text-sm text-neutral-faded">{hint}</p>}
   {error && <p id={`${id}-error`} role="alert" class="text-sm text-critical">{error}</p>}
 </fieldset>
+
+<style is:global>
+  /* The group's error tints every control inside it (slotted, so global). */
+  fieldset[aria-invalid='true'] .apogee-radio {
+    border-color: var(--border-critical);
+  }
+</style>

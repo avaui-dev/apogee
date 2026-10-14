@@ -31,6 +31,10 @@ interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
   variant?: FieldVariant
   /** Floating label animates from placeholder position to the top border (CSS only). @category layout */
   labelPosition?: 'top' | 'floating'
+  /** Text before the value (currency sign, protocol). Replaces the `start` slot. @category content */
+  prefix?: string
+  /** Text after the value (unit). Replaces the `end` slot. @category content */
+  suffix?: string
   required?: boolean
   class?: string
 }
@@ -45,6 +49,8 @@ const {
   size = 'medium',
   variant = 'outline',
   labelPosition = 'top',
+  prefix,
+  suffix,
   required = false,
   class: className,
   ...rest
@@ -52,8 +58,8 @@ const {
 const id = idProp ?? uid(Astro.locals)
 const invalid = Boolean(error) || hasError
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
-const hasStart = Astro.slots.has('start')
-const hasEnd = Astro.slots.has('end')
+const hasStart = Boolean(prefix) || Astro.slots.has('start')
+const hasEnd = Boolean(suffix) || Astro.slots.has('end')
 const floating = labelPosition === 'floating'
 const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlarge: 'start-5' } as const
 ---
@@ -62,8 +68,8 @@ const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlar
   <div class="relative flex items-center">
     {
       hasStart && (
-        <span class="pointer-events-none absolute start-3 text-neutral-faded [&_svg]:size-4">
-          <slot name="start" />
+        <span class="pointer-events-none absolute start-3 text-sm text-neutral-faded [&_svg]:size-4">
+          {prefix ?? <slot name="start" />}
         </span>
       )
     }
@@ -79,8 +85,8 @@ const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlar
     />
     {
       hasEnd && (
-        <span class="pointer-events-none absolute end-3 flex items-center text-neutral-faded [&_svg]:size-4 [&_button]:pointer-events-auto">
-          <slot name="end" />
+        <span class="pointer-events-none absolute end-3 flex items-center text-sm text-neutral-faded [&_svg]:size-4 [&_button]:pointer-events-auto">
+          {suffix ?? <slot name="end" />}
         </span>
       )
     }

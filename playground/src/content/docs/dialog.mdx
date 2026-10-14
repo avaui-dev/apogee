@@ -198,8 +198,9 @@ button and the footer buttons still work.
   slides (`@starting-style`), respects `prefers-reduced-motion`.
 - **Backdrop** — fades to the `--overlay` scrim on open (`::backdrop`);
   `blurred` adds a 4px blur. Page scrolling is locked while a dim or blurred
-  dialog is open (add `scrollbar-gutter: stable` to `html` if the layout shift
-  bothers you).
+  dialog is open: the rule lives in the tokens file (`body:has(dialog:modal)`),
+  so re-run `init` when you update. Add `scrollbar-gutter: stable` to `html`
+  if the layout shift bothers you.
 
 Try each state via the triggers in the Variants preview above.
 

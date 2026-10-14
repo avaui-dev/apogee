@@ -43,9 +43,28 @@ attribute not listed below (`checked`, `disabled`, `name`, `value`,
 | `id` | `string` | auto-generated (`apogee-<random>`) | Connects the `<label>` to the `<input>`. Set your own to target it from elsewhere (a separate `<label for>`, a test selector). |
 | `label` | `string` | — | Visible label text, rendered after the track. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Track and label size. |
+| `reversed` | `boolean` | `false` | Label first, switch last. |
 | `hasError` | `boolean` | `false` | Marks the switch invalid: `aria-invalid` on the input, a critical ring on the track. |
 | `class` | `string` | — | Extra classes on the root `<label>`, appended last. |
 | …rest | — | — | Any other attribute passes through to the `<input type="checkbox" role="switch">`. |
+
+## Sizes
+
+<Preview code={`<Switch size="small" label="Small" />
+<Switch size="medium" label="Medium" />
+<Switch size="large" label="Large" />`}>
+  <Switch size="small" label="Small" />
+  <Switch size="medium" label="Medium" />
+  <Switch size="large" label="Large" />
+</Preview>
+
+## Reversed and slot label
+
+<Preview code={`<Switch reversed label="Email alerts" />
+<Switch><span>Marketing <em>(optional)</em></span></Switch>`}>
+  <div data-apogee-switch="reversed" class="contents"><Switch reversed label="Email alerts" /></div>
+  <Switch><span>Marketing <em>(optional)</em></span></Switch>
+</Preview>
 
 ## States
 

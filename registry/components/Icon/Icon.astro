@@ -17,6 +17,15 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+const tones = {
+  primary: 'text-primary',
+  neutral: 'text-neutral',
+  'neutral-faded': 'text-neutral-faded',
+  critical: 'text-critical',
+  positive: 'text-positive',
+  warning: 'text-warning',
+  inherit: 'text-current',
+} as const
 interface Props extends Omit<HTMLAttributes<'svg'>, 'size'> {
   /** A Lucide icon component. Omit to pass a raw <svg> as the slot. */
   icon?: any
@@ -26,20 +35,25 @@ interface Props extends Omit<HTMLAttributes<'svg'>, 'size'> {
   size?: number | string
   strokeWidth?: number | string
   absoluteStrokeWidth?: boolean
-  color?: string
+  /** A token name maps to its text colour; any other string passes to the SVG as-is. */
+  color?: keyof typeof tones | (string & {})
+  /** Let the glyph keep its own aspect ratio instead of a square box. @category layout */
+  autoWidth?: boolean
   class?: string
 }
 
-const { icon: IconComponent, label, class: className, ...iconProps } = Astro.props
+const { icon: IconComponent, label, color, autoWidth = false, class: className, ...iconProps } = Astro.props
+const tone = color && color in tones ? tones[color as keyof typeof tones] : undefined
+const rawColor = tone ? undefined : color
 
 const a11y = label ? ({ role: 'img', 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const)
 ---
 
 {
   IconComponent ? (
-    <IconComponent class:list={['shrink-0', className]} {...iconProps} {...a11y} />
+    <IconComponent class:list={['shrink-0', tone, autoWidth && 'w-auto', className]} color={rawColor} {...iconProps} {...a11y} />
   ) : (
-    <span class:list={['inline-flex shrink-0 [&>svg]:size-full', className]} {...a11y}>
+    <span class:list={['inline-flex shrink-0 [&>svg]:size-full', tone, autoWidth && '[&>svg]:w-auto', className]} {...a11y}>
       <slot />
     </span>
   )

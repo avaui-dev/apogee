@@ -49,7 +49,8 @@ those below are **not** forwarded to the DOM.
 |---|---|---|---|
 | `name` | `string` | `'code'` | `name` of the hidden `<input type="hidden">` that carries the joined value. |
 | `length` | `number` | `6` | Number of character boxes. |
-| `type` | `'numeric' \| 'text'` | `'numeric'` | `numeric` shows a number keypad and strips non-digits as you type; `text` allows any character. |
+| `pattern` | `'numeric' \| 'alphabetic' \| 'alphanumeric'` | `'numeric'` | Accepted characters: filters as you type and sets the native `pattern` and keypad. |
+| `type` | `'numeric' \| 'text'` | — | Older alias: `numeric` ⇒ `pattern="numeric"`, `text` ⇒ `alphanumeric`. |
 | `hasError` | `boolean` | `false` | Critical border on every box, `aria-invalid`. |
 | `disabled` | `boolean` | `false` | Disables every box. |
 | `value` | `string` | — | Initial code, one character per box. |
@@ -64,6 +65,18 @@ those below are **not** forwarded to the DOM.
 <PinInput type="text" aria-label="Text code" />`}>
   <PinInput type="numeric" aria-label="Numeric code" />
   <PinInput type="text" aria-label="Text code" />
+</Preview>
+
+## Patterns
+
+Every `pattern`:
+
+<Preview code={`<PinInput pattern="numeric" aria-label="Numeric code" />
+<PinInput pattern="alphabetic" aria-label="Letters" />
+<PinInput pattern="alphanumeric" aria-label="Mixed" />`} block>
+  <PinInput pattern="numeric" aria-label="Numeric code" name="pin-num" />
+  <div data-apogee-pin="alpha"><PinInput pattern="alphabetic" aria-label="Letters" name="pin-alpha" /></div>
+  <PinInput pattern="alphanumeric" aria-label="Mixed" name="pin-mixed" />
 </Preview>
 
 ## Examples

@@ -1,0 +1,19 @@
+---
+title: Sections
+navTitle: Overview
+description: Page-level compositions built from the components, for marketing sites and application screens.
+group: Sections
+order: -1
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+A section is a whole band of a page: a hero, a pricing table, a settings
+form. Each takes a `layout`, `background`, `spacing` and `headingLevel`, and
+`apogee add <section>` copies it in with the components it uses.
+
+```sh
+npx @ava-ui/apogee add hero pricing    # copies the sections and their components
+```
+
+<DocsIndex group="Sections" self="sections" />

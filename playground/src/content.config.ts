@@ -8,6 +8,8 @@ const docs = defineCollection({
     description: z.string().optional(),
     group: z.string().default('Components'),
     order: z.number().default(0),
+    /** Sidebar label when it should differ from the title (overview pages). */
+    navTitle: z.string().optional(),
   }),
 })
 

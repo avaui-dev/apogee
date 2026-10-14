@@ -1,0 +1,102 @@
+---
+/**
+ * ContentToggle — shows the child whose `data-key` equals `active`; changing
+ * `data-active` on the root slides the old one out toward `direction` and the
+ * new one in from the other side (prev/next pagers, step content). The first
+ * state renders server-side (zero JS); the island only animates the swap and
+ * dispatches `apogee:content-toggle-change` (`detail: { active }`).
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
+  /** `data-key` of the visible child. */
+  active: string
+  /** Side the outgoing content leaves toward. @category layout */
+  direction?: 'start' | 'end'
+  class?: string
+}
+const { active, direction = 'end', class: className, ...rest } = Astro.props
+// Mark the active child server-side so the first state needs no JS.
+const html = (await Astro.slots.render('default')).replace(`data-key="${active}"`, `data-key="${active}" data-active`)
+---
+
+<div
+  class:list={['apogee-content-toggle relative grid overflow-hidden [&>*]:[grid-area:1/1]', className]}
+  data-active={active}
+  data-direction={direction}
+  {...rest}
+>
+  <Fragment set:html={html} />
+</div>
+
+<style is:global>
+  /* Global: the children arrive through set:html, so a scoped selector would never match them. */
+  .apogee-content-toggle > [data-key] {
+    display: none;
+  }
+  .apogee-content-toggle > [data-key][data-active] {
+    display: block;
+    animation: apogee-ct-in var(--duration-medium) var(--ease-standard);
+  }
+  .apogee-content-toggle > [data-key][data-leaving] {
+    display: block;
+    pointer-events: none;
+    animation: apogee-ct-out var(--duration-medium) var(--ease-standard) forwards;
+  }
+  .apogee-content-toggle[data-direction='start'] {
+    --apogee-ct-x: -1.5rem;
+  }
+  .apogee-content-toggle[data-direction='end'] {
+    --apogee-ct-x: 1.5rem;
+  }
+  .apogee-content-toggle:dir(rtl)[data-direction='start'] {
+    --apogee-ct-x: 1.5rem;
+  }
+  .apogee-content-toggle:dir(rtl)[data-direction='end'] {
+    --apogee-ct-x: -1.5rem;
+  }
+  @keyframes apogee-ct-in {
+    from {
+      opacity: 0;
+      translate: calc(-1 * var(--apogee-ct-x)) 0;
+    }
+  }
+  @keyframes apogee-ct-out {
+    to {
+      opacity: 0;
+      translate: var(--apogee-ct-x) 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-content-toggle > [data-key] {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-content-toggle', (root) => {
+    const children = () => [...root.querySelectorAll<HTMLElement>(':scope > [data-key]')]
+    // Repair the server-side mark if it landed on a nested element or nothing.
+    if (!children().some((el) => el.hasAttribute('data-active')))
+      for (const el of children()) el.toggleAttribute('data-active', el.dataset.key === root.dataset.active)
+    new MutationObserver(() => {
+      const leaving = children().find((el) => el.hasAttribute('data-active') && el.dataset.key !== root.dataset.active)
+      if (leaving) {
+        leaving.removeAttribute('data-active')
+        leaving.setAttribute('data-leaving', '')
+        // Wait for the exit animation, or nothing at all under reduced motion.
+        Promise.all(leaving.getAnimations().map((a) => a.finished))
+          .catch(() => {})
+          .finally(() => leaving.removeAttribute('data-leaving'))
+      }
+      for (const el of children()) el.toggleAttribute('data-active', el.dataset.key === root.dataset.active)
+      root.dispatchEvent(
+        new CustomEvent('apogee:content-toggle-change', { bubbles: true, detail: { active: root.dataset.active } }),
+      )
+    }).observe(root, { attributes: true, attributeFilter: ['data-active'] })
+  })
+</script>

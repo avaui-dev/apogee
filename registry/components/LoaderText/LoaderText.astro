@@ -1,0 +1,101 @@
+---
+/**
+ * LoaderText — text with a moving shimmer while something loads, crossfading
+ * to `completedText` when `completed` turns true ("Generating…" → "Done").
+ * Zero JS: the shimmer is a background-clip gradient animation; flip
+ * `data-completed` on the root to finish it.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+const sizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
+const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold' } as const
+interface Props extends HTMLAttributes<'span'> {
+  completed?: boolean
+  /** @category content */
+  completedText?: string
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** @category layout */
+  weight?: keyof typeof weights
+  class?: string
+}
+const { completed = false, completedText, size = 'medium', weight = 'medium', class: className, ...rest } = Astro.props
+---
+
+<span
+  class:list={['apogee-loader-text inline-flex items-center gap-1.5', sizes[size], weights[weight], className]}
+  data-completed={String(completed)}
+  aria-live="polite"
+  {...rest}
+>
+  {
+    Astro.slots.has('icon') && (
+      <span class="apogee-loader-text-icon inline-flex text-neutral-faded [&_svg]:size-4">
+        <slot name="icon" />
+      </span>
+    )
+  }
+  <span class="apogee-loader-text-stack grid [&>*]:[grid-area:1/1]">
+    <span class="apogee-loader-text-loading"><slot /></span>
+    {completedText && <span class="apogee-loader-text-done text-neutral">{completedText}</span>}
+  </span>
+</span>
+
+<style>
+  .apogee-loader-text-loading {
+    background: linear-gradient(
+      90deg,
+      var(--foreground-neutral-faded) 0%,
+      var(--foreground-neutral) 50%,
+      var(--foreground-neutral-faded) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: apogee-shimmer 1.6s linear infinite;
+    transition:
+      opacity var(--duration-medium) var(--ease-standard),
+      visibility 0s linear;
+  }
+  .apogee-loader-text-done {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--duration-medium) var(--ease-standard),
+      visibility 0s linear var(--duration-medium);
+  }
+  .apogee-loader-text-icon {
+    transition: opacity var(--duration-medium) var(--ease-standard);
+  }
+  .apogee-loader-text[data-completed='true'] .apogee-loader-text-loading {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+    transition-delay: 0s, var(--duration-medium);
+  }
+  .apogee-loader-text[data-completed='true'] .apogee-loader-text-done {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .apogee-loader-text[data-completed='true'] .apogee-loader-text-icon {
+    opacity: 0;
+  }
+  @keyframes apogee-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-loader-text-loading {
+      animation: none;
+      background: none;
+      color: var(--foreground-neutral-faded);
+    }
+  }
+</style>

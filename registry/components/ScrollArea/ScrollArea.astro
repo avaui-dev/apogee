@@ -8,6 +8,16 @@
 import type { HTMLAttributes } from 'astro/types'
 
 const overflow = { vertical: 'overflow-y-auto overflow-x-hidden', horizontal: 'overflow-x-auto overflow-y-hidden', both: 'overflow-auto' } as const
+const scrollbars = {
+  thin: '[scrollbar-width:thin]',
+  hidden: '[scrollbar-width:none]',
+  hover: '[scrollbar-width:none] hover:[scrollbar-width:thin]',
+} as const
+const fades = {
+  vertical: 'data-[fade~=top]:mask-t-from-90% data-[fade~=bottom]:mask-b-from-90%',
+  horizontal: 'data-[fade~=left]:mask-l-from-90% data-[fade~=right]:mask-r-from-90%',
+  both: 'data-[fade~=top]:mask-t-from-90% data-[fade~=bottom]:mask-b-from-90%',
+} as const
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -15,16 +25,30 @@ interface Props extends HTMLAttributes<'div'> {
   direction?: keyof typeof overflow
   /** Max height, any CSS length. @category layout */
   height?: string
+  /** Alias of `height`. @category layout */
+  maxHeight?: string
+  /** Fade the edge that hides content (a small island). @category layout */
+  fade?: boolean
+  /** @category layout */
+  scrollbar?: keyof typeof scrollbars
   class?: string
 }
 
-const { direction = 'vertical', height, class: className, ...rest } = Astro.props
+const { direction = 'vertical', height, maxHeight, fade = false, scrollbar = 'thin', class: className, ...rest } = Astro.props
+const limit = maxHeight ?? height
 ---
 
 <div
   tabindex="0"
-  class:list={['apogee-scroll-area rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary', overflow[direction], className]}
-  style={height ? `max-height: ${height}` : undefined}
+  class:list={[
+    'apogee-scroll-area rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+    overflow[direction],
+    scrollbars[scrollbar],
+    fade && fades[direction],
+    className,
+  ]}
+  style={limit ? `max-height: ${limit}` : undefined}
+  data-fade-axis={fade ? (direction === 'horizontal' ? 'x' : 'y') : undefined}
   {...rest}
 >
   <slot />
@@ -32,7 +56,15 @@ const { direction = 'vertical', height, class: className, ...rest } = Astro.prop
 
 <style>
   .apogee-scroll-area {
-    scrollbar-width: thin;
     scrollbar-color: var(--border-neutral) transparent;
   }
 </style>
+
+<script>
+  import { island } from '../utils/island.ts'
+  import { edgeFade } from '../utils/fade.ts'
+
+  island('.apogee-scroll-area[data-fade-axis]', (el) => {
+    edgeFade(el, el.dataset.fadeAxis === 'x' ? 'x' : 'y')
+  })
+</script>

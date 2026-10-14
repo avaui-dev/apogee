@@ -13,3 +13,8 @@ test('stepIndex wraps both ways, mirrors in RTL, jumps with Home/End and ignores
   assert.equal(stepIndex('a', 1, 4), null)
   assert.equal(stepIndex('ArrowDown', 1, 4), null)
 })
+
+import { rovingTabindex } from './roving.ts'
+test('rovingTabindex is exported for DOM consumers', () => {
+  assert.equal(typeof rovingTabindex, 'function')
+})

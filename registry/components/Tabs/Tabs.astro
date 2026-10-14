@@ -141,6 +141,7 @@ const tabClass =
 <script>
   import { island } from '../utils/island.ts'
   import { stepIndex } from '../utils/roving.ts'
+  import { edgeFade } from '../utils/fade.ts'
 
   island('.apogee-tabs', (root) => {
     const list = root.querySelector<HTMLElement>('.apogee-tabs-list')!
@@ -164,15 +165,7 @@ const tabClass =
       )
     }
 
-    // Edge fades while the list overflows (physical sides; scrollLeft is ≤ 0 in RTL).
-    const fade = () => {
-      const max = list.scrollWidth - list.clientWidth
-      const left = getComputedStyle(list).direction === 'rtl' ? max + list.scrollLeft : list.scrollLeft
-      list.dataset.fade = max > 1 ? [left > 1 && 'left', left < max - 1 && 'right'].filter(Boolean).join(' ') : ''
-    }
-    fade()
-    list.addEventListener('scroll', fade, { passive: true })
-    new ResizeObserver(fade).observe(list)
+    edgeFade(list)
 
     tabs.forEach((tab, i) => {
       if (!tab.hasAttribute('href')) tab.addEventListener('click', () => select(i))

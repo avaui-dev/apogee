@@ -38,6 +38,7 @@ passes through (e.g. `data-*`).
 |---|---|---|---|
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Icon size (`size-4` / `size-5` / `size-8`). |
 | `label` | `string` | — | Accessible label. Set it for a standalone spinner (renders `role="status"` + `aria-label`); omit it when a parent already conveys loading (e.g. `Button`'s `aria-busy`) — it then renders `aria-hidden`. |
+| `color` | `'inherit' \| 'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'inherit'` | Hue; `inherit` takes the surrounding text colour. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
@@ -50,6 +51,22 @@ Every size:
   <Spinner size="small" label="Loading" />
   <Spinner label="Loading" />
   <Spinner size="large" label="Loading" />
+</Preview>
+
+## Colours
+
+<Preview code={`<Spinner color="inherit" label="inherit" />
+<Spinner color="primary" label="primary" />
+<Spinner color="neutral" label="neutral" />
+<Spinner color="critical" label="critical" />
+<Spinner color="positive" label="positive" />
+<Spinner color="warning" label="warning" />`}>
+  <Spinner color="inherit" label="inherit" />
+  <Spinner color="primary" label="primary" />
+  <Spinner color="neutral" label="neutral" />
+  <Spinner color="critical" label="critical" />
+  <Spinner color="positive" label="positive" />
+  <Spinner color="warning" label="warning" />
 </Preview>
 
 ## States

@@ -1,0 +1,50 @@
+---
+/**
+ * IconToggle — two icons in one slot-sized box; `on` picks which shows, with
+ * a scale/fade swap. A display component: ToggleButton flips `data-on` on any
+ * IconToggle inside it, or set `data-on` yourself.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'span'> {
+  on?: boolean
+  /** Accessible label (role="img"). Omit when the parent control is labelled. */
+  label?: string
+  class?: string
+}
+const { on = false, label, class: className, ...rest } = Astro.props
+---
+
+<span
+  data-apogee-icon-toggle
+  data-on={String(on)}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  class:list={['apogee-icon-toggle inline-grid size-4 place-items-center [&>*]:[grid-area:1/1] [&_svg]:size-full', className]}
+  {...rest}
+>
+  <span class="apogee-icon-toggle-off inline-flex"><slot name="off" /></span>
+  <span class="apogee-icon-toggle-on inline-flex"><slot name="on" /></span>
+</span>
+
+<style>
+  .apogee-icon-toggle-on,
+  .apogee-icon-toggle-off {
+    transition:
+      opacity var(--duration-fast) var(--ease-standard),
+      scale var(--duration-fast) var(--ease-standard);
+  }
+  .apogee-icon-toggle[data-on='true'] .apogee-icon-toggle-off,
+  .apogee-icon-toggle[data-on='false'] .apogee-icon-toggle-on {
+    opacity: 0;
+    scale: 0.6;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-icon-toggle-on,
+    .apogee-icon-toggle-off {
+      transition: none;
+    }
+  }
+</style>

@@ -9,7 +9,10 @@ import { ChevronDown } from '@lucide/astro'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'details'>, 'title'> {
-  title: string
+  /** Summary text; the `trigger` slot replaces it with rich content. */
+  title?: string
+  /** Chevron side. @category layout */
+  iconPosition?: 'start' | 'end'
   /** Shared name → single-open (exclusive) across items with the same value. */
   group?: string
   /** Open on load. */
@@ -17,14 +20,17 @@ interface Props extends Omit<HTMLAttributes<'details'>, 'title'> {
   class?: string
 }
 
-const { title, group, open = false, class: className, ...rest } = Astro.props
+const { title, group, open = false, iconPosition = 'end', class: className, ...rest } = Astro.props
 ---
 
 <details name={group} open={open} class:list={['apogee-accordion', className]} {...rest}>
   <summary
-    class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 text-sm font-medium text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
+    class:list={[
+      'flex cursor-pointer list-none items-center gap-3 px-4 py-4 text-sm font-medium text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden',
+      iconPosition === 'end' ? 'justify-between' : 'flex-row-reverse justify-end',
+    ]}
   >
-    {title}
+    <span class="min-w-0 flex-1"><slot name="trigger">{title}</slot></span>
     <ChevronDown class="apogee-accordion-icon size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
   </summary>
   <div class="px-4 pb-4 text-sm text-neutral-faded">

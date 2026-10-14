@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
 import Accordion from '../../../../registry/components/Accordion/Accordion.astro'
 import AccordionItem from '../../../../registry/components/Accordion/AccordionItem.astro'
 
@@ -70,10 +71,32 @@ import AccordionItem from '@/components/apogee/Accordion/AccordionItem.astro'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `title` | `string` | — | Required. Rendered as the `<summary>` label. |
+| `title` | `string` | — | The `<summary>` label; the `trigger` slot replaces it with rich content. |
+| `iconPosition` | `'start' \| 'end'` | `'end'` | Chevron side. |
 | `group` | `string` | — | Shared across items → single-open (exclusive): opening one closes the rest with the same `group`. Maps to `<details name>`. |
 | `open` | `boolean` | `false` | Open on load. |
 | `class` | `string` | — | Extra classes, merged last. |
+
+## Trigger slot and icon position
+
+The `trigger` slot replaces `title` with rich content; `iconPosition` moves the chevron.
+
+<Preview code={`<Accordion>
+  <AccordionItem iconPosition="start" title="Chevron first">…</AccordionItem>
+  <AccordionItem>
+    <span slot="trigger" class="flex items-center gap-2">Billing <Badge color="positive">Paid</Badge></span>
+    …
+  </AccordionItem>
+</Accordion>`} block>
+  <Accordion>
+    <AccordionItem iconPosition="start" title="Chevron first">The chevron sits before the title.</AccordionItem>
+    <AccordionItem iconPosition="end" title="Chevron last (default)">The chevron sits after the title.</AccordionItem>
+    <AccordionItem>
+      <span slot="trigger" class="flex items-center gap-2">Billing <Badge color="positive">Paid</Badge></span>
+      <p>A rich summary with a badge.</p>
+    </AccordionItem>
+  </Accordion>
+</Preview>
 
 ## States
 

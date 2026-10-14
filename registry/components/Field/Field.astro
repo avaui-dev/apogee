@@ -8,8 +8,13 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
-interface Props extends HTMLAttributes<'label'> {
+const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const
+interface Props extends Omit<HTMLAttributes<'label'>, 'size'> {
   id: string
+  /** Dims the label and marks the field. */
+  disabled?: boolean | undefined
+  /** Label text size, matching the control. @category layout */
+  size?: keyof typeof labelSizes | undefined
   label?: string | undefined
   hint?: string | undefined
   error?: string | undefined
@@ -17,13 +22,13 @@ interface Props extends HTMLAttributes<'label'> {
   class?: string | undefined
 }
 
-const { id, label, hint, error, required = false, class: className, ...rest } = Astro.props
+const { id, label, hint, error, required = false, disabled = false, size = 'medium', class: className, ...rest } = Astro.props
 ---
 
-<div class:list={['flex flex-col gap-1.5', className]} {...rest}>
+<div class:list={['flex flex-col gap-1.5', className]} aria-disabled={disabled ? 'true' : undefined} {...rest}>
   {
     label && (
-      <label for={id} id={`${id}-label`} class="text-sm font-medium text-neutral">
+      <label for={id} id={`${id}-label`} class:list={['font-medium', labelSizes[size], disabled ? 'text-disabled' : 'text-neutral']}>
         {label}
         {required && <span class="text-critical" aria-hidden="true"> *</span>}
       </label>

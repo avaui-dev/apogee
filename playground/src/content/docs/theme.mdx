@@ -1,0 +1,167 @@
+---
+title: Theme
+description: A subtree in light, dark, or the opposite of its surroundings, plus the helpers that switch the page mode.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import ThemeToggleDemo from '../../components/ThemeToggleDemo.astro'
+import Theme from '../../../../registry/components/Theme/Theme.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+<JsNote fallback="light and dark are pure CSS and keep working. An inverted region renders in its parent's mode until the script runs.">
+  Resolves `mode="inverted"`: a ten-line script reads the nearest light or dark
+  ancestor and sets the opposite, at page load and after every `setTheme()`.
+</JsNote>
+
+<Preview code={`<Theme mode="dark" class="rounded-lg p-4">
+  <p>Dark region</p>
+  <Theme mode="inverted" class="mt-3 rounded-md p-3">
+    <p>Inverted: light inside dark</p>
+    <Theme mode="inverted" class="mt-3 rounded-md p-3">
+      <p>Inverted again: dark</p>
+    </Theme>
+  </Theme>
+</Theme>`} block>
+  <Theme mode="dark" class="rounded-lg p-4">
+    <p class="text-sm">Dark region</p>
+    <Theme mode="inverted" class="mt-3 rounded-md p-3">
+      <p class="text-sm">Inverted: light inside dark</p>
+      <Theme mode="inverted" class="mt-3 rounded-md p-3">
+        <p class="text-sm">Inverted again: dark</p>
+      </Theme>
+    </Theme>
+  </Theme>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add theme
+```
+
+Depends on `utils` (`theme.ts`). The page-level mode (`<html data-theme>`) needs
+the head script below; `Theme` only scopes a subtree.
+
+## Usage
+
+```astro
+---
+import Theme from '@/components/apogee/Theme/Theme.astro'
+---
+<Theme mode="dark" class="rounded-lg p-6">
+  …a dark card on a light page…
+</Theme>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the wrapper.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `mode` | `'light' \| 'dark' \| 'inverted'` | — | The subtree's colour mode. `inverted` is the opposite of the nearest themed ancestor (or the page). |
+| `as` | `string` | `'div'` | Wrapper element. |
+| `class` | `string` | — | Extra classes, merged last. The wrapper already sets the page background and text colour. |
+
+## Modes
+
+Every `mode`:
+
+<Preview code={`<Theme mode="light" class="rounded-lg border border-neutral p-4">Light</Theme>
+<Theme mode="dark" class="rounded-lg p-4">Dark</Theme>
+<Theme mode="inverted" class="rounded-lg border border-neutral p-4">Inverted</Theme>`}>
+  <Theme mode="light" class="rounded-lg border border-neutral p-4 text-sm">Light</Theme>
+  <Theme mode="dark" class="rounded-lg p-4 text-sm">Dark</Theme>
+  <Theme mode="inverted" id="t-inv-top" class="rounded-lg border border-neutral p-4 text-sm">Inverted</Theme>
+</Preview>
+
+## Nesting
+
+An inverted region reads its nearest light or dark ancestor, so the same markup
+flips both ways.
+
+<Preview code={`<Theme mode="dark"><Theme mode="inverted">…</Theme></Theme>
+<Theme mode="light"><Theme mode="inverted">…</Theme></Theme>`} block>
+  <div data-apogee-theme="nesting" class="grid gap-4 sm:grid-cols-2">
+    <Theme mode="dark" class="rounded-lg p-4">
+      <p class="text-sm">Dark</p>
+      <Theme mode="inverted" id="t-inv-a" class="mt-3 rounded-md p-3">
+        <p class="text-sm">Inverted → light</p>
+      </Theme>
+    </Theme>
+    <Theme mode="light" class="rounded-lg border border-neutral p-4">
+      <p class="text-sm">Light</p>
+      <Theme mode="inverted" id="t-inv-b" class="mt-3 rounded-md p-3">
+        <p class="text-sm">Inverted → dark</p>
+      </Theme>
+    </Theme>
+  </div>
+</Preview>
+
+## Page mode and the toggle
+
+The page mode lives on `<html data-theme>`. Set it before paint with a head
+script (stored choice, else the system setting), then switch it with the
+helpers in `utils/theme.ts`.
+
+```html
+<script is:inline>
+  const t = localStorage.getItem('apogee-theme')
+  document.documentElement.dataset.theme =
+    t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+</script>
+```
+
+```ts
+import { getTheme, setTheme, toggleTheme } from '@/components/apogee/utils/theme.ts'
+
+toggleTheme()            // light ⇄ dark, persisted, no transition flash
+setTheme('dark', { persist: false })
+getTheme()               // 'light' | 'dark'
+```
+
+`setTheme` adds `apogee-no-transitions` to `<html>` for two frames so the switch
+does not tween every colour, re-resolves inverted regions, and dispatches
+`apogee:theme-change` (`detail: { mode }`) on `document`.
+
+<Preview code={`<button onclick="toggleTheme()">Toggle theme</button>`}>
+  <ThemeToggleDemo />
+</Preview>
+
+## States
+
+- **Light / dark** — the two generated token sets; pure CSS, nestable.
+- **Inverted** — resolved to one of the two by the island; until then the
+  element carries `data-theme="inverted"` and inherits its parent.
+
+## Accessibility
+
+- A themed region keeps every contrast pair of its mode (the tokens are the
+  same ones the contrast gate checks).
+- Switching the page mode does not move focus or announce anything; pair the
+  toggle with a visible label or `aria-label`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-page` / `--foreground-neutral` | The wrapper's surface and text |
+| every `[data-theme]` token | Re-resolved inside the region |
+
+## Do / Don't
+
+- **Do** use `inverted` for a callout that should stand out from its section
+  without knowing the section's mode.
+- **Don't** nest more than one `inverted` level for effect; two flips are the
+  parent's mode again.
+- **Don't** put the page toggle inside an inverted region and expect it to
+  read the region's mode: it always reads `<html>`.
+- **Don't** rely on the `dark:` utility variant inside a light or inverted
+  region nested in a dark one: the variant is ancestor-based, so it still
+  applies there. Tokens (`bg-page`, `text-neutral`) follow the region; the
+  variant does not.

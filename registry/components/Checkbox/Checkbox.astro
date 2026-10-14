@@ -15,19 +15,39 @@ interface Props extends HTMLAttributes<'input'> {
   size?: 'small' | 'medium' | 'large'
   /** Marks the control invalid. */
   hasError?: boolean
+  /** Mixed state (some children checked). Set by a small island; the box shows a dash. */
+  indeterminate?: boolean
   class?: string
 }
 
-const { id: idProp, label, size = 'medium', hasError = false, class: className, ...rest } = Astro.props
+const { id: idProp, label, size = 'medium', hasError = false, indeterminate = false, class: className, ...rest } = Astro.props
+const hasLabel = Boolean(label) || Astro.slots.has('default')
 const sizes = { small: 'size-3.5', medium: 'size-4', large: 'size-5' } as const
 const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
 const id = idProp ?? uid(Astro.locals)
 ---
 
 <label for={id} class:list={['flex items-start gap-2', className]}>
-  <input id={id} type="checkbox" class:list={['apogee-checkbox', sizes[size]]} aria-invalid={hasError ? 'true' : undefined} {...rest} />
-  {label && <span class:list={[labelSizes[size], 'text-neutral']}>{label}</span>}
+  <input
+    id={id}
+    type="checkbox"
+    class:list={['apogee-checkbox', sizes[size]]}
+    aria-invalid={hasError ? 'true' : undefined}
+    data-indeterminate={indeterminate || undefined}
+    {...rest}
+  />
+  {hasLabel && <span class:list={[labelSizes[size], 'text-neutral']}>{label ?? <slot />}</span>}
 </label>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  // `indeterminate` is a DOM property, not an attribute; set it once per element.
+  island<HTMLInputElement>('.apogee-checkbox[data-indeterminate]', (input) => {
+    input.indeterminate = true
+    input.addEventListener('change', () => input.removeAttribute('data-indeterminate'), { once: true })
+  })
+</script>
 
 <style>
   .apogee-checkbox {

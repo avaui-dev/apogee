@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Table from '../../../../registry/components/Table/Table.astro'
 
 <Preview block code={`<Table>
@@ -65,6 +66,10 @@ No Apogee component dependencies. Zero JS.
 ```astro
 ---
 import Table from '@/components/apogee/Table/Table.astro'
+
+<JsNote fallback="The table still scrolls sideways; keyboard users reach it through its focusable content.">
+  Fades the hidden edge while the table scrolls sideways and makes the scrolling wrapper a tab stop only while it overflows.
+</JsNote>
 ---
 <Table>
   <thead>
@@ -111,7 +116,27 @@ passes through to the `<table>` element (not the scroll wrapper `<div>`).
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `headerStyle` | `'normal' \| 'caps'` | `'normal'` | Header text: sentence case and semibold, or small caps. |
+| `border` | `boolean` | `false` | Outer border with rounded corners. |
+| `columnBorder` | `boolean` | `false` | Hairline between columns. |
 | `class` | `string` | — | Extra classes on the `<table>`, merged last. |
+
+## Borders and overflow
+
+The wrapper scrolls sideways and fades the hidden edge.
+
+<Preview code={`<Table border columnBorder>…</Table>
+<div class="max-w-md"><Table>…12 columns…</Table></div>`} block>
+  <Table border columnBorder>
+    <thead><tr><th>Name</th><th>Role</th><th>Office</th></tr></thead>
+    <tbody><tr><td>Ana Ruiz</td><td>Design</td><td>Lisbon</td></tr><tr><td>Tomás Ortiz</td><td>Engineering</td><td>Porto</td></tr></tbody>
+  </Table>
+  <div data-apogee-table="wide" class="max-w-md">
+    <Table>
+      <thead><tr>{Array.from({ length: 12 }).map((_, i) => <th>Column {i + 1}</th>)}</tr></thead>
+      <tbody><tr>{Array.from({ length: 12 }).map((_, i) => <td>Cell {i + 1}</td>)}</tr></tbody>
+    </Table>
+  </div>
+</Preview>
 
 ## States
 

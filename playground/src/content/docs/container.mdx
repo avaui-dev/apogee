@@ -44,6 +44,7 @@ through to the root element.
 |---|---|---|---|
 | `as` | `string` | `'div'` | Element/tag to render (e.g. `'section'`, `'main'`). |
 | `width` | `'small' \| 'medium' \| 'large' \| 'xlarge' \| 'full'` | `'large'` | Max width: 48 / 64 / 80 / 90rem, or none. |
+| `padding` | `'gutter' \| 'none'` | `'gutter'` | Side gutters, or none for edge-to-edge content. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
@@ -60,6 +61,14 @@ Every size, each with a marker block so the max-width is visible:
   <Container><div class="bg-neutral-faded p-2 text-center text-sm">lg — max-w-7xl</div></Container>
   <Container width="xlarge"><div class="bg-neutral-faded p-2 text-center text-sm">xl — max-w-[90rem]</div></Container>
   <Container width="full"><div class="bg-neutral-faded p-2 text-center text-sm">full — max-w-none</div></Container>
+</Preview>
+
+## Padding
+
+<Preview code={`<Container width="small">Gutter padding (default)</Container>
+<Container width="small" padding="none">No padding</Container>`} block>
+  <Container width="small" class="rounded-md bg-neutral-faded py-2 text-sm">Gutter padding (default)</Container>
+  <Container width="small" padding="none" class="rounded-md bg-neutral-faded py-2 text-sm">No padding</Container>
 </Preview>
 
 ## States

@@ -8,6 +8,23 @@
 import type { HTMLAttributes } from 'astro/types'
 import { User } from '@lucide/astro'
 
+const fills = {
+  faded: {
+    neutral: 'bg-neutral-faded text-neutral',
+    primary: 'bg-primary-faded text-primary',
+    critical: 'bg-critical-faded text-critical',
+    positive: 'bg-positive-faded text-positive',
+    warning: 'bg-warning-faded text-warning',
+  },
+  solid: {
+    neutral: 'bg-neutral text-on-neutral',
+    primary: 'bg-primary text-on-primary',
+    critical: 'bg-critical text-on-critical',
+    positive: 'bg-positive text-on-positive',
+    warning: 'bg-warning text-on-warning',
+  },
+} as const
+
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'span'>, 'size'> {
   /** Image URL. */
@@ -18,10 +35,16 @@ interface Props extends Omit<HTMLAttributes<'span'>, 'size'> {
   name?: string
   /** @category layout */
   size?: 'small' | 'medium' | 'large'
+  /** Fallback hue. @category layout */
+  color?: keyof typeof fills.faded
+  /** Fallback fill style. @category layout */
+  variant?: keyof typeof fills
+  /** Rounded square instead of a circle. @category layout */
+  squared?: boolean
   class?: string
 }
 
-const { src, alt, name, size = 'medium', class: className, ...rest } = Astro.props
+const { src, alt, name, size = 'medium', color = 'neutral', variant = 'faded', squared = false, class: className, ...rest } = Astro.props
 
 const sizeMap = {
   small: 'size-8 text-xs',
@@ -41,7 +64,8 @@ const initials = name
 
 <span
   class:list={[
-    'apogee-avatar relative inline-flex items-center justify-center overflow-hidden rounded-full bg-neutral font-medium text-neutral select-none',
+    'apogee-avatar relative inline-flex items-center justify-center overflow-hidden bg-page font-medium select-none',
+    squared ? 'rounded-md' : 'rounded-full',
     sizeMap[size],
     className,
   ]}
@@ -49,7 +73,7 @@ const initials = name
 >
   {src && <img src={src} alt={alt ?? name ?? ''} class="apogee-avatar-img size-full object-cover" />}
   <span
-    class="apogee-avatar-fallback inline-flex size-full items-center justify-center"
+    class:list={['apogee-avatar-fallback inline-flex size-full items-center justify-center', fills[variant][color]]}
     role={name ? 'img' : undefined}
     aria-label={name}
   >

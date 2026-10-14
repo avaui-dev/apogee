@@ -1,0 +1,120 @@
+---
+title: ContentToggle
+description: Shows one keyed child at a time and slides between them, for pagers and step content.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import ContentToggle from '../../../../registry/components/ContentToggle/ContentToggle.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+<JsNote fallback="The child matching the initial active key shows (marked server-side); changing data-active has no effect.">
+  A small island watches `data-active` on the root: the outgoing child slides
+  out toward `direction`, the new one slides in from the other side, and
+  `apogee:content-toggle-change` fires with `{ active }`.
+</JsNote>
+
+<Preview code={`<ContentToggle active="1">
+  <p data-key="1">Chapter one.</p>
+  <p data-key="2">Chapter two.</p>
+  <p data-key="3">Chapter three.</p>
+</ContentToggle>
+<Button onclick="…dataset.active = '2'">Next</Button>`} block>
+  <div data-apogee-content-toggle="pager">
+    <ContentToggle active="1" class="rounded-lg border border-neutral p-4 text-sm">
+      <p data-key="1">Chapter one: the island sleeps under a thin fog.</p>
+      <p data-key="2">Chapter two: the tide uncovers a path to the lighthouse.</p>
+      <p data-key="3">Chapter three: the keeper's log ends mid-sentence.</p>
+    </ContentToggle>
+    <div class="mt-3 flex gap-2">
+      <Button variant="outline" color="neutral" onclick="const r = this.closest('[data-apogee-content-toggle]').querySelector('.apogee-content-toggle'); r.dataset.active = String(Math.max(1, Number(r.dataset.active) - 1))">Previous</Button>
+      <Button variant="outline" color="neutral" onclick="const r = this.closest('[data-apogee-content-toggle]').querySelector('.apogee-content-toggle'); r.dataset.active = String(Math.min(3, Number(r.dataset.active) + 1))">Next</Button>
+    </div>
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add content-toggle
+```
+
+Depends on `utils` (`island`).
+
+## Usage
+
+```astro
+---
+import ContentToggle from '@/components/apogee/ContentToggle/ContentToggle.astro'
+---
+<ContentToggle active={step} direction="end">
+  <div data-key="details">…</div>
+  <div data-key="payment">…</div>
+</ContentToggle>
+```
+
+Then, from your own script: `root.dataset.active = 'payment'`.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<div>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `active` | `string` | — | `data-key` of the visible child. Change `data-active` on the root to swap. |
+| `direction` | `'start' \| 'end'` | `'end'` | Side the outgoing content leaves toward; the new one enters from the opposite side. Logical, so it mirrors in RTL. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+Children are any elements with a `data-key`.
+
+## Direction
+
+Both values:
+
+<Preview code={`<ContentToggle active="a" direction="start">…</ContentToggle>
+<ContentToggle active="a" direction="end">…</ContentToggle>`} block>
+  {['start', 'end'].map((direction) => (
+    <div data-apogee-content-toggle={direction}>
+      <ContentToggle active="a" direction={direction} class="rounded-lg border border-neutral p-4 text-sm">
+        <p data-key="a">direction="{direction}": first</p>
+        <p data-key="b">direction="{direction}": second</p>
+      </ContentToggle>
+      <Button variant="ghost" color="neutral" size="small" class="mt-2" onclick="const r = this.previousElementSibling; r.dataset.active = r.dataset.active === 'a' ? 'b' : 'a'">Swap</Button>
+    </div>
+  ))}
+</Preview>
+
+## Events
+
+The root dispatches `apogee:content-toggle-change` (`detail: { active }`,
+bubbling) after every swap.
+
+## States
+
+- **Active** — `display: block`, slides in (`apogee-ct-in`).
+- **Leaving** — the previous child keeps rendering for one animation
+  (`apogee-ct-out`), then hides.
+- **Reduced motion** — no slide; the swap is instant.
+
+## Accessibility
+
+- Only the active child is in the accessibility tree (the rest are
+  `display: none`).
+- Focus does not move on swap; move it yourself when the new content starts a
+  task (a form step).
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--duration-medium` / `--ease-standard` | Enter and exit slides |
+
+## Do / Don't
+
+- **Do** keep children the same height where you can; the box is a grid so
+  it takes the tallest one.
+- **Don't** use it for tab panels; use [Tabs](/docs/tabs), which carries the
+  ARIA pattern.

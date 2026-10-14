@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 import JsNote from '../../components/JsNote.astro'
 import FileUpload from '../../../../registry/components/FileUpload/FileUpload.astro'
 
@@ -46,6 +47,8 @@ Any other native `<input type="file">` attribute (e.g. `required`, `disabled`,
 | `name` | `string` | — | Form field name, forwarded to the native input. |
 | `accept` | `string` | — | Accepted file types, forwarded to the native input (e.g. `"image/*"`). |
 | `multiple` | `boolean` | `false` | Allow selecting more than one file, forwarded to the native input. |
+| `variant` | `'default' \| 'headless'` | `'default'` | `headless` drops the dashed box so the slot is the whole look. |
+| `inline` | `boolean` | `false` | A single row (icon + text) instead of a stacked zone. |
 | `class` | `string` | — | Extra classes on the label (dropzone), merged last. |
 
 ## Examples
@@ -61,6 +64,19 @@ Restricted to a type, marked required:
 ```astro
 <FileUpload name="resume" accept=".pdf,.doc,.docx" required />
 ```
+
+## Slot, headless and inline
+
+The default slot replaces the built-in copy; `headless` leaves styling to you;
+`inline` makes a single row.
+
+<Preview code={`<FileUpload name="cv"><span>Drop your CV here</span></FileUpload>
+<FileUpload name="avatar" variant="headless"><Button as="span" variant="outline" color="neutral">Choose a photo</Button></FileUpload>
+<FileUpload name="attachment" inline />`} block>
+  <FileUpload name="cv"><span class="text-sm text-neutral">Drop your CV here, or <span class="font-medium text-primary">browse</span>.</span></FileUpload>
+  <div data-apogee-file="headless"><FileUpload name="avatar" variant="headless" class="inline-flex"><span class="inline-flex h-9 items-center rounded-md border border-neutral px-3 text-sm font-medium text-neutral">Choose a photo</span></FileUpload></div>
+  <FileUpload name="attachment" inline />
+</Preview>
 
 ## States
 

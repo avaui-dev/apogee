@@ -11,6 +11,8 @@
 import type { HTMLAttributes } from 'astro/types'
 import { fieldVariants, type FieldVariant } from '../utils/field.ts'
 
+const patterns = { numeric: '[0-9]', alphabetic: '[A-Za-z]', alphanumeric: '[A-Za-z0-9]' } as const
+
 interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
   /** @category layout */
   size?: 'small' | 'medium' | 'large'
@@ -18,7 +20,9 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
   variant?: FieldVariant
   name?: string
   length?: number
-  /** Numeric shows a number keypad + digit filtering; text allows any character. */
+  /** Accepted characters; sets the keypad and the native `pattern`. */
+  pattern?: keyof typeof patterns
+  /** Older alias: `numeric` ⇒ `pattern="numeric"`, `text` ⇒ `alphanumeric`. */
   type?: 'numeric' | 'text'
   'aria-label'?: string
   /** Marks the code invalid. */
@@ -32,7 +36,8 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
 const {
   name = 'code',
   length = 6,
-  type = 'numeric',
+  type,
+  pattern = type === 'text' ? 'alphanumeric' : 'numeric',
   'aria-label': ariaLabel,
   size = 'medium',
   variant = 'outline',
@@ -49,7 +54,7 @@ const cells = { small: 'size-9 text-base rounded-sm', medium: 'size-11 text-lg r
   class:list={['apogee-pin flex gap-2', className]}
   role="group"
   aria-label={ariaLabel ?? 'Verification code'}
-  data-type={type}
+  data-pattern={pattern}
   data-name={name}
   {...rest}
 >
@@ -58,7 +63,8 @@ const cells = { small: 'size-9 text-base rounded-sm', medium: 'size-11 text-lg r
       <input
         type="text"
         name={name}
-        inputmode={type === 'numeric' ? 'numeric' : 'text'}
+        inputmode={pattern === 'numeric' ? 'numeric' : 'text'}
+        pattern={patterns[pattern]}
         autocomplete={i === 0 ? 'one-time-code' : 'off'}
         maxlength="1"
         value={value[i] ?? undefined}
@@ -82,7 +88,7 @@ const cells = { small: 'size-9 text-base rounded-sm', medium: 'size-11 text-lg r
   island('.apogee-pin', (root) => {
     const boxes = [...root.querySelectorAll<HTMLInputElement>('.apogee-pin-box')]
     const hidden = root.querySelector<HTMLInputElement>('.apogee-pin-value')
-    const numeric = root.dataset.type === 'numeric'
+    const strip = { numeric: /\D/g, alphabetic: /[^a-z]/gi, alphanumeric: /[^a-z0-9]/gi }[root.dataset.pattern ?? 'numeric'] ?? /\D/g
     if (!boxes.length || !hidden) return
 
     // JS collects one joined value: name the hidden field, un-name the boxes so
@@ -91,7 +97,7 @@ const cells = { small: 'size-9 text-base rounded-sm', medium: 'size-11 text-lg r
     boxes.forEach((b) => b.removeAttribute('name'))
 
     const sync = () => (hidden.value = boxes.map((b) => b.value).join(''))
-    const clean = (s: string) => (numeric ? s.replace(/\D/g, '') : s)
+    const clean = (s: string) => s.replace(strip, '')
 
     boxes.forEach((box, i) => {
       box.addEventListener('input', () => {

@@ -19,3 +19,8 @@ test('dialogPosition cells set every layout axis and the slide variables', () =>
   assert.match(defs.dialogPosition.end, /\[--apogee-dx:100%\]/)
   assert.match(defs.dialogPosition.bottom, /\[--apogee-dy:100%\]/)
 })
+
+test('carouselItems cells set the item count variable', () => {
+  assert.deepEqual(Object.keys(defs.carouselItems), ['1', '2', '3', '4', '5', '6'])
+  assert.equal(defs.carouselItems[3], '[--apogee-items:3]')
+})

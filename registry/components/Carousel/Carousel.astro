@@ -8,6 +8,10 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronLeft, ChevronRight } from '@lucide/astro'
+import { responsive, type Responsive } from '../utils/responsive.ts'
+import { tables } from '../utils/responsive-tables.ts'
+
+const gaps = { 2: 'gap-2 [--apogee-gap:calc(var(--spacing)*2)]', 3: 'gap-3 [--apogee-gap:calc(var(--spacing)*3)]', 4: 'gap-4 [--apogee-gap:calc(var(--spacing)*4)]', 6: 'gap-6 [--apogee-gap:calc(var(--spacing)*6)]', 8: 'gap-8 [--apogee-gap:calc(var(--spacing)*8)]' } as const
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
@@ -19,6 +23,12 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
   align?: 'start' | 'center'
   /** Fixed width applied to every slide, e.g. "16rem". Omit to size each slide yourself. */
   itemWidth?: string
+  /** Slides per view, per breakpoint; sizes every slide to fit. Overrides `itemWidth`. @category layout */
+  visibleItems?: Responsive<keyof typeof tables.carouselItems.base>
+  /** Space between slides, in spacing steps. @category layout */
+  gap?: keyof typeof gaps
+  /** Let the track run under the page gutters. @category layout */
+  bleed?: boolean
   /** Auto-advance. Pauses on hover / focus; off under reduced-motion. */
   autoplay?: boolean
   /** Autoplay delay in ms. */
@@ -35,6 +45,9 @@ const {
   dots = false,
   align = 'start',
   itemWidth,
+  visibleItems,
+  gap = 4,
+  bleed = false,
   autoplay = false,
   interval = 4000,
   loop = false,
@@ -67,7 +80,7 @@ const slideCount = dots
 ---
 
 <div
-  class:list={['apogee-carousel group relative w-full min-w-0', className]}
+  class:list={['apogee-carousel group relative w-full min-w-0', ...responsive(visibleItems, tables.carouselItems), className]}
   data-align={align}
   data-autoplay={String(autoplay)}
   data-interval={interval}
@@ -77,8 +90,12 @@ const slideCount = dots
 >
   <div
     class:list={[
-      'apogee-carousel-track flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1 motion-safe:scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 [&>*]:snap-start group-data-[align=center]:[&>*]:snap-center',
-      itemWidth && '[&>*]:w-(--apogee-item-width)',
+      'apogee-carousel-track flex snap-x snap-mandatory overflow-x-auto pb-1 motion-safe:scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 [&>*]:snap-start group-data-[align=center]:[&>*]:snap-center',
+      gaps[gap],
+      bleed && '-mx-gutter px-gutter scroll-px-gutter',
+      visibleItems !== undefined
+        ? '[&>*]:w-[calc((100%-(var(--apogee-items)-1)*var(--apogee-gap))/var(--apogee-items))]'
+        : itemWidth && '[&>*]:w-(--apogee-item-width)',
     ]}
     tabindex="0"
     role="region"

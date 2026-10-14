@@ -1,42 +1,84 @@
 ---
 /**
- * Breadcrumbs — a path trail. The last item is the current page. Zero JS.
+ * Breadcrumbs — a path trail. The last item is the current page. Zero JS;
+ * `maxVisible` collapses the middle behind an "…" button that a two-line
+ * island expands (without JS every item shows).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronRight } from '@lucide/astro'
 
 /** @composable */
 interface Props extends HTMLAttributes<'nav'> {
-  items: { label: string; href?: string }[]
+  items: { label: string; href?: string; disabled?: boolean }[]
+  /** Show at most this many (≥ 3): the first, an "…" button, and the last ones. Fewer than 3 shows everything. */
+  maxVisible?: number
+  /** Accessible name of the "…" button. @category content */
+  expandLabel?: string
   class?: string
 }
 
-const { items, class: className, ...rest } = Astro.props
+const { items, maxVisible, expandLabel = 'Show all', class: className, ...rest } = Astro.props
+// Collapse: keep the first item and the last (maxVisible - 2); hide the rest behind "…".
+const collapse = maxVisible !== undefined && maxVisible >= 3 && items.length > maxVisible
+const hiddenRange = collapse ? [1, items.length - (maxVisible - 2)] : null
+const sep = Astro.slots.has('separator') ? await Astro.slots.render('separator') : null
+const link =
+  'rounded-sm transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 ---
 
-<nav aria-label="Breadcrumb" class:list={['text-sm', className]} {...rest}>
+<nav aria-label="Breadcrumb" class:list={['apogee-breadcrumbs text-sm', className]} {...rest}>
   <ol class="flex flex-wrap items-center gap-1.5 text-neutral-faded">
     {
       items.map((item, i) => {
         const last = i === items.length - 1
+        const hidden = hiddenRange !== null && i >= hiddenRange[0]! && i < hiddenRange[1]!
+        const separator = !last && (sep ? <Fragment set:html={sep} /> : <ChevronRight class="size-3.5 shrink-0 rtl:-scale-x-100" aria-hidden="true" />)
         return (
-          <li class="flex items-center gap-1.5">
-            {item.href && !last ? (
-              <a
-                href={item.href}
-                class="rounded-sm transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <span class:list={[last && 'font-medium text-neutral']} aria-current={last ? 'page' : undefined}>
-                {item.label}
-              </span>
+          <>
+            {hiddenRange && i === hiddenRange[0] && (
+              <li class="flex items-center gap-1.5 no-js:hidden">
+                <button type="button" aria-expanded="false" aria-label={expandLabel} class:list={['px-1', link]}>
+                  …
+                </button>
+                {separator}
+              </li>
             )}
-            {!last && <ChevronRight class="size-3.5 shrink-0 rtl:-scale-x-100" aria-hidden="true" />}
-          </li>
+            <li class:list={['flex items-center gap-1.5', hidden && 'js:hidden']} data-collapsed={hidden || undefined}>
+              {item.href && !last && !item.disabled ? (
+                <a href={item.href} class={link}>
+                  {item.label}
+                </a>
+              ) : (
+                <span
+                  class:list={[last && 'font-medium text-neutral', item.disabled && !last && 'opacity-50']}
+                  aria-current={last ? 'page' : undefined}
+                  aria-disabled={item.disabled && !last ? 'true' : undefined}
+                >
+                  {item.label}
+                </span>
+              )}
+              {separator}
+            </li>
+          </>
         )
       })
     }
   </ol>
 </nav>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-breadcrumbs', (nav) => {
+    nav.querySelector<HTMLButtonElement>('button[aria-expanded]')?.addEventListener('click', (e) => {
+      const revealed = [...nav.querySelectorAll<HTMLElement>('li[data-collapsed]')]
+      for (const li of revealed) {
+        li.classList.remove('js:hidden')
+        li.removeAttribute('data-collapsed')
+      }
+      // Keep keyboard focus in the trail: the first revealed link takes it.
+      revealed[0]?.querySelector<HTMLElement>('a, [aria-current]')?.focus()
+      ;(e.currentTarget as HTMLElement).closest('li')?.remove()
+    })
+  })
+</script>

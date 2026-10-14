@@ -17,13 +17,19 @@ interface Props extends HTMLAttributes<'div'> {
   current: number
   /** @category layout */
   color?: keyof typeof fills
+  /** Segments fill up to the current step; dots mark only the current one (a window of seven when there are more). @category layout */
+  variant?: 'segments' | 'dots'
   /** Accessible name, e.g. "Onboarding progress". @category content */
   'aria-label'?: string
   class?: string
 }
 
-const { total, current, color = 'primary', 'aria-label': ariaLabel = 'Progress', class: className, ...rest } = Astro.props
+const { total, current, color = 'primary', variant = 'segments', 'aria-label': ariaLabel = 'Progress', class: className, ...rest } = Astro.props
 const done = Math.max(0, Math.min(total, current))
+// Dots: show a window of seven around the current step when there are more.
+const WINDOW = 7
+const start = total <= WINDOW ? 0 : Math.max(0, Math.min(done - 1 - Math.floor(WINDOW / 2), total - WINDOW))
+const inWindow = (i: number) => variant === 'segments' || total <= WINDOW || (i >= start && i < start + WINDOW)
 ---
 
 <div
@@ -33,10 +39,22 @@ const done = Math.max(0, Math.min(total, current))
   aria-valuemax={total}
   aria-valuenow={done}
   aria-valuetext={`Step ${done} of ${total}`}
-  class:list={['flex w-full gap-1.5', className]}
+  class:list={[variant === 'dots' ? 'inline-flex items-center gap-1.5' : 'flex w-full gap-1.5', className]}
   {...rest}
 >
-  {Array.from({ length: total }).map((_, i) => (
-    <span class:list={['h-1.5 flex-1 rounded-full transition-colors', i < done ? fills[color] : 'bg-neutral-faded']} />
-  ))}
+  {Array.from({ length: total }).map((_, i) =>
+    variant === 'dots' ? (
+      inWindow(i) && (
+        <span
+          class:list={[
+            'size-1.5 rounded-full transition-colors',
+            i === done - 1 ? fills[color] : 'bg-neutral-faded',
+            total > WINDOW && (i === start || i === start + WINDOW - 1) && 'scale-75',
+          ]}
+        />
+      )
+    ) : (
+      <span class:list={['h-1.5 flex-1 rounded-full transition-colors', i < done ? fills[color] : 'bg-neutral-faded']} />
+    ),
+  )}
 </div>

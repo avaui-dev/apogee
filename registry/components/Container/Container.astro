@@ -9,10 +9,12 @@ interface Props extends HTMLAttributes<'div'> {
   as?: string
   /** Max width: 48 / 64 / 80 / 90rem, or none. @category layout */
   width?: 'small' | 'medium' | 'large' | 'xlarge' | 'full'
+  /** Side gutters, or none for edge-to-edge content. @category layout */
+  padding?: 'gutter' | 'none'
   class?: string
 }
 
-const { as = 'div', width = 'large', class: className, ...rest } = Astro.props
+const { as = 'div', width = 'large', padding = 'gutter', class: className, ...rest } = Astro.props
 const Tag = as
 
 const widths = {
@@ -24,6 +26,6 @@ const widths = {
 }
 ---
 
-<Tag class:list={['mx-auto w-full px-gutter', widths[width], className]} {...rest}>
+<Tag class:list={['mx-auto w-full', padding === 'gutter' && 'px-gutter', widths[width], className]} {...rest}>
   <slot />
 </Tag>

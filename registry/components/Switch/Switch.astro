@@ -14,10 +14,13 @@ interface Props extends HTMLAttributes<'input'> {
   size?: 'small' | 'medium' | 'large'
   /** Marks the control invalid. */
   hasError?: boolean
+  /** Label first, switch last. @category layout */
+  reversed?: boolean
   class?: string
 }
 
-const { id: idProp, label, size = 'medium', hasError = false, class: className, ...rest } = Astro.props
+const { id: idProp, label, size = 'medium', hasError = false, reversed = false, class: className, ...rest } = Astro.props
+const hasLabel = Boolean(label) || Astro.slots.has('default')
 const tracks = {
   small: 'h-4 w-7 after:size-3 peer-checked:after:translate-x-3 rtl:peer-checked:after:-translate-x-3',
   medium: 'h-5 w-9 after:size-4 peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4',
@@ -27,7 +30,7 @@ const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } a
 const id = idProp ?? uid(Astro.locals)
 ---
 
-<label for={id} class:list={['inline-flex items-center gap-2', className]}>
+<label for={id} class:list={['inline-flex items-center gap-2', reversed && 'flex-row-reverse', className]}>
   <input id={id} type="checkbox" role="switch" class="peer sr-only" aria-invalid={hasError ? 'true' : undefined} {...rest} />
   <span
     class:list={[
@@ -35,5 +38,5 @@ const id = idProp ?? uid(Astro.locals)
       tracks[size],
     ]}
   ></span>
-  {label && <span class:list={[labelSizes[size], 'text-neutral']}>{label}</span>}
+  {hasLabel && <span class:list={[labelSizes[size], 'text-neutral']}>{label ?? <slot />}</span>}
 </label>

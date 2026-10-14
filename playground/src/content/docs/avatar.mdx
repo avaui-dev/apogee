@@ -50,6 +50,9 @@ attribute passes through.
 | `alt` | `string` | `name ?? ''` | Alt text for the image. |
 | `name` | `string` | — | Used for the initials fallback (first letter of up to the first two words) and as the fallback's `aria-label`. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Avatar diameter + text size. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | Fallback (initials) hue. |
+| `variant` | `'solid' \| 'faded'` | `'faded'` | Fallback fill style. |
+| `squared` | `boolean` | `false` | Rounded square instead of a circle. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
@@ -60,6 +63,26 @@ attribute passes through.
   <Avatar size="small" name="Sam Ito" />
   <Avatar name="Sam Ito" />
   <Avatar size="large" name="Sam Ito" />
+</Preview>
+
+## Colours and variants
+
+Every `color` in both `variant`s, plus `squared`:
+
+<Preview code={`<Avatar name="Ana Ruiz" color="primary" />
+<Avatar name="Ana Ruiz" color="neutral" />
+<Avatar name="Ana Ruiz" color="critical" />
+<Avatar name="Ana Ruiz" color="positive" />
+<Avatar name="Ana Ruiz" color="warning" />
+<Avatar name="Ana Ruiz" color="primary" variant="solid" />
+<Avatar name="Ana Ruiz" color="neutral" variant="solid" />
+<Avatar name="Ana Ruiz" color="critical" variant="solid" />
+<Avatar name="Ana Ruiz" color="positive" variant="solid" />
+<Avatar name="Ana Ruiz" color="warning" variant="solid" />
+<Avatar name="Ana Ruiz" squared />`} block>
+  <div class="flex flex-wrap gap-3"><Avatar name="Ana Ruiz" color="primary" /><Avatar name="Ana Ruiz" color="neutral" /><Avatar name="Ana Ruiz" color="critical" /><Avatar name="Ana Ruiz" color="positive" /><Avatar name="Ana Ruiz" color="warning" /></div>
+  <div class="flex flex-wrap gap-3"><Avatar name="Ana Ruiz" color="primary" variant="solid" /><Avatar name="Ana Ruiz" color="neutral" variant="solid" /><Avatar name="Ana Ruiz" color="critical" variant="solid" /><Avatar name="Ana Ruiz" color="positive" variant="solid" /><Avatar name="Ana Ruiz" color="warning" variant="solid" /></div>
+  <div class="flex flex-wrap gap-3"><Avatar name="Ana Ruiz" squared /><Avatar name="Ana Ruiz" squared color="primary" variant="solid" /></div>
 </Preview>
 
 ## States

@@ -77,6 +77,9 @@ attribute passes through to the root.
 | `interval` | `number` | `4000` | Autoplay delay in ms. |
 | `loop` | `boolean` | `false` | With autoplay, jump back to the start after the last slide. |
 | `label` | `string` | `'Carousel'` | Accessible name of the carousel region. |
+| `visibleItems` | `Responsive<1 \| 2 \| 3 \| 4 \| 5 \| 6>` | — | Slides per view, per breakpoint (`{ base: 1, md: 3 }`); sizes every slide to fit, gap included. Overrides `itemWidth`. |
+| `gap` | `2 \| 3 \| 4 \| 6 \| 8` | `4` | Space between slides, in spacing steps. |
+| `bleed` | `boolean` | `false` | Let the track run under the page gutters. |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
 Slides go in the default slot, one top-level element per slide. Give each
@@ -105,6 +108,27 @@ Snap alignment — `start` (default) vs `center`:
     <div class="rounded-lg border border-neutral bg-neutral-faded p-6">A</div>
     <div class="rounded-lg border border-neutral bg-neutral-faded p-6">B</div>
     <div class="rounded-lg border border-neutral bg-neutral-faded p-6">C</div>
+  </Carousel>
+</Preview>
+
+## Visible items, gap and bleed
+
+<Preview code={`<Carousel visibleItems={{ base: 1, md: 3 }} gap={4}>…</Carousel>
+<Carousel visibleItems={2} gap={2}>…</Carousel>
+… gap 3, 6, 8 …
+<Carousel bleed itemWidth="14rem">…</Carousel>`} block>
+  <div data-apogee-carousel="visible">
+    <Carousel visibleItems={{ base: 1, md: 3 }} gap={4} controls={false} label="Visible items">
+      {Array.from({ length: 6 }).map((_, i) => <div class="h-24 rounded-lg bg-neutral-faded p-3 text-sm">Slide {i + 1}</div>)}
+    </Carousel>
+  </div>
+  {[2, 3, 6, 8].map((gap) => (
+    <Carousel visibleItems={2} gap={gap} controls={false} label={`Gap ${gap}`}>
+      {Array.from({ length: 4 }).map((_, i) => <div class="h-16 rounded-lg bg-neutral-faded p-3 text-sm">gap {gap} · {i + 1}</div>)}
+    </Carousel>
+  ))}
+  <Carousel bleed itemWidth="14rem" controls={false} label="Bleed">
+    {Array.from({ length: 5 }).map((_, i) => <div class="h-16 rounded-lg bg-primary-faded p-3 text-sm">Bleed {i + 1}</div>)}
   </Carousel>
 </Preview>
 

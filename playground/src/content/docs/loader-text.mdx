@@ -1,0 +1,114 @@
+---
+title: LoaderText
+description: Text with a moving shimmer while something loads, crossfading to a done label when it finishes.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import LoaderText from '../../../../registry/components/LoaderText/LoaderText.astro'
+import { Sparkles } from '@lucide/astro'
+
+<JsNote fallback="Nothing changes: the shimmer is CSS, and the done label shows as soon as you render completed.">
+  None. Flip `data-completed` on the root (or re-render with `completed`) to
+  crossfade to `completedText`.
+</JsNote>
+
+<Preview code={`<LoaderText>Generating a summary…</LoaderText>
+<LoaderText completed completedText="Done">Generating a summary…</LoaderText>`}>
+  <LoaderText>Generating a summary…</LoaderText>
+  <div data-apogee-loader-text="done"><LoaderText completed completedText="Done">Generating a summary…</LoaderText></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add loader-text
+```
+
+No dependencies.
+
+## Usage
+
+```astro
+---
+import LoaderText from '@/components/apogee/LoaderText/LoaderText.astro'
+---
+<LoaderText completedText="Saved" completed={isSaved}>Saving…</LoaderText>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<span>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `completed` | `boolean` | `false` | Stops the shimmer and shows `completedText`. |
+| `completedText` | `string` | — | The finished label. Without it the text just stops shimmering. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Text size. |
+| `weight` | `'regular' \| 'medium' \| 'semibold'` | `'medium'` | Text weight. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+Slots: default (the loading text), `icon` (leading icon, fades out when completed).
+
+## Sizes and weights
+
+<Preview code={`<LoaderText size="small">Thinking…</LoaderText>
+<LoaderText size="medium">Thinking…</LoaderText>
+<LoaderText size="large">Thinking…</LoaderText>
+<LoaderText weight="regular">Thinking…</LoaderText>
+<LoaderText weight="medium">Thinking…</LoaderText>
+<LoaderText weight="semibold">Thinking…</LoaderText>`} block>
+  <div class="flex flex-wrap items-center gap-6">
+    <LoaderText size="small">Thinking…</LoaderText>
+    <LoaderText size="medium">Thinking…</LoaderText>
+    <LoaderText size="large">Thinking…</LoaderText>
+  </div>
+  <div class="flex flex-wrap items-center gap-6">
+    <LoaderText weight="regular">Thinking…</LoaderText>
+    <LoaderText weight="medium">Thinking…</LoaderText>
+    <LoaderText weight="semibold">Thinking…</LoaderText>
+  </div>
+</Preview>
+
+## With an icon
+
+<Preview code={`<LoaderText completedText="Summary ready">
+  <Sparkles slot="icon" />
+  Summarising the thread…
+</LoaderText>`}>
+  <LoaderText completedText="Summary ready">
+    <Sparkles slot="icon" />
+    Summarising the thread…
+  </LoaderText>
+</Preview>
+
+## States
+
+- **Loading** — the text shimmers (`apogee-shimmer`, 1.6 s linear).
+- **Completed** — the shimmer stops, the loading text fades out and
+  `completedText` fades in (`--duration-medium`).
+- **Reduced motion** — no shimmer; the loading text is the faded neutral.
+
+## Accessibility
+
+- The root is `aria-live="polite"`, so a screen reader hears the done label
+  when it appears.
+- Keep the loading text a real sentence ("Generating a summary…"), not just
+  dots; it is what gets read.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral-faded` / `--foreground-neutral` | Shimmer gradient stops |
+| `--duration-medium` / `--ease-standard` | Crossfade |
+
+## Do / Don't
+
+- **Do** use it for streaming or long-running states where a spinner says too
+  little.
+- **Don't** leave it shimmering without an end: pair it with `completed` or
+  remove it when the work fails.

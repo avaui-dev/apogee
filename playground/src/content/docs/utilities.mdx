@@ -1,0 +1,91 @@
+---
+title: Utilities
+description: The shared helpers every component builds on, and how to use them in your own code.
+group: Foundations
+order: 9
+---
+
+`npx @ava-ui/apogee add utils` copies `components/apogee/utils/`. Every
+component that needs one imports from there; so can you.
+
+## island
+
+`island(selector, init)` runs `init` once per matching element, now and after
+every Astro View Transition. Document-level listeners stay outside `init`.
+
+```ts
+import { island } from '@/components/apogee/utils/island.ts'
+island('.my-widget', (root) => { /* wire it */ })
+```
+
+## uid
+
+`uid(Astro.locals, prefix?)` returns a deterministic id per request, so builds
+reproduce and two components on one page never collide.
+
+## hotkey
+
+`hotkey(combo, fn, { scope?, ignoreInputs? })` binds a shortcut and returns an
+unbind. `mod` is Meta on macOS and Control elsewhere; typing targets (inputs,
+textareas, contenteditable) are ignored unless `ignoreInputs: false`.
+CommandPalette uses it.
+
+```ts
+import { hotkey } from '@/components/apogee/utils/hotkey.ts'
+const off = hotkey('mod+k', () => palette.showModal())
+```
+
+`parseHotkey('shift+/')` and `matchesHotkey(event, 'mod+k')` are exported for
+your own key handling. On macOS, Option changes the key value, so
+`alt+<letter>` combos do not match there; prefer `mod` and `shift`.
+
+## roving
+
+`stepIndex(key, current, last, rtl?)` returns the index an arrow, Home or End
+moves to (wrapping), or `null`. Tabs uses it.
+`rovingTabindex(root, { selector, loop? })` wires a whole row: one tab stop,
+arrows move it. ToggleButtonGroup uses it.
+
+```ts
+import { rovingTabindex } from '@/components/apogee/utils/roving.ts'
+rovingTabindex(toolbar, { selector: 'button' })
+```
+
+## fade
+
+`edgeFade(el, axis = 'x')` sets `data-fade="left right"` (or `top bottom`) on a
+scrolling box as it scrolls and resizes. Pair it with the mask utilities:
+`data-[fade~=left]:mask-l-from-85% data-[fade~=right]:mask-r-from-85%`.
+Tabs, Table and ScrollArea use it. `fadeState` / `fadeStateY` are the pure
+functions behind it.
+
+## scroll
+
+Modal dialogs lock the page through one rule in the tokens file
+(`body:has(dialog:modal)`). For a custom overlay call `lockScroll()` and
+`unlockScroll()`; locks are counted, so nested overlays release in order.
+
+## theme
+
+`getTheme()`, `setTheme(mode, { persist? })`, `toggleTheme()` and
+`resolveInverted(root)`. See [Theme](/docs/theme).
+
+## panel and menu
+
+`panelStyle({ anchor, placement, gap, width, maxHeight })` returns the inline
+anchor-positioning declarations every floating panel uses; `panelClass`,
+`panelSurface`, `menuClass` and the item tables style them.
+`menuKeydown(event, menu)` handles arrows, Home and End inside a
+`role="menu"`; `restoreFocus(panel, trigger)` returns focus when a nested
+popover closes. See [Popover](/docs/popover) and [Dropdown](/docs/dropdown).
+
+## responsive
+
+`responsive(value, table)` turns a `Responsive<T>` prop (`'row'` or
+`{ base: 'column', md: 'row' }`) into the class list from a generated table.
+Box, Stack, Grid, Text, Dialog and Carousel use it.
+
+## field and radius
+
+`fieldSizes`, `fieldVariants`, `fieldBase` are the shared text-control tables;
+`innerRadius['md-1']` gives a chip inside a rounded tray a concentric corner.

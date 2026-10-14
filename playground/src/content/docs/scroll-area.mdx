@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import ScrollArea from '../../../../registry/components/ScrollArea/ScrollArea.astro'
 
 <Preview code={`<ScrollArea height="10rem" aria-label="Changelog">
@@ -29,6 +30,10 @@ No Apogee dependencies.
 ```astro
 ---
 import ScrollArea from '@/components/apogee/ScrollArea/ScrollArea.astro'
+
+<JsNote fallback="The box scrolls normally without the fade.">
+  With `fade`, sets `data-fade` on the box as it scrolls so the hidden edge fades.
+</JsNote>
 ---
 <ScrollArea height="20rem" aria-label="Members">
   <ul>…</ul>
@@ -43,6 +48,9 @@ import ScrollArea from '@/components/apogee/ScrollArea/ScrollArea.astro'
 |---|---|---|---|
 | `direction` | `'vertical' \| 'horizontal' \| 'both'` | `'vertical'` | Which axes scroll. |
 | `height` | `string` | — | Max height, any CSS length. |
+| `maxHeight` | `string` | — | Alias of `height`. |
+| `fade` | `boolean` | `false` | Fade the edge that hides content (a small island). |
+| `scrollbar` | `'thin' \| 'hidden' \| 'hover'` | `'thin'` | Scrollbar treatment. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
@@ -59,6 +67,20 @@ import ScrollArea from '@/components/apogee/ScrollArea/ScrollArea.astro'
   <ScrollArea direction="both" height="8rem" aria-label="Both" class="w-48 rounded-lg border border-neutral p-3 text-sm">
     <div class="w-[32rem]">{Array.from({ length: 12 }).map((_, i) => <p class="py-1 whitespace-nowrap">A long row {i + 1} that overflows horizontally as well</p>)}</div>
   </ScrollArea>
+</Preview>
+
+## Fade and scrollbar
+
+Every `scrollbar` value, and `fade`:
+
+<Preview code={`<ScrollArea maxHeight="8rem" fade>…</ScrollArea>
+<ScrollArea maxHeight="8rem" scrollbar="thin">…</ScrollArea>
+<ScrollArea maxHeight="8rem" scrollbar="hidden">…</ScrollArea>
+<ScrollArea maxHeight="8rem" scrollbar="hover">…</ScrollArea>`} block>
+  <div data-apogee-scroll-area="fade"><ScrollArea maxHeight="8rem" fade aria-label="Faded list" class="rounded-md border border-neutral p-3 text-sm">{Array.from({ length: 14 }).map((_, i) => <p>Line {i + 1}</p>)}</ScrollArea></div>
+  <div class="grid gap-4 sm:grid-cols-3">
+    {['thin', 'hidden', 'hover'].map((s) => <ScrollArea maxHeight="8rem" scrollbar={s} aria-label={`Scrollbar ${s}`} class="rounded-md border border-neutral p-3 text-sm"><p class="font-medium">scrollbar="{s}"</p>{Array.from({ length: 10 }).map((_, i) => <p>Line {i + 1}</p>)}</ScrollArea>)}
+  </div>
 </Preview>
 
 ## Accessibility

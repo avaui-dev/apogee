@@ -118,13 +118,6 @@ const vars = [size && `--apogee-dialog-size: ${size}`, `--apogee-dialog-pad: ${p
   }
 </dialog>
 
-<style is:global>
-  /* Page scroll lock while a dialog with a visible backdrop is open. */
-  body:has(.apogee-dialog[open]:not([data-overlay='transparent'])) {
-    overflow: hidden;
-  }
-</style>
-
 <style>
   /* Layout per position comes from the responsive table (utilities on the
      element). This block owns the enter/exit motion and the backdrop. */
