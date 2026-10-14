@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { buttonStyles, buttonSizes } from './button.ts'
+import { buttonStyles, buttonSizes, pressedStyles } from './button.ts'
 
 test('every variant covers every color with a hover state', () => {
   for (const [variant, colors] of Object.entries(buttonStyles)) {
@@ -14,4 +14,12 @@ test('sizes follow the 28/36/48/56 scale', () => {
   assert.match(buttonSizes.medium, /\bh-9\b/)
   assert.match(buttonSizes.large, /\bh-12\b/)
   assert.match(buttonSizes.xlarge, /\bh-14\b/)
+})
+
+test('pressed styles cover solid and faded for every color, prefixed for aria-pressed', () => {
+  assert.deepEqual(Object.keys(pressedStyles), ['solid', 'faded'])
+  for (const [variant, colors] of Object.entries(pressedStyles)) {
+    assert.deepEqual(Object.keys(colors), ['primary', 'neutral', 'critical', 'positive', 'warning'], variant)
+    for (const cls of Object.values(colors)) assert.match(cls, /^aria-pressed:bg-\S+ aria-pressed:text-\S+ aria-pressed:hover:bg-\S+$/)
+  }
 })

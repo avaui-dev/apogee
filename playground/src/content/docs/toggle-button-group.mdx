@@ -12,19 +12,20 @@ import ToggleButton from '../../../../registry/components/ToggleButton/ToggleBut
 import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight } from '@lucide/astro'
 
 <JsNote fallback="Each ToggleButton stays at its initial pressed state and doesn't respond to clicks (see ToggleButton), so single-select mutual exclusivity never kicks in either.">
-  For `type="single"`, wires a click listener on each child button that
-  un-presses its siblings, so only one stays pressed at a time.
+  Roving tabindex (one tab stop; arrows and Home/End move focus), and for
+  `type="single"` a click listener on each child button that un-presses its
+  siblings, so only one stays pressed at a time.
 </JsNote>
 
 <Preview code={`<ToggleButtonGroup type="single" aria-label="Text alignment">
-  <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
-  <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
-  <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+  <ToggleButton iconOnly pressed aria-label="Left"><AlignLeft /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Center"><AlignCenter /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Right"><AlignRight /></ToggleButton>
 </ToggleButtonGroup>`}>
   <ToggleButtonGroup type="single" aria-label="Text alignment">
-    <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
-    <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
-    <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+    <ToggleButton iconOnly pressed aria-label="Left"><AlignLeft /></ToggleButton>
+    <ToggleButton iconOnly aria-label="Center"><AlignCenter /></ToggleButton>
+    <ToggleButton iconOnly aria-label="Right"><AlignRight /></ToggleButton>
   </ToggleButtonGroup>
 </Preview>
 
@@ -44,8 +45,8 @@ import ToggleButtonGroup from '@/components/apogee/ToggleButtonGroup/ToggleButto
 import ToggleButton from '@/components/apogee/ToggleButton/ToggleButton.astro'
 ---
 <ToggleButtonGroup type="single" aria-label="Text alignment">
-  <ToggleButton aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton aria-label="Italic"><Italic /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Italic"><Italic /></ToggleButton>
 </ToggleButtonGroup>
 ```
 
@@ -73,24 +74,24 @@ through to the root `<div>`.
 Both `type` values:
 
 <Preview code={`<ToggleButtonGroup type="single" aria-label="Alignment">
-  <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
-  <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
-  <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+  <ToggleButton iconOnly pressed aria-label="Left"><AlignLeft /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Center"><AlignCenter /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Right"><AlignRight /></ToggleButton>
 </ToggleButtonGroup>
 <ToggleButtonGroup type="multiple" aria-label="Formatting">
-  <ToggleButton pressed aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton pressed aria-label="Italic"><Italic /></ToggleButton>
-  <ToggleButton aria-label="Underline"><Underline /></ToggleButton>
+  <ToggleButton iconOnly pressed aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton iconOnly pressed aria-label="Italic"><Italic /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Underline"><Underline /></ToggleButton>
 </ToggleButtonGroup>`}>
   <ToggleButtonGroup type="single" aria-label="Alignment">
-    <ToggleButton pressed aria-label="Left"><AlignLeft /></ToggleButton>
-    <ToggleButton aria-label="Center"><AlignCenter /></ToggleButton>
-    <ToggleButton aria-label="Right"><AlignRight /></ToggleButton>
+    <ToggleButton iconOnly pressed aria-label="Left"><AlignLeft /></ToggleButton>
+    <ToggleButton iconOnly aria-label="Center"><AlignCenter /></ToggleButton>
+    <ToggleButton iconOnly aria-label="Right"><AlignRight /></ToggleButton>
   </ToggleButtonGroup>
   <ToggleButtonGroup type="multiple" aria-label="Formatting">
-    <ToggleButton pressed aria-label="Bold"><Bold /></ToggleButton>
-    <ToggleButton pressed aria-label="Italic"><Italic /></ToggleButton>
-    <ToggleButton aria-label="Underline"><Underline /></ToggleButton>
+    <ToggleButton iconOnly pressed aria-label="Bold"><Bold /></ToggleButton>
+    <ToggleButton iconOnly pressed aria-label="Italic"><Italic /></ToggleButton>
+    <ToggleButton iconOnly aria-label="Underline"><Underline /></ToggleButton>
   </ToggleButtonGroup>
 </Preview>
 
@@ -102,34 +103,54 @@ Both `type` values:
 - **No JS** — buttons render at their initial `pressed` values and don't
   respond to clicks (see [`ToggleButton`](/toggle-button)).
 
+## In a form
+
+Each button submits its `value` under its `name` while pressed; in `single`
+mode at most one does.
+
+<Preview code={`<form>
+  <ToggleButtonGroup type="single" aria-label="Alignment">
+    <ToggleButton iconOnly name="align" value="left" pressed aria-label="Left"><AlignLeft /></ToggleButton>
+    <ToggleButton iconOnly name="align" value="center" aria-label="Center"><AlignCenter /></ToggleButton>
+    <ToggleButton iconOnly name="align" value="right" aria-label="Right"><AlignRight /></ToggleButton>
+  </ToggleButtonGroup>
+</form>`}>
+  <form data-apogee-toggle-group="form">
+    <ToggleButtonGroup type="single" aria-label="Alignment">
+      <ToggleButton iconOnly name="align" value="left" pressed aria-label="Left"><AlignLeft /></ToggleButton>
+      <ToggleButton iconOnly name="align" value="center" aria-label="Center"><AlignCenter /></ToggleButton>
+      <ToggleButton iconOnly name="align" value="right" aria-label="Right"><AlignRight /></ToggleButton>
+    </ToggleButtonGroup>
+  </form>
+</Preview>
+
 ## Examples
 
 Mixed sizes pass straight through to each `ToggleButton`:
 
 <Preview code={`<ToggleButtonGroup type="single" aria-label="Size">
-  <ToggleButton size="small" pressed aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton size="small" aria-label="Italic"><Italic /></ToggleButton>
+  <ToggleButton iconOnly size="small" pressed aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton iconOnly size="small" aria-label="Italic"><Italic /></ToggleButton>
 </ToggleButtonGroup>`}>
   <ToggleButtonGroup type="single" aria-label="Size">
-    <ToggleButton size="small" pressed aria-label="Bold"><Bold /></ToggleButton>
-    <ToggleButton size="small" aria-label="Italic"><Italic /></ToggleButton>
+    <ToggleButton iconOnly size="small" pressed aria-label="Bold"><Bold /></ToggleButton>
+    <ToggleButton iconOnly size="small" aria-label="Italic"><Italic /></ToggleButton>
   </ToggleButtonGroup>
 </Preview>
 
 ## Events
 
-The group dispatches `apogee:toggle-group-change` (`detail: { pressed: string[] }`, bubbling) after any button toggles; values come from each button's `data-value`, falling back to its index.
+The group dispatches `apogee:toggle-group-change` (`detail: { value: string[] }`, bubbling) after any button toggles; values come from each button's `value`, falling back to its index.
 
 ## Accessibility
 
+- One tab stop: `Tab` lands on the pressed button (or the first); `←` `→`
+  `Home` `End` move focus; `Space` or `Enter` toggles.
+- In `single` mode clicking the pressed button clears the group (a toggle, not
+  a radio). Use [SegmentedControl](/segmented-control) for exactly-one.
 - `role="group"` with `aria-label` names the whole bar for AT users; each
   child keeps its own `aria-pressed` and `aria-label`.
-- **Keyboard** — no roving tabindex: each button is a normal tab stop
-  (`Tab` moves through all of them); `Enter` / `Space` toggles the focused one.
-  For a fully single-select semantic pattern (roving tabindex, arrow-key
-  navigation, `radiogroup`), a future variant may add that — today this is a
-  group of independent buttons, coordinated visually.
-- **Focus** — each button shows its own visible `focus-visible` ring.
+- **Focus** — the focused button shows its visible `focus-visible` ring.
 - **No JS** — the group renders (a `role="group"` of plain buttons); with
   scripts off none of them toggle, in either mode.
 

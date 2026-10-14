@@ -42,3 +42,23 @@ export const buttonStyles = {
 export type ButtonColor = keyof typeof buttonStyles.solid
 export type ButtonVariant = keyof typeof buttonStyles
 export type ButtonSize = keyof typeof buttonSizes
+
+// ToggleButton pressed state, `aria-pressed:`-prefixed so it beats the resting
+// variant (and its hover) without a specificity fight.
+export const pressedStyles = {
+  solid: {
+    primary: 'aria-pressed:bg-primary aria-pressed:text-on-primary aria-pressed:hover:bg-primary-highlighted',
+    neutral: 'aria-pressed:bg-neutral aria-pressed:text-on-neutral aria-pressed:hover:bg-neutral-highlighted',
+    critical: 'aria-pressed:bg-critical aria-pressed:text-on-critical aria-pressed:hover:bg-critical-highlighted',
+    positive: 'aria-pressed:bg-positive aria-pressed:text-on-positive aria-pressed:hover:bg-positive-highlighted',
+    warning: 'aria-pressed:bg-warning aria-pressed:text-on-warning aria-pressed:hover:bg-warning-highlighted',
+  },
+  faded: {
+    primary: 'aria-pressed:bg-primary-faded aria-pressed:text-primary aria-pressed:hover:bg-primary-faded-highlighted',
+    neutral: 'aria-pressed:bg-neutral-faded aria-pressed:text-neutral aria-pressed:hover:bg-neutral-faded-highlighted',
+    critical: 'aria-pressed:bg-critical-faded aria-pressed:text-critical aria-pressed:hover:bg-critical-faded-highlighted',
+    positive: 'aria-pressed:bg-positive-faded aria-pressed:text-positive aria-pressed:hover:bg-positive-faded-highlighted',
+    warning: 'aria-pressed:bg-warning-faded aria-pressed:text-warning aria-pressed:hover:bg-warning-faded-highlighted',
+  },
+} as const
+export type PressedVariant = keyof typeof pressedStyles

@@ -10,8 +10,9 @@ import JsNote from '../../components/JsNote.astro'
 import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
 
 <JsNote fallback="Every panel renders stacked and reachable — no content is hidden, so nothing is lost.">
-  Wires the WAI-ARIA tablist pattern: roving tabindex, arrow / Home / End keys, and
-  panel visibility (only the selected panel shows).
+  Wires the WAI-ARIA tablist pattern: roving tabindex, arrow / Home / End keys,
+  panel visibility (only the selected panel shows), edge fades when the list
+  overflows, and scrolls the chosen tab into view.
 </JsNote>
 
 <Preview code={`<Tabs tabs={['Account', 'Password', 'Team']}>
@@ -56,11 +57,14 @@ through to the root `<div>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `tabs` | `string[]` | — | Tab labels, in order. Panel count must match. |
+| `tabs` | `(string \| { label, value?, href?, disabled? })[]` | — | Tabs in order. A string is a label; an object adds a `value` (panel slot name and event value, defaults to the index), an `href` (renders a link, no panel) or `disabled`. |
+| `value` | `string` | first enabled tab | Value of the tab shown first. |
+| `variant` | `'bordered' \| 'borderless' \| 'pills' \| 'pills-raised'` | `'bordered'` | Underline with a list border, underline alone, chip, or chip in a raised tray. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Tab height and text size. |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
-Panels are passed as slots: `slot="panel-0"`, `slot="panel-1"`, … matching each
-label by index.
+Panels are slots named `panel-<value>`: `panel-0`, `panel-1`, … for string
+tabs, `panel-billing` for `{ value: 'billing' }`.
 
 ## Anatomy
 
@@ -74,7 +78,79 @@ label by index.
   its panel is visible.
 - **Hover / focus** — inactive tabs lighten on hover; keyboard focus shows a visible
   ring (`focus-visible:outline-primary`).
+- **Disabled** — dimmed, not clickable, skipped by the arrows.
 - **No JS** — every panel is shown (the `no-js:block` fallback).
+
+## Variants
+
+Every `variant`:
+
+<Preview code={`<Tabs variant="bordered" tabs={['Account', 'Password', 'Team']}>…</Tabs>
+<Tabs variant="borderless" tabs={['Account', 'Password', 'Team']}>…</Tabs>
+<Tabs variant="pills" tabs={['Account', 'Password', 'Team']}>…</Tabs>
+<Tabs variant="pills-raised" tabs={['Account', 'Password', 'Team']}>…</Tabs>`} block>
+  {['bordered', 'borderless', 'pills', 'pills-raised'].map((variant) => (
+    <Tabs variant={variant} tabs={['Account', 'Password', 'Team']}>
+      <div slot="panel-0">{variant}: account details.</div>
+      <div slot="panel-1">{variant}: password.</div>
+      <div slot="panel-2">{variant}: members.</div>
+    </Tabs>
+  ))}
+</Preview>
+
+## Sizes
+
+<Preview code={`<Tabs size="small" tabs={['Overview', 'Billing']}>…</Tabs>
+<Tabs size="medium" tabs={['Overview', 'Billing']}>…</Tabs>
+<Tabs size="large" tabs={['Overview', 'Billing']}>…</Tabs>`} block>
+  {['small', 'medium', 'large'].map((size) => (
+    <Tabs size={size} tabs={['Overview', 'Billing']}>
+      <div slot="panel-0">{size} tabs.</div>
+      <div slot="panel-1">Invoices.</div>
+    </Tabs>
+  ))}
+</Preview>
+
+## Items
+
+Objects add a `value`, a link (`href`) or `disabled`; `value` on the root
+picks the tab shown first.
+
+<Preview code={`<Tabs
+  tabs={[{ label: 'Overview' }, { label: 'Billing', value: 'billing' }, { label: 'Archived', disabled: true }, { label: 'Help', href: '/docs/tabs#accessibility' }]}
+  value="billing"
+>
+  <div slot="panel-0">Overview of the account.</div>
+  <div slot="panel-billing">Invoices and payment method.</div>
+</Tabs>`} block>
+  <div data-apogee-tabs="items">
+    <Tabs
+      tabs={[{ label: 'Overview' }, { label: 'Billing', value: 'billing' }, { label: 'Archived', disabled: true }, { label: 'Help', href: '/docs/tabs#accessibility' }]}
+      value="billing"
+    >
+      <div slot="panel-0">Overview of the account.</div>
+      <div slot="panel-billing">Invoices and payment method.</div>
+    </Tabs>
+  </div>
+</Preview>
+
+## Overflow
+
+The list scrolls, the hidden edge fades, and the selected tab is scrolled into
+view.
+
+<Preview code={`<Tabs class="max-w-sm" tabs={['Overview', 'Analytics', 'Reports', 'Notifications', 'Integrations', 'Billing', 'Security', 'Members', 'Audit log', 'Exports']}>
+  <div slot="panel-0">…</div>
+  …
+</Tabs>`} block>
+  <div data-apogee-tabs="overflow">
+    <Tabs class="max-w-sm" tabs={['Overview', 'Analytics', 'Reports', 'Notifications', 'Integrations', 'Billing', 'Security', 'Members', 'Audit log', 'Exports']}>
+      {['Overview', 'Analytics', 'Reports', 'Notifications', 'Integrations', 'Billing', 'Security', 'Members', 'Audit log', 'Exports'].map((label, i) => (
+        <div slot={`panel-${i}`}>{label} panel.</div>
+      ))}
+    </Tabs>
+  </div>
+</Preview>
 
 ## Examples
 
@@ -96,7 +172,7 @@ More than a handful of tabs — they wrap; the pattern is unchanged:
 
 ## Events
 
-The root dispatches `apogee:tabs-change` (`detail: { index }`, bubbling) whenever a tab is selected.
+The root dispatches `apogee:tabs-change` (`detail: { index, value }`, bubbling) whenever a tab is selected.
 
 ## Accessibility
 

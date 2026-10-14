@@ -1,61 +1,123 @@
 ---
 /**
- * Tabs — an accessible tabbed panel. This is the one component that needs a JS
- * island: it wires the `role="tablist"` keyboard pattern (arrows / Home / End),
- * roving tabindex, and panel visibility. Without JS every panel shows (stacked),
- * so no content is lost.
+ * Tabs — an accessible tabbed panel. The island wires the `role="tablist"`
+ * keyboard pattern (arrows / Home / End), roving tabindex, panel visibility,
+ * edge fades when the list overflows, and scrolls the chosen tab into view.
+ * Without JS every panel shows (stacked), so no content is lost.
  *
- * Pass labels via `tabs`; put each panel in a `panel-<i>` slot.
- *
- *   <Tabs tabs={['Account', 'Password']}>
+ *   <Tabs tabs={['Account', { label: 'Billing', value: 'billing' }, { label: 'Help', href: '/help' }]} value="billing">
  *     <div slot="panel-0">…</div>
- *     <div slot="panel-1">…</div>
+ *     <div slot="panel-billing">…</div>
  *   </Tabs>
+ *
+ * A tab's panel slot is `panel-<value>`; `value` defaults to the index. A tab
+ * with `href` is a link (no panel). `disabled` tabs are skipped by the arrows.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
-interface Props extends HTMLAttributes<'div'> {
-  tabs: string[]
+import { innerRadius } from '../utils/radius.ts'
+
+const lists = {
+  bordered: 'gap-1 border-b border-neutral',
+  borderless: 'gap-1',
+  pills: 'gap-1',
+  'pills-raised': 'gap-0.5 rounded-md bg-neutral-faded p-0.5',
+} as const
+const tabStyles = {
+  bordered: 'border-b-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
+  borderless: 'border-b-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
+  pills: 'rounded-md aria-selected:bg-neutral-faded aria-selected:text-neutral',
+  'pills-raised': `${innerRadius['md-0.5']} aria-selected:bg-page aria-selected:text-neutral aria-selected:shadow-outline dark:aria-selected:bg-neutral`,
+} as const
+const sizes = {
+  small: 'px-2.5 py-1.5 text-xs',
+  medium: 'px-3 py-2 text-sm',
+  large: 'px-4 py-2.5 text-base',
+} as const
+
+export interface TabItem {
+  label: string
+  value?: string
+  href?: string
+  disabled?: boolean
+}
+interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
+  tabs: (string | TabItem)[]
+  /** Value of the tab shown first. Defaults to the first enabled tab. */
+  value?: string
+  /** @category layout */
+  variant?: keyof typeof lists
+  /** @category layout */
+  size?: keyof typeof sizes
   class?: string
 }
 
-const { tabs, class: className, ...rest } = Astro.props
+const { tabs, value, variant = 'bordered', size = 'medium', class: className, ...rest } = Astro.props
+const items = tabs.map((t, i) => {
+  const o: TabItem = typeof t === 'string' ? { label: t } : t
+  return { ...o, value: o.value ?? String(i) }
+})
+const found = items.findIndex((t) => t.value === value && !t.disabled && !t.href)
+const initial = found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
 const id = uid(Astro.locals)
+const tabClass =
+  'shrink-0 cursor-pointer whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary aria-disabled:pointer-events-none aria-disabled:opacity-50'
 ---
 
 <div class:list={['apogee-tabs', className]} {...rest}>
-  <div role="tablist" class="flex gap-1 border-b border-neutral">
+  <div
+    role="tablist"
+    class:list={[
+      'apogee-tabs-list flex overflow-x-auto [scrollbar-width:none] data-[fade~=left]:mask-l-from-85% data-[fade~=right]:mask-r-from-85%',
+      lists[variant],
+    ]}
+  >
     {
-      tabs.map((label, i) => (
-        <button
-          type="button"
-          role="tab"
-          id={`${id}-tab-${i}`}
-          aria-controls={`${id}-panel-${i}`}
-          aria-selected={i === 0 ? 'true' : 'false'}
-          tabindex={i === 0 ? 0 : -1}
-          class="-mb-px cursor-pointer border-b-2 border-transparent px-3 py-2 text-sm font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-selected:border-primary aria-selected:text-neutral"
-        >
-          {label}
-        </button>
-      ))
+      items.map((t, i) => {
+        const Tag = t.href ? 'a' : 'button'
+        const hasPanel = !t.href && Astro.slots.has(`panel-${t.value}`)
+        const on = i === initial
+        return (
+          <Tag
+            type={t.href ? undefined : 'button'}
+            href={t.href}
+            role="tab"
+            id={`${id}-tab-${i}`}
+            data-value={t.value}
+            aria-controls={hasPanel ? `${id}-panel-${i}` : undefined}
+            aria-selected={on ? 'true' : 'false'}
+            aria-disabled={t.disabled ? 'true' : undefined}
+            tabindex={on ? 0 : -1}
+            class:list={[tabClass, tabStyles[variant], sizes[size]]}
+          >
+            {t.label}
+          </Tag>
+        )
+      })
     }
   </div>
   {
-    tabs.map((_, i) => (
-      <div
-        role="tabpanel"
-        id={`${id}-panel-${i}`}
-        aria-labelledby={`${id}-tab-${i}`}
-        hidden={i !== 0}
-        tabindex="0"
-        class:list={['pt-4 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary', i !== 0 && 'no-js:block']}
-      >
-        <slot name={`panel-${i}`} />
-      </div>
-    ))
+    items.map(
+      (t, i) =>
+        !t.href &&
+        Astro.slots.has(`panel-${t.value}`) && (
+          <div
+            role="tabpanel"
+            id={`${id}-panel-${i}`}
+            aria-labelledby={`${id}-tab-${i}`}
+            hidden={i !== initial}
+            tabindex="0"
+            class:list={[
+              'pt-4 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+              i !== initial && 'no-js:block',
+            ]}
+          >
+            <slot name={`panel-${t.value}`} />
+          </div>
+        ),
+    )
   }
 </div>
 
@@ -78,40 +140,50 @@ const id = uid(Astro.locals)
 
 <script>
   import { island } from '../utils/island.ts'
+  import { stepIndex } from '../utils/roving.ts'
 
   island('.apogee-tabs', (root) => {
-    const buttons = [...root.querySelectorAll<HTMLElement>('[role="tab"]')]
-    const panels = buttons.map((b) =>
-      root.querySelector<HTMLElement>('#' + b.getAttribute('aria-controls')),
-    )
+    const list = root.querySelector<HTMLElement>('.apogee-tabs-list')!
+    const tabs = [...list.querySelectorAll<HTMLElement>('[role="tab"]')]
+    const panelOf = (t: HTMLElement) => {
+      const c = t.getAttribute('aria-controls')
+      return c ? root.querySelector<HTMLElement>('#' + c) : null
+    }
+    const enabled = () => tabs.filter((t) => t.getAttribute('aria-disabled') !== 'true')
 
     const select = (index: number) => {
-      buttons.forEach((b, i) => {
+      tabs.forEach((t, i) => {
         const on = i === index
-        b.setAttribute('aria-selected', String(on))
-        b.tabIndex = on ? 0 : -1
-        panels[i]?.toggleAttribute('hidden', !on)
+        t.setAttribute('aria-selected', String(on))
+        t.tabIndex = on ? 0 : -1
+        panelOf(t)?.toggleAttribute('hidden', !on)
       })
-      root.dispatchEvent(new CustomEvent('apogee:tabs-change', { bubbles: true, detail: { index } }))
+      tabs[index]?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+      root.dispatchEvent(
+        new CustomEvent('apogee:tabs-change', { bubbles: true, detail: { index, value: tabs[index]?.dataset.value } }),
+      )
     }
 
-    buttons.forEach((button, i) => {
-      button.addEventListener('click', () => select(i))
-      button.addEventListener('keydown', (event: KeyboardEvent) => {
-        const last = buttons.length - 1
-        // Under dir="rtl" the visual order is mirrored, so the arrows swap.
-        const rtl = getComputedStyle(root).direction === 'rtl'
-        const forward = rtl ? 'ArrowLeft' : 'ArrowRight'
-        const back = rtl ? 'ArrowRight' : 'ArrowLeft'
-        let next: number | null = null
-        if (event.key === forward) next = i === last ? 0 : i + 1
-        else if (event.key === back) next = i === 0 ? last : i - 1
-        else if (event.key === 'Home') next = 0
-        else if (event.key === 'End') next = last
-        if (next === null) return
-        event.preventDefault()
-        select(next)
-        buttons[next]?.focus()
+    // Edge fades while the list overflows (physical sides; scrollLeft is ≤ 0 in RTL).
+    const fade = () => {
+      const max = list.scrollWidth - list.clientWidth
+      const left = getComputedStyle(list).direction === 'rtl' ? max + list.scrollLeft : list.scrollLeft
+      list.dataset.fade = max > 1 ? [left > 1 && 'left', left < max - 1 && 'right'].filter(Boolean).join(' ') : ''
+    }
+    fade()
+    list.addEventListener('scroll', fade, { passive: true })
+    new ResizeObserver(fade).observe(list)
+
+    tabs.forEach((tab, i) => {
+      if (!tab.hasAttribute('href')) tab.addEventListener('click', () => select(i))
+      tab.addEventListener('keydown', (e) => {
+        const row = enabled()
+        const n = stepIndex(e.key, row.indexOf(tab), row.length - 1, getComputedStyle(root).direction === 'rtl')
+        if (n === null) return
+        e.preventDefault()
+        const next = row[n]!
+        next.focus()
+        if (!next.hasAttribute('href')) select(tabs.indexOf(next))
       })
     })
   })

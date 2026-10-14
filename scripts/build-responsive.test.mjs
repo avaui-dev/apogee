@@ -6,3 +6,16 @@ import { render } from './build-responsive.mjs'
 test('the committed tables match the generator', () => {
   assert.equal(readFileSync(new URL('../registry/components/utils/responsive-tables.ts', import.meta.url), 'utf8'), render())
 })
+
+import { defs } from './build-responsive.mjs'
+
+test('dialogPosition cells set every layout axis and the slide variables', () => {
+  const positions = ['center', 'start', 'end', 'top', 'bottom', 'full-screen']
+  assert.deepEqual(Object.keys(defs.dialogPosition), positions)
+  for (const cell of Object.values(defs.dialogPosition)) {
+    for (const re of [/\bm-(auto|0)\b/, /\[--apogee-dx:/, /\[--apogee-dy:/, /\[--apogee-scale:/, /\bmax-w-|\[max-width:/, /\bmax-h-|\[max-height:/, /\brounded-/, /\bborder(-0)?\b/])
+      assert.match(cell, re)
+  }
+  assert.match(defs.dialogPosition.end, /\[--apogee-dx:100%\]/)
+  assert.match(defs.dialogPosition.bottom, /\[--apogee-dy:100%\]/)
+})

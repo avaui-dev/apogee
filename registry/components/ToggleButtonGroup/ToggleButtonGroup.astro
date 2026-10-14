@@ -1,8 +1,11 @@
 ---
 /**
  * ToggleButtonGroup — connects ToggleButtons into a segmented bar. `single`
- * makes them mutually exclusive (radio-like: one or none pressed); `multiple`
- * lets each toggle independently. Put ToggleButtons in the slot.
+ * makes them mutually exclusive (one or none pressed); `multiple` lets each
+ * toggle independently. Put ToggleButtons in the slot. Roving tabindex: one tab
+ * stop, arrows and Home/End move focus. Dispatches `apogee:toggle-group-change`
+ * with `detail: { value: string[] }` — each pressed button's `value`, or its
+ * index. A button's hidden input (`name` + `value`) follows its pressed state.
  *
  * @composable
  */
@@ -30,20 +33,45 @@ const { type = 'multiple', class: className, ...rest } = Astro.props
 
 <script>
   import { island } from '../utils/island.ts'
+  import { stepIndex } from '../utils/roving.ts'
 
-  // Single-select: clicking one un-presses its siblings (each button still
-  // self-toggles, so clicking the active one clears the group).
   island('.apogee-toggle-group', (g) => {
     const btns = [...g.querySelectorAll<HTMLButtonElement>('.apogee-toggle')]
+    if (!btns.length) return
     const single = g.dataset.type === 'single'
+    const press = (b: HTMLButtonElement, on: boolean) => {
+      b.setAttribute('aria-pressed', String(on))
+      const hidden = b.nextElementSibling
+      if (hidden instanceof HTMLInputElement && hidden.type === 'hidden') hidden.disabled = !on
+    }
+    const value = () =>
+      btns.filter((o) => o.getAttribute('aria-pressed') === 'true').map((o) => o.value || String(btns.indexOf(o)))
+    const enabled = () => btns.filter((b) => !b.disabled)
+
+    // Roving tabindex: one tab stop (the first pressed button, else the first), arrows move it.
+    const rove = (target: HTMLButtonElement) => {
+      for (const b of btns) b.tabIndex = b === target ? 0 : -1
+    }
+    rove(enabled().find((b) => b.getAttribute('aria-pressed') === 'true') ?? enabled()[0] ?? btns[0]!)
+    g.addEventListener('keydown', (e) => {
+      const list = enabled()
+      const i = list.indexOf(document.activeElement as HTMLButtonElement)
+      if (i < 0) return
+      const n = stepIndex(e.key, i, list.length - 1, getComputedStyle(g).direction === 'rtl')
+      if (n === null) return
+      e.preventDefault()
+      rove(list[n]!)
+      list[n]!.focus()
+    })
+
     for (const b of btns) {
+      b.addEventListener('focus', () => rove(b))
       b.addEventListener('click', () => {
-        if (single) for (const o of btns) if (o !== b) o.setAttribute('aria-pressed', 'false')
+        if (single) for (const o of btns) if (o !== b) press(o, false)
         // After the button's own toggle (same tick, registered earlier) report the group's state.
-        queueMicrotask(() => {
-          const pressed = btns.filter((o) => o.getAttribute('aria-pressed') === 'true').map((o) => o.dataset.value ?? String(btns.indexOf(o)))
-          g.dispatchEvent(new CustomEvent('apogee:toggle-group-change', { bubbles: true, detail: { pressed } }))
-        })
+        queueMicrotask(() =>
+          g.dispatchEvent(new CustomEvent('apogee:toggle-group-change', { bubbles: true, detail: { value: value() } })),
+        )
       })
     }
   })

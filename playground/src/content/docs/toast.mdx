@@ -106,6 +106,8 @@ call it after the `Toaster` has mounted.
 | `options.title` | `string` | — | Bold title line above the message. Omitted entirely if not passed. |
 | `options.duration` | `number` (ms) | `4000` | Auto-dismiss delay. `0` makes it sticky (stays until closed). |
 | `options.position` | `'top-start' \| 'top-center' \| 'top-end' \| 'bottom-start' \| 'bottom-center' \| 'bottom-end'` | the host's | Corner for this toast; a region per corner is created on first use. |
+| `options.actions` | `{ label: string; onClick?: () => void; href?: string }[]` | — | Small ghost buttons under the message. A click runs `onClick` (or follows `href`), then dismisses the toast. |
+| `options.width` | `'short' \| 'long' \| string` | `'short'` (20rem) | Toast width: `long` is 25rem; any CSS length works. |
 
 The timer pauses while the pointer or keyboard focus is on the toast and resumes when it leaves. `apogeeToast()` returns an id; `apogeeToast.dismiss(id)` closes that toast early.
 
@@ -113,6 +115,16 @@ The timer pauses while the pointer or keyboard focus is on the toast and resumes
 <button onclick="const id = apogeeToast('Sticky until dismissed', { duration: 0 }); setTimeout(() => apogeeToast.dismiss(id), 3000)">Dismiss after 3s</button>`}>
   <Button variant="outline" color="neutral" onclick="apogeeToast('Top start', { position: 'top-start' })">Top start</Button>
   <Button variant="outline" color="neutral" onclick="const id = apogeeToast('Sticky until dismissed', { duration: 0 }); setTimeout(() => apogeeToast.dismiss(id), 3000)">Dismiss after 3s</Button>
+</Preview>
+
+### Actions and width
+
+<Preview code={`<button onclick="apogeeToast('Draft deleted', { title: 'Deleted', width: 'long', duration: 0, actions: [{ label: 'Undo', onClick: () => apogeeToast('Draft restored', { color: 'positive' }) }, { label: 'View trash', href: '#' }] })">Delete with undo</button>
+<button onclick="apogeeToast('Short width', { width: 'short' })">Short</button>
+<button onclick="apogeeToast('A custom 30rem width for a longer sentence that would otherwise wrap twice.', { width: '30rem' })">30rem</button>`}>
+  <Button variant="outline" color="neutral" data-apogee-toast="actions" onclick="apogeeToast('Draft deleted', { title: 'Deleted', width: 'long', duration: 0, actions: [{ label: 'Undo', onClick: () => apogeeToast('Draft restored', { color: 'positive' }) }, { label: 'View trash', href: '#' }] })">Delete with undo</Button>
+  <Button variant="outline" color="neutral" onclick="apogeeToast('Short width', { width: 'short' })">Short</Button>
+  <Button variant="outline" color="neutral" onclick="apogeeToast('A custom 30rem width for a longer sentence that would otherwise wrap twice.', { width: '30rem' })">30rem</Button>
 </Preview>
 
 ## Variants
@@ -173,6 +185,9 @@ apogeeToast('Link copied to clipboard.')
   and an `aria-label="Dismiss"` (icon-only).
 - **No JS** — `apogeeToast` is never defined, so nothing renders. Never make a
   toast the only feedback for an action a no-JS user can take.
+
+- Actions are ordinary buttons at the end of the tab order; give a toast with
+  actions `duration: 0` or a long timeout so a keyboard user can reach them.
 
 ## Tokens
 

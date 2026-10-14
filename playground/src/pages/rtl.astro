@@ -19,6 +19,7 @@ import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.as
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import Carousel from '../../../registry/components/Carousel/Carousel.astro'
 import Tabs from '../../../registry/components/Tabs/Tabs.astro'
+import Slider from '../../../registry/components/Slider/Slider.astro'
 import Toaster from '../../../registry/components/Toast/Toaster.astro'
 import CheckboxGroup from '../../../registry/components/CheckboxGroup/CheckboxGroup.astro'
 import Checkbox from '../../../registry/components/Checkbox/Checkbox.astro'
@@ -135,10 +136,14 @@ import { picture } from '../components/demo-data'
 
       <div class="flex flex-wrap items-center gap-3">
         <Button variant="outline" color="neutral" command="show-modal" commandfor="rtl-panel">فتح اللوحة الجانبية</Button>
+        <Button variant="outline" color="neutral" command="show-modal" commandfor="rtl-sheet">فتح الورقة</Button>
         <Button variant="outline" color="neutral" onclick="apogeeToast('تم الحفظ', { color: 'positive', title: 'تم' })">إظهار تنبيه</Button>
       </div>
       <Dialog id="rtl-panel" position="end" title="لوحة جانبية">
         تنزلق من الحافة النهائية (اليسار في RTL) وتُغلق بالزر أو بالنقر خارجها.
+      </Dialog>
+      <Dialog id="rtl-sheet" position={{ base: 'bottom', md: 'start' }} title="ورقة" subtitle="ورقة سفلية على الهاتف، درج بدائي من md.">
+        الموضع يتغير حسب نقطة الفصل.
       </Dialog>
 
       <Tabs tabs={['الحساب', 'كلمة المرور', 'الإشعارات']}>
@@ -146,6 +151,12 @@ import { picture } from '../components/demo-data'
         <p slot="panel-1">الأسهم تعكس اتجاهها تحت RTL.</p>
         <p slot="panel-2">Home / End يصلان إلى الطرفين.</p>
       </Tabs>
+      <Tabs variant="pills-raised" tabs={['الحساب', 'كلمة المرور']}>
+        <p slot="panel-0">أقراص مرتفعة.</p>
+        <p slot="panel-1">كلمة المرور.</p>
+      </Tabs>
+
+      <Slider range name="السعر" minValue={20} maxValue={60} aria-label="السعر" class="max-w-sm" />
 
       <Carousel dots itemWidth="14rem">
         {['١', '٢', '٣', '٤', '٥'].map((n) => (

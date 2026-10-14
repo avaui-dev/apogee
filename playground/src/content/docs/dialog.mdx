@@ -67,8 +67,12 @@ import Button from '@/components/apogee/Button/Button.astro'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `id` | `string` | — | Required — matches the trigger's `commandfor`. |
-| `title` | `string` | — | Renders as the header `<h2>`. |
-| `position` | `'center' \| 'start' \| 'end' \| 'top' \| 'bottom' \| 'full-screen'` | `'center'` | Where it sits: centered, docked to a side (`start` / `end` are logical: `end` is the right in LTR and the left in RTL), docked to the top or bottom, or filling the viewport. |
+| `title` | `string` | — | Renders as the header `<h2>`, wired with `aria-labelledby`. |
+| `subtitle` | `string` | — | One line under the title, wired with `aria-describedby`. |
+| `position` | `Responsive<'center' \| 'start' \| 'end' \| 'top' \| 'bottom' \| 'full-screen'>` | `'center'` | Where it sits, per breakpoint: `{ base: 'bottom', md: 'center' }` is a sheet on phones and a dialog from `md`. `start` / `end` are logical (`end` is the right in LTR, the left in RTL). |
+| `size` | `string` | `32rem` centre, `24rem` drawers, `85dvh` sheets | CSS length: the width of a centred dialog or drawer, the max height of a top or bottom sheet. Use this rather than an inline `style`, which replaces it. |
+| `padding` | `0 \| 2 \| 3 \| 4 \| 5 \| 6` | `5` | Inner padding in spacing steps. `0` for edge-to-edge media. |
+| `overlay` | `'dim' \| 'blurred' \| 'transparent'` | `'dim'` | Backdrop treatment. `transparent` leaves page scrolling alone; the page is still inert while the dialog is open. |
 | `dismissOnBackdrop` | `boolean` | `true` | Clicking the backdrop closes the dialog. Set `false` for a decision the user must answer. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -112,11 +116,90 @@ Every `position`:
   <Dialog id="v-full" position="full-screen" title="Fullscreen">Fills the viewport.</Dialog>
 </Preview>
 
+## Responsive position
+
+Sheet on phones, centred dialog from `md`. Resize the window and reopen.
+
+<Preview code={`<Button command="show-modal" commandfor="d-resp">Open</Button>
+<Dialog id="d-resp" position={{ base: 'bottom', md: 'center' }} title="Share" subtitle="Anyone with the link can view.">
+  <p>Copy the link below.</p>
+</Dialog>`}>
+  <Button command="show-modal" commandfor="d-resp">Open</Button>
+  <Dialog id="d-resp" position={{ base: 'bottom', md: 'center' }} title="Share" subtitle="Anyone with the link can view.">
+    <p>Copy the link below.</p>
+  </Dialog>
+</Preview>
+
+## Size and padding
+
+`size` is a width for a centred dialog or drawer and a max height for a sheet.
+Every `padding` step:
+
+<Preview code={`<Dialog id="d-wide" size="48rem" title="Wide">…</Dialog>
+<Dialog id="d-drawer" position="end" size="32rem" title="Wide drawer">…</Dialog>
+<Dialog id="d-sheet" position="bottom" size="40dvh" title="Short sheet">…</Dialog>
+<Dialog id="d-pad-0" padding={0} title="Padding 0">…</Dialog>
+<Dialog id="d-pad-2" padding={2} title="Padding 2">…</Dialog>
+… padding 3, 4, 5, 6 …`}>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-wide">48rem wide</Button>
+  <Dialog id="d-wide" size="48rem" title="Wide">A centred dialog 48rem wide.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-drawer">32rem drawer</Button>
+  <Dialog id="d-drawer" position="end" size="32rem" title="Wide drawer">An end drawer 32rem wide.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-sheet">40dvh sheet</Button>
+  <Dialog id="d-sheet" position="bottom" size="40dvh" title="Short sheet">A bottom sheet capped at 40dvh.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-pad-0">padding 0</Button>
+  <Dialog id="d-pad-0" padding={0} title="Padding 0">Edge to edge: bring your own padding for media.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-pad-2">padding 2</Button>
+  <Dialog id="d-pad-2" padding={2} title="Padding 2">Inner padding of 2 spacing steps.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-pad-3">padding 3</Button>
+  <Dialog id="d-pad-3" padding={3} title="Padding 3">Inner padding of 3 spacing steps.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-pad-4">padding 4</Button>
+  <Dialog id="d-pad-4" padding={4} title="Padding 4">Inner padding of 4 spacing steps.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-pad-5">padding 5</Button>
+  <Dialog id="d-pad-5" padding={5} title="Padding 5">Inner padding of 5 spacing steps.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-pad-6">padding 6</Button>
+  <Dialog id="d-pad-6" padding={6} title="Padding 6">Inner padding of 6 spacing steps.</Dialog>
+</Preview>
+
+## Overlay
+
+<Preview code={`<Dialog id="d-ov-dim" overlay="dim" title="Dimmed">…</Dialog>
+<Dialog id="d-ov-blur" overlay="blurred" title="Blurred">…</Dialog>
+<Dialog id="d-ov-clear" overlay="transparent" title="Transparent">…</Dialog>`}>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-ov-dim">Dim</Button>
+  <Dialog id="d-ov-dim" overlay="dim" title="Dimmed">The default scrim; the page behind cannot scroll.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-ov-blur">Blurred</Button>
+  <Dialog id="d-ov-blur" overlay="blurred" title="Blurred">The scrim plus a 4px blur.</Dialog>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-ov-clear">Transparent</Button>
+  <Dialog id="d-ov-clear" overlay="transparent" title="Transparent">The page behind does not dim and keeps scrolling, but it is inert until this closes.</Dialog>
+</Preview>
+
+## Must answer
+
+`dismissOnBackdrop={false}`: the backdrop click does nothing; Escape, the close
+button and the footer buttons still work.
+
+<Preview code={`<Dialog id="d-stay" dismissOnBackdrop={false} title="Discard changes?">
+  <p>You have unsaved edits.</p>
+  <Button variant="ghost" color="neutral" command="close" commandfor="d-stay" slot="footer">Keep editing</Button>
+  <Button color="critical" command="close" commandfor="d-stay" slot="footer">Discard</Button>
+</Dialog>`}>
+  <Button variant="outline" color="neutral" command="show-modal" commandfor="d-stay">Discard changes</Button>
+  <Dialog id="d-stay" dismissOnBackdrop={false} title="Discard changes?">
+    <p>You have unsaved edits.</p>
+    <Button variant="ghost" color="neutral" command="close" commandfor="d-stay" slot="footer">Keep editing</Button>
+    <Button color="critical" command="close" commandfor="d-stay" slot="footer">Discard</Button>
+  </Dialog>
+</Preview>
+
 ## States
 
 - **Open / closed** — the native `[open]` attribute; enter/exit fades and
   slides (`@starting-style`), respects `prefers-reduced-motion`.
-- **Backdrop** — fades to 50% black on open (`::backdrop`).
+- **Backdrop** — fades to the `--overlay` scrim on open (`::backdrop`);
+  `blurred` adds a 4px blur. Page scrolling is locked while a dim or blurred
+  dialog is open (add `scrollbar-gutter: stable` to `html` if the layout shift
+  bothers you).
 
 Try each state via the triggers in the Variants preview above.
 
@@ -141,6 +224,8 @@ A destructive confirm, with a `danger` footer button:
 - The `title` renders as an `<h2 id="${id}-title">`, wired to `aria-labelledby`
   on the `<dialog>` — when `title` is set, it's announced as the dialog's
   accessible name on open.
+- `subtitle` renders as a paragraph wired to `aria-describedby`, so it is read
+  as the dialog's description.
 - The close button has `aria-label="Close"`.
 - **Keyboard** — `Escape` closes it (native `showModal()` behavior); the close
   and footer buttons are reachable with `Tab`.
@@ -167,7 +252,7 @@ A destructive confirm, with a `danger` footer button:
 - **Do** match `commandfor` to the dialog's `id` exactly — a mismatch silently
   no-ops.
 - **Don't** stack multiple modal dialogs — the design isn't built for it.
-- **Don't** use `fullscreen` for something that isn't itself a full task (a
+- **Don't** use `full-screen` for something that isn't itself a full task (a
   short confirm) — reserve it for immersive flows.
 
 ## Content

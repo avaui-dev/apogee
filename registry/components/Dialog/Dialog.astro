@@ -1,188 +1,166 @@
 ---
 /**
  * Dialog — a native `<dialog>` opened/closed with invoker commands (zero JS core;
- * a tiny script + `closedby` handle backdrop-click). Three shapes:
+ * a tiny script + `closedby` handle backdrop-click). Positions, per breakpoint:
  *
- *   position="center"      centered dialog (default)
+ *   position="center"      centred dialog (default)
  *   position="start|end"   side drawer (logical: end is the right in LTR)
  *   position="top|bottom"  edge sheet
  *   position="full-screen" fills the viewport
+ *   position={{ base: 'bottom', md: 'center' }}   sheet on phones, dialog from md
  *
  *   <Button command="show-modal" commandfor="d">Open</Button>
- *   <Dialog id="d" position="end" title="…">…</Dialog>
+ *   <Dialog id="d" position="end" title="…" subtitle="…">…</Dialog>
+ *
+ * `size` is the width (centre, drawers) or the max height (sheets). The page
+ * behind a dim or blurred overlay cannot scroll; a transparent overlay leaves
+ * scrolling alone but the dialog is still modal, so the page stays inert.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { X } from '@lucide/astro'
+import { responsive, type Responsive } from '../utils/responsive.ts'
+import { tables } from '../utils/responsive-tables.ts'
+
+type Position = keyof typeof tables.dialogPosition.base
+const paddings = {
+  0: '0px',
+  2: 'calc(var(--spacing) * 2)',
+  3: 'calc(var(--spacing) * 3)',
+  4: 'calc(var(--spacing) * 4)',
+  5: 'calc(var(--spacing) * 5)',
+  6: 'calc(var(--spacing) * 6)',
+} as const
 
 /** @composable */
 interface Props extends HTMLAttributes<'dialog'> {
   id: string
   title?: string
-  /** Where the dialog sits. `start`/`end` are logical: `end` is the right in LTR, the left in RTL. @category layout */
-  position?: 'center' | 'start' | 'end' | 'top' | 'bottom' | 'full-screen'
+  /** One line under the title; wired as the dialog's description. */
+  subtitle?: string
+  /** Where the dialog sits, per breakpoint. `start`/`end` are logical. @category layout */
+  position?: Responsive<Position>
+  /** CSS length: width for centre and drawers, max height for sheets. @category layout */
+  size?: string
+  /** Inner padding in spacing steps. @category layout */
+  padding?: keyof typeof paddings
+  /** Backdrop: dimmed (default), blurred, or none. @category layout */
+  overlay?: 'dim' | 'blurred' | 'transparent'
   /** Click on the backdrop closes it. Set false for a confirm the user must answer. */
   dismissOnBackdrop?: boolean
   class?: string
 }
 
-const { id, title, position = 'center', dismissOnBackdrop = true, class: className, ...rest } = Astro.props
+const {
+  id,
+  title,
+  subtitle,
+  position = 'center',
+  size,
+  padding = 5,
+  overlay = 'dim',
+  dismissOnBackdrop = true,
+  class: className,
+  ...rest
+} = Astro.props
+const vars = [size && `--apogee-dialog-size: ${size}`, `--apogee-dialog-pad: ${paddings[padding]}`].filter(Boolean).join('; ')
 ---
 
 <dialog
   id={id}
   closedby={dismissOnBackdrop ? 'any' : 'closerequest'}
-  data-position={position}
   data-dismiss-on-backdrop={String(dismissOnBackdrop)}
+  data-overlay={overlay}
   aria-labelledby={title ? `${id}-title` : undefined}
-  class:list={['apogee-dialog bg-elevation-raised p-0 text-neutral', position === 'center' ? 'border border-neutral' : 'border-0', className]}
+  aria-describedby={subtitle ? `${id}-subtitle` : undefined}
+  style={vars}
+  class:list={['apogee-dialog bg-elevation-raised p-0 text-neutral', responsive(position, tables.dialogPosition), className]}
   {...rest}
 >
-  <div class="flex items-start justify-between gap-4 p-5 pb-2">
-    {title && <h2 id={`${id}-title`} class="text-lg font-semibold text-neutral">{title}</h2>}
+  <div class="flex items-start justify-between gap-4 p-(--apogee-dialog-pad) pb-2">
+    {
+      (title || subtitle) && (
+        <div class="min-w-0">
+          {title && (
+            <h2 id={`${id}-title`} class="text-lg font-semibold text-neutral">
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p id={`${id}-subtitle`} class="mt-0.5 text-sm text-neutral-faded">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )
+    }
     <button
       type="button"
       command="close"
       commandfor={id}
       aria-label="Close"
-      class="-me-1 -mt-1 ms-auto grid size-8 shrink-0 place-items-center rounded-md text-neutral-faded hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      class:list={[
+        'ms-auto grid size-8 shrink-0 place-items-center rounded-md text-neutral-faded hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+        padding > 0 && '-me-1 -mt-1',
+      ]}
     >
       <X class="size-4" aria-hidden="true" />
     </button>
   </div>
-  <div class="px-5 pb-5 text-sm text-neutral-faded">
+  <div class="px-(--apogee-dialog-pad) pb-(--apogee-dialog-pad) text-sm text-neutral-faded">
     <slot />
   </div>
   {
     Astro.slots.has('footer') && (
-      <div class="flex justify-end gap-2 border-t border-neutral px-5 py-4">
+      <div class="flex justify-end gap-2 border-t border-neutral px-(--apogee-dialog-pad) py-4">
         <slot name="footer" />
       </div>
     )
   }
 </dialog>
 
+<style is:global>
+  /* Page scroll lock while a dialog with a visible backdrop is open. */
+  body:has(.apogee-dialog[open]:not([data-overlay='transparent'])) {
+    overflow: hidden;
+  }
+</style>
+
 <style>
+  /* Layout per position comes from the responsive table (utilities on the
+     element). This block owns the enter/exit motion and the backdrop. */
   .apogee-dialog {
     overflow-y: auto;
     opacity: 0;
     transition:
       opacity var(--duration-slow) var(--ease-standard),
-      transform var(--duration-slow) var(--ease-standard),
+      translate var(--duration-slow) var(--ease-standard),
+      scale var(--duration-slow) var(--ease-standard),
       overlay var(--duration-slow) var(--ease-standard) allow-discrete,
       display var(--duration-slow) var(--ease-standard) allow-discrete;
   }
-
-  /* --- layout per position (state-independent) --- */
-  .apogee-dialog {
-    margin: auto;
-    width: 100%;
-    max-width: 32rem;
-    max-height: 85dvh;
-    border-radius: var(--radius-lg);
-  }
-  .apogee-dialog:is([data-position='start'], [data-position='end'], [data-position='top'], [data-position='bottom']) {
-    margin: 0;
-    max-width: 100%;
-    max-height: 100dvh;
-  }
-  .apogee-dialog[data-position='end'] {
-    inset-block: 0;
-    inset-inline: auto 0;
-    height: 100dvh;
-    width: 24rem;
-    border-start-start-radius: var(--radius-lg);
-    border-end-start-radius: var(--radius-lg);
-  }
-  .apogee-dialog[data-position='start'] {
-    inset-block: 0;
-    inset-inline: 0 auto;
-    height: 100dvh;
-    width: 24rem;
-    border-start-end-radius: var(--radius-lg);
-    border-end-end-radius: var(--radius-lg);
-  }
-  .apogee-dialog[data-position='top'] {
-    inset: 0 0 auto 0;
-    width: 100%;
-    max-height: 85dvh;
-    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  }
-  .apogee-dialog[data-position='bottom'] {
-    inset: auto 0 0 0;
-    width: 100%;
-    max-height: 85dvh;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  }
-  .apogee-dialog[data-position='full-screen'] {
-    inset: 0;
-    margin: 0;
-    width: 100%;
-    height: 100dvh;
-    max-width: 100%;
-    max-height: 100dvh;
-    border-radius: 0;
-  }
-
-  /* --- enter/exit transforms (on the closed state) --- */
   .apogee-dialog:not([open]) {
-    transform: scale(0.97) translateY(6px);
+    translate: var(--apogee-dx) var(--apogee-dy);
+    scale: var(--apogee-scale);
   }
-  /* Slide from the edge it's docked to. :dir(rtl) mirrors the sign. */
-  .apogee-dialog[data-position='end']:not([open]) {
-    transform: translateX(100%);
+  .apogee-dialog:dir(rtl):not([open]) {
+    translate: calc(-1 * var(--apogee-dx)) var(--apogee-dy);
   }
-  .apogee-dialog[data-position='start']:not([open]) {
-    transform: translateX(-100%);
-  }
-  .apogee-dialog[data-position='end']:dir(rtl):not([open]) {
-    transform: translateX(-100%);
-  }
-  .apogee-dialog[data-position='start']:dir(rtl):not([open]) {
-    transform: translateX(100%);
-  }
-  .apogee-dialog[data-position='top']:not([open]) {
-    transform: translateY(-100%);
-  }
-  .apogee-dialog[data-position='bottom']:not([open]) {
-    transform: translateY(100%);
-  }
-  .apogee-dialog[data-position='full-screen']:not([open]) {
-    transform: none;
-  }
-
   .apogee-dialog[open] {
     opacity: 1;
-    transform: none;
+    translate: 0 0;
+    scale: 1;
   }
   @starting-style {
     .apogee-dialog[open] {
       opacity: 0;
-      transform: scale(0.97) translateY(6px);
+      translate: var(--apogee-dx) var(--apogee-dy);
+      scale: var(--apogee-scale);
     }
-    .apogee-dialog[data-position='end'][open] {
-      transform: translateX(100%);
-    }
-    .apogee-dialog[data-position='start'][open] {
-      transform: translateX(-100%);
-    }
-    .apogee-dialog[data-position='end'][open]:dir(rtl) {
-      transform: translateX(-100%);
-    }
-    .apogee-dialog[data-position='start'][open]:dir(rtl) {
-      transform: translateX(100%);
-    }
-    .apogee-dialog[data-position='top'][open] {
-      transform: translateY(-100%);
-    }
-    .apogee-dialog[data-position='bottom'][open] {
-      transform: translateY(100%);
-    }
-    .apogee-dialog[data-position='full-screen'][open] {
-      transform: none;
+    .apogee-dialog[open]:dir(rtl) {
+      translate: calc(-1 * var(--apogee-dx)) var(--apogee-dy);
     }
   }
 
-  /* --- backdrop --- */
   .apogee-dialog::backdrop {
     background-color: transparent;
     transition:
@@ -192,6 +170,12 @@ const { id, title, position = 'center', dismissOnBackdrop = true, class: classNa
   }
   .apogee-dialog[open]::backdrop {
     background-color: var(--overlay);
+  }
+  .apogee-dialog[data-overlay='blurred'][open]::backdrop {
+    backdrop-filter: blur(4px);
+  }
+  .apogee-dialog[data-overlay='transparent'][open]::backdrop {
+    background-color: transparent;
   }
   @starting-style {
     .apogee-dialog[open]::backdrop {
@@ -210,11 +194,17 @@ const { id, title, position = 'center', dismissOnBackdrop = true, class: classNa
 <script>
   import { island } from '../utils/island.ts'
 
-  // Backdrop click closes it (fallback for browsers without `closedby`).
+  // Backdrop click closes it (fallback for browsers without `closedby`). The
+  // backdrop and the dialog's own empty area both report the dialog as the
+  // target, so the click point must also fall outside the card.
   island<HTMLDialogElement>('dialog.apogee-dialog', (dialog) => {
     if (dialog.dataset.dismissOnBackdrop === 'false') return
     dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close()
+      if (event.target !== dialog) return
+      const r = dialog.getBoundingClientRect()
+      const inside =
+        event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom
+      if (!inside) dialog.close()
     })
   })
 </script>

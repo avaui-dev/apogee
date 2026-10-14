@@ -1,54 +1,100 @@
 ---
 /**
- * ToggleButton — a two-state button (`aria-pressed`). Icon and/or text in the
- * slot. Self-toggles on click by default (small island); pass `manual` when a
- * parent owns the state — a toolbar reading the document selection, or a
- * single-select ToggleButtonGroup.
+ * ToggleButton — a two-state button (`aria-pressed`) on the Button class tables:
+ * `color` / `variant` / `size` style the resting state, `selectedColor` /
+ * `selectedVariant` the pressed one. Self-toggles on click by default (small
+ * island); pass `manual` when a parent owns the state. With `name` and `value`
+ * a hidden input submits the value while pressed, with or without JS.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import {
+  buttonSizes,
+  iconOnlySizes,
+  buttonStyles,
+  pressedStyles,
+  type ButtonColor,
+  type ButtonVariant,
+  type ButtonSize,
+  type PressedVariant,
+} from '../Button/button.ts'
 interface Props extends Omit<HTMLAttributes<'button'>, 'size'> {
   pressed?: boolean
   /** Don't self-toggle; the parent controls `aria-pressed`. */
   manual?: boolean
+  /** Identity in a group and the submitted value (with `name`). */
+  value?: string
+  /** Form field name; submits `value` while pressed. */
+  name?: string
+  /** Resting hue. @category layout */
+  color?: ButtonColor
+  /** Resting fill style. @category layout */
+  variant?: ButtonVariant
   /** @category layout */
-  size?: 'small' | 'medium' | 'large'
+  size?: ButtonSize
+  /** Pressed hue. @category layout */
+  selectedColor?: ButtonColor
+  /** Pressed fill style. @category layout */
+  selectedVariant?: PressedVariant
+  /** @category layout */
+  rounded?: boolean
+  /** Square, icon-only button; give it an `aria-label`. @category layout */
+  iconOnly?: boolean
   'aria-label'?: string
   class?: string
 }
 
-const { pressed = false, manual = false, size = 'medium', class: className, ...rest } = Astro.props
+const {
+  pressed = false,
+  manual = false,
+  value,
+  name,
+  color = 'neutral',
+  variant = 'ghost',
+  size = 'medium',
+  selectedColor = 'neutral',
+  selectedVariant = 'faded',
+  rounded = false,
+  iconOnly = false,
+  class: className,
+  ...rest
+} = Astro.props
 
-const sizeMap = {
-  small: 'h-8 min-w-8 px-2 text-xs',
-  medium: 'h-9 min-w-9 px-2.5 text-sm',
-  large: 'h-10 min-w-10 px-3 text-base',
-}
+const sizeClasses = iconOnly
+  ? [iconOnlySizes[size], 'p-0', buttonSizes[size].replace(/\b(px|h)-\S+/g, '')]
+  : buttonSizes[size]
 ---
 
 <button
   type="button"
   aria-pressed={pressed}
   data-toggle={String(!manual)}
+  value={value}
   class:list={[
-    'apogee-toggle inline-flex items-center justify-center gap-2 rounded-md font-medium text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-pressed:bg-neutral aria-pressed:text-neutral disabled:opacity-50 [&>svg]:size-4',
-    sizeMap[size],
+    'apogee-toggle inline-flex items-center justify-center whitespace-nowrap font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0',
+    buttonStyles[variant][color],
+    pressedStyles[selectedVariant][selectedColor],
+    sizeClasses,
+    rounded && 'rounded-full',
     className,
   ]}
   {...rest}
 >
   <slot />
 </button>
+{name && value !== undefined && <input type="hidden" name={name} value={value} disabled={!pressed} />}
 
 <script>
   import { island } from '../utils/island.ts'
 
-  island('.apogee-toggle[data-toggle="true"]', (b) => {
+  island<HTMLButtonElement>('.apogee-toggle[data-toggle="true"]', (b) => {
     b.addEventListener('click', () => {
       const pressed = b.getAttribute('aria-pressed') !== 'true'
       b.setAttribute('aria-pressed', String(pressed))
-      b.dispatchEvent(new CustomEvent('apogee:toggle-change', { bubbles: true, detail: { pressed } }))
+      const hidden = b.nextElementSibling
+      if (hidden instanceof HTMLInputElement && hidden.type === 'hidden') hidden.disabled = !pressed
+      b.dispatchEvent(new CustomEvent('apogee:toggle-change', { bubbles: true, detail: { pressed, value: b.value } }))
     })
   })
 </script>

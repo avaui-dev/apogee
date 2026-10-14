@@ -5,18 +5,21 @@
  *
  *   apogeeToast('Saved', { color: 'positive', title: 'Done' })
  *
- * Signature: apogeeToast(message, { color?, title?, duration?, position? }) → id.
+ * Signature: apogeeToast(message, { color?, title?, duration?, position?, actions?, width? }) → id.
  * `color` is a hue: primary (default), neutral, positive, warning, critical.
  * Toasts stack, auto-dismiss (duration ms, default 4000; 0 = sticky; the timer
  * pauses while hovered or focused), and have a close button. `position` picks a
  * corner per call (regions are created as needed); `apogeeToast.dismiss(id)`
- * closes one early.
+ * closes one early. `actions` render as small ghost buttons under the message
+ * (click runs `onClick` or follows `href`, then dismisses); `width` is
+ * `short` (20rem), `long` (25rem) or a CSS length.
  *
  * The markup lives in a build-time <template> + icon set so Tailwind sees every
  * class; the script clones them. Needs JS (a toast is inherently imperative).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Info, CircleCheck, TriangleAlert, CircleAlert, X } from '@lucide/astro'
+import { buttonSizes, buttonStyles } from '../Button/button.ts'
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -53,7 +56,7 @@ const positions = {
   role="region"
   aria-label="Notifications"
   class:list={[
-    'pointer-events-none fixed z-50 flex w-80 max-w-[calc(100vw-2rem)] gap-2',
+    'pointer-events-none fixed z-50 flex gap-2',
     positions[position],
     className,
   ]}
@@ -70,11 +73,17 @@ const positions = {
 </div>
 
 <template id="apogee-toast-template">
-  <div class="apogee-toast pointer-events-auto flex items-start gap-3 rounded-lg border border-neutral bg-elevation-raised p-3 text-sm shadow-lg">
+  <div class="apogee-toast pointer-events-auto flex w-80 max-w-[calc(100vw-2rem)] items-start gap-3 rounded-lg border border-neutral bg-elevation-raised p-3 text-sm shadow-lg">
     <span class="apogee-toast-icon mt-0.5 shrink-0"></span>
     <div class="min-w-0 flex-1">
       <p class="apogee-toast-title font-medium text-neutral"></p>
       <p class="apogee-toast-msg text-neutral-faded"></p>
+      <div class="apogee-toast-actions mt-2 flex flex-wrap gap-1">
+        <button
+          type="button"
+          class={`apogee-toast-action inline-flex items-center font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${buttonSizes.small} ${buttonStyles.ghost.neutral}`}
+        ></button>
+      </div>
     </div>
     <button
       type="button"
@@ -123,7 +132,7 @@ const positions = {
   const template = document.getElementById('apogee-toast-template') as HTMLTemplateElement | null
   const icons = document.getElementById('apogee-toast-icons')
   const positions: Record<string, string> = host?.dataset.positions ? JSON.parse(host.dataset.positions) : {}
-  const BASE = 'pointer-events-none fixed z-50 flex w-80 max-w-[calc(100vw-2rem)] gap-2'
+  const BASE = 'pointer-events-none fixed z-50 flex gap-2'
 
   // One region per position, created on first use; the host serves its own position.
   const regionFor = (position: string): HTMLElement | null => {
@@ -144,11 +153,12 @@ const positions = {
   let seq = 0
   const open = new Map<number, () => void>()
 
+  type Action = { label: string; onClick?: () => void; href?: string }
   function toast(
     message: string,
-    opts: { color?: string; title?: string; duration?: number; position?: string } = {},
+    opts: { color?: string; title?: string; duration?: number; position?: string; actions?: Action[]; width?: string } = {},
   ): number {
-    const { color = 'primary', title, duration = 4000, position = host?.dataset.position ?? 'bottom-end' } = opts
+    const { color = 'primary', title, duration = 4000, position = host?.dataset.position ?? 'bottom-end', actions = [], width } = opts
     const region = regionFor(position)
     if (!region || !template?.content.firstElementChild) return -1
 
@@ -181,6 +191,24 @@ const positions = {
       el.addEventListener('animationend', remove, { once: true })
       setTimeout(remove, 250)
     }
+
+    // Actions: the template carries one styled button; clone it per action.
+    const actionsEl = el.querySelector<HTMLElement>('.apogee-toast-actions')!
+    const proto = actionsEl.firstElementChild as HTMLElement
+    proto.remove()
+    for (const a of actions) {
+      const b = a.href
+        ? Object.assign(document.createElement('a'), { href: a.href, className: proto.className })
+        : (proto.cloneNode() as HTMLElement)
+      b.textContent = a.label
+      b.addEventListener('click', () => {
+        a.onClick?.()
+        dismiss()
+      })
+      actionsEl.appendChild(b)
+    }
+    if (!actions.length) actionsEl.remove()
+    if (width) el.style.width = width === 'short' ? '20rem' : width === 'long' ? '25rem' : width
 
     // Auto-dismiss timer that pauses while the pointer or focus is on the toast.
     if (duration > 0) {

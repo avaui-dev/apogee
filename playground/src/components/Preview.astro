@@ -8,9 +8,13 @@
  * listbox, Dropdown menu, Popover) can escape the box; only the code block clips.
  * Prose typography is neutralised inside the live area (see global.css) so the
  * rendered component is the real component, not prose-styled HTML.
+ *
+ * The full-screen button pins the live area to the viewport (position: fixed,
+ * same markup, islands untouched) so a component can be seen on a bare page
+ * and the window resized against it. Escape or the corner button restores it.
  */
 import { Code } from 'astro:components'
-import { ChevronDown } from '@lucide/astro'
+import { ChevronDown, Maximize2, Minimize2, Sun, Moon } from '@lucide/astro'
 import type { ComponentProps } from 'astro/types'
 
 interface Props {
@@ -23,10 +27,27 @@ const { code, lang = 'astro', block = false } = Astro.props
 ---
 
 <div class="my-6 rounded-lg border border-neutral" data-preview>
-  <div class:list={['min-h-28 rounded-t-lg bg-page p-6', block ? 'flex flex-col items-stretch gap-4' : 'flex flex-wrap items-start gap-4']} data-preview-live>
+  <div
+    class:list={[
+      'min-h-28 rounded-t-lg bg-page p-6 data-fullscreen:fixed data-fullscreen:inset-0 data-fullscreen:z-40 data-fullscreen:overflow-auto data-fullscreen:rounded-none data-fullscreen:p-8',
+      block ? 'flex flex-col items-stretch gap-4' : 'flex flex-wrap items-start gap-4',
+    ]}
+    data-preview-live
+  >
     <slot />
+    <!-- Full-screen chrome: theme switch + exit. Bound by the layout's theme script like any [data-theme-toggle]. -->
+    <div class="fixed end-3 top-3 hidden gap-1.5 in-data-fullscreen:flex">
+      <button type="button" data-theme-toggle aria-label="Toggle theme" class="grid size-8 place-items-center rounded-md border border-neutral bg-elevation-raised text-neutral-faded shadow-raised transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+        <Sun class="size-4 hidden dark:block" aria-hidden="true" />
+        <Moon class="size-4 dark:hidden" aria-hidden="true" />
+      </button>
+      <button type="button" data-preview-collapse aria-label="Exit full screen" class="grid size-8 place-items-center rounded-md border border-neutral bg-elevation-raised text-neutral-faded shadow-raised transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+        <Minimize2 class="size-4" aria-hidden="true" />
+      </button>
+    </div>
   </div>
   <!-- not-content keeps prose margins and summary styling out of the toolbar and code. -->
+  <div class="relative">
   <details class="group not-content border-t border-neutral">
     <summary
       class="m-0 flex cursor-pointer list-none items-center gap-1.5 rounded-b-lg px-4 py-2 text-xs font-medium text-neutral-faded transition-colors group-open:rounded-b-none hover:bg-neutral-faded hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
@@ -39,4 +60,47 @@ const { code, lang = 'astro', block = false } = Astro.props
       <Code code={code} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} />
     </div>
   </details>
+  <button
+    type="button"
+    data-preview-expand
+    aria-label="View full screen"
+    title="Full screen"
+    class="absolute end-1.5 top-1 grid size-6 place-items-center no-js:hidden rounded text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+  >
+    <Maximize2 class="size-3.5" aria-hidden="true" />
+  </button>
+  </div>
 </div>
+
+<style is:global>
+  body:has([data-preview-live][data-fullscreen]) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  // Toggle a preview's live area between its box and the full viewport.
+  const liveOf = (el: Element) => el.closest('[data-preview]')?.querySelector<HTMLElement>('[data-preview-live]')
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest<HTMLElement>('[data-preview-expand], [data-preview-collapse]')
+    if (!btn) return
+    const live = liveOf(btn)
+    if (!live) return
+    const on = btn.hasAttribute('data-preview-expand')
+    live.toggleAttribute('data-fullscreen', on)
+    live.closest('[data-preview]')?.querySelector<HTMLElement>(on ? '[data-preview-collapse]' : '[data-preview-expand]')?.focus()
+  })
+  document.addEventListener('keydown', (e) => {
+    // A dialog or popover inside the preview owns Escape first.
+    if (e.key !== 'Escape') return
+    try {
+      if (document.querySelector('dialog[open], :popover-open')) return
+    } catch {
+      // No popover support: nothing in the top layer to defer to.
+    }
+    const live = document.querySelector<HTMLElement>('[data-preview-live][data-fullscreen]')
+    if (!live) return
+    live.removeAttribute('data-fullscreen')
+    live.closest('[data-preview]')?.querySelector<HTMLElement>('[data-preview-expand]')?.focus()
+  })
+</script>

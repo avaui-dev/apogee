@@ -27,13 +27,18 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **Link** — `start` / `end` icon slots, `critical` / `positive` / `warning` colours, `disabled`.
 - **Code** — `lang` + `code` for build-time syntax highlighting in both themes.
 - **Table, DataGrid** — `headerStyle: normal | caps` (default `normal`).
-- **Dialog** — `dismissOnBackdrop`.
+- **Dialog** — `dismissOnBackdrop`, responsive `position` (`{ base: 'bottom', md: 'center' }`), `size`, `padding`, `overlay` (dim, blurred, transparent), `subtitle` wired as the description, page scroll lock while open.
 - **PinInput** — `hasError`, `disabled`, `value`; native attributes pass through.
-- **Toast** — `position` per call, `apogeeToast()` returns an id, `apogeeToast.dismiss(id)`; the timer pauses while hovered or focused.
+- **Toast** — `position` per call, `apogeeToast()` returns an id, `apogeeToast.dismiss(id)`; the timer pauses while hovered or focused; `actions` (small ghost buttons that run `onClick` then dismiss), `width` (short, long or a length).
 - **Carousel** — `label`; arrows hide at the edges; `apogee:carousel-change`.
 - **Events** — `apogee:tag-input-change`, `apogee:combobox-select` (plus native `input` / `change` on commit), FileUpload drop fires `change`.
 - **Tokens** — `--font-serif` (Blockquote and prose quotes use it).
 - **Prose** — styles every page element: all headings, lead and small text, figures, video, iframes, tables, kbd, mark, abbr, definition lists, details.
+- **Tabs** — item objects (`value`, `href`, `disabled`), `value` for the first tab, `variant` (bordered, borderless, pills, pills-raised), `size`, overflow scrolling with edge fades; panels are `panel-<value>` slots; `apogee:tabs-change` carries `value`.
+- **Slider** — `range` (two thumbs, `minValue` / `maxValue`, submits `<name>-min` / `<name>-max` or `minName` / `maxName`), the badge shows the value with `format` (`'{value}%'`, `false` hides it), `orientation="vertical"`; the initial value snaps to `step`.
+- **ToggleButton** — on the Button tables: `color`, `variant`, four `size`s, `rounded`, `iconOnly`; pressed look from `selectedColor` × `selectedVariant` (solid, faded); `value` + `name` submit through a hidden input while pressed.
+- **ToggleButtonGroup** — roving tabindex with arrow / Home / End keys; keeps each button's hidden input in sync in `single` mode.
+- **utils/roving** — `stepIndex` keyboard helper (Tabs, ToggleButtonGroup).
 - **utils/radius** — `innerRadius` table for concentric corners inside rounded trays.
 - **Gates** — `npm run check:strict` (consumer-grade strictest typecheck) and `npm run test:behaviour` (browser suite).
 
@@ -45,6 +50,9 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - Avatar fallbacks and the AvatarGroup overflow chip use opaque fills.
 - Dialog drawers, sheets and full-screen have no border; only the centred modal keeps one.
 - Slider: neutral track, higher-contrast thumb, logical fill direction.
+- Slider badge shows the value, not a percentage.
+- ToggleButton icon-only buttons need `iconOnly` for a square; the resting text colour is the hue's text, not the faded one.
+- `apogee:toggle-group-change` detail is `{ value: string[] }` (was `pressed`).
 - ToggleButtonGroup, SegmentedControl and Menubar chips use concentric inner radii.
 - Tooltip wraps long text (max 20rem) and renders nothing when `text` is empty.
 

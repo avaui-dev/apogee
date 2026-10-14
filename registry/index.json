@@ -978,7 +978,9 @@
       "files": [
         "Toast/Toaster.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "Button"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -991,6 +993,7 @@
         "ToggleButton/ToggleButton.astro"
       ],
       "registryDependencies": [
+        "Button",
         "utils"
       ],
       "dependencies": [],
@@ -1031,6 +1034,7 @@
         "utils/radius.ts",
         "utils/responsive-tables.ts",
         "utils/responsive.ts",
+        "utils/roving.ts",
         "utils/uid.ts"
       ],
       "registryDependencies": [],

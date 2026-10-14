@@ -1,8 +1,10 @@
 ---
 /**
- * Slider — a styled native range input with a live percentage badge.
- * The input works with zero JS; the badge is a small island (progressive
- * enhancement — `no-js:hidden`, since the range is fully usable without it).
+ * Slider — a styled native range input with a live value badge. The input works
+ * with zero JS; the badge is a small island (`no-js:hidden`). `range` stacks a
+ * second input for a lower/upper pair that submits as `<name>-min` / `<name>-max`
+ * (or `minName` / `maxName`). `orientation="vertical"` turns the input with
+ * `writing-mode`; give the field a height (`class="h-64"`).
  *
  * @composable
  */
@@ -23,101 +25,166 @@ interface Props extends HTMLAttributes<'div'> {
   step?: number
   value?: number
   disabled?: boolean
+  /** Two thumbs. Uses `minValue` / `maxValue` and submits two fields. */
+  range?: boolean
+  minValue?: number
+  maxValue?: number
+  minName?: string
+  maxName?: string
+  /** Badge text with a `{value}` token (`'${value}'`, `'{value}%'`); `false` hides the badge. */
+  format?: string | false
+  /** @category layout */
+  orientation?: 'horizontal' | 'vertical'
   /** Hue of the filled track and thumb. @category layout */
   color?: keyof typeof colors
-  /** Where the live % badge sits relative to the track. */
+  /** Where the badge sits relative to a horizontal track. */
   labelPosition?: 'top' | 'bottom'
   'aria-label'?: string
   class?: string
 }
 
 const {
+  name,
   min = 0,
   max = 100,
   step = 1,
   value,
+  disabled,
+  range = false,
+  minValue,
+  maxValue,
+  minName,
+  maxName,
+  format = '{value}',
+  orientation = 'horizontal',
   color = 'primary',
   labelPosition = 'top',
+  'aria-label': ariaLabel,
+  'aria-labelledby': labelledBy,
   class: className,
   ...rest
 } = Astro.props
 
-// Initial fill, so the coloured track is correct before (and without) JS.
-// A range with no `value` sits at its midpoint.
-const current = value ?? (min + max) / 2
-const fill = max > min ? ((current - min) / (max - min)) * 100 : 0
+// Snap to the step grid and clamp, so the server-rendered fill and badge match
+// what the native input will report.
+const decimals = (String(step).split('.')[1] ?? '').length
+const snap = (v: number) =>
+  Number((min + Math.round((Math.min(max, Math.max(min, v)) - min) / step) * step).toFixed(decimals))
+const lo = snap(range ? (minValue ?? min) : min)
+const hi = snap(range ? (maxValue ?? max) : (value ?? (min + max) / 2))
+const pct = (v: number) => (max > min ? ((v - min) / (max - min)) * 100 : 0)
+const text = (v: number) => (format === false ? '' : format.replace('{value}', String(v)))
+const thumbs = range
+  ? [
+      { key: 'min', value: lo, name: minName ?? (name ? `${name}-min` : undefined), label: ariaLabel && `${ariaLabel} minimum` },
+      { key: 'max', value: hi, name: maxName ?? (name ? `${name}-max` : undefined), label: ariaLabel && `${ariaLabel} maximum` },
+    ]
+  : [{ key: 'max', value: value === undefined ? undefined : hi, name, label: ariaLabel }]
 ---
 
-<div class:list={['apogee-slider-field relative', className]} data-label-position={labelPosition}>
-  <input
-    type="range"
-    class="apogee-slider w-full"
-    min={min}
-    max={max}
-    step={step}
-    value={value}
-    style={`--apogee-fill: ${fill}%; --apogee-color: ${colors[color]}`}
-    {...rest}
-  />
-  <span
-    class="apogee-slider-badge pointer-events-none absolute -translate-x-1/2 rtl:translate-x-1/2 rounded-md bg-inverted px-1.5 py-0.5 text-xs font-medium text-on-inverted tabular-nums no-js:hidden"
-    aria-hidden="true">0%</span>
+<div
+  class:list={['apogee-slider-field relative', orientation === 'vertical' ? 'h-48 w-6' : 'w-full', className]}
+  data-label-position={labelPosition}
+  data-orientation={orientation}
+  data-range={range || undefined}
+  data-format={format || undefined}
+  style={`--apogee-fill: ${pct(lo)}%; --apogee-fill-end: ${pct(hi)}%; --apogee-color: ${colors[color]}`}
+>
+  {
+    thumbs.map((t, i) => (
+      <input
+        type="range"
+        class:list={['apogee-slider', i > 0 && 'absolute inset-0']}
+        data-thumb={t.key}
+        min={min}
+        max={max}
+        step={step}
+        value={t.value}
+        name={t.name}
+        disabled={disabled}
+        {...(i === 0 ? rest : {})}
+        aria-label={t.label}
+        aria-labelledby={labelledBy}
+      />
+    ))
+  }
+  {
+    format !== false &&
+      thumbs.map((t) => (
+        <span
+          class="apogee-slider-badge pointer-events-none absolute -translate-x-1/2 rounded-md bg-inverted px-1.5 py-0.5 text-xs font-medium text-on-inverted tabular-nums rtl:translate-x-1/2 no-js:hidden"
+          data-for={t.key}
+          aria-hidden="true"
+        >
+          {text(t.value ?? hi)}
+        </span>
+      ))
+  }
 </div>
 
 <style>
   /* Custom track + thumb. Native range styling needs vendor pseudo-elements —
      the one place Tailwind can't reach, so scoped CSS reads the tokens directly.
+     Logical sizes so the same rules work for a vertical (writing-mode) input.
      Thumb is sized for touch (1.5rem). */
   .apogee-slider {
     -webkit-appearance: none;
     appearance: none;
-    height: 1.5rem;
+    inline-size: 100%;
+    block-size: 1.5rem;
     background: transparent;
     cursor: pointer;
   }
   .apogee-slider:dir(rtl) {
     --apogee-dir: to left;
   }
+  .apogee-slider-field[data-orientation='vertical'] .apogee-slider {
+    writing-mode: vertical-lr;
+    direction: rtl; /* max at the top */
+    --apogee-dir: to top;
+  }
   .apogee-slider:disabled {
     cursor: not-allowed;
     opacity: 0.5;
   }
 
-  /* Filled portion (the `color` hue) up to the thumb, neutral after — driven by
-     --apogee-fill (set server-side, updated live by the island). */
+  /* Neutral before the lower thumb, the hue between the thumbs, neutral after.
+     A single slider has --apogee-fill at 0%. */
   .apogee-slider::-webkit-slider-runnable-track {
-    height: 0.5rem;
+    block-size: 0.5rem;
     border-radius: 9999px;
     background: linear-gradient(
       var(--apogee-dir, to right),
-      var(--apogee-color) 0 var(--apogee-fill, 0%),
-      var(--background-neutral) var(--apogee-fill, 0%) 100%
+      var(--background-neutral) 0 var(--apogee-fill, 0%),
+      var(--apogee-color) var(--apogee-fill, 0%) var(--apogee-fill-end, 0%),
+      var(--background-neutral) var(--apogee-fill-end, 0%) 100%
     );
   }
   .apogee-slider::-moz-range-track {
-    height: 0.5rem;
+    block-size: 0.5rem;
     border-radius: 9999px;
     background: linear-gradient(
       var(--apogee-dir, to right),
-      var(--apogee-color) 0 var(--apogee-fill, 0%),
-      var(--background-neutral) var(--apogee-fill, 0%) 100%
+      var(--background-neutral) 0 var(--apogee-fill, 0%),
+      var(--apogee-color) var(--apogee-fill, 0%) var(--apogee-fill-end, 0%),
+      var(--background-neutral) var(--apogee-fill-end, 0%) 100%
     );
   }
 
   .apogee-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    margin-top: -0.5rem;
-    height: 1.5rem;
-    width: 1.5rem;
+    margin-block-start: -0.5rem;
+    block-size: 1.5rem;
+    inline-size: 1.5rem;
     border-radius: 9999px;
     background: var(--apogee-color);
     border: 2px solid var(--background-page);
     box-shadow: 0 0 0 2px var(--apogee-color);
   }
   .apogee-slider::-moz-range-thumb {
-    height: 1.5rem;
-    width: 1.5rem;
+    block-size: 1.5rem;
+    inline-size: 1.5rem;
     border-radius: 9999px;
     background: var(--apogee-color);
     border: 2px solid var(--background-page);
@@ -133,8 +200,26 @@ const fill = max > min ? ((current - min) / (max - min)) * 100 : 0
     outline-offset: 2px;
   }
 
-  /* Badge sits above (default) or below the track. Anchored to the track's
-     centre (50%) and pushed clear of the 1.5rem thumb, so it never covers it. */
+  /* Range: the upper input sits on the lower one; only the thumbs take the
+     pointer, and only the lower track paints. */
+  .apogee-slider-field[data-range] .apogee-slider {
+    pointer-events: none;
+  }
+  .apogee-slider-field[data-range] .apogee-slider::-webkit-slider-thumb {
+    pointer-events: auto;
+  }
+  .apogee-slider-field[data-range] .apogee-slider::-moz-range-thumb {
+    pointer-events: auto;
+  }
+  .apogee-slider-field[data-range] .apogee-slider + .apogee-slider::-webkit-slider-runnable-track {
+    background: transparent;
+  }
+  .apogee-slider-field[data-range] .apogee-slider + .apogee-slider::-moz-range-track {
+    background: transparent;
+  }
+
+  /* Badge sits above (default) or below a horizontal track, clear of the
+     1.5rem thumb; beside a vertical one. */
   .apogee-slider-field[data-label-position='top'] .apogee-slider-badge {
     bottom: 50%;
     margin-bottom: 1.25rem;
@@ -143,6 +228,13 @@ const fill = max > min ? ((current - min) / (max - min)) * 100 : 0
     top: 50%;
     margin-top: 1.25rem;
   }
+  .apogee-slider-field[data-orientation='vertical'] .apogee-slider-badge {
+    inset-block: auto;
+    margin-block: 0;
+    inset-inline-start: 100%;
+    margin-inline-start: 0.5rem;
+    translate: 0 -50%;
+  }
 </style>
 
 <script>
@@ -150,20 +242,30 @@ const fill = max > min ? ((current - min) / (max - min)) * 100 : 0
 
   const THUMB = 24 // px — keep in sync with the thumb size above
   island('.apogee-slider-field', (field) => {
-    const input = field.querySelector<HTMLInputElement>('.apogee-slider')
-    const badge = field.querySelector<HTMLElement>('.apogee-slider-badge')
-    if (!input || !badge) return
-    const update = () => {
-      const min = Number(input.min || 0)
-      const max = Number(input.max || 100)
-      const fraction = max > min ? (Number(input.value) - min) / (max - min) : 0
-      const percent = fraction * 100
-      badge.textContent = `${Math.round(percent)}%`
-      input.style.setProperty('--apogee-fill', `${percent}%`)
-      // Center the badge over the thumb, correcting for the thumb's own width.
-      badge.style.insetInlineStart = `calc(${percent}% + ${(0.5 - fraction) * THUMB}px)`
+    const inputs = [...field.querySelectorAll<HTMLInputElement>('.apogee-slider')]
+    const vertical = field.dataset.orientation === 'vertical'
+    const format = field.dataset.format ?? '{value}'
+    const update = (moved?: HTMLInputElement) => {
+      const [a, b] = inputs
+      // Range: thumbs never cross; the one that moved stops at the other.
+      if (a && b && moved && Number(a.value) > Number(b.value)) moved.value = (moved === a ? b : a).value
+      // The thumb moved last stays on top, so it is still grabbable where the two meet.
+      if (moved) for (const i of inputs) i.style.zIndex = i === moved ? '1' : ''
+      for (const input of inputs) {
+        const min = Number(input.min || 0)
+        const max = Number(input.max || 100)
+        const fraction = max > min ? (Number(input.value) - min) / (max - min) : 0
+        const percent = fraction * 100
+        field.style.setProperty(input.dataset.thumb === 'min' ? '--apogee-fill' : '--apogee-fill-end', `${percent}%`)
+        const badge = field.querySelector<HTMLElement>(`.apogee-slider-badge[data-for="${input.dataset.thumb}"]`)
+        if (!badge) continue
+        badge.textContent = format.replace('{value}', input.value)
+        // Centre the badge on the thumb, correcting for the thumb's own width.
+        if (vertical) badge.style.top = `calc(${100 - percent}% + ${(fraction - 0.5) * THUMB}px)`
+        else badge.style.insetInlineStart = `calc(${percent}% + ${(0.5 - fraction) * THUMB}px)`
+      }
     }
     update()
-    input.addEventListener('input', update)
+    for (const input of inputs) input.addEventListener('input', () => update(input))
   })
 </script>

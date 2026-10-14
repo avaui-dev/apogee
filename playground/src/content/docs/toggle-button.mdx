@@ -8,6 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import ToggleButton from '../../../../registry/components/ToggleButton/ToggleButton.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 import { Bold } from '@lucide/astro'
 
 <JsNote fallback="The button renders at its initial pressed state (from the pressed prop) and stays there — clicking it does nothing, since only the script flips aria-pressed.">
@@ -15,10 +16,10 @@ import { Bold } from '@lucide/astro'
   (non-`manual`) `ToggleButton`.
 </JsNote>
 
-<Preview code={`<ToggleButton aria-label="Bold"><Bold /></ToggleButton>
-<ToggleButton pressed aria-label="Bold (pressed)"><Bold /></ToggleButton>`}>
-  <ToggleButton aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton pressed aria-label="Bold (pressed)"><Bold /></ToggleButton>
+<Preview code={`<ToggleButton iconOnly aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton iconOnly pressed aria-label="Bold (pressed)"><Bold /></ToggleButton>`}>
+  <ToggleButton iconOnly aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton iconOnly pressed aria-label="Bold (pressed)"><Bold /></ToggleButton>
 </Preview>
 
 ## Add
@@ -41,44 +42,151 @@ import ToggleButton from '@/components/apogee/ToggleButton/ToggleButton.astro'
 ## API
 
 `@composable` — exposed to Content Editors in AVA. Any other native `<button>`
-attribute (e.g. `disabled`, `name`) passes through.
+attribute (e.g. `disabled`) passes through.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `pressed` | `boolean` | `false` | Initial (and, in `manual` mode, current) pressed state. |
-| `manual` | `boolean` | `false` | Don't self-toggle on click — a parent (e.g. `ToggleButtonGroup`) owns `aria-pressed`. |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control size. |
+| `manual` | `boolean` | `false` | Don't self-toggle on click — a parent (e.g. a rich-text toolbar) owns `aria-pressed`. |
+| `value` | `string` | — | Identity inside a group and the submitted value. |
+| `name` | `string` | — | With `value`, a hidden input submits the value while pressed, with or without JS. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | Resting hue. |
+| `variant` | `'solid' \| 'faded' \| 'outline' \| 'ghost'` | `'ghost'` | Resting fill style (the Button tables). |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height scale, same as Button. |
+| `selectedColor` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | Pressed hue. |
+| `selectedVariant` | `'solid' \| 'faded'` | `'faded'` | Pressed fill style. |
+| `rounded` | `boolean` | `false` | Fully round ends. |
+| `iconOnly` | `boolean` | `false` | Square button for a lone icon; give it an `aria-label`. |
 | `aria-label` | `string` | — | Label when the button is icon-only. |
 | `class` | `string` | — | Extra classes, merged last. |
 
+## Variants
+
+Every resting `variant`, unpressed and pressed:
+
+<Preview code={`<ToggleButton variant="ghost">ghost</ToggleButton>
+<ToggleButton variant="ghost" pressed>ghost</ToggleButton>
+<ToggleButton variant="outline">outline</ToggleButton>
+<ToggleButton variant="outline" pressed>outline</ToggleButton>
+<ToggleButton variant="faded">faded</ToggleButton>
+<ToggleButton variant="faded" pressed>faded</ToggleButton>
+<ToggleButton variant="solid">solid</ToggleButton>
+<ToggleButton variant="solid" pressed>solid</ToggleButton>`}>
+  <ToggleButton variant="ghost">ghost</ToggleButton>
+  <ToggleButton variant="ghost" pressed>ghost</ToggleButton>
+  <ToggleButton variant="outline">outline</ToggleButton>
+  <ToggleButton variant="outline" pressed>outline</ToggleButton>
+  <ToggleButton variant="faded">faded</ToggleButton>
+  <ToggleButton variant="faded" pressed>faded</ToggleButton>
+  <ToggleButton variant="solid">solid</ToggleButton>
+  <ToggleButton variant="solid" pressed>solid</ToggleButton>
+</Preview>
+
+## Colours
+
+Every resting `color` with `variant="outline"`:
+
+<Preview code={`<ToggleButton variant="outline" color="primary">primary</ToggleButton>
+<ToggleButton variant="outline" color="neutral">neutral</ToggleButton>
+<ToggleButton variant="outline" color="critical">critical</ToggleButton>
+<ToggleButton variant="outline" color="positive">positive</ToggleButton>
+<ToggleButton variant="outline" color="warning">warning</ToggleButton>`}>
+  <ToggleButton variant="outline" color="primary">primary</ToggleButton>
+  <ToggleButton variant="outline" color="neutral">neutral</ToggleButton>
+  <ToggleButton variant="outline" color="critical">critical</ToggleButton>
+  <ToggleButton variant="outline" color="positive">positive</ToggleButton>
+  <ToggleButton variant="outline" color="warning">warning</ToggleButton>
+</Preview>
+
+## Selected
+
+`selectedColor` × `selectedVariant` style the pressed state; a solid primary
+pressed toggle matches a solid primary Button.
+
+<Preview code={`<ToggleButton pressed selectedColor="primary" selectedVariant="solid">Pressed</ToggleButton>
+<Button color="primary">Button</Button>`}>
+  <div data-apogee-toggle="solid" class="contents">
+    <ToggleButton pressed selectedColor="primary" selectedVariant="solid">Pressed</ToggleButton>
+    <Button color="primary">Button</Button>
+  </div>
+</Preview>
+
+<Preview code={`<ToggleButton pressed selectedColor="primary" selectedVariant="faded">primary</ToggleButton>
+<ToggleButton pressed selectedColor="neutral" selectedVariant="faded">neutral</ToggleButton>
+<ToggleButton pressed selectedColor="critical" selectedVariant="faded">critical</ToggleButton>
+<ToggleButton pressed selectedColor="positive" selectedVariant="faded">positive</ToggleButton>
+<ToggleButton pressed selectedColor="warning" selectedVariant="faded">warning</ToggleButton>
+<ToggleButton pressed selectedColor="primary" selectedVariant="solid">primary</ToggleButton>
+<ToggleButton pressed selectedColor="neutral" selectedVariant="solid">neutral</ToggleButton>
+<ToggleButton pressed selectedColor="critical" selectedVariant="solid">critical</ToggleButton>
+<ToggleButton pressed selectedColor="positive" selectedVariant="solid">positive</ToggleButton>
+<ToggleButton pressed selectedColor="warning" selectedVariant="solid">warning</ToggleButton>`} block>
+  <div class="flex flex-wrap gap-2">
+    <ToggleButton pressed selectedColor="primary" selectedVariant="faded">primary</ToggleButton>
+    <ToggleButton pressed selectedColor="neutral" selectedVariant="faded">neutral</ToggleButton>
+    <ToggleButton pressed selectedColor="critical" selectedVariant="faded">critical</ToggleButton>
+    <ToggleButton pressed selectedColor="positive" selectedVariant="faded">positive</ToggleButton>
+    <ToggleButton pressed selectedColor="warning" selectedVariant="faded">warning</ToggleButton>
+  </div>
+  <div class="flex flex-wrap gap-2">
+    <ToggleButton pressed selectedColor="primary" selectedVariant="solid">primary</ToggleButton>
+    <ToggleButton pressed selectedColor="neutral" selectedVariant="solid">neutral</ToggleButton>
+    <ToggleButton pressed selectedColor="critical" selectedVariant="solid">critical</ToggleButton>
+    <ToggleButton pressed selectedColor="positive" selectedVariant="solid">positive</ToggleButton>
+    <ToggleButton pressed selectedColor="warning" selectedVariant="solid">warning</ToggleButton>
+  </div>
+</Preview>
+
 ## Sizes
 
-Every size:
+Every size, icon-only:
 
-<Preview code={`<ToggleButton size="small" aria-label="Bold"><Bold /></ToggleButton>
-<ToggleButton aria-label="Bold"><Bold /></ToggleButton>
-<ToggleButton size="large" aria-label="Bold"><Bold /></ToggleButton>`}>
-  <ToggleButton size="small" aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton size="large" aria-label="Bold"><Bold /></ToggleButton>
+<Preview code={`<ToggleButton iconOnly size="small" aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton iconOnly aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton iconOnly size="large" aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton iconOnly size="xlarge" aria-label="Bold"><Bold /></ToggleButton>`}>
+  <ToggleButton iconOnly size="small" aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton iconOnly size="large" aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton iconOnly size="xlarge" aria-label="Bold"><Bold /></ToggleButton>
 </Preview>
 
 ## States
 
 <Preview code={`<ToggleButton>Off</ToggleButton>
 <ToggleButton pressed>On</ToggleButton>
-<ToggleButton disabled>Disabled</ToggleButton>`}>
+<ToggleButton disabled>Disabled</ToggleButton>
+<ToggleButton rounded pressed>Rounded</ToggleButton>`}>
   <ToggleButton>Off</ToggleButton>
   <ToggleButton pressed>On</ToggleButton>
   <ToggleButton disabled>Disabled</ToggleButton>
+  <ToggleButton rounded pressed>Rounded</ToggleButton>
 </Preview>
 
-- **Pressed** — muted background fill, foreground text (`aria-pressed:bg-neutral-faded
-  aria-pressed:text-neutral`).
-- **Hover** — a lighter muted fill on unpressed buttons.
+- **Pressed** — the `selectedVariant` × `selectedColor` fill (default a faded
+  neutral).
+- **Hover** — the resting variant's hover fill; pressed buttons use the
+  selected fill's highlighted step.
 - **Focus** — visible `focus-visible` ring (`--border-primary`).
 - **Disabled** — dimmed, not interactive.
 - **No JS** — click does nothing; the button stays at its initial `pressed` value.
+
+## In a form
+
+A hidden input submits `value` under `name` while pressed; nothing is submitted
+when unpressed, and a button with `name` but no `value` never submits.
+
+<Preview code={`<form>
+  <ToggleButton name="bold" value="1" pressed>Bold</ToggleButton>
+  <ToggleButton name="italic" value="1">Italic</ToggleButton>
+  <ToggleButton name="draft">No value</ToggleButton>
+</form>`}>
+  <form data-apogee-toggle="form" class="flex gap-2">
+    <ToggleButton name="bold" value="1" pressed>Bold</ToggleButton>
+    <ToggleButton name="italic" value="1">Italic</ToggleButton>
+    <ToggleButton name="draft">No value</ToggleButton>
+  </form>
+</Preview>
 
 ## Examples
 
@@ -94,17 +202,17 @@ Text-only and icon-plus-text:
 selection) instead of toggling itself:
 
 ```astro
-<ToggleButton manual pressed={isBoldAtSelection} aria-label="Bold">
+<ToggleButton manual iconOnly pressed={isBoldAtSelection} aria-label="Bold">
   <Bold />
 </ToggleButton>
 ```
 
-`ToggleButtonGroup` sets `manual` behavior for its children automatically for
-single-select — see the [ToggleButtonGroup](/toggle-button-group) docs.
+Inside a [ToggleButtonGroup](/toggle-button-group) the group handles
+single-select exclusivity and arrow-key focus.
 
 ## Events
 
-Each button dispatches `apogee:toggle-change` (`detail: { pressed }`, bubbling) after it toggles.
+Each button dispatches `apogee:toggle-change` (`detail: { pressed, value }`, bubbling) after it toggles.
 
 ## Accessibility
 

@@ -9,9 +9,10 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Slider from '../../../../registry/components/Slider/Slider.astro'
 
-<JsNote fallback="The range input itself needs no JS — it's a native range input, fully draggable and keyboard-operable, and its initial coloured fill is rendered server-side from value/min/max. Only the floating percentage badge is JS-driven; it's hidden via no-js:hidden when scripts don't run.">
-  A small island updates the badge text and the track's fill percentage on every
-  `input` event, and repositions the badge to stay centered over the thumb.
+<JsNote fallback="The range input itself needs no JS — it's a native range input, fully draggable and keyboard-operable, and its initial coloured fill is rendered server-side from value/min/max. Only the floating value badge is JS-driven; it's hidden via no-js:hidden when scripts don't run.">
+  A small island updates the badge text and the track's fill on every `input`
+  event, keeps the badge centred over the thumb, and in `range` mode stops the
+  two thumbs from crossing.
 </JsNote>
 
 <Preview code={`<Slider aria-label="Volume" value={40} />`}>
@@ -46,16 +47,58 @@ import Slider from '@/components/apogee/Slider/Slider.astro'
 | `min` | `number` | `0` | Minimum value. |
 | `max` | `number` | `100` | Maximum value. |
 | `step` | `number` | `1` | Step increment. |
-| `value` | `number` | midpoint of `min`/`max` | Initial value. |
+| `value` | `number` | midpoint of `min`/`max` | Initial value. Clamped to `min`/`max` and snapped to `step` before render. |
 | `disabled` | `boolean` | `false` | Disables the input. |
+| `range` | `boolean` | `false` | Two thumbs. Uses `minValue` / `maxValue` and submits two fields. |
+| `minValue` / `maxValue` | `number` | `min` / `max` | Initial thumb values in `range` mode. |
+| `minName` / `maxName` | `string` | `<name>-min` / `<name>-max` | Submitted names in `range` mode. |
+| `format` | `string \| false` | `'{value}'` | Badge text with a `{value}` token (`'${value}'`, `'{value}%'`). `false` hides the badge. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Vertical turns the input; give the field a height with `class`. |
 | `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | Hue of the filled track and thumb. |
-| `labelPosition` | `'top' \| 'bottom'` | `'top'` | Where the live percentage badge sits relative to the track. |
+| `labelPosition` | `'top' \| 'bottom'` | `'top'` | Where the badge sits relative to a horizontal track. |
 | `aria-label` | `string` | — | Accessible name. No visible `<label>` is rendered — set this or associate an external `<label>` via `id` / `aria-labelledby`. |
 | `class` | `string` | — | Extra classes on the wrapping `<div>`, merged last. |
 
+## Value and format
+
+The badge shows the value. `format` wraps it; `false` hides the badge.
+
+<Preview code={`<Slider min={0} max={50} value={10} format="\${value}" aria-label="Budget" />
+<Slider value={40} format="{value}%" aria-label="Opacity" />
+<Slider value={25} format={false} aria-label="No badge" />`} block>
+  <div data-apogee-slider="value"><Slider min={0} max={50} value={10} format="${value}" aria-label="Budget" /></div>
+  <Slider value={40} format="{value}%" aria-label="Opacity" />
+  <Slider value={25} format={false} aria-label="No badge" />
+</Preview>
+
+## Range
+
+Two thumbs that never cross; submits `price-min` and `price-max`.
+
+<Preview code={`<Slider range name="price" min={0} max={100} step={10} minValue={20} maxValue={60} aria-label="Price" />`} block>
+  <form data-apogee-slider="range"><Slider range name="price" min={0} max={100} step={10} minValue={20} maxValue={60} aria-label="Price" /></form>
+</Preview>
+
+With a visible label, `aria-labelledby` names both thumbs; prefer `aria-label`
+when each thumb should be named on its own ("Budget minimum" / "Budget maximum").
+
+<Preview code={`<label id="budget-label">Budget</label>
+<Slider range name="budget" minValue={1000} maxValue={4000} max={5000} step={100} aria-labelledby="budget-label" />`} block>
+  <label id="budget-label" class="text-sm font-medium text-neutral">Budget</label>
+  <div data-apogee-slider="labelled"><Slider range name="budget" minValue={1000} maxValue={4000} max={5000} step={100} aria-labelledby="budget-label" /></div>
+</Preview>
+
+## Orientation
+
+<Preview code={`<Slider aria-label="Volume" value={50} />
+<Slider orientation="vertical" aria-label="Volume" class="h-48" />`}>
+  <Slider aria-label="Volume" value={50} class="max-w-xs" />
+  <div data-apogee-slider="vertical" class="pe-10"><Slider orientation="vertical" aria-label="Volume" class="h-48" /></div>
+</Preview>
+
 ## Variants
 
-`labelPosition` — the only stylistic variant:
+`labelPosition` — horizontal only:
 
 <Preview code={`<Slider aria-label="Top badge" labelPosition="top" value={30} />
 <Slider aria-label="Bottom badge" labelPosition="bottom" value={70} />`}>
