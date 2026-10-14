@@ -17,17 +17,26 @@ token override, not a rebuild. The full role list is on
 
 ## Five inputs
 
-`scripts/hues.mjs` holds one OKLCH colour per hue:
+`scripts/hues.mjs` holds one colour per hue, by Tailwind name or as OKLCH:
 
 ```js
-export const hues = {
-  primary:  { l: 0.47, c: 0.2,   h: 262 },   // a dark blue
-  critical: { l: 0.59, c: 0.205, h: 20.28 },
-  warning:  { l: 0.82, c: 0.22,  h: 80 },
-  positive: { l: 0.55, c: 0.13,  h: 151.8 },
-  neutral:  { l: 0.94, c: 0,     h: 0 },
+export default {
+  primary: 'blue-700',   // a name is a Tailwind colour; 'blue' means 'blue-600'
+  critical: 'red-600',
+  warning: 'amber-400',
+  positive: 'green-700',
+  neutral: 'slate',      // the grey family: slate, gray, zinc, neutral, stone, mauve, olive, mist, taupe
 }
 ```
+
+Accents accept any name from `scripts/palettes.mjs` with a step from 400 to
+700, or an object `{ l, c, h }` for a brand colour that is not in the palette.
+
+The neutral entry tints every grey: page, borders, text, disabled states and
+the hover and selected fills. A grey name takes that family's chroma and hue;
+chroma peaks at mid lightness and tapers to nothing at white and black. For a
+custom tint pass `{ l: 0.94, c, h }`, where `c` is the peak chroma and
+`c: 0` gives pure grey.
 
 `npm run build:tokens` derives everything else and writes it between the
 `@generated` markers in `registry/tokens/theme.css`.
