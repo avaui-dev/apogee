@@ -1,0 +1,48 @@
+---
+/**
+ * GridItem — a child of Grid that spans columns or rows. `colSpan` and
+ * `rowSpan` accept per-breakpoint objects; `full` spans every column.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { responsive, type Responsive } from '../utils/responsive.ts'
+import { tables } from '../utils/responsive-tables.ts'
+
+const colStarts = { 1: 'col-start-1', 2: 'col-start-2', 3: 'col-start-3', 4: 'col-start-4', 5: 'col-start-5', 6: 'col-start-6', 7: 'col-start-7', 8: 'col-start-8', 9: 'col-start-9', 10: 'col-start-10', 11: 'col-start-11', 12: 'col-start-12', 13: 'col-start-13' } as const
+const rowStarts = { 1: 'row-start-1', 2: 'row-start-2', 3: 'row-start-3', 4: 'row-start-4', 5: 'row-start-5', 6: 'row-start-6', 7: 'row-start-7' } as const
+
+type ColSpan = keyof typeof tables.colSpan.base
+type RowSpan = keyof typeof tables.rowSpan.base
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  as?: string
+  /** @category layout */
+  colSpan?: Responsive<ColSpan>
+  /** @category layout */
+  rowSpan?: Responsive<RowSpan>
+  /** @category layout */
+  colStart?: keyof typeof colStarts
+  /** @category layout */
+  rowStart?: keyof typeof rowStarts
+  class?: string
+}
+
+const { as = 'div', colSpan, rowSpan, colStart, rowStart, class: className, ...rest } = Astro.props
+const Tag = as
+---
+
+<Tag
+  class:list={[
+    'min-w-0',
+    responsive(colSpan, tables.colSpan),
+    responsive(rowSpan, tables.rowSpan),
+    colStart !== undefined && colStarts[colStart],
+    rowStart !== undefined && rowStarts[rowStart],
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>

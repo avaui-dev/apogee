@@ -5,7 +5,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
   title: string
   description?: string
   class?: string
@@ -18,21 +19,21 @@ const hasActions = Astro.slots.has('actions')
 
 <div
   class:list={[
-    'flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border p-10 text-center',
+    'flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-neutral p-10 text-center',
     className,
   ]}
   {...rest}
 >
   {
     hasIcon && (
-      <div class="text-muted-foreground [&_svg]:size-8">
+      <div class="text-neutral-faded [&_svg]:size-8">
         <slot name="icon" />
       </div>
     )
   }
   <div>
-    <p class="text-sm font-medium text-foreground">{title}</p>
-    {description && <p class="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>}
+    <p class="text-sm font-medium text-neutral">{title}</p>
+    {description && <p class="mx-auto mt-1 max-w-sm text-sm text-neutral-faded">{description}</p>}
   </div>
   {
     hasActions && (

@@ -1,0 +1,42 @@
+---
+/**
+ * ProgressIndicator — "step 2 of 5" as a row of segments, for onboarding
+ * flows, wizards and carousels. One `progressbar` with the step as its value.
+ * Zero JS.
+
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+const fills = { primary: 'bg-primary', neutral: 'bg-inverted', critical: 'bg-critical', positive: 'bg-positive', warning: 'bg-warning' } as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** Number of steps. @category content */
+  total: number
+  /** Completed steps (1-based current step). @category content */
+  current: number
+  /** @category layout */
+  color?: keyof typeof fills
+  /** Accessible name, e.g. "Onboarding progress". @category content */
+  'aria-label'?: string
+  class?: string
+}
+
+const { total, current, color = 'primary', 'aria-label': ariaLabel = 'Progress', class: className, ...rest } = Astro.props
+const done = Math.max(0, Math.min(total, current))
+---
+
+<div
+  role="progressbar"
+  aria-label={ariaLabel}
+  aria-valuemin={0}
+  aria-valuemax={total}
+  aria-valuenow={done}
+  aria-valuetext={`Step ${done} of ${total}`}
+  class:list={['flex w-full gap-1.5', className]}
+  {...rest}
+>
+  {Array.from({ length: total }).map((_, i) => (
+    <span class:list={['h-1.5 flex-1 rounded-full transition-colors', i < done ? fills[color] : 'bg-neutral-faded']} />
+  ))}
+</div>

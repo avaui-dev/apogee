@@ -52,6 +52,10 @@ passes through to the root `<span data-apogee-tag>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | The hue. |
+| `variant` | `'solid' \| 'faded' \| 'outline'` | `'outline'` | The fill style. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Height: 24 / 28 / 32px. |
+| `rounded` | `boolean` | `false` | Fully round ends. |
 | `href` | `string` | — | Renders the inner label as an `<a>` instead of a `<span>`. |
 | `removable` | `boolean` | `false` | Shows a remove button (hidden without JS). |
 | `value` | `string` | — | Identifies this tag in the `apogee:tag-remove` event's `detail`. |
@@ -59,14 +63,64 @@ passes through to the root `<span data-apogee-tag>`.
 | `removeLabel` | `string` | `'Remove'` | Accessible label for the remove button. |
 | `class` | `string` | — | Extra classes, merged last. |
 
-## Variants
+## Variants × colors
 
 <Preview code={`<Tag>Plain</Tag>
 <Tag href="#">Link</Tag>
-<Tag removable value="removable">Removable</Tag>`}>
-  <Tag>Plain</Tag>
-  <Tag href="#">Link</Tag>
-  <Tag removable value="removable">Removable</Tag>
+<Tag removable value="removable">Removable</Tag>
+<Tag rounded>Rounded</Tag>
+<Tag size="small">Small</Tag>
+<Tag size="large">Large</Tag>`}>
+  <div class="flex flex-wrap items-center gap-2">
+    <Tag>Plain</Tag>
+    <Tag href="#">Link</Tag>
+    <Tag removable value="removable">Removable</Tag>
+    <Tag rounded>Rounded</Tag>
+    <Tag size="small">Small</Tag>
+    <Tag size="large">Large</Tag>
+  </div>
+</Preview>
+
+<Preview code={`<Tag color="primary" variant="solid">Primary</Tag>
+<Tag color="neutral" variant="solid">Neutral</Tag>
+<Tag color="critical" variant="solid">Critical</Tag>
+<Tag color="positive" variant="solid">Positive</Tag>
+<Tag color="warning" variant="solid">Warning</Tag>
+
+<Tag color="primary" variant="faded">Primary</Tag>
+<Tag color="neutral" variant="faded">Neutral</Tag>
+<Tag color="critical" variant="faded">Critical</Tag>
+<Tag color="positive" variant="faded">Positive</Tag>
+<Tag color="warning" variant="faded">Warning</Tag>
+
+<Tag color="primary">Primary</Tag>
+<Tag color="neutral">Neutral</Tag>
+<Tag color="critical">Critical</Tag>
+<Tag color="positive">Positive</Tag>
+<Tag color="warning">Warning</Tag>`}>
+  <div class="grid gap-3">
+    <div class="flex flex-wrap gap-2">
+      <Tag color="primary" variant="solid">Primary</Tag>
+      <Tag color="neutral" variant="solid">Neutral</Tag>
+      <Tag color="critical" variant="solid">Critical</Tag>
+      <Tag color="positive" variant="solid">Positive</Tag>
+      <Tag color="warning" variant="solid">Warning</Tag>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <Tag color="primary" variant="faded">Primary</Tag>
+      <Tag color="neutral" variant="faded">Neutral</Tag>
+      <Tag color="critical" variant="faded">Critical</Tag>
+      <Tag color="positive" variant="faded">Positive</Tag>
+      <Tag color="warning" variant="faded">Warning</Tag>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <Tag color="primary">Primary</Tag>
+      <Tag color="neutral">Neutral</Tag>
+      <Tag color="critical">Critical</Tag>
+      <Tag color="positive">Positive</Tag>
+      <Tag color="warning">Warning</Tag>
+    </div>
+  </div>
 </Preview>
 
 ## States
@@ -82,8 +136,8 @@ passes through to the root `<span data-apogee-tag>`.
 
 With an icon:
 
-<Preview code={`<Tag><Mail class="size-3.5" /> Email</Tag>`}>
-  <Tag><Mail class="size-3.5" /> Email</Tag>
+<Preview code={`<Tag><Mail slot="start" /> Email</Tag>`}>
+  <Tag><Mail slot="start" /> Email</Tag>
 </Preview>
 
 A cosmetic list with no backing state, self-removing on click:
@@ -120,10 +174,10 @@ letting the DOM change on its own:
 
 | Token | Used for |
 |---|---|
-| `--border` | Tag border |
-| `--surface` / `--surface-foreground` | Tag background / text |
-| `--muted-foreground` / `--foreground` | Remove icon default / hover color |
-| `--ring` | Focus ring (label + remove button) |
+| `--border-neutral` | Tag border |
+| `--background-elevation-raised` / `--foreground-neutral` | Tag background / text |
+| `--foreground-neutral-faded` / `--foreground-neutral` | Remove icon default / hover color |
+| `--border-primary` | Focus ring (label + remove button) |
 
 ## Do / Don't
 

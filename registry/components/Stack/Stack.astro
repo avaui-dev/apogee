@@ -1,49 +1,50 @@
 ---
 /**
  * Stack — lays children out in a column or row with a token gap. The workhorse
- * for spacing groups of elements.
+ * for spacing groups of elements. `direction`, `gap`, `align`, `justify` and
+ * `wrap` accept a value or a per-breakpoint object: `{ base: 'column', md: 'row' }`.
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+import { responsive, type Responsive } from '../utils/responsive.ts'
+import { tables } from '../utils/responsive-tables.ts'
+
+type Direction = keyof typeof tables.direction.base
+type Gap = keyof typeof tables.gap.base
+type Align = keyof typeof tables.align.base
+type Justify = keyof typeof tables.justify.base
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
   as?: string
-  direction?: 'col' | 'row'
-  gap?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
-  align?: 'start' | 'center' | 'end' | 'stretch'
-  justify?: 'start' | 'center' | 'end' | 'between'
-  wrap?: boolean
+  /** @category layout */
+  direction?: Responsive<Direction>
+  /** @category layout */
+  gap?: Responsive<Gap>
+  /** @category layout */
+  align?: Responsive<Align>
+  /** @category layout */
+  justify?: Responsive<Justify>
+  /** @category layout */
+  wrap?: Responsive<boolean>
   class?: string
 }
 
-const {
-  as = 'div',
-  direction = 'col',
-  gap = 4,
-  align,
-  justify,
-  wrap = false,
-  class: className,
-  ...rest
-} = Astro.props
+const { as = 'div', direction = 'column', gap = 4, align, justify, wrap, class: className, ...rest } = Astro.props
 const Tag = as
-
-// Literal classes (Tailwind can't see `gap-${n}`).
-const gapMap = {
-  0: 'gap-0', 1: 'gap-1', 2: 'gap-2', 3: 'gap-3', 4: 'gap-4',
-  5: 'gap-5', 6: 'gap-6', 8: 'gap-8', 10: 'gap-10', 12: 'gap-12',
-}
-const alignMap = { start: 'items-start', center: 'items-center', end: 'items-end', stretch: 'items-stretch' }
-const justifyMap = { start: 'justify-start', center: 'justify-center', end: 'justify-end', between: 'justify-between' }
+// Booleans are keyed 'true' / 'false' in the generated table.
+const wrapKey = wrap === undefined ? undefined : typeof wrap === 'object' ? Object.fromEntries(Object.entries(wrap).map(([k, v]) => [k, String(v)])) : String(wrap)
 ---
 
 <Tag
   class:list={[
     'flex',
-    direction === 'row' ? 'flex-row' : 'flex-col',
-    gapMap[gap],
-    wrap && 'flex-wrap',
-    align && alignMap[align],
-    justify && justifyMap[justify],
+    responsive(direction, tables.direction),
+    responsive(gap, tables.gap),
+    responsive(align, tables.align),
+    responsive(justify, tables.justify),
+    responsive(wrapKey as Responsive<'true' | 'false'> | undefined, tables.wrap),
     className,
   ]}
   {...rest}

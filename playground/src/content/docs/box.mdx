@@ -1,0 +1,184 @@
+---
+title: Box
+description: The layout primitive. Direction, gap, padding, surface, border, radius and shadow as token props.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Box from '../../../../registry/components/Box/Box.astro'
+
+<Preview code={`<Box direction="row" gap={3} padding={4} background="elevation-raised" border="neutral" radius="lg" shadow="raised">
+  <Box padding={3} background="neutral-faded" radius="md">One</Box>
+  <Box padding={3} background="neutral-faded" radius="md">Two</Box>
+</Box>`}>
+  <Box direction="row" gap={3} padding={4} background="elevation-raised" border="neutral" radius="lg" shadow="raised">
+    <Box padding={3} background="neutral-faded" radius="md">One</Box>
+    <Box padding={3} background="neutral-faded" radius="md">Two</Box>
+  </Box>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add box
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Box from '@/components/apogee/Box/Box.astro'
+---
+<Box direction="column" gap={4} padding={6} background="elevation-raised" border="neutral" radius="lg">
+  <h3>Title</h3>
+  <p>Body</p>
+</Box>
+```
+
+Setting any of `direction`, `gap`, `align`, `justify` or `wrap` makes the
+Box a flex container (column by default). With none of them it is a plain block.
+
+## API
+
+`@composable`. Any other native attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `as` | `string` | `'div'` | Tag to render. |
+| `direction` | `'row' \| 'column' \| 'row-reverse' \| 'column-reverse'`, responsive | — | Flex direction. |
+| `gap` | `0 … 6 \| 8 \| 10 \| 12 \| 16`, responsive | — | Gap on the spacing scale. |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch' \| 'baseline'`, responsive | — | Cross-axis alignment. |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between' \| 'around' \| 'evenly'`, responsive | — | Main-axis distribution. |
+| `wrap` | `boolean`, responsive | — | Allow wrapping. |
+| `divided` | `boolean` | `false` | Hairline between children, following the base direction. |
+| `padding` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 10 \| 12` | — | Padding on the spacing scale. |
+| `paddingInline` / `paddingBlock` | same steps | — | Padding on one axis. |
+| `bleed` | `2 \| 4 \| 6 \| 8` | — | Negative inline margin, so a child runs edge to edge inside a padded parent. |
+| `background` | `'page' \| 'page-faded' \| 'neutral' \| 'neutral-faded' \| 'primary' \| 'primary-faded' \| 'critical' \| 'critical-faded' \| 'positive' \| 'positive-faded' \| 'warning' \| 'warning-faded' \| 'elevation-base' \| 'elevation-raised' \| 'elevation-overlay' \| 'inverted'` | — | Surface token. Solid hues and `inverted` also set the on-colour text. |
+| `border` | `'neutral' \| 'neutral-faded' \| 'primary' \| 'critical' \| 'positive' \| 'warning' \| 'transparent'` | — | 1px border token. |
+| `radius` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | — | Corner radius token. |
+| `shadow` | `'outline' \| 'raised' \| 'overlay'` | — | Elevation shadow token. |
+| `width` | `'full' \| 'auto'` | — | `full` stretches to the container. |
+| `grow` | `boolean` | `false` | As a flex child, take the remaining space. |
+| `shrink` | `boolean` | — | `false` keeps the size when space is short. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+### Backgrounds
+
+<Preview code={`<Box padding={3} radius="md" background="page">page</Box>
+<Box padding={3} radius="md" background="page-faded">page-faded</Box>
+<Box padding={3} radius="md" background="neutral">neutral</Box>
+<Box padding={3} radius="md" background="neutral-faded">neutral-faded</Box>
+<Box padding={3} radius="md" background="primary-faded">primary-faded</Box>
+<Box padding={3} radius="md" background="elevation-base">elevation-base</Box>
+<Box padding={3} radius="md" background="elevation-raised">elevation-raised</Box>
+<Box padding={3} radius="md" background="elevation-overlay">elevation-overlay</Box>
+<Box padding={3} radius="md" background="inverted">inverted</Box>`}>
+  <Box padding={3} radius="md" background="page" border="neutral-faded">page</Box>
+  <Box padding={3} radius="md" background="page-faded">page-faded</Box>
+  <Box padding={3} radius="md" background="neutral">neutral</Box>
+  <Box padding={3} radius="md" background="neutral-faded">neutral-faded</Box>
+  <Box padding={3} radius="md" background="primary-faded">primary-faded</Box>
+  <Box padding={3} radius="md" background="elevation-base" border="neutral-faded">elevation-base</Box>
+  <Box padding={3} radius="md" background="elevation-raised" border="neutral-faded">elevation-raised</Box>
+  <Box padding={3} radius="md" background="elevation-overlay" border="neutral-faded">elevation-overlay</Box>
+  <Box padding={3} radius="md" background="inverted">inverted</Box>
+</Preview>
+
+### Borders, radius, shadows
+
+<Preview code={`<Box padding={3} border="neutral" radius="sm">neutral · sm</Box>
+<Box padding={3} border="neutral-faded" radius="md">neutral-faded · md</Box>
+<Box padding={3} border="primary" radius="lg">primary · lg</Box>
+<Box padding={3} border="neutral" radius="xl">xl</Box>
+<Box padding={3} border="neutral" radius="full">full</Box>
+<Box padding={3} radius="md" shadow="outline">outline</Box>
+<Box padding={3} radius="md" shadow="raised">raised</Box>
+<Box padding={3} radius="md" shadow="overlay">overlay</Box>`}>
+  <Box padding={3} border="neutral" radius="sm">neutral · sm</Box>
+  <Box padding={3} border="neutral-faded" radius="md">neutral-faded · md</Box>
+  <Box padding={3} border="primary" radius="lg">primary · lg</Box>
+  <Box padding={3} border="neutral" radius="xl">xl</Box>
+  <Box padding={3} border="neutral" radius="full">full</Box>
+  <Box padding={3} radius="md" shadow="outline">outline</Box>
+  <Box padding={3} radius="md" shadow="raised">raised</Box>
+  <Box padding={3} radius="md" shadow="overlay">overlay</Box>
+</Preview>
+
+### Responsive, divided, bleed
+
+The five flex props accept `T | { base?, sm?, md?, lg?, xl? }` (mobile first). `divided` draws a hairline between children; `bleed` lets a child run edge to edge inside a padded parent. Push a child to the far edge with `class="ms-auto"`.
+
+<Preview block code={`<Box direction={{ base: 'column', md: 'row' }} gap={4} divided padding={4} border="neutral" radius="lg">
+  <Box padding={2}>One</Box><Box padding={2}>Two</Box><Box padding={2} class="ms-auto">End</Box>
+</Box>
+<Box padding={4} border="neutral" radius="lg">
+  <p>Padded card text</p>
+  <Box bleed={4} background="neutral-faded" padding={3}>Bleeds to the card edges</Box>
+</Box>`}>
+  <Box direction={{ base: 'column', md: 'row' }} gap={4} divided padding={4} border="neutral" radius="lg">
+    <Box padding={2}>One</Box><Box padding={2}>Two</Box><Box padding={2} class="ms-auto">End</Box>
+  </Box>
+  <Box padding={4} border="neutral" radius="lg">
+    <p class="pb-3">Padded card text</p>
+    <Box bleed={4} background="neutral-faded" padding={3}>Bleeds to the card edges</Box>
+  </Box>
+</Preview>
+
+### Hues
+
+<Preview code={`<Box padding={3} radius="md" background="primary">primary</Box>
+<Box padding={3} radius="md" background="critical">critical</Box>
+<Box padding={3} radius="md" background="positive">positive</Box>
+<Box padding={3} radius="md" background="warning">warning</Box>
+<Box padding={3} radius="md" background="critical-faded" border="critical">critical-faded</Box>
+<Box padding={3} radius="md" background="positive-faded" border="positive">positive-faded</Box>
+<Box padding={3} radius="md" background="warning-faded" border="warning">warning-faded</Box>`}>
+  <Box padding={3} radius="md" background="primary">primary</Box>
+  <Box padding={3} radius="md" background="critical">critical</Box>
+  <Box padding={3} radius="md" background="positive">positive</Box>
+  <Box padding={3} radius="md" background="warning">warning</Box>
+  <Box padding={3} radius="md" background="critical-faded" border="critical">critical-faded</Box>
+  <Box padding={3} radius="md" background="positive-faded" border="positive">positive-faded</Box>
+  <Box padding={3} radius="md" background="warning-faded" border="warning">warning-faded</Box>
+</Preview>
+
+### Flex
+
+<Preview code={`<Box direction="row" gap={2} align="center" justify="between" padding={3} border="neutral" radius="md" width="full">
+  <span>Start</span>
+  <span>End</span>
+</Box>
+<Box direction="row" gap={2} wrap padding={3} border="neutral" radius="md" width="full">
+  {Array.from({ length: 12 }).map((_, i) => <Box padding={2} background="neutral-faded" radius="sm">{i + 1}</Box>)}
+</Box>`}>
+  <Box direction="row" gap={2} align="center" justify="between" padding={3} border="neutral" radius="md" width="full">
+    <span>Start</span>
+    <span>End</span>
+  </Box>
+  <Box direction="row" gap={2} wrap padding={3} border="neutral" radius="md" width="full">
+    {Array.from({ length: 12 }).map((_, i) => <Box padding={2} background="neutral-faded" radius="sm">{i + 1}</Box>)}
+  </Box>
+</Preview>
+
+## Accessibility
+
+Native semantics, no extra ARIA needed. Pick `as` to match the document
+outline (`section`, `article`, `nav`…).
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-*` | `background` surfaces |
+| `--border-neutral`, `--border-neutral-faded`, `--border-primary` | `border` |
+| `--radius-sm` … `--radius-xl` | `radius` |
+| `--shadow-outline`, `--shadow-raised`, `--shadow-overlay` | `shadow` |
+| `--spacing` scale | `gap`, `padding` |
+
+Layout primitive, so no content rules.

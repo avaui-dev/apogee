@@ -4,24 +4,26 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
   as?: string
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  /** Max width: 48 / 64 / 80 / 90rem, or none. @category layout */
+  width?: 'small' | 'medium' | 'large' | 'xlarge' | 'full'
   class?: string
 }
 
-const { as = 'div', size = 'lg', class: className, ...rest } = Astro.props
+const { as = 'div', width = 'large', class: className, ...rest } = Astro.props
 const Tag = as
 
-const sizes = {
-  sm: 'max-w-3xl',
-  md: 'max-w-5xl',
-  lg: 'max-w-7xl',
-  xl: 'max-w-[90rem]',
+const widths = {
+  small: 'max-w-3xl',
+  medium: 'max-w-5xl',
+  large: 'max-w-7xl',
+  xlarge: 'max-w-[90rem]',
   full: 'max-w-none',
 }
 ---
 
-<Tag class:list={['mx-auto w-full px-gutter', sizes[size], className]} {...rest}>
+<Tag class:list={['mx-auto w-full px-gutter', widths[width], className]} {...rest}>
   <slot />
 </Tag>

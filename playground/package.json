@@ -9,16 +9,24 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "test:a11y": "playwright test tests/a11y.spec.mjs",
+    "check:strict": "astro check --tsconfig tsconfig.strictest.json",
+    "test:behaviour": "playwright test tests/behaviour.spec.mjs"
   },
   "dependencies": {
-    "@astrojs/mdx": "^8.0.1",
-    "@lucide/astro": "^1.46.0",
+    "@astrojs/mdx": "^8.0.3",
+    "@lucide/astro": "^1.56.0",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.2",
+    "astro": "^7.3.8",
     "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.64.0"
   }
 }

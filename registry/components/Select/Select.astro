@@ -2,32 +2,34 @@
 /**
  * Select — a labeled native `<select>` (styled, with a chevron). Pass `<option>`s
  * in the slot. Native = zero JS, full keyboard + mobile support.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
+import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 import { ChevronDown } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'select'>, 'size'> {
   id?: string
   label?: string
   hint?: string
   error?: string
-  size?: 'sm' | 'md' | 'lg'
+  /** Marks the field invalid without a message. */
+  hasError?: boolean
+  /** @category layout */
+  size?: FieldSize
+  /** @category layout */
+  variant?: FieldVariant
   required?: boolean
   class?: string
-  [key: string]: any
 }
 
-const { id: idProp, label, hint, error, size = 'md', required = false, class: className, ...rest } = Astro.props
-const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const { id: idProp, label, hint, error, hasError = false, size = 'medium', variant = 'outline', required = false, class: className, ...rest } = Astro.props
+const invalid = Boolean(error) || hasError
+const id = idProp ?? uid(Astro.locals)
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
 
-const sizeMap = {
-  sm: 'h-8 ps-2.5 pe-9 text-sm',
-  md: 'h-10 ps-3 pe-9 text-sm',
-  lg: 'h-12 ps-4 pe-9 text-base',
-}
 ---
 
 <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
@@ -36,15 +38,12 @@ const sizeMap = {
       id={id}
       required={required}
       aria-describedby={describedby}
-      aria-invalid={error ? 'true' : undefined}
-      class:list={[
-        'w-full appearance-none rounded-md border border-border bg-background text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-danger',
-        sizeMap[size],
-      ]}
+      aria-invalid={invalid ? 'true' : undefined}
+      class:list={['appearance-none pe-9', fieldBase, fieldVariants[variant], fieldSizes[size]]}
       {...rest}
     >
       <slot />
     </select>
-    <ChevronDown class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+    <ChevronDown class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-neutral-faded" aria-hidden="true" />
   </div>
 </Field>

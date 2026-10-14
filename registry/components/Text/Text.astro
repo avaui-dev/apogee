@@ -4,25 +4,52 @@
  *
  * @composable
  */
-interface Props {
-  as?: 'p' | 'span' | 'div'
-  size?: 'sm' | 'base' | 'lg'
-  /** Muted (secondary) color. */
-  muted?: boolean
+import type { HTMLAttributes } from 'astro/types'
+import { responsive, type Responsive } from '../utils/responsive.ts'
+import { tables } from '../utils/responsive-tables.ts'
+
+const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' } as const
+const clamps = { 1: 'line-clamp-1 wrap-anywhere', 2: 'line-clamp-2', 3: 'line-clamp-3', 4: 'line-clamp-4', 5: 'line-clamp-5', 6: 'line-clamp-6' } as const
+const aligns = { start: 'text-start', center: 'text-center', end: 'text-end' } as const
+interface Props extends Omit<HTMLAttributes<'p'>, 'size' | 'as'> {
+  as?: 'p' | 'span' | 'div' | 'label' | 'li' | 'strong' | 'em' | 'small'
+  /** @category layout */
+  size?: Responsive<'small' | 'medium' | 'large'>
+  /** @category layout */
+  weight?: keyof typeof weights
+  /** Clamp to N lines with an ellipsis. @category layout */
+  maxLines?: keyof typeof clamps
+  /** Tabular figures for aligned digits. @category layout */
+  numeric?: boolean
+  /** @category layout */
+  align?: keyof typeof aligns
+  /** Text colour: body, secondary, or a hue. @category layout */
+  color?: 'neutral' | 'neutral-faded' | 'primary' | 'critical' | 'positive' | 'warning'
   class?: string
 }
 
-const { as = 'p', size = 'base', muted = false, class: className, ...rest } = Astro.props
+const { as = 'p', size = 'medium', color, weight, maxLines, numeric = false, align, class: className, ...rest } = Astro.props
 const Tag = as
 
-const sizeMap = { sm: 'text-sm', base: 'text-base', lg: 'text-lg' }
+const colors = {
+  neutral: 'text-neutral',
+  'neutral-faded': 'text-neutral-faded',
+  primary: 'text-primary',
+  critical: 'text-critical',
+  positive: 'text-positive',
+  warning: 'text-warning',
+}
 ---
 
 <Tag
   class:list={[
-    sizeMap[size],
+    responsive(size, tables.textSize),
     'leading-relaxed',
-    muted ? 'text-muted-foreground' : 'text-foreground',
+    weight && weights[weight],
+    maxLines !== undefined && clamps[maxLines],
+    numeric && 'tabular-nums',
+    align && aligns[align],
+    color && colors[color],
     className,
   ]}
   {...rest}

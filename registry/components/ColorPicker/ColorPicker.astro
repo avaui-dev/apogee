@@ -3,12 +3,13 @@
  * ColorPicker — a styled native color swatch with a synced hex field. The color
  * input works with zero JS; a small island keeps the hex text field in sync both
  * ways. The hex field submits under `name`. Field-wired like Input.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   id?: string
   label?: string
   hint?: string
@@ -16,7 +17,6 @@ interface Props {
   name?: string
   value?: string
   class?: string
-  [key: string]: any
 }
 
 const {
@@ -29,7 +29,7 @@ const {
   class: className,
   ...rest
 } = Astro.props
-const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const id = idProp ?? uid(Astro.locals)
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
 ---
 
@@ -38,7 +38,7 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
     <input
       type="color"
       value={value}
-      class="apogee-color-swatch size-10 shrink-0 cursor-pointer rounded-md border border-border"
+      class="apogee-color-swatch size-10 shrink-0 cursor-pointer rounded-md border border-neutral"
       aria-label="Color picker"
       {...rest}
     />
@@ -50,7 +50,7 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
       aria-describedby={describedby}
       aria-invalid={error ? 'true' : undefined}
       spellcheck="false"
-      class="apogee-color-hex h-10 w-28 rounded-md border border-border bg-background px-3 font-mono text-sm text-foreground uppercase focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-[invalid=true]:border-danger"
+      class="apogee-color-hex h-10 w-28 rounded-md border border-neutral bg-page px-3 font-mono text-sm text-neutral uppercase focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-[invalid=true]:border-critical"
     />
   </div>
 </Field>
@@ -75,13 +75,15 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
 </style>
 
 <script>
-  for (const root of document.querySelectorAll<HTMLElement>('.apogee-color')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-color', (root) => {
     const swatch = root.querySelector<HTMLInputElement>('.apogee-color-swatch')
     const hex = root.querySelector<HTMLInputElement>('.apogee-color-hex')
-    if (!swatch || !hex) continue
+    if (!swatch || !hex) return
     swatch.addEventListener('input', () => (hex.value = swatch.value.toUpperCase()))
     hex.addEventListener('input', () => {
       if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) swatch.value = hex.value
     })
-  }
+  })
 </script>

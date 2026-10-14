@@ -7,6 +7,8 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import { Inbox } from '@lucide/astro'
 
 <Preview code={`<NavLink href="/docs">Docs</NavLink>
 <NavLink href="/pricing">Pricing</NavLink>
@@ -61,6 +63,14 @@ attribute passes through (`...rest`).
   from the URL, or forced via `active`.
 - **Focus** — a visible `focus-visible` ring.
 
+## Slots
+
+`start` and `end` take an icon, badge or count. `end` is pushed to the far edge when the link fills its width (a sidebar) and sits inline in a horizontal navbar.
+
+<Preview code={`<NavLink href="#"><Inbox slot="start" /> Inbox <Badge slot="end" size="small">12</Badge></NavLink>`}>
+  <div class="w-56"><NavLink href="#"><Inbox slot="start" /> Inbox <Badge slot="end" size="small">12</Badge></NavLink></div>
+</Preview>
+
 ## Examples
 
 A link row, built for use inside `Navbar`'s default slot:
@@ -82,9 +92,9 @@ A link row, built for use inside `Navbar`'s default slot:
 
 | Token | Used for |
 |---|---|
-| `--foreground` | Active link text |
-| `--muted-foreground` | Inactive link text |
-| `--ring` | Focus ring |
+| `--foreground-neutral` | Active link text |
+| `--foreground-neutral-faded` | Inactive link text |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

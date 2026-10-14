@@ -1,69 +1,96 @@
 ---
 /**
- * Button — Apogee element.
- *
- * Renders a <button>, or an <a> when `href` is set. Tailwind utilities read
- * design tokens; theming happens via token override, not per-component classes.
- *
- * @composable
+ * Button — the Apogee action control. Renders a <button>, or an <a> when `href`
+ * is set. `color` is the hue, `variant` is the fill style, `size` the height.
+ * Icons go in the `start` / `end` slots; `iconOnly` makes a square button
+ * (pass an `aria-label`). `class` is appended last, so a consumer utility wins
+ * only when it is more specific or later in the stylesheet; there is no class
+ * merging.
  */
+import type { HTMLAttributes } from 'astro/types'
 import Spinner from '../Spinner/Spinner.astro'
+import {
+  buttonSizes,
+  iconOnlySizes,
+  buttonStyles,
+  type ButtonColor,
+  type ButtonVariant,
+  type ButtonSize,
+} from './button.ts'
 
-interface Props {
-  /** Visual style. `link` renders as a plain text link, no button chrome. */
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'link'
-  /** Control size. `icon` is a square, icon-only button (pass an `aria-label`). */
-  size?: 'sm' | 'md' | 'lg' | 'icon'
-  /** Renders an <a> to this URL instead of a <button>. */
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
+  /** Hue. @category layout */
+  color?: ButtonColor
+  /** Fill style. @category layout */
+  variant?: ButtonVariant
+  /** Height scale. @category layout */
+  size?: ButtonSize
+  /** Fully round ends. @category layout */
+  rounded?: boolean
+  /** Adds the raised shadow. @category layout */
+  raised?: boolean
+  /** Stretches to the container width. @category layout */
+  fullWidth?: boolean
+  /** Square, icon-only button; give it an `aria-label`. @category layout */
+  iconOnly?: boolean
+  /** Renders an <a> to this URL instead of a <button>. @category content */
   href?: string
   /** Native button type (ignored with `href`). */
   type?: 'button' | 'submit' | 'reset'
-  /** Disables the control. */
-  disabled?: boolean
   /** Shows a spinner and blocks interaction. */
   loading?: boolean
-  /** Extra classes, merged last. */
+  disabled?: boolean
+  /** Invoker command for a Dialog or popover target. */
+  command?: 'show-modal' | 'close' | 'request-close' | 'show-popover' | 'hide-popover' | 'toggle-popover' | (string & {})
+  /** Id of the element the command targets. */
+  commandfor?: string
   class?: string
 }
 
 const {
-  variant = 'primary',
-  size = 'md',
+  color = 'primary',
+  variant = 'solid',
+  size = 'medium',
+  rounded = false,
+  raised = false,
+  fullWidth = false,
+  iconOnly = false,
   href,
   type = 'button',
-  disabled = false,
   loading = false,
+  disabled = false,
   class: className,
   ...rest
 } = Astro.props
 
 const Tag = href ? 'a' : 'button'
 const isDisabled = disabled || loading
-const isLink = variant === 'link'
 
 const base =
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0'
+  'inline-flex items-center justify-center whitespace-nowrap font-medium transition ' +
+  'active:scale-[0.985] motion-reduce:active:scale-100 ' +
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ' +
+  'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled disabled:border-disabled disabled:shadow-none ' +
+  'aria-disabled:pointer-events-none aria-disabled:bg-disabled aria-disabled:text-disabled ' +
+  '[&_svg]:size-4 [&_svg]:shrink-0'
 
-// `link` drops all button chrome and renders as inline underlined text.
-const shape = isLink
-  ? 'inline rounded-sm underline underline-offset-4'
-  : 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition active:scale-95 motion-reduce:active:scale-100'
-
-const colors = {
-  primary: 'bg-accent text-accent-foreground hover:bg-accent-hover',
-  secondary: 'border border-border bg-surface text-surface-foreground hover:bg-muted',
-  ghost: 'bg-transparent text-foreground hover:bg-muted',
-  danger: 'bg-danger text-danger-foreground hover:bg-danger-hover',
-  link: 'text-accent hover:text-accent-hover',
-}
-
-const sizes = isLink
-  ? { sm: 'text-sm', md: 'text-sm', lg: 'text-base', icon: 'text-sm' }
-  : { sm: 'h-8 px-3 text-sm', md: 'h-10 px-4 text-sm', lg: 'h-12 px-6 text-base', icon: 'size-10' }
+// Icon-only keeps the size's text/gap/radius but swaps padding + height for a square.
+const sizeClasses = iconOnly
+  ? [iconOnlySizes[size], 'p-0', buttonSizes[size].replace(/\b(px|h)-\S+/g, '')]
+  : buttonSizes[size]
 ---
 
 <Tag
-  class:list={[base, shape, colors[variant], sizes[size], className]}
+  class:list={[
+    base,
+    buttonStyles[variant][color],
+    sizeClasses,
+    rounded && 'rounded-full',
+    raised && 'shadow-raised',
+    fullWidth && 'w-full',
+    className,
+  ]}
   href={Tag === 'a' ? (isDisabled ? undefined : href) : undefined}
   type={Tag === 'button' ? type : undefined}
   disabled={Tag === 'button' ? isDisabled : undefined}
@@ -71,6 +98,7 @@ const sizes = isLink
   aria-busy={loading ? 'true' : undefined}
   {...rest}
 >
-  {loading && <Spinner />}
+  {loading ? <Spinner size={size === 'small' ? 'small' : 'medium'} /> : <slot name="start" />}
   <slot />
+  <slot name="end" />
 </Tag>

@@ -4,13 +4,14 @@
  * light dismiss (click-away / Esc) for free, zero JS. Positioned with CSS
  * anchor positioning; where that's unsupported the panel centers on screen
  * (still fully usable). Slots: `trigger` (button label), default (panel).
- *
- * @composable
  */
-const id = `apogee-pop-${Math.random().toString(36).slice(2, 9)}`
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
+const id = uid(Astro.locals, 'apogee-pop')
 const anchor = `--${id}`
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   placement?: 'bottom' | 'top'
   class?: string
 }
@@ -23,7 +24,7 @@ const { placement = 'bottom', class: className, ...rest } = Astro.props
   popovertarget={id}
   style={`anchor-name: ${anchor}`}
   class:list={[
-    'inline-flex items-center gap-1 rounded-md border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+    'inline-flex items-center gap-1 rounded-md border border-neutral bg-page px-3 py-1.5 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
     className,
   ]}
   {...rest}
@@ -36,7 +37,7 @@ const { placement = 'bottom', class: className, ...rest } = Astro.props
   popover
   data-placement={placement}
   style={`position-anchor: ${anchor}`}
-  class="apogee-popover w-64 rounded-lg border border-border bg-background p-4 text-sm text-foreground shadow-lg"
+  class="apogee-popover w-64 rounded-lg border border-neutral bg-page p-4 text-sm text-neutral shadow-lg"
 >
   <slot />
 </div>
@@ -47,8 +48,8 @@ const { placement = 'bottom', class: className, ...rest } = Astro.props
     opacity: 0;
     transform: translateY(-0.25rem);
     transition:
-      opacity var(--duration-fast) var(--ease-smooth),
-      transform var(--duration-fast) var(--ease-smooth),
+      opacity var(--duration-fast) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard),
       overlay var(--duration-fast) allow-discrete,
       display var(--duration-fast) allow-discrete;
   }

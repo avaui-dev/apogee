@@ -48,6 +48,7 @@ import Slider from '@/components/apogee/Slider/Slider.astro'
 | `step` | `number` | `1` | Step increment. |
 | `value` | `number` | midpoint of `min`/`max` | Initial value. |
 | `disabled` | `boolean` | `false` | Disables the input. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | Hue of the filled track and thumb. |
 | `labelPosition` | `'top' \| 'bottom'` | `'top'` | Where the live percentage badge sits relative to the track. |
 | `aria-label` | `string` | — | Accessible name. No visible `<label>` is rendered — set this or associate an external `<label>` via `id` / `aria-labelledby`. |
 | `class` | `string` | — | Extra classes on the wrapping `<div>`, merged last. |
@@ -107,12 +108,12 @@ Controlled range with a fractional step:
 
 | Token | Used for |
 |---|---|
-| `--accent` | Filled portion of the track, thumb fill |
-| `--muted` | Unfilled portion of the track |
-| `--background` | Thumb border, badge text |
-| `--border` | Thumb outer shadow ring |
-| `--ring` | Focus ring on the thumb |
-| `--foreground` | Badge background |
+| `--background-{hue}` | Filled portion of the track, thumb fill (per `color`) |
+| `--background-neutral` | Unfilled portion of the track |
+| `--background-page` | Thumb border |
+| `--border-neutral` | Thumb outer shadow ring |
+| `--border-primary` | Focus ring on the thumb |
+| `--background-inverted` / `--on-inverted` | Badge |
 
 ## Do / Don't
 

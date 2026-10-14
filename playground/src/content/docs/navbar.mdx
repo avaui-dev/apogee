@@ -1,6 +1,6 @@
 ---
 title: Navbar
-description: A responsive site header that collapses its links into a mobile panel below 768px.
+description: A responsive site header that collapses its links into a mobile panel below the md breakpoint.
 group: Components
 order: 0
 ---
@@ -11,7 +11,7 @@ import Navbar from '../../../../registry/components/Navbar/Navbar.astro'
 import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
 
-<JsNote fallback="The toggle is hidden (`no-js:hidden`) and the links panel stays expanded (`no-js:flex`), so below the md breakpoint (768px) the nav is fully reachable without a working control to click. Desktop viewports (≥768px) are unaffected: links show inline via CSS regardless of JS.">
+<JsNote fallback="The toggle is hidden (`no-js:hidden`) and the links panel stays expanded (`no-js:flex`), so below the md breakpoint the nav is fully reachable without a working control to click. Desktop viewports (md and up) are unaffected: links show inline via CSS regardless of JS.">
   Wires the mobile menu toggle: clicking it flips `data-open` on the
   collapsible links panel and syncs `aria-expanded`.
 </JsNote>
@@ -55,11 +55,11 @@ import NavLink from '@/components/apogee/NavLink/NavLink.astro'
 ## Anatomy
 
 - **`brand` slot** — logo or wordmark, leftmost.
-- **default slot** — nav links. Inline row on desktop (≥768px); a stacked
+- **default slot** — nav links. Inline row on desktop (md and up); a stacked
   panel below the header on mobile, hidden until the toggle opens it.
-- **`actions` slot** — right-aligned buttons/controls. Hidden entirely
-  below 768px (`hidden md:flex`) — it does **not** move into the mobile
-  panel, so don't put anything mobile users need only there.
+- **`actions` slot** — end-aligned buttons/controls. Rendered inline on
+  desktop and again at the bottom of the mobile panel, so they stay reachable
+  at every width. Don't put elements with ids in it; they would be duplicated.
 - **mobile toggle** — a hamburger button (`md:hidden`), controls the links
   panel via `aria-controls` / `aria-expanded`.
 
@@ -74,11 +74,11 @@ passes through to the root `<header>` (`...rest`).
 
 ## States
 
-- **Collapsed** (mobile, default) — the links panel is hidden below 768px
-  until toggled open.
+- **Collapsed** (mobile, default) — the links panel is hidden below the md
+  breakpoint until toggled open.
 - **Open** (mobile) — `data-open="true"` on the panel; toggle's
   `aria-expanded="true"`.
-- **Desktop** (≥768px) — links show inline always; the toggle and its
+- **Desktop** (md and up) — links show inline always; the toggle and its
   panel logic don't apply.
 - **No JS** — see the JsNote above; the toggle is hidden and the links
   panel stays expanded.
@@ -92,7 +92,7 @@ With brand, links, and actions:
   <NavLink href="/docs">Docs</NavLink>
   <NavLink href="/pricing">Pricing</NavLink>
   <NavLink href="/blog">Blog</NavLink>
-  <Button slot="actions" variant="ghost" href="/login">Log in</Button>
+  <Button slot="actions" variant="ghost" color="neutral" href="/login">Log in</Button>
   <Button slot="actions" href="/signup">Sign up</Button>
 </Navbar>`}>
   <Navbar>
@@ -100,7 +100,7 @@ With brand, links, and actions:
     <NavLink href="/docs">Docs</NavLink>
     <NavLink href="/pricing">Pricing</NavLink>
     <NavLink href="/blog">Blog</NavLink>
-    <Button slot="actions" variant="ghost" href="/login">Log in</Button>
+    <Button slot="actions" variant="ghost" color="neutral" href="/login">Log in</Button>
     <Button slot="actions" href="/signup">Sign up</Button>
   </Navbar>
 </Preview>
@@ -114,7 +114,7 @@ With brand, links, and actions:
 - **Keyboard** — the toggle is a native button (`Enter` / `Space`
   activates); links are native `<a>` elements in DOM order.
 - **No JS** — the toggle carries `no-js:hidden` and the links panel
-  carries `no-js:flex`, so below 768px the toggle disappears and the
+  carries `no-js:flex`, so on mobile the toggle disappears and the
   links render expanded — never a dead control, and the nav stays fully
   reachable. Desktop is unaffected — links and actions render inline via
   CSS regardless of JS.
@@ -123,11 +123,11 @@ With brand, links, and actions:
 
 | Token | Used for |
 |---|---|
-| `--border` | Header bottom border / mobile panel border |
-| `--background` | Header and mobile panel background |
-| `--foreground` | Toggle icon colour |
-| `--muted` | Toggle hover background |
-| `--ring` | Toggle focus ring |
+| `--border-neutral` | Header bottom border / mobile panel border |
+| `--background-page` | Header and mobile panel background |
+| `--foreground-neutral` | Toggle icon colour |
+| `--background-neutral-faded` | Toggle hover background |
+| `--border-primary` | Toggle focus ring |
 
 ## Do / Don't
 
@@ -135,9 +135,8 @@ With brand, links, and actions:
   link list.
 - **Do** pair the default slot with `NavLink` so the current page gets its
   active state for free.
-- **Don't** assume `actions` content survives on mobile — it's hidden
-  below 768px, not moved into the collapsible panel; duplicate anything
-  essential into the links slot if mobile users need it.
+- **Don't** put elements with `id`s in the `actions` slot — it renders twice
+  (inline on desktop, inside the mobile panel), so ids would collide.
 - **Don't** assume the toggle is visible without JS — it's `no-js:hidden`
   by design; the links panel takes over as the fallback instead.
 

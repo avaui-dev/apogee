@@ -17,7 +17,7 @@ interface Props {
 const { fallback } = Astro.props
 ---
 
-<Alert variant="info" title="Uses JavaScript" class="not-content my-6">
+<Alert color="primary" title="Uses JavaScript" class="not-content my-6">
   <slot />
   {fallback && (
     <p class="mt-1"><strong class="font-medium">Without JS:</strong> {fallback}</p>

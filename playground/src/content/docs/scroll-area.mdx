@@ -1,0 +1,76 @@
+---
+title: ScrollArea
+description: A scroll container with a thin, token-coloured scrollbar. Zero JS.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import ScrollArea from '../../../../registry/components/ScrollArea/ScrollArea.astro'
+
+<Preview code={`<ScrollArea height="10rem" aria-label="Changelog">
+  …
+</ScrollArea>`}>
+  <ScrollArea height="10rem" aria-label="Changelog" class="w-full max-w-sm rounded-lg border border-neutral p-3 text-sm">
+    {Array.from({ length: 20 }).map((_, i) => <p class="py-1">Release note {i + 1}</p>)}
+  </ScrollArea>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add scroll-area
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import ScrollArea from '@/components/apogee/ScrollArea/ScrollArea.astro'
+---
+<ScrollArea height="20rem" aria-label="Members">
+  <ul>…</ul>
+</ScrollArea>
+```
+
+## API
+
+`@composable`. Any other native attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `direction` | `'vertical' \| 'horizontal' \| 'both'` | `'vertical'` | Which axes scroll. |
+| `height` | `string` | — | Max height, any CSS length. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+<Preview code={`<ScrollArea direction="vertical" height="8rem">…</ScrollArea>
+<ScrollArea direction="horizontal">…</ScrollArea>
+<ScrollArea direction="both" height="8rem">…</ScrollArea>`}>
+  <ScrollArea direction="vertical" height="8rem" aria-label="Vertical" class="w-48 rounded-lg border border-neutral p-3 text-sm">
+    {Array.from({ length: 12 }).map((_, i) => <p class="py-1">Row {i + 1}</p>)}
+  </ScrollArea>
+  <ScrollArea direction="horizontal" aria-label="Horizontal" class="w-48 rounded-lg border border-neutral p-3 text-sm">
+    <div class="flex gap-2">{Array.from({ length: 12 }).map((_, i) => <span class="shrink-0 rounded bg-neutral-faded px-3 py-1">Item {i + 1}</span>)}</div>
+  </ScrollArea>
+  <ScrollArea direction="both" height="8rem" aria-label="Both" class="w-48 rounded-lg border border-neutral p-3 text-sm">
+    <div class="w-[32rem]">{Array.from({ length: 12 }).map((_, i) => <p class="py-1 whitespace-nowrap">A long row {i + 1} that overflows horizontally as well</p>)}</div>
+  </ScrollArea>
+</Preview>
+
+## Accessibility
+
+- The container has `tabindex="0"` so keyboard users can focus it and scroll with the arrow keys; it shows the focus ring.
+- Give it an `aria-label` (or `aria-labelledby`) when nothing nearby names the region.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border-neutral` | Scrollbar thumb |
+| `--border-primary` | Focus outline |
+
+Layout primitive, so no content rules.

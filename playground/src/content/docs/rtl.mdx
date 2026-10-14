@@ -66,7 +66,7 @@ tabbing through it:
     { label: 'Products', href: '#' },
     { label: 'Item' },
   ]} />
-  <Button variant="primary"><ArrowRight class="rtl:-scale-x-100" /> Continue</Button>
+  <Button><ArrowRight class="rtl:-scale-x-100" /> Continue</Button>
 </div>`}>
   <div dir="rtl" class="flex w-full flex-col items-start gap-4">
     <Breadcrumbs items={[
@@ -74,7 +74,7 @@ tabbing through it:
       { label: 'Products', href: '#' },
       { label: 'Item' },
     ]} />
-    <Button variant="primary"><ArrowRight class="rtl:-scale-x-100" /> Continue</Button>
+    <Button><ArrowRight class="rtl:-scale-x-100" /> Continue</Button>
   </div>
 </Preview>
 
@@ -96,15 +96,15 @@ checked mirrored at once.
 
 ## Known limitations
 
-- **Carousel** scrolls with `scrollBy({ left })`, whose sign is historically
-  inconsistent across browsers in RTL. Arrows and icons mirror correctly; if
-  your target browsers disagree on scroll direction, branch on `dir` in the
-  island.
-- **Dialog `variant="panel"`** takes an explicit `position` (`left`/`right`) —
-  a deliberate side, not auto-flipped. Use `start`/`end` semantics at your own
-  call sites if you want it to follow direction.
+- **Carousel** reads the track's computed `direction` and flips the scroll
+  sign under RTL, so Next always moves toward the end edge. Older engines that
+  report a positive `scrollLeft` in RTL may still disagree; test on your
+  targets.
+- **Dialog `variant="panel"`** takes a logical `position` (`start`/`end`), so
+  an `end` drawer docks to the right in LTR and the left in RTL, sliding in from
+  that edge.
 - **Popover** anchor positioning uses the physical `anchor(left)` CSS
   function (Chromium-only); it falls back to centering elsewhere. Revisit once
   logical anchor positioning reaches Baseline.
-- **Toast** corners (`top-left`, `top-right`, …) are explicit physical
-  positions by name.
+- **Toaster** corners are logical (`top-start`, `bottom-end`, …) and mirror
+  with direction.

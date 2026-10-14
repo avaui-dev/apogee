@@ -1,0 +1,35 @@
+// One small icon per docs page, keyed by the page id. Unknown ids fall back to Box.
+import {
+  Accessibility, ChevronsDownUp, MousePointerClick, TriangleAlert, Ratio, Users, User, BadgeCheck, Quote, Box, ChevronRight,
+  Globe, SquareStack, RectangleHorizontal, CreditCard, GalleryHorizontal, ListChecks, SquareCheck, Code, ChevronDown, Palette,
+  Search, Command, Frame, AlignCenter, FileText, MousePointer2, Table2, AppWindow, X, Minus, Inbox, ChevronsUpDown, Type,
+  TextCursorInput, Upload, PanelBottom, LayoutGrid, Heading, EyeOff, Shapes, Image, Keyboard, Link, List, MoveHorizontal, Menu,
+  Gauge, ArrowRightLeft, Zap, Navigation, PanelTop, Hash, ChevronsRight, KeyRound, MessageSquare, CircleDot, Activity, Layers,
+  BookOpen, Circle, Star, PenLine, Languages, ScrollText, LayoutTemplate, ToggleLeft, PanelLeft, Rows3, SkipForward,
+  SlidersHorizontal, Ruler, LoaderCircle, TrendingUp, ListOrdered, ToggleRight, Table, PanelsTopLeft, Tags, Tag, Text, AlignLeft,
+  GitCommitHorizontal, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall,
+} from '@lucide/astro'
+
+export const docsIcons: Record<string, typeof Box> = {
+  accessibility: Accessibility, accordion: ChevronsDownUp, actionable: MousePointerClick, alert: TriangleAlert, 'aspect-ratio': Ratio,
+  'avatar-group': Users, avatar: User, badge: BadgeCheck, blockquote: Quote, box: Box, breadcrumbs: ChevronRight, 'browser-support': Globe,
+  'button-group': SquareStack, button: RectangleHorizontal, card: CreditCard, carousel: GalleryHorizontal, 'checkbox-group': ListChecks,
+  checkbox: SquareCheck, code: Code, collapsible: ChevronDown, 'color-picker': Palette, color: Palette, combobox: Search,
+  'command-palette': Command, container: Frame, 'content-wrapper': AlignCenter, content: FileText, 'context-menu': MousePointer2,
+  'data-grid': Table2, dialog: AppWindow, dismissible: X, divider: Minus, dropdown: ChevronDown, 'empty-state': Inbox,
+  expandable: ChevronsUpDown, eyebrow: Type, field: TextCursorInput, 'file-upload': Upload, footer: PanelBottom, grid: LayoutGrid,
+  heading: Heading, hidden: EyeOff, icon: Shapes, image: Image, index: BookOpen, input: TextCursorInput, kbd: Keyboard, link: Link,
+  list: List, marquee: MoveHorizontal, menubar: Menu, meter: Gauge, 'migrating-to-0-3': ArrowRightLeft, motion: Zap,
+  'nav-link': Navigation, navbar: PanelTop, 'number-input': Hash, pagination: ChevronsRight, 'pin-input': KeyRound,
+  popover: MessageSquare, 'progress-indicator': CircleDot, progress: Activity, 'progressive-enhancement': Layers, prose: BookOpen,
+  'radio-group': Circle, radio: CircleDot, rating: Star, 'rich-text-editor': PenLine, rtl: Languages, 'scroll-area': ScrollText,
+  section: LayoutTemplate, 'segmented-control': ToggleLeft, select: ChevronsUpDown, sidebar: PanelLeft, skeleton: Rows3,
+  'skip-link': SkipForward, slider: SlidersHorizontal, spacing: Ruler, spinner: LoaderCircle, stack: Rows3, stat: TrendingUp,
+  steps: ListOrdered, switch: ToggleRight, table: Table, tabs: PanelsTopLeft, 'tag-input': Tags, tag: Tag, text: Text,
+  textarea: AlignLeft, timeline: GitCommitHorizontal, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,
+  tokens: Paintbrush, tooltip: MessageCircle, typography: ALargeSmall,
+  'section-header': LayoutTemplate, 'sections/hero': LayoutTemplate, 'sections/logo-cloud': Shapes, 'sections/features': LayoutGrid, 'sections/stats': TrendingUp,
+  'sections/testimonials': Quote, 'sections/cta': MousePointerClick, 'sections/faq': ChevronsDownUp, 'sections/content': FileText, 'sections/team': Users,
+  'sections/pricing': CreditCard, 'sections/blog-list': List, 'sections/post-header': Heading, 'sections/contact': MessageSquare, 'sections/not-found': Search,
+  'sections/footer-section': PanelBottom, 'sections/page-header': PanelTop, 'sections/stats-cards': Activity, 'sections/settings-form': TextCursorInput, 'sections/table-shell': Table2, 'sections/empty-state-section': Inbox,
+}

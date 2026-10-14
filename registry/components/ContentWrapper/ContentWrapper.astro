@@ -11,7 +11,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
   variant?: 'stack' | 'columns' | 'sticky'
   reverse?: boolean
   gap?: 4 | 6 | 8 | 10 | 12

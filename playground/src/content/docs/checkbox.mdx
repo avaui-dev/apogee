@@ -41,7 +41,9 @@ valid and unchecked by the type system).
 |---|---|---|---|
 | `id` | `string` | auto-generated (`apogee-<random>`) | Id on the `<input>`, and `for` on the `<label>`. Set your own if you need a stable id (e.g. to target it from a `<label for>` elsewhere). |
 | `label` | `string` | — | Visible label text, rendered in a real `<label>`. Omit to render the checkbox alone (then supply your own `aria-label`). |
-| `class` | `string` | — | Extra classes on the wrapping `<div>`, merged last. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control and label size. |
+| `hasError` | `boolean` | `false` | Marks the control invalid (`aria-invalid`, critical border). |
+| `class` | `string` | — | Extra classes on the wrapping `<div>`, appended last. |
 | `...rest` | `any` | — | Passed straight to the `<input>` — e.g. `checked`, `disabled`, `required`, `name`, `value`. |
 
 ## States
@@ -49,13 +51,13 @@ valid and unchecked by the type system).
 The real `<input>` is styled directly (`appearance: none`) — it stays the
 actual control, so every state below is native, not simulated:
 
-- **Unchecked** — bordered box, `--border`.
-- **Hover** (unchecked, enabled) — border darkens to `--muted-foreground`.
-- **Checked** — filled `--accent` with an inline checkmark icon.
-- **Indeterminate** — filled `--accent` with a dash icon. This is a DOM
+- **Unchecked** — bordered box, `--border-neutral`.
+- **Hover** (unchecked, enabled) — border darkens to `--foreground-neutral-faded`.
+- **Checked** — filled `--background-primary` with an inline checkmark icon.
+- **Indeterminate** — filled `--background-primary` with a dash icon. This is a DOM
   property, not an HTML attribute (`el.indeterminate = true`), so it can only
   be set via script — it can't be demonstrated in a static `<Preview>` here.
-- **Focus** — visible `focus-visible` ring, `--ring`.
+- **Focus** — visible `focus-visible` ring, `--border-primary`.
 - **Disabled** — 50% opacity, `not-allowed` cursor.
 
 <Preview code={`<Checkbox label="Unchecked" />
@@ -107,11 +109,11 @@ Setting indeterminate from script (list "select all" pattern):
 
 | Token | Used for |
 |---|---|
-| `--border` | Unchecked border |
-| `--background` | Unchecked fill |
-| `--muted-foreground` | Hover border (unchecked, enabled) |
-| `--accent` | Checked / indeterminate fill and border |
-| `--ring` | Focus ring |
+| `--border-neutral` | Unchecked border |
+| `--background-page` | Unchecked fill |
+| `--foreground-neutral-faded` | Hover border (unchecked, enabled) |
+| `--background-primary` | Checked / indeterminate fill and border |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

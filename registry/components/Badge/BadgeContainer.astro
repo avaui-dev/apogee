@@ -1,0 +1,32 @@
+---
+/**
+ * BadgeContainer — anchors a Badge on the corner of an avatar, icon or button.
+ * Put the element in the default slot and the Badge in the `badge` slot.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+const places = {
+  'top-end': '-top-1 -end-1',
+  'bottom-end': '-bottom-1 -end-1',
+} as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'span'> {
+  /** @category layout */
+  position?: keyof typeof places
+  /** Push the badge outward so it sits on the edge of a round element. @category layout */
+  overlap?: boolean
+  class?: string
+}
+
+const { position = 'top-end', overlap = false, class: className, ...rest } = Astro.props
+---
+
+<span class:list={['relative inline-flex', className]} {...rest}>
+  <slot />
+  <span class:list={['absolute z-10', places[position], overlap && 'translate-x-1/4 rtl:-translate-x-1/4']}>
+    <slot name="badge" />
+  </span>
+</span>

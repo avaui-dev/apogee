@@ -73,7 +73,7 @@ label by index.
 - **Selected** — the active tab has an accent underline and `aria-selected="true"`;
   its panel is visible.
 - **Hover / focus** — inactive tabs lighten on hover; keyboard focus shows a visible
-  ring (`focus-visible:outline-ring`).
+  ring (`focus-visible:outline-primary`).
 - **No JS** — every panel is shown (the `no-js:block` fallback).
 
 ## Examples
@@ -94,6 +94,10 @@ More than a handful of tabs — they wrap; the pattern is unchanged:
   </Tabs>
 </Preview>
 
+## Events
+
+The root dispatches `apogee:tabs-change` (`detail: { index }`, bubbling) whenever a tab is selected.
+
 ## Accessibility
 
 - Full **WAI-ARIA tabs pattern**: `role="tablist"` / `role="tab"` /
@@ -101,7 +105,10 @@ More than a handful of tabs — they wrap; the pattern is unchanged:
   `aria-labelledby`.
 - **Keyboard** — `Tab` moves into the tablist (roving tabindex, so only the active
   tab is in the tab order); `←` / `→` move between tabs and select; `Home` / `End`
-  jump to first / last.
+  jump to first / last. Under `dir="rtl"` the arrows swap to match the mirrored
+  order.
+- Each panel is focusable (`tabindex="0"`), so `Tab` from the active tab lands
+  on its panel before moving on.
 - **Focus** — a visible `focus-visible` ring on each tab.
 - **No JS** — panels are never trapped: with scripts off every panel renders, so
   the content is fully reachable.
@@ -111,11 +118,11 @@ More than a handful of tabs — they wrap; the pattern is unchanged:
 
 | Token | Used for |
 |---|---|
-| `--border` | Tablist bottom rule + inactive tab border |
-| `--accent` | Selected tab underline |
-| `--foreground` / `--muted-foreground` | Active vs. inactive label colour |
-| `--ring` | Focus ring |
-| `--duration-base` / `--ease-smooth` | Panel enter animation |
+| `--border-neutral` | Tablist bottom rule + inactive tab border |
+| `--background-primary` | Selected tab underline |
+| `--foreground-neutral` / `--foreground-neutral-faded` | Active vs. inactive label colour |
+| `--border-primary` | Focus ring |
+| `--duration-medium` / `--ease-standard` | Panel enter animation |
 
 ## Do / Don't
 

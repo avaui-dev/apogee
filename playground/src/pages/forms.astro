@@ -9,6 +9,8 @@ import Checkbox from '../../../registry/components/Checkbox/Checkbox.astro'
 import Radio from '../../../registry/components/Radio/Radio.astro'
 import Switch from '../../../registry/components/Switch/Switch.astro'
 import Stack from '../../../registry/components/Stack/Stack.astro'
+import CheckboxGroup from '../../../registry/components/CheckboxGroup/CheckboxGroup.astro'
+import RadioGroup from '../../../registry/components/RadioGroup/RadioGroup.astro'
 ---
 
 <ShowcasePage title="Forms">
@@ -23,16 +25,16 @@ import Stack from '../../../registry/components/Stack/Stack.astro'
     </Group>
     <Group label="Sizes" stack>
       <Stack gap={4} class="max-w-sm">
-        <Input size="sm" label="Small" placeholder="Small" />
-        <Input size="md" label="Medium" placeholder="Medium" />
-        <Input size="lg" label="Large" placeholder="Large" />
+        <Input size="small" label="Small" placeholder="Small" />
+        <Input label="Medium" placeholder="Medium" />
+        <Input size="large" label="Large" placeholder="Large" />
       </Stack>
     </Group>
     <Group label="Floating label (click a field)" stack>
       <Stack gap={4} class="max-w-sm">
-        <Input variant="floating" label="Full name" />
-        <Input variant="floating" type="email" label="Email address" hint="The label floats up on focus / when filled." />
-        <Input variant="floating" size="lg" label="Large floating" />
+        <Input labelPosition="floating" label="Full name" />
+        <Input labelPosition="floating" type="email" label="Email address" hint="The label floats up on focus / when filled." />
+        <Input labelPosition="floating" size="large" label="Large floating" />
       </Stack>
     </Group>
   </Showcase>
@@ -40,9 +42,9 @@ import Stack from '../../../registry/components/Stack/Stack.astro'
   <Showcase name="Textarea" summary="Sizes.">
     <Group label="Sizes" stack>
       <Stack gap={4} class="max-w-sm">
-        <Textarea size="sm" rows={2} label="Small" placeholder="Small" />
-        <Textarea size="md" label="Medium" placeholder="Medium" />
-        <Textarea size="lg" label="Large" placeholder="Large" />
+        <Textarea size="small" rows={2} label="Small" placeholder="Small" />
+        <Textarea label="Medium" placeholder="Medium" />
+        <Textarea size="large" label="Large" placeholder="Large" />
       </Stack>
     </Group>
   </Showcase>
@@ -50,15 +52,15 @@ import Stack from '../../../registry/components/Stack/Stack.astro'
   <Showcase name="Select" summary="Sizes.">
     <Group label="Sizes" stack>
       <Stack gap={4} class="max-w-sm">
-        <Select size="sm" label="Small">
+        <Select size="small" label="Small">
           <option>Developer</option>
           <option>Designer</option>
         </Select>
-        <Select size="md" label="Medium">
+        <Select label="Medium">
           <option>Developer</option>
           <option>Designer</option>
         </Select>
-        <Select size="lg" label="Large">
+        <Select size="large" label="Large">
           <option>Developer</option>
           <option>Designer</option>
         </Select>
@@ -87,6 +89,34 @@ import Stack from '../../../registry/components/Stack/Stack.astro'
       <Switch label="Enable notifications" />
       <Switch label="On by default" checked />
       <Switch label="Disabled" disabled />
+    </Group>
+  </Showcase>
+  <Showcase name="CheckboxGroup" summary="A fieldset of checkboxes with one legend, hint and error.">
+    <Group stack>
+      <CheckboxGroup legend="Notify me about" hint="Pick as many as you like.">
+        <Checkbox label="Comments" checked />
+        <Checkbox label="Mentions" />
+        <Checkbox label="Releases" />
+      </CheckboxGroup>
+      <CheckboxGroup legend="Row, with error" direction="row" error="Pick at least one.">
+        <Checkbox label="A" hasError />
+        <Checkbox label="B" hasError />
+      </CheckboxGroup>
+    </Group>
+  </Showcase>
+
+  <Showcase name="RadioGroup" summary="A radiogroup fieldset; give every Radio the same name.">
+    <Group stack>
+      <RadioGroup legend="Plan" hint="You can change this later.">
+        <Radio name="plan-group" value="free" label="Free" checked />
+        <Radio name="plan-group" value="pro" label="Pro" />
+        <Radio name="plan-group" value="team" label="Team" />
+      </RadioGroup>
+      <RadioGroup legend="Size" direction="row">
+        <Radio name="size" value="s" label="S" />
+        <Radio name="size" value="m" label="M" checked />
+        <Radio name="size" value="l" label="L" />
+      </RadioGroup>
     </Group>
   </Showcase>
 </ShowcasePage>

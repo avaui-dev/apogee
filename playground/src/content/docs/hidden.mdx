@@ -1,0 +1,79 @@
+---
+title: Hidden
+description: Hide children below or above a breakpoint, or visually only.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Hidden from '../../../../registry/components/Hidden/Hidden.astro'
+
+<Preview code={`<Hidden below="md">Shown from md up</Hidden>
+<Hidden above="md">Shown below md</Hidden>
+<Hidden visually>Read by screen readers only</Hidden>`}>
+  <Hidden below="md" class="rounded-md bg-neutral-faded px-3 py-2">Shown from md up. Resize to see</Hidden>
+  <Hidden above="md" class="rounded-md bg-neutral-faded px-3 py-2">Shown below md. Resize to see</Hidden>
+  <Hidden visually>Read by screen readers only</Hidden>
+  <span class="text-neutral-faded">(a visually hidden item sits here)</span>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add hidden
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Hidden from '@/components/apogee/Hidden/Hidden.astro'
+---
+<Hidden below="lg"><Sidebar /></Hidden>
+<Hidden above="lg"><MobileNav /></Hidden>
+```
+
+## API
+
+`@composable`. Any other native attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `below` | `'sm' \| 'md' \| 'lg' \| 'xl'` | — | Hidden on viewports narrower than the breakpoint. |
+| `above` | `'sm' \| 'md' \| 'lg' \| 'xl'` | — | Hidden on viewports at or wider than the breakpoint. |
+| `visually` | `boolean` | `false` | `sr-only`: removed from view, kept for assistive tech. |
+| `as` | `'div' \| 'span'` | `'div'` | Tag to render. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+<Preview code={`<Hidden below="sm">below sm</Hidden>
+<Hidden below="md">below md</Hidden>
+<Hidden below="lg">below lg</Hidden>
+<Hidden below="xl">below xl</Hidden>
+<Hidden above="sm">above sm</Hidden>
+<Hidden above="md">above md</Hidden>
+<Hidden above="lg">above lg</Hidden>
+<Hidden above="xl">above xl</Hidden>`}>
+  <Hidden below="sm" as="span" class="rounded-md bg-neutral-faded px-2 py-1 text-sm">hidden below sm</Hidden>
+  <Hidden below="md" as="span" class="rounded-md bg-neutral-faded px-2 py-1 text-sm">hidden below md</Hidden>
+  <Hidden below="lg" as="span" class="rounded-md bg-neutral-faded px-2 py-1 text-sm">hidden below lg</Hidden>
+  <Hidden below="xl" as="span" class="rounded-md bg-neutral-faded px-2 py-1 text-sm">hidden below xl</Hidden>
+  <Hidden above="sm" as="span" class="rounded-md bg-primary-faded px-2 py-1 text-sm">hidden above sm</Hidden>
+  <Hidden above="md" as="span" class="rounded-md bg-primary-faded px-2 py-1 text-sm">hidden above md</Hidden>
+  <Hidden above="lg" as="span" class="rounded-md bg-primary-faded px-2 py-1 text-sm">hidden above lg</Hidden>
+  <Hidden above="xl" as="span" class="rounded-md bg-primary-faded px-2 py-1 text-sm">hidden above xl</Hidden>
+</Preview>
+
+## Accessibility
+
+- Breakpoint hiding uses `display: none`: the content is removed for everyone at that size, including screen readers. Don't hide the only route to a feature.
+- `visually` keeps the content in the accessibility tree. Use it for labels that sighted users get from context.
+
+## Tokens
+
+None. Breakpoints come from Tailwind's `--breakpoint-*` scale.
+
+Layout primitive, so no content rules.

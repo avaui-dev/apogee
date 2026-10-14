@@ -2,12 +2,12 @@
 import '../styles/global.css'
 import Navbar from '../../../registry/components/Navbar/Navbar.astro'
 import NavLink from '../../../registry/components/NavLink/NavLink.astro'
-import Footer from '../../../registry/components/Footer/Footer.astro'
 import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
 import Prose from '../../../registry/components/Prose/Prose.astro'
 import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
-import { Sun, Moon, Search, Menu } from '@lucide/astro'
+import { Sun, Moon, Search, Menu, Box } from '@lucide/astro'
+import { docsIcons } from '../components/docs-icons'
 
 interface NavGroup {
   group: string
@@ -15,10 +15,10 @@ interface NavGroup {
 }
 interface Props {
   title: string
-  description?: string
-  headings?: { depth: number; slug: string; text: string }[]
-  nav?: NavGroup[]
-  group?: string
+  description?: string | undefined
+  headings?: { depth: number; slug: string; text: string }[] | undefined
+  nav?: NavGroup[] | undefined
+  group?: string | undefined
 }
 
 const { title, description, headings = [], nav = [], group } = Astro.props
@@ -48,7 +48,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
         t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
     </script>
   </head>
-  <body class="min-h-dvh bg-background text-foreground">
+  <body class="min-h-dvh bg-page text-neutral">
     <Navbar>
       <a slot="brand" href="/docs" class="text-base font-semibold tracking-tight">Apogee</a>
       <NavLink href="/docs">Docs</NavLink>
@@ -57,7 +57,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
           type="button"
           command="show-modal"
           commandfor="docs-mobile-nav"
-          class="grid size-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+          class="grid size-9 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral md:hidden"
           aria-label="Open navigation"
         >
           <Menu class="size-5" aria-hidden="true" />
@@ -65,15 +65,15 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
         <button
           type="button"
           data-command-open="docsearch"
-          class="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          class="inline-flex h-9 items-center gap-2 rounded-md border border-neutral bg-page px-2.5 text-sm text-neutral-faded transition-colors hover:text-neutral"
           aria-label="Search"
         >
           <Search class="size-4" aria-hidden="true" />
-          <kbd class="hidden rounded border border-border px-1 text-xs sm:inline">⌘K</kbd>
+          <kbd class="hidden rounded border border-neutral px-1 text-xs sm:inline">⌘K</kbd>
         </button>
         <a
           href="https://github.com/avaui-dev/apogee"
-          class="grid size-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          class="grid size-9 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral"
           aria-label="GitHub"
         >
           <svg class="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -81,9 +81,9 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
           </svg>
         </a>
         <button
-          id="theme-toggle"
+          data-theme-toggle
           type="button"
-          class="grid size-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          class="grid size-9 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral"
           aria-label="Toggle theme"
         >
           <Sun class="size-4 hidden dark:block" aria-hidden="true" />
@@ -93,20 +93,21 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
     </Navbar>
 
     <div class="mx-auto flex w-full max-w-7xl gap-8 px-4">
-      <aside class="hidden w-56 shrink-0 md:block">
+      <aside class="hidden w-64 shrink-0 md:block">
         <nav class="sticky top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto py-8 pe-2" aria-label="Docs">
           {
             nav.map((g) => (
-              <div class="mb-4">
-                <p class="px-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{g.group}</p>
+              <div class="mb-8 last:mb-0">
+                <p class="px-2 pb-2 text-xs font-semibold tracking-wider text-neutral uppercase">{g.group}</p>
                 <div class="flex flex-col gap-0.5">
                   {g.items.map((i) => (
                     <NavLink href={i.href} class="px-2! py-1.5!">
+                      {(() => { const Icon = docsIcons[i.id] ?? Box; return <Icon slot="start" class="size-4 text-neutral-faded" aria-hidden="true" /> })()}
                       {i.title}
                       {i.js && (
                         <span
-                          slot="trailing"
-                          class="rounded bg-muted-foreground/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-muted-foreground"
+                          slot="end"
+                          class="rounded bg-neutral-faded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-neutral"
                           title="Uses JavaScript"
                         >
                           JS
@@ -126,22 +127,22 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
           items={[{ label: 'Docs', href: '/docs' }, ...(group ? [{ label: group }] : []), { label: title }]}
         />
         <h1 class="mt-4 text-3xl font-semibold tracking-tight">{title}</h1>
-        {description && <p class="mt-2 text-lg text-muted-foreground">{description}</p>}
+        {description && <p class="mt-2 text-lg text-neutral-faded">{description}</p>}
         <Prose class="mt-8">
           <slot />
         </Prose>
 
         {
           (prev || next) && (
-            <nav class="mt-12 flex items-stretch justify-between gap-4 border-t border-border pt-6" aria-label="Pagination">
+            <nav class="mt-12 flex items-stretch justify-between gap-4 border-t border-neutral pt-6" aria-label="Pagination">
               {prev ? (
                 <a
                   href={prev.href}
-                  class="flex flex-col gap-0.5 rounded-lg border border-border px-4 py-3 transition-colors hover:bg-muted/60"
+                  class="flex flex-col gap-0.5 rounded-lg border border-neutral px-4 py-3 transition-colors hover:bg-neutral-faded-highlighted"
                   rel="prev"
                 >
-                  <span class="text-xs text-muted-foreground">← Previous</span>
-                  <span class="text-sm font-medium text-foreground">{prev.title}</span>
+                  <span class="text-xs text-neutral-faded">← Previous</span>
+                  <span class="text-sm font-medium text-neutral">{prev.title}</span>
                 </a>
               ) : (
                 <span />
@@ -149,11 +150,11 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
               {next ? (
                 <a
                   href={next.href}
-                  class="flex flex-col gap-0.5 rounded-lg border border-border px-4 py-3 text-end transition-colors hover:bg-muted/60"
+                  class="flex flex-col gap-0.5 rounded-lg border border-neutral px-4 py-3 text-end transition-colors hover:bg-neutral-faded-highlighted"
                   rel="next"
                 >
-                  <span class="text-xs text-muted-foreground">Next →</span>
-                  <span class="text-sm font-medium text-foreground">{next.title}</span>
+                  <span class="text-xs text-neutral-faded">Next →</span>
+                  <span class="text-sm font-medium text-neutral">{next.title}</span>
                 </a>
               ) : (
                 <span />
@@ -167,14 +168,14 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
         toc.length > 0 && (
           <aside class="hidden w-52 shrink-0 xl:block">
             <nav class="sticky top-16 py-10 text-sm" aria-label="On this page">
-              <p class="pb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">On this page</p>
+              <p class="pb-2 text-xs font-medium tracking-wide text-neutral-faded uppercase">On this page</p>
               <ul class="flex flex-col" data-toc>
                 {toc.map((h) => (
                   <li>
                     <a
                       href={`#${h.slug}`}
                       class:list={[
-                        'block border-s border-border py-1.5 text-muted-foreground transition-colors hover:text-foreground data-[active=true]:border-accent data-[active=true]:font-medium data-[active=true]:text-accent',
+                        'block border-s border-neutral py-1.5 text-neutral-faded transition-colors hover:text-neutral data-[active=true]:border-primary data-[active=true]:font-medium data-[active=true]:text-primary',
                         h.depth === 3 ? 'ps-6' : 'ps-3',
                       ]}
                     >
@@ -189,27 +190,21 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
       }
     </div>
 
-    <Footer>
-      <Fragment slot="bottom">
-        <span>© 2026 AVA UI · MIT</span>
-        <span>Built with Apogee</span>
-      </Fragment>
-    </Footer>
-
-    <Dialog id="docs-mobile-nav" variant="panel" position="left" title="Menu" class="md:hidden">
+    <Dialog id="docs-mobile-nav" position="start" title="Menu" class="md:hidden">
       <nav aria-label="Docs">
         {
           nav.map((g) => (
-            <div class="mb-4">
-              <p class="px-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{g.group}</p>
+            <div class="mb-8 last:mb-0">
+              <p class="px-2 pb-2 text-xs font-semibold tracking-wider text-neutral uppercase">{g.group}</p>
               <div class="flex flex-col gap-0.5">
                 {g.items.map((i) => (
                   <NavLink href={i.href} class="px-2! py-1.5!">
+                    {(() => { const Icon = docsIcons[i.id] ?? Box; return <Icon slot="start" class="size-4 text-neutral-faded" aria-hidden="true" /> })()}
                     {i.title}
                     {i.js && (
                       <span
-                        slot="trailing"
-                        class="rounded bg-muted-foreground/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-muted-foreground"
+                        slot="end"
+                        class="rounded bg-neutral-faded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-neutral"
                         title="Uses JavaScript"
                       >
                         JS
@@ -227,12 +222,21 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
     <CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
 
     <script>
-      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      // Navbar renders its actions slot twice (mobile panel + desktop), so bind every copy.
+      const toggleTheme = () => {
         const el = document.documentElement
         const next = el.dataset.theme === 'dark' ? 'light' : 'dark'
+        el.classList.add('apogee-no-transitions')
         el.dataset.theme = next
         localStorage.setItem('apogee-theme', next)
-      })
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('apogee-no-transitions')))
+      }
+      for (const b of document.querySelectorAll('[data-theme-toggle]')) b.addEventListener('click', toggleTheme)
+
+      // Keep the current page's link in view inside the scrolling sidebar.
+      const sideNav = document.querySelector<HTMLElement>('aside nav[aria-label="Docs"]')
+      const current = sideNav?.querySelector<HTMLElement>('[aria-current="page"]')
+      if (sideNav && current) sideNav.scrollTop = Math.max(0, current.offsetTop - sideNav.clientHeight / 2)
 
       // Add a `#` anchor to each prose heading (progressive enhancement).
       for (const h of document.querySelectorAll<HTMLElement>(

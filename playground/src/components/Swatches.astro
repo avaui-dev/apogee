@@ -1,0 +1,63 @@
+---
+/**
+ * Swatches — every colour role as a labelled tile, read live from the CSS
+ * variables, so the grid follows the current theme.
+ */
+const hues = ['primary', 'neutral', 'critical', 'positive', 'warning'] as const
+const fills = ['', '-faded', '-highlighted', '-faded-highlighted'] as const
+const neutralOnly = [
+  'page', 'page-faded', 'elevation-base', 'elevation-raised', 'elevation-overlay', 'disabled', 'disabled-faded', 'inverted',
+] as const
+---
+
+<div class="not-content my-6 flex flex-col gap-8 text-xs">
+  <section>
+    <h3 class="mb-2 font-semibold text-neutral">Backgrounds and on-colours</h3>
+    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      {hues.flatMap((hue) =>
+        fills.map((fill) => (
+          <div
+            class="flex h-16 flex-col justify-between rounded-md border border-neutral-faded p-2"
+            style={`background: var(--background-${hue}${fill}); color: var(--${fill.includes('faded') ? `foreground-${hue}` : `on-${hue}`})`}
+          >
+            <code>--background-{hue}{fill}</code>
+            <span>{fill.includes('faded') ? `--foreground-${hue}` : `--on-${hue}`}</span>
+          </div>
+        )),
+      )}
+    </div>
+  </section>
+  <section>
+    <h3 class="mb-2 font-semibold text-neutral">Page, elevation, disabled, inverted</h3>
+    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      {neutralOnly.map((name) => (
+        <div
+          class="flex h-16 flex-col justify-between rounded-md border border-neutral-faded p-2"
+          style={`background: var(--background-${name}); color: var(--${name === 'inverted' ? 'on-inverted' : 'foreground-neutral'})`}
+        >
+          <code>--background-{name}</code>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section>
+    <h3 class="mb-2 font-semibold text-neutral">Borders</h3>
+    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      {[...hues.flatMap((h) => [h, `${h}-faded`]), 'disabled'].map((name) => (
+        <div class="flex h-12 items-center rounded-md border-2 bg-page p-2 text-neutral" style={`border-color: var(--border-${name})`}>
+          <code>--border-{name}</code>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section>
+    <h3 class="mb-2 font-semibold text-neutral">Foregrounds on the page</h3>
+    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      {[...hues, 'neutral-faded'].map((name) => (
+        <div class="rounded-md border border-neutral-faded bg-page p-2 text-sm font-medium" style={`color: var(--foreground-${name})`}>
+          <code>--foreground-{name}</code>
+        </div>
+      ))}
+    </div>
+  </section>
+</div>

@@ -5,7 +5,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
   class?: string
 }
 
@@ -13,7 +14,7 @@ const { class: className, ...rest } = Astro.props
 ---
 
 <div
-  class:list={['divide-y divide-border overflow-hidden rounded-lg border border-border', className]}
+  class:list={['divide-y divide-neutral overflow-hidden rounded-lg border border-neutral', className]}
   {...rest}
 >
   <slot />

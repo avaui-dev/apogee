@@ -6,9 +6,8 @@
  *
  * Numbers sort numerically; everything else sorts as text. `selectable` adds a
  * checkbox column with an indeterminate "select all".
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { ChevronsUpDown, ChevronUp, ChevronDown } from '@lucide/astro'
 import Checkbox from '../Checkbox/Checkbox.astro'
 
@@ -16,49 +15,55 @@ interface Column {
   key: string
   label: string
   sortable?: boolean
-  align?: 'left' | 'right' | 'center'
+  align?: 'start' | 'end' | 'center'
 }
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** Header text style. @category layout */
+  headerStyle?: 'normal' | 'caps'
   columns: Column[]
   rows: Record<string, any>[]
   selectable?: boolean
   class?: string
 }
 
-const { columns, rows, selectable = false, class: className, ...rest } = Astro.props
+const { headerStyle = 'normal', columns, rows, selectable = false, class: className, ...rest } = Astro.props
 
-const alignMap = { left: 'text-start', right: 'text-end', center: 'text-center' }
-const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
+const alignMap = { start: 'text-start', end: 'text-end', center: 'text-center' }
+const cellAlign = (c: Column) => alignMap[c.align ?? 'start']
 ---
 
-<div class:list={['apogee-datagrid overflow-x-auto rounded-lg border border-border', className]} {...rest}>
+<div class:list={['apogee-datagrid overflow-x-auto rounded-lg border border-neutral', className]} {...rest}>
   <table class="w-full text-sm">
-    <thead class="border-b border-border bg-muted/40">
+    <thead class="border-b border-neutral bg-neutral-faded">
       <tr>
         {selectable && (
           <th class="w-10 px-3 py-2">
-            <Checkbox data-datagrid-all aria-label="Select all" />
+            <span class="no-js:hidden"><Checkbox data-datagrid-all aria-label="Select all" /></span>
           </th>
         )}
         {
           columns.map((col) => (
             <th
-              class:list={['px-3 py-2 text-xs font-medium tracking-wide text-muted-foreground uppercase', cellAlign(col)]}
+              class:list={['px-3 py-2', headerStyle === 'caps' ? 'text-xs font-medium tracking-wide text-neutral-faded uppercase' : 'text-sm font-semibold text-neutral normal-case', cellAlign(col)]}
               data-key={col.key}
               aria-sort="none"
             >
               {col.sortable ? (
-                <button
-                  type="button"
-                  class="apogee-datagrid-sort inline-flex items-center gap-1 transition-colors hover:text-foreground"
-                  data-key={col.key}
-                  data-sort="none"
-                >
-                  {col.label}
-                  <ChevronsUpDown class="apogee-dg-none size-3.5" aria-hidden="true" />
-                  <ChevronUp class="apogee-dg-asc size-3.5" aria-hidden="true" />
-                  <ChevronDown class="apogee-dg-desc size-3.5" aria-hidden="true" />
-                </button>
+                <>
+                  <button
+                    type="button"
+                    class="apogee-datagrid-sort inline-flex items-center gap-1 transition-colors no-js:hidden hover:text-neutral"
+                    data-key={col.key}
+                    data-sort="none"
+                  >
+                    {col.label}
+                    <ChevronsUpDown class="apogee-dg-none size-3.5" aria-hidden="true" />
+                    <ChevronUp class="apogee-dg-asc size-3.5" aria-hidden="true" />
+                    <ChevronDown class="apogee-dg-desc size-3.5" aria-hidden="true" />
+                  </button>
+                  <span class="hidden no-js:inline">{col.label}</span>
+                </>
               ) : (
                 col.label
               )}
@@ -67,10 +72,10 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
         }
       </tr>
     </thead>
-    <tbody class="divide-y divide-border">
+    <tbody class="divide-y divide-neutral">
       {
         rows.map((row) => (
-          <tr class="[&:has(:checked)]:bg-muted/40">
+          <tr class="[&:has(:checked)]:bg-neutral-faded">
             {selectable && (
               <td class="px-3 py-2">
                 <Checkbox data-datagrid-row aria-label="Select row" />
@@ -78,7 +83,7 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
             )}
             {columns.map((col) => (
               <td
-                class:list={['px-3 py-2 text-foreground', cellAlign(col), typeof row[col.key] === 'number' && 'tabular-nums']}
+                class:list={['px-3 py-2 text-neutral', cellAlign(col), typeof row[col.key] === 'number' && 'tabular-nums']}
                 data-key={col.key}
                 data-value={String(row[col.key] ?? '')}
               >
@@ -109,9 +114,11 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
 </style>
 
 <script>
-  for (const grid of document.querySelectorAll<HTMLElement>('.apogee-datagrid')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-datagrid', (grid) => {
     const tbody = grid.querySelector<HTMLElement>('tbody')
-    if (!tbody) continue
+    if (!tbody) return
 
     // Sorting.
     for (const btn of grid.querySelectorAll<HTMLButtonElement>('.apogee-datagrid-sort')) {
@@ -129,8 +136,10 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
         rows.sort((a, b) => {
           const av = a.querySelector<HTMLElement>(`td[data-key="${key}"]`)?.dataset.value ?? ''
           const bv = b.querySelector<HTMLElement>(`td[data-key="${key}"]`)?.dataset.value ?? ''
-          const na = parseFloat(av)
-          const nb = parseFloat(bv)
+          // Numeric only when the whole cell is a number ("12abc" sorts as text).
+          const num = (v: string) => (v.trim() !== '' && Number.isFinite(Number(v)) ? Number(v) : NaN)
+          const na = num(av)
+          const nb = num(bv)
           const cmp = !isNaN(na) && !isNaN(nb) ? na - nb : av.localeCompare(bv)
           return dir === 'ascending' ? cmp : -cmp
         })
@@ -154,5 +163,5 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'left']
         all.indeterminate = checked > 0 && checked < bs.length
       }
     })
-  }
+  })
 </script>

@@ -3,18 +3,18 @@
  * NavLink — a navigation link with an active state. Auto-detects the current
  * route (`Astro.url.pathname === href`); pass `active` to override. Zero JS.
  *
- * Hover shows a subtle fill; the active link a stronger one. Optional `leading`
- * and `trailing` slots take an icon, badge, or count — `trailing` is pushed to
+ * Hover shows a subtle fill; the active link a stronger one. Optional `start`
+ * and `end` slots take an icon, badge, or count — `end` is pushed to
  * the end (via `ms-auto`) when the link fills its width (e.g. a sidebar), and
  * sits inline when the link is auto-width (e.g. a horizontal navbar).
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'a'> {
   href: string
   active?: boolean
   class?: string
-  [key: string]: any
 }
 
 const { href, active: activeProp, class: className, ...rest } = Astro.props
@@ -22,23 +22,23 @@ const { href, active: activeProp, class: className, ...rest } = Astro.props
 const norm = (p: string) => p.replace(/\/+$/, '') || '/'
 const active = activeProp ?? norm(Astro.url.pathname) === norm(href)
 
-const hasLeading = Astro.slots.has('leading')
-const hasTrailing = Astro.slots.has('trailing')
+const hasStart = Astro.slots.has('start')
+const hasEnd = Astro.slots.has('end')
 ---
 
 <a
   href={href}
   aria-current={active ? 'page' : undefined}
   class:list={[
-    'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+    'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
     active
-      ? 'bg-muted text-foreground'
-      : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
+      ? 'bg-neutral text-neutral'
+      : 'text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral',
     className,
   ]}
   {...rest}
 >
-  {hasLeading && <span class="flex shrink-0 items-center [&>svg]:size-4"><slot name="leading" /></span>}
+  {hasStart && <span class="flex shrink-0 items-center [&>svg]:size-4"><slot name="start" /></span>}
   <slot />
-  {hasTrailing && <span class="ms-auto flex shrink-0 items-center [&>svg]:size-4"><slot name="trailing" /></span>}
+  {hasEnd && <span class="ms-auto flex shrink-0 items-center [&>svg]:size-4"><slot name="end" /></span>}
 </a>

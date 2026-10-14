@@ -52,7 +52,7 @@ import AvatarGroup from '@/components/apogee/AvatarGroup/AvatarGroup.astro'
   entry (each gets the group's `size`) plus a **+N overflow chip** when `items.length > max`.
 - **Manual mode** — omit `items` and drop `<Avatar>` children into the default
   slot instead; you control each avatar's props (including its own `size`). The
-  overlap (`-space-x-2`) and ring (`ring-2 ring-background`) styling apply either way.
+  overlap (`-space-x-2`) and ring (`ring-2 ring-page`) styling apply either way.
 
 ## API
 
@@ -63,17 +63,17 @@ attribute passes through.
 |---|---|---|---|
 | `items` | `{ src?: string; name?: string; alt?: string }[]` | — | Renders one `Avatar` per entry. Omit to use the default slot instead. |
 | `max` | `number` | — | Show at most this many `items`, then a `+N` chip. Omit to show all. Ignored in manual (slot) mode. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size applied to each generated `Avatar` and to the overflow chip. Doesn't affect manually slotted avatars — set their own `size`. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Size applied to each generated `Avatar` and to the overflow chip. Doesn't affect manually slotted avatars — set their own `size`. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
 
-<Preview code={`<AvatarGroup size="sm" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
-<AvatarGroup size="md" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
-<AvatarGroup size="lg" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />`}>
-  <AvatarGroup size="sm" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
-  <AvatarGroup size="md" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
-  <AvatarGroup size="lg" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+<Preview code={`<AvatarGroup size="small" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+<AvatarGroup items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+<AvatarGroup size="large" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />`}>
+  <AvatarGroup size="small" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+  <AvatarGroup items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+  <AvatarGroup size="large" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
 </Preview>
 
 ## States
@@ -113,9 +113,9 @@ Manual composition — mixed sizes or custom per-avatar props aren't possible vi
 
 | Token | Used for |
 |---|---|
-| `--background` | Ring color separating overlapping avatars (`ring-2 ring-background`) |
-| `--muted` | Overflow chip background |
-| `--muted-foreground` | Overflow chip text |
+| `--background-page` | Ring color separating overlapping avatars (`ring-2 ring-page`) |
+| `--background-neutral` | Overflow chip background |
+| `--foreground-neutral` | Overflow chip text |
 
 ## Do / Don't
 

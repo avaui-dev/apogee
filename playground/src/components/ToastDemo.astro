@@ -7,27 +7,27 @@
 import Toaster from '../../../registry/components/Toast/Toaster.astro'
 
 const btn =
-  'rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/60'
+  'rounded-md border border-neutral px-3 py-1.5 text-sm font-medium text-neutral transition-colors hover:bg-neutral-faded-highlighted'
 ---
 
 <Toaster />
-<button type="button" data-toast="info" class={btn}>Show info</button>
-<button type="button" data-toast="success" class={btn}>Show success</button>
+<button type="button" data-toast="primary" class={btn}>Show info</button>
+<button type="button" data-toast="positive" class={btn}>Show success</button>
 <button type="button" data-toast="warning" class={btn}>Show warning</button>
-<button type="button" data-toast="danger" class={btn}>Show danger</button>
+<button type="button" data-toast="critical" class={btn}>Show danger</button>
 
 <script>
   const messages = {
-    info: { message: 'Changes are saved automatically.', title: 'Heads up' },
-    success: { message: 'Your changes have been saved.', title: 'Saved' },
+    primary: { message: 'Changes are saved automatically.', title: 'Heads up' },
+    positive: { message: 'Your changes have been saved.', title: 'Saved' },
     warning: { message: 'Your session expires in 5 minutes.', title: 'Heads up' },
-    danger: { message: 'Could not save your changes.', title: 'Error' },
+    critical: { message: 'Could not save your changes.', title: 'Error' },
   } as const
   for (const el of document.querySelectorAll<HTMLElement>('[data-toast]')) {
-    const variant = el.dataset.toast as keyof typeof messages
+    const color = el.dataset.toast as keyof typeof messages
     el.addEventListener('click', () => {
-      const { message, title } = messages[variant]
-      ;(window as any).apogeeToast?.(message, { variant, title })
+      const { message, title } = messages[color]
+      ;(window as any).apogeeToast?.(message, { color, title })
     })
   }
 </script>

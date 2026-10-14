@@ -50,8 +50,13 @@ those below are **not** forwarded to the DOM.
 | `name` | `string` | `'code'` | `name` of the hidden `<input type="hidden">` that carries the joined value. |
 | `length` | `number` | `6` | Number of character boxes. |
 | `type` | `'numeric' \| 'text'` | `'numeric'` | `numeric` shows a number keypad and strips non-digits as you type; `text` allows any character. |
+| `hasError` | `boolean` | `false` | Critical border on every box, `aria-invalid`. |
+| `disabled` | `boolean` | `false` | Disables every box. |
+| `value` | `string` | — | Initial code, one character per box. |
 | `aria-label` | `string` | `'Verification code'` | Label on the `role="group"` wrapper. |
-| `class` | `string` | — | Extra classes on the root, merged last. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Cell size: 36 / 44 / 48px. |
+| `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The cell box style, shared with every text field. |
+| `class` | `string` | — | Extra classes on the root, appended last. |
 
 ## Variants
 
@@ -88,11 +93,11 @@ A shorter PIN with a custom field name:
 
 | Token | Used for |
 |---|---|
-| `--border` | Box border |
-| `--background` | Box background |
-| `--foreground` | Box text |
-| `--accent` | Focus-visible border |
-| `--ring` | Focus ring |
+| `--border-neutral` | Box border |
+| `--background-page` | Box background |
+| `--foreground-neutral` | Box text |
+| `--background-primary` | Focus-visible border |
+| `--border-primary` | Focus ring |
 | `--radius-md` | Box corner radius |
 
 ## Do / Don't

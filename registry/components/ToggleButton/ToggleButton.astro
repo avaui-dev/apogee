@@ -7,22 +7,23 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends Omit<HTMLAttributes<'button'>, 'size'> {
   pressed?: boolean
   /** Don't self-toggle; the parent controls `aria-pressed`. */
   manual?: boolean
-  size?: 'sm' | 'md' | 'lg'
+  /** @category layout */
+  size?: 'small' | 'medium' | 'large'
   'aria-label'?: string
   class?: string
-  [key: string]: any
 }
 
-const { pressed = false, manual = false, size = 'md', class: className, ...rest } = Astro.props
+const { pressed = false, manual = false, size = 'medium', class: className, ...rest } = Astro.props
 
 const sizeMap = {
-  sm: 'h-8 min-w-8 px-2 text-xs',
-  md: 'h-9 min-w-9 px-2.5 text-sm',
-  lg: 'h-10 min-w-10 px-3 text-base',
+  small: 'h-8 min-w-8 px-2 text-xs',
+  medium: 'h-9 min-w-9 px-2.5 text-sm',
+  large: 'h-10 min-w-10 px-3 text-base',
 }
 ---
 
@@ -31,7 +32,7 @@ const sizeMap = {
   aria-pressed={pressed}
   data-toggle={String(!manual)}
   class:list={[
-    'apogee-toggle inline-flex items-center justify-center gap-2 rounded-md font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-pressed:bg-muted aria-pressed:text-foreground disabled:opacity-50 [&>svg]:size-4',
+    'apogee-toggle inline-flex items-center justify-center gap-2 rounded-md font-medium text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-pressed:bg-neutral aria-pressed:text-neutral disabled:opacity-50 [&>svg]:size-4',
     sizeMap[size],
     className,
   ]}
@@ -41,9 +42,13 @@ const sizeMap = {
 </button>
 
 <script>
-  for (const b of document.querySelectorAll<HTMLButtonElement>('.apogee-toggle[data-toggle="true"]')) {
-    b.addEventListener('click', () =>
-      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')),
-    )
-  }
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-toggle[data-toggle="true"]', (b) => {
+    b.addEventListener('click', () => {
+      const pressed = b.getAttribute('aria-pressed') !== 'true'
+      b.setAttribute('aria-pressed', String(pressed))
+      b.dispatchEvent(new CustomEvent('apogee:toggle-change', { bubbles: true, detail: { pressed } }))
+    })
+  })
 </script>

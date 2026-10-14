@@ -7,8 +7,13 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'a'> {
   href: string
+  /** Text colour. `inherit` takes the surrounding text colour. @category layout */
+  color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning' | 'inherit'
+  /** Not navigable: no href, aria-disabled, dimmed. */
+  disabled?: boolean
   /** Underline behavior. */
   underline?: 'always' | 'hover' | 'none'
   /** Opens in a new tab with safe rel. */
@@ -16,7 +21,17 @@ interface Props {
   class?: string
 }
 
-const { href, underline = 'always', external = false, class: className, ...rest } = Astro.props
+const { color = 'primary', href, underline = 'always', external = false, disabled = false, class: className, ...rest } = Astro.props
+const colors = {
+  primary: 'text-primary',
+  neutral: 'text-neutral',
+  critical: 'text-critical',
+  positive: 'text-positive',
+  warning: 'text-warning',
+  inherit: 'text-inherit',
+} as const
+const hasStart = Astro.slots.has('start')
+const hasEnd = Astro.slots.has('end')
 
 const underlineMap = {
   always: 'underline underline-offset-4',
@@ -27,14 +42,19 @@ const ext = external ? { target: '_blank', rel: 'noopener noreferrer' } : {}
 ---
 
 <a
-  href={href}
+  href={disabled ? undefined : href}
+  aria-disabled={disabled ? 'true' : undefined}
   class:list={[
-    'rounded-sm text-accent transition-colors hover:text-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+    'rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+    (hasStart || hasEnd) && 'inline-flex items-center gap-[0.35em] [&_svg]:size-[1em] [&_svg]:shrink-0',
+    disabled ? 'pointer-events-none text-disabled' : colors[color],
     underlineMap[underline],
     className,
   ]}
   {...ext}
   {...rest}
 >
+  {hasStart && <slot name="start" />}
   <slot />
+  {hasEnd && <slot name="end" />}
 </a>

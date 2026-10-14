@@ -1,18 +1,12 @@
 /* Apogee design tokens.
  *
- * The single source of truth for the design language. `apogee init` copies this
- * into a project; the playground imports it directly. Consumers add
- * `@import "tailwindcss";` before this file so Tailwind's palette variables
- * (--color-slate-*, --color-blue-*, …) exist for the semantic tokens below.
+ * Colour: five hues (primary, neutral, critical, positive, warning) × seven roles,
+ * generated into the two @generated blocks below by `npm run build:tokens` from
+ * scripts/hues.mjs. Edit the hue inputs, not the generated lines.
  *
- * Model (Tailwind v4):
- *  - Semantic tokens are plain CSS variables that REFERENCE Tailwind's tuned
- *    palette, re-declared under [data-theme="dark"] so a theme is one attribute
- *    flip, no rebuild. Swap a neutral ramp (slate → zinc) or the brand accent in
- *    one place; components never change.
- *  - `@theme inline` maps them to utilities that reference the runtime var
- *    (bg-accent -> background: var(--accent)), so dark mode flows through.
- *  - Static scales (radius) live in a normal `@theme` block.
+ * Tailwind mapping uses the namespaced theme keys, so one short name resolves to
+ * the right role per utility: `bg-primary` is the fill, `text-primary` is
+ * readable primary text, `text-on-primary` is text on the fill.
  */
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
@@ -23,8 +17,6 @@
 @custom-variant no-js (html.no-js &);
 @custom-variant js (html.js &);
 
-/* base — global defaults. box-sizing: border-box is already applied to
-   *, ::before, ::after by Tailwind's Preflight, so we only add font smoothing. */
 @layer base {
   body {
     -webkit-font-smoothing: antialiased;
@@ -34,98 +26,226 @@
 
 :root,
 [data-theme="light"] {
-  /* surfaces & text (neutral ramp = Tailwind zinc; swap to slate/neutral here) */
-  --background: var(--color-white);
-  --foreground: var(--color-zinc-900);
-  --surface: var(--color-zinc-50);
-  --surface-foreground: var(--color-zinc-900);
-  --muted: var(--color-zinc-100);
-  --muted-foreground: var(--color-zinc-600);
-  --border: var(--color-zinc-200);
+  /* @generated colors light start */
+  --background-primary: oklch(0.47 0.2 262);
+  --background-primary-faded: oklch(0.98 0.02 262);
+  --background-primary-highlighted: oklch(0.523 0.2 262);
+  --background-primary-faded-highlighted: oklch(0.47 0.2 262 / 0.06);
+  --border-primary: oklch(0.43 0.2 262);
+  --border-primary-faded: oklch(0.94 0.02 262);
+  --foreground-primary: oklch(0.52 0.2 262);
+  --on-primary: oklch(1 0 0);
+  --background-critical: oklch(0.59 0.205 20.28);
+  --background-critical-faded: oklch(0.98 0.02 20.28);
+  --background-critical-highlighted: oklch(0.531 0.205 20.28);
+  --background-critical-faded-highlighted: oklch(0.59 0.205 20.28 / 0.06);
+  --border-critical: oklch(0.55 0.205 20.28);
+  --border-critical-faded: oklch(0.94 0.02 20.28);
+  --foreground-critical: oklch(0.52 0.205 20.28);
+  --on-critical: oklch(1 0 0);
+  --background-warning: oklch(0.82 0.22 80);
+  --background-warning-faded: oklch(0.98 0.04 80);
+  --background-warning-highlighted: oklch(0.738 0.22 80);
+  --background-warning-faded-highlighted: oklch(0.82 0.22 80 / 0.06);
+  --border-warning: oklch(0.78 0.22 80);
+  --border-warning-faded: oklch(0.94 0.04 80);
+  --foreground-warning: oklch(0.52 0.22 80);
+  --on-warning: oklch(0 0 0);
+  --background-positive: oklch(0.55 0.13 151.8);
+  --background-positive-faded: oklch(0.98 0.02 151.8);
+  --background-positive-highlighted: oklch(0.495 0.13 151.8);
+  --background-positive-faded-highlighted: oklch(0.55 0.13 151.8 / 0.06);
+  --border-positive: oklch(0.51 0.13 151.8);
+  --border-positive-faded: oklch(0.94 0.02 151.8);
+  --foreground-positive: oklch(0.52 0.13 151.8);
+  --on-positive: oklch(1 0 0);
+  --background-neutral: oklch(0.94 0 0);
+  --background-neutral-faded: oklch(0 0 0 / 0.05);
+  --background-neutral-highlighted: oklch(0.9118 0 0);
+  --background-neutral-faded-highlighted: oklch(0 0 0 / 0.1);
+  --border-neutral: oklch(0 0 0 / 0.12);
+  --border-neutral-faded: oklch(0 0 0 / 0.08);
+  --foreground-neutral: oklch(0.24 0 0);
+  --on-neutral: oklch(0 0 0);
+  --foreground-neutral-faded: oklch(0.52 0 0);
+  --background-disabled: oklch(0.95 0 0);
+  --background-disabled-faded: oklch(0.98 0 0);
+  --border-disabled: oklch(0 0 0 / 0.06);
+  --foreground-disabled: oklch(0.65 0 0);
+  --background-elevation-base: oklch(1 0 0);
+  --background-elevation-raised: oklch(1 0 0);
+  --background-elevation-overlay: oklch(1 0 0);
+  --background-page: oklch(1 0 0);
+  --background-page-faded: oklch(0.98 0 0);
+  --background-inverted: oklch(0.24 0 0);
+  --on-inverted: oklch(1 0 0);
+  /* @generated colors light end */
 
-  /* brand accent — PLACEHOLDER (Tailwind blue). Replace with AVA's brand color. */
-  --accent: var(--color-blue-600);
-  --accent-hover: var(--color-blue-700);
-  --accent-foreground: var(--color-white);
-
-  /* danger */
-  --danger: var(--color-red-600);
-  --danger-hover: var(--color-red-700);
-  --danger-foreground: var(--color-white);
-
-  /* status */
-  --success: var(--color-green-700);
-  --success-foreground: var(--color-white);
-  --warning: var(--color-amber-500);
-  --warning-foreground: var(--color-zinc-950);
-
-  /* focus ring */
-  --ring: var(--color-blue-600);
+  /* scrim behind dialogs / command palettes */
+  --overlay: oklch(0 0 0 / 0.5);
+  --shadow-outline: 0 1px 2px -0.5px rgb(0 0 0 / 0.06), 0 2px 3px -1px rgb(0 0 0 / 0.06);
+  --shadow-raised: 0 8px 12px -4px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.1);
+  --shadow-overlay: 0 16px 24px -4px rgb(0 0 0 / 0.12), 0 4px 8px -2px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.1);
 }
 
 [data-theme="dark"] {
-  --background: var(--color-zinc-950);
-  --foreground: var(--color-zinc-50);
-  --surface: var(--color-zinc-900);
-  --surface-foreground: var(--color-zinc-50);
-  --muted: var(--color-zinc-800);
-  --muted-foreground: var(--color-zinc-400);
-  --border: var(--color-zinc-800);
+  /* @generated colors dark start */
+  --background-primary: oklch(0.4724 0.16 262);
+  --background-primary-faded: oklch(0.24 0.0163 262);
+  --background-primary-highlighted: oklch(0.5252 0.16 262);
+  --background-primary-faded-highlighted: oklch(0.4724 0.16 262 / 0.08);
+  --border-primary: oklch(0.5724 0.16 262);
+  --border-primary-faded: oklch(0.3 0.0163 262);
+  --foreground-primary: oklch(0.75 0.17 262);
+  --on-primary: oklch(1 0 0);
+  --background-critical: oklch(0.5842 0.164 20.28);
+  --background-critical-faded: oklch(0.24 0.0167 20.28);
+  --background-critical-highlighted: oklch(0.5258 0.164 20.28);
+  --background-critical-faded-highlighted: oklch(0.5842 0.164 20.28 / 0.08);
+  --border-critical: oklch(0.6842 0.164 20.28);
+  --border-critical-faded: oklch(0.3 0.0167 20.28);
+  --foreground-critical: oklch(0.75 0.1742 20.28);
+  --on-critical: oklch(1 0 0);
+  --background-warning: oklch(0.8108 0.176 80);
+  --background-warning-faded: oklch(0.24 0.018 80);
+  --background-warning-highlighted: oklch(0.7297 0.176 80);
+  --background-warning-faded-highlighted: oklch(0.8108 0.176 80 / 0.08);
+  --border-warning: oklch(0.9108 0.176 80);
+  --border-warning-faded: oklch(0.3 0.018 80);
+  --foreground-warning: oklch(0.75 0.187 80);
+  --on-warning: oklch(0 0 0);
+  --background-positive: oklch(0.527 0.104 151.8);
+  --background-positive-faded: oklch(0.24 0.0106 151.8);
+  --background-positive-highlighted: oklch(0.4743 0.104 151.8);
+  --background-positive-faded-highlighted: oklch(0.527 0.104 151.8 / 0.08);
+  --border-positive: oklch(0.627 0.104 151.8);
+  --border-positive-faded: oklch(0.3 0.0106 151.8);
+  --foreground-positive: oklch(0.75 0.1105 151.8);
+  --on-positive: oklch(1 0 0);
+  --background-neutral: oklch(0.32 0 0);
+  --background-neutral-faded: oklch(1 0 0 / 0.08);
+  --background-neutral-highlighted: oklch(0.3608 0 0);
+  --background-neutral-faded-highlighted: oklch(1 0 0 / 0.14);
+  --border-neutral: oklch(1 0 0 / 0.12);
+  --border-neutral-faded: oklch(1 0 0 / 0.08);
+  --foreground-neutral: oklch(0.96 0 0);
+  --on-neutral: oklch(1 0 0);
+  --foreground-neutral-faded: oklch(0.74 0 0);
+  --background-disabled: oklch(0.28 0 0);
+  --background-disabled-faded: oklch(0.225 0 0);
+  --border-disabled: oklch(1 0 0 / 0.06);
+  --foreground-disabled: oklch(0.45 0 0);
+  --background-elevation-base: oklch(0.2 0 0);
+  --background-elevation-raised: oklch(0.22 0 0);
+  --background-elevation-overlay: oklch(0.24 0 0);
+  --background-page: oklch(0.16 0 0);
+  --background-page-faded: oklch(0.18 0 0);
+  --background-inverted: oklch(0.96 0 0);
+  --on-inverted: oklch(0.16 0 0);
+  /* @generated colors dark end */
 
-  --accent: var(--color-blue-500);
-  --accent-hover: var(--color-blue-400);
-  /* Bright 500-level fills → dark text for AA (same idea as warning). */
-  --accent-foreground: var(--color-zinc-950);
-
-  --danger: var(--color-red-500);
-  --danger-hover: var(--color-red-400);
-  --danger-foreground: var(--color-zinc-950);
-
-  --success: var(--color-green-500);
-  --success-foreground: var(--color-zinc-950);
-  --warning: var(--color-amber-400);
-
-  --ring: var(--color-blue-500);
+  --overlay: oklch(0 0 0 / 0.65);
+  /* Dark surfaces are lit from above: a faint white top highlight, no drop shadow. */
+  --shadow-outline: 0 -1px 2px -0.5px rgb(255 255 255 / 0.06), 0 -1px 3px -1px rgb(255 255 255 / 0.05);
+  --shadow-raised: 0 -8px 12px -4px rgb(255 255 255 / 0.06), 0 -1px 2px rgb(255 255 255 / 0.08);
+  --shadow-overlay: 0 -16px 24px -4px rgb(255 255 255 / 0.08), 0 -4px 8px -2px rgb(255 255 255 / 0.06), 0 -1px 2px rgb(255 255 255 / 0.1);
 }
 
-/* runtime-overridable color tokens -> Tailwind utilities */
+/* Runtime vars → utilities. Namespaced keys keep roles unambiguous. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
-  --color-surface-foreground: var(--surface-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-danger: var(--danger);
-  --color-danger-hover: var(--danger-hover);
-  --color-danger-foreground: var(--danger-foreground);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-  --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
-  --color-ring: var(--ring);
+  --background-color-primary: var(--background-primary);
+  --background-color-primary-faded: var(--background-primary-faded);
+  --background-color-primary-highlighted: var(--background-primary-highlighted);
+  --background-color-primary-faded-highlighted: var(--background-primary-faded-highlighted);
+  --border-color-primary: var(--border-primary);
+  --border-color-primary-faded: var(--border-primary-faded);
+  --outline-color-primary: var(--border-primary);
+  --text-color-primary: var(--foreground-primary);
+  --text-color-on-primary: var(--on-primary);
+
+  --background-color-neutral: var(--background-neutral);
+  --background-color-neutral-faded: var(--background-neutral-faded);
+  --background-color-neutral-highlighted: var(--background-neutral-highlighted);
+  --background-color-neutral-faded-highlighted: var(--background-neutral-faded-highlighted);
+  --border-color-neutral: var(--border-neutral);
+  --border-color-neutral-faded: var(--border-neutral-faded);
+  --outline-color-neutral: var(--border-neutral);
+  --text-color-neutral: var(--foreground-neutral);
+  --text-color-neutral-faded: var(--foreground-neutral-faded);
+  --text-color-on-neutral: var(--on-neutral);
+  --color-neutral: var(--border-neutral); /* divide-neutral, ring-neutral */
+
+  --background-color-critical: var(--background-critical);
+  --background-color-critical-faded: var(--background-critical-faded);
+  --background-color-critical-highlighted: var(--background-critical-highlighted);
+  --background-color-critical-faded-highlighted: var(--background-critical-faded-highlighted);
+  --border-color-critical: var(--border-critical);
+  --border-color-critical-faded: var(--border-critical-faded);
+  --outline-color-critical: var(--border-critical);
+  --text-color-critical: var(--foreground-critical);
+  --text-color-on-critical: var(--on-critical);
+
+  --background-color-positive: var(--background-positive);
+  --background-color-positive-faded: var(--background-positive-faded);
+  --background-color-positive-highlighted: var(--background-positive-highlighted);
+  --background-color-positive-faded-highlighted: var(--background-positive-faded-highlighted);
+  --border-color-positive: var(--border-positive);
+  --border-color-positive-faded: var(--border-positive-faded);
+  --outline-color-positive: var(--border-positive);
+  --text-color-positive: var(--foreground-positive);
+  --text-color-on-positive: var(--on-positive);
+
+  --background-color-warning: var(--background-warning);
+  --background-color-warning-faded: var(--background-warning-faded);
+  --background-color-warning-highlighted: var(--background-warning-highlighted);
+  --background-color-warning-faded-highlighted: var(--background-warning-faded-highlighted);
+  --border-color-warning: var(--border-warning);
+  --border-color-warning-faded: var(--border-warning-faded);
+  --outline-color-warning: var(--border-warning);
+  --text-color-warning: var(--foreground-warning);
+  --text-color-on-warning: var(--on-warning);
+
+  --background-color-page: var(--background-page);
+  --background-color-page-faded: var(--background-page-faded);
+  --background-color-elevation-base: var(--background-elevation-base);
+  --background-color-elevation-raised: var(--background-elevation-raised);
+  --background-color-elevation-overlay: var(--background-elevation-overlay);
+  --background-color-disabled: var(--background-disabled);
+  --background-color-disabled-faded: var(--background-disabled-faded);
+  --background-color-inverted: var(--background-inverted);
+  --background-color-overlay: var(--overlay);
+  --border-color-disabled: var(--border-disabled);
+  --text-color-disabled: var(--foreground-disabled);
+  --text-color-on-inverted: var(--on-inverted);
+
+  --shadow-outline: var(--shadow-outline);
+  --shadow-raised: var(--shadow-raised);
+  --shadow-overlay: var(--shadow-overlay);
+
+  /* Fills under --color-* too, for utilities with no namespace of their own
+     (ring-*, divide-*, from-/to-*, fill-*, stroke-*, accent-*, caret-*). */
+  --color-primary: var(--background-primary);
+  --color-critical: var(--background-critical);
+  --color-positive: var(--background-positive);
+  --color-warning: var(--background-warning);
+  --color-page: var(--background-page);
 }
 
-/* static scales */
+/* Static scales. */
 @theme {
   /* font families — explicit, overridable tokens (default to the platform system
-     stacks Tailwind ships, so this changes nothing visually until a themer swaps
-     one). `--font-sans` drives body text; `--font-mono` drives code. */
-  --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
-    'Courier New', monospace;
+     stacks Tailwind ships). `--font-sans` drives body text; `--font-mono` code. */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
-  --radius-sm: 0.3rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  /* Tight radius scale under Tailwind's names. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
 
-  /* fluid type scale — clamp(min @320px, +vw, max @1440px), Lumos min/max idea.
+  /* fluid type scale — clamp(min @320px, +vw, max @1440px).
      Generates text-display / text-h1 … text-h6 with paired line-heights. */
   --text-display: clamp(2.5rem, 1.6rem + 4.5vw, 4.5rem);
   --text-display--line-height: 1.05;
@@ -142,25 +262,22 @@
   --text-h6: clamp(0.875rem, 0.85rem + 0.15vw, 1rem);
   --text-h6--line-height: 1.45;
 
-  /* motion — `ease-smooth` / `ease-emphasized` become utilities; the durations
-     are CSS vars for scoped styles (`transition-duration: var(--duration-base)`)
-     and arbitrary values (`duration-[var(--duration-fast)]`). Every animated
-     component reads these instead of hard-coded times, and still honours
-     prefers-reduced-motion. */
-  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-emphasized: cubic-bezier(0.65, 0, 0.35, 1);
-  --duration-fast: 120ms;
-  --duration-base: 180ms;
-  --duration-slow: 260ms;
-  /* Make every Tailwind `transition-*` utility use the tokens by default, so a
-     bare `transition-colors` is already on-brand (fast + smooth). */
+  /* motion — `ease-standard` / `ease-accelerate` / `ease-decelerate` become
+     utilities; durations are CSS vars for scoped styles. Every animated component
+     reads these instead of hard-coded times, and honours prefers-reduced-motion. */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --duration-rapid: 100ms;
+  --duration-fast: 150ms;
+  --duration-medium: 250ms;
+  --duration-slow: 400ms;
   --default-transition-duration: var(--duration-fast);
-  --default-transition-timing-function: var(--ease-smooth);
+  --default-transition-timing-function: var(--ease-standard);
 
-  /* fluid layout spacing — clamp(min @~320px → max @~1440px), Lumos-style. These
-     add named utilities: `px-gutter` (page side padding), `py-section` /
-     `-section-sm` / `-section-lg` (vertical rhythm). Component internals keep the
-     fixed numeric scale; these are for page/section layout only. */
+  /* fluid layout spacing — `px-gutter` (page side padding), `py-section` /
+     `-section-sm` / `-section-lg` / `-section-xl` (vertical rhythm). Component
+     internals keep the fixed numeric scale; these are for page/section layout. */
   --spacing-gutter: clamp(1rem, 0.55rem + 2.25vw, 2rem);
   --spacing-section-sm: clamp(2rem, 1.4rem + 3vw, 3.5rem);
   --spacing-section: clamp(3rem, 2rem + 5vw, 6rem);

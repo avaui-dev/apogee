@@ -6,7 +6,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'blockquote'> {
   /** Attribution shown below the quote. */
   cite?: string
   class?: string
@@ -15,13 +16,13 @@ interface Props {
 const { cite, class: className, ...rest } = Astro.props
 ---
 
-<figure class:list={['border-s-2 border-accent ps-4', className]} {...rest}>
-  <blockquote class="text-lg text-foreground italic [&>p]:mt-0">
+<figure class:list={['border-s-2 border-primary ps-4', className]} {...rest}>
+  <blockquote class="font-serif text-lg text-neutral italic [&>p]:mt-0">
     <slot />
   </blockquote>
   {
     cite && (
-      <figcaption class="mt-2 text-sm text-muted-foreground not-italic">— {cite}</figcaption>
+      <figcaption class="mt-2 text-sm text-neutral-faded not-italic">— {cite}</figcaption>
     )
   }
 </figure>

@@ -8,7 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Table from '../../../../registry/components/Table/Table.astro'
 
-<Preview code={`<Table>
+<Preview block code={`<Table>
   <thead>
     <tr>
       <th>Name</th>
@@ -110,18 +110,28 @@ passes through to the `<table>` element (not the scroll wrapper `<div>`).
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
+| `headerStyle` | `'normal' \| 'caps'` | `'normal'` | Header text: sentence case and semibold, or small caps. |
 | `class` | `string` | — | Extra classes on the `<table>`, merged last. |
 
 ## States
 
 Hover a row in the live preview above — `tbody tr:hover` gets a
-`bg-muted/40` fill.
+`bg-neutral-faded` fill.
 
 ## Examples
 
+Small-caps headers:
+
+<Preview block code={`<Table headerStyle="caps">…</Table>`}>
+  <Table headerStyle="caps">
+    <thead><tr><th>Name</th><th>Role</th></tr></thead>
+    <tbody><tr><td>Ada Lovelace</td><td>Developer</td></tr><tr><td>Grace Hopper</td><td>Editor</td></tr></tbody>
+  </Table>
+</Preview>
+
 End-align a numeric column:
 
-<Preview code={`<Table>
+<Preview block code={`<Table>
   <thead>
     <tr>
       <th>Item</th>
@@ -190,9 +200,9 @@ A captioned table (caption hidden visually, still announced):
 
 | Token | Used for |
 |---|---|
-| `--foreground` | Header + cell text |
-| `--border` | Header bottom rule + row top rule |
-| `--muted` | Row hover fill (`bg-muted/40`) |
+| `--foreground-neutral` | Header + cell text |
+| `--border-neutral` | Header bottom rule + row top rule |
+| `--background-neutral-faded` | Row hover fill (`bg-neutral-faded`) |
 
 ## Do / Don't
 

@@ -12,22 +12,22 @@ import Grid from '../../../../registry/components/Grid/Grid.astro'
 <Preview code={`<Footer>
   <Grid cols={3} gap={6}>
     <div>
-      <p class="text-sm font-medium text-foreground">Product</p>
-      <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+      <p class="text-sm font-medium text-neutral">Product</p>
+      <ul class="mt-3 flex flex-col gap-2 text-sm text-neutral-faded">
         <li><a href="#">Features</a></li>
         <li><a href="#">Pricing</a></li>
       </ul>
     </div>
     <div>
-      <p class="text-sm font-medium text-foreground">Company</p>
-      <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+      <p class="text-sm font-medium text-neutral">Company</p>
+      <ul class="mt-3 flex flex-col gap-2 text-sm text-neutral-faded">
         <li><a href="#">About</a></li>
         <li><a href="#">Careers</a></li>
       </ul>
     </div>
     <div>
-      <p class="text-sm font-medium text-foreground">Legal</p>
-      <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+      <p class="text-sm font-medium text-neutral">Legal</p>
+      <ul class="mt-3 flex flex-col gap-2 text-sm text-neutral-faded">
         <li><a href="#">Privacy</a></li>
         <li><a href="#">Terms</a></li>
       </ul>
@@ -38,22 +38,22 @@ import Grid from '../../../../registry/components/Grid/Grid.astro'
   <Footer>
     <Grid cols={3} gap={6}>
       <div>
-        <p class="text-sm font-medium text-foreground">Product</p>
-        <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+        <p class="text-sm font-medium text-neutral">Product</p>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-neutral-faded">
           <li><a href="#">Features</a></li>
           <li><a href="#">Pricing</a></li>
         </ul>
       </div>
       <div>
-        <p class="text-sm font-medium text-foreground">Company</p>
-        <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+        <p class="text-sm font-medium text-neutral">Company</p>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-neutral-faded">
           <li><a href="#">About</a></li>
           <li><a href="#">Careers</a></li>
         </ul>
       </div>
       <div>
-        <p class="text-sm font-medium text-foreground">Legal</p>
-        <ul class="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+        <p class="text-sm font-medium text-neutral">Legal</p>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-neutral-faded">
           <li><a href="#">Privacy</a></li>
           <li><a href="#">Terms</a></li>
         </ul>
@@ -103,10 +103,10 @@ through to the root `<footer>`.
 Without a bottom row:
 
 <Preview code={`<Footer>
-  <p class="text-sm text-muted-foreground">A single-column footer, no bottom row.</p>
+  <p class="text-sm text-neutral-faded">A single-column footer, no bottom row.</p>
 </Footer>`}>
   <Footer>
-    <p class="text-sm text-muted-foreground">A single-column footer, no bottom row.</p>
+    <p class="text-sm text-neutral-faded">A single-column footer, no bottom row.</p>
   </Footer>
 </Preview>
 
@@ -132,8 +132,8 @@ Links inside it keep their own keyboard behaviour.
 
 | Token | Used for |
 |---|---|
-| `--border` | Top border of the footer and of the `bottom` row |
-| `--muted-foreground` | `bottom` row text colour |
+| `--border-neutral` | Top border of the footer and of the `bottom` row |
+| `--foreground-neutral-faded` | `bottom` row text colour |
 
 ## Do / Don't
 

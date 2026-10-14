@@ -17,7 +17,7 @@ import { Scissors, Copy, ClipboardPaste } from '@lucide/astro'
 </JsNote>
 
 <Preview code={`<ContextMenu class="w-full">
-  <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+  <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-neutral text-sm text-neutral-faded">
     Right-click here
   </div>
   <DropdownItem slot="menu">Cut</DropdownItem>
@@ -25,7 +25,7 @@ import { Scissors, Copy, ClipboardPaste } from '@lucide/astro'
   <DropdownItem slot="menu">Paste</DropdownItem>
 </ContextMenu>`}>
   <ContextMenu class="w-full">
-    <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+    <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-neutral text-sm text-neutral-faded">
       Right-click here
     </div>
     <DropdownItem slot="menu">Cut</DropdownItem>
@@ -85,7 +85,7 @@ through to the root `<div>`.
 With leading icons:
 
 <Preview code={`<ContextMenu>
-  <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+  <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-neutral text-sm text-neutral-faded">
     Right-click here
   </div>
   <DropdownItem slot="menu"><Scissors /> Cut</DropdownItem>
@@ -93,7 +93,7 @@ With leading icons:
   <DropdownItem slot="menu"><ClipboardPaste /> Paste</DropdownItem>
 </ContextMenu>`}>
   <ContextMenu>
-    <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+    <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-neutral text-sm text-neutral-faded">
       Right-click here
     </div>
     <DropdownItem slot="menu"><Scissors /> Cut</DropdownItem>
@@ -101,6 +101,10 @@ With leading icons:
     <DropdownItem slot="menu"><ClipboardPaste /> Paste</DropdownItem>
   </ContextMenu>
 </Preview>
+
+## Events
+
+The panel dispatches `apogee:contextmenu-open` (`detail: { x, y }`) and `apogee:contextmenu-close`, both bubbling.
 
 ## Accessibility
 
@@ -118,9 +122,9 @@ With leading icons:
 
 | Token | Used for |
 |---|---|
-| `--border` | Panel border |
-| `--surface` | Panel background |
-| `--duration-fast` / `--ease-smooth` | Panel open fade/scale animation |
+| `--border-neutral` | Panel border |
+| `--background-elevation-raised` | Panel background |
+| `--duration-fast` / `--ease-standard` | Panel open fade/scale animation |
 
 ## Do / Don't
 

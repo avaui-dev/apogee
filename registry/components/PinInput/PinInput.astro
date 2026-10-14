@@ -8,12 +8,24 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+import { fieldVariants, type FieldVariant } from '../utils/field.ts'
+
+interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
+  /** @category layout */
+  size?: 'small' | 'medium' | 'large'
+  /** @category layout */
+  variant?: FieldVariant
   name?: string
   length?: number
   /** Numeric shows a number keypad + digit filtering; text allows any character. */
   type?: 'numeric' | 'text'
   'aria-label'?: string
+  /** Marks the code invalid. */
+  hasError?: boolean
+  disabled?: boolean
+  /** Initial code, split across the boxes. */
+  value?: string
   class?: string
 }
 
@@ -22,8 +34,15 @@ const {
   length = 6,
   type = 'numeric',
   'aria-label': ariaLabel,
+  size = 'medium',
+  variant = 'outline',
+  hasError = false,
+  disabled = false,
+  value = '',
   class: className,
+  ...rest
 } = Astro.props
+const cells = { small: 'size-9 text-base rounded-sm', medium: 'size-11 text-lg rounded-md', large: 'size-12 text-xl rounded-md' } as const
 ---
 
 <div
@@ -32,6 +51,7 @@ const {
   aria-label={ariaLabel ?? 'Verification code'}
   data-type={type}
   data-name={name}
+  {...rest}
 >
   {
     Array.from({ length }).map((_, i) => (
@@ -41,7 +61,14 @@ const {
         inputmode={type === 'numeric' ? 'numeric' : 'text'}
         autocomplete={i === 0 ? 'one-time-code' : 'off'}
         maxlength="1"
-        class="apogee-pin-box size-11 rounded-md border border-border bg-background text-center text-lg font-medium text-foreground tabular-nums focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        value={value[i] ?? undefined}
+        disabled={disabled || undefined}
+        aria-invalid={hasError ? 'true' : undefined}
+        class:list={[
+          'apogee-pin-box text-center font-medium text-neutral tabular-nums max-md:text-base aria-[invalid=true]:border-critical disabled:bg-disabled disabled:text-disabled transition-colors focus-visible:border-primary focus-visible:outline-none focus-visible:shadow-[inset_0_0_0_1.5px_var(--border-primary)]',
+          fieldVariants[variant],
+          cells[size],
+        ]}
         aria-label={`Character ${i + 1}`}
       />
     ))
@@ -50,11 +77,13 @@ const {
 </div>
 
 <script>
-  for (const root of document.querySelectorAll<HTMLElement>('.apogee-pin')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-pin', (root) => {
     const boxes = [...root.querySelectorAll<HTMLInputElement>('.apogee-pin-box')]
     const hidden = root.querySelector<HTMLInputElement>('.apogee-pin-value')
     const numeric = root.dataset.type === 'numeric'
-    if (!boxes.length || !hidden) continue
+    if (!boxes.length || !hidden) return
 
     // JS collects one joined value: name the hidden field, un-name the boxes so
     // they no longer submit individually (the no-JS fallback).
@@ -67,29 +96,29 @@ const {
     boxes.forEach((box, i) => {
       box.addEventListener('input', () => {
         box.value = clean(box.value).slice(-1)
-        if (box.value && i < boxes.length - 1) boxes[i + 1].focus()
+        if (box.value && i < boxes.length - 1) boxes[i + 1]?.focus()
         sync()
       })
       box.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !box.value && i > 0) {
-          boxes[i - 1].focus()
+          boxes[i - 1]?.focus()
         } else if (e.key === 'ArrowLeft' && i > 0) {
           e.preventDefault()
-          boxes[i - 1].focus()
+          boxes[i - 1]?.focus()
         } else if (e.key === 'ArrowRight' && i < boxes.length - 1) {
           e.preventDefault()
-          boxes[i + 1].focus()
+          boxes[i + 1]?.focus()
         }
       })
       box.addEventListener('paste', (e) => {
         e.preventDefault()
         const chars = clean(e.clipboardData?.getData('text') ?? '').split('')
         for (let j = 0; j < chars.length && i + j < boxes.length; j++) {
-          boxes[i + j].value = chars[j]
+          boxes[i + j]!.value = chars[j] ?? ''
         }
-        boxes[Math.min(i + chars.length, boxes.length - 1)].focus()
+        boxes[Math.min(i + chars.length, boxes.length - 1)]?.focus()
         sync()
       })
     })
-  }
+  })
 </script>

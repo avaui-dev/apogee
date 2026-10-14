@@ -49,17 +49,17 @@ attribute passes through.
 | `src` | `string` | — | Image URL. Omit to always show the initials fallback. |
 | `alt` | `string` | `name ?? ''` | Alt text for the image. |
 | `name` | `string` | — | Used for the initials fallback (first letter of up to the first two words) and as the fallback's `aria-label`. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Avatar diameter + text size. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Avatar diameter + text size. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
 
-<Preview code={`<Avatar size="sm" name="Sam Ito" />
-<Avatar size="md" name="Sam Ito" />
-<Avatar size="lg" name="Sam Ito" />`}>
-  <Avatar size="sm" name="Sam Ito" />
-  <Avatar size="md" name="Sam Ito" />
-  <Avatar size="lg" name="Sam Ito" />
+<Preview code={`<Avatar size="small" name="Sam Ito" />
+<Avatar name="Sam Ito" />
+<Avatar size="large" name="Sam Ito" />`}>
+  <Avatar size="small" name="Sam Ito" />
+  <Avatar name="Sam Ito" />
+  <Avatar size="large" name="Sam Ito" />
 </Preview>
 
 ## States
@@ -83,7 +83,7 @@ Grouped in a list row:
 
 ```astro
 <div class="flex items-center gap-2">
-  <Avatar src="/users/jordan.jpg" name="Jordan Lee" size="sm" />
+  <Avatar src="/users/jordan.jpg" name="Jordan Lee" size="small" />
   <span class="text-sm font-medium">Jordan Lee</span>
 </div>
 ```
@@ -104,8 +104,8 @@ For a stack of overlapping avatars, use [`AvatarGroup`](/avatar-group).
 
 | Token | Used for |
 |---|---|
-| `--muted` | Initials-fallback background |
-| `--muted-foreground` | Initials-fallback text |
+| `--background-neutral` | Initials-fallback background (opaque, so stacked avatars never show through) |
+| `--foreground-neutral` | Initials-fallback text |
 
 ## Do / Don't
 

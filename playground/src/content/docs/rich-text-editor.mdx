@@ -43,7 +43,8 @@ import RichTextEditor from '@/components/apogee/RichTextEditor/RichTextEditor.as
 - **Toolbar** (`no-js:hidden`) — two `ToggleButtonGroup`s of `ToggleButton`s:
   - *Text style* — Bold, Italic, Underline (`execCommand` state commands).
   - *Blocks* — Heading, Bulleted list, Numbered list, Link (prompts for a
-    URL via native `prompt()`).
+    URL via native `prompt()`; only `http(s)` and `mailto` links are inserted,
+    anything else is dropped).
 - **Editor** (`no-js:hidden`) — the `contenteditable` region (`role="textbox"`,
   `aria-multiline="true"`), seeded from `value`, shows `placeholder` when
   empty.
@@ -104,11 +105,11 @@ Prefilled with initial HTML:
 
 | Token | Used for |
 |---|---|
-| `--border` | Wrapper border + toolbar bottom rule |
-| `--background` | Wrapper fill |
-| `--foreground` | Editor text |
-| `--accent` | Links inside the editor content |
-| `--muted-foreground` | Placeholder text |
+| `--border-neutral` | Wrapper border + toolbar bottom rule |
+| `--background-page` | Wrapper fill |
+| `--foreground-neutral` | Editor text |
+| `--foreground-primary` | Links inside the editor content |
+| `--foreground-neutral-faded` | Placeholder text |
 
 ## Do / Don't
 

@@ -4,7 +4,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends Omit<HTMLAttributes<'ul'>, 'as'> {
   as?: 'ul' | 'ol'
   /** `none` drops the marker and indent. */
   marker?: 'default' | 'none'
@@ -17,7 +18,7 @@ const Tag = as
 const markerClass =
   marker === 'none'
     ? 'list-none'
-    : `${as === 'ol' ? 'list-decimal' : 'list-disc'} ps-5 marker:text-muted-foreground`
+    : `${as === 'ol' ? 'list-decimal' : 'list-disc'} ps-5 marker:text-neutral-faded`
 ---
 
 <Tag class:list={['space-y-1', markerClass, className]} {...rest}>

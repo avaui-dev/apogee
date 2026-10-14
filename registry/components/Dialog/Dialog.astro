@@ -3,57 +3,58 @@
  * Dialog — a native `<dialog>` opened/closed with invoker commands (zero JS core;
  * a tiny script + `closedby` handle backdrop-click). Three shapes:
  *
- *   variant="modal"      centered dialog (default)
- *   variant="panel"      edge drawer — position="left|right|top|bottom"
- *   variant="fullscreen" fills the viewport
+ *   position="center"      centered dialog (default)
+ *   position="start|end"   side drawer (logical: end is the right in LTR)
+ *   position="top|bottom"  edge sheet
+ *   position="full-screen" fills the viewport
  *
  *   <Button command="show-modal" commandfor="d">Open</Button>
- *   <Dialog id="d" variant="panel" position="right" title="…">…</Dialog>
- *
- * @composable
+ *   <Dialog id="d" position="end" title="…">…</Dialog>
  */
+import type { HTMLAttributes } from 'astro/types'
 import { X } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'dialog'> {
   id: string
   title?: string
-  variant?: 'modal' | 'panel' | 'fullscreen'
-  /** Drawer edge (panel variant only). */
-  position?: 'left' | 'right' | 'top' | 'bottom'
+  /** Where the dialog sits. `start`/`end` are logical: `end` is the right in LTR, the left in RTL. @category layout */
+  position?: 'center' | 'start' | 'end' | 'top' | 'bottom' | 'full-screen'
+  /** Click on the backdrop closes it. Set false for a confirm the user must answer. */
+  dismissOnBackdrop?: boolean
   class?: string
-  [key: string]: any
 }
 
-const { id, title, variant = 'modal', position = 'right', class: className, ...rest } = Astro.props
+const { id, title, position = 'center', dismissOnBackdrop = true, class: className, ...rest } = Astro.props
 ---
 
 <dialog
   id={id}
-  closedby="any"
-  data-variant={variant}
-  data-position={variant === 'panel' ? position : undefined}
+  closedby={dismissOnBackdrop ? 'any' : 'closerequest'}
+  data-position={position}
+  data-dismiss-on-backdrop={String(dismissOnBackdrop)}
   aria-labelledby={title ? `${id}-title` : undefined}
-  class:list={['apogee-dialog border border-border bg-surface p-0 text-surface-foreground', className]}
+  class:list={['apogee-dialog bg-elevation-raised p-0 text-neutral', position === 'center' ? 'border border-neutral' : 'border-0', className]}
   {...rest}
 >
   <div class="flex items-start justify-between gap-4 p-5 pb-2">
-    {title && <h2 id={`${id}-title`} class="text-lg font-semibold text-foreground">{title}</h2>}
+    {title && <h2 id={`${id}-title`} class="text-lg font-semibold text-neutral">{title}</h2>}
     <button
       type="button"
       command="close"
       commandfor={id}
       aria-label="Close"
-      class="-me-1 -mt-1 ms-auto grid size-8 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      class="-me-1 -mt-1 ms-auto grid size-8 shrink-0 place-items-center rounded-md text-neutral-faded hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     >
       <X class="size-4" aria-hidden="true" />
     </button>
   </div>
-  <div class="px-5 pb-5 text-sm text-muted-foreground">
+  <div class="px-5 pb-5 text-sm text-neutral-faded">
     <slot />
   </div>
   {
     Astro.slots.has('footer') && (
-      <div class="flex justify-end gap-2 border-t border-border px-5 py-4">
+      <div class="flex justify-end gap-2 border-t border-neutral px-5 py-4">
         <slot name="footer" />
       </div>
     )
@@ -65,13 +66,13 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
     overflow-y: auto;
     opacity: 0;
     transition:
-      opacity var(--duration-slow) var(--ease-smooth),
-      transform var(--duration-slow) var(--ease-smooth),
-      overlay var(--duration-slow) var(--ease-smooth) allow-discrete,
-      display var(--duration-slow) var(--ease-smooth) allow-discrete;
+      opacity var(--duration-slow) var(--ease-standard),
+      transform var(--duration-slow) var(--ease-standard),
+      overlay var(--duration-slow) var(--ease-standard) allow-discrete,
+      display var(--duration-slow) var(--ease-standard) allow-discrete;
   }
 
-  /* --- layout per variant (state-independent) --- */
+  /* --- layout per position (state-independent) --- */
   .apogee-dialog {
     margin: auto;
     width: 100%;
@@ -79,22 +80,26 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
     max-height: 85dvh;
     border-radius: var(--radius-lg);
   }
-  .apogee-dialog[data-variant='panel'] {
+  .apogee-dialog:is([data-position='start'], [data-position='end'], [data-position='top'], [data-position='bottom']) {
     margin: 0;
     max-width: 100%;
     max-height: 100dvh;
   }
-  .apogee-dialog[data-position='right'] {
-    inset: 0 0 0 auto;
+  .apogee-dialog[data-position='end'] {
+    inset-block: 0;
+    inset-inline: auto 0;
     height: 100dvh;
     width: 24rem;
-    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    border-start-start-radius: var(--radius-lg);
+    border-end-start-radius: var(--radius-lg);
   }
-  .apogee-dialog[data-position='left'] {
-    inset: 0 auto 0 0;
+  .apogee-dialog[data-position='start'] {
+    inset-block: 0;
+    inset-inline: 0 auto;
     height: 100dvh;
     width: 24rem;
-    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    border-start-end-radius: var(--radius-lg);
+    border-end-end-radius: var(--radius-lg);
   }
   .apogee-dialog[data-position='top'] {
     inset: 0 0 auto 0;
@@ -108,7 +113,7 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
     max-height: 85dvh;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
-  .apogee-dialog[data-variant='fullscreen'] {
+  .apogee-dialog[data-position='full-screen'] {
     inset: 0;
     margin: 0;
     width: 100%;
@@ -122,11 +127,18 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
   .apogee-dialog:not([open]) {
     transform: scale(0.97) translateY(6px);
   }
-  .apogee-dialog[data-position='right']:not([open]) {
+  /* Slide from the edge it's docked to. :dir(rtl) mirrors the sign. */
+  .apogee-dialog[data-position='end']:not([open]) {
     transform: translateX(100%);
   }
-  .apogee-dialog[data-position='left']:not([open]) {
+  .apogee-dialog[data-position='start']:not([open]) {
     transform: translateX(-100%);
+  }
+  .apogee-dialog[data-position='end']:dir(rtl):not([open]) {
+    transform: translateX(-100%);
+  }
+  .apogee-dialog[data-position='start']:dir(rtl):not([open]) {
+    transform: translateX(100%);
   }
   .apogee-dialog[data-position='top']:not([open]) {
     transform: translateY(-100%);
@@ -134,7 +146,7 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
   .apogee-dialog[data-position='bottom']:not([open]) {
     transform: translateY(100%);
   }
-  .apogee-dialog[data-variant='fullscreen']:not([open]) {
+  .apogee-dialog[data-position='full-screen']:not([open]) {
     transform: none;
   }
 
@@ -147,11 +159,17 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
       opacity: 0;
       transform: scale(0.97) translateY(6px);
     }
-    .apogee-dialog[data-position='right'][open] {
+    .apogee-dialog[data-position='end'][open] {
       transform: translateX(100%);
     }
-    .apogee-dialog[data-position='left'][open] {
+    .apogee-dialog[data-position='start'][open] {
       transform: translateX(-100%);
+    }
+    .apogee-dialog[data-position='end'][open]:dir(rtl) {
+      transform: translateX(-100%);
+    }
+    .apogee-dialog[data-position='start'][open]:dir(rtl) {
+      transform: translateX(100%);
     }
     .apogee-dialog[data-position='top'][open] {
       transform: translateY(-100%);
@@ -159,25 +177,25 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
     .apogee-dialog[data-position='bottom'][open] {
       transform: translateY(100%);
     }
-    .apogee-dialog[data-variant='fullscreen'][open] {
+    .apogee-dialog[data-position='full-screen'][open] {
       transform: none;
     }
   }
 
   /* --- backdrop --- */
   .apogee-dialog::backdrop {
-    background-color: rgb(0 0 0 / 0);
+    background-color: transparent;
     transition:
-      background-color var(--duration-slow) var(--ease-smooth),
-      overlay var(--duration-slow) var(--ease-smooth) allow-discrete,
-      display var(--duration-slow) var(--ease-smooth) allow-discrete;
+      background-color var(--duration-slow) var(--ease-standard),
+      overlay var(--duration-slow) var(--ease-standard) allow-discrete,
+      display var(--duration-slow) var(--ease-standard) allow-discrete;
   }
   .apogee-dialog[open]::backdrop {
-    background-color: rgb(0 0 0 / 0.5);
+    background-color: var(--overlay);
   }
   @starting-style {
     .apogee-dialog[open]::backdrop {
-      background-color: rgb(0 0 0 / 0);
+      background-color: transparent;
     }
   }
 
@@ -190,10 +208,13 @@ const { id, title, variant = 'modal', position = 'right', class: className, ...r
 </style>
 
 <script>
+  import { island } from '../utils/island.ts'
+
   // Backdrop click closes it (fallback for browsers without `closedby`).
-  for (const dialog of document.querySelectorAll<HTMLDialogElement>('dialog.apogee-dialog')) {
+  island<HTMLDialogElement>('dialog.apogee-dialog', (dialog) => {
+    if (dialog.dataset.dismissOnBackdrop === 'false') return
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog) dialog.close()
     })
-  }
+  })
 </script>

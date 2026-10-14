@@ -12,11 +12,11 @@ import { Inbox, SearchX } from '@lucide/astro'
 
 <Preview code={`<EmptyState title="No messages yet" description="When someone sends you a message, it'll show up here.">
   <Inbox slot="icon" />
-  <Button slot="actions" variant="primary" size="sm">Compose</Button>
+  <Button slot="actions" size="small">Compose</Button>
 </EmptyState>`}>
   <EmptyState title="No messages yet" description="When someone sends you a message, it'll show up here.">
     <Inbox slot="icon" />
-    <Button slot="actions" variant="primary" size="sm">Compose</Button>
+    <Button slot="actions" size="small">Compose</Button>
   </EmptyState>
 </Preview>
 
@@ -49,8 +49,8 @@ import EmptyState from '@/components/apogee/EmptyState/EmptyState.astro'
 ```astro
 <EmptyState title="No projects" description="Create your first project to get started.">
   <FolderOpen slot="icon" />
-  <Button slot="actions" variant="primary" size="sm">New project</Button>
-  <Button slot="actions" variant="ghost" size="sm">Import</Button>
+  <Button slot="actions" size="small">New project</Button>
+  <Button slot="actions" variant="ghost" color="neutral" size="small">Import</Button>
 </EmptyState>
 ```
 
@@ -94,9 +94,9 @@ it). Any `Button`/link placed in `actions` keeps its own keyboard behaviour.
 
 | Token | Used for |
 |---|---|
-| `--border` | Dashed border around the block |
-| `--foreground` | Title text |
-| `--muted-foreground` | Icon colour and description text |
+| `--border-neutral` | Dashed border around the block |
+| `--foreground-neutral` | Title text |
+| `--foreground-neutral-faded` | Icon colour and description text |
 | `--radius-lg` | Corner radius |
 
 ## Do / Don't

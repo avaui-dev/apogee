@@ -56,7 +56,7 @@ a `<span aria-current="page">`, even if it has an `href`.
 ## States
 
 - **Hover / focus** — linked crumbs (all but the last, when `href` is set)
-  lighten on hover; keyboard focus shows a visible ring (`--ring`).
+  lighten on hover; keyboard focus shows a visible ring (`--border-primary`).
 - **Current page** — the last item is bold text, never a link, with
   `aria-current="page"`.
 
@@ -112,9 +112,9 @@ A single-item trail (just the current page, no links):
 
 | Token | Used for |
 |---|---|
-| `--muted-foreground` | Default crumb text |
-| `--foreground` | Hovered crumb + current-page text |
-| `--ring` | Focus ring on linked crumbs |
+| `--foreground-neutral-faded` | Default crumb text |
+| `--foreground-neutral` | Hovered crumb + current-page text |
+| `--border-primary` | Focus ring on linked crumbs |
 
 ## Do / Don't
 

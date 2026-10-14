@@ -1,85 +1,74 @@
 ---
 title: Motion
-description: Duration and easing tokens, the default transition wiring, and the mandatory prefers-reduced-motion guard.
+description: Four durations, three easings, wired as Tailwind's defaults, and the mandatory reduced-motion guard.
 group: Foundations
 order: 5
 ---
 
 import Preview from '../../components/Preview.astro'
 
-Motion is token-driven like everything else: two easing curves, three
-durations, wired as the default for every Tailwind `transition-*` utility —
-and every animated component must still respect `prefers-reduced-motion`.
-That last part is not optional.
+Motion is token-driven like everything else. Every animated component reads the
+tokens below and respects `prefers-reduced-motion`.
 
-## Duration & easing tokens
+## Tokens
 
-| Token | Value | Used for |
+| Token | Value | Use |
 |---|---|---|
-| `--duration-fast` | `120ms` | Micro-interactions (hover, focus, press) |
-| `--duration-base` | `180ms` | Default transitions |
-| `--duration-slow` | `260ms` | Larger surface changes (dialogs, panels) |
-| `--ease-smooth` | `cubic-bezier(0.16, 1, 0.3, 1)` | Default, calm motion |
-| `--ease-emphasized` | `cubic-bezier(0.65, 0, 0.35, 1)` | Deliberate, attention-drawing motion |
+| `--duration-rapid` | 100ms | Hover fills, press feedback |
+| `--duration-fast` | 150ms | Menus, toggles, tooltips |
+| `--duration-medium` | 250ms | Panels, popovers, chevrons |
+| `--duration-slow` | 400ms | Dialogs, expanding regions |
+| `--ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | Default: quick start, soft landing |
+| `--ease-accelerate` | `cubic-bezier(0.4, 0, 1, 1)` | Leaving the screen |
+| `--ease-decelerate` | `cubic-bezier(0, 0, 0.2, 1)` | Entering the screen |
 
-`--ease-smooth` and `--ease-emphasized` become Tailwind utilities directly
-(`ease-smooth`, `ease-emphasized`). The durations stay as CSS variables — use
-them in scoped styles (`transition-duration: var(--duration-base)`) or as a
-Tailwind arbitrary value (`duration-[var(--duration-base)]`); there's no bare
-`duration-fast` utility.
+Easings become utilities (`ease-standard`, `ease-accelerate`,
+`ease-decelerate`). Durations stay CSS variables: in scoped CSS use
+`transition: opacity var(--duration-fast) var(--ease-standard)`; in markup use
+`duration-[var(--duration-medium)]`.
 
-## The default transition is already wired
+## Defaults
 
-```css
---default-transition-duration: var(--duration-fast);
---default-transition-timing-function: var(--ease-smooth);
-```
+Tailwind's default transition duration and easing point at
+`--duration-fast` and `--ease-standard`, so a bare `transition-colors` is
+on-brand:
 
-Every bare Tailwind `transition-*` utility (`transition-colors`,
-`transition-transform`, …) already resolves to `--duration-fast` +
-`--ease-smooth` — on-brand with zero extra classes. Reach for the arbitrary
-value only when you need `base`/`slow` or `ease-emphasized` instead of the
-default.
+<Preview code={`<div class="rounded-md border border-neutral bg-elevation-raised px-4 py-2 text-sm transition-colors hover:bg-primary hover:text-on-primary motion-reduce:transition-none">
+  Hover me
+</div>`}>
+  <div class="inline-flex rounded-md border border-neutral bg-elevation-raised px-4 py-2 text-sm font-medium text-neutral transition-colors hover:bg-primary hover:text-on-primary motion-reduce:transition-none">
+    Hover me
+  </div>
+</Preview>
 
-```astro
-<!-- default: fast + smooth, free -->
-<button class="transition-colors hover:bg-accent-hover">...</button>
+Reach for an explicit duration only when the default is wrong for the size of
+the move:
 
-<!-- explicit: base duration, emphasized easing -->
-<div class="transition-transform duration-[var(--duration-base)] ease-emphasized">...</div>
-```
+<Preview code={`<div class="… transition-colors duration-[var(--duration-medium)] ease-decelerate …">Slower</div>`}>
+  <div class="inline-flex rounded-md border border-neutral bg-elevation-raised px-4 py-2 text-sm font-medium text-neutral transition-colors duration-[var(--duration-medium)] ease-decelerate hover:bg-primary hover:text-on-primary motion-reduce:transition-none">
+    Slower
+  </div>
+</Preview>
 
-## `prefers-reduced-motion` is mandatory
+## Reduced motion
 
-Every animated component must respect it — not aspirational, a non-negotiable.
-Two ways to apply the guard:
-
-- **Tailwind's `motion-reduce:` variant** for utility-class animations:
-
-```astro
-<button class="active:scale-95 motion-reduce:active:scale-100">...</button>
-```
-
-- **A media query in scoped CSS** for keyframes or anything in an
-  escape-hatch `<style>` block:
+Every transition and animation carries a guard. In markup, `motion-reduce:transition-none`.
+In scoped CSS:
 
 ```css
 @media (prefers-reduced-motion: reduce) {
-  .my-component {
+  .apogee-thing {
     transition: none;
-    animation: none;
   }
 }
 ```
 
-A component isn't done until motion degrades cleanly under this setting.
+Looping animations (Spinner, Progress, Marquee, Skeleton) keep their own
+durations; the scale above is for transitions. Under reduced motion they slow
+down or stop rather than disappear, so the state they communicate stays visible.
 
-## Example
+## Do / Don't
 
-<Preview code={`<div class="inline-flex rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors duration-[var(--duration-base)] ease-smooth hover:bg-accent hover:text-accent-foreground motion-reduce:transition-none">
-  Hover me
-</div>`}>
-  <div class="inline-flex rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors duration-[var(--duration-base)] ease-smooth hover:bg-accent hover:text-accent-foreground motion-reduce:transition-none">
-    Hover me
-  </div>
-</Preview>
+- **Do** use `ease-decelerate` for things that appear and `ease-accelerate` for things that leave.
+- **Don't** write a literal `150ms` or a `cubic-bezier()` in a component.
+- **Don't** animate layout properties (`height`, `top`) when `transform` or `::details-content` can do it.

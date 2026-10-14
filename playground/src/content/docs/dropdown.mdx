@@ -134,11 +134,18 @@ With leading icons, and a destructive item set off by a `Divider`:
   </Dropdown>
 </Preview>
 
+## Events
+
+The `<details>` root dispatches `apogee:dropdown-open` and `apogee:dropdown-close` (bubbling) alongside the native `toggle` event. A button item closes the menu when activated.
+
 ## Accessibility
 
 - The panel has `role="menu"`; `DropdownItem`s carry `role="menuitem"`.
 - Native `<details>` / `<summary>` — keyboard-operable out of the box (`Enter` /
-  `Space` toggles it), no script required for the base open/close.
+  `Space` toggles it), no script required for the base open/close. The trigger
+  carries `aria-haspopup="menu"` and `aria-expanded` (synced by JS).
+- `ArrowDown` on the closed trigger opens the menu and focuses the first item —
+  JS behavior, only with JS enabled.
 - `Escape` closes it and returns focus to the trigger (`summary`) — JS behavior,
   only with JS enabled.
 - `ArrowDown` / `ArrowUp` move focus between menu items, wrapping from last to
@@ -152,14 +159,14 @@ With leading icons, and a destructive item set off by a `Divider`:
 
 | Token | Used for |
 |---|---|
-| `--border` | Trigger + menu panel border |
-| `--background` | Trigger background |
-| `--muted` | Trigger hover background |
-| `--foreground` | Trigger label + item text |
-| `--muted-foreground` | Chevron + item icon color |
-| `--surface` | Menu panel background |
-| `--ring` | Trigger focus ring |
-| `--duration-fast` / `--ease-smooth` | Menu open fade/scale animation |
+| `--border-neutral` | Trigger + menu panel border |
+| `--background-page` | Trigger background |
+| `--background-neutral-faded` | Trigger hover background |
+| `--foreground-neutral` | Trigger label + item text |
+| `--foreground-neutral-faded` | Chevron + item icon color |
+| `--background-elevation-raised` | Menu panel background |
+| `--border-primary` | Trigger focus ring |
+| `--duration-fast` / `--ease-standard` | Menu open fade/scale animation |
 
 ## Do / Don't
 

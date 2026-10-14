@@ -1,0 +1,38 @@
+---
+/**
+ * ScrollArea — a scroll container with a thin, token-coloured scrollbar. The
+ * region is focusable so keyboard users can scroll it; give it an `aria-label`
+ * when the surrounding context does not name it. Zero JS.
+
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+const overflow = { vertical: 'overflow-y-auto overflow-x-hidden', horizontal: 'overflow-x-auto overflow-y-hidden', both: 'overflow-auto' } as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** @category layout */
+  direction?: keyof typeof overflow
+  /** Max height, any CSS length. @category layout */
+  height?: string
+  class?: string
+}
+
+const { direction = 'vertical', height, class: className, ...rest } = Astro.props
+---
+
+<div
+  tabindex="0"
+  class:list={['apogee-scroll-area rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary', overflow[direction], className]}
+  style={height ? `max-height: ${height}` : undefined}
+  {...rest}
+>
+  <slot />
+</div>
+
+<style>
+  .apogee-scroll-area {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-neutral) transparent;
+  }
+</style>

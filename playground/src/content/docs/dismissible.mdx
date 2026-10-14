@@ -1,0 +1,94 @@
+---
+title: Dismissible
+description: Wrap anything with a close button, with an optional auto-dismiss timeout.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Dismissible from '../../../../registry/components/Dismissible/Dismissible.astro'
+import Alert from '../../../../registry/components/Alert/Alert.astro'
+
+<JsNote fallback="The close button is hidden and the content stays put; a timeout never fires.">
+  A document-level click listener handles every close button: it dispatches a
+  cancelable `apogee:dismiss` event on the wrapper and, unless you cancel it,
+  removes the element. An island arms the `timeout`.
+</JsNote>
+
+<Preview code={`<Dismissible>
+  <Alert color="positive" title="Saved">Your changes are live.</Alert>
+</Dismissible>`}>
+  <Dismissible class="w-full max-w-md">
+    <Alert color="positive" title="Saved" class="pe-10">Your changes are live.</Alert>
+  </Dismissible>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add dismissible
+```
+
+Depends on `utils`.
+
+## Usage
+
+```astro
+---
+import Dismissible from '@/components/apogee/Dismissible/Dismissible.astro'
+---
+<Dismissible timeout={8000} closeLabel="Hide banner">
+  <div class="rounded-lg bg-primary-faded p-4 pe-10">Try the new editor.</div>
+</Dismissible>
+
+<script>
+  document.addEventListener('apogee:dismiss', (e) => {
+    // e.preventDefault() keeps the element; otherwise it is removed.
+    localStorage.setItem('banner-dismissed', '1')
+  })
+</script>
+```
+
+Leave room for the button at the end edge of your content (`pe-10`).
+
+## API
+
+`@composable`. Any other native attribute passes through to the wrapper.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `timeout` | `number` | — | Auto-dismiss after this many milliseconds. |
+| `closeLabel` | `string` | `'Dismiss'` | Accessible name of the close button. |
+| `class` | `string` | — | Extra classes on the wrapper, merged last. |
+
+## Variants
+
+<Preview code={`<Dismissible>…</Dismissible>
+<Dismissible timeout={5000}>…</Dismissible>`}>
+  <Dismissible class="w-full max-w-md">
+    <Alert title="Manual">Stays until you close it.</Alert>
+  </Dismissible>
+  <Dismissible timeout={5000} class="w-full max-w-md">
+    <Alert color="warning" title="Timed">Goes away by itself after five seconds.</Alert>
+  </Dismissible>
+</Preview>
+
+## Accessibility
+
+- The close button is a real `<button>` with an `aria-label`; set `closeLabel` to name what is being closed.
+- A timed dismissal removes content without user action. Keep timeouts for non-essential messages, and never for errors.
+- Focus is not moved on dismiss; if the button had focus, the browser returns it to the body. Manage it yourself in the `apogee:dismiss` handler when that matters.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral-faded` / `--foreground-neutral` | Button icon default / hover |
+| `--background-neutral-faded-highlighted` | Button hover fill |
+| `--border-primary` | Focus outline |
+
+## Do / Don't
+
+- **Do** persist the dismissal when the content is a banner the user should not see again.
+- **Don't** put a form inside a timed Dismissible.

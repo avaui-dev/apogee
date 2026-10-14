@@ -8,10 +8,10 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Alert from '../../../../registry/components/Alert/Alert.astro'
 
-<Preview code={`<Alert variant="info" title="Heads up">
+<Preview block code={`<Alert color="primary" title="Heads up">
   A new version of this page is available.
 </Alert>`}>
-  <Alert variant="info" title="Heads up">
+  <Alert color="primary" title="Heads up">
     A new version of this page is available.
   </Alert>
 </Preview>
@@ -30,7 +30,7 @@ Uses `@lucide/astro` (`Info`, `CircleCheck`, `TriangleAlert`, `CircleAlert`) for
 ---
 import Alert from '@/components/apogee/Alert/Alert.astro'
 ---
-<Alert variant="success" title="Saved">Your changes were saved.</Alert>
+<Alert color="positive" title="Saved">Your changes were saved.</Alert>
 ```
 
 ## API
@@ -40,22 +40,40 @@ import Alert from '@/components/apogee/Alert/Alert.astro'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `variant` | `'info' \| 'success' \| 'warning' \| 'danger'` | `'info'` | Status color + icon. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | The hue. |
+| `variant` | `'faded' \| 'solid'` | `'faded'` | Tinted (default) or filled. |
 | `title` | `string` | — | Optional bold heading above the message. |
-| `class` | `string` | — | Extra classes, merged last. |
+| `inline` | `boolean` | `false` | Hides the icon column. |
+| `class` | `string` | — | Extra classes, appended last. |
 
-## Variants
+Slots: default for the message, `actions` for buttons under it.
 
-Every variant, each with its fixed icon:
+## Colors × variants
 
-<Preview code={`<Alert variant="info" title="Info">Informational message.</Alert>
-<Alert variant="success" title="Success">Action completed.</Alert>
-<Alert variant="warning" title="Warning">Check this before continuing.</Alert>
-<Alert variant="danger" title="Danger">Something went wrong.</Alert>`}>
-  <Alert variant="info" title="Info">Informational message.</Alert>
-  <Alert variant="success" title="Success">Action completed.</Alert>
-  <Alert variant="warning" title="Warning">Check this before continuing.</Alert>
-  <Alert variant="danger" title="Danger">Something went wrong.</Alert>
+Every `color`, each with its fixed icon, tinted and filled:
+
+<Preview block code={`<Alert color="neutral" title="Note">A neutral callout.</Alert>
+<Alert color="primary" title="Info">Informational message.</Alert>
+<Alert color="positive" title="Success">Action completed.</Alert>
+<Alert color="warning" title="Warning">Check this before continuing.</Alert>
+<Alert color="critical" title="Error">Something went wrong.</Alert>
+<Alert variant="solid" color="neutral" title="Note">A neutral callout.</Alert>
+<Alert variant="solid" color="primary" title="Info">Informational message.</Alert>
+<Alert variant="solid" color="positive" title="Success">Action completed.</Alert>
+<Alert variant="solid" color="warning" title="Warning">Check this before continuing.</Alert>
+<Alert variant="solid" color="critical" title="Error">Something went wrong.</Alert>`}>
+  <div class="grid w-full gap-3">
+    <Alert color="neutral" title="Note">A neutral callout.</Alert>
+    <Alert color="primary" title="Info">Informational message.</Alert>
+    <Alert color="positive" title="Success">Action completed.</Alert>
+    <Alert color="warning" title="Warning">Check this before continuing.</Alert>
+    <Alert color="critical" title="Error">Something went wrong.</Alert>
+    <Alert variant="solid" color="neutral" title="Note">A neutral callout.</Alert>
+    <Alert variant="solid" color="primary" title="Info">Informational message.</Alert>
+    <Alert variant="solid" color="positive" title="Success">Action completed.</Alert>
+    <Alert variant="solid" color="warning" title="Warning">Check this before continuing.</Alert>
+    <Alert variant="solid" color="critical" title="Error">Something went wrong.</Alert>
+  </div>
 </Preview>
 
 ## States
@@ -64,16 +82,16 @@ Alert is static — no hover/focus/disabled states. The one behavioral distincti
 is static (page) vs dynamic (result of an action), which changes the ARIA role
 you pass in, not the markup:
 
-<Preview code={`<Alert variant="warning" title="Limited availability">
+<Preview block code={`<Alert color="warning" title="Limited availability">
   Only 2 left in stock.
 </Alert>
-<Alert variant="danger" title="Couldn't save" role="alert">
+<Alert color="critical" title="Couldn't save" role="alert">
   Check the highlighted fields and try again.
 </Alert>`}>
-  <Alert variant="warning" title="Limited availability">
+  <Alert color="warning" title="Limited availability">
     Only 2 left in stock.
   </Alert>
-  <Alert variant="danger" title="Couldn't save" role="alert">
+  <Alert color="critical" title="Couldn't save" role="alert">
     Check the highlighted fields and try again.
   </Alert>
 </Preview>
@@ -82,14 +100,14 @@ you pass in, not the markup:
 
 Without a title — the message alone takes the primary text color:
 
-<Preview code={`<Alert variant="info">No title, just a message.</Alert>`}>
-  <Alert variant="info">No title, just a message.</Alert>
+<Preview block code={`<Alert color="primary">No title, just a message.</Alert>`}>
+  <Alert color="primary">No title, just a message.</Alert>
 </Preview>
 
 With a link in the body:
 
 ```astro
-<Alert variant="warning" title="Update required">
+<Alert color="warning" title="Update required">
   Your plan expires soon. <a href="/billing" class="underline">Renew now</a>.
 </Alert>
 ```
@@ -105,12 +123,11 @@ With a link in the body:
 
 | Token | Used for |
 |---|---|
-| `--accent` / `--accent` (10% bg, 25% border) | Info icon + surface |
-| `--success` | Success icon + surface |
-| `--warning` | Warning icon + surface |
-| `--danger` | Danger icon + surface |
-| `--foreground` | Title text |
-| `--muted-foreground` | Body text (when a title is present) |
+| `--background-{hue}-faded` / `--border-{hue}-faded` | Surface and border of the `faded` variant, per `color` |
+| `--foreground-{hue}` | Icon of the `faded` variant |
+| `--background-{hue}` / `--on-{hue}` | Surface and text of the `solid` variant |
+| `--foreground-neutral` | Title text |
+| `--foreground-neutral-faded` | Body text (when a title is present) |
 
 ## Do / Don't
 

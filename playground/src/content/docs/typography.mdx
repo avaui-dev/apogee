@@ -41,7 +41,7 @@ correct for accessibility even when the visual size differs from the level.
 The demo below uses `as="div"` for every step so the page doesn't end up with
 seven `<h1>`s — in real content, `as` should match your outline.
 
-<Preview code={`<Heading as="div" size="display">Display</Heading>
+<Preview block code={`<Heading as="div" size="display">Display</Heading>
 <Heading as="div" size="h1">Heading 1</Heading>
 <Heading as="div" size="h2">Heading 2</Heading>
 <Heading as="div" size="h3">Heading 3</Heading>
@@ -61,25 +61,26 @@ Every `Heading` also gets `text-balance` and `tracking-tight`.
 
 ## Text
 
-Body copy. Unlike `Heading`, `Text` sizes (`sm` / `base` / `lg`, default
-`base`) are Tailwind's own static scale, not the fluid tokens above — body
+Body copy. Unlike `Heading`, `Text` sizes (`small` / `medium` / `large`, default
+`medium`) are Tailwind's own static scale, not the fluid tokens above — body
 text doesn't need to fluid-resize the way display copy does. `leading-relaxed`
-by default; `muted` switches the color to `--muted-foreground`.
+by default; `color="neutral-faded"` switches to the secondary text colour.
 
 ```astro
 <Text>Default body copy.</Text>
-<Text size="sm" muted>Secondary, smaller copy.</Text>
+<Text size="small" color="neutral-faded">Secondary, smaller copy.</Text>
 ```
 
 ## Font stack
 
-`theme.css` defines two font tokens in `@theme`, defaulting to the platform
+`theme.css` defines three font tokens in `@theme`, defaulting to the platform
 system stacks (so text looks native out of the box):
 
 | Token | Used for |
 |---|---|
 | `--font-sans` | Body / UI text (the `font-sans` utility and the default body font) |
 | `--font-mono` | Code (`font-mono`, `Code`, `Kbd`) |
+| `--font-serif` | Quotations (`font-serif`, `Blockquote`, prose blockquotes) |
 
 To brand the type, override `--font-sans` (or `--font-mono`) in your own `@theme`
 block — same one-place pattern as the color tokens, no component changes:
@@ -99,7 +100,7 @@ scoped, token-driven `.apogee-prose` stylesheet (escape-hatch CSS, since
 Tailwind utilities can't reach injected HTML) covering headings, links, lists,
 blockquotes, code, and `<hr>`.
 
-<Preview code={`<Prose>
+<Preview block code={`<Prose>
   <h2>Release notes</h2>
   <p>Body copy with a <a href="#">link</a> and <strong>bold</strong> text.</p>
   <ul>

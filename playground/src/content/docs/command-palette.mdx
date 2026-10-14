@@ -16,7 +16,7 @@ import CommandPalette from '../../../../registry/components/CommandPalette/Comma
   `href`, or dispatching an `apogee:command` event on `document`.
 </JsNote>
 
-<Preview code={`<button type="button" data-command-open="apogee-command" class="rounded-md border border-border px-3 py-2 text-sm">Open (⌘K)</button>
+<Preview code={`<button type="button" data-command-open="apogee-command" class="rounded-md border border-neutral px-3 py-2 text-sm">Open (⌘K)</button>
 <CommandPalette
   commands={[
     { label: 'Create project', group: 'Actions', keywords: 'new add' },
@@ -24,7 +24,7 @@ import CommandPalette from '../../../../registry/components/CommandPalette/Comma
     { label: 'Documentation', href: '/docs', group: 'Navigate' },
   ]}
 />`}>
-  <button type="button" data-command-open="apogee-command" class="rounded-md border border-border px-3 py-2 text-sm">Open (⌘K)</button>
+  <button type="button" data-command-open="apogee-command" class="rounded-md border border-neutral px-3 py-2 text-sm">Open (⌘K)</button>
   <CommandPalette
     commands={[
       { label: 'Create project', group: 'Actions', keywords: 'new add' },
@@ -142,12 +142,12 @@ Custom shortcut key:
 
 | Token | Used for |
 |---|---|
-| `--border` | Dialog border, header divider |
-| `--background` | Dialog background |
-| `--foreground` | Option text |
-| `--muted-foreground` | Search icon, group heading, placeholder, empty state |
-| `--muted` | Option hover / selected background |
-| `--duration-fast` / `--ease-smooth` | Open/close transition |
+| `--border-neutral` | Dialog border, header divider |
+| `--background-page` | Dialog background |
+| `--foreground-neutral` | Option text |
+| `--foreground-neutral-faded` | Search icon, group heading, placeholder, empty state |
+| `--background-neutral-faded` | Option hover / selected background |
+| `--duration-fast` / `--ease-standard` | Open/close transition |
 
 ## Do / Don't
 

@@ -1,42 +1,50 @@
 ---
 /**
  * Textarea — a labeled multiline input. Same field wiring as Input.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
+import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'textarea'>, 'size'> {
   id?: string
   label?: string
   hint?: string
   error?: string
   rows?: number
-  size?: 'sm' | 'md' | 'lg'
+  /** Initial text (a textarea carries its value as content, not an attribute). */
+  value?: string
+  /** Marks the field invalid without a message. */
+  hasError?: boolean
+  /** @category layout */
+  size?: FieldSize
+  /** @category layout */
+  variant?: FieldVariant
   required?: boolean
   class?: string
-  [key: string]: any
 }
 
 const {
   id: idProp,
   label,
   hint,
+  value,
   error,
   rows = 4,
-  size = 'md',
+  hasError = false,
+  size = 'medium',
+  variant = 'outline',
   required = false,
   class: className,
   ...rest
 } = Astro.props
-const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const id = idProp ?? uid(Astro.locals)
+const invalid = Boolean(error) || hasError
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
-
-const sizeMap = {
-  sm: 'px-2.5 py-1.5 text-sm',
-  md: 'px-3 py-2 text-sm',
-  lg: 'px-4 py-2.5 text-base',
-}
+// A textarea grows with rows: keep the size's padding/text, drop its fixed height.
+const sizeClasses = fieldSizes[size].replace(/\bh-\S+/, 'py-2')
 ---
 
 <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
@@ -45,10 +53,7 @@ const sizeMap = {
     rows={rows}
     required={required}
     aria-describedby={describedby}
-    aria-invalid={error ? 'true' : undefined}
-    class:list={[
-      'w-full rounded-md border border-border bg-background text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-danger',
-      sizeMap[size],
-    ]}
-    {...rest}></textarea>
+    aria-invalid={invalid ? 'true' : undefined}
+    class:list={['resize-y', fieldBase, fieldVariants[variant], sizeClasses]}
+    {...rest}>{value ?? <slot />}</textarea>
 </Field>

@@ -1,12 +1,12 @@
 ---
 /**
  * Breadcrumbs — a path trail. The last item is the current page. Zero JS.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { ChevronRight } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'nav'> {
   items: { label: string; href?: string }[]
   class?: string
 }
@@ -15,7 +15,7 @@ const { items, class: className, ...rest } = Astro.props
 ---
 
 <nav aria-label="Breadcrumb" class:list={['text-sm', className]} {...rest}>
-  <ol class="flex flex-wrap items-center gap-1.5 text-muted-foreground">
+  <ol class="flex flex-wrap items-center gap-1.5 text-neutral-faded">
     {
       items.map((item, i) => {
         const last = i === items.length - 1
@@ -24,12 +24,12 @@ const { items, class: className, ...rest } = Astro.props
             {item.href && !last ? (
               <a
                 href={item.href}
-                class="rounded-sm transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                class="rounded-sm transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 {item.label}
               </a>
             ) : (
-              <span class:list={[last && 'font-medium text-foreground']} aria-current={last ? 'page' : undefined}>
+              <span class:list={[last && 'font-medium text-neutral']} aria-current={last ? 'page' : undefined}>
                 {item.label}
               </span>
             )}

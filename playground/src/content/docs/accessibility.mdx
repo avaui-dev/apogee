@@ -38,16 +38,16 @@ ideally 44×44px.
 ## Focus
 
 Every interactive element gets an always-visible `:focus-visible` ring, driven
-by the `--ring` token — never suppressed:
+by the `--border-primary` token — never suppressed:
 
 ```astro
-class="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+class="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 ```
 
 Tab into the button below to see it:
 
-<Preview code={`<Button variant="primary">Save changes</Button>`}>
-  <Button variant="primary">Save changes</Button>
+<Preview code={`<Button>Save changes</Button>`}>
+  <Button>Save changes</Button>
 </Preview>
 
 Modal dialogs trap focus while open and return it to the trigger on close.
@@ -55,7 +55,7 @@ Modal dialogs trap focus while open and return it to the trigger on close.
 ## Motion
 
 Every animated component reads the motion tokens (`--duration-*`,
-`ease-smooth`, `ease-emphasized`) and respects `prefers-reduced-motion` — for
+`ease-standard`, `ease-decelerate`) and respects `prefers-reduced-motion` — for
 example, `Button`'s press animation:
 
 ```
@@ -76,7 +76,7 @@ Text and UI meet **WCAG AA** against every themed background: 4.5:1 for text,
 Accessible name, role, and state stay in sync with the UI: `aria-expanded` on
 disclosure triggers, `aria-current="page"` on the active breadcrumb/nav item,
 `aria-selected` on active tabs, `aria-busy` while `Button` is `loading`.
-Meaningful images and icon-only controls (`Button size="icon"`) get a label;
+Meaningful images and icon-only controls (`Button iconOnly`) get a label;
 decorative icons are hidden from assistive tech (`aria-hidden="true"`).
 
 ## How we verify

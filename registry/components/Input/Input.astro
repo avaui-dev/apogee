@@ -3,25 +3,36 @@
  * Input — a labeled text input. Renders a full accessible field (label + input
  * + hint/error) via Field, wiring `for` / `aria-describedby` / `aria-invalid`.
  *
- * `variant="floating"` uses the label as a placeholder that animates up onto the
- * top border on focus / when filled — pure CSS, no JS. (It manages its own
- * placeholder, so a passed `placeholder` is ignored in that variant.)
- *
- * @composable
+ * `size` and `variant` come from the shared field tables, so every text-like
+ * control matches. `labelPosition="floating"` animates the label from
+ * placeholder position to the top border on focus / when filled (pure CSS).
+ * Icons or prefixes go in the `start` / `end` slots, inside the control box.
  */
+import type { HTMLAttributes } from 'astro/types'
 import Field from '../Field/Field.astro'
+import { uid } from '../utils/uid.ts'
+import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
   id?: string
+  /** @category content */
   label?: string
+  /** @category content */
   hint?: string
+  /** @category content */
   error?: string
+  /** Marks the field invalid without a message. */
+  hasError?: boolean
   type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date'
-  size?: 'sm' | 'md' | 'lg'
-  variant?: 'default' | 'floating'
+  /** @category layout */
+  size?: FieldSize
+  /** @category layout */
+  variant?: FieldVariant
+  /** Floating label animates from placeholder position to the top border (CSS only). @category layout */
+  labelPosition?: 'top' | 'floating'
   required?: boolean
   class?: string
-  [key: string]: any
 }
 
 const {
@@ -29,64 +40,66 @@ const {
   label,
   hint,
   error,
+  hasError = false,
   type = 'text',
-  size = 'md',
-  variant = 'default',
+  size = 'medium',
+  variant = 'outline',
+  labelPosition = 'top',
   required = false,
   class: className,
   ...rest
 } = Astro.props
-const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const id = idProp ?? uid(Astro.locals)
+const invalid = Boolean(error) || hasError
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
-
-const sizeMap = {
-  sm: 'h-8 px-2.5 text-sm',
-  md: 'h-10 px-3 text-sm',
-  lg: 'h-12 px-4 text-base',
-}
-const labelLeft = { sm: 'start-2.5', md: 'start-3', lg: 'start-4' }
-
-const inputBase =
-  'w-full rounded-md border border-border bg-background text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-danger'
+const hasStart = Astro.slots.has('start')
+const hasEnd = Astro.slots.has('end')
+const floating = labelPosition === 'floating'
+const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlarge: 'start-5' } as const
 ---
 
-{
-  variant === 'floating' ? (
-    <Field id={id} hint={hint} error={error} class={className}>
-      <div class="relative">
-        <input
-          id={id}
-          type={type}
-          required={required}
-          aria-describedby={describedby}
-          aria-invalid={error ? 'true' : undefined}
-          class:list={['peer', inputBase, sizeMap[size]]}
-          {...rest}
-          placeholder=" "
-        />
+<Field id={id} label={floating ? undefined : label} hint={hint} error={error} required={required} class={className}>
+  <div class="relative flex items-center">
+    {
+      hasStart && (
+        <span class="pointer-events-none absolute start-3 text-neutral-faded [&_svg]:size-4">
+          <slot name="start" />
+        </span>
+      )
+    }
+    <input
+      id={id}
+      type={type}
+      required={required}
+      aria-describedby={describedby}
+      aria-invalid={invalid ? 'true' : undefined}
+      class:list={[fieldBase, fieldVariants[variant], fieldSizes[size], hasStart && 'ps-9', hasEnd && 'pe-9', floating && 'peer']}
+      placeholder={floating ? ' ' : undefined}
+      {...rest}
+    />
+    {
+      hasEnd && (
+        <span class="pointer-events-none absolute end-3 flex items-center text-neutral-faded [&_svg]:size-4 [&_button]:pointer-events-auto">
+          <slot name="end" />
+        </span>
+      )
+    }
+    {
+      floating && (
         <label
           for={id}
           class:list={[
-            'pointer-events-none absolute top-1/2 -translate-y-1/2 bg-background px-1 text-sm text-muted-foreground transition-all peer-focus:-top-1 peer-focus:text-xs peer-focus:font-medium peer-focus:text-accent peer-[:not(:placeholder-shown)]:-top-0.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium peer-disabled:opacity-50',
-            labelLeft[size],
+            'pointer-events-none absolute top-1/2 -translate-y-1/2 bg-page px-1 text-sm text-neutral-faded transition-all motion-reduce:transition-none',
+            'peer-focus:-top-0.5 peer-focus:text-xs peer-focus:font-medium peer-focus:text-primary',
+            'peer-[:not(:placeholder-shown)]:-top-0.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-medium',
+            'peer-disabled:text-disabled',
+            labelInset[size],
           ]}
         >
           {label}
-          {required && <span class="text-danger" aria-hidden="true"> *</span>}
+          {required && <span class="text-critical" aria-hidden="true"> *</span>}
         </label>
-      </div>
-    </Field>
-  ) : (
-    <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
-      <input
-        id={id}
-        type={type}
-        required={required}
-        aria-describedby={describedby}
-        aria-invalid={error ? 'true' : undefined}
-        class:list={[inputBase, sizeMap[size]]}
-        {...rest}
-      />
-    </Field>
-  )
-}
+      )
+    }
+  </div>
+</Field>

@@ -36,7 +36,7 @@ passes through (e.g. `data-*`).
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Icon size (`size-4` / `size-5` / `size-8`). |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Icon size (`size-4` / `size-5` / `size-8`). |
 | `label` | `string` | — | Accessible label. Set it for a standalone spinner (renders `role="status"` + `aria-label`); omit it when a parent already conveys loading (e.g. `Button`'s `aria-busy`) — it then renders `aria-hidden`. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -44,12 +44,12 @@ passes through (e.g. `data-*`).
 
 Every size:
 
-<Preview code={`<Spinner size="sm" label="Loading" />
-<Spinner size="md" label="Loading" />
-<Spinner size="lg" label="Loading" />`}>
-  <Spinner size="sm" label="Loading" />
-  <Spinner size="md" label="Loading" />
-  <Spinner size="lg" label="Loading" />
+<Preview code={`<Spinner size="small" label="Loading" />
+<Spinner label="Loading" />
+<Spinner size="large" label="Loading" />`}>
+  <Spinner size="small" label="Loading" />
+  <Spinner label="Loading" />
+  <Spinner size="large" label="Loading" />
 </Preview>
 
 ## States
@@ -57,10 +57,10 @@ Every size:
 Always animating (`animate-spin`) — no hover/focus/disabled states; it's not
 interactive. Inherits `text-current`, so it takes the colour of its container:
 
-<Preview code={`<div class="text-accent"><Spinner label="Loading" /></div>
-<div class="text-danger"><Spinner label="Loading" /></div>`}>
-  <div class="text-accent"><Spinner label="Loading" /></div>
-  <div class="text-danger"><Spinner label="Loading" /></div>
+<Preview code={`<div class="text-primary"><Spinner label="Loading" /></div>
+<div class="text-critical"><Spinner label="Loading" /></div>`}>
+  <div class="text-primary"><Spinner label="Loading" /></div>
+  <div class="text-critical"><Spinner label="Loading" /></div>
 </Preview>
 
 ## Examples
@@ -92,7 +92,7 @@ Standalone (announced) vs. decorative (parent already labelled):
 ## Tokens
 
 Spinner reads no Apogee tokens directly — it inherits colour via
-`currentColor`. Set a text-colour utility (`text-accent`, `text-danger`, …) on
+`currentColor`. Set a text-colour utility (`text-primary`, `text-critical`, …) on
 a wrapping element, or pass `class`, to theme it.
 
 ## Do / Don't

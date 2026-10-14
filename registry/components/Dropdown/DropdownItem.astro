@@ -5,10 +5,10 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'button'> {
   href?: string
   class?: string
-  [key: string]: any
 }
 
 const { href, class: className, ...rest } = Astro.props
@@ -20,7 +20,7 @@ const Tag = href ? 'a' : 'button'
   type={href ? undefined : 'button'}
   role="menuitem"
   class:list={[
-    'flex w-full items-center gap-2 rounded px-2 py-1.5 text-start text-sm text-foreground transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-muted-foreground',
+    'flex w-full items-center gap-2 rounded px-2 py-1.5 text-start text-sm text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:bg-neutral-faded-highlighted focus-visible:outline-none [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-neutral-faded',
     className,
   ]}
   {...rest}

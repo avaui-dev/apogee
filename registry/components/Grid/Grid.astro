@@ -2,30 +2,63 @@
 /**
  * Grid — a responsive grid. By default it's **autofit**: as many columns as fit
  * from `minItemWidth`, reflowing to the grid's own width (no breakpoints needed).
- * Pass `cols` for a fixed column count instead.
+ * Pass `cols` for a fixed count; `cols` and `gap` accept per-breakpoint objects
+ * (`cols={{ base: 1, md: 3 }}`). Span children with `GridItem`.
  *
  * @composable
  */
-interface Props {
-  /** Autofit: smallest a column may get before the count drops. */
+import type { HTMLAttributes } from 'astro/types'
+import { responsive, type Responsive } from '../utils/responsive.ts'
+import { tables } from '../utils/responsive-tables.ts'
+
+const colGaps = { 0: 'gap-x-0', 1: 'gap-x-1', 2: 'gap-x-2', 3: 'gap-x-3', 4: 'gap-x-4', 6: 'gap-x-6', 8: 'gap-x-8', 10: 'gap-x-10', 12: 'gap-x-12' } as const
+const rowGaps = { 0: 'gap-y-0', 1: 'gap-y-1', 2: 'gap-y-2', 3: 'gap-y-3', 4: 'gap-y-4', 6: 'gap-y-6', 8: 'gap-y-8', 10: 'gap-y-10', 12: 'gap-y-12' } as const
+const aligns = { start: 'items-start', center: 'items-center', end: 'items-end', stretch: 'items-stretch' } as const
+const justifies = { start: 'justify-items-start', center: 'justify-items-center', end: 'justify-items-end', stretch: 'justify-items-stretch' } as const
+
+type Cols = keyof typeof tables.cols.base
+type Gap = keyof typeof tables.gap.base
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
+  as?: string
+  /** Autofit: smallest a column may get before the count drops. @category layout */
   minItemWidth?: string
-  /** Fixed column count (overrides autofit). */
-  cols?: number
-  gap?: 0 | 2 | 4 | 6 | 8 | 10
+  /** Fixed column count (overrides autofit); responsive. @category layout */
+  cols?: Responsive<Cols>
+  /** @category layout */
+  gap?: Responsive<Gap>
+  /** @category layout */
+  colGap?: keyof typeof colGaps
+  /** @category layout */
+  rowGap?: keyof typeof rowGaps
+  /** @category layout */
+  align?: keyof typeof aligns
+  /** @category layout */
+  justify?: keyof typeof justifies
   class?: string
 }
 
-const { minItemWidth = '16rem', cols, gap = 6, class: className, ...rest } = Astro.props
-
-const gapMap = { 0: 'gap-0', 2: 'gap-2', 4: 'gap-4', 6: 'gap-6', 8: 'gap-8', 10: 'gap-10' }
-
-// Inline style keeps the template dynamic without fighting Tailwind's scanner.
-// `min(width, 100%)` stops a wide min from overflowing a narrow grid.
-const templateColumns = cols
-  ? `repeat(${cols}, minmax(0, 1fr))`
-  : `repeat(auto-fit, minmax(min(${minItemWidth}, 100%), 1fr))`
+const { as = 'div', minItemWidth = '16rem', cols, gap = 6, colGap, rowGap, align, justify, class: className, ...rest } = Astro.props
+const Tag = as
+// Autofit keeps its inline template (dynamic value, Tailwind-free); `min(width, 100%)`
+// stops a wide min from overflowing a narrow grid.
+const autofit = cols === undefined ? `grid-template-columns: repeat(auto-fit, minmax(min(${minItemWidth}, 100%), 1fr))` : undefined
 ---
 
-<div class:list={['grid', gapMap[gap], className]} style={`grid-template-columns: ${templateColumns}`} {...rest}>
+<Tag
+  class:list={[
+    'grid',
+    responsive(cols, tables.cols),
+    responsive(gap, tables.gap),
+    colGap !== undefined && colGaps[colGap],
+    rowGap !== undefined && rowGaps[rowGap],
+    align && aligns[align],
+    justify && justifies[justify],
+    className,
+  ]}
+  style={autofit}
+  {...rest}
+>
   <slot />
-</div>
+</Tag>

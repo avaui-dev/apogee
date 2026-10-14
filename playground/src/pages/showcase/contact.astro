@@ -1,0 +1,11 @@
+---
+import Site from '../../layouts/Site.astro'
+import Contact from '../../../../registry/sections/Contact/Contact.astro'
+import FAQ from '../../../../registry/sections/FAQ/FAQ.astro'
+import { contactDetails, faqs } from '../../components/demo-data'
+---
+
+<Site title="Contact">
+  <Contact eyebrow="Contact" heading="Get in touch" description="We answer within a working day." details={contactDetails} action="#" headingLevel={1} />
+  <FAQ heading="Before you write" items={faqs.slice(0, 3)} background="neutral-faded" />
+</Site>

@@ -1,38 +1,67 @@
 ---
 /**
- * Alert — an inline message with a status color and icon. Zero JS.
+ * Alert — an inline message with a status colour and icon. Zero JS.
  *
  * For a dynamically-shown alert (e.g. a form result), add `role="alert"` so it's
- * announced; a static callout needs no role.
- *
- * @composable
+ * announced; a static callout needs no role. Buttons go in the `actions` slot.
  */
+import type { HTMLAttributes } from 'astro/types'
 import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro'
 
-interface Props {
-  variant?: 'info' | 'success' | 'warning' | 'danger'
+const icons = { primary: Info, neutral: Info, positive: CircleCheck, warning: TriangleAlert, critical: CircleAlert } as const
+const styles = {
+  faded: {
+    primary: 'bg-primary-faded border-primary-faded',
+    neutral: 'bg-neutral-faded border-neutral-faded',
+    critical: 'bg-critical-faded border-critical-faded',
+    positive: 'bg-positive-faded border-positive-faded',
+    warning: 'bg-warning-faded border-warning-faded',
+  },
+  solid: {
+    primary: 'bg-primary text-on-primary border-transparent',
+    neutral: 'bg-neutral text-on-neutral border-transparent',
+    critical: 'bg-critical text-on-critical border-transparent',
+    positive: 'bg-positive text-on-positive border-transparent',
+    warning: 'bg-warning text-on-warning border-transparent',
+  },
+} as const
+const tints = {
+  primary: 'text-primary',
+  neutral: 'text-neutral',
+  critical: 'text-critical',
+  positive: 'text-positive',
+  warning: 'text-warning',
+} as const
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'div'>, 'title'> {
+  /** Hue. @category layout */
+  color?: keyof typeof icons
+  /** Fill style. @category layout */
+  variant?: keyof typeof styles
+  /** @category content */
   title?: string
+  /** Hides the icon column. @category layout */
+  inline?: boolean
   class?: string
-  [key: string]: any
 }
 
-const { variant = 'info', title, class: className, ...rest } = Astro.props
-
-const config = {
-  info: { icon: Info, box: 'border-accent/25 bg-accent/10', tint: 'text-accent' },
-  success: { icon: CircleCheck, box: 'border-success/25 bg-success/10', tint: 'text-success' },
-  warning: { icon: TriangleAlert, box: 'border-warning/30 bg-warning/10', tint: 'text-warning' },
-  danger: { icon: CircleAlert, box: 'border-danger/25 bg-danger/10', tint: 'text-danger' },
-}
-const { icon: Icon, box, tint } = config[variant]
+const { color = 'neutral', variant = 'faded', title, inline = false, class: className, ...rest } = Astro.props
+const Icon = icons[color]
+const solid = variant === 'solid'
 ---
 
-<div class:list={['flex gap-3 rounded-lg border p-4', box, className]} {...rest}>
-  <Icon class:list={['mt-0.5 size-5 shrink-0', tint]} aria-hidden="true" />
-  <div class="text-sm">
-    {title && <p class="font-medium text-foreground">{title}</p>}
-    <div class:list={[title ? 'mt-0.5 text-muted-foreground' : 'text-foreground']}>
+<div class:list={['flex gap-3 rounded-lg border p-4', styles[variant][color], className]} {...rest}>
+  {!inline && <Icon class:list={['mt-0.5 size-5 shrink-0', solid ? 'text-current' : tints[color]]} aria-hidden="true" />}
+  <div class="min-w-0 flex-1 text-sm">
+    {title && <p class:list={['font-medium', solid ? 'text-current' : 'text-neutral']}>{title}</p>}
+    <div class:list={[title && 'mt-0.5', solid ? 'text-current' : title ? 'text-neutral-faded' : 'text-neutral']}>
       <slot />
     </div>
+    {Astro.slots.has('actions') && (
+      <div class="mt-3 flex flex-wrap gap-2">
+        <slot name="actions" />
+      </div>
+    )}
   </div>
 </div>

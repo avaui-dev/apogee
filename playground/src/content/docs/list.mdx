@@ -8,7 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import List from '../../../../registry/components/List/List.astro'
 
-<Preview code={`<List>
+<Preview block code={`<List>
   <li>First item</li>
   <li>Second item</li>
   <li>Third item</li>
@@ -55,7 +55,7 @@ import List from '@/components/apogee/List/List.astro'
 
 `as` × `marker`, every combination:
 
-<Preview code={`<List as="ul">
+<Preview block code={`<List as="ul">
   <li>Unordered</li>
   <li>Bulleted</li>
 </List>
@@ -97,7 +97,7 @@ No interactive states — List renders static markup.
 
 Nested list, and a list of longer content:
 
-<Preview code={`<List as="ol">
+<Preview block code={`<List as="ol">
   <li>
     Set up the project
     <List marker="none" class="mt-1 ms-4">
@@ -128,7 +128,7 @@ children already gives assistive tech the list role, item count, and position.
 
 | Token | Used for |
 |---|---|
-| `--muted-foreground` | Marker (bullet / number) colour |
+| `--foreground-neutral-faded` | Marker (bullet / number) colour |
 
 ## Do / Don't
 

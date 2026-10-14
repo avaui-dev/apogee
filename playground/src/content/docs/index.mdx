@@ -11,15 +11,15 @@ import Button from '../../../../registry/components/Button/Button.astro'
 **Apogee** is the AVA design system for Astro: accessible, responsive components
 with **zero external JavaScript**, copied into your project so you own the code.
 
-<Preview code={`<Button variant="primary">Get started</Button>
-<Button variant="secondary">Docs</Button>`}>
-  <Button variant="primary">Get started</Button>
-  <Button variant="secondary">Docs</Button>
+<Preview code={`<Button>Get started</Button>
+<Button variant="outline" color="neutral">Docs</Button>`}>
+  <Button>Get started</Button>
+  <Button variant="outline" color="neutral">Docs</Button>
 </Preview>
 
 ## Install
 
-Components are copied in (shadcn / Starwind model). Requires Tailwind v4.
+Components are copied in; you own the source. Requires Tailwind v4.
 
 ```sh
 npx @ava-ui/apogee init                 # tokens + config + setup steps
@@ -30,13 +30,17 @@ npx @ava-ui/apogee list                 # all available components
 `add` resolves dependencies for you and prints any npm packages to install.
 Files land in `src/components/apogee/` — yours to edit.
 
+Sections (Hero, Features, Pricing, Contact, the application set) are added the
+same way and land in `src/components/apogee/sections/`. See the **Sections**
+group in the sidebar; the showcase at `/showcase` composes them into whole pages.
+
 ## Use
 
 ```astro
 ---
 import Button from '@/components/apogee/Button/Button.astro'
 ---
-<Button variant="primary">Get started</Button>
+<Button>Get started</Button>
 ```
 
 ## Principles

@@ -1,0 +1,86 @@
+---
+title: Actionable
+description: The bare interactive primitive. A button, link or focusable div with the focus ring and disabled handling, nothing else.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Actionable from '../../../../registry/components/Actionable/Actionable.astro'
+
+<Preview code={`<Actionable class="rounded-lg border border-neutral p-4 hover:bg-neutral-faded-highlighted">
+  Click me
+</Actionable>
+<Actionable href="#" class="rounded-lg border border-neutral p-4 hover:bg-neutral-faded-highlighted">
+  A link
+</Actionable>`}>
+  <Actionable class="rounded-lg border border-neutral p-4 hover:bg-neutral-faded-highlighted">Click me</Actionable>
+  <Actionable href="#" class="rounded-lg border border-neutral p-4 hover:bg-neutral-faded-highlighted">A link</Actionable>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add actionable
+```
+
+No Apogee dependencies.
+
+## Usage
+
+Wrap any custom clickable surface. You bring the look; Actionable brings the
+semantics, the focus ring and the disabled state.
+
+```astro
+---
+import Actionable from '@/components/apogee/Actionable/Actionable.astro'
+---
+<Actionable href="/plans/pro" class="rounded-lg border border-neutral p-4">
+  <strong>Pro</strong>, $12/month
+</Actionable>
+```
+
+## API
+
+`@composable`. Any other native attribute passes through to the rendered element.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `href` | `string` | — | Renders an `<a>`. Dropped while `disabled`. |
+| `as` | `'button' \| 'div'` | `'button'` | Element when there is no `href`. A `div` gets `tabindex="0"`. |
+| `disabled` | `boolean` | `false` | `disabled` on a button; `aria-disabled` and no href otherwise. |
+| `fullWidth` | `boolean` | `false` | Stretches to the container width. |
+| `class` | `string` | — | Extra classes, merged last. |
+
+## Variants
+
+<Preview code={`<Actionable>Button</Actionable>
+<Actionable href="#">Link</Actionable>
+<Actionable as="div">Div</Actionable>
+<Actionable disabled>Disabled</Actionable>
+<Actionable href="#" disabled>Disabled link</Actionable>`}>
+  <Actionable class="rounded-md border border-neutral px-3 py-2">Button</Actionable>
+  <Actionable href="#" class="rounded-md border border-neutral px-3 py-2">Link</Actionable>
+  <Actionable as="div" class="rounded-md border border-neutral px-3 py-2">Div</Actionable>
+  <Actionable disabled class="rounded-md border border-neutral px-3 py-2">Disabled</Actionable>
+  <Actionable href="#" disabled class="rounded-md border border-neutral px-3 py-2">Disabled link</Actionable>
+</Preview>
+
+## States
+
+Focus shows the primary outline. Disabled halves the opacity and blocks the
+pointer. Hover and active are yours to add via `class`.
+
+## Accessibility
+
+- A real `<button type="button">` or `<a>` by default; prefer those over `as="div"`.
+- `as="div"` is focusable but has no role. Add `role` and key handling yourself, or use a button.
+- Disabled links lose their `href` so they drop out of the tab order, as a disabled button does.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border-primary` | Focus outline |
+
+Layout primitive, so no content rules.

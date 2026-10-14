@@ -13,11 +13,11 @@ import Button from '../../../../registry/components/Button/Button.astro'
 
 <Preview code={`<Card>
   <Heading as="h3">Card title</Heading>
-  <Text muted>A short supporting description of what this card links to or explains.</Text>
+  <Text color="neutral-faded">A short supporting description of what this card links to or explains.</Text>
 </Card>`}>
   <Card>
     <Heading as="h3">Card title</Heading>
-    <Text muted>A short supporting description of what this card links to or explains.</Text>
+    <Text color="neutral-faded">A short supporting description of what this card links to or explains.</Text>
   </Card>
 </Preview>
 
@@ -62,6 +62,7 @@ Card.Header/Card.Body family:
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `href` | `string` | — | Renders the card as an `<a>` and makes the whole surface a link (hover/focus states apply). Omit for a static `<div>`. |
+| `as` | `'div' \| 'article' \| 'section' \| 'li' \| 'button'` | `'div'` | Tag to render; `button` makes the whole card a button (ignored when `href` is set). |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
@@ -71,38 +72,46 @@ The only structural variant is presence of the `media` slot:
 <Preview code={`<Card>
   <img slot="media" src="https://picsum.photos/seed/apogee/640/360" alt="" />
   <Heading as="h3">With media</Heading>
-  <Text muted size="sm">An image slotted above the body, flush to the card's edges.</Text>
+  <Text color="neutral-faded" size="small">An image slotted above the body, flush to the card's edges.</Text>
 </Card>
 <Card>
   <Heading as="h3">Without media</Heading>
-  <Text muted size="sm">Just the padded body.</Text>
+  <Text color="neutral-faded" size="small">Just the padded body.</Text>
 </Card>`}>
   <Card>
     <img slot="media" src="https://picsum.photos/seed/apogee/640/360" alt="" />
     <Heading as="h3">With media</Heading>
-    <Text muted size="sm">An image slotted above the body, flush to the card's edges.</Text>
+    <Text color="neutral-faded" size="small">An image slotted above the body, flush to the card's edges.</Text>
   </Card>
   <Card>
     <Heading as="h3">Without media</Heading>
-    <Text muted size="sm">Just the padded body.</Text>
+    <Text color="neutral-faded" size="small">Just the padded body.</Text>
   </Card>
+</Preview>
+
+An article card and a button card:
+
+<Preview code={`<Card as="article"><h3>Post title</h3><p>Summary</p></Card>
+<Card as="button" selected>Pick this plan</Card>`}>
+  <Card as="article" class="max-w-xs"><h3 class="font-semibold">Post title</h3><p class="text-sm text-neutral-faded">Summary</p></Card>
+  <Card as="button" selected class="max-w-xs">Pick this plan</Card>
 </Preview>
 
 ## States
 
 Interactive states only apply when `href` is set (the whole card is a link):
 
-- **Hover** — background shifts to `--muted`.
-- **Focus** — a visible `focus-visible` ring (`--ring`).
+- **Hover** — background shifts to `--background-neutral-faded`.
+- **Focus** — a visible `focus-visible` ring (`--border-primary`).
 - **Static** (no `href`) — no hover/focus treatment; it's a plain container.
 
 <Preview code={`<Card href="#">
   <Heading as="h3">Clickable card</Heading>
-  <Text muted size="sm">Hover or focus to see the interactive state.</Text>
+  <Text color="neutral-faded" size="small">Hover or focus to see the interactive state.</Text>
 </Card>`}>
   <Card href="#">
     <Heading as="h3">Clickable card</Heading>
-    <Text muted size="sm">Hover or focus to see the interactive state.</Text>
+    <Text color="neutral-faded" size="small">Hover or focus to see the interactive state.</Text>
   </Card>
 </Preview>
 
@@ -113,12 +122,12 @@ As a link card with media and a call to action:
 <Preview code={`<Card href="#">
   <img slot="media" src="https://picsum.photos/seed/apogee2/640/360" alt="" />
   <Heading as="h3">Ship faster with Apogee</Heading>
-  <Text muted size="sm">Copy-in, accessible Astro components.</Text>
+  <Text color="neutral-faded" size="small">Copy-in, accessible Astro components.</Text>
 </Card>`}>
   <Card href="#">
     <img slot="media" src="https://picsum.photos/seed/apogee2/640/360" alt="" />
     <Heading as="h3">Ship faster with Apogee</Heading>
-    <Text muted size="sm">Copy-in, accessible Astro components.</Text>
+    <Text color="neutral-faded" size="small">Copy-in, accessible Astro components.</Text>
   </Card>
 </Preview>
 
@@ -126,13 +135,13 @@ Composed with a Button (card itself is static — the button is the click target
 
 <Preview code={`<Card>
   <Heading as="h3">Upgrade your plan</Heading>
-  <Text muted size="sm">Unlock more seats and priority support.</Text>
-  <Button variant="primary" class="mt-4">Upgrade</Button>
+  <Text color="neutral-faded" size="small">Unlock more seats and priority support.</Text>
+  <Button class="mt-4">Upgrade</Button>
 </Card>`}>
   <Card>
     <Heading as="h3">Upgrade your plan</Heading>
-    <Text muted size="sm">Unlock more seats and priority support.</Text>
-    <Button variant="primary" class="mt-4">Upgrade</Button>
+    <Text color="neutral-faded" size="small">Unlock more seats and priority support.</Text>
+    <Button class="mt-4">Upgrade</Button>
   </Card>
 </Preview>
 
@@ -153,10 +162,10 @@ Composed with a Button (card itself is static — the button is the click target
 
 | Token | Used for |
 |---|---|
-| `--border` | Card outline |
-| `--surface` / `--surface-foreground` | Card background / default text color |
-| `--muted` | Hover background (linked cards only) |
-| `--ring` | Focus ring (linked cards only) |
+| `--border-neutral` | Card outline |
+| `--background-elevation-raised` / `--foreground-neutral` | Card background / default text color |
+| `--background-neutral-faded-highlighted` | Hover background (linked cards only) |
+| `--border-primary` | Focus ring (linked cards only) |
 | `--radius-lg` | Corner radius |
 
 ## Do / Don't

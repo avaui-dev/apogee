@@ -2,6 +2,7 @@
 /* Button and friends live in ../registry, outside the playground — tell
    Tailwind to scan them so their utilities get generated. */
 @source "../../../registry/components";
+@source "../../../registry/sections";
 @import "../../../registry/tokens/theme.css";
 
 /* Docs: anchor jumps clear the sticky navbar (h-16 = 4rem). */
@@ -22,16 +23,16 @@ html {
   position: absolute;
   inset-inline-start: -1.1em;
   opacity: 0;
-  color: var(--muted-foreground);
+  color: var(--foreground-neutral-faded);
   text-decoration: none;
-  transition: opacity var(--duration-fast) var(--ease-smooth);
+  transition: opacity var(--duration-fast) var(--ease-standard);
 }
 .apogee-prose :where(h2, h3, h4):hover .heading-anchor,
 .heading-anchor:focus-visible {
   opacity: 1;
 }
 .heading-anchor:hover {
-  color: var(--accent);
+  color: var(--foreground-primary);
 }
 
 /* Live component previews sit inside .apogee-prose (the MDX body) but must render
@@ -40,23 +41,26 @@ html {
    zero-specificity `:where()` rules; component utilities (higher layer) still win
    wherever they set a value, so this only strips the leaked prose defaults. */
 @layer components {
-  :is([data-preview-live], .not-content) :is(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, pre, table, figure, hr, li) {
+  :is([data-preview-live], .not-content) :is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, dt, dd, blockquote, pre, table, figure, figcaption, video, iframe, details, hr, li, img):not([data-preview-live] .apogee-prose *, .not-content .apogee-prose *) {
     margin: 0;
   }
-  :is([data-preview-live], .not-content) :is(ul, ol) {
+  :is([data-preview-live], .not-content) :is(ul, ol, li):not([data-preview-live] .apogee-prose *, .not-content .apogee-prose *) {
     padding: 0;
     list-style: none;
   }
-  :is([data-preview-live], .not-content) :is(blockquote) {
+  :is([data-preview-live], .not-content) :is(blockquote):not([data-preview-live] .apogee-prose *, .not-content .apogee-prose *) {
     border: 0;
     padding: 0;
     color: inherit;
   }
-  :is([data-preview-live], .not-content) :is(a) {
+  :is([data-preview-live], .not-content) :is(figure, figcaption, dt, dd, small, h5, h6, .lead):not([data-preview-live] .apogee-prose *, .not-content .apogee-prose *) {
+    color: inherit;
+  }
+  :is([data-preview-live], .not-content) :is(a):not([data-preview-live] .apogee-prose *, .not-content .apogee-prose *) {
     color: inherit;
     text-decoration: none;
   }
-  :is([data-preview-live], .not-content) :is(code) {
+  :is([data-preview-live], .not-content) :is(code):not([data-preview-live] .apogee-prose *, .not-content .apogee-prose *) {
     background: none;
     padding: 0;
     border-radius: 0;
@@ -66,10 +70,10 @@ html {
 
 /* Code blocks: Shiki dual theme (token colours switch by our data-theme; inline
    styles hold the light colours + --shiki-dark, so overrides need !important).
-   Background uses our --muted surface in both themes so the block reads as an
+   Background uses the page-faded surface in both themes (light enough for the comment colour to pass AA) so the block reads as an
    elevated panel, not flat against the page (github-light's bg ≈ the page). */
 .astro-code {
-  background-color: var(--muted) !important;
+  background-color: var(--background-page-faded) !important;
 }
 [data-theme="dark"] .astro-code span {
   color: var(--shiki-dark) !important;
@@ -88,27 +92,32 @@ html {
   width: 1.9rem;
   height: 1.9rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--background) 85%, transparent);
-  color: var(--muted-foreground);
+  border: 1px solid var(--border-neutral);
+  background: color-mix(in oklab, var(--background-page) 85%, transparent);
+  color: var(--foreground-neutral-faded);
   cursor: pointer;
   opacity: 0;
   transition:
-    opacity var(--duration-fast) var(--ease-smooth),
-    color var(--duration-fast) var(--ease-smooth);
+    opacity var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
 }
 .code-block:hover .code-copy,
 .code-copy:focus-visible {
   opacity: 1;
 }
 .code-copy:hover {
-  color: var(--foreground);
+  color: var(--foreground-neutral);
 }
 .code-copy.copied {
-  color: var(--success);
+  color: var(--foreground-positive);
   opacity: 1;
 }
 .code-copy svg {
   width: 0.9rem;
   height: 0.9rem;
+}
+
+/* One frame without transitions while the colour mode flips, so nothing tweens. */
+.apogee-no-transitions * {
+  transition: none !important;
 }

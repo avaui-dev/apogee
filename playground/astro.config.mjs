@@ -13,6 +13,6 @@ export default defineConfig({
   markdown: {
     // Dual theme — light is baked, dark exposed as --shiki-dark; global.css
     // switches on [data-theme="dark"] so code follows the page theme.
-    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
+    shikiConfig: { themes: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' } },
   },
 })

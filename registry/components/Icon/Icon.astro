@@ -10,13 +10,14 @@
  * from assistive tech).
  *
  *   import { Camera } from '@lucide/astro'
- *   <Icon icon={Camera} label="Take photo" strokeWidth={2.5} class="text-accent" />
+ *   <Icon icon={Camera} label="Take photo" strokeWidth={2.5} class="text-primary" />
  *   <Icon icon={ChevronDown} />              // decorative
  *   <Icon><svg …/></Icon>                    // raw SVG fallback
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends Omit<HTMLAttributes<'svg'>, 'size'> {
   /** A Lucide icon component. Omit to pass a raw <svg> as the slot. */
   icon?: any
   /** Accessible label. Omit for decorative icons. */
@@ -27,12 +28,11 @@ interface Props {
   absoluteStrokeWidth?: boolean
   color?: string
   class?: string
-  [key: string]: any
 }
 
 const { icon: IconComponent, label, class: className, ...iconProps } = Astro.props
 
-const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true' }
+const a11y = label ? ({ role: 'img', 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const)
 ---
 
 {

@@ -5,12 +5,12 @@
  * (`no-js:hidden`, the track scrolls fine without them). Drop slides in the
  * default slot; snapping and `shrink-0` are applied for you. Give each slide a
  * width, or set `itemWidth` for uniform slides.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { ChevronLeft, ChevronRight } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
   /** Show the prev/next arrow buttons. */
   controls?: boolean
   /** Show clickable pagination dots (one per slide). */
@@ -25,6 +25,8 @@ interface Props {
   interval?: number
   /** With autoplay, jump back to the start after the last slide. */
   loop?: boolean
+  /** Accessible name of the carousel region. @category content */
+  label?: string
   class?: string
 }
 
@@ -36,6 +38,7 @@ const {
   autoplay = false,
   interval = 4000,
   loop = false,
+  label = 'Carousel',
   class: className,
   ...rest
 } = Astro.props
@@ -56,7 +59,7 @@ const slideCount = dots
           continue
         }
         if (depth === 0) n += 1
-        if (!self && !VOID.has(name.toLowerCase())) depth += 1
+        if (!self && !VOID.has((name ?? '').toLowerCase())) depth += 1
       }
       return n
     })()
@@ -64,7 +67,7 @@ const slideCount = dots
 ---
 
 <div
-  class:list={['apogee-carousel group relative', itemWidth && 'apogee-carousel--fixed', className]}
+  class:list={['apogee-carousel group relative w-full min-w-0', className]}
   data-align={align}
   data-autoplay={String(autoplay)}
   data-interval={interval}
@@ -73,8 +76,14 @@ const slideCount = dots
   {...rest}
 >
   <div
-    class="apogee-carousel-track flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0"
+    class:list={[
+      'apogee-carousel-track flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1 motion-safe:scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>*]:shrink-0 [&>*]:snap-start group-data-[align=center]:[&>*]:snap-center',
+      itemWidth && '[&>*]:w-(--apogee-item-width)',
+    ]}
     tabindex="0"
+    role="region"
+    aria-roledescription="carousel"
+    aria-label={label}
   >
     <Fragment set:html={items} />
   </div>
@@ -84,14 +93,14 @@ const slideCount = dots
       <>
         <button
           type="button"
-          class="apogee-carousel-prev absolute top-1/2 start-2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-foreground shadow-md no-js:hidden hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          class="apogee-carousel-prev absolute top-1/2 start-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           aria-label="Previous"
         >
           <ChevronLeft class="size-5 rtl:-scale-x-100" aria-hidden="true" />
         </button>
         <button
           type="button"
-          class="apogee-carousel-next absolute top-1/2 end-2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-background text-foreground shadow-md no-js:hidden hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          class="apogee-carousel-next absolute top-1/2 end-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           aria-label="Next"
         >
           <ChevronRight class="size-5 rtl:-scale-x-100" aria-hidden="true" />
@@ -102,66 +111,80 @@ const slideCount = dots
 
   {
     dots && slideCount > 0 && (
-      <div class="apogee-carousel-dots mt-3 flex justify-center gap-2 no-js:hidden" role="tablist" aria-label="Slides">
+      <div class="apogee-carousel-dots mt-3 flex justify-center gap-2 no-js:hidden" role="group" aria-label="Slides">
         {Array.from({ length: slideCount }).map((_, i) => (
           <button
             type="button"
-            class="apogee-carousel-dot size-2 rounded-full bg-border transition-colors aria-[current=true]:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            class="apogee-carousel-dot group/dot rounded-full p-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             aria-label={`Go to slide ${i + 1}`}
             aria-current={i === 0 ? 'true' : 'false'}
-          />
+          >
+            <span class="block size-2.5 rounded-full bg-neutral transition-colors group-aria-[current=true]/dot:bg-primary" />
+          </button>
         ))}
       </div>
     )
   }
 </div>
 
-<style>
-  .apogee-carousel-track > * {
-    scroll-snap-align: start;
-  }
-  .apogee-carousel[data-align='center'] .apogee-carousel-track > * {
-    scroll-snap-align: center;
-  }
-  /* Uniform slide width (only when itemWidth is set, so consumer widths win otherwise). */
-  .apogee-carousel--fixed .apogee-carousel-track > * {
-    width: var(--apogee-item-width);
-  }
-</style>
-
 <script>
+  import { island } from '../utils/island.ts'
+
   const reduced = matchMedia('(prefers-reduced-motion: reduce)')
 
-  for (const c of document.querySelectorAll<HTMLElement>('.apogee-carousel')) {
+  island('.apogee-carousel', (c) => {
     const track = c.querySelector<HTMLElement>('.apogee-carousel-track')
-    if (!track) continue
+    if (!track) return
     const slides = [...track.children] as HTMLElement[]
+    slides.forEach((s, i) => {
+      if (!s.hasAttribute('role')) s.setAttribute('role', 'group')
+      s.setAttribute('aria-roledescription', 'slide')
+      if (!s.hasAttribute('aria-label')) s.setAttribute('aria-label', `${i + 1} of ${slides.length}`)
+    })
     const step = () => track.clientWidth * 0.8
-    const go = (dir: number) => track.scrollBy({ left: dir * step(), behavior: 'smooth' })
+    // In RTL the inline axis runs right-to-left, so "next" is a negative scroll.
+    const sign = () => (getComputedStyle(track).direction === 'rtl' ? -1 : 1)
+    const go = (dir: number) => track.scrollBy({ left: dir * sign() * step(), behavior: 'smooth' })
 
-    c.querySelector('.apogee-carousel-prev')?.addEventListener('click', () => go(-1))
-    c.querySelector('.apogee-carousel-next')?.addEventListener('click', () => go(1))
-
-    // Dots: click to scroll to a slide; IntersectionObserver marks the active one.
-    const dots = [...c.querySelectorAll<HTMLElement>('.apogee-carousel-dot')]
-    if (dots.length) {
-      const scrollToSlide = (el: HTMLElement) => {
-        const left = el.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft
-        track.scrollTo({ left, behavior: 'smooth' })
-      }
-      dots.forEach((dot, i) => slides[i] && dot.addEventListener('click', () => scrollToSlide(slides[i])))
-      const io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (!e.isIntersecting) continue
-            const i = slides.indexOf(e.target as HTMLElement)
-            dots.forEach((d, di) => d.setAttribute('aria-current', String(di === i)))
-          }
-        },
-        { root: track, threshold: 0.6 },
-      )
-      slides.forEach((s) => io.observe(s))
+    const prev = c.querySelector<HTMLElement>('.apogee-carousel-prev')
+    const next = c.querySelector<HTMLElement>('.apogee-carousel-next')
+    prev?.addEventListener('click', () => go(-1))
+    next?.addEventListener('click', () => go(1))
+    // Hide an arrow at its edge; `Math.abs` keeps it right under RTL.
+    const edges = () => {
+      const pos = Math.abs(track.scrollLeft)
+      prev?.toggleAttribute('hidden', pos <= 1)
+      next?.toggleAttribute('hidden', pos + track.clientWidth >= track.scrollWidth - 1)
     }
+    edges()
+    track.addEventListener('scroll', edges, { passive: true })
+    new ResizeObserver(edges).observe(track)
+
+    // The active slide (most visible) drives the dots and the change event.
+    let current = 0
+    const dots = [...c.querySelectorAll<HTMLElement>('.apogee-carousel-dot')]
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue
+          const i = slides.indexOf(e.target as HTMLElement)
+          dots.forEach((d, di) => d.setAttribute('aria-current', String(di === i)))
+          if (i !== current) {
+            current = i
+            c.dispatchEvent(new CustomEvent('apogee:carousel-change', { bubbles: true, detail: { index: i } }))
+          }
+        }
+      },
+      { root: track, threshold: 0.6 },
+    )
+    slides.forEach((s) => io.observe(s))
+
+    // Dots: click to scroll to a slide.
+    const scrollToSlide = (el: HTMLElement) => {
+      const left = el.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft
+      track.scrollTo({ left, behavior: 'smooth' })
+    }
+    dots.forEach((dot, i) => { const s = slides[i]; if (s) dot.addEventListener('click', () => scrollToSlide(s)) })
 
     // Autoplay: advance on a timer, pause on hover/focus, never under reduced-motion.
     if (c.dataset.autoplay === 'true' && !reduced.matches) {
@@ -169,7 +192,7 @@ const slideCount = dots
       const loop = c.dataset.loop === 'true'
       let timer: number | undefined
       const tick = () => {
-        const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4
+        const atEnd = Math.abs(track.scrollLeft) + track.clientWidth >= track.scrollWidth - 4
         if (atEnd) {
           if (loop) track.scrollTo({ left: 0, behavior: 'smooth' })
         } else {
@@ -184,5 +207,5 @@ const slideCount = dots
       c.addEventListener('focusin', stop)
       c.addEventListener('focusout', start)
     }
-  }
+  })
 </script>

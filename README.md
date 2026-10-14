@@ -28,7 +28,8 @@ and prints the npm packages to install (e.g. `@lucide/astro`). Files land in
 ---
 import Button from '@/components/apogee/Button/Button.astro'
 ---
-<Button variant="primary">Get started</Button>
+<Button>Get started</Button>
+<Button variant="outline" color="neutral" size="large">Docs</Button>
 ```
 
 With AVA, Apogee is offered at scaffold time — no separate install.

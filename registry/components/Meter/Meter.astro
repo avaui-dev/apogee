@@ -7,7 +7,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
   value: number
   min?: number
   max?: number
@@ -19,7 +20,6 @@ interface Props {
   optimum?: number
   label?: string
   class?: string
-  [key: string]: any
 }
 
 const { value, min = 0, max = 100, low, high, optimum, label, class: className, ...rest } = Astro.props
@@ -29,8 +29,8 @@ const { value, min = 0, max = 100, low, high, optimum, label, class: className, 
   {
     label && (
       <div class="flex justify-between text-sm">
-        <span class="text-foreground">{label}</span>
-        <span class="text-muted-foreground tabular-nums">
+        <span class="text-neutral">{label}</span>
+        <span class="text-neutral-faded tabular-nums">
           {value}/{max}
         </span>
       </div>
@@ -57,39 +57,39 @@ const { value, min = 0, max = 100, low, high, optimum, label, class: className, 
     width: 100%;
     height: 0.5rem;
     border-radius: 9999px;
-    background: var(--color-muted);
+    background: var(--background-neutral-faded);
     overflow: hidden;
   }
 
   /* WebKit / Blink */
   .apogee-meter::-webkit-meter-bar {
-    background: var(--color-muted);
+    background: var(--background-neutral-faded);
     border: none;
     border-radius: 9999px;
     height: 0.5rem;
   }
   .apogee-meter::-webkit-meter-optimum-value {
-    background: var(--color-accent);
+    background: var(--background-primary);
     border-radius: 9999px;
   }
   .apogee-meter::-webkit-meter-suboptimum-value {
-    background: var(--color-warning);
+    background: var(--background-warning);
     border-radius: 9999px;
   }
   .apogee-meter::-webkit-meter-even-less-good-value {
-    background: var(--color-danger);
+    background: var(--background-critical);
     border-radius: 9999px;
   }
 
   /* Firefox */
   .apogee-meter::-moz-meter-bar {
-    background: var(--color-accent);
+    background: var(--background-primary);
     border-radius: 9999px;
   }
   .apogee-meter:-moz-meter-sub-optimum::-moz-meter-bar {
-    background: var(--color-warning);
+    background: var(--background-warning);
   }
   .apogee-meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
-    background: var(--color-danger);
+    background: var(--background-critical);
   }
 </style>

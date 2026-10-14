@@ -45,13 +45,15 @@ attribute (e.g. `checked`, `disabled`, `required`) passes through.
 | `value` | `string` | — | This radio's value, submitted when checked. |
 | `label` | `string` | — | Visible label, rendered in a `<label>` next to the input. |
 | `id` | `string` | auto-generated | Ties the label to the input; set your own to target it elsewhere. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control and label size. |
+| `hasError` | `boolean` | `false` | Marks the control invalid (`aria-invalid`, critical border). |
 | `class` | `string` | — | Extra classes on the wrapping `<div>`. |
 
 ## States
 
 - **Unchecked / Checked** — native `:checked`; a filled accent dot fades in.
 - **Hover** — border darkens on an unchecked, enabled radio.
-- **Focus** — a visible `focus-visible` ring (`--ring`).
+- **Focus** — a visible `focus-visible` ring (`--border-primary`).
 - **Disabled** — dimmed, pointer becomes `not-allowed`. Pass the native
   `disabled` attribute.
 
@@ -89,11 +91,11 @@ A full group sharing one `name`:
 
 | Token | Used for |
 |---|---|
-| `--border` | Unchecked border |
-| `--muted-foreground` | Hover border (unchecked, enabled) |
-| `--accent` | Checked border + fill |
-| `--background` | Unchecked fill |
-| `--ring` | Focus ring |
+| `--border-neutral` | Unchecked border |
+| `--foreground-neutral-faded` | Hover border (unchecked, enabled) |
+| `--background-primary` | Checked border + fill |
+| `--background-page` | Unchecked fill |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

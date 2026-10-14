@@ -6,38 +6,45 @@
  *
  * @composable
  */
-interface Props {
-  name: string
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
+import { innerRadius } from '../utils/radius.ts'
+interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
+  /** Form field name; generated when omitted. */
+  name?: string
   /** Options as strings, or `{ label, value }` when they differ. */
   options: (string | { label: string; value: string })[]
   /** Selected value. */
   value?: string
-  size?: 'sm' | 'md' | 'lg'
+  /** @category layout */
+  size?: 'small' | 'medium' | 'large'
   'aria-label'?: string
   class?: string
 }
 
-const { name, options, value, size = 'md', class: className, ...rest } = Astro.props
+const { name: nameProp, options, value, size = 'medium', class: className, ...rest } = Astro.props
+const name = nameProp ?? uid(Astro.locals, 'seg')
 const items = options.map((o) => (typeof o === 'string' ? { label: o, value: o } : o))
-const uid = Math.random().toString(36).slice(2, 9)
+const rid = uid(Astro.locals)
 
 const sizeMap = {
-  sm: 'h-8 px-2.5 text-xs',
-  md: 'h-9 px-3 text-sm',
-  lg: 'h-11 px-4 text-base',
+  small: 'h-8 px-2.5 text-xs',
+  medium: 'h-9 px-3 text-sm',
+  large: 'h-11 px-4 text-base',
 }
 ---
 
 <div
   role="group"
-  class:list={['inline-flex gap-0.5 rounded-md border border-border bg-muted p-0.5', className]}
+  data-apogee-segmented
+  class:list={['inline-flex gap-0.5 rounded-md border border-neutral bg-neutral-faded p-0.5', className]}
   {...rest}
 >
   {
     items.map((o) => {
-      const oid = `${name}-${o.value}-${uid}`
+      const oid = `${name}-${o.value}-${rid}`
       return (
-        <>
+        <span class="contents">
           <input
             type="radio"
             name={name}
@@ -49,13 +56,14 @@ const sizeMap = {
           <label
             for={oid}
             class:list={[
-              'flex cursor-pointer items-center justify-center rounded font-medium text-muted-foreground transition-colors hover:text-foreground peer-checked:bg-background peer-checked:text-foreground peer-checked:shadow-sm peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring',
+              'flex cursor-pointer items-center justify-center font-medium text-neutral-faded transition-colors hover:text-neutral peer-checked:bg-page peer-checked:text-neutral peer-checked:shadow-outline dark:peer-checked:bg-neutral peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary',
               sizeMap[size],
+              innerRadius['md-0.5'],
             ]}
           >
             {o.label}
           </label>
-        </>
+        </span>
       )
     })
   }

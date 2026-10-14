@@ -3,43 +3,45 @@
  * FileUpload — a styled file input / dropzone. The native input works with zero
  * JS (opens the picker, submits the file); a small island adds the selected file
  * name(s) and drag-and-drop (progressive enhancement).
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
 import { UploadCloud } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'input'> {
   name?: string
   accept?: string
   multiple?: boolean
   class?: string
-  [key: string]: any
 }
 
 const { id: idProp, class: className, ...rest } = Astro.props
-const id = idProp ?? `apogee-file-${Math.random().toString(36).slice(2, 9)}`
+const id = idProp ?? uid(Astro.locals, 'apogee-file')
 ---
 
 <label
   for={id}
   class:list={[
-    'apogee-file flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-background p-6 text-center transition-colors hover:border-accent data-[drag=true]:border-accent data-[drag=true]:bg-accent/5',
+    'apogee-file flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-neutral bg-page p-6 text-center transition-colors hover:border-primary data-[drag=true]:border-primary data-[drag=true]:bg-primary-faded-highlighted',
     className,
   ]}
 >
   <input id={id} type="file" class="apogee-file-input sr-only" {...rest} />
-  <UploadCloud class="size-6 text-muted-foreground" aria-hidden="true" />
-  <span class="text-sm text-foreground">
-    <span class="font-medium text-accent">Browse</span> or drag a file here
+  <UploadCloud class="size-6 text-neutral-faded" aria-hidden="true" />
+  <span class="text-sm text-neutral">
+    <span class="font-medium text-primary">Browse</span> or drag a file here
   </span>
-  <span class="apogee-file-name text-xs text-muted-foreground no-js:hidden"></span>
+  <span class="apogee-file-name text-xs text-neutral-faded no-js:hidden"></span>
 </label>
 
 <script>
-  for (const label of document.querySelectorAll<HTMLElement>('.apogee-file')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-file', (label) => {
     const input = label.querySelector<HTMLInputElement>('.apogee-file-input')
     const nameEl = label.querySelector<HTMLElement>('.apogee-file-name')
-    if (!input) continue
+    if (!input) return
 
     const show = () => {
       const files = [...(input.files ?? [])]
@@ -62,8 +64,8 @@ const id = idProp ?? `apogee-file-${Math.random().toString(36).slice(2, 9)}`
       label.dataset.drag = 'false'
       if (e.dataTransfer?.files?.length) {
         input.files = e.dataTransfer.files
-        show()
+        input.dispatchEvent(new Event('change', { bubbles: true }))
       }
     })
-  }
+  })
 </script>

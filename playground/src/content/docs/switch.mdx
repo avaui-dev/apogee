@@ -42,7 +42,9 @@ attribute not listed below (`checked`, `disabled`, `name`, `value`,
 |---|---|---|---|
 | `id` | `string` | auto-generated (`apogee-<random>`) | Connects the `<label>` to the `<input>`. Set your own to target it from elsewhere (a separate `<label for>`, a test selector). |
 | `label` | `string` | — | Visible label text, rendered after the track. |
-| `class` | `string` | — | Extra classes on the root `<label>`, merged last. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Track and label size. |
+| `hasError` | `boolean` | `false` | Marks the switch invalid: `aria-invalid` on the input, a critical ring on the track. |
+| `class` | `string` | — | Extra classes on the root `<label>`, appended last. |
 | …rest | — | — | Any other attribute passes through to the `<input type="checkbox" role="switch">`. |
 
 ## States
@@ -97,9 +99,9 @@ In a form, submitting a value when checked:
 
 | Token | Used for |
 |---|---|
-| `--muted` | Track background (unchecked) |
-| `--accent` | Track background (checked) |
-| `--ring` | Focus ring |
+| `--background-neutral-faded` | Track background (unchecked) |
+| `--background-primary` | Track background (checked) |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

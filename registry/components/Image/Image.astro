@@ -1,31 +1,81 @@
 ---
 /**
  * Image — wraps `astro:assets` Image with sensible defaults (lazy, async
- * decode, responsive). Pass a local image import (ImageMetadata); every
- * astro:assets prop (`widths`, `sizes`, `format`, `quality`, `width`,
- * `height`, …) forwards through.
- *
- * @composable
+ * decode, responsive). Pass a local import (optimised at build) or a remote
+ * URL (sized with `inferSize` unless you give `width`/`height`). A `fallback`
+ * slot shows when the image fails to load.
  */
+import type { HTMLAttributes } from 'astro/types'
 import { Image as AstroImage } from 'astro:assets'
 
-interface Props {
-  src: ImageMetadata
+const fits = { cover: 'object-cover', contain: 'object-contain' } as const
+const radii = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg', xl: 'rounded-xl', full: 'rounded-full' } as const
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'alt' | 'width' | 'height' | 'loading' | 'decoding'> {
+  /** A local image import, or a remote URL. */
+  src: ImageMetadata | string
   alt: string
   loading?: 'lazy' | 'eager'
   decoding?: 'async' | 'sync' | 'auto'
+  /** Responsive candidates, e.g. [480, 800, 1200]. */
+  widths?: number[]
+  sizes?: string
+  width?: number
+  height?: number
+  quality?: number | 'low' | 'mid' | 'high' | 'max'
+  format?: 'avif' | 'webp' | 'png' | 'jpeg' | 'svg'
+  /** How the image fills a box you size with `width`/`height` or a class. @category layout */
+  fit?: keyof typeof fits
+  /** @category layout */
+  radius?: keyof typeof radii
+  /** Inset hairline for images that blend into the page. @category layout */
+  outline?: boolean
   class?: string
-  [key: string]: any
 }
 
-const { src, alt, loading = 'lazy', decoding = 'async', class: className, ...rest } = Astro.props
+const { src, alt, loading = 'lazy', decoding = 'async', width, height, fit, radius, outline = false, class: className, ...rest } = Astro.props
+const remote = typeof src === 'string'
+const hasFallback = Astro.slots.has('fallback')
+const imgClass = ['h-auto max-w-full', fit && fits[fit], radius && radii[radius], outline && 'ring-1 ring-inset ring-neutral', !hasFallback && className]
+// Remote URLs without explicit dimensions are measured at build time.
+const sizing = remote && width === undefined && height === undefined ? { inferSize: true as const } : { ...(width !== undefined && { width }), ...(height !== undefined && { height }) }
 ---
 
-<AstroImage
-  src={src}
-  alt={alt}
-  loading={loading}
-  decoding={decoding}
-  class:list={['h-auto max-w-full', className]}
-  {...rest}
-/>
+{
+  hasFallback ? (
+    <span class:list={['apogee-image relative inline-block', className]} data-apogee-image>
+      <AstroImage src={src as ImageMetadata} alt={alt} loading={loading} decoding={decoding} class:list={imgClass} {...sizing} {...rest} />
+      <span class="apogee-image-fallback hidden [&>*]:size-full" aria-hidden="true"><slot name="fallback" /></span>
+    </span>
+  ) : (
+    <AstroImage src={src as ImageMetadata} alt={alt} loading={loading} decoding={decoding} class:list={imgClass} {...sizing} {...rest} />
+  )
+}
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  // A failed load hides the image and reveals the fallback (same box, no shift).
+  island('[data-apogee-image]', (root) => {
+    const img = root.querySelector<HTMLImageElement>('img')
+    const fallback = root.querySelector<HTMLElement>('.apogee-image-fallback')
+    if (!img || !fallback) return
+    const fail = () => {
+      fallback.style.width = `${img.offsetWidth || img.width}px`
+      fallback.style.height = `${img.offsetHeight || img.height}px`
+      img.hidden = true
+      fallback.hidden = false
+      fallback.classList.remove('hidden')
+      fallback.classList.add('block')
+      // Keep the image's meaning: the fallback takes over the alt text.
+      if (img.alt) {
+        fallback.removeAttribute('aria-hidden')
+        fallback.setAttribute('role', 'img')
+        fallback.setAttribute('aria-label', img.alt)
+      }
+    }
+    if (img.complete && img.naturalWidth === 0) fail()
+    else img.addEventListener('error', fail, { once: true })
+  })
+</script>

@@ -61,8 +61,10 @@ the `<select>` itself.
 | `id` | `string` | auto-generated | Ties the `Field` label to the `<select>`. |
 | `label` | `string` | — | Field label. |
 | `hint` | `string` | — | Helper text below the control (hidden when `error` is set). |
-| `error` | `string` | — | Error text; sets `aria-invalid` and switches the border to `--danger`. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size. |
+| `error` | `string` | — | Error text; sets `aria-invalid` and switches the border to `--background-critical`. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
+| `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
+| `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `required` | `boolean` | `false` | Marks the field required (native `required` + a visible `*` on the label). |
 | `class` | `string` | — | Extra classes on the `Field` wrapper. |
 
@@ -70,20 +72,20 @@ the `<select>` itself.
 
 Every size:
 
-<Preview code={`<Select label="Small" name="size-sm" size="sm"><option>Option</option></Select>
-<Select label="Medium" name="size-md" size="md"><option>Option</option></Select>
-<Select label="Large" name="size-lg" size="lg"><option>Option</option></Select>`}>
-  <Select label="Small" name="size-sm" size="sm"><option>Option</option></Select>
-  <Select label="Medium" name="size-md" size="md"><option>Option</option></Select>
-  <Select label="Large" name="size-lg" size="lg"><option>Option</option></Select>
+<Preview code={`<Select label="Small" name="size-sm" size="small"><option>Option</option></Select>
+<Select label="Medium" name="size-md"><option>Option</option></Select>
+<Select label="Large" name="size-lg" size="large"><option>Option</option></Select>`}>
+  <Select label="Small" name="size-sm" size="small"><option>Option</option></Select>
+  <Select label="Medium" name="size-md"><option>Option</option></Select>
+  <Select label="Large" name="size-lg" size="large"><option>Option</option></Select>
 </Preview>
 
 ## States
 
-- **Hover / focus** — a visible `focus-visible` ring (`--ring`).
+- **Hover / focus** — a visible `focus-visible` ring (`--border-primary`).
 - **Disabled** — dimmed, `cursor-not-allowed`. Pass the native `disabled`
   attribute.
-- **Error** — `aria-invalid="true"`, border switches to `--danger`, `Field`
+- **Error** — `aria-invalid="true"`, border switches to `--background-critical`, `Field`
   shows the error text with `role="alert"`.
 - **Required** — the label shows a `*`.
 
@@ -140,12 +142,12 @@ With an error:
 
 | Token | Used for |
 |---|---|
-| `--border` | Control border |
-| `--background` | Control fill |
-| `--foreground` | Selected value text |
-| `--muted-foreground` | Chevron icon |
-| `--ring` | Focus ring |
-| `--danger` | Error border (`aria-invalid`) + `Field`'s error text |
+| `--border-neutral` | Control border |
+| `--background-page` | Control fill |
+| `--foreground-neutral` | Selected value text |
+| `--foreground-neutral-faded` | Chevron icon |
+| `--border-primary` | Focus ring |
+| `--foreground-critical` | Error border (`aria-invalid`) + `Field`'s error text |
 
 ## Do / Don't
 

@@ -7,12 +7,14 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Badge from '../../../../registry/components/Badge/Badge.astro'
+import BadgeContainer from '../../../../registry/components/Badge/BadgeContainer.astro'
+import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
 import { Check } from '@lucide/astro'
 
-<Preview code={`<Badge variant="accent">New</Badge>
-<Badge variant="danger">Error</Badge>`}>
-  <Badge variant="accent">New</Badge>
-  <Badge variant="danger">Error</Badge>
+<Preview code={`<Badge color="primary" variant="solid">New</Badge>
+<Badge color="critical" variant="solid">Error</Badge>`}>
+  <Badge color="primary" variant="solid">New</Badge>
+  <Badge color="critical" variant="solid">Error</Badge>
 </Preview>
 
 ## Add
@@ -29,7 +31,7 @@ No component dependencies.
 ---
 import Badge from '@/components/apogee/Badge/Badge.astro'
 ---
-<Badge variant="accent">New</Badge>
+<Badge color="primary" variant="solid">New</Badge>
 ```
 
 ## API
@@ -39,26 +41,123 @@ attribute passes through.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `variant` | `'neutral' \| 'accent' \| 'danger' \| 'outline'` | `'neutral'` | Visual style. |
-| `class` | `string` | — | Extra classes, merged last. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | The hue. |
+| `variant` | `'solid' \| 'faded' \| 'outline'` | `'faded'` | The fill style. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Height: 20 / 24 / 28px. |
+| `rounded` | `boolean` | `false` | Fully round ends. |
+| `highlighted` | `boolean` | `false` | Stronger fill for an active filter or selected state. |
+| `truncate` | `boolean` | `false` | Clamps long labels (max 10rem) with an ellipsis. |
+| `class` | `string` | — | Extra classes, appended last. |
 
-No `size` prop — Badge has one fixed size.
+Slots: `start` and `end` for a small icon.
 
-## Variants
+## Variants × colors
 
-Every variant:
+Every `variant` for every `color`:
 
-<Preview code={`<Badge variant="neutral">Neutral</Badge>
-<Badge variant="accent">Accent</Badge>
-<Badge variant="danger">Danger</Badge>
-<Badge variant="outline">Outline</Badge>`}>
-  <Badge variant="neutral">Neutral</Badge>
-  <Badge variant="accent">Accent</Badge>
-  <Badge variant="danger">Danger</Badge>
-  <Badge variant="outline">Outline</Badge>
+<Preview code={`<Badge color="primary" variant="solid">Primary</Badge>
+<Badge color="neutral" variant="solid">Neutral</Badge>
+<Badge color="critical" variant="solid">Critical</Badge>
+<Badge color="positive" variant="solid">Positive</Badge>
+<Badge color="warning" variant="solid">Warning</Badge>
+
+<Badge color="primary">Primary</Badge>
+<Badge color="neutral">Neutral</Badge>
+<Badge color="critical">Critical</Badge>
+<Badge color="positive">Positive</Badge>
+<Badge color="warning">Warning</Badge>
+
+<Badge color="primary" variant="outline">Primary</Badge>
+<Badge color="neutral" variant="outline">Neutral</Badge>
+<Badge color="critical" variant="outline">Critical</Badge>
+<Badge color="positive" variant="outline">Positive</Badge>
+<Badge color="warning" variant="outline">Warning</Badge>`}>
+  <div class="grid gap-3">
+    <div class="flex flex-wrap gap-2">
+      <Badge color="primary" variant="solid">Primary</Badge>
+      <Badge color="neutral" variant="solid">Neutral</Badge>
+      <Badge color="critical" variant="solid">Critical</Badge>
+      <Badge color="positive" variant="solid">Positive</Badge>
+      <Badge color="warning" variant="solid">Warning</Badge>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <Badge color="primary">Primary</Badge>
+      <Badge color="neutral">Neutral</Badge>
+      <Badge color="critical">Critical</Badge>
+      <Badge color="positive">Positive</Badge>
+      <Badge color="warning">Warning</Badge>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <Badge color="primary" variant="outline">Primary</Badge>
+      <Badge color="neutral" variant="outline">Neutral</Badge>
+      <Badge color="critical" variant="outline">Critical</Badge>
+      <Badge color="positive" variant="outline">Positive</Badge>
+      <Badge color="warning" variant="outline">Warning</Badge>
+    </div>
+  </div>
+</Preview>
+
+## Sizes
+
+<Preview code={`<Badge size="small">Small</Badge>
+<Badge size="medium">Medium</Badge>
+<Badge size="large">Large</Badge>
+<Badge rounded>Rounded</Badge>`}>
+  <Badge size="small">Small</Badge>
+  <Badge size="medium">Medium</Badge>
+  <Badge size="large">Large</Badge>
+  <Badge rounded>Rounded</Badge>
 </Preview>
 
 ## States
+
+<Preview code={`<Badge color="primary">Filter</Badge>
+<Badge color="primary" highlighted>Filter</Badge>
+<Badge variant="solid" color="positive">Live</Badge>
+<Badge variant="solid" color="positive" highlighted>Live</Badge>
+<Badge truncate>A label far too long to fit in a small chip</Badge>`}>
+  <Badge color="primary">Filter</Badge>
+  <Badge color="primary" highlighted>Filter</Badge>
+  <Badge variant="solid" color="positive">Live</Badge>
+  <Badge variant="solid" color="positive" highlighted>Live</Badge>
+  <Badge truncate>A label far too long to fit in a small chip</Badge>
+</Preview>
+
+With no content a Badge renders as a dot indicator:
+
+<Preview code={`<Badge color="critical" />
+<Badge color="positive" />`}>
+  <Badge color="critical" />
+  <Badge color="positive" />
+</Preview>
+
+## BadgeContainer
+
+Anchors a Badge on the corner of an avatar, icon or button.
+
+<Preview code={`<BadgeContainer>
+  <Avatar name="Ada Lovelace" />
+  <Badge slot="badge" color="critical" />
+</BadgeContainer>
+<BadgeContainer position="bottom-end" overlap>
+  <Avatar name="Alan Turing" />
+  <Badge slot="badge" variant="solid" color="positive" rounded size="small">3</Badge>
+</BadgeContainer>`}>
+  <BadgeContainer>
+    <Avatar name="Ada Lovelace" />
+    <Badge slot="badge" color="critical" />
+  </BadgeContainer>
+  <BadgeContainer position="bottom-end" overlap>
+    <Avatar name="Alan Turing" />
+    <Badge slot="badge" variant="solid" color="positive" rounded size="small">3</Badge>
+  </BadgeContainer>
+</Preview>
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `position` | `'top-end' \| 'bottom-end'` | `'top-end'` | Corner the badge sits on. |
+| `overlap` | `boolean` | `false` | Pushes the badge outward for round elements. |
+| `class` | `string` | — | Extra classes on the wrapper. |
 
 Static — a `<span>`, not a control. No hover/focus/disabled states. If a badge
 needs to be clickable (a removable filter chip), wrap it in a `<button>`
@@ -68,8 +167,8 @@ yourself; Badge doesn't provide one.
 
 With a leading icon — like Button, the child SVG auto-sizes:
 
-<Preview code={`<Badge variant="accent"><Check /> Verified</Badge>`}>
-  <Badge variant="accent"><Check /> Verified</Badge>
+<Preview code={`<Badge color="primary" variant="solid"><Check /> Verified</Badge>`}>
+  <Badge color="primary" variant="solid"><Check /> Verified</Badge>
 </Preview>
 
 As a count next to a label:
@@ -77,7 +176,7 @@ As a count next to a label:
 ```astro
 <span class="flex items-center gap-2">
   Inbox
-  <Badge variant="danger">12</Badge>
+  <Badge color="critical" variant="solid">12</Badge>
 </span>
 ```
 
@@ -91,10 +190,9 @@ so assistive tech picks up the change.
 
 | Token | Used for |
 |---|---|
-| `--muted` / `--muted-foreground` | Neutral variant |
-| `--accent` / `--accent-foreground` | Accent variant |
-| `--danger` / `--danger-foreground` | Danger variant |
-| `--border` / `--foreground` | Outline variant |
+| `--background-{hue}-faded` / `--foreground-{hue}` | `faded` variant, per `color` |
+| `--background-{hue}` / `--on-{hue}` | `solid` variant |
+| `--border-{hue}` / `--foreground-{hue}` | `outline` variant |
 
 ## Do / Don't
 

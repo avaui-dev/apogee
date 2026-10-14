@@ -7,7 +7,7 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Link from '../../../../registry/components/Link/Link.astro'
-import { ExternalLink } from '@lucide/astro'
+import { Mail, ExternalLink } from '@lucide/astro'
 
 <Preview code={`<Link href="#">Default link</Link>
 <Link href="#" underline="hover">Hover underline</Link>`}>
@@ -40,7 +40,9 @@ attribute (e.g. `download`, `hreflang`) passes through.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `href` | `string` | — | Required. Link destination. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning' \| 'inherit'` | `'primary'` | Text colour; `inherit` takes the surrounding colour. |
 | `underline` | `'always' \| 'hover' \| 'none'` | `'always'` | Underline behaviour. |
+| `disabled` | `boolean` | `false` | No `href`, `aria-disabled`, dimmed. |
 | `external` | `boolean` | `false` | Opens in a new tab (`target="_blank"`) with `rel="noopener noreferrer"`. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -58,11 +60,31 @@ Every `underline` value:
 
 ## States
 
-- **Hover** — colour shifts to `--accent-hover`; `underline="hover"` reveals
+- **Hover** — colour shifts to `--background-primary-highlighted`; `underline="hover"` reveals
   its underline.
-- **Focus** — a visible `focus-visible` ring (`--ring`).
+- **Focus** — a visible `focus-visible` ring (`--border-primary`).
 
 ## Examples
+
+With icons in the `start` / `end` slots (sized to the text):
+
+<Preview code={`<Link href="#"><Mail slot="start" /> Email us</Link>
+<Link href="#" external>Docs<ExternalLink slot="end" /></Link>`}>
+  <Link href="#"><Mail slot="start" /> Email us</Link>
+  <Link href="#" external>Docs<ExternalLink slot="end" /></Link>
+</Preview>
+
+Semantic colours and a disabled link:
+
+<Preview code={`<Link href="#" color="critical">Delete</Link>
+<Link href="#" color="positive">Approved</Link>
+<Link href="#" color="warning">Pending</Link>
+<Link href="#" disabled>Unavailable</Link>`}>
+  <Link href="#" color="critical">Delete</Link>
+  <Link href="#" color="positive">Approved</Link>
+  <Link href="#" color="warning">Pending</Link>
+  <Link href="#" disabled>Unavailable</Link>
+</Preview>
 
 External link, with a trailing icon as the visual cue:
 
@@ -84,8 +106,8 @@ External link, with a trailing icon as the visual cue:
 
 | Token | Used for |
 |---|---|
-| `--accent` / `--accent-hover` | Link colour / hover colour |
-| `--ring` | Focus ring |
+| `--foreground-primary` | Link colour |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

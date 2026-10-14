@@ -2,12 +2,12 @@
 /**
  * Steps — a vertical progress list (onboarding, checkout, wizards). Zero JS.
  * `current` is the 1-based active step; earlier steps render as done.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { Check } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   items: { title: string; description?: string }[]
   /** 1-based index of the active step. */
   current?: number
@@ -27,16 +27,16 @@ const { items, current = 1, class: className, ...rest } = Astro.props
         <li class="relative flex gap-4 pb-8 last:pb-0">
           {!last && (
             <span
-              class="absolute top-8 start-4 -ms-px h-full w-px bg-border"
+              class="absolute top-8 start-4 h-full w-px -translate-x-1/2 bg-neutral rtl:translate-x-1/2"
               aria-hidden="true"
             />
           )}
           <span
             class:list={[
               'relative z-10 grid size-8 shrink-0 place-items-center rounded-full border text-sm font-medium tabular-nums',
-              state === 'done' && 'border-accent bg-accent text-accent-foreground',
-              state === 'current' && 'border-accent bg-background text-accent',
-              state === 'upcoming' && 'border-border bg-background text-muted-foreground',
+              state === 'done' && 'border-primary bg-primary text-on-primary',
+              state === 'current' && 'border-primary bg-page text-primary',
+              state === 'upcoming' && 'border-neutral bg-page text-neutral-faded',
             ]}
             aria-current={state === 'current' ? 'step' : undefined}
           >
@@ -46,13 +46,13 @@ const { items, current = 1, class: className, ...rest } = Astro.props
             <p
               class:list={[
                 'text-sm font-medium',
-                state === 'upcoming' ? 'text-muted-foreground' : 'text-foreground',
+                state === 'upcoming' ? 'text-neutral-faded' : 'text-neutral',
               ]}
             >
               {step.title}
             </p>
             {step.description && (
-              <p class="mt-0.5 text-sm text-muted-foreground">{step.description}</p>
+              <p class="mt-0.5 text-sm text-neutral-faded">{step.description}</p>
             )}
           </div>
         </li>

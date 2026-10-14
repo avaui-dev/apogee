@@ -64,7 +64,7 @@ through to the swatch (`<input type="color">`) — e.g. `disabled`, or an
 - **Focus** — the hex field shows a visible `focus-visible` ring; the swatch
   uses the browser's native focus indicator.
 - **Hint** — helper text under the field.
-- **Error** — hex field border turns `--danger`, `aria-invalid="true"`, and the
+- **Error** — hex field border turns `--background-critical`, `aria-invalid="true"`, and the
   error text replaces the hint.
 
 <Preview code={`<ColorPicker label="Brand color" hint="Used for buttons and links." />
@@ -105,12 +105,12 @@ Required field, wired into a form:
 
 | Token | Used for |
 |---|---|
-| `--border` | Swatch and hex field border |
-| `--background` | Hex field background |
-| `--foreground` | Hex field text |
-| `--muted-foreground` | Hint text |
-| `--danger` | Error border + error text |
-| `--ring` | Hex field focus ring |
+| `--border-neutral` | Swatch and hex field border |
+| `--background-page` | Hex field background |
+| `--foreground-neutral` | Hex field text |
+| `--foreground-neutral-faded` | Hint text |
+| `--foreground-critical` | Error border + error text |
+| `--border-primary` | Hex field focus ring |
 
 ## Do / Don't
 

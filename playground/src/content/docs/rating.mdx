@@ -41,6 +41,7 @@ display wrapper).
 | `max` | `number` | `5` | Number of stars. |
 | `value` | `number` | `0` | Selected (interactive) or displayed (`readonly`) rating. |
 | `readonly` | `boolean` | `false` | Renders a static display instead of radio inputs. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'warning'` | Hue of a filled star. |
 | `aria-label` | `string` | `'Rating'` (interactive) / `` `${value} out of ${max}` `` (readonly) | Accessible label for the group/display. |
 | `class` | `string` | — | Extra classes on the root. |
 
@@ -60,7 +61,7 @@ Interactive (a `radiogroup` of native radios) vs. read-only (a static
 - **Hover preview** — hovering a star fills it and every star before it (the
   reverse-order CSS trick); moving off clears the preview back to the
   checked value.
-- **Checked** — the selected star and every star before it fill amber.
+- **Checked** — the selected star and every star before it fill with the `color` hue (amber by default).
 - **Focus** — a visible outline on the focused star's `label`.
 - Read-only mode has no interactive states.
 
@@ -88,6 +89,8 @@ A read-only aggregate score:
 
 ## Accessibility
 
+- Each star is a 44px target on touch devices; the hover preview only runs on devices that hover.
+
 - Interactive mode is a native `role="radiogroup"` of radio inputs — arrow
   keys move and select, `Tab` enters/exits the group, all for free.
 - Each star's `<label>` carries `aria-label="N star(s)"`; the group itself
@@ -102,9 +105,9 @@ A read-only aggregate score:
 
 | Token | Used for |
 |---|---|
-| `--color-border` | Unfilled star |
-| `--color-amber-400` | Filled star (checked or hovered) |
-| `--ring` | Focus outline on the focused star |
+| `--border-neutral` | Unfilled star |
+| `--background-{hue}` | Filled star (checked or hovered), per `color` |
+| `--border-primary` | Focus outline on the focused star |
 
 ## Do / Don't
 

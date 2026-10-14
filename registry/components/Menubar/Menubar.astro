@@ -5,29 +5,29 @@
  * the expected menubar behaviour: opening one closes the siblings, and ← / →
  * move between menus. Items with `href` navigate; others dispatch `apogee:menu`
  * (`detail: { id, label }`) on `document`.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { innerRadius } from '../utils/radius.ts'
 interface MenuItem {
   label?: string
   href?: string
   id?: string
   separator?: boolean
 }
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   menus: { label: string; items: MenuItem[] }[]
   class?: string
 }
 
 const { menus, class: className, ...rest } = Astro.props
 
-const itemClass =
-  'apogee-menubar-item flex w-full items-center gap-2 rounded px-2 py-1.5 text-start text-sm text-foreground transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none'
+const itemClass = `apogee-menubar-item flex w-full items-center gap-2 ${innerRadius['md-1']} px-2 py-1.5 text-start text-sm text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:bg-neutral-faded-highlighted focus-visible:outline-none`
 ---
 
 <div
   role="menubar"
-  class:list={['apogee-menubar flex items-center gap-0.5 rounded-md border border-border bg-background p-1', className]}
+  class:list={['apogee-menubar flex items-center gap-0.5 rounded-md border border-neutral bg-page p-1', className]}
   {...rest}
 >
   {
@@ -36,17 +36,17 @@ const itemClass =
         <summary
           role="menuitem"
           aria-haspopup="true"
-          class="cursor-pointer list-none rounded px-3 py-1.5 text-sm font-medium text-foreground transition-colors select-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+          class:list={['cursor-pointer list-none px-3 py-1.5 text-sm font-medium text-neutral transition-colors select-none hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden', innerRadius['md-1']]}
         >
           {menu.label}
         </summary>
         <div
           role="menu"
-          class="apogee-menubar-panel absolute top-full start-0 z-30 mt-1 flex min-w-44 flex-col gap-0.5 rounded-md border border-border bg-surface p-1 shadow-lg"
+          class="apogee-menubar-panel absolute top-full start-0 z-30 mt-1 flex min-w-44 flex-col gap-0.5 rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg"
         >
           {menu.items.map((item) =>
             item.separator ? (
-              <hr class="my-1 border-border" />
+              <hr class="my-1 border-neutral" />
             ) : item.href ? (
               <a href={item.href} role="menuitem" class={itemClass}>
                 {item.label}
@@ -66,7 +66,7 @@ const itemClass =
 <style>
   /* Fade + slide in when a menu opens. */
   .apogee-menubar-menu[open] .apogee-menubar-panel {
-    animation: apogee-menubar-in var(--duration-fast) var(--ease-smooth);
+    animation: apogee-menubar-in var(--duration-fast) var(--ease-standard);
   }
   @keyframes apogee-menubar-in {
     from {
@@ -82,7 +82,9 @@ const itemClass =
 </style>
 
 <script>
-  for (const bar of document.querySelectorAll<HTMLElement>('.apogee-menubar')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-menubar', (bar) => {
     const menus = [...bar.querySelectorAll<HTMLDetailsElement>('.apogee-menubar-menu')]
 
     menus.forEach((d, i) => {
@@ -95,10 +97,10 @@ const itemClass =
       summary?.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') {
           e.preventDefault()
-          menus[(i + 1) % menus.length].querySelector<HTMLElement>('summary')?.focus()
+          menus[(i + 1) % menus.length]?.querySelector<HTMLElement>('summary')?.focus()
         } else if (e.key === 'ArrowLeft') {
           e.preventDefault()
-          menus[(i - 1 + menus.length) % menus.length].querySelector<HTMLElement>('summary')?.focus()
+          menus[(i - 1 + menus.length) % menus.length]?.querySelector<HTMLElement>('summary')?.focus()
         }
       })
     })
@@ -113,12 +115,16 @@ const itemClass =
       })
     }
 
-    // Close on outside click / Escape.
-    document.addEventListener('click', (e) => {
-      if (!bar.contains(e.target as Node)) menus.forEach((d) => (d.open = false))
-    })
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') menus.forEach((d) => (d.open = false))
-    })
-  }
+  })
+
+  // Close on outside click / Escape — one listener for every menubar on the page.
+  document.addEventListener('click', (e) => {
+    for (const d of document.querySelectorAll<HTMLDetailsElement>('.apogee-menubar-menu[open]')) {
+      if (!d.closest('.apogee-menubar')?.contains(e.target as Node)) d.open = false
+    }
+  })
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return
+    for (const d of document.querySelectorAll<HTMLDetailsElement>('.apogee-menubar-menu[open]')) d.open = false
+  })
 </script>

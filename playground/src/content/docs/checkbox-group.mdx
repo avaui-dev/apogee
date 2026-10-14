@@ -1,0 +1,117 @@
+---
+title: CheckboxGroup
+description: A fieldset of Checkbox controls with one legend, hint and error.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import CheckboxGroup from '../../../../registry/components/CheckboxGroup/CheckboxGroup.astro'
+import Checkbox from '../../../../registry/components/Checkbox/Checkbox.astro'
+
+<Preview code={`<CheckboxGroup legend="Notify me about" hint="Pick as many as you like.">
+  <Checkbox label="Comments" checked />
+  <Checkbox label="Mentions" />
+  <Checkbox label="Releases" />
+</CheckboxGroup>`}>
+  <CheckboxGroup legend="Notify me about" hint="Pick as many as you like.">
+    <Checkbox label="Comments" checked />
+    <Checkbox label="Mentions" />
+    <Checkbox label="Releases" />
+  </CheckboxGroup>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add checkbox-group
+```
+
+Depends on `utils`. Use with `checkbox`.
+
+## Usage
+
+```astro
+---
+import CheckboxGroup from '@/components/apogee/CheckboxGroup/CheckboxGroup.astro'
+import Checkbox from '@/components/apogee/Checkbox/Checkbox.astro'
+---
+<CheckboxGroup legend="Size" direction="row">
+  <Checkbox label="S" />
+  <Checkbox label="M" />
+  <Checkbox label="L" />
+</CheckboxGroup>
+```
+
+## Anatomy
+
+A `<fieldset>` with a `<legend>`, the controls in the default slot, and an
+optional hint or error paragraph the fieldset is described by.
+
+## API
+
+`@composable`. Any other native `<fieldset>` attribute (`disabled`, `form`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `legend` | `string` | — | Group label (required). |
+| `hint` | `string` | — | Helper text under the controls. |
+| `error` | `string` | — | Error text; replaces the hint, sets `aria-invalid`. |
+| `direction` | `'row' \| 'column'` | `'column'` | Lay the controls out in a row (wraps) or a column. |
+| `id` | `string` | auto | Fieldset id; hint/error ids derive from it. |
+| `class` | `string` | — | Extra classes on the fieldset, merged last. |
+
+## Variants
+
+<Preview code={`<CheckboxGroup legend="Column">…</CheckboxGroup>
+<CheckboxGroup legend="Row" direction="row">…</CheckboxGroup>`}>
+  <CheckboxGroup legend="Column">
+    <Checkbox label="One" />
+    <Checkbox label="Two" />
+  </CheckboxGroup>
+  <CheckboxGroup legend="Row" direction="row">
+    <Checkbox label="One" />
+    <Checkbox label="Two" />
+  </CheckboxGroup>
+</Preview>
+
+## States
+
+<Preview code={`<CheckboxGroup legend="With hint" hint="Helper text.">…</CheckboxGroup>
+<CheckboxGroup legend="With error" error="Pick at least one.">…</CheckboxGroup>
+<CheckboxGroup legend="Disabled" disabled>…</CheckboxGroup>`}>
+  <CheckboxGroup legend="With hint" hint="Helper text.">
+    <Checkbox label="One" />
+  </CheckboxGroup>
+  <CheckboxGroup legend="With error" error="Pick at least one.">
+    <Checkbox label="One" hasError />
+  </CheckboxGroup>
+  <CheckboxGroup legend="Disabled" disabled>
+    <Checkbox label="One" />
+  </CheckboxGroup>
+</Preview>
+
+## Accessibility
+
+- Native `<fieldset>`/`<legend>`: screen readers announce the legend with each control.
+- Hint and error are linked through `aria-describedby`; the error has `role="alert"`.
+- Pass `hasError` to the controls that are wrong so they draw the critical border too.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral` | Legend |
+| `--foreground-neutral-faded` | Hint |
+| `--foreground-critical` | Error |
+
+## Do / Don't
+
+- **Do** write the legend as the question or category ("Plan", "Notify me about").
+- **Do** use `direction="row"` for two or three short options only.
+- **Don't** nest one group inside another.
+
+## Content
+
+- Legend in sentence case, no trailing colon.
+- Error text says what to do ("Pick at least one"), not what went wrong.

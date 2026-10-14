@@ -1,144 +1,110 @@
 ---
 title: Color
-description: The semantic color tokens, dark mode, and the WCAG AA contrast gate that guards them.
+description: How the five hues become a full light and dark palette, and the contrast gate that keeps every pair readable.
 group: Foundations
 order: 2
 ---
 
 import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import Alert from '../../../../registry/components/Alert/Alert.astro'
 
-Color is the one token category that's runtime-overridable per theme — every
-other scale (radius, spacing, motion, type) is static. Components never read
-a raw palette step; they read a semantic role (`bg-accent`,
-`text-muted-foreground`), so a theme is one attribute flip, not a rebuild.
+Components never read a raw palette step. They read a hue and a role
+(`bg-primary`, `text-neutral-faded`, `text-on-critical`), so a theme is a
+token override, not a rebuild. The full role list is on
+[Design tokens](/docs/tokens); this page is about where the values come from.
 
-## Semantic tokens
+## Five inputs
 
-Neutral ramp is Tailwind zinc; accent is Tailwind blue as a placeholder —
-swap either in `registry/tokens/theme.css`.
+`scripts/hues.mjs` holds one OKLCH colour per hue:
 
-| Token | Light | Dark | Used for |
-|---|---|---|---|
-| `--background` | `white` | `zinc-950` | Page background |
-| `--foreground` | `zinc-900` | `zinc-50` | Body text on background |
-| `--surface` | `zinc-50` | `zinc-900` | Raised/panel background (cards, popovers) |
-| `--surface-foreground` | `zinc-900` | `zinc-50` | Text on surface |
-| `--muted` | `zinc-100` | `zinc-800` | Subtle fill (chips, code, hover rows) |
-| `--muted-foreground` | `zinc-600` | `zinc-400` | De-emphasized text |
-| `--border` | `zinc-200` | `zinc-800` | Dividers, outlines |
-| `--accent` | `blue-600` | `blue-500` | Primary brand fill / links |
-| `--accent-hover` | `blue-700` | `blue-400` | Accent hover state |
-| `--accent-foreground` | `white` | `zinc-950` | Text/icon on accent fill |
-| `--danger` | `red-600` | `red-500` | Destructive actions, errors |
-| `--danger-hover` | `red-700` | `red-400` | Danger hover state |
-| `--danger-foreground` | `white` | `zinc-950` | Text on danger fill |
-| `--success` | `green-700` | `green-500` | Positive status |
-| `--success-foreground` | `white` | `zinc-950` | Text on success fill |
-| `--warning` | `amber-500` | `amber-400` | Caution status |
-| `--warning-foreground` | `zinc-950` | `zinc-950` | Text on warning fill |
-| `--ring` | `blue-600` | `blue-500` | Focus ring |
+```js
+export const hues = {
+  primary:  { l: 0.47, c: 0.2,   h: 262 },   // a dark blue
+  critical: { l: 0.59, c: 0.205, h: 20.28 },
+  warning:  { l: 0.82, c: 0.22,  h: 80 },
+  positive: { l: 0.55, c: 0.13,  h: 151.8 },
+  neutral:  { l: 0.94, c: 0,     h: 0 },
+}
+```
 
-<Preview code={`<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-  <div class="flex h-16 items-center justify-center rounded-md border border-border bg-background text-sm text-foreground">background</div>
-  <div class="flex h-16 items-center justify-center rounded-md border border-border bg-surface text-sm text-surface-foreground">surface</div>
-  <div class="flex h-16 items-center justify-center rounded-md bg-muted text-sm text-muted-foreground">muted</div>
-  <div class="flex h-16 items-center justify-center rounded-md bg-accent text-sm text-accent-foreground">accent</div>
-  <div class="flex h-16 items-center justify-center rounded-md bg-danger text-sm text-danger-foreground">danger</div>
-  <div class="flex h-16 items-center justify-center rounded-md bg-success text-sm text-success-foreground">success</div>
-  <div class="flex h-16 items-center justify-center rounded-md bg-warning text-sm text-warning-foreground">warning</div>
-  <div class="flex h-16 items-center justify-center rounded-md border-2 border-ring bg-background text-sm text-foreground">ring</div>
-</div>`}>
-  <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-    <div class="flex h-16 items-center justify-center rounded-md border border-border bg-background text-sm text-foreground">background</div>
-    <div class="flex h-16 items-center justify-center rounded-md border border-border bg-surface text-sm text-surface-foreground">surface</div>
-    <div class="flex h-16 items-center justify-center rounded-md bg-muted text-sm text-muted-foreground">muted</div>
-    <div class="flex h-16 items-center justify-center rounded-md bg-accent text-sm text-accent-foreground">accent</div>
-    <div class="flex h-16 items-center justify-center rounded-md bg-danger text-sm text-danger-foreground">danger</div>
-    <div class="flex h-16 items-center justify-center rounded-md bg-success text-sm text-success-foreground">success</div>
-    <div class="flex h-16 items-center justify-center rounded-md bg-warning text-sm text-warning-foreground">warning</div>
-    <div class="flex h-16 items-center justify-center rounded-md border-2 border-ring bg-background text-sm text-foreground">ring</div>
-  </div>
+`npm run build:tokens` derives everything else and writes it between the
+`@generated` markers in `registry/tokens/theme.css`.
+
+## What the generator derives
+
+- **Dark fill.** Lightness inverts around the midpoint, weighted by chroma, and
+  is clamped so a dark brand never turns black. Chroma drops a little.
+- **Faded tint.** The fill at low alpha, so it composites over any surface.
+- **Hover steps.** A small move in lightness. If that move would push the
+  on-colour under AA, the step goes the other way.
+- **Foreground.** The hue pulled toward the page's text until it passes 4.5:1
+  on the page and on the faded tint.
+- **On-colour.** White when white passes 4.5:1 on the fill, black otherwise.
+  `warning` is light, so its on-colour is black in both themes.
+- **Neutral extras.** Page, elevation steps, disabled set, inverted surface.
+
+<Preview code={`<Button>Primary</Button>
+<Button color="critical">Critical</Button>
+<Button color="positive" variant="faded">Positive</Button>
+<Button color="warning">Warning</Button>
+<Badge color="neutral">Neutral</Badge>`}>
+  <Button>Primary</Button>
+  <Button color="critical">Critical</Button>
+  <Button color="positive" variant="faded">Positive</Button>
+  <Button color="warning">Warning</Button>
+  <Badge color="neutral">Neutral</Badge>
 </Preview>
 
 ## Dark mode
 
-Dark mode is a token override under `[data-theme="dark"]`, not a separate
-stylesheet or component variant:
+Set `data-theme="dark"` on `<html>` or on any subtree. Both themes come out of
+the same inputs, so a brand change updates both.
+
+<Preview code={`<div data-theme="dark" class="rounded-lg bg-page p-4">
+  <Alert color="primary" title="Dark subtree">Everything inside recolours.</Alert>
+</div>`}>
+  <div data-theme="dark" class="w-full rounded-lg bg-page p-4">
+    <Alert color="primary" title="Dark subtree">Everything inside recolours.</Alert>
+  </div>
+</Preview>
+
+## The contrast gate
+
+`npm run check:contrast` reads the real values from `theme.css` and measures
+every pair the generator produces, in both themes:
+
+- each `--foreground-{hue}` on the page, on `elevation-raised`, and on its own faded tint;
+- each `--on-{hue}` on the fill and on the hovered fill;
+- `--foreground-neutral-faded` on the page and on the faded neutral fill;
+- `--on-inverted` on the inverted surface;
+- the focus ring on the page at 3:1;
+- body text on every elevation.
+
+Faded tints are alpha colours, so the gate composites them over the page in
+gamma sRGB, the way a browser paints them, before measuring. It exits non-zero
+on the first miss, and `prepublishOnly` runs it.
+
+## Overriding one token
+
+Set the variable after the theme import:
 
 ```css
-:root,
-[data-theme="light"] {
-  --background: var(--color-white);
-  --foreground: var(--color-zinc-900);
-  --accent: var(--color-blue-600);
-  --accent-foreground: var(--color-white);
-}
-
-[data-theme="dark"] {
-  --background: var(--color-zinc-950);
-  --foreground: var(--color-zinc-50);
-  --accent: var(--color-blue-500);
-  /* bright 500-level fill flips to dark text for AA — see below */
-  --accent-foreground: var(--color-zinc-950);
+[data-brand="acme"] {
+  --background-primary: oklch(0.45 0.18 300);
+  --background-primary-highlighted: oklch(0.4 0.18 300);
+  --foreground-primary: oklch(0.42 0.18 300);
+  --on-primary: white;
 }
 ```
 
-Set `data-theme` on `<html>` (or any ancestor) and every component under it
-repaints — no prop, no rebuild.
+A hand override skips the generator, so run the gate afterwards. Overriding a
+fill without its on-colour is the usual way to break AA.
 
-## The WCAG AA contrast gate
+## Do / Don't
 
-Every semantic pair that carries text — or a focus indicator — is required to
-meet **WCAG 2.1 AA**: 4.5:1 for normal text, 3:1 for the focus ring. This
-isn't a design guideline someone eyeballs; it's enforced by a script that
-computes the real ratios and fails the build on a miss:
-
-```sh
-npm run check:contrast
-```
-
-`scripts/check-contrast.mjs` reads the semantic mapping straight out of
-`registry/tokens/theme.css` and the ramp values from Tailwind's own theme
-(OKLCH), converts each OKLCH color to sRGB, computes luminance, and derives
-the WCAG contrast ratio for every pair, in both themes. No dependencies — the
-color math is self-checked against black/white = 21:1 at the bottom of the
-script.
-
-| Pair | Role | Min | Light | Dark |
-|---|---|---|---|---|
-| `foreground` / `background` | body text | 4.5 | 17.7 | 19.1 |
-| `foreground` / `surface` | text on surface | 4.5 | 17.0 | 17.0 |
-| `muted-foreground` / `background` | muted text | 4.5 | 7.7 | 7.6 |
-| `muted-foreground` / `muted` | muted text on fill | 4.5 | 7.0 | 5.7 |
-| `accent` / `background` | link / accent text | 4.5 | 5.3 | 5.3 |
-| `accent-foreground` / `accent` | text on accent fill | 4.5 | 5.3 | 5.3 |
-| `danger-foreground` / `danger` | text on danger fill | 4.5 | 4.8 | 5.2 |
-| `success-foreground` / `success` | text on success fill | 4.5 | 4.9 | 9.0 |
-| `warning-foreground` / `warning` | text on warning fill | 4.5 | 9.3 | 11.6 |
-| `ring` / `background` | focus ring | 3.0 | 5.3 | 5.3 |
-
-### Bright dark-mode fills take a dark foreground
-
-Dark mode's `accent`, `danger`, and `success` are bright 500-level colors (they
-need to read against a near-black background), which flips their `-foreground`
-to near-black `zinc-950` rather than white — the same trick `warning` already
-uses in light mode. Two decisions this drove:
-
-- `muted-foreground` is zinc-**600**, not 500, so muted text still clears AA
-  even sitting on a `muted` fill (e.g. `Kbd`).
-- `success` is green-**700** in light mode, not 600, so white text on a
-  success fill passes.
-
-If you want white text on a primary button in dark mode instead, swap in a
-darker accent (`blue-600`) and re-run the gate — don't hand-pick a lighter
-foreground and hope.
-
-### What isn't gated
-
-- **Decorative borders and dividers** are exempt under WCAG 1.4.11 — they
-  don't identify a component, so `border` isn't tested.
-- Pairs that never render as text-on-fill aren't asserted beyond the roles
-  in the table above.
-
-Run `check:contrast` after changing any color token — before it ships, not
-after someone reports it.
+- **Do** change `scripts/hues.mjs` and rebuild rather than editing generated lines.
+- **Do** keep `primary` dark enough for white text; the gate will tell you.
+- **Don't** reach for a Tailwind palette step (`bg-blue-600`) in a component.
+- **Don't** put `text-primary` on `bg-primary`; the on-colour exists for that.

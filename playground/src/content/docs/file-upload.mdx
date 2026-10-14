@@ -64,10 +64,14 @@ Restricted to a type, marked required:
 
 ## States
 
-- **Hover** — dropzone border shifts to `--accent`.
+- **Hover** — dropzone border shifts to `--background-primary`.
 - **Drag-over** (JS) — border and a faint accent background via `data-drag="true"`.
 - **No JS** — filename text is hidden (`no-js:hidden`); the native picker and
   form submission still work.
+
+## Events
+
+A dropped file assigns `input.files` and dispatches a native `change` event, the same as picking a file.
 
 ## Accessibility
 
@@ -86,11 +90,11 @@ Restricted to a type, marked required:
 
 | Token | Used for |
 |---|---|
-| `--border` / `--accent` | Dropzone border (default / hover / drag-over) |
-| `--background` | Dropzone fill |
-| `--accent` (at 5% opacity) | Drag-over background tint |
-| `--muted-foreground` | Helper text and filename echo |
-| `--foreground` | "or drag a file here" text |
+| `--border-neutral` / `--background-primary` | Dropzone border (default / hover / drag-over) |
+| `--background-page` | Dropzone fill |
+| `--background-primary` (at 5% opacity) | Drag-over background tint |
+| `--foreground-neutral-faded` | Helper text and filename echo |
+| `--foreground-neutral` | "or drag a file here" text |
 | `--radius-lg` | Corner radius |
 
 ## Do / Don't

@@ -48,7 +48,9 @@ passes through to the root `<div>` (not the free-text `<input>`).
 | `name` | `string` | — | Field name each tag submits under, as a repeated hidden input. |
 | `value` | `string[]` | `[]` | Initial tags, rendered as removable chips. |
 | `placeholder` | `string` | `'Add tag…'` | Placeholder on the free-text field. |
-| `class` | `string` | — | Extra classes on the root `<div>`, merged last. |
+| `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style, shared with every text field. |
+| `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border). |
+| `class` | `string` | — | Extra classes on the root `<div>`, appended last. |
 
 ## States
 
@@ -57,7 +59,7 @@ passes through to the root `<div>` (not the free-text `<input>`).
 - **Focus-within** — the whole container gets a visible ring when the
   free-text field has focus.
 - **Hover** on a chip's remove button — the icon darkens from
-  `--muted-foreground` to `--foreground`.
+  `--foreground-neutral-faded` to `--foreground-neutral`.
 - **No JS** — remove buttons on the initial tags are hidden (`no-js:hidden`);
   the free-text field keeps its `name`, so typed-but-not-yet-added text still
   submits alongside the tags.
@@ -87,6 +89,20 @@ an array:
 const skills = formData.getAll('skills') // ['Astro', 'Tailwind', …]
 ```
 
+## Events
+
+The root dispatches `apogee:tag-input-change` (`detail: { values: string[] }`, bubbles) after every add or remove. Duplicate labels are ignored.
+
+```astro
+<TagInput name="tags" id="tags" value={['astro']} />
+<output for="tags">astro</output>
+<script>
+  document.querySelector('.apogee-taginput')?.addEventListener('apogee:tag-input-change', (e) => {
+    document.querySelector('output').textContent = e.detail.values.join(', ')
+  })
+</script>
+```
+
 ## Accessibility
 
 - The free-text field is a real `<input type="text">`; each tag's remove
@@ -105,12 +121,12 @@ const skills = formData.getAll('skills') // ['Astro', 'Tailwind', …]
 
 | Token | Used for |
 |---|---|
-| `--border` | Container border |
-| `--background` | Container + field background |
-| `--ring` | Focus-within ring |
-| `--muted` | Chip background |
-| `--foreground` | Chip text + remove icon (hover) |
-| `--muted-foreground` | Field placeholder + remove icon (default) |
+| `--border-neutral` | Container border |
+| `--background-page` | Container + field background |
+| `--border-primary` | Focus-within ring |
+| `--background-neutral-faded` | Chip background |
+| `--foreground-neutral` | Chip text + remove icon (hover) |
+| `--foreground-neutral-faded` | Field placeholder + remove icon (default) |
 
 ## Do / Don't
 

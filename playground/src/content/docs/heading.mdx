@@ -8,7 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Heading from '../../../../registry/components/Heading/Heading.astro'
 
-<Preview code={`<Heading as="h1">Ship faster with Apogee</Heading>
+<Preview block code={`<Heading as="h1">Ship faster with Apogee</Heading>
 <Heading as="h2" size="h3">Same order, a smaller visual weight</Heading>`}>
   <Heading as="h1">Ship faster with Apogee</Heading>
   <Heading as="h2" size="h3">Same order, a smaller visual weight</Heading>
@@ -40,6 +40,10 @@ attribute (e.g. `id`, `aria-level`) passes through.
 |---|---|---|---|
 | `as` | `'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6' \| 'p' \| 'div'` | `'h2'` | Semantic tag rendered. |
 | `size` | `'display' \| 'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6'` | mirrors `as` (falls back to `h2` when `as` is `p`/`div`) | Visual size, independent of the semantic tag. |
+| `weight` | `'regular' \| 'medium' \| 'semibold' \| 'bold'` | `'semibold'` | Font weight. |
+| `color` | `'neutral' \| 'neutral-faded' \| 'primary' \| 'critical' \| 'positive' \| 'warning'` | — | Text hue. Unset inherits the surrounding colour, so a heading inside a solid fill keeps the on-colour. |
+| `maxLines` | `1 \| 2 \| 3` | — | Clamp with an ellipsis. |
+| `align` | `'start' \| 'center' \| 'end'` | — | Text alignment. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
@@ -47,7 +51,7 @@ attribute (e.g. `id`, `aria-level`) passes through.
 Every size. Rendered here on `as="div"` so the outline stays clean — in real
 pages, prefer picking the right `as` first.
 
-<Preview code={`<Heading as="div" size="display">Display</Heading>
+<Preview block code={`<Heading as="div" size="display">Display</Heading>
 <Heading as="div" size="h1">Heading 1</Heading>
 <Heading as="div" size="h2">Heading 2</Heading>
 <Heading as="div" size="h3">Heading 3</Heading>
@@ -61,6 +65,20 @@ pages, prefer picking the right `as` first.
   <Heading as="div" size="h4">Heading 4</Heading>
   <Heading as="div" size="h5">Heading 5</Heading>
   <Heading as="div" size="h6">Heading 6</Heading>
+</Preview>
+
+## Weight and colour
+
+<Preview block code={`<Heading as="h3" weight="regular">Regular</Heading>
+<Heading as="h3" weight="bold">Bold</Heading>
+<Heading as="h3" color="primary">Primary</Heading>
+<Heading as="h3" color="neutral-faded">Faded</Heading>
+<Heading as="h3" maxLines={1}>A very long heading that is clamped to one line with an ellipsis</Heading>`}>
+  <Heading as="h3" weight="regular">Regular</Heading>
+  <Heading as="h3" weight="bold">Bold</Heading>
+  <Heading as="h3" color="primary">Primary</Heading>
+  <Heading as="h3" color="neutral-faded">Faded</Heading>
+  <Heading as="h3" maxLines={1} class="max-w-sm">A very long heading that is clamped to one line with an ellipsis</Heading>
 </Preview>
 
 ## Examples
@@ -88,7 +106,7 @@ an `h3` but should look smaller than the page's other `h3`s:
 | Token | Used for |
 |---|---|
 | `--text-display` / `--text-h1` … `--text-h6` (each paired with its own line-height) | Fluid font size + line height per `size` |
-| `--foreground` | Text colour |
+| `--foreground-neutral` | Text colour |
 
 ## Do / Don't
 

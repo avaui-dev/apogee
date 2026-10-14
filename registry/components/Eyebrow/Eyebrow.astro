@@ -4,24 +4,38 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+
+const colors = {
+  primary: 'text-primary',
+  neutral: 'text-neutral',
+  'neutral-faded': 'text-neutral-faded',
+  critical: 'text-critical',
+  positive: 'text-positive',
+  warning: 'text-warning',
+  inherit: 'text-inherit',
+} as const
+
+const sizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
+const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold' } as const
+
+interface Props extends Omit<HTMLAttributes<'span'>, 'as'> {
   as?: 'p' | 'span' | 'div'
-  /** Neutral instead of the accent color. */
-  muted?: boolean
+  /** @category layout */
+  color?: keyof typeof colors
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** @category layout */
+  weight?: keyof typeof weights
+  /** All caps with letter-spacing; false keeps the text as written. @category layout */
+  uppercase?: boolean
   class?: string
 }
 
-const { as = 'p', muted = false, class: className, ...rest } = Astro.props
+const { as = 'p', color = 'primary', size = 'medium', weight = 'medium', uppercase = true, class: className, ...rest } = Astro.props
 const Tag = as
 ---
 
-<Tag
-  class:list={[
-    'text-sm font-medium uppercase tracking-wide',
-    muted ? 'text-muted-foreground' : 'text-accent',
-    className,
-  ]}
-  {...rest}
->
+<Tag class:list={[sizes[size], weights[weight], uppercase ? 'uppercase tracking-wide' : 'normal-case tracking-normal', colors[color], className]} {...rest}>
   <slot />
 </Tag>

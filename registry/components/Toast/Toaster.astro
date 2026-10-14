@@ -3,43 +3,53 @@
  * Toaster — the toast host. Place it once (e.g. in your base layout), then fire
  * toasts imperatively:
  *
- *   apogeeToast('Saved', { variant: 'success', title: 'Done' })
+ *   apogeeToast('Saved', { color: 'positive', title: 'Done' })
  *
- * Signature: apogeeToast(message, { variant?, title?, duration? }). Toasts stack,
- * auto-dismiss (duration ms, default 4000; 0 = sticky), and have a close button.
+ * Signature: apogeeToast(message, { color?, title?, duration?, position? }) → id.
+ * `color` is a hue: primary (default), neutral, positive, warning, critical.
+ * Toasts stack, auto-dismiss (duration ms, default 4000; 0 = sticky; the timer
+ * pauses while hovered or focused), and have a close button. `position` picks a
+ * corner per call (regions are created as needed); `apogeeToast.dismiss(id)`
+ * closes one early.
  *
  * The markup lives in a build-time <template> + icon set so Tailwind sees every
  * class; the script clones them. Needs JS (a toast is inherently imperative).
- *
- * @composable
  */
-import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro'
+import type { HTMLAttributes } from 'astro/types'
+import { Info, CircleCheck, TriangleAlert, CircleAlert, X } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** Host id. One Toaster per page; a second one is ignored by the script. */
+  id?: string
+  /** Screen corner, in logical terms (`end` is the right in LTR, the left in RTL). */
   position?:
-    | 'top-left'
+    | 'top-start'
     | 'top-center'
-    | 'top-right'
-    | 'bottom-left'
+    | 'top-end'
+    | 'bottom-start'
     | 'bottom-center'
-    | 'bottom-right'
+    | 'bottom-end'
   class?: string
 }
-const { position = 'bottom-right', class: className, ...rest } = Astro.props
+const { id = 'apogee-toaster', position = 'bottom-end', class: className, ...rest } = Astro.props
 
-// Literal classes so Tailwind sees them.
+// Literal classes so Tailwind sees them. Logical edges mirror under dir="rtl".
 const positions = {
-  'top-left': 'top-4 left-4 items-start flex-col-reverse',
+  'top-start': 'top-4 start-4 items-start flex-col-reverse',
   'top-center': 'top-4 left-1/2 -translate-x-1/2 items-center flex-col-reverse',
-  'top-right': 'top-4 right-4 items-end flex-col-reverse',
-  'bottom-left': 'bottom-4 left-4 items-start flex-col',
+  'top-end': 'top-4 end-4 items-end flex-col-reverse',
+  'bottom-start': 'bottom-4 start-4 items-start flex-col',
   'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2 items-center flex-col',
-  'bottom-right': 'bottom-4 right-4 items-end flex-col',
+  'bottom-end': 'bottom-4 end-4 items-end flex-col',
 }
 ---
 
 <div
-  id="apogee-toaster"
+  id={id}
+  data-apogee-toaster
+  data-position={position}
+  data-positions={JSON.stringify(positions)}
   role="region"
   aria-label="Notifications"
   class:list={[
@@ -52,49 +62,41 @@ const positions = {
 </div>
 
 <div id="apogee-toast-icons" hidden>
-  <span data-variant="info"><Info class="size-5 text-accent" /></span>
-  <span data-variant="success"><CircleCheck class="size-5 text-success" /></span>
-  <span data-variant="warning"><TriangleAlert class="size-5 text-warning" /></span>
-  <span data-variant="danger"><CircleAlert class="size-5 text-danger" /></span>
+  <span data-color="primary"><Info class="size-5 text-primary" /></span>
+  <span data-color="neutral"><Info class="size-5 text-neutral-faded" /></span>
+  <span data-color="positive"><CircleCheck class="size-5 text-positive" /></span>
+  <span data-color="warning"><TriangleAlert class="size-5 text-warning" /></span>
+  <span data-color="critical"><CircleAlert class="size-5 text-critical" /></span>
 </div>
 
 <template id="apogee-toast-template">
-  <div class="apogee-toast pointer-events-auto flex items-start gap-3 rounded-lg border border-border bg-surface p-3 text-sm shadow-lg">
+  <div class="apogee-toast pointer-events-auto flex items-start gap-3 rounded-lg border border-neutral bg-elevation-raised p-3 text-sm shadow-lg">
     <span class="apogee-toast-icon mt-0.5 shrink-0"></span>
     <div class="min-w-0 flex-1">
-      <p class="apogee-toast-title font-medium text-foreground"></p>
-      <p class="apogee-toast-msg text-muted-foreground"></p>
+      <p class="apogee-toast-title font-medium text-neutral"></p>
+      <p class="apogee-toast-msg text-neutral-faded"></p>
     </div>
     <button
       type="button"
-      class="apogee-toast-close -me-1 -mt-1 grid size-6 shrink-0 place-items-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      class="apogee-toast-close -me-1 -mt-1 grid size-6 shrink-0 place-items-center rounded text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       aria-label="Dismiss"
     >
-      <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-        <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
-      </svg>
+      <X class="size-4" aria-hidden="true" />
     </button>
   </div>
 </template>
 
 <style is:global>
   .apogee-toast {
-    animation: apogee-toast-in var(--duration-base) var(--ease-smooth);
+    animation: apogee-toast-in var(--duration-medium) var(--ease-standard);
   }
-  .apogee-toast[data-variant='info'] {
-    border-color: color-mix(in oklab, var(--accent) 35%, var(--border));
-  }
-  .apogee-toast[data-variant='success'] {
-    border-color: color-mix(in oklab, var(--success) 35%, var(--border));
-  }
-  .apogee-toast[data-variant='warning'] {
-    border-color: color-mix(in oklab, var(--warning) 40%, var(--border));
-  }
-  .apogee-toast[data-variant='danger'] {
-    border-color: color-mix(in oklab, var(--danger) 35%, var(--border));
-  }
+  .apogee-toast[data-color='primary'] { border-color: var(--border-primary-faded); }
+  .apogee-toast[data-color='neutral'] { border-color: var(--border-neutral); }
+  .apogee-toast[data-color='positive'] { border-color: var(--border-positive-faded); }
+  .apogee-toast[data-color='warning'] { border-color: var(--border-warning-faded); }
+  .apogee-toast[data-color='critical'] { border-color: var(--border-critical-faded); }
   .apogee-toast--out {
-    animation: apogee-toast-out var(--duration-fast) var(--ease-smooth) forwards;
+    animation: apogee-toast-out var(--duration-fast) var(--ease-standard) forwards;
   }
   @keyframes apogee-toast-in {
     from {
@@ -117,23 +119,45 @@ const positions = {
 </style>
 
 <script>
-  const region = document.getElementById('apogee-toaster')
+  const host = document.querySelector<HTMLElement>('[data-apogee-toaster]')
   const template = document.getElementById('apogee-toast-template') as HTMLTemplateElement | null
   const icons = document.getElementById('apogee-toast-icons')
+  const positions: Record<string, string> = host?.dataset.positions ? JSON.parse(host.dataset.positions) : {}
+  const BASE = 'pointer-events-none fixed z-50 flex w-80 max-w-[calc(100vw-2rem)] gap-2'
+
+  // One region per position, created on first use; the host serves its own position.
+  const regionFor = (position: string): HTMLElement | null => {
+    if (!host) return null
+    if (position === host.dataset.position || !positions[position]) return host
+    let region = document.querySelector<HTMLElement>(`[data-apogee-toaster-region="${position}"]`)
+    if (!region) {
+      region = document.createElement('div')
+      region.dataset.apogeeToasterRegion = position
+      region.setAttribute('role', 'region')
+      region.setAttribute('aria-label', host.getAttribute('aria-label') ?? 'Notifications')
+      region.className = `${BASE} ${positions[position]}`
+      document.body.appendChild(region)
+    }
+    return region
+  }
+
+  let seq = 0
+  const open = new Map<number, () => void>()
 
   function toast(
     message: string,
-    opts: { variant?: string; title?: string; duration?: number } = {},
-  ) {
-    if (!region || !template?.content.firstElementChild) return
-    const { variant = 'info', title, duration = 4000 } = opts
+    opts: { color?: string; title?: string; duration?: number; position?: string } = {},
+  ): number {
+    const { color = 'primary', title, duration = 4000, position = host?.dataset.position ?? 'bottom-end' } = opts
+    const region = regionFor(position)
+    if (!region || !template?.content.firstElementChild) return -1
 
     const el = template.content.firstElementChild.cloneNode(true) as HTMLElement
-    el.dataset.variant = variant
-    el.setAttribute('role', variant === 'danger' || variant === 'warning' ? 'alert' : 'status')
+    el.dataset.color = color
+    el.setAttribute('role', color === 'critical' || color === 'warning' ? 'alert' : 'status')
 
     const iconEl = el.querySelector('.apogee-toast-icon')
-    const iconSrc = icons?.querySelector(`[data-variant="${variant}"]`)
+    const iconSrc = icons?.querySelector(`[data-color="${color}"]`)
     if (iconEl && iconSrc) iconEl.innerHTML = iconSrc.innerHTML
 
     const titleEl = el.querySelector<HTMLElement>('.apogee-toast-title')
@@ -144,11 +168,13 @@ const positions = {
     }
     if (msgEl) msgEl.textContent = message
 
+    const id = ++seq
     let removed = false
     const remove = () => {
       if (removed) return
       removed = true
       el.remove()
+      open.delete(id)
     }
     const dismiss = () => {
       el.classList.add('apogee-toast--out')
@@ -156,10 +182,40 @@ const positions = {
       setTimeout(remove, 250)
     }
 
+    // Auto-dismiss timer that pauses while the pointer or focus is on the toast.
+    if (duration > 0) {
+      let remaining = duration
+      let startedAt = Date.now()
+      let timer: number | undefined
+      let running = false
+      let hovered = false
+      let focused = false
+      const resume = () => {
+        if (running || hovered || focused) return
+        clearTimeout(timer)
+        startedAt = Date.now()
+        running = true
+        timer = window.setTimeout(dismiss, remaining)
+      }
+      const pause = () => {
+        if (!running) return
+        clearTimeout(timer)
+        running = false
+        remaining = Math.max(0, remaining - (Date.now() - startedAt))
+      }
+      el.addEventListener('mouseenter', () => { hovered = true; pause() })
+      el.addEventListener('mouseleave', () => { hovered = false; resume() })
+      el.addEventListener('focusin', () => { focused = true; pause() })
+      el.addEventListener('focusout', () => { focused = false; resume() })
+      resume()
+    }
+
     el.querySelector('.apogee-toast-close')?.addEventListener('click', dismiss)
     region.appendChild(el)
-    if (duration > 0) setTimeout(dismiss, duration)
+    open.set(id, dismiss)
+    return id
   }
+  toast.dismiss = (id: number) => open.get(id)?.()
 
   ;(window as unknown as { apogeeToast: typeof toast }).apogeeToast = toast
 </script>

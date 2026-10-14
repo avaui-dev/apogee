@@ -9,14 +9,14 @@ import Preview from '../../components/Preview.astro'
 import Stack from '../../../../registry/components/Stack/Stack.astro'
 
 <Preview code={`<Stack gap={4}>
-  <div class="rounded-md bg-muted p-3">One</div>
-  <div class="rounded-md bg-muted p-3">Two</div>
-  <div class="rounded-md bg-muted p-3">Three</div>
+  <div class="rounded-md bg-neutral-faded p-3">One</div>
+  <div class="rounded-md bg-neutral-faded p-3">Two</div>
+  <div class="rounded-md bg-neutral-faded p-3">Three</div>
 </Stack>`}>
   <Stack gap={4}>
-    <div class="rounded-md bg-muted p-3">One</div>
-    <div class="rounded-md bg-muted p-3">Two</div>
-    <div class="rounded-md bg-muted p-3">Three</div>
+    <div class="rounded-md bg-neutral-faded p-3">One</div>
+    <div class="rounded-md bg-neutral-faded p-3">Two</div>
+    <div class="rounded-md bg-neutral-faded p-3">Three</div>
   </Stack>
 </Preview>
 
@@ -48,32 +48,46 @@ through onto the rendered tag.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `as` | `string` | `'div'` | Element/tag to render. |
-| `direction` | `'col' \| 'row'` | `'col'` | Stack axis. |
-| `gap` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 10 \| 12` | `4` | Gap between children (Tailwind's numeric spacing scale). |
-| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | — | Cross-axis alignment (`items-*`). |
-| `justify` | `'start' \| 'center' \| 'end' \| 'between'` | — | Main-axis distribution (`justify-*`). |
-| `wrap` | `boolean` | `false` | Allows children to wrap (`flex-wrap`). |
+| `direction` | `'column' \| 'row' \| 'column-reverse' \| 'row-reverse'`, responsive | `'column'` | Stack axis. |
+| `gap` | `0 … 6 \| 8 \| 10 \| 12 \| 16`, responsive | `4` | Gap between children (Tailwind's numeric spacing scale). |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch' \| 'baseline'`, responsive | — | Cross-axis alignment (`items-*`). |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between' \| 'around' \| 'evenly'`, responsive | — | Main-axis distribution (`justify-*`). |
+| `wrap` | `boolean`, responsive | — | Allows children to wrap (`flex-wrap`). |
 | `class` | `string` | — | Extra classes, merged last. |
+
+## Responsive values
+
+Every layout prop accepts a value or an object keyed by breakpoint (`T | { base?, sm?, md?, lg?, xl? }`, mobile first, Tailwind's `sm` 640px, `md` 768px, `lg` 1024px, `xl` 1280px). Resize the window to see the direction flip:
+
+<Preview block code={`<Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 2, md: 6 }} align={{ md: 'center' }}>
+  <div>One</div><div>Two</div><div>Three</div>
+</Stack>`}>
+  <Stack direction={{ base: 'column', md: 'row' }} gap={{ base: 2, md: 6 }} align={{ md: 'center' }} class="rounded-lg border border-neutral p-4">
+    <div class="rounded bg-neutral-faded p-3">One</div>
+    <div class="rounded bg-neutral-faded p-3">Two</div>
+    <div class="rounded bg-neutral-faded p-3">Three</div>
+  </Stack>
+</Preview>
 
 ## Variants
 
 ### Direction
 
 <Preview code={`<Stack direction="row" gap={2}>
-  <div class="rounded-md bg-muted p-3">A</div>
-  <div class="rounded-md bg-muted p-3">B</div>
+  <div class="rounded-md bg-neutral-faded p-3">A</div>
+  <div class="rounded-md bg-neutral-faded p-3">B</div>
 </Stack>
-<Stack direction="col" gap={2}>
-  <div class="rounded-md bg-muted p-3">A</div>
-  <div class="rounded-md bg-muted p-3">B</div>
+<Stack direction="column" gap={2}>
+  <div class="rounded-md bg-neutral-faded p-3">A</div>
+  <div class="rounded-md bg-neutral-faded p-3">B</div>
 </Stack>`}>
   <Stack direction="row" gap={2}>
-    <div class="rounded-md bg-muted p-3">A</div>
-    <div class="rounded-md bg-muted p-3">B</div>
+    <div class="rounded-md bg-neutral-faded p-3">A</div>
+    <div class="rounded-md bg-neutral-faded p-3">B</div>
   </Stack>
-  <Stack direction="col" gap={2}>
-    <div class="rounded-md bg-muted p-3">A</div>
-    <div class="rounded-md bg-muted p-3">B</div>
+  <Stack direction="column" gap={2}>
+    <div class="rounded-md bg-neutral-faded p-3">A</div>
+    <div class="rounded-md bg-neutral-faded p-3">B</div>
   </Stack>
 </Preview>
 
@@ -82,102 +96,102 @@ through onto the rendered tag.
 Every value on the scale:
 
 <Preview code={`<Stack gap={2}>
-  <Stack direction="row" gap={0} align="center"><span class="w-12 text-xs">gap=0</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={1} align="center"><span class="w-12 text-xs">gap=1</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={2} align="center"><span class="w-12 text-xs">gap=2</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={3} align="center"><span class="w-12 text-xs">gap=3</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={4} align="center"><span class="w-12 text-xs">gap=4</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={5} align="center"><span class="w-12 text-xs">gap=5</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={6} align="center"><span class="w-12 text-xs">gap=6</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={8} align="center"><span class="w-12 text-xs">gap=8</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={10} align="center"><span class="w-12 text-xs">gap=10</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-  <Stack direction="row" gap={12} align="center"><span class="w-12 text-xs">gap=12</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
+  <Stack direction="row" gap={0} align="center"><span class="w-12 text-xs">gap=0</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={1} align="center"><span class="w-12 text-xs">gap=1</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={2} align="center"><span class="w-12 text-xs">gap=2</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={3} align="center"><span class="w-12 text-xs">gap=3</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={4} align="center"><span class="w-12 text-xs">gap=4</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={5} align="center"><span class="w-12 text-xs">gap=5</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={6} align="center"><span class="w-12 text-xs">gap=6</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={8} align="center"><span class="w-12 text-xs">gap=8</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={10} align="center"><span class="w-12 text-xs">gap=10</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+  <Stack direction="row" gap={12} align="center"><span class="w-12 text-xs">gap=12</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
 </Stack>`}>
   <Stack gap={2}>
-    <Stack direction="row" gap={0} align="center"><span class="w-12 text-xs">gap=0</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={1} align="center"><span class="w-12 text-xs">gap=1</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={2} align="center"><span class="w-12 text-xs">gap=2</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={3} align="center"><span class="w-12 text-xs">gap=3</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={4} align="center"><span class="w-12 text-xs">gap=4</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={5} align="center"><span class="w-12 text-xs">gap=5</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={6} align="center"><span class="w-12 text-xs">gap=6</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={8} align="center"><span class="w-12 text-xs">gap=8</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={10} align="center"><span class="w-12 text-xs">gap=10</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
-    <Stack direction="row" gap={12} align="center"><span class="w-12 text-xs">gap=12</span><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div><div class="size-4 rounded bg-accent"></div></Stack>
+    <Stack direction="row" gap={0} align="center"><span class="w-12 text-xs">gap=0</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={1} align="center"><span class="w-12 text-xs">gap=1</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={2} align="center"><span class="w-12 text-xs">gap=2</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={3} align="center"><span class="w-12 text-xs">gap=3</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={4} align="center"><span class="w-12 text-xs">gap=4</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={5} align="center"><span class="w-12 text-xs">gap=5</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={6} align="center"><span class="w-12 text-xs">gap=6</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={8} align="center"><span class="w-12 text-xs">gap=8</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={10} align="center"><span class="w-12 text-xs">gap=10</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
+    <Stack direction="row" gap={12} align="center"><span class="w-12 text-xs">gap=12</span><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div><div class="size-4 rounded bg-primary"></div></Stack>
   </Stack>
 </Preview>
 
 ### Align
 
-<Preview code={`<Stack direction="row" align="start" gap={2} class="h-16 bg-muted/40">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">start</div>
+<Preview code={`<Stack direction="row" align="start" gap={2} class="h-16 bg-neutral-faded">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">start</div>
 </Stack>
-<Stack direction="row" align="center" gap={2} class="h-16 bg-muted/40">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">center</div>
+<Stack direction="row" align="center" gap={2} class="h-16 bg-neutral-faded">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">center</div>
 </Stack>
-<Stack direction="row" align="end" gap={2} class="h-16 bg-muted/40">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">end</div>
+<Stack direction="row" align="end" gap={2} class="h-16 bg-neutral-faded">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">end</div>
 </Stack>
-<Stack direction="row" align="stretch" gap={2} class="h-16 bg-muted/40">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">stretch</div>
+<Stack direction="row" align="stretch" gap={2} class="h-16 bg-neutral-faded">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">stretch</div>
 </Stack>`}>
-  <Stack direction="row" align="start" gap={2} class="h-16 bg-muted/40">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">start</div>
+  <Stack direction="row" align="start" gap={2} class="h-16 bg-neutral-faded">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">start</div>
   </Stack>
-  <Stack direction="row" align="center" gap={2} class="h-16 bg-muted/40">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">center</div>
+  <Stack direction="row" align="center" gap={2} class="h-16 bg-neutral-faded">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">center</div>
   </Stack>
-  <Stack direction="row" align="end" gap={2} class="h-16 bg-muted/40">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">end</div>
+  <Stack direction="row" align="end" gap={2} class="h-16 bg-neutral-faded">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">end</div>
   </Stack>
-  <Stack direction="row" align="stretch" gap={2} class="h-16 bg-muted/40">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">stretch</div>
+  <Stack direction="row" align="stretch" gap={2} class="h-16 bg-neutral-faded">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">stretch</div>
   </Stack>
 </Preview>
 
 ### Justify
 
-<Preview code={`<Stack direction="row" justify="start" gap={2} class="w-full bg-muted/40 p-2">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">start</div>
+<Preview code={`<Stack direction="row" justify="start" gap={2} class="w-full bg-neutral-faded p-2">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">start</div>
 </Stack>
-<Stack direction="row" justify="center" gap={2} class="w-full bg-muted/40 p-2">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">center</div>
+<Stack direction="row" justify="center" gap={2} class="w-full bg-neutral-faded p-2">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">center</div>
 </Stack>
-<Stack direction="row" justify="end" gap={2} class="w-full bg-muted/40 p-2">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">end</div>
+<Stack direction="row" justify="end" gap={2} class="w-full bg-neutral-faded p-2">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">end</div>
 </Stack>
-<Stack direction="row" justify="between" gap={2} class="w-full bg-muted/40 p-2">
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">A</div>
-  <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">B</div>
+<Stack direction="row" justify="between" gap={2} class="w-full bg-neutral-faded p-2">
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">A</div>
+  <div class="rounded-md bg-primary p-2 text-xs text-on-primary">B</div>
 </Stack>`}>
-  <Stack direction="row" justify="start" gap={2} class="w-full bg-muted/40 p-2">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">start</div>
+  <Stack direction="row" justify="start" gap={2} class="w-full bg-neutral-faded p-2">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">start</div>
   </Stack>
-  <Stack direction="row" justify="center" gap={2} class="w-full bg-muted/40 p-2">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">center</div>
+  <Stack direction="row" justify="center" gap={2} class="w-full bg-neutral-faded p-2">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">center</div>
   </Stack>
-  <Stack direction="row" justify="end" gap={2} class="w-full bg-muted/40 p-2">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">end</div>
+  <Stack direction="row" justify="end" gap={2} class="w-full bg-neutral-faded p-2">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">end</div>
   </Stack>
-  <Stack direction="row" justify="between" gap={2} class="w-full bg-muted/40 p-2">
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">A</div>
-    <div class="rounded-md bg-accent p-2 text-xs text-accent-foreground">B</div>
+  <Stack direction="row" justify="between" gap={2} class="w-full bg-neutral-faded p-2">
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">A</div>
+    <div class="rounded-md bg-primary p-2 text-xs text-on-primary">B</div>
   </Stack>
 </Preview>
 
 ### Wrap
 
 <Preview code={`<Stack direction="row" gap={2} wrap class="w-48">
-  <div class="rounded-md bg-muted p-3">One</div>
-  <div class="rounded-md bg-muted p-3">Two</div>
-  <div class="rounded-md bg-muted p-3">Three</div>
-  <div class="rounded-md bg-muted p-3">Four</div>
+  <div class="rounded-md bg-neutral-faded p-3">One</div>
+  <div class="rounded-md bg-neutral-faded p-3">Two</div>
+  <div class="rounded-md bg-neutral-faded p-3">Three</div>
+  <div class="rounded-md bg-neutral-faded p-3">Four</div>
 </Stack>`}>
   <Stack direction="row" gap={2} wrap class="w-48">
-    <div class="rounded-md bg-muted p-3">One</div>
-    <div class="rounded-md bg-muted p-3">Two</div>
-    <div class="rounded-md bg-muted p-3">Three</div>
-    <div class="rounded-md bg-muted p-3">Four</div>
+    <div class="rounded-md bg-neutral-faded p-3">One</div>
+    <div class="rounded-md bg-neutral-faded p-3">Two</div>
+    <div class="rounded-md bg-neutral-faded p-3">Three</div>
+    <div class="rounded-md bg-neutral-faded p-3">Four</div>
   </Stack>
 </Preview>
 
@@ -201,10 +215,10 @@ Nested Stacks — a vertical form with a right-aligned button row:
 
 ```astro
 <Stack gap={4}>
-  <input class="rounded-md border border-border px-3 py-2" placeholder="Email" />
+  <input class="rounded-md border border-neutral px-3 py-2" placeholder="Email" />
   <Stack direction="row" gap={2} justify="end">
-    <button class="rounded-md border border-border px-3 py-2 text-sm">Cancel</button>
-    <button class="rounded-md bg-accent px-3 py-2 text-sm text-accent-foreground">Save</button>
+    <button class="rounded-md border border-neutral px-3 py-2 text-sm">Cancel</button>
+    <button class="rounded-md bg-primary px-3 py-2 text-sm text-on-primary">Save</button>
   </Stack>
 </Stack>
 ```

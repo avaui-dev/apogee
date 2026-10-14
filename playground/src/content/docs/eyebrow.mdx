@@ -38,15 +38,48 @@ for the rendered tag (e.g. `id`) passes through.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `as` | `'p' \| 'span' \| 'div'` | `'p'` | Tag to render. |
-| `muted` | `boolean` | `false` | Neutral (muted-foreground) colour instead of the accent colour. |
+| `color` | `'primary' \| 'neutral' \| 'neutral-faded' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | Text colour. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Text size. |
+| `weight` | `'regular' \| 'medium' \| 'semibold'` | `'medium'` | Font weight. |
+| `uppercase` | `boolean` | `true` | All caps with letter-spacing; `false` keeps the text as written. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
 
-<Preview code={`<Eyebrow>Accent</Eyebrow>
-<Eyebrow muted>Muted</Eyebrow>`}>
-  <Eyebrow>Accent</Eyebrow>
-  <Eyebrow muted>Muted</Eyebrow>
+<Preview block code={`<Eyebrow size="small">Small</Eyebrow>
+<Eyebrow>Medium</Eyebrow>
+<Eyebrow size="large">Large</Eyebrow>
+<Eyebrow uppercase={false}>Sentence case</Eyebrow>
+<Eyebrow weight="regular">Regular</Eyebrow>
+<Eyebrow weight="semibold">Semibold</Eyebrow>`}>
+  <Eyebrow size="small">Small</Eyebrow>
+  <Eyebrow>Medium</Eyebrow>
+  <Eyebrow size="large">Large</Eyebrow>
+  <Eyebrow uppercase={false}>Sentence case</Eyebrow>
+  <Eyebrow weight="regular">Regular</Eyebrow>
+  <Eyebrow weight="semibold">Semibold</Eyebrow>
+</Preview>
+
+Colours:
+
+<Preview code={`<Eyebrow>Primary</Eyebrow>
+<Eyebrow color="neutral">Neutral</Eyebrow>
+<Eyebrow color="neutral-faded">Neutral faded</Eyebrow>
+<Eyebrow color="critical">Critical</Eyebrow>
+<Eyebrow color="positive">Positive</Eyebrow>
+<Eyebrow color="warning">Warning</Eyebrow>`}>
+  <Eyebrow>Primary</Eyebrow>
+  <Eyebrow color="neutral">Neutral</Eyebrow>
+  <Eyebrow color="neutral-faded">Neutral faded</Eyebrow>
+  <Eyebrow color="critical">Critical</Eyebrow>
+  <Eyebrow color="positive">Positive</Eyebrow>
+  <Eyebrow color="warning">Warning</Eyebrow>
+</Preview>
+
+<Preview code={`<Eyebrow>Primary</Eyebrow>
+<Eyebrow color="neutral-faded">Neutral faded</Eyebrow>`}>
+  <Eyebrow>Primary</Eyebrow>
+  <Eyebrow color="neutral-faded">Neutral faded</Eyebrow>
 </Preview>
 
 ## Examples
@@ -66,8 +99,8 @@ surrounding document outline (e.g. `span` inside a heading, not a block-level `p
 
 | Token | Used for |
 |---|---|
-| `--accent` | Default (non-muted) text colour |
-| `--muted-foreground` | `muted` text colour |
+| `--foreground-{hue}` | Text colour for the chosen `color` |
+| `--foreground-neutral-faded` | `color="neutral-faded"` |
 
 ## Do / Don't
 

@@ -3,30 +3,31 @@ import ShowcasePage from '../showcase/ShowcasePage.astro'
 import Showcase from '../showcase/Showcase.astro'
 import Group from '../showcase/Group.astro'
 import Button from '../../../registry/components/Button/Button.astro'
+import Link from '../../../registry/components/Link/Link.astro'
 import { Mail, ArrowRight, Search } from '@lucide/astro'
 ---
 
 <ShowcasePage title="Button">
   <Showcase name="Button" summary="Triggers an action. Renders a button, or a link when href is set.">
     <Group label="Variants">
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="danger">Delete</Button>
-      <Button variant="link" href="/">Link</Button>
+      <Button>Primary</Button>
+      <Button variant="outline" color="neutral">Secondary</Button>
+      <Button variant="ghost" color="neutral">Ghost</Button>
+      <Button color="critical">Delete</Button>
+      <Link href="/">Link</Link>
     </Group>
 
     <Group label="Link variant (inline)" stack>
-      <p class="text-sm text-muted-foreground">
+      <p class="text-sm text-neutral-faded">
         A link-styled button flows inline in text —
-        <Button variant="link" href="/">just like this</Button> — with no button chrome.
+        <Link href="/">just like this</Link> — with no button chrome.
       </p>
     </Group>
 
     <Group label="Sizes">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
+      <Button size="small">Small</Button>
+      <Button>Medium</Button>
+      <Button size="large">Large</Button>
     </Group>
 
     <Group label="States">
@@ -36,16 +37,16 @@ import { Mail, ArrowRight, Search } from '@lucide/astro'
     </Group>
 
     <Group label="As link">
-      <Button href="/" variant="ghost">Back home</Button>
-      <Button href="/" variant="primary">Go</Button>
+      <Button href="/" variant="ghost" color="neutral">Back home</Button>
+      <Button href="/">Go</Button>
       <Button href="/" disabled>Disabled link</Button>
     </Group>
 
     <Group label="With icons">
       <Button><Mail /> Email</Button>
-      <Button variant="secondary">Next <ArrowRight /></Button>
-      <Button size="icon" aria-label="Search"><Search /></Button>
-      <Button size="icon" variant="ghost" aria-label="Search"><Search stroke-width={2.5} /></Button>
+      <Button variant="outline" color="neutral">Next <ArrowRight /></Button>
+      <Button iconOnly aria-label="Search"><Search /></Button>
+      <Button iconOnly variant="ghost" color="neutral" aria-label="Search"><Search stroke-width={2.5} /></Button>
     </Group>
   </Showcase>
 </ShowcasePage>

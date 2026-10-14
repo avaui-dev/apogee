@@ -3,6 +3,128 @@
 All notable changes to Apogee are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](https://semver.org).
 
+## [Unreleased]
+
+### Added
+
+- **Sections** — 21 page-level compositions under `registry/sections`, built from the components: marketing (Hero, LogoCloud, Features, Stats, Testimonials, CTA, FAQ, Content, Team, Pricing, BlogList, PostHeader, Contact, NotFound, FooterSection) and application (PageHeader, StatsCards, SettingsForm, TableShell, EmptyStateSection). Each takes `background`, `spacing`, `headingLevel` and a `layout`; `apogee add <section>` copies one in with its components. `SectionHeader` component, `Section` `background`. Showcase pages at `/showcase/*`.
+- **Textarea** — `value` renders as content.
+- **Responsive props** — `direction`, `gap`, `align`, `justify`, `wrap` on Box and Stack, `cols` and `gap` on Grid, `colSpan` / `rowSpan` on GridItem, `size` on Text accept `{ base, sm, md, lg, xl }` objects. Classes come from a generated table (`npm run build:responsive`).
+- **Box** — `divided`, `paddingInline` / `paddingBlock`, `bleed`, every hue on `background` and `border`, `grow` / `shrink`.
+- **GridItem** — spans and start lines; **Grid** — `colGap` / `rowGap`, `align` / `justify`, `as`.
+- **Divider** — label slot with `contentPosition`, `color`, `inset`.
+- **Image** — remote `src`, `fit`, `radius`, `outline`, a `fallback` slot for broken images.
+- **Card** — `as` (article, section, li, button).
+- **Text** — `weight`, `maxLines`, `numeric`, `align`, more tags; **Heading** — `weight`, `color`, `maxLines`, `align`.
+- **Badge** — `highlighted`, `truncate`, a dot mode when empty, and `BadgeContainer` to anchor a badge on an avatar or icon.
+- **Eyebrow** — `size`, `weight`, `uppercase`.
+- **Link** — `start` / `end` icon slots, `critical` / `positive` / `warning` colours, `disabled`.
+- **Code** — `lang` + `code` for build-time syntax highlighting in both themes.
+- **Table, DataGrid** — `headerStyle: normal | caps` (default `normal`).
+- **Dialog** — `dismissOnBackdrop`.
+- **PinInput** — `hasError`, `disabled`, `value`; native attributes pass through.
+- **Toast** — `position` per call, `apogeeToast()` returns an id, `apogeeToast.dismiss(id)`; the timer pauses while hovered or focused.
+- **Carousel** — `label`; arrows hide at the edges; `apogee:carousel-change`.
+- **Events** — `apogee:tag-input-change`, `apogee:combobox-select` (plus native `input` / `change` on commit), FileUpload drop fires `change`.
+- **Tokens** — `--font-serif` (Blockquote and prose quotes use it).
+- **Prose** — styles every page element: all headings, lead and small text, figures, video, iframes, tables, kbd, mark, abbr, definition lists, details.
+- **utils/radius** — `innerRadius` table for concentric corners inside rounded trays.
+- **Gates** — `npm run check:strict` (consumer-grade strictest typecheck) and `npm run test:behaviour` (browser suite).
+
+### Changed
+
+- **Stack** — `direction="col"` is now `direction="column"` (plus `row-reverse` / `column-reverse`).
+- **Prose** — headings use the fluid type tokens, lists show markers, quotes and code match the Blockquote and Code components, roomier rhythm.
+- Form controls are at least 16px text below the `md` breakpoint, so phones never zoom on focus.
+- Avatar fallbacks and the AvatarGroup overflow chip use opaque fills.
+- Dialog drawers, sheets and full-screen have no border; only the centred modal keeps one.
+- Slider: neutral track, higher-contrast thumb, logical fill direction.
+- ToggleButtonGroup, SegmentedControl and Menubar chips use concentric inner radii.
+- Tooltip wraps long text (max 20rem) and renders nothing when `text` is empty.
+
+### Fixed
+
+- Carousel slides never received their snap and width styles (scoped CSS could not reach slotted children); arrows lost their fill on hover.
+- SegmentedControl styled every option after the checked one as selected.
+- TagInput could not add or remove tags (its template sat outside the root).
+- Rating: 44px touch targets, hover preview only on devices that hover, no focus-ring leak.
+- Tag: an icon in the default slot stacked above the label.
+- Combobox committed a selection without any event.
+- Input: a button in the `end` slot could not be clicked.
+- Dropdown stayed open after a button item was activated.
+- Radio and Checkbox: clicking between control and text now toggles (the wrapper is the label).
+- Actionable `as="div"`: `role="button"` and Enter / Space activation.
+- Skeleton renders a text-line height by default.
+- Docs: the theme toggle bound only the hidden mobile copy of the button; typography, prose, table and other block examples render as rows; stale `muted`, `size="lg"`, `size="icon"` and `align="right"` references.
+- Types: Button and Actionable declare `command` / `commandfor`; the registry typechecks under `astro/tsconfigs/strictest`.
+
+## [0.3.0] — 2026-10-13
+
+The 0.3 token model and prop vocabulary. See [Migrating to 0.3](https://apogee.avaui.dev/docs/migrating-to-0-3).
+
+### Added
+
+- **Token generator** — `scripts/hues.mjs` holds one OKLCH colour per hue; `npm run build:tokens` derives both themes, faded tints, hover steps, foregrounds and on-colours into `theme.css`. The contrast gate measures every generated pair in both themes, with alpha composited over the page.
+- **Components** — Actionable, Box, CheckboxGroup, RadioGroup, Hidden, Expandable, Dismissible, ProgressIndicator, ScrollArea.
+- **Fields** — shared size and variant tables (`outline | faded | ghost | headless`), `hasError`, `start` / `end` icon slots on Input; `size` and `hasError` on Checkbox, Radio, Switch; `size` and `variant` on PinInput and TagInput.
+- **Button** — `color` × `variant` × `size` tables, `rounded`, `raised`, `fullWidth`, `iconOnly`, `loading` with a Spinner, `start` / `end` slots.
+- **Badge, Tag, Alert, Toaster** — `color` and `variant` on every hue.
+- **Card** — `raised`, `selected`, `padding`. **Link** — `color`. **Progress, Slider, Rating** — `color`. **Section** — `containerWidth`.
+- **utils** — `uid()` deterministic ids per request, `island()` boot helper, shared field tables. Copied in automatically as a dependency.
+- **Typing** — every `Props` extends `HTMLAttributes` for its root element; `astro check` runs on the registry (`npm run check`).
+- **Codemod** — `scripts/codemod-0.3.mjs` rewrites 0.2 utilities and `var(--…)` names in a consumer's `src`.
+
+### Changed
+
+- **Tokens** — hues × roles replace the 0.2 semantic names: `--background-{hue}`, `-faded`, `-highlighted`, `-faded-highlighted`, `--border-{hue}`, `--foreground-{hue}`, `--on-{hue}`, plus page, elevation, disabled and inverted surfaces. Tailwind utilities are namespaced: `bg-primary` is the fill, `text-primary` readable text, `text-on-primary` text on the fill.
+- **Motion** — `--duration-rapid | fast | medium | slow` (100 / 150 / 250 / 400ms) and `--ease-standard | accelerate | decelerate` replace `--duration-base`, `ease-smooth`, `ease-emphasized`.
+- **Radius** — 4 / 6 / 10 / 14px under the same `rounded-sm | md | lg | xl` names.
+- **Props** — `color: primary | neutral | critical | positive | warning`, `variant` is fill style only, `size: small | medium | large | xlarge`; `Text` and `Eyebrow` `muted` → `color="neutral-faded"`; `Container` `size` → `width`; `Section` `space` → `spacing`; `Dialog` single `position`; `DataGrid` `align: start | end`; `Input` `variant="floating"` → `labelPosition`.
+- **NavLink** — slots `leading` / `trailing` are now `start` / `end`.
+- **Ids** — components generate deterministic ids per request instead of random ones, so builds are reproducible.
+
+### Removed
+
+- The 0.2 tokens (`--accent`, `--muted`, `--surface`, `--border`, `--ring`, `--danger`, `--success` …).
+- Button `variant="link"` (use `Link`) and `size="icon"` (use `iconOnly`).
+- The `[key: string]: any` escape hatch in `Props`.
+- `docs/components/*.md`; the playground is the docs.
+
+### Changed (earlier in this cycle)
+
+- **Dialog** — `position` is now logical: `start` / `end` replace `left` /
+  `right` (`end` is the right edge in LTR, the left in RTL). Default `end`.
+- **Toaster** — `position` values are logical: `top-start`, `top-end`,
+  `bottom-start`, `bottom-end` replace the `-left` / `-right` forms. Default
+  `bottom-end`. New `id` prop (default `apogee-toaster`).
+- **Navbar** — the `actions` slot now also renders inside the mobile panel, so
+  actions stay reachable on small screens. The breakpoint is Tailwind's `md`
+  utility instead of a hard-coded media query.
+- **Registry** — every component declares `@composable` in the JSDoc block
+  directly above `interface Props`, where AVA's descriptor reads it.
+- **Tokens** — new `--overlay` (scrim behind Dialog and CommandPalette).
+- **CLI** — `prepublishOnly` runs the new CLI tests; the contrast gate resolves
+  Tailwind from the package's own devDependency.
+
+### Fixed
+
+- **RTL:** Dialog side panels, Carousel next/previous, and Toaster corners now
+  mirror under `dir="rtl"`; all three joined the `/rtl` page.
+- **DataGrid** — sort buttons and select-all are hidden without JS (plain labels
+  show instead); `"12abc"` sorts as text, not as 12.
+- **RichTextEditor** — only `http(s)` and `mailto` links are inserted.
+- **Dropdown** — `aria-haspopup="menu"` and `aria-expanded` on the trigger;
+  `ArrowDown` on the closed trigger opens it.
+- **Tabs** — arrow keys follow the mirrored order in RTL; panels are focusable.
+- **Carousel** — dots are a `group`, not a misused `tablist`.
+- **Input, Switch** — transitions respect `prefers-reduced-motion`.
+- **ContextMenu, Menubar** — document listeners bound once per page.
+- **Radio, CommandPalette, Dialog** — no hard-coded white/black fills.
+- **Toaster** — close icon is Lucide's `X`.
+- **CLI** — refuses to write outside the components directory; a malformed
+  `apogee.json` fails with a message instead of a stack trace.
+- **Docs** — Tooltip page added.
+
 ## [0.2.0] — 2026-09-24
 
 ### Added

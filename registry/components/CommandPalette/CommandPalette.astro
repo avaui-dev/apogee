@@ -9,12 +9,12 @@
  * `apogee:command` event (`detail: { id, label }`) on `document` for the app to
  * handle. Without JS the dialog and shortcut don't run — pair the trigger with a
  * real link/menu as a fallback.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { Search } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   id?: string
   commands: { label: string; href?: string; group?: string; keywords?: string; id?: string }[]
   placeholder?: string
@@ -47,17 +47,17 @@ for (const c of commands) {
 <dialog
   id={id}
   class:list={[
-    'apogee-command m-auto w-[calc(100%-2rem)] max-w-xl rounded-xl border border-border bg-background p-0 shadow-2xl backdrop:bg-black/40',
+    'apogee-command m-auto w-[calc(100%-2rem)] max-w-xl rounded-xl border border-neutral bg-page p-0 shadow-2xl backdrop:bg-overlay',
     className,
   ]}
   data-shortcut={shortcut}
   closedby="any"
 >
-  <div class="flex items-center gap-2 border-b border-border px-3">
-    <Search class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+  <div class="flex items-center gap-2 border-b border-neutral px-3">
+    <Search class="size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
     <input
       type="text"
-      class="apogee-command-input h-12 w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+      class="apogee-command-input h-12 w-full bg-transparent text-sm text-neutral outline-none placeholder:text-neutral-faded"
       placeholder={placeholder}
       role="combobox"
       aria-expanded="true"
@@ -72,7 +72,7 @@ for (const c of commands) {
       groups.map((g) => (
         <div class="apogee-command-section">
           {g.name && (
-            <p class="px-2 pt-3 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase first:pt-1">
+            <p class="px-2 pt-3 pb-1 text-xs font-medium tracking-wide text-neutral-faded uppercase first:pt-1">
               {g.name}
             </p>
           )}
@@ -82,7 +82,7 @@ for (const c of commands) {
                 type="button"
                 role="option"
                 aria-selected="false"
-                class="apogee-command-item flex w-full items-center gap-2 rounded px-2 py-2 text-start text-sm text-foreground hover:bg-muted aria-selected:bg-muted [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-muted-foreground"
+                class="apogee-command-item flex w-full items-center gap-2 rounded px-2 py-2 text-start text-sm text-neutral hover:bg-neutral-faded-highlighted aria-selected:bg-neutral-faded-highlighted [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-neutral-faded"
                 data-label={c.label}
                 data-keywords={c.keywords ?? ''}
                 data-href={c.href ?? ''}
@@ -95,7 +95,7 @@ for (const c of commands) {
         </div>
       ))
     }
-    <p class="apogee-command-empty hidden px-2 py-6 text-center text-sm text-muted-foreground">No results.</p>
+    <p class="apogee-command-empty hidden px-2 py-6 text-center text-sm text-neutral-faded">No results.</p>
   </div>
 </dialog>
 
@@ -103,7 +103,7 @@ for (const c of commands) {
   .apogee-command,
   .apogee-command::backdrop {
     transition:
-      opacity var(--duration-fast) var(--ease-smooth),
+      opacity var(--duration-fast) var(--ease-standard),
       overlay var(--duration-fast) allow-discrete,
       display var(--duration-fast) allow-discrete;
     opacity: 0;
@@ -127,12 +127,14 @@ for (const c of commands) {
 </style>
 
 <script>
-  for (const dialog of document.querySelectorAll<HTMLDialogElement>('.apogee-command')) {
+  import { island } from '../utils/island.ts'
+
+  island<HTMLDialogElement>('.apogee-command', (dialog) => {
     const input = dialog.querySelector<HTMLInputElement>('.apogee-command-input')
     const items = [...dialog.querySelectorAll<HTMLElement>('.apogee-command-item')]
     const sections = [...dialog.querySelectorAll<HTMLElement>('.apogee-command-section')]
     const empty = dialog.querySelector<HTMLElement>('.apogee-command-empty')
-    if (!input) continue
+    if (!input) return
 
     let active = -1
     const visible = () => items.filter((i) => !i.hidden)
@@ -202,7 +204,7 @@ for (const c of commands) {
       } else if (e.key === 'Enter') {
         if (active >= 0 && vis[active]) {
           e.preventDefault()
-          activate(vis[active])
+          { const v = vis[active]; if (v) activate(v) }
         }
       }
     })
@@ -214,5 +216,5 @@ for (const c of commands) {
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) dialog.close()
     })
-  }
+  })
 </script>

@@ -1,6 +1,6 @@
 ---
 title: Text
-description: Body copy with a size scale and a muted variant. Renders p, span, or div.
+description: Body copy with a size scale and semantic colours. Renders p, span, or div.
 group: Components
 order: 0
 ---
@@ -8,10 +8,10 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Text from '../../../../registry/components/Text/Text.astro'
 
-<Preview code={`<Text>Body copy at the base size.</Text>
-<Text muted>Muted secondary copy.</Text>`}>
+<Preview block code={`<Text>Body copy at the base size.</Text>
+<Text color="neutral-faded">Muted secondary copy.</Text>`}>
   <Text>Body copy at the base size.</Text>
-  <Text muted>Muted secondary copy.</Text>
+  <Text color="neutral-faded">Muted secondary copy.</Text>
 </Preview>
 
 ## Add
@@ -38,31 +38,51 @@ for the rendered tag (e.g. `id`, `aria-label`) passes through.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `as` | `'p' \| 'span' \| 'div'` | `'p'` | Element rendered. |
-| `size` | `'sm' \| 'base' \| 'lg'` | `'base'` | Font size. |
-| `muted` | `boolean` | `false` | Secondary (muted) color instead of foreground. |
+| `as` | `'p' \| 'span' \| 'div' \| 'label' \| 'li' \| 'strong' \| 'em' \| 'small'` | `'p'` | Element rendered. |
+| `size` | `'small' \| 'medium' \| 'large'`, responsive | `'medium'` | Font size: 14 / 16 / 18px; `{ base: 'small', md: 'medium' }` per breakpoint. |
+| `weight` | `'regular' \| 'medium' \| 'semibold' \| 'bold'` | `'regular'` | Font weight. |
+| `maxLines` | `1 … 6` | — | Clamp with an ellipsis (`1` also breaks long words). |
+| `numeric` | `boolean` | `false` | Tabular figures for aligned digits. |
+| `align` | `'start' \| 'center' \| 'end'` | — | Text alignment. |
+| `color` | `'neutral' \| 'neutral-faded' \| 'primary' \| 'critical' \| 'positive' \| 'warning'` | — | Body text, secondary text, or a hue. Unset inherits, so text on a solid fill keeps the on-colour. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
 
-`muted` on and off:
+Default and faded colour:
 
-<Preview code={`<Text>Foreground text.</Text>
-<Text muted>Muted text.</Text>`}>
+<Preview block code={`<Text>Foreground text.</Text>
+<Text color="neutral-faded">Muted text.</Text>`}>
   <Text>Foreground text.</Text>
-  <Text muted>Muted text.</Text>
+  <Text color="neutral-faded">Muted text.</Text>
 </Preview>
 
 ## Sizes
 
 Every size:
 
-<Preview code={`<Text size="sm">Small text.</Text>
-<Text size="base">Base text.</Text>
-<Text size="lg">Large text.</Text>`}>
-  <Text size="sm">Small text.</Text>
-  <Text size="base">Base text.</Text>
-  <Text size="lg">Large text.</Text>
+<Preview block code={`<Text size="small">Small text.</Text>
+<Text>Base text.</Text>
+<Text size="large">Large text.</Text>`}>
+  <Text size="small">Small text.</Text>
+  <Text>Base text.</Text>
+  <Text size="large">Large text.</Text>
+</Preview>
+
+## Weight, clamping, numbers
+
+<Preview block code={`<Text weight="medium">Medium weight</Text>
+<Text weight="bold">Bold</Text>
+<Text maxLines={2}>A long paragraph …</Text>
+<Text numeric>1,024 · 2,048 · 4,096</Text>
+<Text align="center">Centred</Text>
+<Text size={{ base: 'small', md: 'large' }}>Small on phones, large from md</Text>`}>
+  <Text weight="medium">Medium weight</Text>
+  <Text weight="bold">Bold</Text>
+  <Text maxLines={2} class="max-w-xs">A long paragraph that keeps going past the second line and therefore gets clamped with an ellipsis at the end of line two, however long it is.</Text>
+  <Text numeric>1,024 · 2,048 · 4,096</Text>
+  <Text align="center">Centred</Text>
+  <Text size={{ base: 'small', md: 'large' }}>Small on phones, large from md</Text>
 </Preview>
 
 ## States
@@ -73,10 +93,10 @@ Static text — no interactive states.
 
 Rendered as a different element (`span` inline, `div` block):
 
-<Preview code={`<Text as="span">Inline span.</Text>
-<Text as="div" size="sm" muted>Block div, small, muted.</Text>`}>
+<Preview block code={`<Text as="span">Inline span.</Text>
+<Text as="div" size="small" color="neutral-faded">Block div, small, faded.</Text>`}>
   <Text as="span">Inline span.</Text>
-  <Text as="div" size="sm" muted>Block div, small, muted.</Text>
+  <Text as="div" size="small" color="neutral-faded">Block div, small, faded.</Text>
 </Preview>
 
 ## Accessibility
@@ -89,17 +109,17 @@ the tag or component that carries that meaning instead of `Text`.
 
 | Token | Used for |
 |---|---|
-| `--foreground` | Default text color |
-| `--muted-foreground` | `muted` text color |
+| `--foreground-neutral` | Default text color |
+| `--foreground-neutral-faded` | `color="neutral-faded"` text |
 
 ## Do / Don't
 
-- **Do** use `muted` for secondary/supporting copy (timestamps, helper text).
+- **Do** use `color="neutral-faded"` for secondary/supporting copy (timestamps, helper text).
 - **Do** pick `as` to match the surrounding flow (`span` inside a line, `div` /
   `p` as a block).
 - **Don't** use `Text` for headings — it has no heading semantics or size scale
   for that.
-- **Don't** hard-code font size or color classes — use `size` and `muted`.
+- **Don't** hard-code font size or colour classes; use `size` and `color`.
 
 ## Content
 

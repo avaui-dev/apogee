@@ -10,22 +10,22 @@ import ContentWrapper from '../../../../registry/components/ContentWrapper/Conte
 
 <Preview code={`<ContentWrapper variant="columns">
   <div>
-    <h3 class="mb-2 text-sm font-semibold text-foreground">Primary</h3>
-    <p class="text-sm text-muted-foreground">Main column content.</p>
+    <h3 class="mb-2 text-sm font-semibold text-neutral">Primary</h3>
+    <p class="text-sm text-neutral-faded">Main column content.</p>
   </div>
   <div slot="secondary">
-    <h3 class="mb-2 text-sm font-semibold text-foreground">Secondary</h3>
-    <p class="text-sm text-muted-foreground">Second column content.</p>
+    <h3 class="mb-2 text-sm font-semibold text-neutral">Secondary</h3>
+    <p class="text-sm text-neutral-faded">Second column content.</p>
   </div>
 </ContentWrapper>`}>
   <ContentWrapper variant="columns">
     <div>
-      <h3 class="mb-2 text-sm font-semibold text-foreground">Primary</h3>
-      <p class="text-sm text-muted-foreground">Main column content.</p>
+      <h3 class="mb-2 text-sm font-semibold text-neutral">Primary</h3>
+      <p class="text-sm text-neutral-faded">Main column content.</p>
     </div>
     <div slot="secondary">
-      <h3 class="mb-2 text-sm font-semibold text-foreground">Secondary</h3>
-      <p class="text-sm text-muted-foreground">Second column content.</p>
+      <h3 class="mb-2 text-sm font-semibold text-neutral">Secondary</h3>
+      <p class="text-sm text-neutral-faded">Second column content.</p>
     </div>
   </ContentWrapper>
 </Preview>
@@ -75,8 +75,8 @@ Every `variant`:
   <div>Second</div>
 </ContentWrapper>`}>
   <ContentWrapper variant="stack">
-    <div class="rounded-md border border-border p-4 text-sm">First</div>
-    <div class="rounded-md border border-border p-4 text-sm">Second</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">First</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">Second</div>
   </ContentWrapper>
 </Preview>
 
@@ -85,8 +85,8 @@ Every `variant`:
   <div slot="secondary">Secondary column</div>
 </ContentWrapper>`}>
   <ContentWrapper variant="columns">
-    <div class="rounded-md border border-border p-4 text-sm">Primary column</div>
-    <div class="rounded-md border border-border p-4 text-sm" slot="secondary">Secondary column</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">Primary column</div>
+    <div class="rounded-md border border-neutral p-4 text-sm" slot="secondary">Secondary column</div>
   </ContentWrapper>
 </Preview>
 
@@ -95,8 +95,8 @@ Every `variant`:
   <div slot="secondary">Stays put (md and up)</div>
 </ContentWrapper>`}>
   <ContentWrapper variant="sticky">
-    <div class="rounded-md border border-border p-4 text-sm">Scrolls</div>
-    <div class="rounded-md border border-border p-4 text-sm" slot="secondary">Stays put (md and up)</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">Scrolls</div>
+    <div class="rounded-md border border-neutral p-4 text-sm" slot="secondary">Stays put (md and up)</div>
   </ContentWrapper>
 </Preview>
 
@@ -109,8 +109,8 @@ passing another value:
   <div slot="secondary">Shows first on desktop</div>
 </ContentWrapper>`}>
   <ContentWrapper variant="columns" reverse gap={4}>
-    <div class="rounded-md border border-border p-4 text-sm">Shows second on desktop</div>
-    <div class="rounded-md border border-border p-4 text-sm" slot="secondary">Shows first on desktop</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">Shows second on desktop</div>
+    <div class="rounded-md border border-neutral p-4 text-sm" slot="secondary">Shows first on desktop</div>
   </ContentWrapper>
 </Preview>
 

@@ -1,0 +1,19 @@
+---
+import Site from '../../layouts/Site.astro'
+import Hero from '../../../../registry/sections/Hero/Hero.astro'
+import LogoCloud from '../../../../registry/sections/LogoCloud/LogoCloud.astro'
+import Features from '../../../../registry/sections/Features/Features.astro'
+import Stats from '../../../../registry/sections/Stats/Stats.astro'
+import Testimonials from '../../../../registry/sections/Testimonials/Testimonials.astro'
+import CTA from '../../../../registry/sections/CTA/CTA.astro'
+import { logos, picture, features, stats, quotes } from '../../components/demo-data'
+---
+
+<Site title="Home">
+  <Hero layout="split" eyebrow="Design system" heading="Ship the site without re-drawing the product" description="Sections built from the same components your app uses, copied into your repo." primaryAction={{ label: 'Get started', href: '/showcase/pricing' }} secondaryAction={{ label: 'Read the docs', href: '/docs' }} media={picture('home-hero', 1200, 900)} />
+  <LogoCloud heading="Trusted by teams at" items={logos} />
+  <Features eyebrow="Why" heading="Everything a page needs" description="Fast, accessible, right to left, themed by tokens." items={features} />
+  <Stats layout="cards" items={stats} background="neutral-faded" />
+  <Testimonials layout="grid" heading="What teams say" items={quotes} />
+  <CTA heading="Start with one section" description="Copy it in, fill the props, ship." primaryAction={{ label: 'Get started', href: '/showcase/pricing' }} secondaryAction={{ label: 'Talk to us', href: '/showcase/contact' }} />
+</Site>

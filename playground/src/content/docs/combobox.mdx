@@ -58,19 +58,21 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 | `hint` | `string` | — | Helper text (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid` and renders via `role="alert"`. |
 | `options` | `string[]` | — | Suggestions shown in the dropdown. Required. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
+| `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
+| `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `required` | `boolean` | `false` | Marks the input required (native + `Field`'s `*` indicator). |
 | `caret` | `boolean` | `true` | Shows the chevron caret. Set `false` to hide it. |
 | `class` | `string` | — | Extra classes, passed to the `Field` wrapper. |
 
 ## Sizes
 
-<Preview code={`<Combobox label="Small" size="sm" options={['One', 'Two', 'Three']} />
-<Combobox label="Medium" size="md" options={['One', 'Two', 'Three']} />
-<Combobox label="Large" size="lg" options={['One', 'Two', 'Three']} />`}>
-  <Combobox label="Small" size="sm" options={['One', 'Two', 'Three']} />
-  <Combobox label="Medium" size="md" options={['One', 'Two', 'Three']} />
-  <Combobox label="Large" size="lg" options={['One', 'Two', 'Three']} />
+<Preview code={`<Combobox label="Small" size="small" options={['One', 'Two', 'Three']} />
+<Combobox label="Medium" options={['One', 'Two', 'Three']} />
+<Combobox label="Large" size="large" options={['One', 'Two', 'Three']} />`}>
+  <Combobox label="Small" size="small" options={['One', 'Two', 'Three']} />
+  <Combobox label="Medium" options={['One', 'Two', 'Three']} />
+  <Combobox label="Large" size="large" options={['One', 'Two', 'Three']} />
 </Preview>
 
 ## States
@@ -78,7 +80,7 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 - **Default** — closed, empty or pre-filled input.
 - **Open** — focusing or typing in the input opens the listbox; the closest
   match is highlighted (`aria-selected` + `aria-activedescendant`).
-- **Error** — border turns `--danger`, `aria-invalid="true"`, error text
+- **Error** — border turns `--background-critical`, `aria-invalid="true"`, error text
   replaces the hint.
 - **Disabled** — via passthrough `disabled`; dimmed, not interactive.
 - **No JS** — listbox stays `hidden`; the input is a plain text field.
@@ -103,6 +105,10 @@ Required, wired into a form with a submit name:
 <Combobox label="Country" name="country" required options={['Canada', 'France', 'Germany']} />
 ```
 
+## Events
+
+Committing an option (Enter or click) sets the input value and dispatches native `input` and `change` events plus `apogee:combobox-select` (`detail: { value }`, bubbles) on the root, so forms and listeners see the selection.
+
 ## Accessibility
 
 - Full ARIA combobox pattern: `role="combobox"` on the input, wired with
@@ -123,15 +129,15 @@ Required, wired into a form with a submit name:
 
 | Token | Used for |
 |---|---|
-| `--border` | Input and listbox border |
-| `--background` | Input background |
-| `--surface` | Listbox panel background |
-| `--foreground` | Input and option text |
-| `--muted-foreground` | Placeholder text, caret |
-| `--muted` | Option hover / selected background |
-| `--danger` | Error border |
-| `--ring` | Focus ring |
-| `--duration-fast` / `--ease-smooth` | Listbox open animation |
+| `--border-neutral` | Input and listbox border |
+| `--background-page` | Input background |
+| `--background-elevation-raised` | Listbox panel background |
+| `--foreground-neutral` | Input and option text |
+| `--foreground-neutral-faded` | Placeholder text, caret |
+| `--background-neutral-faded` | Option hover / selected background |
+| `--background-critical` | Error border |
+| `--border-primary` | Focus ring |
+| `--duration-fast` / `--ease-standard` | Listbox open animation |
 
 ## Do / Don't
 

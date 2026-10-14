@@ -79,7 +79,7 @@ through to the trigger `<button>` (not the panel).
 ## States
 
 - **Closed → open** — a fade + slight upward slide (`--duration-fast`,
-  `--ease-smooth`), using `@starting-style` for the entry transition; driven
+  `--ease-standard`), using `@starting-style` for the entry transition; driven
   entirely by the browser's `:popover-open` pseudo-class.
 - **Unsupported anchor positioning** (no `@supports (anchor-name: --x)`) — the
   panel falls back to the popover API's default centered position, still fully
@@ -118,12 +118,12 @@ A short list inside the panel:
 
 | Token | Used for |
 |---|---|
-| `--border` | Trigger + panel border |
-| `--background` | Trigger + panel background |
-| `--foreground` | Trigger + panel text |
-| `--muted` | Trigger hover background |
-| `--ring` | Focus ring |
-| `--duration-fast` / `--ease-smooth` | Open/close transition |
+| `--border-neutral` | Trigger + panel border |
+| `--background-page` | Trigger + panel background |
+| `--foreground-neutral` | Trigger + panel text |
+| `--background-neutral-faded` | Trigger hover background |
+| `--border-primary` | Focus ring |
+| `--duration-fast` / `--ease-standard` | Open/close transition |
 | `--radius-md` | Trigger corner radius |
 | `--radius-lg` | Panel corner radius |
 

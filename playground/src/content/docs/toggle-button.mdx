@@ -47,7 +47,7 @@ attribute (e.g. `disabled`, `name`) passes through.
 |---|---|---|---|
 | `pressed` | `boolean` | `false` | Initial (and, in `manual` mode, current) pressed state. |
 | `manual` | `boolean` | `false` | Don't self-toggle on click — a parent (e.g. `ToggleButtonGroup`) owns `aria-pressed`. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control size. |
 | `aria-label` | `string` | — | Label when the button is icon-only. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -55,12 +55,12 @@ attribute (e.g. `disabled`, `name`) passes through.
 
 Every size:
 
-<Preview code={`<ToggleButton size="sm" aria-label="Bold"><Bold /></ToggleButton>
-<ToggleButton size="md" aria-label="Bold"><Bold /></ToggleButton>
-<ToggleButton size="lg" aria-label="Bold"><Bold /></ToggleButton>`}>
-  <ToggleButton size="sm" aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton size="md" aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton size="lg" aria-label="Bold"><Bold /></ToggleButton>
+<Preview code={`<ToggleButton size="small" aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton aria-label="Bold"><Bold /></ToggleButton>
+<ToggleButton size="large" aria-label="Bold"><Bold /></ToggleButton>`}>
+  <ToggleButton size="small" aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton size="large" aria-label="Bold"><Bold /></ToggleButton>
 </Preview>
 
 ## States
@@ -73,10 +73,10 @@ Every size:
   <ToggleButton disabled>Disabled</ToggleButton>
 </Preview>
 
-- **Pressed** — muted background fill, foreground text (`aria-pressed:bg-muted
-  aria-pressed:text-foreground`).
+- **Pressed** — muted background fill, foreground text (`aria-pressed:bg-neutral-faded
+  aria-pressed:text-neutral`).
 - **Hover** — a lighter muted fill on unpressed buttons.
-- **Focus** — visible `focus-visible` ring (`--ring`).
+- **Focus** — visible `focus-visible` ring (`--border-primary`).
 - **Disabled** — dimmed, not interactive.
 - **No JS** — click does nothing; the button stays at its initial `pressed` value.
 
@@ -102,6 +102,10 @@ selection) instead of toggling itself:
 `ToggleButtonGroup` sets `manual` behavior for its children automatically for
 single-select — see the [ToggleButtonGroup](/toggle-button-group) docs.
 
+## Events
+
+Each button dispatches `apogee:toggle-change` (`detail: { pressed }`, bubbling) after it toggles.
+
 ## Accessibility
 
 - Real `<button type="button">` with `aria-pressed` — the native two-state
@@ -118,9 +122,9 @@ single-select — see the [ToggleButtonGroup](/toggle-button-group) docs.
 
 | Token | Used for |
 |---|---|
-| `--muted-foreground` / `--foreground` | Unpressed vs. pressed label color |
-| `--muted` | Hover + pressed fill |
-| `--ring` | Focus ring |
+| `--foreground-neutral-faded` / `--foreground-neutral` | Unpressed vs. pressed label color |
+| `--background-neutral-faded` | Hover + pressed fill |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

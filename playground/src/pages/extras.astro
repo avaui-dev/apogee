@@ -28,6 +28,11 @@ import Collapsible from '../../../registry/components/Collapsible/Collapsible.as
 import ContextMenu from '../../../registry/components/ContextMenu/ContextMenu.astro'
 import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
 import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
+import Expandable from '../../../registry/components/Expandable/Expandable.astro'
+import Dismissible from '../../../registry/components/Dismissible/Dismissible.astro'
+import ProgressIndicator from '../../../registry/components/ProgressIndicator/ProgressIndicator.astro'
+import Actionable from '../../../registry/components/Actionable/Actionable.astro'
+import Alert from '../../../registry/components/Alert/Alert.astro'
 import RichTextEditor from '../../../registry/components/RichTextEditor/RichTextEditor.astro'
 import Menubar from '../../../registry/components/Menubar/Menubar.astro'
 import DataGrid from '../../../registry/components/DataGrid/DataGrid.astro'
@@ -50,13 +55,13 @@ const people = [
 <ShowcasePage title="Extras">
   <Showcase name="AspectRatio">
     <Group label="16 / 9" stack>
-      <AspectRatio ratio="16 / 9" class="max-w-sm rounded-lg bg-muted">
-        <div class="grid place-items-center text-sm text-muted-foreground">16 / 9</div>
+      <AspectRatio ratio="16 / 9" class="max-w-sm rounded-lg bg-neutral-faded">
+        <div class="grid place-items-center text-sm text-neutral-faded">16 / 9</div>
       </AspectRatio>
     </Group>
     <Group label="1 / 1" stack>
-      <AspectRatio ratio="1 / 1" class="w-40 rounded-lg bg-muted">
-        <div class="grid place-items-center text-sm text-muted-foreground">1 / 1</div>
+      <AspectRatio ratio="1 / 1" class="w-40 rounded-lg bg-neutral-faded">
+        <div class="grid place-items-center text-sm text-neutral-faded">1 / 1</div>
       </AspectRatio>
     </Group>
   </Showcase>
@@ -71,7 +76,7 @@ const people = [
 
   <Showcase name="Code">
     <Group label="Inline">
-      <span class="text-sm text-muted-foreground">Install with <Code>npm i @ava-ui/apogee</Code>.</span>
+      <span class="text-sm text-neutral-faded">Install with <Code>npm i @ava-ui/apogee</Code>.</span>
     </Group>
     <Group label="Block" stack>
       <Code block class="max-w-lg">npx @ava-ui/apogee add button</Code>
@@ -120,9 +125,9 @@ const people = [
     <Group>
       <Popover>
         <span slot="trigger">Details</span>
-        <p class="font-medium text-foreground">Shipping</p>
-        <p class="mt-1 text-muted-foreground">Free 2-day shipping on orders over $50. Click away or press Esc to close.</p>
-        <Button size="sm" class="mt-3">Got it</Button>
+        <p class="font-medium text-neutral">Shipping</p>
+        <p class="mt-1 text-neutral-faded">Free 2-day shipping on orders over $50. Click away or press Esc to close.</p>
+        <Button size="small" class="mt-3">Got it</Button>
       </Popover>
     </Group>
   </Showcase>
@@ -151,7 +156,7 @@ const people = [
       <Carousel class="max-w-xl">
         {
           ['Zinc', 'Blue', 'Green', 'Amber', 'Red', 'Violet'].map((c, i) => (
-            <div class="grid h-32 w-56 place-items-center rounded-lg border border-border bg-surface text-sm font-medium text-muted-foreground">
+            <div class="grid h-32 w-56 place-items-center rounded-lg border border-neutral bg-elevation-raised text-sm font-medium text-neutral-faded">
               {i + 1}. {c}
             </div>
           ))
@@ -162,7 +167,7 @@ const people = [
       <Carousel class="max-w-xl" dots align="center" itemWidth="14rem" controls={false}>
         {
           ['One', 'Two', 'Three', 'Four', 'Five'].map((c) => (
-            <div class="grid h-32 place-items-center rounded-lg border border-border bg-surface text-sm font-medium text-muted-foreground">
+            <div class="grid h-32 place-items-center rounded-lg border border-neutral bg-elevation-raised text-sm font-medium text-neutral-faded">
               {c}
             </div>
           ))
@@ -173,7 +178,7 @@ const people = [
       <Carousel class="max-w-xl" autoplay interval={2500} loop itemWidth="16rem">
         {
           ['Alpha', 'Bravo', 'Charlie', 'Delta'].map((c) => (
-            <div class="grid h-32 place-items-center rounded-lg border border-border bg-accent/10 text-sm font-medium text-accent">
+            <div class="grid h-32 place-items-center rounded-lg border border-neutral bg-primary-faded text-sm font-medium text-primary">
               {c}
             </div>
           ))
@@ -187,7 +192,7 @@ const people = [
       <Marquee label="Logos" class="max-w-xl">
         {
           ['Astro', 'Tailwind', 'Vite', 'Lucide', 'Zinc', 'Blue'].map((c) => (
-            <span class="text-lg font-semibold text-muted-foreground">{c}</span>
+            <span class="text-lg font-semibold text-neutral-faded">{c}</span>
           ))
         }
       </Marquee>
@@ -196,7 +201,7 @@ const people = [
       <Marquee label="Tags" direction="backwards" speed={2} class="max-w-xl">
         {
           ['accessible', 'responsive', 'zero-JS', 'native-first', 'copy-in'].map((c) => (
-            <span class="rounded-full border border-border px-3 py-1 text-sm text-foreground">{c}</span>
+            <span class="rounded-full border border-neutral px-3 py-1 text-sm text-neutral">{c}</span>
           ))
         }
       </Marquee>
@@ -205,15 +210,15 @@ const people = [
 
   <Showcase name="Sidebar">
     <Group stack>
-      <div class="flex max-w-2xl overflow-hidden rounded-lg border border-border">
+      <div class="flex max-w-2xl overflow-hidden rounded-lg border border-neutral">
         <Sidebar class="md:h-auto md:w-56">
           <span slot="brand" class="text-sm font-semibold tracking-tight">Apogee</span>
           <NavLink href="/extras">Overview</NavLink>
           <NavLink href="/settings">Settings</NavLink>
           <NavLink href="/billing">Billing</NavLink>
-          <span slot="footer" class="text-xs text-muted-foreground">v1.0.0</span>
+          <span slot="footer" class="text-xs text-neutral-faded">v1.0.0</span>
         </Sidebar>
-        <div class="flex-1 p-6 text-sm text-muted-foreground">
+        <div class="flex-1 p-6 text-sm text-neutral-faded">
           Main content. Narrow the window to collapse the sidebar nav behind the toggle.
         </div>
       </div>
@@ -222,11 +227,10 @@ const people = [
 
   <Showcase name="SegmentedControl">
     <Group label="Sizes" stack>
-      <SegmentedControl name="view-sm" size="sm" value="list" options={['list', 'board', 'calendar']} aria-label="View" />
+      <SegmentedControl name="view-sm" size="small" value="list" options={['list', 'board', 'calendar']} aria-label="View" />
       <SegmentedControl name="view-md" value="board" options={['list', 'board', 'calendar']} aria-label="View" />
       <SegmentedControl
-        name="range"
-        size="lg"
+        name="range" size="large"
         value="month"
         options={[
           { label: 'Day', value: 'day' },
@@ -255,8 +259,8 @@ const people = [
         description="Create your first project to get started — it only takes a minute."
       >
         <Inbox slot="icon" aria-hidden="true" />
-        <Button slot="actions" size="sm">New project</Button>
-        <Button slot="actions" size="sm" variant="ghost">Import</Button>
+        <Button slot="actions" size="small">New project</Button>
+        <Button slot="actions" size="small" variant="ghost" color="neutral">Import</Button>
       </EmptyState>
     </Group>
   </Showcase>
@@ -296,9 +300,9 @@ const people = [
 
   <Showcase name="NumberInput">
     <Group label="Sizes" stack>
-      <NumberInput label="Quantity" size="sm" value={1} min={0} max={99} class="max-w-40" />
+      <NumberInput label="Quantity" size="small" value={1} min={0} max={99} class="max-w-40" />
       <NumberInput label="Seats" value={4} min={1} max={20} class="max-w-40" />
-      <NumberInput label="Amount" size="lg" value={10} step={5} class="max-w-40" />
+      <NumberInput label="Amount" size="large" value={10} step={5} class="max-w-40" />
     </Group>
   </Showcase>
 
@@ -329,7 +333,7 @@ const people = [
   <Showcase name="ContextMenu">
     <Group stack>
       <ContextMenu>
-        <div class="grid h-24 max-w-md place-items-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
+        <div class="grid h-24 max-w-md place-items-center rounded-lg border border-dashed border-neutral text-sm text-neutral-faded">
           Right-click anywhere here
         </div>
         <Fragment slot="menu">
@@ -343,7 +347,7 @@ const people = [
 
   <Showcase name="CommandPalette">
     <Group stack>
-      <Button data-command-open="cmd" variant="secondary">
+      <Button data-command-open="cmd" variant="outline" color="neutral">
         Open command menu <Kbd class="ml-1">⌘K</Kbd>
       </Button>
       <CommandPalette
@@ -425,7 +429,7 @@ const people = [
         columns={[
           { key: 'name', label: 'Name', sortable: true },
           { key: 'role', label: 'Role', sortable: true },
-          { key: 'commits', label: 'Commits', sortable: true, align: 'right' },
+          { key: 'commits', label: 'Commits', sortable: true, align: 'end' },
         ]}
         rows={[
           { name: 'Ada Lovelace', role: 'Developer', commits: 128 },
@@ -434,6 +438,44 @@ const people = [
           { name: 'Katherine Johnson', role: 'Developer', commits: 87 },
         ]}
       />
+    </Group>
+  </Showcase>
+  <Showcase name="Expandable" summary="Long content clamped to a preview height with a fade and a Show more toggle. Zero JS.">
+    <Group stack>
+      <Expandable maxHeight="5rem" class="max-w-prose text-sm text-neutral">
+        <p>
+          Components you copy into your project and own. Every visual value reads a token, every control is a native
+          element first, and JavaScript is progressive enhancement. Components mirror automatically under a
+          right-to-left ancestor, pass the contrast gate in both themes, and respect reduced-motion preferences. The
+          registry is derived from the imports, so a copy brings its dependencies along. The playground is the docs.
+        </p>
+      </Expandable>
+    </Group>
+  </Showcase>
+
+  <Showcase name="Dismissible" summary="Wrap anything with a close button; optional auto-dismiss timeout.">
+    <Group stack>
+      <Dismissible class="max-w-md">
+        <Alert color="positive" title="Saved" class="pe-10">Your changes are live. Close me.</Alert>
+      </Dismissible>
+      <Dismissible timeout={6000} class="max-w-md">
+        <Alert color="warning" title="Timed" class="pe-10">Dismisses itself after six seconds.</Alert>
+      </Dismissible>
+    </Group>
+  </Showcase>
+
+  <Showcase name="ProgressIndicator" summary="Step N of M as segments.">
+    <Group stack>
+      <ProgressIndicator total={5} current={2} aria-label="Onboarding" class="max-w-sm" />
+      <ProgressIndicator total={5} current={5} color="positive" aria-label="Done" class="max-w-sm" />
+    </Group>
+  </Showcase>
+
+  <Showcase name="Actionable" summary="The bare interactive primitive: button, link or focusable div with the ring and disabled handling.">
+    <Group>
+      <Actionable class="rounded-lg border border-neutral px-4 py-3 hover:bg-neutral-faded-highlighted">Button</Actionable>
+      <Actionable href="#" class="rounded-lg border border-neutral px-4 py-3 hover:bg-neutral-faded-highlighted">Link</Actionable>
+      <Actionable disabled class="rounded-lg border border-neutral px-4 py-3">Disabled</Actionable>
     </Group>
   </Showcase>
 </ShowcasePage>

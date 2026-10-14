@@ -67,12 +67,12 @@ SVG slot.
 The two render modes — a Lucide icon via `icon`, or a raw SVG via the slot —
 render identically once styled:
 
-<Preview code={`<Icon icon={ChevronDown} class="text-accent" />
-<Icon class="text-accent">
+<Preview code={`<Icon icon={ChevronDown} class="text-primary" />
+<Icon class="text-primary">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
 </Icon>`}>
-  <Icon icon={ChevronDown} class="text-accent" />
-  <Icon class="text-accent">
+  <Icon icon={ChevronDown} class="text-primary" />
+  <Icon class="text-primary">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
   </Icon>
 </Preview>
@@ -81,15 +81,15 @@ render identically once styled:
 
 Inherits `currentColor`, so it picks up surrounding text colour:
 
-<Preview code={`<span class="text-danger"><Icon icon={Camera} label="Camera" /> Camera off</span>`}>
-  <span class="text-danger"><Icon icon={Camera} label="Camera" /> Camera off</span>
+<Preview code={`<span class="text-critical"><Icon icon={Camera} label="Camera" /> Camera off</span>`}>
+  <span class="text-critical"><Icon icon={Camera} label="Camera" /> Camera off</span>
 </Preview>
 
 Sizing with a Tailwind class instead of the `size` prop, to stay in step with
 surrounding type:
 
 ```astro
-<Icon icon={Camera} class="size-4 text-muted-foreground" />
+<Icon icon={Camera} class="size-4 text-neutral-faded" />
 ```
 
 ## Accessibility

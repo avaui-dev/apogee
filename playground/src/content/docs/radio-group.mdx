@@ -1,0 +1,118 @@
+---
+title: RadioGroup
+description: A fieldset of Radio controls with one legend, hint and error.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import RadioGroup from '../../../../registry/components/RadioGroup/RadioGroup.astro'
+import Radio from '../../../../registry/components/Radio/Radio.astro'
+
+<Preview code={`<RadioGroup legend="Plan" hint="You can change this later.">
+  <Radio name="plan" value="free" label="Free" checked />
+  <Radio name="plan" value="pro" label="Pro" />
+  <Radio name="plan" value="team" label="Team" />
+</RadioGroup>`}>
+  <RadioGroup legend="Plan" hint="You can change this later.">
+    <Radio name="plan" value="free" label="Free" checked />
+    <Radio name="plan" value="pro" label="Pro" />
+    <Radio name="plan" value="team" label="Team" />
+  </RadioGroup>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add radio-group
+```
+
+Depends on `utils`. Use with `radio`.
+
+## Usage
+
+```astro
+---
+import RadioGroup from '@/components/apogee/RadioGroup/RadioGroup.astro'
+import Radio from '@/components/apogee/Radio/Radio.astro'
+---
+<RadioGroup legend="Size" direction="row">
+  <Radio name="plan" value="s" label="S" />
+  <Radio name="plan" value="m" label="M" />
+  <Radio name="plan" value="l" label="L" />
+</RadioGroup>
+```
+
+## Anatomy
+
+A `<fieldset>` with a `<legend>`, the controls in the default slot, and an
+optional hint or error paragraph the fieldset is described by.
+
+## API
+
+`@composable`. Any other native `<fieldset>` attribute (`disabled`, `form`) passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `legend` | `string` | — | Group label (required). |
+| `hint` | `string` | — | Helper text under the controls. |
+| `error` | `string` | — | Error text; replaces the hint, sets `aria-invalid`. |
+| `direction` | `'row' \| 'column'` | `'column'` | Lay the controls out in a row (wraps) or a column. |
+| `id` | `string` | auto | Fieldset id; hint/error ids derive from it. |
+| `class` | `string` | — | Extra classes on the fieldset, merged last. |
+
+## Variants
+
+<Preview code={`<RadioGroup legend="Column">…</RadioGroup>
+<RadioGroup legend="Row" direction="row">…</RadioGroup>`}>
+  <RadioGroup legend="Column">
+    <Radio name="plan" value="1" label="One" />
+    <Radio name="plan" value="2" label="Two" />
+  </RadioGroup>
+  <RadioGroup legend="Row" direction="row">
+    <Radio name="plan" value="3" label="One" />
+    <Radio name="plan" value="4" label="Two" />
+  </RadioGroup>
+</Preview>
+
+## States
+
+<Preview code={`<RadioGroup legend="With hint" hint="Helper text.">…</RadioGroup>
+<RadioGroup legend="With error" error="Pick at least one.">…</RadioGroup>
+<RadioGroup legend="Disabled" disabled>…</RadioGroup>`}>
+  <RadioGroup legend="With hint" hint="Helper text.">
+    <Radio name="plan" value="5" label="One" />
+  </RadioGroup>
+  <RadioGroup legend="With error" error="Pick at least one.">
+    <Radio name="plan" value="6" label="One" hasError />
+  </RadioGroup>
+  <RadioGroup legend="Disabled" disabled>
+    <Radio name="plan" value="7" label="One" />
+  </RadioGroup>
+</Preview>
+
+## Accessibility
+
+- Native `<fieldset>`/`<legend>`: screen readers announce the legend with each control.
+- `role="radiogroup"` on the fieldset; arrow keys move between radios natively.
+- Hint and error are linked through `aria-describedby`; the error has `role="alert"`.
+- Pass `hasError` to the controls that are wrong so they draw the critical border too.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral` | Legend |
+| `--foreground-neutral-faded` | Hint |
+| `--foreground-critical` | Error |
+
+## Do / Don't
+
+- **Do** write the legend as the question or category ("Plan", "Notify me about").
+- **Do** use `direction="row"` for two or three short options only.
+- **Don't** nest one group inside another.
+
+## Content
+
+- Legend in sentence case, no trailing colon.
+- Error text says what to do ("Pick at least one"), not what went wrong.

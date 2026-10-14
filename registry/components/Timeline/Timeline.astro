@@ -5,7 +5,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
   items: { title: string; time?: string; description?: string }[]
   class?: string
 }
@@ -20,19 +21,19 @@ const { items, class: className, ...rest } = Astro.props
       return (
         <li class="relative flex gap-4 pb-6 last:pb-0">
           {!last && (
-            <span class="absolute top-3 start-1.5 -ms-px h-full w-px bg-border" aria-hidden="true" />
+            <span class="absolute top-3 start-1.5 h-full w-px -translate-x-1/2 bg-neutral rtl:translate-x-1/2" aria-hidden="true" />
           )}
           <span
-            class="relative z-10 mt-1.5 size-3 shrink-0 rounded-full border-2 border-accent bg-background"
+            class="relative z-10 mt-1.5 size-3 shrink-0 rounded-full border-2 border-primary bg-page"
             aria-hidden="true"
           />
           <div>
             <div class="flex flex-wrap items-baseline gap-x-2">
-              <p class="text-sm font-medium text-foreground">{item.title}</p>
-              {item.time && <time class="text-xs text-muted-foreground tabular-nums">{item.time}</time>}
+              <p class="text-sm font-medium text-neutral">{item.title}</p>
+              {item.time && <time class="text-xs text-neutral-faded tabular-nums">{item.time}</time>}
             </div>
             {item.description && (
-              <p class="mt-0.5 text-sm text-muted-foreground">{item.description}</p>
+              <p class="mt-0.5 text-sm text-neutral-faded">{item.description}</p>
             )}
           </div>
         </li>

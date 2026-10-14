@@ -4,12 +4,12 @@
  * animated open/close (`::details-content` + `interpolate-size`). For grouped
  * single-open sections use Accordion.
  * Slots: `trigger` (summary label), default (revealed content).
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { ChevronDown } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   open?: boolean
   class?: string
 }
@@ -19,12 +19,12 @@ const { open = false, class: className, ...rest } = Astro.props
 
 <details class:list={['apogee-collapsible', className]} open={open} {...rest}>
   <summary
-    class="flex cursor-pointer items-center gap-2 text-sm font-medium text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+    class="flex cursor-pointer items-center gap-2 text-sm font-medium text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
   >
-    <ChevronDown class="apogee-collapsible-icon size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+    <ChevronDown class="apogee-collapsible-icon size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
     <slot name="trigger">Details</slot>
   </summary>
-  <div class="apogee-collapsible-content pt-2 text-sm text-muted-foreground">
+  <div class="apogee-collapsible-content pt-2 text-sm text-neutral-faded">
     <slot />
   </div>
 </details>
@@ -34,7 +34,7 @@ const { open = false, class: className, ...rest } = Astro.props
     interpolate-size: allow-keywords;
   }
   .apogee-collapsible-icon {
-    transition: rotate var(--duration-base) var(--ease-smooth);
+    transition: rotate var(--duration-medium) var(--ease-standard);
   }
   .apogee-collapsible[open] .apogee-collapsible-icon {
     rotate: 180deg;
@@ -44,8 +44,8 @@ const { open = false, class: className, ...rest } = Astro.props
     overflow: hidden;
     content-visibility: hidden;
     transition:
-      block-size var(--duration-slow) var(--ease-smooth),
-      content-visibility var(--duration-slow) var(--ease-smooth) allow-discrete;
+      block-size var(--duration-slow) var(--ease-standard),
+      content-visibility var(--duration-slow) var(--ease-standard) allow-discrete;
   }
   .apogee-collapsible[open]::details-content {
     block-size: auto;

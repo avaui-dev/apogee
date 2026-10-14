@@ -8,11 +8,11 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Container from '../../../../registry/components/Container/Container.astro'
 
-<Preview code={`<Container size="md">
-  <div class="bg-muted p-4 text-center text-sm">Centered content</div>
+<Preview code={`<Container width="medium">
+  <div class="bg-neutral-faded p-4 text-center text-sm">Centered content</div>
 </Container>`}>
-  <Container size="md">
-    <div class="bg-muted p-4 text-center text-sm">Centered content</div>
+  <Container width="medium">
+    <div class="bg-neutral-faded p-4 text-center text-sm">Centered content</div>
   </Container>
 </Preview>
 
@@ -30,7 +30,7 @@ No Apogee dependencies.
 ---
 import Container from '@/components/apogee/Container/Container.astro'
 ---
-<Container size="lg">
+<Container>
   <p>Page content, centered with side gutters.</p>
 </Container>
 ```
@@ -43,23 +43,23 @@ through to the root element.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `as` | `string` | `'div'` | Element/tag to render (e.g. `'section'`, `'main'`). |
-| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'lg'` | Max width: `sm`=`max-w-3xl`, `md`=`max-w-5xl`, `lg`=`max-w-7xl`, `xl`=`max-w-[90rem]`, `full`=`max-w-none`. |
+| `width` | `'small' \| 'medium' \| 'large' \| 'xlarge' \| 'full'` | `'large'` | Max width: 48 / 64 / 80 / 90rem, or none. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
 
 Every size, each with a marker block so the max-width is visible:
 
-<Preview code={`<Container size="sm"><div class="bg-muted p-2 text-center text-sm">sm — max-w-3xl</div></Container>
-<Container size="md"><div class="bg-muted p-2 text-center text-sm">md — max-w-5xl</div></Container>
-<Container size="lg"><div class="bg-muted p-2 text-center text-sm">lg — max-w-7xl</div></Container>
-<Container size="xl"><div class="bg-muted p-2 text-center text-sm">xl — max-w-[90rem]</div></Container>
-<Container size="full"><div class="bg-muted p-2 text-center text-sm">full — max-w-none</div></Container>`}>
-  <Container size="sm"><div class="bg-muted p-2 text-center text-sm">sm — max-w-3xl</div></Container>
-  <Container size="md"><div class="bg-muted p-2 text-center text-sm">md — max-w-5xl</div></Container>
-  <Container size="lg"><div class="bg-muted p-2 text-center text-sm">lg — max-w-7xl</div></Container>
-  <Container size="xl"><div class="bg-muted p-2 text-center text-sm">xl — max-w-[90rem]</div></Container>
-  <Container size="full"><div class="bg-muted p-2 text-center text-sm">full — max-w-none</div></Container>
+<Preview code={`<Container width="small"><div class="bg-neutral-faded p-2 text-center text-sm">sm — max-w-3xl</div></Container>
+<Container width="medium"><div class="bg-neutral-faded p-2 text-center text-sm">md — max-w-5xl</div></Container>
+<Container><div class="bg-neutral-faded p-2 text-center text-sm">lg — max-w-7xl</div></Container>
+<Container width="xlarge"><div class="bg-neutral-faded p-2 text-center text-sm">xl — max-w-[90rem]</div></Container>
+<Container width="full"><div class="bg-neutral-faded p-2 text-center text-sm">full — max-w-none</div></Container>`}>
+  <Container width="small"><div class="bg-neutral-faded p-2 text-center text-sm">sm — max-w-3xl</div></Container>
+  <Container width="medium"><div class="bg-neutral-faded p-2 text-center text-sm">md — max-w-5xl</div></Container>
+  <Container><div class="bg-neutral-faded p-2 text-center text-sm">lg — max-w-7xl</div></Container>
+  <Container width="xlarge"><div class="bg-neutral-faded p-2 text-center text-sm">xl — max-w-[90rem]</div></Container>
+  <Container width="full"><div class="bg-neutral-faded p-2 text-center text-sm">full — max-w-none</div></Container>
 </Preview>
 
 ## States
@@ -72,7 +72,7 @@ states.
 Rendered as a semantic landmark instead of a `<div>`:
 
 ```astro
-<Container as="main" size="lg">
+<Container as="main">
   <h1>Page title</h1>
 </Container>
 ```
@@ -80,8 +80,8 @@ Rendered as a semantic landmark instead of a `<div>`:
 Nested, for a full-width band with a narrower content column inside:
 
 ```astro
-<Container size="full" class="bg-muted">
-  <Container size="md">
+<Container width="full" class="bg-neutral-faded">
+  <Container width="medium">
     <p>Narrower content inside a full-bleed background.</p>
   </Container>
 </Container>

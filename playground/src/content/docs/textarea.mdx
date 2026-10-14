@@ -41,7 +41,9 @@ attribute (e.g. `placeholder`, `disabled`, `maxlength`, `name`) passes through.
 | `hint` | `string` | — | Helper text below the field (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid` and swaps in for `hint`. |
 | `rows` | `number` | `4` | Visible row count. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Padding and font size. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Padding and text size from the shared scale, 28 / 36 / 48 / 56px. |
+| `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
+| `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `required` | `boolean` | `false` | Marks the field required (native `required` + label asterisk). |
 | `class` | `string` | — | Extra classes on the `Field` wrapper, merged last. |
 
@@ -57,12 +59,12 @@ attribute (e.g. `placeholder`, `disabled`, `maxlength`, `name`) passes through.
 
 Every size:
 
-<Preview code={`<Textarea label="Small" size="sm" placeholder="Small" />
-<Textarea label="Medium" size="md" placeholder="Medium" />
-<Textarea label="Large" size="lg" placeholder="Large" />`}>
-  <Textarea label="Small" size="sm" placeholder="Small" />
-  <Textarea label="Medium" size="md" placeholder="Medium" />
-  <Textarea label="Large" size="lg" placeholder="Large" />
+<Preview code={`<Textarea label="Small" size="small" placeholder="Small" />
+<Textarea label="Medium" placeholder="Medium" />
+<Textarea label="Large" size="large" placeholder="Large" />`}>
+  <Textarea label="Small" size="small" placeholder="Small" />
+  <Textarea label="Medium" placeholder="Medium" />
+  <Textarea label="Large" size="large" placeholder="Large" />
 </Preview>
 
 ## States
@@ -76,9 +78,9 @@ Every size:
 </Preview>
 
 - **Hover** — border unchanged; no hover-specific style.
-- **Focus** — visible `focus-visible` ring (`--ring`).
+- **Focus** — visible `focus-visible` ring (`--border-primary`).
 - **Disabled** — dimmed, not focusable, native `disabled`.
-- **Invalid** (`error` set) — `--danger` border, `aria-invalid="true"`, hint text
+- **Invalid** (`error` set) — `--background-critical` border, `aria-invalid="true"`, hint text
   replaced by the error message with `role="alert"`.
 
 ## Examples
@@ -101,10 +103,10 @@ More rows for longer content:
 
 | Token | Used for |
 |---|---|
-| `--border` / `--background` / `--foreground` | Field border, fill, text |
-| `--muted-foreground` | Placeholder + hint text |
-| `--danger` | Invalid border + error text |
-| `--ring` | Focus ring |
+| `--border-neutral` / `--background-page` / `--foreground-neutral` | Field border, fill, text |
+| `--foreground-neutral-faded` | Placeholder + hint text |
+| `--foreground-critical` | Invalid border + error text |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

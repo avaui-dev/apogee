@@ -6,7 +6,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
   type?: 'single' | 'multiple'
   'aria-label'?: string
   class?: string
@@ -19,7 +20,7 @@ const { type = 'multiple', class: className, ...rest } = Astro.props
   role="group"
   data-type={type}
   class:list={[
-    'apogee-toggle-group inline-flex flex-wrap items-center gap-0.5 rounded-md border border-border bg-background p-0.5',
+    'apogee-toggle-group inline-flex flex-wrap items-center gap-0.5 rounded-md border border-neutral bg-page p-0.5 [&>.apogee-toggle]:rounded-[calc(var(--radius-md)-0.125rem)]',
     className,
   ]}
   {...rest}
@@ -28,14 +29,22 @@ const { type = 'multiple', class: className, ...rest } = Astro.props
 </div>
 
 <script>
+  import { island } from '../utils/island.ts'
+
   // Single-select: clicking one un-presses its siblings (each button still
   // self-toggles, so clicking the active one clears the group).
-  for (const g of document.querySelectorAll<HTMLElement>('.apogee-toggle-group[data-type="single"]')) {
+  island('.apogee-toggle-group', (g) => {
     const btns = [...g.querySelectorAll<HTMLButtonElement>('.apogee-toggle')]
+    const single = g.dataset.type === 'single'
     for (const b of btns) {
       b.addEventListener('click', () => {
-        for (const o of btns) if (o !== b) o.setAttribute('aria-pressed', 'false')
+        if (single) for (const o of btns) if (o !== b) o.setAttribute('aria-pressed', 'false')
+        // After the button's own toggle (same tick, registered earlier) report the group's state.
+        queueMicrotask(() => {
+          const pressed = btns.filter((o) => o.getAttribute('aria-pressed') === 'true').map((o) => o.dataset.value ?? String(btns.indexOf(o)))
+          g.dispatchEvent(new CustomEvent('apogee:toggle-group-change', { bubbles: true, detail: { pressed } }))
+        })
       })
     }
-  }
+  })
 </script>

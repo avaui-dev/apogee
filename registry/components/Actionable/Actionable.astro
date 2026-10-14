@@ -1,0 +1,59 @@
+---
+/**
+ * Actionable — the bare interactive primitive: a button, a link (`href`) or a
+ * focusable div, with the focus ring and disabled handling and nothing else.
+ * Wrap custom clickable surfaces (a tile, a row, a media card) in it instead
+ * of hand-wiring `<button>` resets.
+
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+/** @composable */
+interface Props extends HTMLAttributes<'button'> {
+  /** Renders an `<a>`. @category content */
+  href?: string
+  /** Element when there is no `href`. @category layout */
+  as?: 'button' | 'div'
+  disabled?: boolean
+  /** @category layout */
+  fullWidth?: boolean
+  /** Invoker command for a Dialog or popover target. */
+  command?: 'show-modal' | 'close' | 'request-close' | 'show-popover' | 'hide-popover' | 'toggle-popover' | (string & {})
+  /** Id of the element the command targets. */
+  commandfor?: string
+  class?: string
+}
+
+const { href, as = 'button', disabled = false, fullWidth = false, class: className, ...rest } = Astro.props
+const Tag = href ? 'a' : as
+---
+
+<Tag
+  href={disabled ? undefined : href}
+  type={Tag === 'button' ? 'button' : undefined}
+  tabindex={Tag === 'div' && !disabled ? 0 : undefined}
+  role={Tag === 'div' ? 'button' : undefined}
+  data-apogee-actionable={Tag === 'div' ? '' : undefined}
+  disabled={Tag === 'button' && disabled ? true : undefined}
+  aria-disabled={Tag !== 'button' && disabled ? 'true' : undefined}
+  class:list={[
+    'inline-flex cursor-pointer appearance-none items-center bg-transparent text-start text-inherit focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+    disabled && 'cursor-not-allowed opacity-50',
+    fullWidth && 'flex w-full',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<script>
+  // A div acting as a button: Enter and Space activate it, like a native button.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return
+    const el = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-apogee-actionable][role="button"]') : null
+    if (!el || el.getAttribute('aria-disabled') === 'true') return
+    event.preventDefault()
+    el.click()
+  })
+</script>

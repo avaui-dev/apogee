@@ -1,0 +1,126 @@
+---
+title: Tooltip
+description: A short hint shown on hover and keyboard focus. CSS only — wrap a focusable trigger and the hint appears for mouse and keyboard users alike.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Tooltip from '../../../../registry/components/Tooltip/Tooltip.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+<Preview code={`<Tooltip text="Copy to clipboard">
+  <Button variant="outline" color="neutral">Copy</Button>
+</Tooltip>`}>
+  <Tooltip text="Copy to clipboard">
+    <Button variant="outline" color="neutral">Copy</Button>
+  </Tooltip>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add tooltip
+```
+
+No Apogee component dependencies, no icons, zero JS.
+
+## Usage
+
+```astro
+---
+import Tooltip from '@/components/apogee/Tooltip/Tooltip.astro'
+---
+<Tooltip text="Copy to clipboard">
+  <button type="button">Copy</button>
+</Tooltip>
+```
+
+## Anatomy
+
+- **Trigger** — whatever you put in the default slot. Make it focusable (a
+  button or link) so keyboard users get the hint too; it carries
+  `aria-describedby` pointing at the tooltip.
+- **Tooltip** — a `role="tooltip"` span above the trigger, centered, shown on
+  `:hover` and `:focus-within`.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root wrapper `<span>`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `text` | `string` | — | The hint. Keep it to a few words; it does not wrap. |
+| `class` | `string` | — | Extra classes on the root wrapper. |
+
+## Variants
+
+One shape. The tooltip always sits above the trigger, horizontally centered.
+
+<Preview code={`<Tooltip text="Edit"><Button variant="ghost" color="neutral" iconOnly aria-label="Edit">✎</Button></Tooltip>
+<Tooltip text="Delete"><Button color="critical">Delete</Button></Tooltip>
+<Tooltip text="Opens in a new tab"><a href="#" class="text-primary underline">Docs</a></Tooltip>`}>
+  <div class="flex items-center gap-4">
+    <Tooltip text="Edit"><Button variant="ghost" color="neutral" iconOnly aria-label="Edit">✎</Button></Tooltip>
+    <Tooltip text="Delete"><Button color="critical">Delete</Button></Tooltip>
+    <Tooltip text="Opens in a new tab"><a href="#" class="text-primary underline">Docs</a></Tooltip>
+  </div>
+</Preview>
+
+## States
+
+- **Hidden** (default) — `opacity: 0`, nudged down 4px, `pointer-events: none`.
+- **Shown** — on `:hover` or `:focus-within` of the wrapper: fades in and
+  settles into place (`--duration-fast`, `--ease-standard`).
+
+## Examples
+
+An icon-only button is the classic case: the visible label is the tooltip,
+the accessible name is `aria-label`.
+
+```astro
+<Tooltip text="Settings">
+  <Button variant="ghost" color="neutral" iconOnly aria-label="Settings"><Settings /></Button>
+</Tooltip>
+```
+
+## Accessibility
+
+- The tooltip has `role="tooltip"` and the trigger wrapper points at it with
+  `aria-describedby`, so screen readers read the hint after the trigger's
+  name.
+- Appears on keyboard focus, not only hover, because it is driven by
+  `:focus-within`. Put a focusable element in the slot or keyboard users never
+  see it.
+- The hint is supplementary. Never put the only label of a control in a
+  tooltip; give the control an accessible name of its own.
+- There is no `Esc` to dismiss (WCAG 1.4.13 asks for one). Moving focus or the
+  pointer away hides it. If the hint is long or essential, use a Popover.
+- The fade respects `prefers-reduced-motion`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-inverted` | Tooltip background |
+| `--on-inverted` | Tooltip text |
+| `--radius-md` | Corner radius |
+| `--duration-fast` / `--ease-standard` | Fade transition |
+
+## Do / Don't
+
+- **Do** use it for a two-to-five-word hint on icon buttons and truncated
+  labels.
+- **Do** keep the trigger focusable.
+- **Don't** put links, buttons or formatted text in it; the tooltip is plain
+  text and cannot be hovered.
+- **Don't** rely on it on touch screens; there is no hover, so the hint only
+  shows while the control has focus.
+
+## Content
+
+- Sentence case, no ending period: "Copy to clipboard", not "Copy to
+  clipboard."
+- Name the action or the outcome, not the control: "Opens in a new tab"
+  rather than "Link".

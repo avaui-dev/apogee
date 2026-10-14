@@ -1,0 +1,177 @@
+---
+title: Migrating to 0.3
+description: The 0.3 token model and prop vocabulary, with a codemod for the utilities and a table for the props.
+group: Foundations
+order: 9
+---
+
+0.3 replaces the 0.2 semantic tokens (`--accent`, `--muted`, `--surface` …)
+with five hues times seven roles, and gives every component the same prop
+vocabulary. Copied components are yours, so the migration touches your repo.
+
+## 1. Update the tokens file
+
+Re-run `npx @ava-ui/apogee init` to refresh `theme.css`, or copy the new
+`registry/tokens/theme.css` over yours. If you had hand-edited colours, copy
+`scripts/hues.mjs` from the package, change the values, and run
+`node node_modules/@ava-ui/apogee/scripts/build-tokens.mjs src/styles/apogee.css ./hues.mjs`
+(see [Design tokens](/docs/tokens)).
+
+## 2. Run the codemod
+
+It rewrites utility classes and `var(--…)` references in `.astro`, `.mdx`,
+`.md` and `.css` files under `./src` (run it from your project root):
+
+```sh
+node node_modules/@ava-ui/apogee/scripts/codemod-0.3.mjs --dry   # list files it would change
+node node_modules/@ava-ui/apogee/scripts/codemod-0.3.mjs         # apply
+```
+
+Then re-add the components you had copied (`npx @ava-ui/apogee add …`) to pick
+up their 0.3 versions, and diff against your local edits.
+
+### Utilities
+
+| 0.2 | 0.3 |
+|---|---|
+| `bg-accent/5` | `bg-primary-faded-highlighted` |
+| `from-accent/20` | `from-primary/20` |
+| `from-accent/10` | `from-primary/10` |
+| `bg-muted/60` | `bg-neutral-faded-highlighted` |
+| `bg-muted-foreground/15` | `bg-neutral` |
+| `bg-muted-foreground/10` | `bg-neutral` |
+| `ring-background` | `ring-page` |
+| `border-ring` | `border-primary` |
+| `text-accent-hover` | `text-primary` |
+| `bg-accent-hover` | `bg-primary-highlighted` |
+| `text-accent-foreground` | `text-on-primary` |
+| `border-accent/25` | `border-primary-faded` |
+| `bg-accent/10` | `bg-primary-faded` |
+| `bg-accent/15` | `bg-primary-faded` |
+| `bg-accent` | `bg-primary` |
+| `text-accent` | `text-primary` |
+| `border-accent` | `border-primary` |
+| `outline-accent` | `outline-primary` |
+| `bg-danger-hover` | `bg-critical-highlighted` |
+| `text-danger-foreground` | `text-on-critical` |
+| `border-danger/25` | `border-critical-faded` |
+| `bg-danger/10` | `bg-critical-faded` |
+| `bg-danger` | `bg-critical` |
+| `text-danger` | `text-critical` |
+| `border-danger` | `border-critical` |
+| `text-success-foreground` | `text-on-positive` |
+| `border-success/25` | `border-positive-faded` |
+| `bg-success/10` | `bg-positive-faded` |
+| `bg-success` | `bg-positive` |
+| `text-success` | `text-positive` |
+| `border-success` | `border-positive` |
+| `text-warning-foreground` | `text-on-warning` |
+| `border-warning/30` | `border-warning-faded` |
+| `bg-warning/10` | `bg-warning-faded` |
+| `text-muted-foreground` | `text-neutral-faded` |
+| `bg-muted/40` | `bg-neutral-faded` |
+| `bg-muted/50` | `bg-neutral-faded` |
+| `hover:bg-muted` | `hover:bg-neutral-faded-highlighted` |
+| `focus-visible:bg-muted` | `focus-visible:bg-neutral-faded-highlighted` |
+| `aria-selected:bg-muted` | `aria-selected:bg-neutral-faded-highlighted` |
+| `bg-muted` | `bg-neutral-faded` |
+| `text-surface-foreground` | `text-neutral` |
+| `bg-surface` | `bg-elevation-raised` |
+| `border-border` | `border-neutral` |
+| `divide-border` | `divide-neutral` |
+| `bg-border` | `bg-neutral` |
+| `bg-background/85` | `bg-page/85` |
+| `bg-background` | `bg-page` |
+| `text-background` | `text-on-inverted` |
+| `bg-foreground` | `bg-inverted` |
+| `text-foreground` | `text-neutral` |
+| `outline-ring` | `outline-primary` |
+| `ring-ring` | `ring-neutral` |
+
+
+### CSS variables
+
+| 0.2 | 0.3 |
+|---|---|
+| `--accent-hover` | `--background-primary-highlighted` |
+| `--accent-foreground` | `--on-primary` |
+| `--accent` | `--background-primary` |
+| `--danger-hover` | `--background-critical-highlighted` |
+| `--danger-foreground` | `--on-critical` |
+| `--danger` | `--background-critical` |
+| `--success-foreground` | `--on-positive` |
+| `--success` | `--background-positive` |
+| `--warning-foreground` | `--on-warning` |
+| `--warning` | `--background-warning` |
+| `--muted-foreground` | `--foreground-neutral-faded` |
+| `--muted` | `--background-neutral-faded` |
+| `--surface-foreground` | `--foreground-neutral` |
+| `--surface` | `--background-elevation-raised` |
+| `--border` | `--border-neutral` |
+| `--background` | `--background-page` |
+| `--foreground` | `--foreground-neutral` |
+| `--ring` | `--border-primary` |
+| `--color-accent` | `--background-primary` |
+| `--color-muted` | `--background-neutral-faded` |
+| `--color-border` | `--border-neutral` |
+| `--color-background` | `--background-page` |
+| `--color-ring` | `--border-primary` |
+| `--color-danger` | `--background-critical` |
+| `--color-success` | `--background-positive` |
+| `--duration-base` | `--duration-medium` |
+| `--ease-smooth` | `--ease-standard` |
+| `--ease-emphasized` | `--ease-decelerate` |
+
+
+## 3. Rename props by hand
+
+The vocabulary is the same everywhere: `color` is the hue, `variant` the fill
+style, `size` one of `small | medium | large | xlarge`, directions `start | end`.
+
+| Component | 0.2 | 0.3 |
+|---|---|---|
+| Button | `variant="primary"` | (default) |
+| Button | `variant="secondary"` | `variant="outline" color="neutral"` |
+| Button | `variant="ghost"` | `variant="ghost" color="neutral"` |
+| Button | `variant="danger"` | `color="critical"` |
+| Button | `variant="link"` | use `<Link>` |
+| Button | `size="icon"` | `iconOnly` |
+| Button, Input, Select, Textarea, Combobox, NumberInput, TagInput, PinInput, Checkbox, Radio, Switch, Avatar, AvatarGroup, Spinner, SegmentedControl, ToggleButton | `size="sm" \| "md" \| "lg"` | `size="small" \| "medium" \| "large"` |
+| Badge, Tag | `variant="accent"` | `color="primary" variant="solid"` |
+| Badge, Tag | `variant="danger"` | `color="critical" variant="solid"` |
+| Badge, Tag | `variant="neutral"` | (default) |
+| Alert | `variant="info" \| "success" \| "warning" \| "danger"` | `color="primary" \| "positive" \| "warning" \| "critical"` |
+| Toaster | `apogeeToast(msg, { variant })` | `apogeeToast(msg, { color })`, same mapping as Alert |
+| Input | `variant="floating"` | `labelPosition="floating"` |
+| Input, Select, Textarea … | `error` (message) | unchanged; add `hasError` to mark invalid without a message |
+| Checkbox, Radio, Switch | — | gained `size`, `hasError` |
+| Text | `muted` | `color="neutral-faded"` |
+| Text | `size="sm" \| "base" \| "lg"` | `size="small" \| "medium" \| "large"` |
+| Eyebrow | `muted` | `color="neutral-faded"` |
+| Container | `size` | `width` (`small \| medium \| large \| xlarge \| full`) |
+| Section | `space="sm" \| "md" \| "lg" \| "xl"` | `spacing="small" \| "medium" \| "large" \| "xlarge"`; `containerWidth` |
+| Dialog | `variant="panel" position="end"` | `position="end"` |
+| Dialog | `variant="fullscreen"` | `position="full-screen"` |
+| DataGrid column | `align="left" \| "right"` | `align="start" \| "end"` |
+| Card | — | gained `raised`, `selected`, `padding` |
+| Link | — | gained `color="primary" \| "neutral" \| "inherit"` |
+| NavLink | slots `leading` / `trailing` | slots `start` / `end` |
+| Stack | `direction="col"` | `direction="column"` (0.4) |
+| Progress, Slider, Rating, ProgressIndicator | — | gained `color` |
+
+## 4. Typed props
+
+Every component's `Props` now extends Astro's `HTMLAttributes` for its root
+element. Unknown attributes still pass through, but a typo in a known one is a
+type error under `astro check`. If you relied on the old `[key: string]: any`
+escape hatch for a custom attribute, spread it from an object.
+
+## 5. Check
+
+```sh
+npx astro check
+npm run build
+```
+
+Then open your pages in both themes. The contrast gate covers the tokens;
+your own class combinations are yours to look at.

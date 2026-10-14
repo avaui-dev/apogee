@@ -9,17 +9,17 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import DataGrid from '../../../../registry/components/DataGrid/DataGrid.astro'
 
-<JsNote fallback="Rows render in the order given by the rows prop. Sort buttons and the select-all checkbox render but don't respond to clicks — nothing is hidden, the data is still fully readable.">
+<JsNote fallback="Rows render in the order given by the rows prop. Sortable headers show their plain label instead of a button and the select-all checkbox is hidden (`no-js:hidden`), so no dead controls appear; per-row checkboxes stay as ordinary form controls.">
   Wires client-side column sorting (numbers sort numerically, everything else as
   text) and, when `selectable`, row checkboxes with an indeterminate select-all.
 </JsNote>
 
-<Preview code={`<DataGrid
+<Preview block code={`<DataGrid
   selectable
   columns={[
     { key: 'name', label: 'Name', sortable: true },
     { key: 'role', label: 'Role' },
-    { key: 'joined', label: 'Joined', sortable: true, align: 'right' },
+    { key: 'joined', label: 'Joined', sortable: true, align: 'end' },
   ]}
   rows={[
     { name: 'Ada Lovelace', role: 'Engineer', joined: 2021 },
@@ -32,7 +32,7 @@ import DataGrid from '../../../../registry/components/DataGrid/DataGrid.astro'
     columns={[
       { key: 'name', label: 'Name', sortable: true },
       { key: 'role', label: 'Role' },
-      { key: 'joined', label: 'Joined', sortable: true, align: 'right' },
+      { key: 'joined', label: 'Joined', sortable: true, align: 'end' },
     ]}
     rows={[
       { name: 'Ada Lovelace', role: 'Engineer', joined: 2021 },
@@ -70,7 +70,7 @@ import DataGrid from '@/components/apogee/DataGrid/DataGrid.astro'
 - **Select-all checkbox** — header cell, shown when `selectable`; a `Checkbox`
   wired to an indeterminate state.
 - **Body rows** — one `<tr>` per item in `rows`; a checked row's `<tr>` tints
-  (`bg-muted/40`).
+  (`bg-neutral-faded`).
 - **Row checkbox** — shown per row when `selectable`; a `Checkbox`.
 
 ## API
@@ -83,6 +83,7 @@ through to the root wrapper `<div>`.
 | `columns` | `Column[]` | — | Column definitions, in order. |
 | `rows` | `Record<string, any>[]` | — | Row data; each row's keys match `columns[].key`. |
 | `selectable` | `boolean` | `false` | Adds a checkbox column with an indeterminate select-all. |
+| `headerStyle` | `'normal' \| 'caps'` | `'normal'` | Header text: sentence case and semibold, or small caps. |
 | `class` | `string` | — | Extra classes on the wrapper, merged last. |
 
 ### `Column` shape
@@ -92,16 +93,16 @@ through to the root wrapper `<div>`.
 | `key` | `string` | — | Key read from each row's data. |
 | `label` | `string` | — | Column header text. |
 | `sortable` | `boolean` | `false` | Adds a sort button to the header. |
-| `align` | `'left' \| 'right' \| 'center'` | `'left'` | Header + cell text alignment. |
+| `align` | `'start' \| 'end' \| 'center'` | `'start'` | Header + cell text alignment (logical, mirrors in RTL). |
 
 ## Variants
 
 Sortable columns (click a header to cycle unsorted → ascending → descending):
 
-<Preview code={`<DataGrid
+<Preview block code={`<DataGrid
   columns={[
     { key: 'name', label: 'Name', sortable: true },
-    { key: 'score', label: 'Score', sortable: true, align: 'right' },
+    { key: 'score', label: 'Score', sortable: true, align: 'end' },
   ]}
   rows={[
     { name: 'Charlie', score: 88 },
@@ -112,7 +113,7 @@ Sortable columns (click a header to cycle unsorted → ascending → descending)
   <DataGrid
     columns={[
       { key: 'name', label: 'Name', sortable: true },
-      { key: 'score', label: 'Score', sortable: true, align: 'right' },
+      { key: 'score', label: 'Score', sortable: true, align: 'end' },
     ]}
     rows={[
       { name: 'Charlie', score: 88 },
@@ -124,19 +125,19 @@ Sortable columns (click a header to cycle unsorted → ascending → descending)
 
 Column alignment — `left`, `right`, `center`:
 
-<Preview code={`<DataGrid
+<Preview block code={`<DataGrid
   columns={[
-    { key: 'a', label: 'Left', align: 'left' },
+    { key: 'a', label: 'Left', align: 'start' },
     { key: 'b', label: 'Center', align: 'center' },
-    { key: 'c', label: 'Right', align: 'right' },
+    { key: 'c', label: 'Right', align: 'end' },
   ]}
   rows={[{ a: 'aligned', b: 'aligned', c: 42 }]}
 />`}>
   <DataGrid
     columns={[
-      { key: 'a', label: 'Left', align: 'left' },
+      { key: 'a', label: 'Left', align: 'start' },
       { key: 'b', label: 'Center', align: 'center' },
-      { key: 'c', label: 'Right', align: 'right' },
+      { key: 'c', label: 'Right', align: 'end' },
     ]}
     rows={[{ a: 'aligned', b: 'aligned', c: 42 }]}
   />
@@ -154,11 +155,11 @@ Column alignment — `left`, `right`, `center`:
 
 Selectable rows, numeric column right-aligned with `tabular-nums`:
 
-<Preview code={`<DataGrid
+<Preview block code={`<DataGrid
   selectable
   columns={[
     { key: 'item', label: 'Item' },
-    { key: 'qty', label: 'Qty', align: 'right' },
+    { key: 'qty', label: 'Qty', align: 'end' },
   ]}
   rows={[
     { item: 'Widget', qty: 12 },
@@ -169,7 +170,7 @@ Selectable rows, numeric column right-aligned with `tabular-nums`:
     selectable
     columns={[
       { key: 'item', label: 'Item' },
-      { key: 'qty', label: 'Qty', align: 'right' },
+      { key: 'qty', label: 'Qty', align: 'end' },
     ]}
     rows={[
       { item: 'Widget', qty: 12 },
@@ -196,10 +197,10 @@ Selectable rows, numeric column right-aligned with `tabular-nums`:
 
 | Token | Used for |
 |---|---|
-| `--border` | Wrapper border, header/row dividers |
-| `--muted` | Header background, checked-row tint |
-| `--muted-foreground` | Header label color, inactive sort icon |
-| `--foreground` | Cell text, hovered sort label |
+| `--border-neutral` | Wrapper border, header/row dividers |
+| `--background-neutral-faded` | Header background, checked-row tint |
+| `--foreground-neutral-faded` | Header label color, inactive sort icon |
+| `--foreground-neutral` | Cell text, hovered sort label |
 
 ## Do / Don't
 
@@ -215,5 +216,5 @@ Selectable rows, numeric column right-aligned with `tabular-nums`:
 ## Content
 
 - Column labels are short nouns, sentence case, no ending punctuation.
-- Numeric columns right-align (`align="right"`) and inherit `tabular-nums`
+- Numeric columns end-align (`align="end"`) and inherit `tabular-nums`
   automatically.

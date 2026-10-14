@@ -3,12 +3,12 @@
  * AccordionItem — a native `<details>` disclosure. Open/close is 100% native
  * (zero JS); CSS animates the height. Give several items the same `group` for
  * single-open (exclusive) behavior.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { ChevronDown } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'details'>, 'title'> {
   title: string
   /** Shared name → single-open (exclusive) across items with the same value. */
   group?: string
@@ -22,12 +22,12 @@ const { title, group, open = false, class: className, ...rest } = Astro.props
 
 <details name={group} open={open} class:list={['apogee-accordion', className]} {...rest}>
   <summary
-    class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 text-sm font-medium text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+    class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 text-sm font-medium text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
   >
     {title}
-    <ChevronDown class="apogee-accordion-icon size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+    <ChevronDown class="apogee-accordion-icon size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
   </summary>
-  <div class="px-4 pb-4 text-sm text-muted-foreground">
+  <div class="px-4 pb-4 text-sm text-neutral-faded">
     <slot />
   </div>
 </details>
@@ -37,7 +37,7 @@ const { title, group, open = false, class: className, ...rest } = Astro.props
     interpolate-size: allow-keywords;
   }
   .apogee-accordion-icon {
-    transition: rotate var(--duration-base) var(--ease-smooth);
+    transition: rotate var(--duration-medium) var(--ease-standard);
   }
   .apogee-accordion[open] .apogee-accordion-icon {
     rotate: 180deg;
@@ -47,8 +47,8 @@ const { title, group, open = false, class: className, ...rest } = Astro.props
     overflow: hidden;
     content-visibility: hidden;
     transition:
-      block-size var(--duration-slow) var(--ease-smooth),
-      content-visibility var(--duration-slow) var(--ease-smooth) allow-discrete;
+      block-size var(--duration-slow) var(--ease-standard),
+      content-visibility var(--duration-slow) var(--ease-standard) allow-discrete;
   }
   .apogee-accordion[open]::details-content {
     block-size: auto;

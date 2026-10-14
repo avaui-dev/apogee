@@ -14,7 +14,7 @@ import Code from '../../../../registry/components/Code/Code.astro'
   checkmark and shows a "Copied" label for 3 seconds.
 </JsNote>
 
-<Preview code={`<Code copy>npm install @ava-ui/apogee</Code>`}>
+<Preview block code={`<Code copy>npm install @ava-ui/apogee</Code>`}>
   <Code copy>npm install @ava-ui/apogee</Code>
 </Preview>
 
@@ -49,13 +49,15 @@ element.
 |---|---|---|---|
 | `block` | `boolean` | `false` | Renders a block `<pre>` panel instead of inline `<code>`. |
 | `copy` | `boolean` | `false` | Adds a copy-to-clipboard button. Implies `block`. |
+| `lang` | `string` | — | Syntax-highlights at build time (both themes). Implies `block`. Requires `code`; without it the slot renders plain. |
+| `code` | `string` | — | Source to highlight when `lang` is set. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
 
 The three render modes — inline, block, and block with copy:
 
-<Preview code={`<Code>npm i</Code>
+<Preview block code={`<Code>npm i</Code>
 <Code block>{'{ "name": "apogee" }'}</Code>
 <Code copy>npm install @ava-ui/apogee</Code>`}>
   <Code>npm i</Code>
@@ -66,16 +68,30 @@ The three render modes — inline, block, and block with copy:
 ## States
 
 - **Default** — copy button shows a copy icon, muted-foreground colour.
-- **Hover / focus** — button background shifts to `--muted`; a visible
+- **Hover / focus** — button background shifts to `--background-neutral-faded`; a visible
   `focus-visible` ring on keyboard focus.
-- **Copied** — icon swaps to a checkmark, button turns `--success`, and a
+- **Copied** — icon swaps to a checkmark, button turns `--background-positive`, and a
   "Copied" label fades in for 3 seconds (`role="status"`).
 
-<Preview code={`<Code copy>git commit -m "fix: copy button"</Code>`}>
+<Preview block code={`<Code copy>git commit -m "fix: copy button"</Code>`}>
   <Code copy>git commit -m "fix: copy button"</Code>
 </Preview>
 
 ## Examples
+
+Highlighted (build time, follows the theme):
+
+export const tsSnippet = "export const greet = (name: string) => 'Hello, ' + name"
+export const cssSnippet = ".card { border-radius: var(--radius-lg); }"
+export const htmlSnippet = '<button class="bg-primary text-on-primary">Save</button>'
+
+<Preview block code={`<Code lang="ts" copy code={tsSnippet} />
+<Code lang="css" code={cssSnippet} />
+<Code lang="html" code={htmlSnippet} />`}>
+  <Code lang="ts" copy code={tsSnippet} />
+  <Code lang="css" code={cssSnippet} />
+  <Code lang="html" code={htmlSnippet} />
+</Preview>
 
 Inline, in prose:
 
@@ -85,13 +101,13 @@ Run <Code>npm i</Code> before starting the dev server.
 
 Block, no copy button (e.g. read-only output):
 
-<Preview code={`<Code block>✓ 12 tests passed</Code>`}>
+<Preview block code={`<Code block>✓ 12 tests passed</Code>`}>
   <Code block>✓ 12 tests passed</Code>
 </Preview>
 
 Block with copy, for install commands and config snippets:
 
-<Preview code={`<Code copy>pnpm add -D @ava-ui/apogee</Code>`}>
+<Preview block code={`<Code copy>pnpm add -D @ava-ui/apogee</Code>`}>
   <Code copy>pnpm add -D @ava-ui/apogee</Code>
 </Preview>
 
@@ -109,14 +125,14 @@ Block with copy, for install commands and config snippets:
 
 | Token | Used for |
 |---|---|
-| `--border` | Inline `<code>` and block `<pre>` border |
-| `--muted` | Inline/block background; copy button hover background |
-| `--background` | Copy button background |
-| `--foreground` | Code text; copy button hover/copied text |
-| `--muted-foreground` | Copy button default icon/text colour |
-| `--success` | Copy button "copied" colour |
-| `--ring` | Focus ring |
-| `--duration-fast` / `--ease-smooth` | "Copied" label fade transition |
+| `--border-neutral` | Inline `<code>` and block `<pre>` border |
+| `--background-neutral-faded` | Inline/block background; copy button hover background |
+| `--background-page` | Copy button background |
+| `--foreground-neutral` | Code text; copy button hover/copied text |
+| `--foreground-neutral-faded` | Copy button default icon/text colour |
+| `--foreground-positive` | Copy button "copied" colour |
+| `--border-primary` | Focus ring |
+| `--duration-fast` / `--ease-standard` | "Copied" label fade transition |
 
 ## Do / Don't
 

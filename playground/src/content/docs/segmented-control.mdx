@@ -39,7 +39,7 @@ passes through to the root `<div role="group">`.
 | `name` | `string` | — | Shared `name` for the underlying radio inputs. |
 | `options` | `(string \| { label: string; value: string })[]` | — | Options, in order. A plain string is used as both label and value. |
 | `value` | `string` | — | Selected value. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control size. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control size. |
 | `aria-label` | `string` | — | Accessible name for the group. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -47,17 +47,17 @@ passes through to the root `<div role="group">`.
 
 Every size:
 
-<Preview code={`<SegmentedControl name="size-sm" size="sm" options={['List', 'Board', 'Calendar']} value="List" />
-<SegmentedControl name="size-md" size="md" options={['List', 'Board', 'Calendar']} value="List" />
-<SegmentedControl name="size-lg" size="lg" options={['List', 'Board', 'Calendar']} value="List" />`}>
-  <SegmentedControl name="size-sm" size="sm" options={['List', 'Board', 'Calendar']} value="List" />
-  <SegmentedControl name="size-md" size="md" options={['List', 'Board', 'Calendar']} value="List" />
-  <SegmentedControl name="size-lg" size="lg" options={['List', 'Board', 'Calendar']} value="List" />
+<Preview code={`<SegmentedControl name="size-sm" size="small" options={['List', 'Board', 'Calendar']} value="List" />
+<SegmentedControl name="size-md" options={['List', 'Board', 'Calendar']} value="List" />
+<SegmentedControl name="size-lg" size="large" options={['List', 'Board', 'Calendar']} value="List" />`}>
+  <SegmentedControl name="size-sm" size="small" options={['List', 'Board', 'Calendar']} value="List" />
+  <SegmentedControl name="size-md" options={['List', 'Board', 'Calendar']} value="List" />
+  <SegmentedControl name="size-lg" size="large" options={['List', 'Board', 'Calendar']} value="List" />
 </Preview>
 
 ## States
 
-- **Selected** — the active option has a raised background (`bg-background`,
+- **Selected** — the active option has a raised background (`bg-page`,
   `shadow-sm`) and full-contrast text.
 - **Hover** — inactive options darken their text on hover.
 - **Focus** — the focused option's `label` shows a visible outline
@@ -97,12 +97,12 @@ differ:
 
 | Token | Used for |
 |---|---|
-| `--border` | Track border |
-| `--muted` | Track background |
-| `--background` | Selected option fill |
-| `--muted-foreground` | Unselected label |
-| `--foreground` | Selected / hovered label |
-| `--ring` | Focus outline |
+| `--border-neutral` | Track border |
+| `--background-neutral-faded` | Track background |
+| `--background-page` | Selected option fill |
+| `--foreground-neutral-faded` | Unselected label |
+| `--foreground-neutral` | Selected / hovered label |
+| `--border-primary` | Focus outline |
 
 ## Do / Don't
 

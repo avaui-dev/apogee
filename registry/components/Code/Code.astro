@@ -10,56 +10,68 @@
  *
  * `copy` adds a copy-to-clipboard button (progressive enhancement — hidden with
  * `no-js:hidden` when JS is off, since the code is still selectable).
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { Copy, Check } from '@lucide/astro'
+import { Code as Highlighted } from 'astro:components'
+import type { ComponentProps } from 'astro/types'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'code'>, 'lang'> {
   block?: boolean
   /** Add a copy-to-clipboard button (implies block). */
   copy?: boolean
+  /** Syntax-highlight a block (build time, both themes). Implies block. */
+  lang?: ComponentProps<typeof Highlighted>['lang']
+  /** Source to highlight when `lang` is set (the slot is plain text otherwise). */
+  code?: string
   class?: string
 }
 
-const { block = false, copy = false, class: className, ...rest } = Astro.props
-const isBlock = block || copy
+const { block = false, copy = false, lang, code, class: className, ...rest } = Astro.props
+const isBlock = block || copy || Boolean(lang)
+const themes = { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' } as const
 ---
 
 {
   !isBlock ? (
     <code
       class:list={[
-        'rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-foreground',
+        'rounded border border-neutral bg-neutral-faded px-1.5 py-0.5 font-mono text-[0.85em] text-neutral',
         className,
       ]}
       {...rest}
     ><slot /></code>
   ) : copy ? (
     <div class:list={['apogee-code relative', className]} {...rest}>
-      <pre class="overflow-x-auto rounded-lg border border-border bg-muted p-4 pe-12 text-sm"><code class="apogee-code-src font-mono text-foreground"><slot /></code></pre>
+      <pre class="overflow-x-auto rounded-lg border border-neutral bg-page-faded p-4 pe-12 text-sm"><code class="apogee-code-src font-mono text-neutral">{lang && code ? <Highlighted code={code} lang={lang} themes={themes} inline /> : <slot />}</code></pre>
       <button
         type="button"
-        class="apogee-code-copy absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-border bg-background text-muted-foreground no-js:hidden hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        class="apogee-code-copy absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         aria-label="Copy code"
       >
         <Copy class="apogee-code-icon-copy size-4" aria-hidden="true" />
-        <Check class="apogee-code-icon-check size-4 text-success" aria-hidden="true" />
-        <span class="apogee-code-label absolute top-full end-0 mt-1.5 rounded-md bg-foreground px-2 py-1 text-xs text-background" role="status">Copied</span>
+        <Check class="apogee-code-icon-check size-4 text-positive" aria-hidden="true" />
+        <span class="apogee-code-label absolute top-full end-0 mt-1.5 rounded-md bg-inverted px-2 py-1 text-xs text-on-inverted" role="status">Copied</span>
       </button>
     </div>
   ) : (
     <pre
       class:list={[
-        'overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm',
+        'overflow-x-auto rounded-lg border border-neutral bg-page-faded p-4 text-sm',
         className,
       ]}
       {...rest}
-    ><code class="font-mono text-foreground"><slot /></code></pre>
+    ><code class="apogee-code-plain font-mono text-neutral">{lang && code ? <Highlighted code={code} lang={lang} themes={themes} inline /> : <slot />}</code></pre>
   )
 }
 
 <style>
+  /* Highlighted code is rendered with both themes; swap to the dark colours under data-theme. */
+  :global([data-theme="dark"]) .apogee-code-src :global(span),
+  :global([data-theme="dark"]) .apogee-code-plain :global(span) {
+    color: var(--shiki-dark) !important;
+  }
   /* Copy button state, driven by data-copied on the button. */
   .apogee-code-icon-check {
     display: none;
@@ -67,7 +79,7 @@ const isBlock = block || copy
   .apogee-code-label {
     pointer-events: none;
     opacity: 0;
-    transition: opacity var(--duration-fast) var(--ease-smooth);
+    transition: opacity var(--duration-fast) var(--ease-standard);
   }
   .apogee-code-copy[data-copied='true'] .apogee-code-icon-copy {
     display: none;
@@ -76,7 +88,7 @@ const isBlock = block || copy
     display: inline;
   }
   .apogee-code-copy[data-copied='true'] {
-    color: var(--color-success);
+    color: var(--foreground-positive);
   }
   .apogee-code-copy[data-copied='true'] .apogee-code-label {
     opacity: 1;
@@ -84,9 +96,11 @@ const isBlock = block || copy
 </style>
 
 <script>
+  import { island } from '../utils/island.ts'
+
   // Copy the block's source; flip to a checkmark + "Copied" label for 3s.
   const timers = new WeakMap<HTMLElement, number>()
-  for (const btn of document.querySelectorAll<HTMLButtonElement>('.apogee-code-copy')) {
+  island('.apogee-code-copy', (btn) => {
     btn.addEventListener('click', async () => {
       const src = btn.closest('.apogee-code')?.querySelector('.apogee-code-src')?.textContent ?? ''
       try {
@@ -104,5 +118,5 @@ const isBlock = block || copy
         }, 3000),
       )
     })
-  }
+  })
 </script>

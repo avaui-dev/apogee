@@ -9,10 +9,10 @@ import Preview from '../../components/Preview.astro'
 import Field from '../../../../registry/components/Field/Field.astro'
 
 <Preview code={`<Field id="email" label="Email" hint="We'll never share it.">
-  <input id="email" type="email" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+  <input id="email" type="email" class="w-full rounded-md border border-neutral bg-page px-3 py-2 text-sm" />
 </Field>`}>
   <Field id="email" label="Email" hint="We'll never share it.">
-    <input id="email" type="email" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+    <input id="email" type="email" class="w-full rounded-md border border-neutral bg-page px-3 py-2 text-sm" />
   </Field>
 </Preview>
 
@@ -33,7 +33,7 @@ control.
 import Field from '@/components/apogee/Field/Field.astro'
 ---
 <Field id="name" label="Name" required>
-  <input id="name" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+  <input id="name" class="w-full rounded-md border border-neutral bg-page px-3 py-2 text-sm" />
 </Field>
 ```
 
@@ -67,20 +67,20 @@ through to the root `<div>`.
 With a hint:
 
 <Preview code={`<Field id="username" label="Username" hint="Letters, numbers, and dashes only.">
-  <input id="username" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+  <input id="username" class="w-full rounded-md border border-neutral bg-page px-3 py-2 text-sm" />
 </Field>`}>
   <Field id="username" label="Username" hint="Letters, numbers, and dashes only.">
-    <input id="username" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+    <input id="username" class="w-full rounded-md border border-neutral bg-page px-3 py-2 text-sm" />
   </Field>
 </Preview>
 
 With an error (overrides the hint):
 
 <Preview code={`<Field id="pw" label="Password" required error="Must be at least 8 characters.">
-  <input id="pw" type="password" class="w-full rounded-md border border-danger bg-background px-3 py-2 text-sm" />
+  <input id="pw" type="password" class="w-full rounded-md border border-critical bg-page px-3 py-2 text-sm" />
 </Field>`}>
   <Field id="pw" label="Password" required error="Must be at least 8 characters.">
-    <input id="pw" type="password" class="w-full rounded-md border border-danger bg-background px-3 py-2 text-sm" />
+    <input id="pw" type="password" class="w-full rounded-md border border-critical bg-page px-3 py-2 text-sm" />
   </Field>
 </Preview>
 
@@ -89,7 +89,7 @@ Custom control (a `Field` wrapping something other than a native input) — set
 
 ```astro
 <Field id="plan" label="Plan">
-  <select id="plan" aria-describedby="plan-hint" class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm">
+  <select id="plan" aria-describedby="plan-hint" class="w-full rounded-md border border-neutral bg-page px-3 py-2 text-sm">
     <option>Free</option>
     <option>Pro</option>
   </select>
@@ -110,9 +110,9 @@ Custom control (a `Field` wrapping something other than a native input) — set
 
 | Token | Used for |
 |---|---|
-| `--foreground` | Label text |
-| `--muted-foreground` | Hint text |
-| `--danger` | Required `*` and error text |
+| `--foreground-neutral` | Label text |
+| `--foreground-neutral-faded` | Hint text |
+| `--foreground-critical` | Required `*` and error text |
 
 ## Do / Don't
 

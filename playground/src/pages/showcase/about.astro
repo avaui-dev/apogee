@@ -1,0 +1,20 @@
+---
+import Site from '../../layouts/Site.astro'
+import Hero from '../../../../registry/sections/Hero/Hero.astro'
+import ContentSection from '../../../../registry/sections/Content/Content.astro'
+import Team from '../../../../registry/sections/Team/Team.astro'
+import Stats from '../../../../registry/sections/Stats/Stats.astro'
+import CTA from '../../../../registry/sections/CTA/CTA.astro'
+import { picture, team, stats } from '../../components/demo-data'
+---
+
+<Site title="About">
+  <Hero layout="centered" eyebrow="About" heading="A small team with a long memory" description="We have built design systems for a decade. This one is the distillation." spacing="medium" />
+  <ContentSection eyebrow="Story" heading="Why we built it" media={picture('about-1')} primaryAction={{ label: 'Read the principles', href: '/docs' }}>
+    <p>Every design system we touched drifted from its product within a year. The fix was never more process; it was fewer moving parts.</p>
+    <p>So the sections here are the components, arranged. Change a token and both move.</p>
+  </ContentSection>
+  <Stats layout="row" items={stats} background="neutral-faded" />
+  <Team eyebrow="People" heading="The team" layout="list" items={team} />
+  <CTA layout="split" heading="Work with us" description="We are hiring across design and engineering." primaryAction={{ label: 'See roles', href: '/showcase/contact' }} background="inverted" />
+</Site>

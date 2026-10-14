@@ -1,0 +1,25 @@
+---
+import Site from '../../../layouts/Site.astro'
+import PostHeader from '../../../../../registry/sections/PostHeader/PostHeader.astro'
+import ContentSection from '../../../../../registry/sections/Content/Content.astro'
+import BlogList from '../../../../../registry/sections/BlogList/BlogList.astro'
+import { picture, posts } from '../../../components/demo-data'
+---
+
+<Site title="Zero JavaScript until it earns its place">
+  <PostHeader eyebrow="Engineering" heading="Zero JavaScript until it earns its place" description="Why every section renders without a runtime, and what the islands are for." author={{ name: 'Alan Turing', avatar: 'https://i.pravatar.cc/64?img=12', role: 'Engineering' }} date="2026-09-18" readingTime="6 min read" media={picture('post-hero', 1600, 900)} />
+  <ContentSection layout="prose" spacing="small">
+    <p class="lead">A section that needs a script to render is a section that breaks when the script does.</p>
+    <h2>What ships by default</h2>
+    <p>Every section here renders to plain HTML. Headings, lists, forms and images work before any script loads, and keep working when one fails.</p>
+    <h2>Where the islands are</h2>
+    <ul>
+      <li>The pricing switch swaps the visible price per tier.</li>
+      <li>The data grid sorts columns and selects rows.</li>
+      <li>The navbar opens its menu on small screens.</li>
+    </ul>
+    <blockquote><p>JavaScript is the exception, not the default.</p><cite>The contributing guide</cite></blockquote>
+    <p>Each island boots once per element, again after view transitions, and leaves its default CSS state as the working fallback.</p>
+  </ContentSection>
+  <BlogList heading="More posts" items={posts.slice(1).map((p) => ({ ...p, href: '/showcase/blog/post' }))} background="neutral-faded" spacing="medium" headingLevel={2} />
+</Site>

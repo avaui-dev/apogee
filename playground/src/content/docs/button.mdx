@@ -1,18 +1,19 @@
 ---
 title: Button
-description: Triggers an action. Renders a <button>, or an <a> when href is set.
+description: Triggers an action. Renders a <button>, or an <a> when href is set. Hue, fill and height are three separate props.
 group: Components
 order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+import Link from '../../../../registry/components/Link/Link.astro'
 import { Mail, ArrowRight, Search, Plus } from '@lucide/astro'
 
-<Preview code={`<Button variant="primary">Get started</Button>
-<Button variant="secondary">Learn more</Button>`}>
-  <Button variant="primary">Get started</Button>
-  <Button variant="secondary">Learn more</Button>
+<Preview code={`<Button>Get started</Button>
+<Button variant="outline" color="neutral">Learn more</Button>`}>
+  <Button>Get started</Button>
+  <Button variant="outline" color="neutral">Learn more</Button>
 </Preview>
 
 ## Add
@@ -21,7 +22,7 @@ import { Mail, ArrowRight, Search, Plus } from '@lucide/astro'
 npx @ava-ui/apogee add button
 ```
 
-Pulls in `Spinner` (loading state). Bring `@lucide/astro` for icon children.
+Pulls in `Spinner` (for the loading state). Zero JS.
 
 ## Usage
 
@@ -29,118 +30,215 @@ Pulls in `Spinner` (loading state). Bring `@lucide/astro` for icon children.
 ---
 import Button from '@/components/apogee/Button/Button.astro'
 ---
-<Button variant="primary">Get started</Button>
+<Button>Save</Button>
+<Button variant="outline" color="neutral">Cancel</Button>
+<Button color="critical">Delete</Button>
+<Button href="/pricing">See pricing</Button>
 ```
 
 ## API
 
-`@composable` — exposed to Content Editors in AVA. Any other native
-`<button>` / `<a>` attribute (e.g. `aria-label`, `name`, `form`) passes through.
+`@composable` — exposed to Content Editors in AVA. Any other attribute passes
+through to the root `<button>` or `<a>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'link'` | `'primary'` | Visual style. `link` renders as plain underlined text. |
-| `size` | `'sm' \| 'md' \| 'lg' \| 'icon'` | `'md'` | Control size. `icon` is square, icon-only. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | The hue. |
+| `variant` | `'solid' \| 'outline' \| 'ghost' \| 'faded'` | `'solid'` | The fill style. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
+| `rounded` | `boolean` | `false` | Fully round ends. |
+| `raised` | `boolean` | `false` | Adds the raised shadow. |
+| `fullWidth` | `boolean` | `false` | Stretches to the container width. |
+| `iconOnly` | `boolean` | `false` | A square button for a single icon. Give it an `aria-label`. |
 | `href` | `string` | — | Renders an `<a>` instead of a `<button>`. |
-| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Button type (ignored when `href` is set). |
-| `disabled` | `boolean` | `false` | Disables the button (native on `<button>`; drops `href` + sets `aria-disabled` on a link). |
-| `loading` | `boolean` | `false` | Shows a `Spinner`, blocks interaction, sets `aria-busy`. |
-| `class` | `string` | — | Extra classes, merged last. |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Native button type (ignored with `href`). |
+| `loading` | `boolean` | `false` | Shows a spinner in the `start` slot and blocks interaction. |
+| `disabled` | `boolean` | `false` | Disables the control (`aria-disabled` on links). |
+| `class` | `string` | — | Extra classes, appended last. |
 
-## Variants
+Slots: `start` and `end` for icons; the default slot is the label.
 
-Every variant:
+For an inline text link use `Link`; Button has no link variant.
 
-<Preview code={`<Button variant="primary">Primary</Button>
-<Button variant="secondary">Secondary</Button>
-<Button variant="ghost">Ghost</Button>
-<Button variant="danger">Delete</Button>
-<Button variant="link" href="#">Link</Button>`}>
-  <Button variant="primary">Primary</Button>
-  <Button variant="secondary">Secondary</Button>
-  <Button variant="ghost">Ghost</Button>
-  <Button variant="danger">Delete</Button>
-  <Button variant="link" href="#">Link</Button>
+## Variants × colors
+
+Every `variant` for every `color`:
+
+<Preview code={`<Button color="primary">Primary</Button>
+<Button color="neutral">Neutral</Button>
+<Button color="critical">Critical</Button>
+<Button color="positive">Positive</Button>
+<Button color="warning">Warning</Button>
+
+<Button variant="faded" color="primary">Primary</Button>
+<Button variant="faded" color="neutral">Neutral</Button>
+<Button variant="faded" color="critical">Critical</Button>
+<Button variant="faded" color="positive">Positive</Button>
+<Button variant="faded" color="warning">Warning</Button>
+
+<Button variant="outline" color="primary">Primary</Button>
+<Button variant="outline" color="neutral">Neutral</Button>
+<Button variant="outline" color="critical">Critical</Button>
+<Button variant="outline" color="positive">Positive</Button>
+<Button variant="outline" color="warning">Warning</Button>
+
+<Button variant="ghost" color="primary">Primary</Button>
+<Button variant="ghost" color="neutral">Neutral</Button>
+<Button variant="ghost" color="critical">Critical</Button>
+<Button variant="ghost" color="positive">Positive</Button>
+<Button variant="ghost" color="warning">Warning</Button>`}>
+  <div class="grid gap-3">
+    <div class="flex flex-wrap gap-2">
+      <Button color="primary">Primary</Button>
+      <Button color="neutral">Neutral</Button>
+      <Button color="critical">Critical</Button>
+      <Button color="positive">Positive</Button>
+      <Button color="warning">Warning</Button>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <Button variant="faded" color="primary">Primary</Button>
+      <Button variant="faded" color="neutral">Neutral</Button>
+      <Button variant="faded" color="critical">Critical</Button>
+      <Button variant="faded" color="positive">Positive</Button>
+      <Button variant="faded" color="warning">Warning</Button>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <Button variant="outline" color="primary">Primary</Button>
+      <Button variant="outline" color="neutral">Neutral</Button>
+      <Button variant="outline" color="critical">Critical</Button>
+      <Button variant="outline" color="positive">Positive</Button>
+      <Button variant="outline" color="warning">Warning</Button>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <Button variant="ghost" color="primary">Primary</Button>
+      <Button variant="ghost" color="neutral">Neutral</Button>
+      <Button variant="ghost" color="critical">Critical</Button>
+      <Button variant="ghost" color="positive">Positive</Button>
+      <Button variant="ghost" color="warning">Warning</Button>
+    </div>
+  </div>
 </Preview>
 
 ## Sizes
 
-Every size, including the square `icon` size (pass an `aria-label`):
+<Preview code={`<Button size="small">Small</Button>
+<Button size="medium">Medium</Button>
+<Button size="large">Large</Button>
+<Button size="xlarge">Extra large</Button>
+<Button size="small" iconOnly aria-label="Search"><Search /></Button>
+<Button iconOnly aria-label="Search"><Search /></Button>
+<Button size="large" iconOnly aria-label="Search"><Search /></Button>
+<Button size="xlarge" iconOnly aria-label="Search"><Search /></Button>`}>
+  <div class="flex flex-wrap items-center gap-2">
+    <Button size="small">Small</Button>
+    <Button size="medium">Medium</Button>
+    <Button size="large">Large</Button>
+    <Button size="xlarge">Extra large</Button>
+  </div>
+  <div class="flex flex-wrap items-center gap-2">
+    <Button size="small" iconOnly aria-label="Search"><Search /></Button>
+    <Button iconOnly aria-label="Search"><Search /></Button>
+    <Button size="large" iconOnly aria-label="Search"><Search /></Button>
+    <Button size="xlarge" iconOnly aria-label="Search"><Search /></Button>
+  </div>
+</Preview>
 
-<Preview code={`<Button size="sm">Small</Button>
-<Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
-<Button size="icon" aria-label="Search"><Search /></Button>`}>
-  <Button size="sm">Small</Button>
-  <Button size="md">Medium</Button>
-  <Button size="lg">Large</Button>
-  <Button size="icon" aria-label="Search"><Search /></Button>
+## Shape and width
+
+<Preview code={`<Button rounded>Rounded</Button>
+<Button raised variant="outline" color="neutral">Raised</Button>
+<Button rounded iconOnly aria-label="Add"><Plus /></Button>
+<Button fullWidth>Full width</Button>`}>
+  <div class="flex w-full flex-col gap-3">
+    <div class="flex flex-wrap items-center gap-2">
+      <Button rounded>Rounded</Button>
+      <Button raised variant="outline" color="neutral">Raised</Button>
+      <Button rounded iconOnly aria-label="Add"><Plus /></Button>
+    </div>
+    <Button fullWidth>Full width</Button>
+  </div>
 </Preview>
 
 ## States
 
-- **Hover / active** — token-driven background shift; a subtle press scale
-  (`active:scale-95`, motion-reduce safe).
-- **Focus** — a visible `focus-visible` ring (`--ring`).
-- **Disabled** — dimmed, not focusable-as-action.
-- **Loading** — a `Spinner` replaces the leading content; the label stays and
-  `aria-busy="true"` is set.
-
-<Preview code={`<Button disabled>Disabled</Button>
-<Button variant="danger" disabled>Delete</Button>
-<Button loading>Saving…</Button>`}>
-  <Button disabled>Disabled</Button>
-  <Button variant="danger" disabled>Delete</Button>
+<Preview code={`<Button loading>Saving…</Button>
+<Button disabled>Disabled</Button>
+<Button variant="outline" color="neutral" disabled>Disabled</Button>
+<Button href="/docs" disabled>Disabled link</Button>`}>
   <Button loading>Saving…</Button>
+  <Button disabled>Disabled</Button>
+  <Button variant="outline" color="neutral" disabled>Disabled</Button>
+  <Button href="/docs" disabled>Disabled link</Button>
 </Preview>
+
+- **Hover** — solid fills move to their `-highlighted` token; faded, outline
+  and ghost fills get the hue's `-faded-highlighted` tint.
+- **Active** — scales to 98.5% (not under `prefers-reduced-motion`).
+- **Focus** — a 2px outline in the primary border colour, offset 2px.
+- **Loading** — `aria-busy="true"`, a `Spinner` replaces the `start` slot, and
+  the control is disabled.
+- **Disabled** — the disabled fill and text tokens; a disabled link drops its
+  `href` and carries `aria-disabled="true"`.
 
 ## Examples
 
-Drop a Lucide icon in as a child — the Button auto-sizes any child SVG.
+With icons in the `start` and `end` slots:
 
-<Preview code={`<Button><Mail /> Email</Button>
-<Button variant="secondary">Next <ArrowRight /></Button>
-<Button size="icon" aria-label="Add"><Plus /></Button>`}>
-  <Button><Mail /> Email</Button>
-  <Button variant="secondary">Next <ArrowRight /></Button>
-  <Button size="icon" aria-label="Add"><Plus /></Button>
+<Preview code={`<Button><Mail slot="start" /> Email us</Button>
+<Button variant="outline" color="neutral">Next <ArrowRight slot="end" /></Button>`}>
+  <Button><Mail slot="start" /> Email us</Button>
+  <Button variant="outline" color="neutral">Next <ArrowRight slot="end" /></Button>
 </Preview>
 
-As a link, and as a form submit:
+As a link, and the text link that is not a Button:
 
-```astro
-<Button href="/docs" variant="ghost">Read the docs</Button>
-<Button type="submit">Create account</Button>
-```
+<Preview code={`<Button href="/docs">Read the docs</Button>
+<Link href="/docs">Read the docs</Link>`}>
+  <Button href="/docs">Read the docs</Button>
+  <Link href="/docs">Read the docs</Link>
+</Preview>
 
 ## Accessibility
 
-- Real `<button>` / `<a>` — full keyboard + AT support for free. `href` →
-  anchor (navigates); no `href` → button (acts). Never a `<div>`.
-- Focus ring is always visible on keyboard focus.
-- `size="icon"` has no visible text — always pass an `aria-label`.
-- `loading` sets `aria-busy`; a disabled `<button>` uses the native `disabled`
-  attribute, a disabled link drops its `href` and sets `aria-disabled`.
-- The press animation respects `prefers-reduced-motion`.
+- A real `<button>` (or `<a>` with `href`), so keyboard activation, form
+  submission and screen-reader naming are native.
+- `iconOnly` buttons need an `aria-label`; the icon alone has no name.
+- Loading sets `aria-busy` and disables the control, so the state is announced
+  and a double submit is impossible.
+- A disabled link keeps its text, loses its `href`, and reports
+  `aria-disabled="true"`; it is not focusable, matching a disabled button.
+- The active-state scale honours `prefers-reduced-motion`.
 
 ## Tokens
 
 | Token | Used for |
 |---|---|
-| `--accent` / `--accent-hover` / `--accent-foreground` | Primary background / hover / label |
-| `--border` / `--background` / `--muted` | Secondary + ghost surface, border, hover |
-| `--danger` / `--danger-hover` / `--danger-foreground` | Danger variant |
-| `--ring` | Focus ring |
-| `--radius-md` | Corner radius |
+| `--background-{hue}` / `-highlighted` | Solid fill and its hover |
+| `--background-{hue}-faded` / `-faded-highlighted` | Faded fill; hover of faded, outline and ghost |
+| `--foreground-{hue}` | Text of faded, outline and ghost |
+| `--on-{hue}` | Text on a solid fill |
+| `--border-{hue}` | Outline border; `--border-primary` is also the focus ring |
+| `--background-disabled` / `--foreground-disabled` / `--border-disabled` | Disabled state |
+| `--shadow-outline` | The neutral outline variant |
+| `--shadow-raised` | `raised` |
+| `--radius-sm` / `--radius-md` | Corners for `small` / the rest |
+
+## Class merging
+
+There is none. `class` is appended after the component's own utilities, so a
+utility you pass wins only when it is more specific or later in the generated
+stylesheet. To change padding or colour, use the props; to add layout
+(`mt-4`, `self-end`), pass a class.
 
 ## Do / Don't
 
-- **Do** use one primary button per view — the main action.
-- **Don't** use a Button for navigation — use `href` (renders a link) or the
-  `Link` component.
-- **Don't** hard-code colours — restyle via tokens.
+- **Do** use one solid `primary` button per view for the main action; pair it
+  with `outline` or `ghost` neutral buttons for the rest.
+- **Do** use `color="critical"` for destructive actions, and confirm them.
+- **Don't** use a Button for navigation inside running text; use `Link`.
+- **Don't** put more than one `fullWidth` button side by side.
 
 ## Content
 
-- Label leads with a verb and names the outcome ("Save changes"), sentence case,
-  1–3 words, no ending period. Icon-only (`size="icon"`) needs an `aria-label`.
+- Verb first, sentence case, no ending period: "Save changes", "Send invite".
+- Two or three words. The label says what happens, not "OK" or "Submit".

@@ -7,13 +7,14 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'label'> {
   id: string
-  label?: string
-  hint?: string
-  error?: string
-  required?: boolean
-  class?: string
+  label?: string | undefined
+  hint?: string | undefined
+  error?: string | undefined
+  required?: boolean | undefined
+  class?: string | undefined
 }
 
 const { id, label, hint, error, required = false, class: className, ...rest } = Astro.props
@@ -22,13 +23,13 @@ const { id, label, hint, error, required = false, class: className, ...rest } = 
 <div class:list={['flex flex-col gap-1.5', className]} {...rest}>
   {
     label && (
-      <label for={id} class="text-sm font-medium text-foreground">
+      <label for={id} class="text-sm font-medium text-neutral">
         {label}
-        {required && <span class="text-danger" aria-hidden="true"> *</span>}
+        {required && <span class="text-critical" aria-hidden="true"> *</span>}
       </label>
     )
   }
   <slot />
-  {hint && !error && <p id={`${id}-hint`} class="text-sm text-muted-foreground">{hint}</p>}
-  {error && <p id={`${id}-error`} role="alert" class="text-sm text-danger">{error}</p>}
+  {hint && !error && <p id={`${id}-hint`} class="text-sm text-neutral-faded">{hint}</p>}
+  {error && <p id={`${id}-error`} role="alert" class="text-sm text-critical">{error}</p>}
 </div>

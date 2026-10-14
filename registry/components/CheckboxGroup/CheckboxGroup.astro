@@ -1,0 +1,42 @@
+---
+/**
+ * CheckboxGroup — a `<fieldset>` of Checkbox controls with one legend, hint and
+ * error. Put Checkbox components in the default slot. Zero JS.
+
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
+
+/** @composable */
+interface Props extends HTMLAttributes<'fieldset'> {
+  id?: string
+  /** @category content */
+  legend: string
+  /** @category content */
+  hint?: string
+  /** @category content */
+  error?: string
+  /** @category layout */
+  direction?: 'row' | 'column'
+  class?: string
+}
+
+const { id: idProp, legend, hint, error, direction = 'column', class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals)
+const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+---
+
+<fieldset
+  id={id}
+  aria-describedby={describedby}
+  aria-invalid={error ? 'true' : undefined}
+  class:list={['flex min-w-0 flex-col gap-2', className]}
+  {...rest}
+>
+  <legend class="mb-1 text-sm font-medium text-neutral">{legend}</legend>
+  <div class:list={[direction === 'row' ? 'flex flex-wrap gap-x-6 gap-y-2' : 'flex flex-col gap-2']}>
+    <slot />
+  </div>
+  {hint && !error && <p id={`${id}-hint`} class="text-sm text-neutral-faded">{hint}</p>}
+  {error && <p id={`${id}-error`} role="alert" class="text-sm text-critical">{error}</p>}
+</fieldset>

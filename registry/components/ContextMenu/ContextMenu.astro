@@ -8,12 +8,14 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
+interface Props extends HTMLAttributes<'div'> {
   class?: string
 }
 
 const { class: className, ...rest } = Astro.props
-const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
+const id = uid(Astro.locals, 'apogee-ctx')
 ---
 
 <div class:list={['apogee-contextmenu', className]} data-menu={id} {...rest}>
@@ -21,7 +23,7 @@ const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
   <div
     id={id}
     role="menu"
-    class="apogee-contextmenu-panel fixed z-50 flex min-w-44 flex-col gap-0.5 rounded-md border border-border bg-surface p-1 shadow-lg no-js:hidden"
+    class="apogee-contextmenu-panel fixed z-50 flex min-w-44 flex-col gap-0.5 rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg no-js:hidden"
     hidden
   >
     <slot name="menu" />
@@ -31,7 +33,7 @@ const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
 <style>
   /* Fade + scale in when the menu opens at the cursor. */
   .apogee-contextmenu-panel:not([hidden]) {
-    animation: apogee-contextmenu-in var(--duration-fast) var(--ease-smooth);
+    animation: apogee-contextmenu-in var(--duration-fast) var(--ease-standard);
   }
   @keyframes apogee-contextmenu-in {
     from {
@@ -47,15 +49,20 @@ const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
 </style>
 
 <script>
-  for (const root of document.querySelectorAll<HTMLElement>('.apogee-contextmenu')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-contextmenu', (root) => {
     const panel = root.querySelector<HTMLElement>('.apogee-contextmenu-panel')
-    if (!panel) continue
+    if (!panel) return
 
     const close = () => {
+      if (panel.hidden) return
       panel.hidden = true
+      panel.dispatchEvent(new CustomEvent('apogee:contextmenu-close', { bubbles: true }))
     }
     const openAt = (x: number, y: number) => {
       panel.hidden = false
+      panel.dispatchEvent(new CustomEvent('apogee:contextmenu-open', { bubbles: true, detail: { x, y } }))
       // Clamp inside the viewport now that we can measure it.
       const { offsetWidth: w, offsetHeight: h } = panel
       panel.style.left = `${Math.min(x, window.innerWidth - w - 8)}px`
@@ -70,16 +77,16 @@ const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
       const idx = items.indexOf(document.activeElement as HTMLElement)
       if (e.key === 'ArrowDown') {
         e.preventDefault()
-        items[idx < items.length - 1 ? idx + 1 : 0].focus()
+        items[idx < items.length - 1 ? idx + 1 : 0]?.focus()
       } else if (e.key === 'ArrowUp') {
         e.preventDefault()
-        items[idx > 0 ? idx - 1 : items.length - 1].focus()
+        items[idx > 0 ? idx - 1 : items.length - 1]?.focus()
       } else if (e.key === 'Home') {
         e.preventDefault()
-        items[0].focus()
+        items[0]?.focus()
       } else if (e.key === 'End') {
         e.preventDefault()
-        items[items.length - 1].focus()
+        items[items.length - 1]?.focus()
       }
     })
 
@@ -90,13 +97,17 @@ const id = `apogee-ctx-${Math.random().toString(36).slice(2, 9)}`
     })
     // Activating an item closes the menu.
     panel.addEventListener('click', () => close())
-    document.addEventListener('click', (e) => {
-      if (!panel.hidden && !panel.contains(e.target as Node)) close()
-    })
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') close()
-    })
-    window.addEventListener('scroll', close, true)
-    window.addEventListener('resize', close)
-  }
+  })
+
+  // Dismissal is global, bound once for every menu on the page.
+  const openPanels = () => document.querySelectorAll<HTMLElement>('.apogee-contextmenu-panel:not([hidden])')
+  const closeAll = () => openPanels().forEach((p) => (p.hidden = true))
+  document.addEventListener('click', (e) => {
+    for (const p of openPanels()) if (!p.contains(e.target as Node)) p.hidden = true
+  })
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll()
+  })
+  window.addEventListener('scroll', closeAll, true)
+  window.addEventListener('resize', closeAll)
 </script>

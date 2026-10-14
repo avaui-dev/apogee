@@ -1,0 +1,24 @@
+---
+import Site from '../../layouts/Site.astro'
+import PageHeader from '../../../../registry/sections/PageHeader/PageHeader.astro'
+import StatsCards from '../../../../registry/sections/StatsCards/StatsCards.astro'
+import TableShell from '../../../../registry/sections/TableShell/TableShell.astro'
+import SettingsForm from '../../../../registry/sections/SettingsForm/SettingsForm.astro'
+import EmptyStateSection from '../../../../registry/sections/EmptyStateSection/EmptyStateSection.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import { Inbox } from '@lucide/astro'
+import { metrics, tableColumns, tableRows, settingsGroups } from '../../components/demo-data'
+---
+
+<Site title="Dashboard">
+  <PageHeader layout="with-tabs" breadcrumbs={[{ label: 'Home', href: '/showcase/home' }, { label: 'Dashboard' }]} heading="Dashboard" description="Last 30 days." tabs={[{ label: 'Overview', href: '#overview', active: true }, { label: 'Customers', href: '#customers' }, { label: 'Settings', href: '#settings' }]} />
+  <StatsCards items={metrics} id="overview" />
+  <TableShell id="customers" heading="Customers" description="Accounts and their plans." searchable columns={tableColumns} rows={tableRows} currentPage={1} totalPages={4}>
+    <Button slot="actions" size="small">Add customer</Button>
+  </TableShell>
+  <EmptyStateSection heading="No invoices yet" description="Invoices you create will show up here." spacing="small">
+    <Inbox slot="icon" />
+    <Button slot="actions">Create invoice</Button>
+  </EmptyStateSection>
+  <SettingsForm id="settings" layout="two-column" action="#" groups={settingsGroups} cancelLabel="Reset" />
+</Site>

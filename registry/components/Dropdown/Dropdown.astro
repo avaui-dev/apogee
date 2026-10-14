@@ -3,12 +3,12 @@
  * Dropdown — a menu on native `<details>`. Open/close is native; a small island
  * adds the expected close-on-outside-click and Escape (progressive enhancement —
  * it works without JS, just doesn't auto-close). Put `DropdownItem`s in the slot.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { ChevronDown } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'details'>, 'align'> {
   label: string
   /** Which edge the menu aligns to. */
   align?: 'start' | 'end'
@@ -20,15 +20,17 @@ const { label, align = 'start', class: className, ...rest } = Astro.props
 
 <details class:list={['apogee-dropdown group relative inline-block', className]} {...rest}>
   <summary
-    class="inline-flex h-10 cursor-pointer list-none items-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    class="inline-flex h-10 cursor-pointer list-none items-center gap-2 rounded-md border border-neutral bg-page px-3 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
   >
     {label}
-    <ChevronDown class="size-4 text-muted-foreground transition-transform group-open:rotate-180" aria-hidden="true" />
+    <ChevronDown class="size-4 text-neutral-faded transition-transform group-open:rotate-180" aria-hidden="true" />
   </summary>
   <div
     role="menu"
     class:list={[
-      'apogee-dropdown-menu absolute z-20 flex min-w-48 flex-col gap-0.5 rounded-md border border-border bg-surface p-1 shadow-lg',
+      'apogee-dropdown-menu absolute z-20 flex min-w-48 flex-col gap-0.5 rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg',
       align === 'end' ? 'end-0' : 'start-0',
     ]}
   >
@@ -51,7 +53,7 @@ const { label, align = 'start', class: className, ...rest } = Astro.props
     transform-origin: bottom;
   }
   .apogee-dropdown[open] .apogee-dropdown-menu {
-    animation: apogee-dropdown-in var(--duration-fast) var(--ease-smooth);
+    animation: apogee-dropdown-in var(--duration-fast) var(--ease-standard);
   }
   @keyframes apogee-dropdown-in {
     from {
@@ -67,9 +69,14 @@ const { label, align = 'start', class: className, ...rest } = Astro.props
 </style>
 
 <script>
+  import { island } from '../utils/island.ts'
+
   // Flip the menu above the trigger when there isn't room below the viewport.
-  for (const d of document.querySelectorAll<HTMLDetailsElement>('details.apogee-dropdown')) {
+  island<HTMLDetailsElement>('details.apogee-dropdown', (d) => {
+    const summary = d.querySelector<HTMLElement>('summary')
     d.addEventListener('toggle', () => {
+      summary?.setAttribute('aria-expanded', String(d.open))
+      d.dispatchEvent(new CustomEvent(d.open ? 'apogee:dropdown-open' : 'apogee:dropdown-close', { bubbles: true }))
       if (!d.open) return
       const menu = d.querySelector<HTMLElement>('.apogee-dropdown-menu')
       if (!menu) return
@@ -82,28 +89,41 @@ const { label, align = 'start', class: className, ...rest } = Astro.props
 
     // Arrow-key navigation between items (WAI-ARIA menu pattern).
     d.addEventListener('keydown', (e) => {
-      if (!d.open) return
       const items = [...d.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])')]
       if (!items.length) return
+      // ArrowDown on the closed trigger opens the menu and lands on the first item.
+      if (!d.open) {
+        if (e.key === 'ArrowDown' && e.target === summary) {
+          e.preventDefault()
+          d.open = true
+          items[0]?.focus()
+        }
+        return
+      }
       const idx = items.indexOf(document.activeElement as HTMLElement)
       if (e.key === 'ArrowDown') {
         e.preventDefault()
-        items[idx < items.length - 1 ? idx + 1 : 0].focus()
+        items[idx < items.length - 1 ? idx + 1 : 0]?.focus()
       } else if (e.key === 'ArrowUp') {
         e.preventDefault()
-        items[idx > 0 ? idx - 1 : items.length - 1].focus()
+        items[idx > 0 ? idx - 1 : items.length - 1]?.focus()
       } else if (e.key === 'Home') {
         e.preventDefault()
-        items[0].focus()
+        items[0]?.focus()
       } else if (e.key === 'End') {
         e.preventDefault()
-        items[items.length - 1].focus()
+        items[items.length - 1]?.focus()
       }
     })
-  }
+  })
 
-  // Progressive enhancement: close on outside-click and Escape.
+  // Progressive enhancement: close on outside-click, on item activation, and Escape.
   document.addEventListener('click', (event) => {
+    const item = event.target instanceof Element ? event.target.closest('details.apogee-dropdown[open] button[role="menuitem"]') : null
+    if (item) {
+      item.closest<HTMLDetailsElement>('details.apogee-dropdown')!.open = false
+      return
+    }
     for (const d of document.querySelectorAll<HTMLDetailsElement>('details.apogee-dropdown[open]')) {
       if (!d.contains(event.target as Node)) d.open = false
     }

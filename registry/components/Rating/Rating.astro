@@ -3,17 +3,28 @@
  * Rating — a star rating on native radios (zero JS). `readonly` renders a static
  * display instead of inputs. Uses the reverse-order CSS trick so hovering /
  * checking a star fills it and every lower one.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
 import { Star } from '@lucide/astro'
 
-interface Props {
+const colors = {
+  primary: 'var(--foreground-primary)',
+  neutral: 'var(--foreground-neutral)',
+  critical: 'var(--foreground-critical)',
+  positive: 'var(--foreground-positive)',
+  warning: 'var(--foreground-warning)',
+} as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   name?: string
   max?: number
   /** Selected (or displayed, when readonly) rating. */
   value?: number
   readonly?: boolean
+  /** Hue of a filled star. @category layout */
+  color?: keyof typeof colors
   'aria-label'?: string
   class?: string
 }
@@ -23,11 +34,12 @@ const {
   max = 5,
   value = 0,
   readonly = false,
+  color = 'warning',
   'aria-label': ariaLabel,
   class: className,
   ...rest
 } = Astro.props
-const uid = Math.random().toString(36).slice(2, 9)
+const rid = uid(Astro.locals)
 ---
 
 {
@@ -35,26 +47,28 @@ const uid = Math.random().toString(36).slice(2, 9)
     <div
       class:list={['inline-flex', className]}
       role="img"
+      style={`--apogee-color: ${colors[color]}`}
       aria-label={ariaLabel ?? `${value} out of ${max}`}
       {...rest}
     >
       {Array.from({ length: max }).map((_, i) => (
         <Star
-          class:list={['size-5 fill-current', i < value ? 'text-amber-400' : 'text-border']}
+          class:list={['size-5 fill-current', i < value ? 'text-(--apogee-color)' : 'text-(--foreground-disabled)']}
           aria-hidden="true"
         />
       ))}
     </div>
   ) : (
-    <div class:list={['apogee-rating inline-flex flex-row-reverse', className]} role="radiogroup" aria-label={ariaLabel ?? 'Rating'} {...rest}>
+    <div class:list={['apogee-rating inline-flex flex-row-reverse', className]} style={`--apogee-color: ${colors[color]}`} role="radiogroup" aria-label={ariaLabel ?? 'Rating'} {...rest}>
       {Array.from({ length: max }).map((_, i) => {
         const v = max - i
-        const oid = `${name}-${v}-${uid}`
+        const oid = `${name}-${v}-${rid}`
         return (
           <>
             <input type="radio" name={name} id={oid} value={v} checked={value === v} class="peer sr-only" />
-            <label for={oid} class="cursor-pointer px-0.5 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring" aria-label={`${v} star${v === 1 ? '' : 's'}`}>
+            <label for={oid} class="apogee-rating-star cursor-pointer rounded-sm p-2.5">
               <Star class="size-6 fill-current" aria-hidden="true" />
+              <span class="sr-only">{`${v} star${v === 1 ? '' : 's'}`}</span>
             </label>
           </>
         )
@@ -63,21 +77,35 @@ const uid = Math.random().toString(36).slice(2, 9)
   )
 }
 
-<style>
+<style is:global>
   /* Reverse-order fill: a star and every lower one light up. Container hover
      clears the checked state so the hover preview wins. */
   .apogee-rating label {
-    color: var(--color-border);
-    transition: color var(--duration-fast) var(--ease-smooth);
+    color: var(--foreground-disabled);
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  /* 44px targets by default; compact spacing only where a precise pointer exists. */
+  @media (pointer: fine) {
+    .apogee-rating label {
+      padding: 0.25rem 0.125rem;
+    }
   }
   .apogee-rating input:checked ~ label {
-    color: var(--color-amber-400);
+    color: var(--apogee-color);
   }
-  .apogee-rating:hover label {
-    color: var(--color-border);
+  /* Hover preview only on devices that hover; touch keeps the checked state. */
+  @media (hover: hover) {
+    .apogee-rating:hover input:checked ~ label {
+      color: var(--foreground-disabled);
+    }
+    /* Doubled class: must outrank the reset above regardless of how the sheet is bundled. */
+    .apogee-rating.apogee-rating:hover label:hover,
+    .apogee-rating.apogee-rating:hover label:hover ~ label {
+      color: var(--apogee-color);
+    }
   }
-  .apogee-rating label:hover,
-  .apogee-rating label:hover ~ label {
-    color: var(--color-amber-400);
+  .apogee-rating input:focus-visible + label {
+    outline: 2px solid var(--border-primary);
+    outline-offset: 2px;
   }
 </style>

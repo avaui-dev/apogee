@@ -1,6 +1,6 @@
 ---
 title: Input
-description: A labeled text field with hint/error messaging, wired for accessibility — plus a pure-CSS floating-label variant.
+description: A labeled text field with hint/error messaging, wired for accessibility — plus a pure-CSS floating label.
 group: Components
 order: 0
 ---
@@ -38,40 +38,42 @@ attribute (`placeholder`, `name`, `value`, `min`/`max`, `autocomplete`,
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `id` | `string` | auto-generated (`apogee-<random>`) | Field id; also used to derive the `aria-describedby` target. |
-| `label` | `string` | — | Field label. In `variant="floating"`, doubles as the floating placeholder text. |
+| `label` | `string` | — | Field label. With `labelPosition="floating"`, doubles as the floating placeholder text. |
 | `hint` | `string` | — | Helper text below the field. Hidden when `error` is set. |
 | `error` | `string` | — | Error text below the field. Sets `aria-invalid="true"` on the input and `role="alert"` on the message. |
 | `type` | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search' \| 'date'` | `'text'` | Native input type. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control height, padding, and text size. |
-| `variant` | `'default' \| 'floating'` | `'default'` | `floating` animates the label onto the border on focus / when filled — pure CSS. Ignores a passed `placeholder` (it manages its own). |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
+| `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
+| `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
+| `labelPosition` | `'top' \| 'floating'` | `'top'` | `floating` animates the label onto the border on focus / when filled — pure CSS. Ignores a passed `placeholder` (it manages its own). |
 | `required` | `boolean` | `false` | Marks the field required (native `required` + a visible `*` next to the label). |
 | `class` | `string` | — | Extra classes, merged onto the outer field wrapper. |
 
 ## Variants
 
 <Preview code={`<Input label="Email" type="email" placeholder="you@example.com" />
-<Input label="Email" type="email" variant="floating" />`}>
+<Input label="Email" type="email" labelPosition="floating" />`}>
   <Input label="Email" type="email" placeholder="you@example.com" />
-  <Input label="Email" type="email" variant="floating" />
+  <Input label="Email" type="email" labelPosition="floating" />
 </Preview>
 
 ## Sizes
 
-Every size. Sizes interact with the floating variant — the label's inset
+Every size. Sizes interact with the floating label — the label's inset
 shifts with the control's padding — shown together:
 
-<Preview code={`<Input label="Small" size="sm" />
-<Input label="Medium" size="md" />
-<Input label="Large" size="lg" />
-<Input label="Small" size="sm" variant="floating" />
-<Input label="Medium" size="md" variant="floating" />
-<Input label="Large" size="lg" variant="floating" />`}>
-  <Input label="Small" size="sm" />
-  <Input label="Medium" size="md" />
-  <Input label="Large" size="lg" />
-  <Input label="Small" size="sm" variant="floating" />
-  <Input label="Medium" size="md" variant="floating" />
-  <Input label="Large" size="lg" variant="floating" />
+<Preview code={`<Input label="Small" size="small" />
+<Input label="Medium" />
+<Input label="Large" size="large" />
+<Input label="Small" size="small" labelPosition="floating" />
+<Input label="Medium" labelPosition="floating" />
+<Input label="Large" size="large" labelPosition="floating" />`}>
+  <Input label="Small" size="small" />
+  <Input label="Medium" />
+  <Input label="Large" size="large" />
+  <Input label="Small" size="small" labelPosition="floating" />
+  <Input label="Medium" labelPosition="floating" />
+  <Input label="Large" size="large" labelPosition="floating" />
 </Preview>
 
 ## States
@@ -79,8 +81,8 @@ shifts with the control's padding — shown together:
 - **Hover / focus** — border/token shift on hover; a visible `focus-visible`
   ring on focus.
 - **Disabled** — dimmed, `disabled:cursor-not-allowed disabled:opacity-50`.
-- **Required** — a `--danger`-coloured `*` next to the label.
-- **Error** — `--danger` border, `aria-invalid="true"`, error message replaces
+- **Required** — a `--background-critical`-coloured `*` next to the label.
+- **Error** — `--background-critical` border, `aria-invalid="true"`, error message replaces
   the hint.
 
 <Preview code={`<Input label="Disabled" disabled value="Can't edit" />
@@ -93,13 +95,25 @@ shifts with the control's padding — shown together:
 
 ## Examples
 
+A clear button in the `end` slot (the slot accepts buttons):
+
+<Preview code={`<Input label="Search" id="q" value="astro">
+  <button slot="end" type="button" aria-label="Clear" onclick="const i=document.getElementById('q'); i.value=''; i.focus()">×</button>
+</Input>`}>
+  <Input label="Search" id="q" value="astro">
+    <button slot="end" type="button" aria-label="Clear" class="grid size-6 place-items-center rounded-sm hover:bg-neutral-faded-highlighted" onclick="const i=document.getElementById('q'); i.value=''; i.focus()">×</button>
+  </Input>
+</Preview>
+
 <Preview code={`<Input label="Password" type="password" hint="At least 8 characters" required />
-<Input label="Search" type="search" variant="floating" />`}>
+<Input label="Search" type="search" labelPosition="floating" />`}>
   <Input label="Password" type="password" hint="At least 8 characters" required />
-  <Input label="Search" type="search" variant="floating" />
+  <Input label="Search" type="search" labelPosition="floating" />
 </Preview>
 
 ## Accessibility
+
+- Every control is at least 16px text on viewports below `md`, so focusing a field never zooms the page on a phone; desktop sizes keep their smaller type.
 
 - Real `<label for>` / `<input id>` pairing — always programmatically
   associated, including in `variant="floating"`.
@@ -107,7 +121,7 @@ shifts with the control's padding — shown together:
   (`<id>-hint` / `<id>-error`); error takes priority when both are set.
 - `error` sets `aria-invalid="true"` on the input and `role="alert"` on the
   message, so screen readers announce it immediately.
-- Focus shows a visible `focus-visible` ring (`--ring`).
+- Focus shows a visible `focus-visible` ring (`--border-primary`).
 - `variant="floating"` is pure CSS (`:placeholder-shown` + `peer`) — works
   identically with JS off.
 - No JS.
@@ -116,11 +130,11 @@ shifts with the control's padding — shown together:
 
 | Token | Used for |
 |---|---|
-| `--border` / `--background` / `--foreground` | Input border, fill, text |
-| `--muted-foreground` | Placeholder, hint text, floating label (idle) |
-| `--danger` | Error border, error text, required `*` |
-| `--accent` | Floating label colour on focus |
-| `--ring` | Focus ring |
+| `--border-neutral` / `--background-page` / `--foreground-neutral` | Input border, fill, text |
+| `--foreground-neutral-faded` | Placeholder, hint text, floating label (idle) |
+| `--foreground-critical` | Error border, error text, required `*` |
+| `--foreground-primary` | Floating label colour on focus |
+| `--border-primary` | Focus ring |
 
 ## Do / Don't
 

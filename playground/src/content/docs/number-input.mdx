@@ -50,18 +50,20 @@ outer `Field` wrapper, not the input group.
 | `label` | `string` | — | Field label. |
 | `hint` | `string` | — | Helper text below the field (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid="true"` on the group. |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Control height. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
+| `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
+| `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `required` | `boolean` | `false` | Marks the field required (label asterisk + native `required`). |
 | `class` | `string` | — | Extra classes on the `Field` wrapper, merged last. |
 
 ## Sizes
 
-<Preview code={`<NumberInput label="Small" size="sm" value={1} />
-<NumberInput label="Medium" size="md" value={1} />
-<NumberInput label="Large" size="lg" value={1} />`}>
-  <NumberInput label="Small" size="sm" value={1} />
-  <NumberInput label="Medium" size="md" value={1} />
-  <NumberInput label="Large" size="lg" value={1} />
+<Preview code={`<NumberInput label="Small" size="small" value={1} />
+<NumberInput label="Medium" value={1} />
+<NumberInput label="Large" size="large" value={1} />`}>
+  <NumberInput label="Small" size="small" value={1} />
+  <NumberInput label="Medium" value={1} />
+  <NumberInput label="Large" size="large" value={1} />
 </Preview>
 
 ## States
@@ -110,20 +112,20 @@ Unlabeled, identified for assistive tech only:
 
 | Token | Used for |
 |---|---|
-| `--border` | Group border |
-| `--background` | Group + input background |
-| `--ring` | Focus ring (group `focus-within`, button `focus-visible`) |
-| `--muted` | Stepper hover background |
-| `--muted-foreground` | Stepper icon colour (default) |
-| `--foreground` | Stepper icon colour (hover), input text |
-| `--danger` | Invalid border (`aria-invalid`) |
+| `--border-neutral` | Group border |
+| `--background-page` | Group + input background |
+| `--border-primary` | Focus ring (group `focus-within`, button `focus-visible`) |
+| `--background-neutral-faded` | Stepper hover background |
+| `--foreground-neutral-faded` | Stepper icon colour (default) |
+| `--foreground-neutral` | Stepper icon colour (hover), input text |
+| `--background-critical` | Invalid border (`aria-invalid`) |
 | `--radius-md` | Corner radius |
 
 ## Do / Don't
 
 - **Do** pass `min` / `max` / `step` so native validation matches the stepping
   behaviour.
-- **Do** use `size="lg"` for touch-first or prominent quantity pickers.
+- **Do** use `size="large"` for touch-first or prominent quantity pickers.
 - **Don't** add `readonly` — it blocks typing for no-JS and keyboard-only users,
   who otherwise get a fully working field.
 - **Don't** omit `label` (or `aria-label`) — the field is unlabeled without one.

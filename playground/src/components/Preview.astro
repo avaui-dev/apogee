@@ -10,26 +10,29 @@
  * rendered component is the real component, not prose-styled HTML.
  */
 import { Code } from 'astro:components'
+import type { ComponentProps } from 'astro/types'
 
 interface Props {
   code: string
-  lang?: string
+  lang?: ComponentProps<typeof Code>['lang']
+  /** Stack examples as full-width rows instead of a wrapping inline row. */
+  block?: boolean
 }
-const { code, lang = 'astro' } = Astro.props
+const { code, lang = 'astro', block = false } = Astro.props
 ---
 
-<div class="my-6 rounded-lg border border-border" data-preview>
-  <div class="flex min-h-28 flex-wrap items-start gap-4 rounded-t-lg bg-background p-6" data-preview-live>
+<div class="my-6 rounded-lg border border-neutral" data-preview>
+  <div class:list={['min-h-28 rounded-t-lg bg-page p-6', block ? 'flex flex-col items-stretch gap-4' : 'flex flex-wrap items-start gap-4']} data-preview-live>
     <slot />
   </div>
-  <details class="group border-t border-border">
+  <details class="group border-t border-neutral">
     <summary
-      class="flex cursor-pointer list-none items-center justify-between rounded-b-lg bg-muted/40 px-4 py-2 text-xs font-medium text-muted-foreground transition-colors group-open:rounded-b-none hover:text-foreground [&::-webkit-details-marker]:hidden"
+      class="flex cursor-pointer list-none items-center justify-between rounded-b-lg bg-neutral-faded px-4 py-2 text-xs font-medium text-neutral-faded transition-colors group-open:rounded-b-none hover:text-neutral [&::-webkit-details-marker]:hidden"
     >
       <span class="group-open:hidden">Show code</span>
       <span class="hidden group-open:inline">Hide code</span>
     </summary>
-    <div class="overflow-hidden rounded-b-lg border-t border-border">
+    <div class="overflow-hidden rounded-b-lg border-t border-neutral">
       <div class="overflow-x-auto [&_pre]:m-0 [&_pre]:p-4 [&_pre]:text-sm">
         <Code code={code} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} />
       </div>

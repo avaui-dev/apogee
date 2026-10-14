@@ -18,13 +18,13 @@ import Button from '../../../../registry/components/Button/Button.astro'
 <Preview code={`<Button command="show-modal" commandfor="demo-dialog">Open dialog</Button>
 <Dialog id="demo-dialog" title="Edit profile">
   <p>Update your profile details below.</p>
-  <Button variant="ghost" command="close" commandfor="demo-dialog" slot="footer">Cancel</Button>
+  <Button variant="ghost" color="neutral" command="close" commandfor="demo-dialog" slot="footer">Cancel</Button>
   <Button command="close" commandfor="demo-dialog" slot="footer">Save</Button>
 </Dialog>`}>
   <Button command="show-modal" commandfor="demo-dialog">Open dialog</Button>
   <Dialog id="demo-dialog" title="Edit profile">
     <p>Update your profile details below.</p>
-    <Button variant="ghost" command="close" commandfor="demo-dialog" slot="footer">Cancel</Button>
+    <Button variant="ghost" color="neutral" command="close" commandfor="demo-dialog" slot="footer">Cancel</Button>
     <Button command="close" commandfor="demo-dialog" slot="footer">Save</Button>
   </Dialog>
 </Preview>
@@ -68,48 +68,48 @@ import Button from '@/components/apogee/Button/Button.astro'
 |---|---|---|---|
 | `id` | `string` | — | Required — matches the trigger's `commandfor`. |
 | `title` | `string` | — | Renders as the header `<h2>`. |
-| `variant` | `'modal' \| 'panel' \| 'fullscreen'` | `'modal'` | `modal`: centered. `panel`: edge drawer (see `position`). `fullscreen`: fills the viewport. |
-| `position` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | Drawer edge — only applies when `variant="panel"`. |
+| `position` | `'center' \| 'start' \| 'end' \| 'top' \| 'bottom' \| 'full-screen'` | `'center'` | Where it sits: centered, docked to a side (`start` / `end` are logical: `end` is the right in LTR and the left in RTL), docked to the top or bottom, or filling the viewport. |
+| `dismissOnBackdrop` | `boolean` | `true` | Clicking the backdrop closes the dialog. Set `false` for a decision the user must answer. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
 
-Every `variant`, and every `position` for `panel`:
+Every `position`:
 
 <Preview code={`<Button command="show-modal" commandfor="v-modal">Modal</Button>
 <Dialog id="v-modal" title="Modal">Centered dialog content.</Dialog>
 
-<Button command="show-modal" commandfor="v-panel-right">Panel — right</Button>
-<Dialog id="v-panel-right" variant="panel" position="right" title="Panel (right)">Right-edge drawer.</Dialog>
+<Button command="show-modal" commandfor="v-panel-end">Panel — end</Button>
+<Dialog id="v-panel-end" position="end" title="Panel (end)">End-edge drawer (right in LTR).</Dialog>
 
-<Button command="show-modal" commandfor="v-panel-left">Panel — left</Button>
-<Dialog id="v-panel-left" variant="panel" position="left" title="Panel (left)">Left-edge drawer.</Dialog>
+<Button command="show-modal" commandfor="v-panel-start">Panel — start</Button>
+<Dialog id="v-panel-start" position="start" title="Panel (start)">Start-edge drawer (left in LTR).</Dialog>
 
 <Button command="show-modal" commandfor="v-panel-top">Panel — top</Button>
-<Dialog id="v-panel-top" variant="panel" position="top" title="Panel (top)">Top-edge drawer.</Dialog>
+<Dialog id="v-panel-top" position="top" title="Panel (top)">Top-edge drawer.</Dialog>
 
 <Button command="show-modal" commandfor="v-panel-bottom">Panel — bottom</Button>
-<Dialog id="v-panel-bottom" variant="panel" position="bottom" title="Panel (bottom)">Bottom-edge drawer.</Dialog>
+<Dialog id="v-panel-bottom" position="bottom" title="Panel (bottom)">Bottom-edge drawer.</Dialog>
 
 <Button command="show-modal" commandfor="v-full">Fullscreen</Button>
-<Dialog id="v-full" variant="fullscreen" title="Fullscreen">Fills the viewport.</Dialog>`}>
+<Dialog id="v-full" position="full-screen" title="Fullscreen">Fills the viewport.</Dialog>`}>
   <Button command="show-modal" commandfor="v-modal">Modal</Button>
   <Dialog id="v-modal" title="Modal">Centered dialog content.</Dialog>
 
-  <Button command="show-modal" commandfor="v-panel-right">Panel — right</Button>
-  <Dialog id="v-panel-right" variant="panel" position="right" title="Panel (right)">Right-edge drawer.</Dialog>
+  <Button command="show-modal" commandfor="v-panel-end">Panel — end</Button>
+  <Dialog id="v-panel-end" position="end" title="Panel (end)">End-edge drawer (right in LTR).</Dialog>
 
-  <Button command="show-modal" commandfor="v-panel-left">Panel — left</Button>
-  <Dialog id="v-panel-left" variant="panel" position="left" title="Panel (left)">Left-edge drawer.</Dialog>
+  <Button command="show-modal" commandfor="v-panel-start">Panel — start</Button>
+  <Dialog id="v-panel-start" position="start" title="Panel (start)">Start-edge drawer (left in LTR).</Dialog>
 
   <Button command="show-modal" commandfor="v-panel-top">Panel — top</Button>
-  <Dialog id="v-panel-top" variant="panel" position="top" title="Panel (top)">Top-edge drawer.</Dialog>
+  <Dialog id="v-panel-top" position="top" title="Panel (top)">Top-edge drawer.</Dialog>
 
   <Button command="show-modal" commandfor="v-panel-bottom">Panel — bottom</Button>
-  <Dialog id="v-panel-bottom" variant="panel" position="bottom" title="Panel (bottom)">Bottom-edge drawer.</Dialog>
+  <Dialog id="v-panel-bottom" position="bottom" title="Panel (bottom)">Bottom-edge drawer.</Dialog>
 
   <Button command="show-modal" commandfor="v-full">Fullscreen</Button>
-  <Dialog id="v-full" variant="fullscreen" title="Fullscreen">Fills the viewport.</Dialog>
+  <Dialog id="v-full" position="full-screen" title="Fullscreen">Fills the viewport.</Dialog>
 </Preview>
 
 ## States
@@ -125,11 +125,11 @@ Try each state via the triggers in the Variants preview above.
 A destructive confirm, with a `danger` footer button:
 
 ```astro
-<Button variant="danger" command="show-modal" commandfor="confirm-delete">Delete account</Button>
+<Button color="critical" command="show-modal" commandfor="confirm-delete">Delete account</Button>
 <Dialog id="confirm-delete" title="Delete account">
   <p>This can't be undone.</p>
-  <Button variant="ghost" command="close" commandfor="confirm-delete" slot="footer">Cancel</Button>
-  <Button variant="danger" command="close" commandfor="confirm-delete" slot="footer">Delete</Button>
+  <Button variant="ghost" color="neutral" command="close" commandfor="confirm-delete" slot="footer">Cancel</Button>
+  <Button color="critical" command="close" commandfor="confirm-delete" slot="footer">Delete</Button>
 </Dialog>
 ```
 
@@ -152,13 +152,14 @@ A destructive confirm, with a `danger` footer button:
 
 | Token | Used for |
 |---|---|
-| `--border` | Dialog border |
-| `--surface` / `--surface-foreground` | Background / default text color |
-| `--foreground` | Title text |
-| `--muted-foreground` / `--muted` | Close button icon / hover background |
-| `--ring` | Close button focus ring |
+| `--border-neutral` | Dialog border |
+| `--overlay` | Backdrop scrim |
+| `--background-elevation-raised` / `--foreground-neutral` | Background / default text color |
+| `--foreground-neutral` | Title text |
+| `--foreground-neutral-faded` / `--background-neutral-faded` | Close button icon / hover background |
+| `--border-primary` | Close button focus ring |
 | `--radius-lg` | Corner radius |
-| `--duration-slow` / `--ease-smooth` | Open/close and backdrop transition |
+| `--duration-slow` / `--ease-standard` | Open/close and backdrop transition |
 
 ## Do / Don't
 

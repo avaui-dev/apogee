@@ -1,16 +1,57 @@
 ---
 /**
- * Tag — a chip. Optionally a link (`href`) or removable.
+ * Tag — a chip. Optionally a link (`href`) or removable. `color` is the hue,
+ * `variant` the fill style.
  *
  * `removable` renders a remove button that emits a cancelable, bubbling
  * `apogee:tag-remove` event (`detail: { value, tag }`). Handle it to update
  * your state — a tag usually reflects data your app owns, so removing it is a
  * state change, not just a DOM edit. For a purely cosmetic list with no backing
  * state, set `dismissOnClick` to also remove the element from the DOM.
- *
- * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+import { X } from '@lucide/astro'
+
+const styles = {
+  solid: {
+    primary: 'bg-primary text-on-primary',
+    neutral: 'bg-neutral text-on-neutral',
+    critical: 'bg-critical text-on-critical',
+    positive: 'bg-positive text-on-positive',
+    warning: 'bg-warning text-on-warning',
+  },
+  faded: {
+    primary: 'bg-primary-faded text-primary',
+    neutral: 'bg-neutral-faded text-neutral',
+    critical: 'bg-critical-faded text-critical',
+    positive: 'bg-positive-faded text-positive',
+    warning: 'bg-warning-faded text-warning',
+  },
+  outline: {
+    primary: 'border border-primary text-primary',
+    neutral: 'border border-neutral bg-elevation-raised text-neutral',
+    critical: 'border border-critical text-critical',
+    positive: 'border border-positive text-positive',
+    warning: 'border border-warning text-warning',
+  },
+} as const
+const sizes = {
+  small: 'h-6 px-1.5 text-xs gap-1',
+  medium: 'h-7 px-2 text-sm gap-1',
+  large: 'h-8 px-2.5 text-sm gap-1.5',
+} as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'span'> {
+  /** Hue. @category layout */
+  color?: keyof typeof styles.solid
+  /** Fill style. @category layout */
+  variant?: keyof typeof styles
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** Fully round ends. @category layout */
+  rounded?: boolean
+  /** Makes the label a link. @category content */
   href?: string
   removable?: boolean
   /** Identifies this tag in the remove event's `detail`. */
@@ -22,9 +63,11 @@ interface Props {
   class?: string
 }
 
-import { X } from '@lucide/astro'
-
 const {
+  color = 'neutral',
+  variant = 'outline',
+  size = 'medium',
+  rounded = false,
   href,
   removable = false,
   value,
@@ -38,7 +81,10 @@ const Label = href ? 'a' : 'span'
 
 <span
   class:list={[
-    'inline-flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-0.5 text-sm text-surface-foreground',
+    'inline-flex items-center whitespace-nowrap [&_svg]:size-3.5',
+    rounded ? 'rounded-full' : 'rounded-md',
+    styles[variant][color],
+    sizes[size],
     className,
   ]}
   data-apogee-tag
@@ -46,10 +92,8 @@ const Label = href ? 'a' : 'span'
   data-dismiss-on-click={dismissOnClick ? '' : undefined}
   {...rest}
 >
-  <Label
-    href={href}
-    class="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-  >
+  <slot name="start" />
+  <Label href={href} class="inline-flex items-center gap-[inherit] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
     <slot />
   </Label>
   {
@@ -58,7 +102,7 @@ const Label = href ? 'a' : 'span'
         type="button"
         aria-label={removeLabel}
         data-tag-remove
-        class="-me-0.5 grid size-4 place-items-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring no-js:hidden"
+        class="-me-0.5 grid size-4 place-items-center rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary no-js:hidden"
       >
         <X class="size-3.5" stroke-width={2.5} aria-hidden="true" />
       </button>

@@ -6,6 +6,7 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 import JsNote from '../../components/JsNote.astro'
 import Toaster from '../../../../registry/components/Toast/Toaster.astro'
 import ToastDemo from '../../components/ToastDemo.astro'
@@ -28,13 +29,13 @@ toasts from anywhere:
 
 <script>
   document.getElementById('toast-info')?.addEventListener('click', () =>
-    apogeeToast('Changes are saved automatically.', { variant: 'info', title: 'Heads up' }))
+    apogeeToast('Changes are saved automatically.', { color: 'primary', title: 'Heads up' }))
   document.getElementById('toast-success')?.addEventListener('click', () =>
-    apogeeToast('Your changes have been saved.', { variant: 'success', title: 'Saved' }))
+    apogeeToast('Your changes have been saved.', { color: 'positive', title: 'Saved' }))
   document.getElementById('toast-warning')?.addEventListener('click', () =>
-    apogeeToast('Your session expires in 5 minutes.', { variant: 'warning', title: 'Heads up' }))
+    apogeeToast('Your session expires in 5 minutes.', { color: 'warning', title: 'Heads up' }))
   document.getElementById('toast-danger')?.addEventListener('click', () =>
-    apogeeToast('Could not save your changes.', { variant: 'danger', title: 'Error' }))
+    apogeeToast('Could not save your changes.', { color: 'critical', title: 'Error' }))
 </script>`}>
   <ToastDemo />
 </Preview>
@@ -65,7 +66,7 @@ import Toaster from '@/components/apogee/Toast/Toaster.astro'
 
 ```js
 // anywhere, client-side
-apogeeToast('Saved', { variant: 'success', title: 'Done' })
+apogeeToast('Saved', { color: 'positive', title: 'Done' })
 ```
 
 Mount **exactly one** `<Toaster />` per page — its region, template, and icon
@@ -89,7 +90,8 @@ through to the `Toaster` root.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'bottom-right'` | Where the host (and its toasts) sits on screen. |
+| `id` | `string` | `'apogee-toaster'` | Host id. Mount one Toaster per page; the script binds to the first. |
+| `position` | `'top-start' \| 'top-center' \| 'top-end' \| 'bottom-start' \| 'bottom-center' \| 'bottom-end'` | `'bottom-end'` | Screen corner, in logical terms: `end` is the right in LTR and the left in RTL. |
 | `class` | `string` | — | Extra classes on the host, merged last. |
 
 ### `apogeeToast(message, options)`
@@ -100,14 +102,23 @@ call it after the `Toaster` has mounted.
 | Argument | Type | Default | Description |
 |---|---|---|---|
 | `message` | `string` | — | Toast body text. |
-| `options.variant` | `'info' \| 'success' \| 'warning' \| 'danger'` | `'info'` | Icon + accent border. `warning`/`danger` use `role="alert"`; others use `role="status"`. |
+| `options.color` | `'primary' \| 'neutral' \| 'positive' \| 'warning' \| 'critical'` | `'primary'` | Icon + border tint. `warning` and `critical` use `role="alert"`; the others use `role="status"`. |
 | `options.title` | `string` | — | Bold title line above the message. Omitted entirely if not passed. |
 | `options.duration` | `number` (ms) | `4000` | Auto-dismiss delay. `0` makes it sticky (stays until closed). |
+| `options.position` | `'top-start' \| 'top-center' \| 'top-end' \| 'bottom-start' \| 'bottom-center' \| 'bottom-end'` | the host's | Corner for this toast; a region per corner is created on first use. |
+
+The timer pauses while the pointer or keyboard focus is on the toast and resumes when it leaves. `apogeeToast()` returns an id; `apogeeToast.dismiss(id)` closes that toast early.
+
+<Preview code={`<button onclick="apogeeToast('Top start', { position: 'top-start' })">Top start</button>
+<button onclick="const id = apogeeToast('Sticky until dismissed', { duration: 0 }); setTimeout(() => apogeeToast.dismiss(id), 3000)">Dismiss after 3s</button>`}>
+  <Button variant="outline" color="neutral" onclick="apogeeToast('Top start', { position: 'top-start' })">Top start</Button>
+  <Button variant="outline" color="neutral" onclick="const id = apogeeToast('Sticky until dismissed', { duration: 0 }); setTimeout(() => apogeeToast.dismiss(id), 3000)">Dismiss after 3s</Button>
+</Preview>
 
 ## Variants
 
-Every `variant`, shown in the hero preview above — click each button to fire
-`info`, `success`, `warning`, and `danger` toasts.
+Every `color`, shown in the hero preview above — click each button to fire
+`primary`, `positive`, `warning`, and `critical` toasts.
 
 ## Positions
 
@@ -115,20 +126,20 @@ All six `position` values (shown as code, not live — only one `Toaster` can be
 mounted on this page at a time):
 
 ```astro
-<Toaster position="top-left" />
+<Toaster position="top-start" />
 <Toaster position="top-center" />
-<Toaster position="top-right" />
-<Toaster position="bottom-left" />
+<Toaster position="top-end" />
+<Toaster position="bottom-start" />
 <Toaster position="bottom-center" />
-<Toaster position="bottom-right" />
+<Toaster position="bottom-end" />
 ```
 
 ## States
 
-- **Enter** — fades and scales in (`apogee-toast-in`, `--duration-base` /
-  `--ease-smooth`).
+- **Enter** — fades and scales in (`apogee-toast-in`, `--duration-medium` /
+  `--ease-standard`).
 - **Exit** — fades and scales out (`apogee-toast--out`,
-  `--duration-fast` / `--ease-smooth`) on close-button click or auto-dismiss.
+  `--duration-fast` / `--ease-standard`) on close-button click or auto-dismiss.
 - **Sticky** (`duration: 0`) — never auto-dismisses; only the close button
   removes it.
 - **Reduced motion** — enter/exit animations are disabled under
@@ -139,7 +150,7 @@ mounted on this page at a time):
 A sticky error that needs manual dismissal:
 
 ```js
-apogeeToast('Payment failed — update your card.', { variant: 'danger', title: 'Action needed', duration: 0 })
+apogeeToast('Payment failed — update your card.', { color: 'critical', title: 'Action needed', duration: 0 })
 ```
 
 A quick, title-less confirmation:
@@ -149,6 +160,9 @@ apogeeToast('Link copied to clipboard.')
 ```
 
 ## Accessibility
+
+- The auto-dismiss timer pauses while the pointer or keyboard focus is on a toast and resumes when it leaves.
+- `apogeeToast()` returns an id; `apogeeToast.dismiss(id)` closes that toast early.
 
 - The host is `role="region"` with `aria-label="Notifications"`.
 - Each toast is `role="alert"` (`warning` / `danger` — assertive) or
@@ -164,14 +178,12 @@ apogeeToast('Link copied to clipboard.')
 
 | Token | Used for |
 |---|---|
-| `--border` / `--surface` / `--foreground` | Toast border, fill, text |
-| `--muted-foreground` | Message text + close-button icon |
-| `--accent` | Info icon + border tint |
-| `--success` | Success icon + border tint |
-| `--warning` | Warning icon + border tint |
-| `--danger` | Danger icon + border tint |
-| `--ring` | Close-button focus ring |
-| `--duration-base` / `--duration-fast` / `--ease-smooth` | Enter / exit animation |
+| `--border-neutral` / `--background-elevation-raised` / `--foreground-neutral` | Toast border, fill, text |
+| `--foreground-neutral-faded` | Message text + close-button icon |
+| `--foreground-{hue}` | The icon |
+| `--border-{hue}-faded` | The border tint per `color` |
+| `--border-primary` | Close-button focus ring |
+| `--duration-medium` / `--duration-fast` / `--ease-standard` | Enter / exit animation |
 
 ## Do / Don't
 

@@ -1,0 +1,68 @@
+---
+/**
+ * Expandable — long content clamped to a preview height with a fade, and a
+ * "Show more" toggle. The content is always in the DOM (readable, indexable);
+ * only its height changes. Zero JS: a native `<details>` drives the state and
+ * `:has()` applies the clamp.
+
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { ChevronDown } from '@lucide/astro'
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** Collapsed preview height, any CSS length. @category layout */
+  maxHeight?: string
+  /** @category content */
+  moreLabel?: string
+  /** @category content */
+  lessLabel?: string
+  open?: boolean
+  class?: string
+}
+
+const { maxHeight = '8rem', moreLabel = 'Show more', lessLabel = 'Show less', open = false, class: className, ...rest } = Astro.props
+---
+
+<div class:list={['apogee-expandable', className]} style={`--apogee-max: ${maxHeight}`} {...rest}>
+  <div class="apogee-expandable-content">
+    <slot />
+  </div>
+  <details class="apogee-expandable-toggle mt-2" open={open}>
+    <summary
+      class="inline-flex cursor-pointer list-none items-center gap-1 rounded-sm text-sm font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
+    >
+      <span class="apogee-expandable-more">{moreLabel}</span>
+      <span class="apogee-expandable-less">{lessLabel}</span>
+      <ChevronDown class="apogee-expandable-icon size-4" aria-hidden="true" />
+    </summary>
+  </details>
+</div>
+
+<style>
+  /* Collapsed = the toggle's <details> is closed. The clamp and fade live on
+     the sibling content, so the text itself never leaves the accessibility tree. */
+  .apogee-expandable:not(:has(.apogee-expandable-toggle[open])) .apogee-expandable-content {
+    max-height: var(--apogee-max);
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  }
+  .apogee-expandable-less,
+  .apogee-expandable-toggle[open] .apogee-expandable-more {
+    display: none;
+  }
+  .apogee-expandable-toggle[open] .apogee-expandable-less {
+    display: inline;
+  }
+  .apogee-expandable-icon {
+    transition: rotate var(--duration-medium) var(--ease-standard);
+  }
+  .apogee-expandable-toggle[open] .apogee-expandable-icon {
+    rotate: 180deg;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-expandable-icon {
+      transition: none;
+    }
+  }
+</style>

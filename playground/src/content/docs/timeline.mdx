@@ -48,9 +48,9 @@ import Timeline from '@/components/apogee/Timeline/Timeline.astro'
 renders the same fixed structure:
 
 - **List** — an `<ol>` of events.
-- **Connector** — a vertical line (`bg-border`) running between markers; omitted
+- **Connector** — a vertical line (`bg-neutral`) running between markers; omitted
   after the last item.
-- **Marker** — a dot per item, outlined in `--accent`.
+- **Marker** — a dot per item, outlined in `--background-primary`.
 - **Title** — `item.title`, always shown.
 - **Time** — `item.time`, shown next to the title when present (`<time>`,
   tabular numerals).
@@ -110,11 +110,11 @@ for the timestamp. Markers and the connecting line are `aria-hidden`
 
 | Token | Used for |
 |---|---|
-| `--border` | Connecting line between markers |
-| `--accent` | Marker outline |
-| `--background` | Marker fill |
-| `--foreground` | Title text |
-| `--muted-foreground` | Time + description text |
+| `--border-neutral` | Connecting line between markers |
+| `--background-primary` | Marker outline |
+| `--background-page` | Marker fill |
+| `--foreground-neutral` | Title text |
+| `--foreground-neutral-faded` | Time + description text |
 
 ## Do / Don't
 

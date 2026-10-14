@@ -5,21 +5,35 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
+interface Props extends HTMLAttributes<'input'> {
   id?: string
   label?: string
+  /** @category layout */
+  size?: 'small' | 'medium' | 'large'
+  /** Marks the control invalid. */
+  hasError?: boolean
   class?: string
-  [key: string]: any
 }
 
-const { id: idProp, label, class: className, ...rest } = Astro.props
-const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const { id: idProp, label, size = 'medium', hasError = false, class: className, ...rest } = Astro.props
+const tracks = {
+  small: 'h-4 w-7 after:size-3 peer-checked:after:translate-x-3 rtl:peer-checked:after:-translate-x-3',
+  medium: 'h-5 w-9 after:size-4 peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4',
+  large: 'h-6 w-11 after:size-5 peer-checked:after:translate-x-5 rtl:peer-checked:after:-translate-x-5',
+} as const
+const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
+const id = idProp ?? uid(Astro.locals)
 ---
 
 <label for={id} class:list={['inline-flex items-center gap-2', className]}>
-  <input id={id} type="checkbox" role="switch" class="peer sr-only" {...rest} />
+  <input id={id} type="checkbox" role="switch" class="peer sr-only" aria-invalid={hasError ? 'true' : undefined} {...rest} />
   <span
-    class="relative h-5 w-9 shrink-0 rounded-full bg-muted transition-colors peer-checked:bg-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring peer-disabled:opacity-50 after:absolute after:start-0.5 after:top-0.5 after:size-4 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4"
+    class:list={[
+      "relative shrink-0 rounded-full bg-neutral transition-colors motion-reduce:transition-none motion-reduce:after:transition-none peer-checked:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary peer-disabled:bg-disabled peer-aria-[invalid=true]:shadow-[0_0_0_1.5px_var(--border-critical)] after:absolute after:start-0.5 after:top-0.5 after:rounded-full after:bg-white after:shadow-outline after:transition-transform after:content-['']",
+      tracks[size],
+    ]}
   ></span>
-  {label && <span class="text-sm text-foreground">{label}</span>}
+  {label && <span class:list={[labelSizes[size], 'text-neutral']}>{label}</span>}
 </label>

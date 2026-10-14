@@ -8,15 +8,29 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+
+const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' } as const
+const colors = { neutral: 'text-neutral', 'neutral-faded': 'text-neutral-faded', primary: 'text-primary', critical: 'text-critical', positive: 'text-positive', warning: 'text-warning' } as const
+const clamps = { 1: 'line-clamp-1 wrap-anywhere', 2: 'line-clamp-2', 3: 'line-clamp-3' } as const
+const aligns = { start: 'text-start', center: 'text-center', end: 'text-end' } as const
+interface Props extends Omit<HTMLAttributes<'h2'>, 'size' | 'as'> {
   /** Semantic tag. */
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'div'
   /** Visual size; defaults to `as` when it's a heading, else h2. */
   size?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  /** @category layout */
+  weight?: keyof typeof weights
+  /** Text hue. Unset inherits, so headings on a solid fill keep the on-colour. @category layout */
+  color?: keyof typeof colors
+  /** @category layout */
+  maxLines?: keyof typeof clamps
+  /** @category layout */
+  align?: keyof typeof aligns
   class?: string
 }
 
-const { as = 'h2', size, class: className, ...rest } = Astro.props
+const { as = 'h2', size, weight = 'semibold', color, maxLines, align, class: className, ...rest } = Astro.props
 const Tag = as
 
 const sizeMap = {
@@ -32,7 +46,7 @@ const visual = (size ?? (as[0] === 'h' ? as : 'h2')) as keyof typeof sizeMap
 ---
 
 <Tag
-  class:list={['text-balance font-semibold tracking-tight text-foreground', sizeMap[visual], className]}
+  class:list={['text-balance tracking-tight', weights[weight], color && colors[color], sizeMap[visual], maxLines !== undefined && clamps[maxLines], align && aligns[align], className]}
   {...rest}
 >
   <slot />

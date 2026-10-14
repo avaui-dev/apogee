@@ -7,7 +7,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
   /** CSS aspect ratio, e.g. "16 / 9", "4 / 3", "1 / 1". */
   ratio?: string
   class?: string

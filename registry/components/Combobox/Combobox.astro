@@ -7,25 +7,31 @@
  * Typing filters the list and highlights the closest match (prefers a prefix
  * match); Enter or click commits it into the input. Free-typing is allowed.
  * Renders a full accessible field (label + hint/error) via Field, like Input.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
+import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 import { ChevronDown } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
   id?: string
   label?: string
   hint?: string
   error?: string
   /** Suggestions shown in the dropdown. */
   options: string[]
-  size?: 'sm' | 'md' | 'lg'
+  /** Marks the field invalid without a message. */
+  hasError?: boolean
+  /** @category layout */
+  size?: FieldSize
+  /** @category layout */
+  variant?: FieldVariant
   required?: boolean
   /** Show the chevron caret. Set false to hide it. */
   caret?: boolean
   class?: string
-  [key: string]: any
 }
 
 const {
@@ -34,23 +40,17 @@ const {
   hint,
   error,
   options,
-  size = 'md',
+  hasError = false,
+  size = 'medium',
+  variant = 'outline',
   required = false,
   caret = true,
   class: className,
   ...rest
 } = Astro.props
-const id = idProp ?? `apogee-${Math.random().toString(36).slice(2, 9)}`
+const id = idProp ?? uid(Astro.locals)
 const listId = `${id}-list`
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
-
-const sizeMap = {
-  sm: 'h-8 px-2.5 text-sm',
-  md: 'h-10 px-3 text-sm',
-  lg: 'h-12 px-4 text-base',
-}
-const inputBase =
-  'w-full rounded-md border border-border bg-background text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-danger'
 ---
 
 <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
@@ -66,13 +66,13 @@ const inputBase =
       required={required}
       aria-describedby={describedby}
       aria-invalid={error ? 'true' : undefined}
-      class:list={[inputBase, sizeMap[size], caret && 'pe-9']}
+      class:list={[fieldBase, fieldVariants[variant], fieldSizes[size], caret && 'pe-9']}
       {...rest}
     />
     {
       caret && (
         <ChevronDown
-          class="pointer-events-none absolute top-1/2 end-3 size-4 -translate-y-1/2 text-muted-foreground"
+          class="pointer-events-none absolute top-1/2 end-3 size-4 -translate-y-1/2 text-neutral-faded"
           aria-hidden="true"
         />
       )
@@ -80,7 +80,7 @@ const inputBase =
     <ul
       id={listId}
       role="listbox"
-      class="apogee-combobox-list absolute z-20 flex max-h-60 w-full flex-col gap-0.5 overflow-auto rounded-md border border-border bg-surface p-1 shadow-lg no-js:hidden"
+      class="apogee-combobox-list absolute z-20 flex max-h-60 w-full flex-col gap-0.5 overflow-auto rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg no-js:hidden"
       hidden
     >
       {
@@ -90,7 +90,7 @@ const inputBase =
             role="option"
             aria-selected="false"
             data-value={opt}
-            class="cursor-pointer rounded px-2 py-1.5 text-sm text-foreground hover:bg-muted aria-selected:bg-muted"
+            class="cursor-pointer rounded px-2 py-1.5 text-sm text-neutral hover:bg-neutral-faded-highlighted aria-selected:bg-neutral-faded-highlighted"
           >
             {opt}
           </li>
@@ -114,7 +114,7 @@ const inputBase =
   }
   /* Fade + slide in each time the list opens. */
   .apogee-combobox-list:not([hidden]) {
-    animation: apogee-combobox-in var(--duration-fast) var(--ease-smooth);
+    animation: apogee-combobox-in var(--duration-fast) var(--ease-standard);
   }
   @keyframes apogee-combobox-in {
     from {
@@ -130,11 +130,13 @@ const inputBase =
 </style>
 
 <script>
-  for (const cb of document.querySelectorAll<HTMLElement>('.apogee-combobox')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-combobox', (cb) => {
     const input = cb.querySelector<HTMLInputElement>('input[role="combobox"]')
     const list = cb.querySelector<HTMLElement>('[role="listbox"]')
     const options = [...cb.querySelectorAll<HTMLElement>('[role="option"]')]
-    if (!input || !list || !options.length) continue
+    if (!input || !list || !options.length) return
 
     let active = -1
     const visible = () => options.filter((o) => !o.hidden)
@@ -191,8 +193,12 @@ const inputBase =
       place() // list height changed — re-check the flip
     }
     const commit = (o: HTMLElement) => {
-      input.value = o.dataset.value ?? ''
+      const value = o.dataset.value ?? ''
+      input.value = value
       close()
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      input.dispatchEvent(new Event('change', { bubbles: true }))
+      cb.dispatchEvent(new CustomEvent('apogee:combobox-select', { bubbles: true, detail: { value } }))
     }
 
     input.addEventListener('focus', () => {
@@ -200,7 +206,8 @@ const inputBase =
       showAll()
       setActive(matchIndex())
     })
-    input.addEventListener('input', () => {
+    input.addEventListener('input', (e) => {
+      if (!e.isTrusted) return // our own commit event, not typing
       open()
       filter()
     })
@@ -219,7 +226,7 @@ const inputBase =
       } else if (e.key === 'Enter') {
         if (!list.hidden && active >= 0 && vis[active]) {
           e.preventDefault()
-          commit(vis[active])
+          { const v = vis[active]; if (v) commit(v) }
         }
       } else if (e.key === 'Escape') {
         close()
@@ -239,5 +246,5 @@ const inputBase =
     cb.addEventListener('focusout', (e) => {
       if (!cb.contains(e.relatedTarget as Node)) close()
     })
-  }
+  })
 </script>

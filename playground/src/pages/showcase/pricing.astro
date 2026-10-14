@@ -1,0 +1,15 @@
+---
+import Site from '../../layouts/Site.astro'
+import Hero from '../../../../registry/sections/Hero/Hero.astro'
+import Pricing from '../../../../registry/sections/Pricing/Pricing.astro'
+import FAQ from '../../../../registry/sections/FAQ/FAQ.astro'
+import CTA from '../../../../registry/sections/CTA/CTA.astro'
+import { plans, faqs } from '../../components/demo-data'
+---
+
+<Site title="Pricing">
+  <Hero layout="centered" eyebrow="Pricing" heading="Simple pricing" description="Three plans, no surprises. Switch to annual and save." spacing="small" />
+  <Pricing layout="tiers-toggle" items={plans} />
+  <FAQ layout="two-column" heading="Questions" items={faqs} background="neutral-faded" />
+  <CTA heading="Still unsure?" description="Start on the free plan and upgrade when it pays for itself." primaryAction={{ label: 'Start free', href: '#' }} />
+</Site>

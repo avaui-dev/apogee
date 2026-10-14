@@ -107,14 +107,18 @@ Both `type` values:
 Mixed sizes pass straight through to each `ToggleButton`:
 
 <Preview code={`<ToggleButtonGroup type="single" aria-label="Size">
-  <ToggleButton size="sm" pressed aria-label="Bold"><Bold /></ToggleButton>
-  <ToggleButton size="sm" aria-label="Italic"><Italic /></ToggleButton>
+  <ToggleButton size="small" pressed aria-label="Bold"><Bold /></ToggleButton>
+  <ToggleButton size="small" aria-label="Italic"><Italic /></ToggleButton>
 </ToggleButtonGroup>`}>
   <ToggleButtonGroup type="single" aria-label="Size">
-    <ToggleButton size="sm" pressed aria-label="Bold"><Bold /></ToggleButton>
-    <ToggleButton size="sm" aria-label="Italic"><Italic /></ToggleButton>
+    <ToggleButton size="small" pressed aria-label="Bold"><Bold /></ToggleButton>
+    <ToggleButton size="small" aria-label="Italic"><Italic /></ToggleButton>
   </ToggleButtonGroup>
 </Preview>
+
+## Events
+
+The group dispatches `apogee:toggle-group-change` (`detail: { pressed: string[] }`, bubbling) after any button toggles; values come from each button's `data-value`, falling back to its index.
 
 ## Accessibility
 
@@ -133,7 +137,7 @@ Mixed sizes pass straight through to each `ToggleButton`:
 
 | Token | Used for |
 |---|---|
-| `--border` / `--background` | Group container border + fill |
+| `--border-neutral` / `--background-page` | Group container border + fill |
 | (see [`ToggleButton`](/toggle-button)) | Individual button colors |
 
 ## Do / Don't

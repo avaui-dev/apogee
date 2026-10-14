@@ -1,0 +1,85 @@
+---
+title: ProgressIndicator
+description: Step N of M as a row of segments, for onboarding flows, wizards and carousels. Zero JS.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import ProgressIndicator from '../../../../registry/components/ProgressIndicator/ProgressIndicator.astro'
+
+<Preview code={`<ProgressIndicator total={5} current={2} aria-label="Onboarding" />`}>
+  <ProgressIndicator total={5} current={2} aria-label="Onboarding" class="max-w-sm" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add progress-indicator
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import ProgressIndicator from '@/components/apogee/ProgressIndicator/ProgressIndicator.astro'
+---
+<ProgressIndicator total={4} current={step} aria-label="Checkout" />
+```
+
+Use Progress for a continuous percentage; ProgressIndicator for discrete steps.
+
+## API
+
+`@composable`. Any other native attribute passes through to the root.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `total` | `number` | — | Number of steps. |
+| `current` | `number` | — | Steps done, clamped to `0..total`. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | Hue of the done segments. |
+| `aria-label` | `string` | `'Progress'` | Accessible name. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+<Preview code={`<ProgressIndicator total={5} current={3} color="primary" />
+<ProgressIndicator total={5} current={3} color="neutral" />
+<ProgressIndicator total={5} current={3} color="critical" />
+<ProgressIndicator total={5} current={3} color="positive" />
+<ProgressIndicator total={5} current={3} color="warning" />`}>
+  <ProgressIndicator total={5} current={3} color="primary" class="max-w-sm" />
+  <ProgressIndicator total={5} current={3} color="neutral" class="max-w-sm" />
+  <ProgressIndicator total={5} current={3} color="critical" class="max-w-sm" />
+  <ProgressIndicator total={5} current={3} color="positive" class="max-w-sm" />
+  <ProgressIndicator total={5} current={3} color="warning" class="max-w-sm" />
+</Preview>
+
+## States
+
+<Preview code={`<ProgressIndicator total={4} current={0} />
+<ProgressIndicator total={4} current={2} />
+<ProgressIndicator total={4} current={4} />`}>
+  <ProgressIndicator total={4} current={0} class="max-w-sm" />
+  <ProgressIndicator total={4} current={2} class="max-w-sm" />
+  <ProgressIndicator total={4} current={4} class="max-w-sm" />
+</Preview>
+
+## Accessibility
+
+- One `role="progressbar"` with `aria-valuemin`/`max`/`now` and `aria-valuetext="Step 2 of 5"`.
+- The segments are decorative; the name and value carry the meaning.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-{hue}` | Done segments (`neutral` uses `--background-inverted`) |
+| `--background-neutral-faded` | Remaining segments |
+
+## Do / Don't
+
+- **Do** pair it with visible "Step 2 of 5" text when the step count matters.
+- **Don't** use it for more than about eight steps. The segments get too thin to read.

@@ -5,31 +5,32 @@
  * Without JS the toggle is hidden and the nav + footer stay expanded (`no-js:`),
  * so nothing is unreachable. On mobile with JS, opening the nav also reveals the
  * footer. Slots: `brand` (top), default (nav links — use NavLink or <a>), `footer`.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
 import { Menu } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   class?: string
 }
 
 const { class: className, ...rest } = Astro.props
-const navId = `apogee-sidebar-${Math.random().toString(36).slice(2, 9)}`
+const navId = uid(Astro.locals, 'apogee-sidebar')
 ---
 
 <aside
   class:list={[
-    'apogee-sidebar w-full border-border bg-background md:sticky md:top-0 md:h-dvh md:w-64 md:shrink-0 md:border-e',
+    'apogee-sidebar w-full border-neutral bg-page md:sticky md:top-0 md:h-dvh md:w-64 md:shrink-0 md:border-e',
     className,
   ]}
   {...rest}
 >
-  <div class="flex items-center justify-between gap-4 border-b border-border p-4 md:border-0">
+  <div class="flex items-center justify-between gap-4 border-b border-neutral p-4 md:border-0">
     <slot name="brand" />
     <button
       type="button"
-      class="apogee-sidebar-toggle grid size-9 place-items-center rounded-md text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring no-js:hidden md:hidden"
+      class="apogee-sidebar-toggle grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary no-js:hidden md:hidden"
       aria-controls={navId}
       aria-expanded="false"
       aria-label="Toggle navigation"
@@ -42,7 +43,7 @@ const navId = `apogee-sidebar-${Math.random().toString(36).slice(2, 9)}`
     <slot />
   </nav>
 
-  <div class="apogee-sidebar-footer mt-auto border-t border-border p-4 no-js:block">
+  <div class="apogee-sidebar-footer mt-auto border-t border-neutral p-4 no-js:block">
     <slot name="footer" />
   </div>
 </aside>
@@ -81,14 +82,16 @@ const navId = `apogee-sidebar-${Math.random().toString(36).slice(2, 9)}`
 </style>
 
 <script>
-  for (const toggle of document.querySelectorAll<HTMLElement>('.apogee-sidebar-toggle')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-sidebar-toggle', (toggle) => {
     const id = toggle.getAttribute('aria-controls')
     const nav = id ? document.getElementById(id) : null
-    if (!nav) continue
+    if (!nav) return
     toggle.addEventListener('click', () => {
       const open = nav.dataset.open !== 'true'
       nav.dataset.open = String(open)
       toggle.setAttribute('aria-expanded', String(open))
     })
-  }
+  })
 </script>

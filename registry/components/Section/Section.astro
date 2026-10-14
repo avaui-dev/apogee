@@ -2,21 +2,23 @@
 /**
  * Section — a full-width band with vertical rhythm, wrapping its content in a
  * Container. `theme` colors the whole section and everything inside it (it flips
- * the design tokens for the subtree — Lumos's context theming). A `background`
+ * the design tokens for the subtree — context theming). A `background`
  * slot renders behind the content, full-bleed.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import Container from '../Container/Container.astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'section'> {
   as?: string
   /** Colors this section and its children by flipping the tokens. */
   theme?: 'inherit' | 'light' | 'dark'
-  /** Vertical padding. */
-  space?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
-  /** Inner Container width. */
-  containerSize?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  /** Vertical padding. @category layout */
+  spacing?: 'none' | 'small' | 'medium' | 'large' | 'xlarge'
+  /** Surface token for the band. Solid fills also set the on-colour text. @category layout */
+  background?: 'page' | 'neutral-faded' | 'primary-faded' | 'primary' | 'inverted'
+  /** Inner Container width. @category layout */
+  containerWidth?: 'small' | 'medium' | 'large' | 'xlarge' | 'full'
   /** Set false to skip the inner Container (content spans full width). */
   container?: boolean
   class?: string
@@ -25,8 +27,9 @@ interface Props {
 const {
   as = 'section',
   theme = 'inherit',
-  space = 'lg',
-  containerSize = 'lg',
+  spacing = 'large',
+  background,
+  containerWidth = 'large',
   container = true,
   class: className,
   ...rest
@@ -37,24 +40,31 @@ const Tag = as
 // section breathes with the viewport instead of stepping at breakpoints.
 const spaces = {
   none: '',
-  sm: 'py-section-sm',
-  md: 'py-section',
-  lg: 'py-section-lg',
-  xl: 'py-section-xl',
+  small: 'py-section-sm',
+  medium: 'py-section',
+  large: 'py-section-lg',
+  xlarge: 'py-section-xl',
 }
+const backgrounds = {
+  page: 'bg-page text-neutral',
+  'neutral-faded': 'bg-neutral-faded',
+  'primary-faded': 'bg-primary-faded',
+  primary: 'bg-primary text-on-primary',
+  inverted: 'bg-inverted text-on-inverted',
+} as const
 const themed = theme !== 'inherit'
 const hasBackground = Astro.slots.has('background')
 ---
 
 <Tag
-  class:list={['relative', themed && 'bg-background text-foreground', spaces[space], className]}
+  class:list={['relative', themed && 'bg-page text-neutral', background && backgrounds[background], spaces[spacing], className]}
   data-theme={themed ? theme : undefined}
   {...rest}
 >
   {hasBackground && <div class="absolute inset-0 -z-10"><slot name="background" /></div>}
   {
     container ? (
-      <Container size={containerSize}>
+      <Container width={containerWidth}>
         <slot />
       </Container>
     ) : (

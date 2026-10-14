@@ -6,7 +6,8 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'span'> {
   class?: string
 }
 
@@ -15,7 +16,7 @@ const { class: className, ...rest } = Astro.props
 
 <kbd
   class:list={[
-    'inline-flex h-5 min-w-5 items-center justify-center rounded border border-border bg-muted px-1.5 font-sans text-xs font-medium text-muted-foreground',
+    'inline-flex h-5 min-w-5 items-center justify-center rounded border border-neutral bg-neutral-faded px-1.5 font-sans text-xs font-medium text-neutral-faded',
     className,
   ]}
   {...rest}

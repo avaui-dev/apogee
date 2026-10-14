@@ -4,38 +4,45 @@
  * an empty field removes the last. JS island; without JS it degrades to the
  * initial tags plus a plain text field that also submits (both under `name`), so
  * typed text is never lost. Tags submit as repeated `name` fields.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { X } from '@lucide/astro'
+import { fieldVariants, type FieldVariant } from '../utils/field.ts'
 
-interface Props {
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'div'>, 'value'> {
   name: string
   /** Initial tags. */
   value?: string[]
   placeholder?: string
+  /** @category layout */
+  variant?: FieldVariant
+  /** Marks the field invalid. */
+  hasError?: boolean
   class?: string
 }
 
-const { name, value = [], placeholder = 'Add tag…', class: className, ...rest } = Astro.props
+const { name, value = [], placeholder = 'Add tag…', variant = 'outline', hasError = false, class: className, ...rest } = Astro.props
 ---
 
 <div
   class:list={[
-    'apogee-taginput flex flex-wrap items-center gap-1.5 rounded-md border border-border bg-background px-2 py-1.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring',
+    'apogee-taginput flex min-h-9 flex-wrap items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors focus-within:border-primary focus-within:shadow-[inset_0_0_0_1.5px_var(--border-primary)] aria-[invalid=true]:border-critical',
+    fieldVariants[variant],
     className,
   ]}
+  aria-invalid={hasError ? 'true' : undefined}
   data-name={name}
   {...rest}
 >
   {
     value.map((tag) => (
-      <span class="apogee-tag inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-sm text-foreground">
+      <span class="apogee-tag inline-flex items-center gap-1 rounded bg-neutral-faded px-2 py-0.5 text-sm text-neutral">
         <span class="apogee-tag-label">{tag}</span>
         <input type="hidden" name={name} value={tag} />
         <button
           type="button"
-          class="apogee-tag-remove text-muted-foreground transition-colors no-js:hidden hover:text-foreground"
+          class="apogee-tag-remove text-neutral-faded transition-colors no-js:hidden hover:text-neutral"
           aria-label={`Remove ${tag}`}
         >
           <X class="size-3.5" aria-hidden="true" />
@@ -46,38 +53,48 @@ const { name, value = [], placeholder = 'Add tag…', class: className, ...rest 
   <input
     type="text"
     name={name}
-    class="apogee-taginput-field min-w-24 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+    class="apogee-taginput-field min-w-24 flex-1 bg-transparent text-sm max-md:text-base text-neutral outline-none placeholder:text-neutral-faded"
     placeholder={placeholder}
     autocomplete="off"
   />
-</div>
-
-<template class="apogee-tag-template">
-  <span class="apogee-tag inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-sm text-foreground">
+  <template class="apogee-tag-template">
+  <span class="apogee-tag inline-flex items-center gap-1 rounded bg-neutral-faded px-2 py-0.5 text-sm text-neutral">
     <span class="apogee-tag-label"></span>
     <input type="hidden" />
-    <button type="button" class="apogee-tag-remove text-muted-foreground transition-colors hover:text-foreground" aria-label="Remove">
+    <button type="button" class="apogee-tag-remove text-neutral-faded transition-colors hover:text-neutral" aria-label="Remove">
       <X class="size-3.5" aria-hidden="true" />
     </button>
   </span>
 </template>
+</div>
 
 <script>
-  for (const root of document.querySelectorAll<HTMLElement>('.apogee-taginput')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-taginput', (root) => {
     const field = root.querySelector<HTMLInputElement>('.apogee-taginput-field')
     const tpl = root.querySelector<HTMLTemplateElement>('.apogee-tag-template')
     const name = root.dataset.name || 'tags'
-    if (!field || !tpl) continue
+    if (!field || !tpl) return
 
     // With JS, tags submit via their own hidden inputs — the live field is just
     // for typing, so drop its name (it carries the no-JS fallback value).
     field.removeAttribute('name')
 
-    const removeTag = (tag: Element) => tag.remove()
+    const values = () => [...root.querySelectorAll<HTMLInputElement>('input[type="hidden"]')].map((i) => i.value)
+    const changed = () => root.dispatchEvent(new CustomEvent('apogee:tag-input-change', { bubbles: true, detail: { values: values() } }))
+    const removeTag = (tag: Element) => {
+      tag.remove()
+      changed()
+    }
 
     const addTag = (raw: string) => {
       const label = raw.trim().replace(/,$/, '').trim()
       if (!label) return
+      if (values().some((v) => v.toLowerCase() === label.toLowerCase())) {
+        field.value = ''
+        return
+      }
       const node = tpl.content.firstElementChild!.cloneNode(true) as HTMLElement
       node.querySelector('.apogee-tag-label')!.textContent = label
       const hidden = node.querySelector<HTMLInputElement>('input[type="hidden"]')!
@@ -88,6 +105,7 @@ const { name, value = [], placeholder = 'Add tag…', class: className, ...rest 
       btn.addEventListener('click', () => removeTag(node))
       root.insertBefore(node, field)
       field.value = ''
+      changed()
     }
 
     field.addEventListener('keydown', (e) => {
@@ -103,7 +121,7 @@ const { name, value = [], placeholder = 'Add tag…', class: className, ...rest 
 
     // Wire the server-rendered tags' remove buttons.
     for (const btn of root.querySelectorAll<HTMLButtonElement>('.apogee-tag-remove')) {
-      btn.addEventListener('click', () => btn.closest('.apogee-tag')?.remove())
+      btn.addEventListener('click', () => { const t = btn.closest('.apogee-tag'); if (t) removeTag(t) })
     }
-  }
+  })
 </script>

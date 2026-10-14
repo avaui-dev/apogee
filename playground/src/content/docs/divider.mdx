@@ -43,6 +43,9 @@ through to the root element.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | `horizontal` renders an `<hr>`; `vertical` renders a `<div>` sized to stretch its flex/grid container. |
+| `color` | `'neutral' \| 'neutral-faded'` | `'neutral'` | Line colour. |
+| `contentPosition` | `'start' \| 'center' \| 'end'` | `'center'` | Where a label sits on a horizontal divider. |
+| `inset` | `0 \| 2 \| 4 \| 6 \| 8` | — | Margin along the main axis. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
@@ -65,6 +68,20 @@ Every `orientation`:
   </div>
 </Preview>
 
+### Labelled
+
+Text in the default slot renders between the lines; `contentPosition` moves it. The line follows the text direction in RTL.
+
+<Preview block code={`<Divider>or</Divider>
+<Divider contentPosition="start">Today</Divider>
+<Divider contentPosition="end" color="neutral-faded">End of list</Divider>
+<Divider inset={6} />`}>
+  <Divider>or</Divider>
+  <Divider contentPosition="start">Today</Divider>
+  <Divider contentPosition="end" color="neutral-faded">End of list</Divider>
+  <Divider inset={6} />
+</Preview>
+
 ## States
 
 No interactive states — a static separator.
@@ -75,9 +92,9 @@ Between toolbar items:
 
 ```astro
 <div class="flex h-10 items-center gap-3">
-  <Button variant="ghost" size="icon" aria-label="Bold">B</Button>
+  <Button variant="ghost" color="neutral" iconOnly aria-label="Bold">B</Button>
   <Divider orientation="vertical" />
-  <Button variant="ghost" size="icon" aria-label="Italic">I</Button>
+  <Button variant="ghost" color="neutral" iconOnly aria-label="Italic">I</Button>
 </div>
 ```
 
@@ -92,7 +109,8 @@ Between toolbar items:
 
 | Token | Used for |
 |---|---|
-| `--border` | Line color |
+| `--background-neutral` / `--background-neutral-faded` | Line colour per `color` |
+| `--foreground-neutral-faded` | Label text |
 
 ## Do / Don't
 

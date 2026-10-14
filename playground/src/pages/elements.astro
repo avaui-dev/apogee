@@ -18,8 +18,8 @@ import { Check, Heart, Settings } from '@lucide/astro'
   <Showcase name="Badge">
     <Group label="Variants">
       <Badge>Neutral</Badge>
-      <Badge variant="accent">Accent</Badge>
-      <Badge variant="danger">Danger</Badge>
+      <Badge color="primary" variant="solid">Accent</Badge>
+      <Badge color="critical" variant="solid">Danger</Badge>
       <Badge variant="outline">Outline</Badge>
     </Group>
   </Showcase>
@@ -35,9 +35,9 @@ import { Check, Heart, Settings } from '@lucide/astro'
 
   <Showcase name="Avatar">
     <Group label="Sizes & fallback">
-      <Avatar name="Ada Lovelace" size="sm" />
+      <Avatar name="Ada Lovelace" size="small" />
       <Avatar name="Ada Lovelace" />
-      <Avatar name="Ada Lovelace" size="lg" />
+      <Avatar name="Ada Lovelace" size="large" />
       <Avatar src="/favicon.svg" alt="Logo" />
     </Group>
   </Showcase>
@@ -45,19 +45,19 @@ import { Check, Heart, Settings } from '@lucide/astro'
   <Showcase name="Icon" summary="Renders a Lucide icon and forwards its props (size via class, strokeWidth, color).">
     <Group label="Sizes & props">
       <Icon icon={Check} label="Done" class="size-4" />
-      <Icon icon={Heart} label="Like" class="size-5 text-accent" />
+      <Icon icon={Heart} label="Like" class="size-5 text-primary" />
       <Icon icon={Settings} label="Settings" class="size-6" stroke-width={1.5} />
     </Group>
   </Showcase>
 
   <Showcase name="Spinner" summary="Lucide loader, spun. Standalone or inside a loading state.">
     <Group label="Sizes">
-      <Spinner size="sm" />
+      <Spinner size="small" />
       <Spinner />
-      <Spinner size="lg" />
+      <Spinner size="large" />
     </Group>
     <Group label="In context" stack>
-      <div class="flex items-center gap-2 text-muted-foreground">
+      <div class="flex items-center gap-2 text-neutral-faded">
         <Spinner label="Loading" />
         <span>Loading your data…</span>
       </div>
@@ -88,9 +88,9 @@ import { Check, Heart, Settings } from '@lucide/astro'
   <Showcase name="ButtonGroup">
     <Group>
       <ButtonGroup label="Alignment">
-        <Button variant="secondary">Left</Button>
-        <Button variant="secondary">Center</Button>
-        <Button variant="secondary">Right</Button>
+        <Button variant="outline" color="neutral">Left</Button>
+        <Button variant="outline" color="neutral">Center</Button>
+        <Button variant="outline" color="neutral">Right</Button>
       </ButtonGroup>
     </Group>
   </Showcase>

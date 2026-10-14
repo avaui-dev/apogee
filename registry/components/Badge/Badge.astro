@@ -1,27 +1,104 @@
 ---
 /**
- * Badge — a small status label.
- *
- * @composable
+ * Badge — a small status label. `color` is the hue, `variant` the fill style.
+ * Icons go in the `start` / `end` slots.
  */
-interface Props {
-  variant?: 'neutral' | 'accent' | 'danger' | 'outline'
+import type { HTMLAttributes } from 'astro/types'
+
+const styles = {
+  solid: {
+    primary: 'bg-primary text-on-primary',
+    neutral: 'bg-neutral text-on-neutral',
+    critical: 'bg-critical text-on-critical',
+    positive: 'bg-positive text-on-positive',
+    warning: 'bg-warning text-on-warning',
+  },
+  faded: {
+    primary: 'bg-primary-faded text-primary',
+    neutral: 'bg-neutral-faded text-neutral',
+    critical: 'bg-critical-faded text-critical',
+    positive: 'bg-positive-faded text-positive',
+    warning: 'bg-warning-faded text-warning',
+  },
+  outline: {
+    primary: 'border border-primary text-primary',
+    neutral: 'border border-neutral text-neutral',
+    critical: 'border border-critical text-critical',
+    positive: 'border border-positive text-positive',
+    warning: 'border border-warning text-warning',
+  },
+} as const
+const sizes = {
+  small: 'h-5 px-1.5 text-[11px] gap-1',
+  medium: 'h-6 px-2 text-xs gap-1',
+  large: 'h-7 px-2.5 text-sm gap-1.5',
+} as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'span'> {
+  /** Hue. @category layout */
+  color?: keyof typeof styles.solid
+  /** Fill style. @category layout */
+  variant?: keyof typeof styles
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** Fully round ends. @category layout */
+  rounded?: boolean
+  /** Stronger fill for an active filter or a selected state. @category layout */
+  highlighted?: boolean
+  /** Clamp long labels with an ellipsis. @category layout */
+  truncate?: boolean
   class?: string
 }
 
-const { variant = 'neutral', class: className, ...rest } = Astro.props
+const highlights = {
+  solid: {
+    primary: 'bg-primary-highlighted',
+    neutral: 'bg-neutral-highlighted',
+    critical: 'bg-critical-highlighted',
+    positive: 'bg-positive-highlighted',
+    warning: 'bg-warning-highlighted',
+  },
+  faded: {
+    primary: 'bg-primary-faded-highlighted',
+    neutral: 'bg-neutral-faded-highlighted',
+    critical: 'bg-critical-faded-highlighted',
+    positive: 'bg-positive-faded-highlighted',
+    warning: 'bg-warning-faded-highlighted',
+  },
+  outline: {
+    primary: 'bg-primary-faded',
+    neutral: 'bg-neutral-faded',
+    critical: 'bg-critical-faded',
+    positive: 'bg-positive-faded',
+    warning: 'bg-warning-faded',
+  },
+} as const
 
-const variants = {
-  neutral: 'bg-muted text-muted-foreground',
-  accent: 'bg-accent text-accent-foreground',
-  danger: 'bg-danger text-danger-foreground',
-  outline: 'border border-border text-foreground',
-}
+const { color = 'neutral', variant = 'faded', size = 'medium', rounded = false, highlighted = false, truncate = false, class: className, ...rest } = Astro.props
+// No content at all: render a dot indicator instead of an empty pill.
+const empty = !Astro.slots.has('default') && !Astro.slots.has('start') && !Astro.slots.has('end')
 ---
 
-<span
-  class:list={['inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium', variants[variant], className]}
-  {...rest}
->
-  <slot />
-</span>
+{
+  empty ? (
+    <span class:list={['inline-block size-2 rounded-full', styles.solid[color], className]} aria-hidden="true" {...rest} />
+  ) : (
+    <span
+      class:list={[
+        'inline-flex items-center whitespace-nowrap font-medium tabular-nums [&_svg]:size-3.5',
+        rounded ? 'rounded-full' : 'rounded-sm',
+        styles[variant][color],
+        highlighted && highlights[variant][color],
+        truncate && 'max-w-40',
+        sizes[size],
+        className,
+      ]}
+      {...rest}
+    >
+      <slot name="start" />
+      {truncate ? <span class="truncate"><slot /></span> : <slot />}
+      <slot name="end" />
+    </span>
+  )
+}

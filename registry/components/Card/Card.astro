@@ -6,23 +6,38 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'div'> {
+  /** Makes the whole card a link. @category content */
   href?: string
+  /** Tag to render; `button` makes the whole card a button. @category layout */
+  as?: 'div' | 'article' | 'section' | 'li' | 'button'
+  /** Adds the raised shadow. @category layout */
+  raised?: boolean
+  /** Primary border, for a chosen card in a set. @category layout */
+  selected?: boolean
+  /** Inner padding. @category layout */
+  padding?: 'none' | 'small' | 'medium' | 'large'
   class?: string
 }
 
-const { href, class: className, ...rest } = Astro.props
-const Tag = href ? 'a' : 'div'
-const interactive = href
-  ? 'transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'
+const { href, as = 'div', raised = false, selected = false, padding = 'medium', class: className, ...rest } = Astro.props
+const paddings = { none: 'p-0', small: 'p-3', medium: 'p-5', large: 'p-8' } as const
+const Tag = href ? 'a' : as
+const interactive = href || as === 'button'
+  ? 'transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
   : ''
 const hasMedia = Astro.slots.has('media')
 ---
 
 <Tag
   href={href}
+  type={Tag === 'button' ? 'button' : undefined}
   class:list={[
-    'block overflow-hidden rounded-lg border border-border bg-surface text-surface-foreground',
+    'block overflow-hidden rounded-lg border bg-elevation-raised text-start text-neutral',
+    Tag === 'button' && 'w-full',
+    selected ? 'border-primary' : 'border-neutral',
+    raised && 'shadow-raised',
     interactive,
     className,
   ]}
@@ -35,7 +50,7 @@ const hasMedia = Astro.slots.has('media')
       </div>
     )
   }
-  <div class="p-5">
+  <div class={paddings[padding]}>
     <slot />
   </div>
 </Tag>

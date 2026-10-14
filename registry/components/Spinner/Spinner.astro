@@ -7,21 +7,21 @@
  * Give a `label` for a standalone spinner (announced via `role="status"`);
  * omit it when the surrounding element already conveys the loading state
  * (e.g. a Button with `aria-busy`), and it renders decorative.
- *
- * @composable
  */
+import type { ComponentProps } from 'astro/types'
 import { LoaderCircle } from '@lucide/astro'
 
-interface Props {
-  size?: 'sm' | 'md' | 'lg'
+/** @composable */
+interface Props extends Omit<ComponentProps<typeof LoaderCircle>, 'size'> {
+  size?: 'small' | 'medium' | 'large'
   /** Accessible label. Omit when a parent already announces loading. */
   label?: string
   class?: string
 }
 
-const { size = 'md', label, class: className, ...rest } = Astro.props
-const sizeMap = { sm: 'size-4', md: 'size-5', lg: 'size-8' }
-const a11y = label ? { role: 'status', 'aria-label': label } : { 'aria-hidden': 'true' }
+const { size = 'medium', label, class: className, ...rest } = Astro.props
+const sizeMap = { small: 'size-4', medium: 'size-5', large: 'size-8' }
+const a11y = label ? ({ role: 'status', 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const)
 ---
 
 <LoaderCircle

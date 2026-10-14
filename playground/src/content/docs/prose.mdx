@@ -8,7 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Prose from '../../../../registry/components/Prose/Prose.astro'
 
-<Preview code={`<Prose>
+<Preview block code={`<Prose>
   <h2>Getting started</h2>
   <p>Prose styles any block of rich or CMS-authored HTML you don't hand-style
   element by element — token-driven, so it themes with everything else.</p>
@@ -57,6 +57,34 @@ import Prose from '@/components/apogee/Prose/Prose.astro'
 
 ## Examples
 
+Every element a page can contain, styled by Prose:
+
+<Preview block code={`<Prose>…every element…</Prose>`}>
+  <Prose>
+    <h1>Heading one</h1>
+    <p class="lead">A lead paragraph that introduces the article in a slightly larger, softer voice.</p>
+    <h2>Heading two</h2>
+    <p>Body copy with <strong>strong</strong>, <em>emphasis</em>, <a href="#">a link</a>, inline <code>code</code>, <kbd>⌘K</kbd>, <mark>a highlight</mark> and an <abbr title="Accessible Rich Internet Applications">ARIA</abbr> abbreviation.</p>
+    <p><small>Small print under a paragraph.</small></p>
+    <h3>Heading three</h3>
+    <ul><li>Unordered item</li><li>Another item<ul><li>Nested item</li></ul></li></ul>
+    <ol><li>First step</li><li>Second step<ol><li>Sub-step</li></ol></li></ol>
+    <h4>Heading four</h4>
+    <blockquote><p>The best way to predict the future is to invent it.</p><cite>Alan Kay</cite></blockquote>
+    <pre><code>npm install @ava-ui/apogee
+npx @ava-ui/apogee add prose</code></pre>
+    <h5>Heading five</h5>
+    <figure><img src="https://picsum.photos/seed/apogee/800/400" alt="A landscape placeholder" width="800" height="400" /><figcaption>A figure with a caption.</figcaption></figure>
+    <video controls muted playsinline src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"></video>
+    <h6>Heading six</h6>
+    <table><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody><tr><td>--radius-md</td><td>6px</td></tr><tr><td>--radius-lg</td><td>10px</td></tr></tbody></table>
+    <dl><dt>Term</dt><dd>Its definition.</dd><dt>Another term</dt><dd>Another definition.</dd></dl>
+    <details><summary>More details</summary><p>Hidden until opened.</p></details>
+    <hr />
+    <p>After a horizontal rule.</p>
+  </Prose>
+</Preview>
+
 Trusted/sanitized CMS or markdown HTML:
 
 ```astro
@@ -74,7 +102,7 @@ Authored inline as children instead:
 
 The styled element catalogue — headings, links, emphasis, lists, quotes, code:
 
-<Preview code={`<Prose>
+<Preview block code={`<Prose>
   <h2>Heading two</h2>
   <h3>Heading three</h3>
   <p>A paragraph with a <a href="#">link</a> and <strong>bold text</strong>.</p>
@@ -120,11 +148,11 @@ The styled element catalogue — headings, links, emphasis, lists, quotes, code:
 
 | Token | Used for |
 |---|---|
-| `--foreground` | Body + heading text |
-| `--accent` / `--accent-hover` | Link colour / hover |
-| `--muted-foreground` | List marker colour, blockquote text |
-| `--border` | Blockquote rule, `<hr>` |
-| `--muted` | Inline `code` and `pre` background |
+| `--foreground-neutral` | Body + heading text |
+| `--foreground-primary` | Link colour and hover |
+| `--foreground-neutral-faded` | List marker colour, blockquote text |
+| `--border-neutral` | Blockquote rule, `<hr>` |
+| `--background-neutral-faded` | Inline `code` and `pre` background |
 | `--radius-sm` | Inline `code` corner radius |
 | `--radius-md` | `pre` and `img` corner radius |
 

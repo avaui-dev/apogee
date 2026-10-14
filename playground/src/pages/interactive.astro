@@ -19,10 +19,10 @@ import { Settings, User, LogOut } from '@lucide/astro'
   <Showcase name="Alert" summary="Status message with icon. Zero JS.">
     <Group stack>
       <div class="flex max-w-md flex-col gap-3">
-        <Alert variant="info" title="Heads up">This is an informational message.</Alert>
-        <Alert variant="success" title="Saved">Your changes were saved.</Alert>
-        <Alert variant="warning" title="Careful">This action can't be undone.</Alert>
-        <Alert variant="danger" title="Error">Something went wrong.</Alert>
+        <Alert color="primary" title="Heads up">This is an informational message.</Alert>
+        <Alert color="positive" title="Saved">Your changes were saved.</Alert>
+        <Alert color="warning" title="Careful">This action can't be undone.</Alert>
+        <Alert color="critical" title="Error">Something went wrong.</Alert>
       </div>
     </Group>
   </Showcase>
@@ -46,28 +46,28 @@ import { Settings, User, LogOut } from '@lucide/astro'
   <Showcase name="Dialog" summary="Native <dialog> — modal, edge panel (drawer), or fullscreen.">
     <Group label="Variants">
       <Button command="show-modal" commandfor="dlg-modal">Modal</Button>
-      <Button variant="secondary" command="show-modal" commandfor="dlg-right">Panel (right)</Button>
-      <Button variant="secondary" command="show-modal" commandfor="dlg-bottom">Panel (bottom)</Button>
-      <Button variant="secondary" command="show-modal" commandfor="dlg-full">Fullscreen</Button>
+      <Button variant="outline" color="neutral" command="show-modal" commandfor="dlg-right">Panel (right)</Button>
+      <Button variant="outline" color="neutral" command="show-modal" commandfor="dlg-bottom">Panel (bottom)</Button>
+      <Button variant="outline" color="neutral" command="show-modal" commandfor="dlg-full">Fullscreen</Button>
     </Group>
 
     <Dialog id="dlg-modal" title="Delete project?">
       This permanently deletes the project and everything in it. This can't be undone.
       <Fragment slot="footer">
-        <Button variant="secondary" command="close" commandfor="dlg-modal">Cancel</Button>
-        <Button variant="danger" command="close" commandfor="dlg-modal">Delete</Button>
+        <Button variant="outline" color="neutral" command="close" commandfor="dlg-modal">Cancel</Button>
+        <Button color="critical" command="close" commandfor="dlg-modal">Delete</Button>
       </Fragment>
     </Dialog>
 
-    <Dialog id="dlg-right" variant="panel" position="right" title="Details">
+    <Dialog id="dlg-right" position="end" title="Details">
       A right-edge drawer. Slides in from the right, full height.
     </Dialog>
 
-    <Dialog id="dlg-bottom" variant="panel" position="bottom" title="Share">
+    <Dialog id="dlg-bottom" position="bottom" title="Share">
       A bottom sheet. Slides up from the bottom edge.
     </Dialog>
 
-    <Dialog id="dlg-full" variant="fullscreen" title="Fullscreen">
+    <Dialog id="dlg-full" position="full-screen" title="Fullscreen">
       Fills the viewport. Good for immersive flows or mobile.
     </Dialog>
   </Showcase>
@@ -75,10 +75,10 @@ import { Settings, User, LogOut } from '@lucide/astro'
   <Showcase name="Tooltip" summary="Hover / focus hint. Zero JS.">
     <Group>
       <Tooltip text="Copied to clipboard">
-        <Button variant="secondary">Hover me</Button>
+        <Button variant="outline" color="neutral">Hover me</Button>
       </Tooltip>
       <Tooltip text="Settings">
-        <Button size="icon" variant="ghost" aria-label="Settings">⚙</Button>
+        <Button iconOnly variant="ghost" color="neutral" aria-label="Settings">⚙</Button>
       </Tooltip>
     </Group>
   </Showcase>
@@ -105,24 +105,23 @@ import { Settings, User, LogOut } from '@lucide/astro'
 
   <Showcase name="Toast" summary="Transient notification via apogeeToast(). Place <Toaster /> once.">
     <Group>
-      <Button id="toast-info" variant="secondary">Info</Button>
-      <Button id="toast-success" variant="secondary">Success</Button>
-      <Button id="toast-warning" variant="secondary">Warning</Button>
-      <Button id="toast-danger" variant="secondary">Danger</Button>
+      <Button id="toast-info" variant="outline" color="neutral">Info</Button>
+      <Button id="toast-success" variant="outline" color="neutral">Success</Button>
+      <Button id="toast-warning" variant="outline" color="neutral">Warning</Button>
+      <Button id="toast-danger" variant="outline" color="neutral">Danger</Button>
     </Group>
   </Showcase>
 </ShowcasePage>
 
-<Toaster position="bottom-right" />
+<Toaster position="bottom-end" />
 
 <script>
-  const toast = (window as unknown as { apogeeToast?: (m: string, o?: object) => void }).apogeeToast
-  const wire = (id: string, message: string, variant: string, title: string) =>
+  const wire = (id: string, message: string, color: string, title: string) =>
     document.getElementById(id)?.addEventListener('click', () =>
-      (window as unknown as { apogeeToast: (m: string, o?: object) => void }).apogeeToast(message, { variant, title }),
+      (window as unknown as { apogeeToast: (m: string, o?: object) => void }).apogeeToast(message, { color, title }),
     )
-  wire('toast-info', 'Just so you know.', 'info', 'Heads up')
-  wire('toast-success', 'Your changes were saved.', 'success', 'Saved')
+  wire('toast-info', 'Just so you know.', 'primary', 'Heads up')
+  wire('toast-success', 'Your changes were saved.', 'positive', 'Saved')
   wire('toast-warning', "This can't be undone.", 'warning', 'Careful')
-  wire('toast-danger', 'Something went wrong.', 'danger', 'Error')
+  wire('toast-danger', 'Something went wrong.', 'critical', 'Error')
 </script>

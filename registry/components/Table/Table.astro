@@ -6,21 +6,29 @@
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+interface Props extends HTMLAttributes<'table'> {
+  /** Header text style. @category layout */
+  headerStyle?: 'normal' | 'caps'
   class?: string
 }
 
-const { class: className, ...rest } = Astro.props
+const { headerStyle = 'normal', class: className, ...rest } = Astro.props
+const headers = {
+  normal: '[&_th]:text-sm [&_th]:font-semibold [&_th]:text-neutral [&_th]:normal-case',
+  caps: '[&_th]:text-xs [&_th]:font-medium [&_th]:tracking-wide [&_th]:text-neutral-faded [&_th]:uppercase',
+} as const
 ---
 
 <div class="w-full overflow-x-auto">
   <table
     class:list={[
       'apogee-table w-full border-collapse text-start text-sm tabular-nums',
-      '[&_th]:px-3 [&_th]:py-2.5 [&_th]:font-semibold [&_th]:text-foreground',
-      '[&_td]:border-t [&_td]:border-border [&_td]:px-3 [&_td]:py-2.5 [&_td]:text-foreground',
-      '[&_thead_th]:border-b [&_thead_th]:border-border',
-      '[&_tbody_tr:hover]:bg-muted/40',
+      '[&_th]:px-3 [&_th]:py-2.5',
+      headers[headerStyle],
+      '[&_td]:border-t [&_td]:border-neutral [&_td]:px-3 [&_td]:py-2.5 [&_td]:text-neutral',
+      '[&_thead_th]:border-b [&_thead_th]:border-neutral',
+      '[&_tbody_tr:hover]:bg-neutral-faded',
       className,
     ]}
     {...rest}

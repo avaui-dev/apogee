@@ -1,21 +1,44 @@
 ---
 /**
- * Divider — a separator between content.
+ * Divider — a separator between content. Put text in the default slot for a
+ * labelled rule ("or", "Today"); `contentPosition` places it.
  *
  * @composable
  */
-interface Props {
+import type { HTMLAttributes } from 'astro/types'
+
+const colors = { neutral: 'bg-neutral', 'neutral-faded': 'bg-neutral-faded' } as const
+const insetsH = { 0: 'my-0', 2: 'my-2', 4: 'my-4', 6: 'my-6', 8: 'my-8' } as const
+const insetsV = { 0: 'mx-0', 2: 'mx-2', 4: 'mx-4', 6: 'mx-6', 8: 'mx-8' } as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'hr'> {
+  /** @category layout */
   orientation?: 'horizontal' | 'vertical'
+  /** @category layout */
+  color?: keyof typeof colors
+  /** Where the label sits on a horizontal divider. @category layout */
+  contentPosition?: 'start' | 'center' | 'end'
+  /** Margin along the main axis. @category layout */
+  inset?: keyof typeof insetsH
   class?: string
 }
 
-const { orientation = 'horizontal', class: className, ...rest } = Astro.props
+const { orientation = 'horizontal', color = 'neutral', contentPosition = 'center', inset, class: className, ...rest } = Astro.props
+const labelled = Astro.slots.has('default')
+const line = colors[color]
 ---
 
 {
   orientation === 'vertical' ? (
-    <div role="separator" aria-orientation="vertical" class:list={['w-px self-stretch bg-border', className]} {...rest} />
+    <div role="separator" aria-orientation="vertical" class:list={['w-px self-stretch', line, inset !== undefined && insetsV[inset], className]} {...rest} />
+  ) : labelled ? (
+    <div role="separator" class:list={['flex items-center gap-3 text-sm text-neutral-faded', inset !== undefined && insetsH[inset], className]} {...rest}>
+      {contentPosition !== 'start' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
+      <span class="shrink-0"><slot /></span>
+      {contentPosition !== 'end' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
+    </div>
   ) : (
-    <hr class:list={['h-px w-full border-0 bg-border', className]} {...rest} />
+    <hr class:list={['h-px w-full border-0', line, inset !== undefined && insetsH[inset], className]} {...rest} />
   )
 }

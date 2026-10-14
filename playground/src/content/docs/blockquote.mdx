@@ -8,7 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Blockquote from '../../../../registry/components/Blockquote/Blockquote.astro'
 
-<Preview code={`<Blockquote cite="Ada Lovelace">
+<Preview block code={`<Blockquote cite="Ada Lovelace">
   The Analytical Engine has no pretensions whatever to originate anything.
 </Blockquote>`}>
   <Blockquote cite="Ada Lovelace">
@@ -47,7 +47,7 @@ attribute (e.g. `id`, `aria-label`) passes through.
 
 No interactive states — Blockquote is static content.
 
-<Preview code={`<Blockquote>No attribution — the quote stands alone.</Blockquote>`}>
+<Preview block code={`<Blockquote>No attribution — the quote stands alone.</Blockquote>`}>
   <Blockquote>No attribution — the quote stands alone.</Blockquote>
 </Preview>
 
@@ -55,7 +55,7 @@ No interactive states — Blockquote is static content.
 
 A quote spanning multiple paragraphs:
 
-<Preview code={`<Blockquote cite="Grace Hopper">
+<Preview block code={`<Blockquote cite="Grace Hopper">
   <p>The most dangerous phrase in the language is "we've always done it this way."</p>
   <p>One accurate measurement is worth a thousand expert opinions.</p>
 </Blockquote>`}>
@@ -75,9 +75,10 @@ A quote spanning multiple paragraphs:
 
 | Token | Used for |
 |---|---|
-| `--accent` | Left border rule |
-| `--foreground` | Quote text |
-| `--muted-foreground` | Attribution (`cite`) text |
+| `--font-serif` | Quote text (the device's default serif stack) |
+| `--background-primary` | Left border rule |
+| `--foreground-neutral` | Quote text |
+| `--foreground-neutral-faded` | Attribution (`cite`) text |
 
 ## Do / Don't
 

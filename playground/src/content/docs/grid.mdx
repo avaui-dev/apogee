@@ -7,20 +7,21 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Grid from '../../../../registry/components/Grid/Grid.astro'
+import GridItem from '../../../../registry/components/Grid/GridItem.astro'
 
 Layout primitive — exempt from Do/Don't and Content (no misuse or wording surface).
 
 <Preview code={`<Grid minItemWidth="10rem" gap={4}>
-  <div class="rounded-md border border-border p-4 text-sm">1</div>
-  <div class="rounded-md border border-border p-4 text-sm">2</div>
-  <div class="rounded-md border border-border p-4 text-sm">3</div>
-  <div class="rounded-md border border-border p-4 text-sm">4</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">1</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">2</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">3</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">4</div>
 </Grid>`}>
   <Grid minItemWidth="10rem" gap={4}>
-    <div class="rounded-md border border-border p-4 text-sm">1</div>
-    <div class="rounded-md border border-border p-4 text-sm">2</div>
-    <div class="rounded-md border border-border p-4 text-sm">3</div>
-    <div class="rounded-md border border-border p-4 text-sm">4</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">1</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">2</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">3</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">4</div>
   </Grid>
 </Preview>
 
@@ -53,41 +54,69 @@ through to the root `<div>`.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `minItemWidth` | `string` | `'16rem'` | Autofit mode: the smallest a column may get before the count drops. Ignored when `cols` is set. |
-| `cols` | `number` | — | Fixed column count. Overrides autofit. |
-| `gap` | `0 \| 2 \| 4 \| 6 \| 8 \| 10` | `6` | Gap size (Tailwind `gap-*` scale). |
+| `cols` | `1 … 12 \| 'auto'`, responsive | — | Fixed column count (overrides autofit). `{ base: 1, md: 3 }` for breakpoints. |
+| `gap` | `0 … 6 \| 8 \| 10 \| 12 \| 16`, responsive | `6` | Gap size (Tailwind `gap-*` scale). |
+| `colGap` / `rowGap` | `0 \| 1 \| 2 \| 3 \| 4 \| 6 \| 8 \| 10 \| 12` | — | Gap on one axis. |
+| `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | — | Vertical alignment of items in their cells. |
+| `justify` | `'start' \| 'center' \| 'end' \| 'stretch'` | — | Horizontal alignment of items in their cells. |
+| `as` | `string` | `'div'` | Tag to render. |
 | `class` | `string` | — | Extra classes, merged last. |
+
+## GridItem
+
+Spans columns or rows; `colSpan` and `rowSpan` accept per-breakpoint objects.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `colSpan` | `1 … 12 \| 'full'`, responsive | — | Columns to span. |
+| `rowSpan` | `1 … 6`, responsive | — | Rows to span. |
+| `colStart` | `1 … 13` | — | Column line to start at. |
+| `rowStart` | `1 … 7` | — | Row line to start at. |
+| `as` | `string` | `'div'` | Tag to render. |
+
+<Preview block code={`<Grid cols={{ base: 1, md: 3 }} gap={4}>
+  <GridItem colSpan={{ base: 'full', md: 2 }}>Main</GridItem>
+  <GridItem>Aside</GridItem>
+  <GridItem colSpan="full">Footer</GridItem>
+</Grid>`}>
+  <Grid cols={{ base: 1, md: 3 }} gap={4} data-grid-demo>
+    <GridItem colSpan={{ base: 'full', md: 2 }} class="rounded bg-neutral-faded p-4">Main (2 of 3 columns from md)</GridItem>
+    <GridItem class="rounded bg-neutral-faded p-4">Aside</GridItem>
+    <GridItem colSpan="full" class="rounded bg-neutral-faded p-4">Footer (full)</GridItem>
+  </Grid>
+</Preview>
 
 ## Variants
 
 Autofit (default) — columns reflow to the grid's width, no breakpoints:
 
 <Preview code={`<Grid minItemWidth="8rem">
-  <div class="rounded-md border border-border p-4 text-sm">A</div>
-  <div class="rounded-md border border-border p-4 text-sm">B</div>
-  <div class="rounded-md border border-border p-4 text-sm">C</div>
-  <div class="rounded-md border border-border p-4 text-sm">D</div>
-  <div class="rounded-md border border-border p-4 text-sm">E</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">A</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">B</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">C</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">D</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">E</div>
 </Grid>`}>
   <Grid minItemWidth="8rem">
-    <div class="rounded-md border border-border p-4 text-sm">A</div>
-    <div class="rounded-md border border-border p-4 text-sm">B</div>
-    <div class="rounded-md border border-border p-4 text-sm">C</div>
-    <div class="rounded-md border border-border p-4 text-sm">D</div>
-    <div class="rounded-md border border-border p-4 text-sm">E</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">A</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">B</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">C</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">D</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">E</div>
   </Grid>
 </Preview>
 
 Fixed columns (`cols` overrides autofit):
 
 <Preview code={`<Grid cols={3}>
-  <div class="rounded-md border border-border p-4 text-sm">1</div>
-  <div class="rounded-md border border-border p-4 text-sm">2</div>
-  <div class="rounded-md border border-border p-4 text-sm">3</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">1</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">2</div>
+  <div class="rounded-md border border-neutral p-4 text-sm">3</div>
 </Grid>`}>
   <Grid cols={3}>
-    <div class="rounded-md border border-border p-4 text-sm">1</div>
-    <div class="rounded-md border border-border p-4 text-sm">2</div>
-    <div class="rounded-md border border-border p-4 text-sm">3</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">1</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">2</div>
+    <div class="rounded-md border border-neutral p-4 text-sm">3</div>
   </Grid>
 </Preview>
 
@@ -95,54 +124,54 @@ Every `gap` value (two columns, so the gap is easy to compare):
 
 <Preview code={`<div class="flex w-full flex-col gap-6">
   <Grid cols={2} gap={0}>
-    <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
-    <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=0</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=0</div>
   </Grid>
   <Grid cols={2} gap={2}>
-    <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
-    <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=2</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=2</div>
   </Grid>
   <Grid cols={2} gap={4}>
-    <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
-    <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=4</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=4</div>
   </Grid>
   <Grid cols={2} gap={6}>
-    <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
-    <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=6</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=6</div>
   </Grid>
   <Grid cols={2} gap={8}>
-    <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
-    <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=8</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=8</div>
   </Grid>
   <Grid cols={2} gap={10}>
-    <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
-    <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=10</div>
+    <div class="rounded-md border border-neutral p-3 text-xs">gap=10</div>
   </Grid>
 </div>`}>
   <div class="flex w-full flex-col gap-6">
     <Grid cols={2} gap={0}>
-      <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
-      <div class="rounded-md border border-border p-3 text-xs">gap=0</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=0</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=0</div>
     </Grid>
     <Grid cols={2} gap={2}>
-      <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
-      <div class="rounded-md border border-border p-3 text-xs">gap=2</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=2</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=2</div>
     </Grid>
     <Grid cols={2} gap={4}>
-      <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
-      <div class="rounded-md border border-border p-3 text-xs">gap=4</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=4</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=4</div>
     </Grid>
     <Grid cols={2} gap={6}>
-      <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
-      <div class="rounded-md border border-border p-3 text-xs">gap=6</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=6</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=6</div>
     </Grid>
     <Grid cols={2} gap={8}>
-      <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
-      <div class="rounded-md border border-border p-3 text-xs">gap=8</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=8</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=8</div>
     </Grid>
     <Grid cols={2} gap={10}>
-      <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
-      <div class="rounded-md border border-border p-3 text-xs">gap=10</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=10</div>
+      <div class="rounded-md border border-neutral p-3 text-xs">gap=10</div>
     </Grid>
   </div>
 </Preview>

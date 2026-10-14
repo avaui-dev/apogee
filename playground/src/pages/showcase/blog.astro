@@ -1,0 +1,13 @@
+---
+import Site from '../../layouts/Site.astro'
+import Hero from '../../../../registry/sections/Hero/Hero.astro'
+import BlogList from '../../../../registry/sections/BlogList/BlogList.astro'
+import CTA from '../../../../registry/sections/CTA/CTA.astro'
+import { posts } from '../../components/demo-data'
+---
+
+<Site title="Blog">
+  <Hero layout="centered" eyebrow="Blog" heading="Notes on building the system" spacing="small" />
+  <BlogList layout="featured" items={posts.map((p) => ({ ...p, href: '/showcase/blog/post' }))} />
+  <CTA layout="split" heading="Get new posts by email" description="One email a month, no tracking." primaryAction={{ label: 'Subscribe', href: '/showcase/contact' }} background="neutral-faded" />
+</Site>

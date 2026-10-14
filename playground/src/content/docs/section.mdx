@@ -8,11 +8,11 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import Section from '../../../../registry/components/Section/Section.astro'
 
-<Preview code={`<Section space="md">
-  <p class="text-foreground">Section content, centered by its inner Container.</p>
+<Preview code={`<Section spacing="medium">
+  <p class="text-neutral">Section content, centered by its inner Container.</p>
 </Section>`}>
-  <Section space="md">
-    <p class="text-foreground">Section content, centered by its inner Container.</p>
+  <Section spacing="medium">
+    <p class="text-neutral">Section content, centered by its inner Container.</p>
   </Section>
 </Preview>
 
@@ -30,7 +30,7 @@ Pulls in `Container`.
 ---
 import Section from '@/components/apogee/Section/Section.astro'
 ---
-<Section space="lg">
+<Section spacing="large">
   <h2>About us</h2>
   <p>…</p>
 </Section>
@@ -53,8 +53,9 @@ passes through to the root element.
 |---|---|---|---|
 | `as` | `string` | `'section'` | Element/tag to render. |
 | `theme` | `'inherit' \| 'light' \| 'dark'` | `'inherit'` | Flips design tokens for this section and everything inside it (sets `data-theme`). |
-| `space` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'lg'` | Vertical padding. |
-| `containerSize` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'lg'` | Width of the inner `Container`. |
+| `spacing` | `'none' \| 'small' \| 'medium' \| 'large' \| 'xlarge'` | `'large'` | Vertical padding. |
+| `background` | `'page' \| 'neutral-faded' \| 'primary-faded' \| 'primary' \| 'inverted'` | — | Surface token for the band; solid fills also set the on-colour text. |
+| `containerWidth` | `'small' \| 'medium' \| 'large' \| 'xlarge' \| 'full'` | `'large'` | Width of the inner `Container`. |
 | `container` | `boolean` | `true` | Set `false` to skip the inner `Container` — content spans full width. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -63,40 +64,40 @@ passes through to the root element.
 `theme` re-colors the section and its whole subtree by flipping tokens —
 every variant:
 
-<Preview code={`<Section theme="light" space="sm"><p>theme="light"</p></Section>
-<Section theme="dark" space="sm"><p>theme="dark"</p></Section>`}>
-  <Section theme="light" space="sm"><p>theme="light"</p></Section>
-  <Section theme="dark" space="sm"><p>theme="dark"</p></Section>
+<Preview code={`<Section theme="light" spacing="small"><p>theme="light"</p></Section>
+<Section theme="dark" spacing="small"><p>theme="dark"</p></Section>`}>
+  <Section theme="light" spacing="small"><p>theme="light"</p></Section>
+  <Section theme="dark" spacing="small"><p>theme="dark"</p></Section>
 </Preview>
 
 ## Sizes
 
 Every `space` value:
 
-<Preview code={`<Section space="none"><p class="border border-dashed border-border p-2 text-sm">space="none"</p></Section>
-<Section space="sm"><p class="border border-dashed border-border p-2 text-sm">space="sm"</p></Section>
-<Section space="md"><p class="border border-dashed border-border p-2 text-sm">space="md"</p></Section>
-<Section space="lg"><p class="border border-dashed border-border p-2 text-sm">space="lg"</p></Section>
-<Section space="xl"><p class="border border-dashed border-border p-2 text-sm">space="xl"</p></Section>`}>
-  <Section space="none"><p class="border border-dashed border-border p-2 text-sm">space="none"</p></Section>
-  <Section space="sm"><p class="border border-dashed border-border p-2 text-sm">space="sm"</p></Section>
-  <Section space="md"><p class="border border-dashed border-border p-2 text-sm">space="md"</p></Section>
-  <Section space="lg"><p class="border border-dashed border-border p-2 text-sm">space="lg"</p></Section>
-  <Section space="xl"><p class="border border-dashed border-border p-2 text-sm">space="xl"</p></Section>
+<Preview code={`<Section spacing="none"><p class="border border-dashed border-neutral p-2 text-sm">spacing="none"</p></Section>
+<Section spacing="small"><p class="border border-dashed border-neutral p-2 text-sm">spacing="small"</p></Section>
+<Section spacing="medium"><p class="border border-dashed border-neutral p-2 text-sm">spacing="medium"</p></Section>
+<Section spacing="large"><p class="border border-dashed border-neutral p-2 text-sm">spacing="large"</p></Section>
+<Section spacing="xlarge"><p class="border border-dashed border-neutral p-2 text-sm">spacing="xlarge"</p></Section>`}>
+  <Section spacing="none"><p class="border border-dashed border-neutral p-2 text-sm">spacing="none"</p></Section>
+  <Section spacing="small"><p class="border border-dashed border-neutral p-2 text-sm">spacing="small"</p></Section>
+  <Section spacing="medium"><p class="border border-dashed border-neutral p-2 text-sm">spacing="medium"</p></Section>
+  <Section spacing="large"><p class="border border-dashed border-neutral p-2 text-sm">spacing="large"</p></Section>
+  <Section spacing="xlarge"><p class="border border-dashed border-neutral p-2 text-sm">spacing="xlarge"</p></Section>
 </Preview>
 
 Every `containerSize` value:
 
-<Preview code={`<Section containerSize="sm" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="sm"</div></Section>
-<Section containerSize="md" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="md"</div></Section>
-<Section containerSize="lg" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="lg"</div></Section>
-<Section containerSize="xl" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="xl"</div></Section>
-<Section containerSize="full" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="full"</div></Section>`}>
-  <Section containerSize="sm" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="sm"</div></Section>
-  <Section containerSize="md" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="md"</div></Section>
-  <Section containerSize="lg" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="lg"</div></Section>
-  <Section containerSize="xl" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="xl"</div></Section>
-  <Section containerSize="full" space="sm"><div class="border border-dashed border-border p-2 text-sm">containerSize="full"</div></Section>
+<Preview code={`<Section containerWidth="small" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="sm"</div></Section>
+<Section containerWidth="medium" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="md"</div></Section>
+<Section containerWidth="large" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="lg"</div></Section>
+<Section containerWidth="xlarge" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="xl"</div></Section>
+<Section containerWidth="full" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="full"</div></Section>`}>
+  <Section containerWidth="small" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="sm"</div></Section>
+  <Section containerWidth="medium" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="md"</div></Section>
+  <Section containerWidth="large" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="lg"</div></Section>
+  <Section containerWidth="xlarge" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="xl"</div></Section>
+  <Section containerWidth="full" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="full"</div></Section>
 </Preview>
 
 ## States
@@ -107,22 +108,22 @@ Section is a static layout wrapper — no interactive states.
 
 A full-bleed background behind Container-width content:
 
-<Preview code={`<Section space="lg">
-  <div slot="background" class="h-full bg-gradient-to-br from-accent/20 to-transparent" />
-  <h2 class="text-2xl font-semibold text-foreground">Full-bleed background</h2>
-  <p class="text-muted-foreground">The gradient spans edge-to-edge; the heading stays inside the Container.</p>
+<Preview code={`<Section spacing="large">
+  <div slot="background" class="h-full bg-gradient-to-br from-primary/20 to-transparent" />
+  <h2 class="text-2xl font-semibold text-neutral">Full-bleed background</h2>
+  <p class="text-neutral-faded">The gradient spans edge-to-edge; the heading stays inside the Container.</p>
 </Section>`}>
-  <Section space="lg">
-    <div slot="background" class="h-full bg-gradient-to-br from-accent/20 to-transparent" />
-    <h2 class="text-2xl font-semibold text-foreground">Full-bleed background</h2>
-    <p class="text-muted-foreground">The gradient spans edge-to-edge; the heading stays inside the Container.</p>
+  <Section spacing="large">
+    <div slot="background" class="h-full bg-gradient-to-br from-primary/20 to-transparent" />
+    <h2 class="text-2xl font-semibold text-neutral">Full-bleed background</h2>
+    <p class="text-neutral-faded">The gradient spans edge-to-edge; the heading stays inside the Container.</p>
   </Section>
 </Preview>
 
 Skipping the Container for something that should span edge-to-edge:
 
 ```astro
-<Section container={false} space="none">
+<Section container={false} spacing="none">
   <img src="/hero.jpg" alt="" class="w-full" />
 </Section>
 ```
@@ -141,8 +142,8 @@ Skipping the Container for something that should span edge-to-edge:
 
 | Token | Used for |
 |---|---|
-| `--background` | Section fill, only when `theme` isn't `inherit` |
-| `--foreground` | Section text color, only when `theme` isn't `inherit` |
+| `--background-page` | Section fill, only when `theme` isn't `inherit` |
+| `--foreground-neutral` | Section text color, only when `theme` isn't `inherit` |
 
 A themed Section flips the token context for its whole subtree — every
 component nested inside also reads its own tokens from that context; see

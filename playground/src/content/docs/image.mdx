@@ -6,8 +6,13 @@ order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Image from '../../../../registry/components/Image/Image.astro'
 import placeholder from '../../assets/placeholder.png'
+
+<JsNote fallback="The broken image shows its alt text; the fallback stays hidden.">
+  Only when a `fallback` slot is present: a small island listens for the image's `error` event and swaps the image for the fallback in the same box, carrying the alt text over as an accessible name.
+</JsNote>
 
 <Preview code={`<Image src={placeholder} alt="Placeholder" />`}>
   <Image src={placeholder} alt="Placeholder" />
@@ -40,11 +45,16 @@ import hero from '../assets/hero.jpg'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `src` | `ImageMetadata` | — | Required. A local image import. |
+| `src` | `ImageMetadata \| string` | — | Required. A local image import (optimised at build) or a remote URL (sized with `inferSize` unless `width`/`height` are given). |
 | `alt` | `string` | — | Required. Alt text (`""` for decorative images). |
 | `loading` | `'lazy' \| 'eager'` | `'lazy'` | Native lazy-loading. Use `eager` for the page's LCP image. |
 | `decoding` | `'async' \| 'sync' \| 'auto'` | `'async'` | Native image decoding hint. |
+| `fit` | `'cover' \| 'contain'` | — | How the image fills a box sized by `width`/`height` or a class. |
+| `radius` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | — | Corner radius token. |
+| `outline` | `boolean` | `false` | Inset hairline for images that blend into the page. |
 | `class` | `string` | — | Extra classes, merged last (`h-auto max-w-full` is always applied). |
+
+Slot `fallback`: shown in the image's box when it fails to load (a small island swaps them; without JS the broken image shows its alt text).
 
 ## Examples
 
@@ -70,6 +80,20 @@ Format + quality override:
 ```astro
 <Image src={hero} alt="Product screenshot" format="avif" quality={80} />
 ```
+
+Remote source, fit and radius, outline, and a fallback for a broken URL:
+
+<Preview code={`<Image src="https://picsum.photos/seed/apogee/320/200" alt="A landscape" width={320} height={200} radius="lg" />
+<Image src="https://picsum.photos/seed/apogee/320/200" alt="A landscape" width={160} height={160} fit="cover" radius="full" outline />
+<Image src="https://example.invalid/missing.jpg" alt="Missing image" width={160} height={100} radius="md">
+  <div slot="fallback" class="grid place-items-center rounded-md bg-neutral-faded text-sm text-neutral-faded">No image</div>
+</Image>`}>
+  <Image src="https://picsum.photos/seed/apogee/320/200" alt="A landscape" width={320} height={200} radius="lg" />
+  <Image src="https://picsum.photos/seed/apogee/320/200" alt="A landscape" width={160} height={160} fit="cover" radius="full" outline />
+  <Image src="https://example.invalid/missing.jpg" alt="Missing image" width={160} height={100} radius="md">
+    <div slot="fallback" class="grid place-items-center rounded-md bg-neutral-faded text-sm text-neutral-faded">No image</div>
+  </Image>
+</Preview>
 
 ## Accessibility
 

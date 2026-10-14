@@ -1,0 +1,91 @@
+---
+title: Expandable
+description: Long content clamped to a preview height with a fade and a "Show more" toggle. Zero JS.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import Expandable from '../../../../registry/components/Expandable/Expandable.astro'
+
+export const lorem = 'The Apogee design system ships components you copy into your project and own. Every visual value reads a token, every control is a native element first, and JavaScript is progressive enhancement. Components mirror automatically under a right-to-left ancestor, pass the contrast gate in both themes, and respect reduced-motion preferences. '
+
+<Preview code={`<Expandable maxHeight="6rem">
+  <p>…long content…</p>
+</Expandable>`}>
+  <Expandable maxHeight="6rem" class="max-w-prose text-sm text-neutral">
+    <p>{lorem}{lorem}{lorem}</p>
+  </Expandable>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add expandable
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Expandable from '@/components/apogee/Expandable/Expandable.astro'
+---
+<Expandable maxHeight="10rem" moreLabel="Read the full story" lessLabel="Collapse">
+  <article>…</article>
+</Expandable>
+```
+
+The content stays in the DOM at all times; only its visible height changes.
+Search engines and screen readers see all of it.
+
+## Anatomy
+
+The clamped content block, then a native `<details>` whose `<summary>` is the
+toggle. Open state is read with `:has()` and applies the clamp to the sibling.
+
+## API
+
+`@composable`. Any other native attribute passes through to the root.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `maxHeight` | `string` | `'8rem'` | Collapsed preview height, any CSS length. |
+| `moreLabel` | `string` | `'Show more'` | Toggle text while collapsed. |
+| `lessLabel` | `string` | `'Show less'` | Toggle text while expanded. |
+| `open` | `boolean` | `false` | Start expanded. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+<Preview code={`<Expandable maxHeight="4rem">…</Expandable>
+<Expandable maxHeight="4rem" open>…</Expandable>
+<Expandable maxHeight="4rem" moreLabel="Read on" lessLabel="Enough">…</Expandable>`}>
+  <Expandable maxHeight="4rem" class="max-w-prose text-sm"><p>{lorem}{lorem}</p></Expandable>
+  <Expandable maxHeight="4rem" open class="max-w-prose text-sm"><p>{lorem}{lorem}</p></Expandable>
+  <Expandable maxHeight="4rem" moreLabel="Read on" lessLabel="Enough" class="max-w-prose text-sm"><p>{lorem}{lorem}</p></Expandable>
+</Preview>
+
+## Accessibility
+
+- The toggle is a native `<summary>`: Enter and Space toggle it, and its expanded state is exposed by the browser.
+- Collapsed content is clipped, not removed, so it stays readable to assistive tech. If the clipped part is essential, consider Collapsible instead.
+- Needs `:has()` support (all current browsers). Without it the content shows in full.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-primary` | Toggle text |
+| `--border-primary` | Focus outline |
+| `--duration-medium`, `--ease-standard` | Chevron rotation |
+
+## Do / Don't
+
+- **Do** use it for prose: bios, reviews, descriptions.
+- **Don't** clamp interactive content (forms, tables). Hidden controls confuse everyone.
+
+## Content
+
+- Toggle labels are verbs: "Show more", "Read the full review".

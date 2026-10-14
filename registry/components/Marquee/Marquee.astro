@@ -2,18 +2,18 @@
 /**
  * Marquee — an endless scrolling strip (logos, tags, testimonials). CSS-driven:
  * two panels loop seamlessly, and the duration scales with the item count so the
- * pace stays constant however many you add. Ported from Lumos's marquee.
+ * pace stays constant however many you add.
  *
  * Accessible by default: the second panel is `aria-hidden`/`inert` (never read
  * or tabbed twice), the strip pauses on `:focus-within` so a link can't scroll
  * out from under a keyboard user, it holds still for `prefers-reduced-motion`,
  * and a play/pause toggle (JS enhancement) lets anyone stop it.
- *
- * @composable
  */
+import type { HTMLAttributes } from 'astro/types'
 import { Play, Pause } from '@lucide/astro'
 
-interface Props {
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
   /** Accessible label for the strip. */
   label?: string
   /** Travel direction — `forwards` runs leftwards. */
@@ -21,13 +21,12 @@ interface Props {
   /** Seconds spent per item — keeps pace constant regardless of count. */
   speed?: number
   class?: string
-  [key: string]: any
 }
 
 const { label = 'Marquee', direction = 'forwards', speed = 4, class: className, ...rest } = Astro.props
 
 // Render the slot once, then inject it into both panels (single render, matches
-// Lumos), and count the top-level items so the loop can scale its pace to them.
+// a CSS-only marquee), and count the top-level items so the loop can scale its pace to them.
 const items = await Astro.slots.render('default')
 const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'])
 let depth = 0
@@ -38,7 +37,7 @@ for (const [, closing, name, , self] of items.matchAll(/<(\/?)([a-zA-Z][^\s/>]*)
     continue
   }
   if (depth === 0) count += 1
-  if (!self && !VOID.has(name.toLowerCase())) depth += 1
+  if (!self && !VOID.has((name ?? '').toLowerCase())) depth += 1
 }
 count = count || 1
 ---
@@ -60,7 +59,7 @@ count = count || 1
 
   <button
     type="button"
-    class="apogee-marquee-toggle grid size-9 shrink-0 place-items-center rounded-full border border-border bg-background text-foreground transition-colors no-js:hidden hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    class="apogee-marquee-toggle grid size-9 shrink-0 place-items-center rounded-full border border-neutral bg-page text-neutral transition-colors no-js:hidden hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
     data-marquee-toggle
     aria-pressed="true"
     aria-label="Pause"
@@ -154,9 +153,11 @@ count = count || 1
 </style>
 
 <script>
-  for (const m of document.querySelectorAll<HTMLElement>('.apogee-marquee')) {
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-marquee', (m) => {
     const toggle = m.querySelector<HTMLButtonElement>('[data-marquee-toggle]')
-    if (!toggle) continue
+    if (!toggle) return
     const reduced = matchMedia('(prefers-reduced-motion: reduce)')
     const setPlaying = (playing: boolean) => {
       m.dataset.state = playing ? 'playing' : 'paused'
@@ -167,5 +168,5 @@ count = count || 1
     setPlaying(!reduced.matches)
     reduced.addEventListener('change', () => setPlaying(!reduced.matches))
     toggle.addEventListener('click', () => setPlaying(m.dataset.state !== 'playing'))
-  }
+  })
 </script>

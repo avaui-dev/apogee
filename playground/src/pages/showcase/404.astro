@@ -1,0 +1,8 @@
+---
+import Site from '../../layouts/Site.astro'
+import NotFound from '../../../../registry/sections/NotFound/NotFound.astro'
+---
+
+<Site title="Page not found">
+  <NotFound primaryAction={{ label: 'Go home', href: '/showcase/home' }} secondaryAction={{ label: 'Contact us', href: '/showcase/contact' }} />
+</Site>

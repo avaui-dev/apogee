@@ -10,14 +10,14 @@ import ButtonGroup from '../../../../registry/components/ButtonGroup/ButtonGroup
 import Button from '../../../../registry/components/Button/Button.astro'
 
 <Preview code={`<ButtonGroup label="View">
-  <Button variant="secondary">Day</Button>
-  <Button variant="secondary">Week</Button>
-  <Button variant="secondary">Month</Button>
+  <Button variant="outline" color="neutral">Day</Button>
+  <Button variant="outline" color="neutral">Week</Button>
+  <Button variant="outline" color="neutral">Month</Button>
 </ButtonGroup>`}>
   <ButtonGroup label="View">
-    <Button variant="secondary">Day</Button>
-    <Button variant="secondary">Week</Button>
-    <Button variant="secondary">Month</Button>
+    <Button variant="outline" color="neutral">Day</Button>
+    <Button variant="outline" color="neutral">Week</Button>
+    <Button variant="outline" color="neutral">Month</Button>
   </ButtonGroup>
 </Preview>
 
@@ -38,9 +38,9 @@ import ButtonGroup from '@/components/apogee/ButtonGroup/ButtonGroup.astro'
 import Button from '@/components/apogee/Button/Button.astro'
 ---
 <ButtonGroup label="Alignment">
-  <Button variant="secondary">Left</Button>
-  <Button variant="secondary">Center</Button>
-  <Button variant="secondary">Right</Button>
+  <Button variant="outline" color="neutral">Left</Button>
+  <Button variant="outline" color="neutral">Center</Button>
+  <Button variant="outline" color="neutral">Right</Button>
 </ButtonGroup>
 ```
 
@@ -69,12 +69,12 @@ disabled) — ButtonGroup itself has none.
 Mixed content — a group works with any adjacent controls, not only `Button`:
 
 <Preview code={`<ButtonGroup label="Zoom">
-  <Button variant="secondary" size="icon" aria-label="Zoom out">−</Button>
-  <Button variant="secondary" size="icon" aria-label="Zoom in">+</Button>
+  <Button variant="outline" color="neutral" iconOnly aria-label="Zoom out">−</Button>
+  <Button variant="outline" color="neutral" iconOnly aria-label="Zoom in">+</Button>
 </ButtonGroup>`}>
   <ButtonGroup label="Zoom">
-    <Button variant="secondary" size="icon" aria-label="Zoom out">−</Button>
-    <Button variant="secondary" size="icon" aria-label="Zoom in">+</Button>
+    <Button variant="outline" color="neutral" iconOnly aria-label="Zoom out">−</Button>
+    <Button variant="outline" color="neutral" iconOnly aria-label="Zoom in">+</Button>
   </ButtonGroup>
 </Preview>
 

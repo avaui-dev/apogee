@@ -1,6 +1,6 @@
 {
   "name": "@ava-ui/apogee",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Apogee — the AVA design system for Astro. Atomic components, sections, and patterns, native to Astro: minimal JS, accessible, ready to compose.",
   "type": "module",
   "bin": {
@@ -9,7 +9,13 @@
   "scripts": {
     "build:registry": "node scripts/build-registry.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
-    "prepublishOnly": "npm run build:registry && npm run check:contrast"
+    "prepublishOnly": "npm test && npm run build:registry && npm run check:contrast && npm run check:strict",
+    "test": "node --test --experimental-strip-types cli/index.test.mjs scripts/color.test.mjs scripts/build-tokens.test.mjs scripts/codemod-0.3.test.mjs registry/components/utils/uid.test.mjs registry/components/utils/island.test.mjs scripts/build-registry.test.mjs registry/components/Button/Button.test.mjs registry/components/utils/radius.test.mjs registry/components/utils/responsive.test.mjs scripts/build-responsive.test.mjs registry/sections/_shared/sections.test.mjs",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "check": "npm --prefix playground run check",
+    "check:strict": "npm --prefix playground run check:strict",
+    "test:behaviour": "npm --prefix playground run test:behaviour",
+    "build:responsive": "node scripts/build-responsive.mjs"
   },
   "license": "MIT",
   "author": "AVA UI (https://avaui.dev)",
@@ -34,12 +40,17 @@
   "files": [
     "registry",
     "cli",
+    "scripts",
+    "!scripts/*.test.mjs",
     "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "@lucide/astro": "^1.46.0"
+    "@astrojs/check": "^0.9.10",
+    "@lucide/astro": "^1.56.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
   }
 }
