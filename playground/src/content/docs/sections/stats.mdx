@@ -1,0 +1,43 @@
+---
+title: Stats
+description: Headline numbers in a row or as cards.
+group: Sections
+order: 4
+---
+
+import Preview from '../../../components/Preview.astro'
+import Stats from '../../../../../registry/sections/Stats/Stats.astro'
+import { stats } from '../../../components/demo-data'
+
+<Preview block code={`<Stats heading="By the numbers" items={[{ value, label, description? }, …]} />`}>
+  <Stats heading="By the numbers" items={stats} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add stats
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Section header (optional). |
+| `items` | `{ value: string, label: string, description?: string }[]` | — | content | Required. Up to four per row. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `layout` | `'row' \| 'cards'` | `'row'` | layout | |
+| `align` | `'start' \| 'center'` | `'start'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<Stats layout="cards" align="center" items={…} />
+<Stats background="primary" items={…} />`}>
+  <Stats layout="cards" align="center" items={stats} />
+  <Stats background="primary" layout="cards" items={stats} class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Numbers use tabular figures; each stat is a value and a label in reading order.

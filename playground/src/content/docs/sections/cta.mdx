@@ -1,0 +1,43 @@
+---
+title: CTA
+description: A closing call to action, centred or split with the actions on the end side.
+group: Sections
+order: 6
+---
+
+import Preview from '../../../components/Preview.astro'
+import CTA from '../../../../../registry/sections/CTA/CTA.astro'
+
+<Preview block code={`<CTA heading="Ready to build?" description="Copy the sections you need and ship." primaryAction={{ label: 'Get started', href: '#' }} secondaryAction={{ label: 'Talk to us', href: '#' }} />`}>
+  <CTA heading="Ready to build?" description="Copy the sections you need and ship." primaryAction={{ label: 'Get started', href: '#' }} secondaryAction={{ label: 'Talk to us', href: '#' }} class="rounded-xl" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add cta
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | `heading` required. |
+| `primaryAction`, `secondaryAction` | `{ label, href }` | — | content | Buttons. |
+| `layout` | `'centered' \| 'split'` | `'centered'` | layout | |
+| `background` | Section background | `'primary-faded'` | layout | |
+| `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<CTA layout="split" background="primary" … />
+<CTA background="inverted" … />
+<CTA background="neutral-faded" … />`}>
+  <CTA layout="split" background="primary" eyebrow="Pro" heading="Upgrade when you are ready" description="Monthly or annual, cancel any time." primaryAction={{ label: 'See pricing', href: '#' }} class="rounded-xl" />
+  <CTA background="inverted" heading="Join the beta" primaryAction={{ label: 'Request access', href: '#' }} secondaryAction={{ label: 'Read the FAQ', href: '#' }} class="rounded-xl" />
+  <CTA background="neutral-faded" layout="split" heading="Questions?" description="We answer within a day." primaryAction={{ label: 'Contact us', href: '#' }} class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- A `section` labelled by its heading; actions are links styled as buttons, with neutral fills on solid backgrounds.

@@ -1,0 +1,42 @@
+---
+title: Settings form
+description: Groups of fields described by data, rendered as one plain HTML form.
+group: Sections
+order: 18
+---
+
+import Preview from '../../../components/Preview.astro'
+import SettingsForm from '../../../../../registry/sections/SettingsForm/SettingsForm.astro'
+import { settingsGroups } from '../../../components/demo-data'
+
+<Preview block code={`<SettingsForm layout="two-column" action="/settings" groups={[{ heading, description?, fields: [{ kind: 'input' | 'select' | 'switch' | 'textarea', name, label, hint?, options?, value?, required?, type? }] }]} cancelLabel="Reset" />`}>
+  <SettingsForm layout="two-column" action="#" groups={settingsGroups} cancelLabel="Reset" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add settings-form
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `groups` | `{ heading, description?, fields }[]` | — | content | Each field: `kind`, `name`, `label`, `hint?`, `options?` (select), `value?` (`'on'` checks a switch), `required?`, `type?` (input). |
+| `action`, `method` | `string`, `'get' \| 'post'` | —, `'post'` | content | Passed to the `form`. |
+| `submitLabel` | `string` | `'Save changes'` | content | |
+| `cancelLabel` | `string` | — | content | Shows a reset button. |
+| `label` | `string` | `'Settings'` | content | Landmark name. |
+| `layout` | `'stacked' \| 'two-column'` | `'stacked'` | layout | Two-column puts the group heading beside its fields. |
+| `spacing`, `headingLevel`, `id` | | `spacing` is `small` | layout | |
+
+## Layouts
+
+<Preview block code={`<SettingsForm layout="stacked" groups={…} />`}>
+  <SettingsForm layout="stacked" action="#" groups={settingsGroups} />
+</Preview>
+
+## Accessibility
+
+- Each group is a `fieldset` labelled by its heading; every control has a visible label; the form submits without JS.

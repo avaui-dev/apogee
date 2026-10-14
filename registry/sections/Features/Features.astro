@@ -1,0 +1,111 @@
+---
+/**
+ * Features — a set of benefits: a 3-up grid with icons, alternating rows with
+ * media, or a simple list.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Check, Zap, Shield, Globe, Sparkles, Layers, Lock, Rocket, Gauge, Heart } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import GridItem from '../../components/Grid/GridItem.astro'
+import Image from '../../components/Image/Image.astro'
+import Link from '../../components/Link/Link.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Text from '../../components/Text/Text.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Align, Background, Media, Spacing } from '../_shared/spine.ts'
+
+const icons = { check: Check, zap: Zap, shield: Shield, globe: Globe, sparkles: Sparkles, layers: Layers, lock: Lock, rocket: Rocket, gauge: Gauge, heart: Heart } as const
+type IconName = keyof typeof icons
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ eyebrow?: string
+  /** @category content */ heading?: string
+  /** @category content */ description?: string
+  /** Landmark name when there is no heading. @category content */ label?: string
+  /** Features. @shape { icon?: 'check'|'zap'|'shield'|'globe'|'sparkles'|'layers'|'lock'|'rocket'|'gauge'|'heart', title: string, description: string, href?: string, linkLabel?: string, media?: { src, alt } } @category content */
+  items: { icon?: IconName; title: string; description: string; href?: string; linkLabel?: string; media?: Media }[]
+  /** Text of item links without their own `linkLabel`. @category content */ linkLabel?: string
+  /** @category layout */ layout?: 'grid' | 'alternating' | 'list'
+  /** @category layout */ align?: Align
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { eyebrow, heading, description, label, items, linkLabel = 'Learn more', layout = 'grid', align = 'start', background = 'page', spacing = 'large', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'features')
+const headingId = `${id}-heading`
+const itemLevel = heading ? Math.min(headingLevel + 1, 6) : headingLevel
+const itemAs = `h${itemLevel}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+const iconBox = background === 'primary' || background === 'inverted' ? 'bg-page/15 text-inherit' : 'bg-primary-faded text-primary'
+const faded = background === 'primary' || background === 'inverted' ? 'opacity-85' : 'text-neutral-faded'
+---
+
+<Section as="section" id={id} aria-labelledby={heading ? headingId : undefined} aria-label={heading ? undefined : label ?? 'Features'} background={background} spacing={spacing} class={className} {...rest}>
+  {heading && <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={align} background={background} class="mb-12" />}
+  {layout === 'grid' && (
+    <Grid cols={{ base: 1, sm: 2, lg: 3 }} gap={8}>
+      {items.map((f) => {
+        const Icon = f.icon ? icons[f.icon] : undefined
+        return (
+          <div class:list={['flex flex-col gap-3', align === 'center' && 'items-center text-center']}>
+            {Icon && <span class:list={['grid size-10 place-items-center rounded-md', iconBox]}><Icon class="size-5" aria-hidden="true" /></span>}
+            <Heading as={itemAs} size="h5">{f.title}</Heading>
+            <Text class={faded}>{f.description}</Text>
+            {f.href && <Link href={f.href} color={background === 'primary' || background === 'inverted' ? 'inherit' : 'primary'}>{f.linkLabel ?? linkLabel}</Link>}
+          </div>
+        )
+      })}
+    </Grid>
+  )}
+  {layout === 'alternating' && (
+    <div class="flex flex-col gap-16">
+      {items.map((f, i) => {
+        const Icon = f.icon ? icons[f.icon] : undefined
+        return (
+          <Grid cols={{ base: 1, md: 2 }} gap={10} align="center">
+            <GridItem class:list={[i % 2 === 1 && 'md:order-last']}>
+              <div class="flex flex-col gap-3">
+                {Icon && <span class:list={['grid size-10 place-items-center rounded-md', iconBox]}><Icon class="size-5" aria-hidden="true" /></span>}
+                <Heading as={itemAs} size="h3">{f.title}</Heading>
+                <Text size="large" class={faded}>{f.description}</Text>
+                {f.href && <Link href={f.href} color={background === 'primary' || background === 'inverted' ? 'inherit' : 'primary'}>{f.linkLabel ?? linkLabel}</Link>}
+              </div>
+            </GridItem>
+            <GridItem>
+              {f.media ? (
+                <Image src={f.media.src} alt={f.media.alt} width={f.media.width ?? 1200} height={f.media.height ?? 800} radius="lg" outline class="w-full" />
+              ) : (
+                <div class="aspect-[3/2] w-full rounded-lg bg-neutral-faded" aria-hidden="true" />
+              )}
+            </GridItem>
+          </Grid>
+        )
+      })}
+    </div>
+  )}
+  {layout === 'list' && (
+    <ul class="flex max-w-3xl flex-col divide-y divide-neutral">
+      {items.map((f) => {
+        const Icon = f.icon ? icons[f.icon] : undefined
+        return (
+          <li class="flex gap-4 py-6 first:pt-0 last:pb-0">
+            {Icon && <span class:list={['mt-0.5 grid size-8 shrink-0 place-items-center rounded-md', iconBox]}><Icon class="size-4" aria-hidden="true" /></span>}
+            <div class="flex flex-col gap-1">
+              <Heading as={itemAs} size="h5">{f.title}</Heading>
+              <Text class={faded}>{f.description}</Text>
+              {f.href && <Link href={f.href} color={background === 'primary' || background === 'inverted' ? 'inherit' : 'primary'}>{f.linkLabel ?? linkLabel}</Link>}
+            </div>
+          </li>
+        )
+      })}
+    </ul>
+  )}
+</Section>

@@ -1,0 +1,79 @@
+---
+/**
+ * Contact — a message form, with or without a column of contact details.
+ * The form is plain HTML: pass `action` and `method` and it posts without JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Mail, Phone, MapPin } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Input from '../../components/Input/Input.astro'
+import Textarea from '../../components/Textarea/Textarea.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import { uid } from '../../components/utils/uid.ts'
+import { onBackground, type Background, type Spacing } from '../_shared/spine.ts'
+
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin } as const
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ eyebrow?: string
+  /** @category content */ heading: string
+  /** @category content */ description?: string
+  /** Shown beside the form in `form-details`. @shape { icon: 'mail'|'phone'|'map-pin', label: string, value: string, href?: string } @category content */
+  details?: { icon: keyof typeof icons; label: string; value: string; href?: string }[]
+  /** Form target. @category content */ action?: string
+  /** @category content */ method?: 'get' | 'post'
+  /** Submit label. @category content */ submitLabel?: string
+  /** Field labels. @shape { name?: string, email?: string, message?: string } @category content */ labels?: { name?: string; email?: string; message?: string }
+  /** @category layout */ layout?: 'form-details' | 'form-only'
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { eyebrow, heading, description, details = [], action, method = 'post', submitLabel = 'Send message', labels = {}, layout = 'form-details', background = 'page', spacing = 'large', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'contact')
+const headingId = `${id}-heading`
+const colours = onBackground[background]
+const solid = background === 'primary' || background === 'inverted'
+const faded = solid ? 'opacity-85' : 'text-neutral-faded'
+const withDetails = layout === 'form-details' && details.length > 0
+---
+
+<Section as="section" id={id} aria-labelledby={headingId} background={background} spacing={spacing} class={className} {...rest}>
+  <div class:list={withDetails ? 'grid gap-12 md:grid-cols-2' : 'mx-auto flex max-w-2xl flex-col'}>
+    <div>
+      <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align="start" background={background} />
+      {withDetails && (
+        <ul class="mt-10 flex flex-col gap-6">
+          {details.map((d) => {
+            const Icon = icons[d.icon]
+            return (
+              <li class="flex gap-4">
+                <span class:list={['mt-0.5 shrink-0', solid ? 'text-inherit' : 'text-primary']}><Icon class="size-5" aria-hidden="true" /></span>
+                <span class="flex flex-col">
+                  <span class:list={['text-sm', faded]}>{d.label}</span>
+                  {d.href ? <Link href={d.href} color={solid ? 'inherit' : 'neutral'} underline="hover">{d.value}</Link> : <span>{d.value}</span>}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </div>
+    <form action={action} method={method} class:list={['flex flex-col gap-5', !withDetails && 'mt-10']}>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <Input id={`${id}-name`} name="name" label={labels.name ?? 'Name'} autocomplete="name" required />
+        <Input id={`${id}-email`} name="email" type="email" label={labels.email ?? 'Email'} autocomplete="email" required />
+      </div>
+      <Textarea id={`${id}-message`} name="message" label={labels.message ?? 'Message'} rows={5} required />
+      <Button type="submit" size="large" class="self-start" {...colours.primary}>{submitLabel}</Button>
+    </form>
+  </div>
+</Section>

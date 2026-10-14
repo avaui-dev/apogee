@@ -1,0 +1,44 @@
+---
+title: Testimonials
+description: One featured quote, or a grid of quote cards.
+group: Sections
+order: 5
+---
+
+import Preview from '../../../components/Preview.astro'
+import Testimonials from '../../../../../registry/sections/Testimonials/Testimonials.astro'
+import { quotes } from '../../../components/demo-data'
+
+<Preview block code={`<Testimonials items={[{ quote, name, role?, avatar? }]} />`}>
+  <Testimonials items={quotes} spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add testimonials
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Optional section header. |
+| `items` | `{ quote, name, role?, avatar? }[]` | — | content | Required. `single` shows the first. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `layout` | `'single' \| 'grid'` | `'single'` | layout | |
+| `align` | `'start' \| 'center'` | `'center'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<Testimonials layout="grid" heading="What teams say" items={…} />
+<Testimonials background="inverted" items={…} />`}>
+  <Testimonials layout="grid" eyebrow="Customers" heading="What teams say" items={quotes} spacing="medium" />
+  <Testimonials background="inverted" items={quotes} spacing="medium" class="rounded-xl" />
+  <Testimonials layout="grid" background="neutral-faded" items={quotes.slice(0, 2)} spacing="medium" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Each quote is a `figure` with a `blockquote` and a `figcaption` naming the person; avatars use the name as their label.

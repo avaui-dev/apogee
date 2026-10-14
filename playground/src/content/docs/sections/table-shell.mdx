@@ -1,0 +1,53 @@
+---
+title: Table shell
+description: A data table with its toolbar and pagination.
+group: Sections
+order: 19
+---
+
+import Preview from '../../../components/Preview.astro'
+import JsNote from '../../../components/JsNote.astro'
+import TableShell from '../../../../../registry/sections/TableShell/TableShell.astro'
+import Button from '../../../../../registry/components/Button/Button.astro'
+import { tableColumns, tableRows } from '../../../components/demo-data'
+
+<JsNote fallback="Sort buttons are hidden and the header shows plain labels; search still submits as a GET form.">
+  `DataGrid` adds a small island for column sorting and row selection.
+</JsNote>
+
+<Preview block code={`<TableShell heading="Customers" searchable columns={[{ key, label, sortable?, align? }]} rows={[…]} currentPage={1} totalPages={4}>
+  <Button slot="actions" size="small">Add customer</Button>
+</TableShell>`}>
+  <TableShell heading="Customers" description="Accounts and their plans." searchable columns={tableColumns} rows={tableRows} currentPage={1} totalPages={4}>
+    <Button slot="actions" size="small">Add customer</Button>
+  </TableShell>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add table-shell
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `heading`, `description` | `string` | — | content | `heading` required. |
+| `searchable`, `searchLabel` | `boolean`, `string` | `false`, `'Search'` | content | A GET form that submits `?q=`. |
+| `columns`, `rows`, `selectable` | | | content | Passed to `DataGrid`. |
+| `headerStyle` | `'normal' \| 'caps'` | `'normal'` | layout | Passed to `DataGrid`. |
+| `currentPage`, `totalPages` | `number` | — | content | Shows `Pagination` when both are set and there is more than one page. |
+| `actions` slot | | | content | Toolbar buttons. |
+| `layout` | `'simple'` | `'simple'` | layout | |
+| `spacing`, `headingLevel`, `id` | | `spacing` is `small` | layout | |
+
+## Variants
+
+<Preview block code={`<TableShell heading="Selectable, caps header" selectable headerStyle="caps" columns={…} rows={…} />`}>
+  <TableShell heading="Selectable, caps header" selectable headerStyle="caps" columns={tableColumns} rows={tableRows} />
+</Preview>
+
+## Accessibility
+
+- Labelled region; the search is a `role="search"` form with a visually hidden label; the grid and pagination keep their own semantics.

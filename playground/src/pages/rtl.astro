@@ -13,6 +13,18 @@ import Blockquote from '../../../registry/components/Blockquote/Blockquote.astro
 import Steps from '../../../registry/components/Steps/Steps.astro'
 import Table from '../../../registry/components/Table/Table.astro'
 import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.astro'
+import Dialog from '../../../registry/components/Dialog/Dialog.astro'
+import Carousel from '../../../registry/components/Carousel/Carousel.astro'
+import Tabs from '../../../registry/components/Tabs/Tabs.astro'
+import Toaster from '../../../registry/components/Toast/Toaster.astro'
+import CheckboxGroup from '../../../registry/components/CheckboxGroup/CheckboxGroup.astro'
+import Checkbox from '../../../registry/components/Checkbox/Checkbox.astro'
+import Box from '../../../registry/components/Box/Box.astro'
+import Expandable from '../../../registry/components/Expandable/Expandable.astro'
+import Hero from '../../../registry/sections/Hero/Hero.astro'
+import Features from '../../../registry/sections/Features/Features.astro'
+import Testimonials from '../../../registry/sections/Testimonials/Testimonials.astro'
+import { picture } from '../components/demo-data'
 ---
 
 <!doctype html>
@@ -22,12 +34,12 @@ import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.as
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>RTL — Apogee playground</title>
   </head>
-  <body class="min-h-dvh bg-background p-8 text-foreground">
+  <body class="min-h-dvh bg-page p-8 text-neutral">
     <main class="mx-auto max-w-2xl space-y-8">
       <div>
-        <a href="/" class="text-sm text-accent underline underline-offset-2" dir="ltr">← index</a>
+        <a href="/" class="text-sm text-primary underline underline-offset-2" dir="ltr">← index</a>
         <h1 class="mt-3 text-2xl font-semibold tracking-tight">RTL smoke test</h1>
-        <p class="mt-2 text-muted-foreground">
+        <p class="mt-2 text-neutral-faded">
           The page is <code>dir="rtl"</code>. Logical properties should mirror layout;
           directional icons (chevrons, separators) should flip.
         </p>
@@ -42,25 +54,29 @@ import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.as
       />
 
       <div class="flex flex-wrap items-center gap-3">
-        <Button variant="primary">حفظ التغييرات</Button>
-        <Button variant="secondary">إلغاء</Button>
+        <Button>حفظ التغييرات</Button>
+        <Button variant="outline" color="neutral">إلغاء</Button>
         <ButtonGroup>
-          <Button variant="secondary">يوم</Button>
-          <Button variant="secondary">أسبوع</Button>
-          <Button variant="secondary">شهر</Button>
+          <Button variant="outline" color="neutral">يوم</Button>
+          <Button variant="outline" color="neutral">أسبوع</Button>
+          <Button variant="outline" color="neutral">شهر</Button>
         </ButtonGroup>
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2">
         <Input label="البريد الإلكتروني" placeholder="name@company.com" hint="لن نشاركه مع أحد" />
-        <Input variant="floating" label="الاسم الكامل" />
-        <Select label="الدولة" options={['مصر', 'السعودية', 'الإمارات']} />
+        <Input labelPosition="floating" label="الاسم الكامل" />
+        <Select label="الدولة">
+          <option>مصر</option>
+          <option>السعودية</option>
+          <option>الإمارات</option>
+        </Select>
         <label class="flex items-center gap-2 text-sm">
-          <Switch name="notify" checked /> الإشعارات
+          <Switch name="notify" checked label="الإشعارات" />
         </label>
       </div>
 
-      <Alert variant="info" title="معلومة">
+      <Alert color="primary" title="معلومة">
         النص يبدأ من اليمين، والأيقونة على الجانب الصحيح.
       </Alert>
 
@@ -94,6 +110,45 @@ import ButtonGroup from '../../../registry/components/ButtonGroup/ButtonGroup.as
       </Table>
 
       <Pagination currentPage={3} totalPages={8} getHref={() => '#'} />
+
+      <div class="flex flex-wrap items-center gap-3">
+        <Button variant="outline" color="neutral" command="show-modal" commandfor="rtl-panel">فتح اللوحة الجانبية</Button>
+        <Button variant="outline" color="neutral" onclick="apogeeToast('تم الحفظ', { color: 'positive', title: 'تم' })">إظهار تنبيه</Button>
+      </div>
+      <Dialog id="rtl-panel" position="end" title="لوحة جانبية">
+        تنزلق من الحافة النهائية (اليسار في RTL) وتُغلق بالزر أو بالنقر خارجها.
+      </Dialog>
+
+      <Tabs tabs={['الحساب', 'كلمة المرور', 'الإشعارات']}>
+        <p slot="panel-0">السهم الأيسر ينتقل إلى اللسان التالي.</p>
+        <p slot="panel-1">الأسهم تعكس اتجاهها تحت RTL.</p>
+        <p slot="panel-2">Home / End يصلان إلى الطرفين.</p>
+      </Tabs>
+
+      <Carousel dots itemWidth="14rem">
+        {['١', '٢', '٣', '٤', '٥'].map((n) => (
+          <div class="grid h-28 place-items-center rounded-lg border border-neutral bg-elevation-raised text-2xl font-semibold">{n}</div>
+        ))}
+      </Carousel>
+
+      <CheckboxGroup legend="أبلغني عن" hint="اختر ما تريد." direction="row">
+        <Checkbox label="التعليقات" checked />
+        <Checkbox label="الإشارات" />
+      </CheckboxGroup>
+
+      <Box direction="row" gap={3} padding={4} border="neutral" radius="lg" justify="between">
+        <span>البداية</span>
+        <span>النهاية</span>
+      </Box>
+
+      <Expandable maxHeight="3rem" moreLabel="عرض المزيد" lessLabel="عرض أقل" class="text-sm">
+        <p>نص طويل يتم اقتطاعه إلى ارتفاع المعاينة مع تلاشٍ، ثم زر لعرض المزيد. المحتوى يبقى في الصفحة دائماً. نص طويل يتم اقتطاعه إلى ارتفاع المعاينة مع تلاشٍ، ثم زر لعرض المزيد. المحتوى يبقى في الصفحة دائماً.</p>
+      </Expandable>
+
+      <Toaster position="bottom-end" />
     </main>
+    <Hero layout="split" eyebrow="نظام التصميم" heading="أقسام جاهزة تنعكس تلقائياً" description="الخصائص المنطقية في كل مكان؛ اقلب الاتجاه وينعكس كل قسم." primaryAction={{ label: 'ابدأ الآن', href: '#' }} secondaryAction={{ label: 'الوثائق', href: '#' }} media={picture('rtl-hero', 1200, 900)} headingLevel={2} />
+    <Features layout="alternating" eyebrow="المزايا" heading="صفوف متناوبة" items={[{ icon: 'zap', title: 'سريع افتراضياً', description: 'صفحات ثابتة بلا وقت تشغيل.', media: picture('rtl-f1', 800, 600) }, { icon: 'globe', title: 'من اليمين إلى اليسار', description: 'الخصائص المنطقية في كل مكان.', media: picture('rtl-f2', 800, 600) }]} />
+    <Testimonials layout="grid" heading="آراء الفرق" items={[{ quote: 'أطلقنا الموقع في أسبوع.', name: 'آدا', role: 'التصميم' }, { quote: 'الأقسام HTML صادق.', name: 'آلان', role: 'الهندسة' }, { quote: 'الوضع الداكن والاتجاه والتباين: كلها جاهزة.', name: 'غريس' }]} />
   </body>
 </html>

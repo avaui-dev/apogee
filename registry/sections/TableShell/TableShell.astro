@@ -1,0 +1,66 @@
+---
+/**
+ * TableShell — a data table with its toolbar (title, search, actions) and
+ * pagination. The grid props pass straight through to `DataGrid`.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Search } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Input from '../../components/Input/Input.astro'
+import DataGrid from '../../components/DataGrid/DataGrid.astro'
+import Pagination from '../../components/Pagination/Pagination.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ heading: string
+  /** @category content */ description?: string
+  /** Search box; the form submits `?q=` without JS. @category content */ searchable?: boolean
+  /** @category content */ searchLabel?: string
+  /** @shape { key: string, label: string, sortable?: boolean, align?: 'start'|'end'|'center' }[] @category content */
+  columns: { key: string; label: string; sortable?: boolean; align?: 'start' | 'end' | 'center' }[]
+  /** @category content */ rows: Record<string, unknown>[]
+  /** @category content */ selectable?: boolean
+  /** @category layout */ headerStyle?: 'normal' | 'caps'
+  /** @category content */ currentPage?: number
+  /** @category content */ totalPages?: number
+  /** @category layout */ layout?: 'simple'
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { heading, description, searchable = false, searchLabel = 'Search', columns, rows, selectable = false, headerStyle = 'normal', currentPage, totalPages, layout = 'simple', spacing = 'small', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'table')
+const headingId = `${id}-heading`
+const hasActions = Astro.slots.has('actions')
+void layout
+---
+
+<Section as="section" id={id} aria-labelledby={headingId} spacing={spacing} class={className} {...rest}>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div class="flex flex-col gap-1">
+        <Heading as={`h${headingLevel}` as 'h1' | 'h2' | 'h3' | 'h4'} size="h4" id={headingId}>{heading}</Heading>
+        {description && <p class="text-sm text-neutral-faded">{description}</p>}
+      </div>
+      <div class="flex flex-wrap items-end gap-2">
+        {searchable && (
+          <form method="get" role="search" class="min-w-56">
+            <Input id={`${id}-q`} name="q" type="search" label={searchLabel} size="small" class="[&_label]:sr-only" placeholder={searchLabel}>
+              <Search slot="start" class="size-4" aria-hidden="true" />
+            </Input>
+          </form>
+        )}
+        {hasActions && <slot name="actions" />}
+      </div>
+    </div>
+    <DataGrid columns={columns} rows={rows} selectable={selectable} headerStyle={headerStyle} />
+    {currentPage !== undefined && totalPages !== undefined && totalPages > 1 && <Pagination currentPage={currentPage} totalPages={totalPages} class="self-end" />}
+  </div>
+</Section>

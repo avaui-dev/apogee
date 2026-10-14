@@ -1,0 +1,41 @@
+---
+title: Empty state section
+description: An EmptyState with section spacing, for a whole empty page or panel.
+group: Sections
+order: 20
+---
+
+import Preview from '../../../components/Preview.astro'
+import EmptyStateSection from '../../../../../registry/sections/EmptyStateSection/EmptyStateSection.astro'
+import Button from '../../../../../registry/components/Button/Button.astro'
+import { Inbox } from '@lucide/astro'
+
+<Preview block code={`<EmptyStateSection heading="No invoices yet" description="…">
+  <Inbox slot="icon" />
+  <Button slot="actions">Create invoice</Button>
+</EmptyStateSection>`}>
+  <EmptyStateSection heading="No invoices yet" description="Invoices you create will show up here." spacing="small">
+    <Inbox slot="icon" />
+    <Button slot="actions">Create invoice</Button>
+    <Button slot="actions" variant="outline" color="neutral">Import</Button>
+  </EmptyStateSection>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add empty-state-section
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `heading`, `description` | `string` | — | content | `heading` required. |
+| `icon`, `actions` slots | | | content | Passed to `EmptyState`. |
+| `layout` | `'centered'` | `'centered'` | layout | |
+| `spacing` | | `'medium'` | layout | |
+
+## Accessibility
+
+- A region named after the heading; the icon is decorative.

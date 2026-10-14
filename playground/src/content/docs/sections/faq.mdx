@@ -1,0 +1,43 @@
+---
+title: FAQ
+description: Questions and answers as an accordion or a two-column list. Zero JS.
+group: Sections
+order: 7
+---
+
+import Preview from '../../../components/Preview.astro'
+import FAQ from '../../../../../registry/sections/FAQ/FAQ.astro'
+import { faqs } from '../../../components/demo-data'
+
+<Preview block code={`<FAQ heading="Questions" items={[{ question, answer }, …]} />`}>
+  <FAQ heading="Questions" description="The ones we hear most." items={faqs} spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add faq
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Optional section header. |
+| `items` | `{ question, answer }[]` | — | content | Required. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `layout` | `'accordion' \| 'two-column'` | `'accordion'` | layout | The accordion opens one at a time. |
+| `align` | `'start' \| 'center'` | `'start'` | layout | Header alignment. |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<FAQ layout="two-column" items={…} />
+<FAQ background="neutral-faded" align="center" items={…} />`}>
+  <FAQ layout="two-column" heading="Two columns" items={faqs} spacing="medium" />
+  <FAQ background="neutral-faded" align="center" heading="On a tint" items={faqs.slice(0, 3)} spacing="medium" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- The accordion is native `details` elements with a shared `name`, so keyboard and screen-reader support come from the browser; the two-column layout uses headings one level below the section heading.

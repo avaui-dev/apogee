@@ -1,0 +1,79 @@
+---
+/**
+ * Hero — the opening section of a page: eyebrow, heading, description, up to
+ * two actions, optional media. `layout` picks the composition.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import GridItem from '../../components/Grid/GridItem.astro'
+import Image from '../../components/Image/Image.astro'
+import { uid } from '../../components/utils/uid.ts'
+import { onBackground, type Action, type Align, type Background, type Media, type Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ eyebrow?: string
+  /** @category content */ heading: string
+  /** @category content */ description?: string
+  /** @category content */ primaryAction?: Action
+  /** @category content */ secondaryAction?: Action
+  /** Image shown beside (`split`) or below (`stacked`) the text; or use the `media` slot. @category content */ media?: Media
+  /** @category layout */ layout?: 'centered' | 'split' | 'stacked'
+  /** @category layout */ align?: Align
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const {
+  eyebrow, heading, description, primaryAction, secondaryAction, media,
+  layout = 'centered', align, background = 'page', spacing = 'large', headingLevel = 1, id: idProp, class: className, ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals, 'hero')
+const headingId = `${id}-heading`
+const colours = onBackground[background]
+const centred = align ?? (layout === 'centered' ? 'center' : 'start')
+const hasMedia = Boolean(media) || Astro.slots.has('media')
+const actions = primaryAction || secondaryAction
+---
+
+<Section as="section" id={id} aria-labelledby={headingId} background={background} spacing={spacing} class={className} {...rest}>
+  {layout === 'split' && hasMedia ? (
+    <Grid cols={{ base: 1, md: 2 }} gap={10} align="center">
+      <GridItem>
+        <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={centred} background={background} size="large" />
+        {actions && (
+          <div class:list={['mt-8 flex flex-wrap gap-3', centred === 'center' && 'justify-center']}>
+            {primaryAction && <Button href={primaryAction.href} size="large" {...colours.primary}>{primaryAction.label}</Button>}
+            {secondaryAction && <Button href={secondaryAction.href} size="large" {...colours.secondary}>{secondaryAction.label}</Button>}
+          </div>
+        )}
+      </GridItem>
+      <GridItem>
+        {media ? <Image src={media.src} alt={media.alt} width={media.width ?? 1200} height={media.height ?? 900} radius="lg" class="w-full" loading="eager" /> : <slot name="media" />}
+      </GridItem>
+    </Grid>
+  ) : (
+    <div class:list={['flex flex-col', centred === 'center' && 'items-center text-center']}>
+      <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={centred} background={background} size="large" class="max-w-3xl" />
+      {actions && (
+        <div class:list={['mt-8 flex flex-wrap gap-3', centred === 'center' && 'justify-center']}>
+          {primaryAction && <Button href={primaryAction.href} size="large" {...colours.primary}>{primaryAction.label}</Button>}
+          {secondaryAction && <Button href={secondaryAction.href} size="large" {...colours.secondary}>{secondaryAction.label}</Button>}
+        </div>
+      )}
+      {layout === 'stacked' && hasMedia && (
+        <div class="mt-12 w-full max-w-5xl">
+          {media ? <Image src={media.src} alt={media.alt} width={media.width ?? 1600} height={media.height ?? 900} radius="xl" outline class="w-full" loading="eager" /> : <slot name="media" />}
+        </div>
+      )}
+    </div>
+  )}
+</Section>

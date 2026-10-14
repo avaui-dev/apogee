@@ -1,0 +1,52 @@
+---
+/**
+ * NotFound — the 404 page body: a big status code, heading, description and
+ * a way back.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import Button from '../../components/Button/Button.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import { uid } from '../../components/utils/uid.ts'
+import { onBackground, type Action, type Background, type Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ code?: string
+  /** @category content */ heading?: string
+  /** @category content */ description?: string
+  /** @category content */ primaryAction?: Action
+  /** @category content */ secondaryAction?: Action
+  /** @category layout */ layout?: 'centered'
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const {
+  code = '404', heading = 'Page not found', description = 'The page you are looking for has moved or never existed.',
+  primaryAction = { label: 'Go home', href: '/' }, secondaryAction,
+  layout = 'centered', background = 'page', spacing = 'large', headingLevel = 1, id: idProp, class: className, ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals, 'not-found')
+const headingId = `${id}-heading`
+const colours = onBackground[background]
+const solid = background === 'primary' || background === 'inverted'
+void layout
+---
+
+<Section as="section" id={id} aria-labelledby={headingId} background={background} spacing={spacing} class={className} {...rest}>
+  <div class="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
+    <p class:list={['text-sm font-semibold tabular-nums tracking-wider', solid ? 'text-inherit opacity-85' : 'text-primary']}>{code}</p>
+    <Heading id={headingId} as={`h${headingLevel}` as 'h1' | 'h2' | 'h3' | 'h4'} size="h1">{heading}</Heading>
+    {description && <p class:list={['text-lg', solid ? 'opacity-85' : 'text-neutral-faded']}>{description}</p>}
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <Button href={primaryAction.href} size="large" {...colours.primary}>{primaryAction.label}</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" {...colours.secondary}>{secondaryAction.label}</Button>}
+    </div>
+  </div>
+</Section>

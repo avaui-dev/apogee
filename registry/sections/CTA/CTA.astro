@@ -1,0 +1,46 @@
+---
+/**
+ * CTA — a closing call to action: heading, description and actions, centred
+ * or split with the actions on the end side.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import { uid } from '../../components/utils/uid.ts'
+import { onBackground, type Action, type Background, type Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ eyebrow?: string
+  /** @category content */ heading: string
+  /** @category content */ description?: string
+  /** @category content */ primaryAction?: Action
+  /** @category content */ secondaryAction?: Action
+  /** @category layout */ layout?: 'centered' | 'split'
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { eyebrow, heading, description, primaryAction, secondaryAction, layout = 'centered', background = 'primary-faded', spacing = 'medium', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'cta')
+const headingId = `${id}-heading`
+const colours = onBackground[background]
+---
+
+<Section as="section" id={id} aria-labelledby={headingId} background={background} spacing={spacing} class={className} {...rest}>
+  <div class:list={layout === 'split' ? 'flex flex-col gap-8 md:flex-row md:items-center md:justify-between' : 'flex flex-col items-center gap-8 text-center'}>
+    <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={layout === 'split' ? 'start' : 'center'} background={background} />
+    {(primaryAction || secondaryAction) && (
+      <div class="flex shrink-0 flex-wrap gap-3">
+        {primaryAction && <Button href={primaryAction.href} size="large" {...colours.primary}>{primaryAction.label}</Button>}
+        {secondaryAction && <Button href={secondaryAction.href} size="large" {...colours.secondary}>{secondaryAction.label}</Button>}
+      </div>
+    )}
+  </div>
+</Section>

@@ -4,6 +4,7 @@
   "components": {
     "Accordion": {
       "name": "Accordion",
+      "kind": "component",
       "files": [
         "Accordion/Accordion.astro",
         "Accordion/AccordionItem.astro"
@@ -14,8 +15,19 @@
       ],
       "usesJs": false
     },
+    "Actionable": {
+      "name": "Actionable",
+      "kind": "component",
+      "files": [
+        "Actionable/Actionable.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": true
+    },
     "Alert": {
       "name": "Alert",
+      "kind": "component",
       "files": [
         "Alert/Alert.astro"
       ],
@@ -27,6 +39,7 @@
     },
     "AspectRatio": {
       "name": "AspectRatio",
+      "kind": "component",
       "files": [
         "AspectRatio/AspectRatio.astro"
       ],
@@ -36,10 +49,13 @@
     },
     "Avatar": {
       "name": "Avatar",
+      "kind": "component",
       "files": [
         "Avatar/Avatar.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -47,6 +63,7 @@
     },
     "AvatarGroup": {
       "name": "AvatarGroup",
+      "kind": "component",
       "files": [
         "AvatarGroup/AvatarGroup.astro"
       ],
@@ -58,8 +75,10 @@
     },
     "Badge": {
       "name": "Badge",
+      "kind": "component",
       "files": [
-        "Badge/Badge.astro"
+        "Badge/Badge.astro",
+        "Badge/BadgeContainer.astro"
       ],
       "registryDependencies": [],
       "dependencies": [],
@@ -67,6 +86,7 @@
     },
     "Blockquote": {
       "name": "Blockquote",
+      "kind": "component",
       "files": [
         "Blockquote/Blockquote.astro"
       ],
@@ -74,8 +94,21 @@
       "dependencies": [],
       "usesJs": false
     },
+    "Box": {
+      "name": "Box",
+      "kind": "component",
+      "files": [
+        "Box/Box.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "Breadcrumbs": {
       "name": "Breadcrumbs",
+      "kind": "component",
       "files": [
         "Breadcrumbs/Breadcrumbs.astro"
       ],
@@ -87,8 +120,10 @@
     },
     "Button": {
       "name": "Button",
+      "kind": "component",
       "files": [
-        "Button/Button.astro"
+        "Button/Button.astro",
+        "Button/button.ts"
       ],
       "registryDependencies": [
         "Spinner"
@@ -98,6 +133,7 @@
     },
     "ButtonGroup": {
       "name": "ButtonGroup",
+      "kind": "component",
       "files": [
         "ButtonGroup/ButtonGroup.astro"
       ],
@@ -107,6 +143,7 @@
     },
     "Card": {
       "name": "Card",
+      "kind": "component",
       "files": [
         "Card/Card.astro"
       ],
@@ -116,10 +153,13 @@
     },
     "Carousel": {
       "name": "Carousel",
+      "kind": "component",
       "files": [
         "Carousel/Carousel.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -127,19 +167,37 @@
     },
     "Checkbox": {
       "name": "Checkbox",
+      "kind": "component",
       "files": [
         "Checkbox/Checkbox.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "CheckboxGroup": {
+      "name": "CheckboxGroup",
+      "kind": "component",
+      "files": [
+        "CheckboxGroup/CheckboxGroup.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Code": {
       "name": "Code",
+      "kind": "component",
       "files": [
         "Code/Code.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -147,6 +205,7 @@
     },
     "Collapsible": {
       "name": "Collapsible",
+      "kind": "component",
       "files": [
         "Collapsible/Collapsible.astro"
       ],
@@ -158,22 +217,26 @@
     },
     "ColorPicker": {
       "name": "ColorPicker",
+      "kind": "component",
       "files": [
         "ColorPicker/ColorPicker.astro"
       ],
       "registryDependencies": [
-        "Field"
+        "Field",
+        "utils"
       ],
       "dependencies": [],
       "usesJs": true
     },
     "Combobox": {
       "name": "Combobox",
+      "kind": "component",
       "files": [
         "Combobox/Combobox.astro"
       ],
       "registryDependencies": [
-        "Field"
+        "Field",
+        "utils"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -182,10 +245,13 @@
     },
     "CommandPalette": {
       "name": "CommandPalette",
+      "kind": "component",
       "files": [
         "CommandPalette/CommandPalette.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -193,6 +259,7 @@
     },
     "Container": {
       "name": "Container",
+      "kind": "component",
       "files": [
         "Container/Container.astro"
       ],
@@ -202,6 +269,7 @@
     },
     "ContentWrapper": {
       "name": "ContentWrapper",
+      "kind": "component",
       "files": [
         "ContentWrapper/ContentWrapper.astro"
       ],
@@ -211,20 +279,25 @@
     },
     "ContextMenu": {
       "name": "ContextMenu",
+      "kind": "component",
       "files": [
         "ContextMenu/ContextMenu.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": true
     },
     "DataGrid": {
       "name": "DataGrid",
+      "kind": "component",
       "files": [
         "DataGrid/DataGrid.astro"
       ],
       "registryDependencies": [
-        "Checkbox"
+        "Checkbox",
+        "utils"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -233,10 +306,27 @@
     },
     "Dialog": {
       "name": "Dialog",
+      "kind": "component",
       "files": [
         "Dialog/Dialog.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
+    },
+    "Dismissible": {
+      "name": "Dismissible",
+      "kind": "component",
+      "files": [
+        "Dismissible/Dismissible.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -244,6 +334,7 @@
     },
     "Divider": {
       "name": "Divider",
+      "kind": "component",
       "files": [
         "Divider/Divider.astro"
       ],
@@ -253,11 +344,14 @@
     },
     "Dropdown": {
       "name": "Dropdown",
+      "kind": "component",
       "files": [
         "Dropdown/Dropdown.astro",
         "Dropdown/DropdownItem.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -265,6 +359,7 @@
     },
     "EmptyState": {
       "name": "EmptyState",
+      "kind": "component",
       "files": [
         "EmptyState/EmptyState.astro"
       ],
@@ -272,8 +367,21 @@
       "dependencies": [],
       "usesJs": false
     },
+    "Expandable": {
+      "name": "Expandable",
+      "kind": "component",
+      "files": [
+        "Expandable/Expandable.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "Eyebrow": {
       "name": "Eyebrow",
+      "kind": "component",
       "files": [
         "Eyebrow/Eyebrow.astro"
       ],
@@ -283,6 +391,7 @@
     },
     "Field": {
       "name": "Field",
+      "kind": "component",
       "files": [
         "Field/Field.astro"
       ],
@@ -292,10 +401,13 @@
     },
     "FileUpload": {
       "name": "FileUpload",
+      "kind": "component",
       "files": [
         "FileUpload/FileUpload.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -303,6 +415,7 @@
     },
     "Footer": {
       "name": "Footer",
+      "kind": "component",
       "files": [
         "Footer/Footer.astro"
       ],
@@ -312,15 +425,20 @@
     },
     "Grid": {
       "name": "Grid",
+      "kind": "component",
       "files": [
-        "Grid/Grid.astro"
+        "Grid/Grid.astro",
+        "Grid/GridItem.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Heading": {
       "name": "Heading",
+      "kind": "component",
       "files": [
         "Heading/Heading.astro"
       ],
@@ -328,8 +446,19 @@
       "dependencies": [],
       "usesJs": false
     },
+    "Hidden": {
+      "name": "Hidden",
+      "kind": "component",
+      "files": [
+        "Hidden/Hidden.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
     "Icon": {
       "name": "Icon",
+      "kind": "component",
       "files": [
         "Icon/Icon.astro"
       ],
@@ -341,26 +470,32 @@
     },
     "Image": {
       "name": "Image",
+      "kind": "component",
       "files": [
         "Image/Image.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
-      "usesJs": false
+      "usesJs": true
     },
     "Input": {
       "name": "Input",
+      "kind": "component",
       "files": [
         "Input/Input.astro"
       ],
       "registryDependencies": [
-        "Field"
+        "Field",
+        "utils"
       ],
       "dependencies": [],
       "usesJs": false
     },
     "Kbd": {
       "name": "Kbd",
+      "kind": "component",
       "files": [
         "Kbd/Kbd.astro"
       ],
@@ -370,6 +505,7 @@
     },
     "Link": {
       "name": "Link",
+      "kind": "component",
       "files": [
         "Link/Link.astro"
       ],
@@ -379,6 +515,7 @@
     },
     "List": {
       "name": "List",
+      "kind": "component",
       "files": [
         "List/List.astro"
       ],
@@ -388,10 +525,13 @@
     },
     "Marquee": {
       "name": "Marquee",
+      "kind": "component",
       "files": [
         "Marquee/Marquee.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -399,15 +539,19 @@
     },
     "Menubar": {
       "name": "Menubar",
+      "kind": "component",
       "files": [
         "Menubar/Menubar.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": true
     },
     "Meter": {
       "name": "Meter",
+      "kind": "component",
       "files": [
         "Meter/Meter.astro"
       ],
@@ -417,6 +561,7 @@
     },
     "NavLink": {
       "name": "NavLink",
+      "kind": "component",
       "files": [
         "NavLink/NavLink.astro"
       ],
@@ -426,10 +571,13 @@
     },
     "Navbar": {
       "name": "Navbar",
+      "kind": "component",
       "files": [
         "Navbar/Navbar.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -437,11 +585,13 @@
     },
     "NumberInput": {
       "name": "NumberInput",
+      "kind": "component",
       "files": [
         "NumberInput/NumberInput.astro"
       ],
       "registryDependencies": [
-        "Field"
+        "Field",
+        "utils"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -450,6 +600,7 @@
     },
     "Pagination": {
       "name": "Pagination",
+      "kind": "component",
       "files": [
         "Pagination/Pagination.astro"
       ],
@@ -461,24 +612,31 @@
     },
     "PinInput": {
       "name": "PinInput",
+      "kind": "component",
       "files": [
         "PinInput/PinInput.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": true
     },
     "Popover": {
       "name": "Popover",
+      "kind": "component",
       "files": [
         "Popover/Popover.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Progress": {
       "name": "Progress",
+      "kind": "component",
       "files": [
         "Progress/Progress.astro"
       ],
@@ -486,8 +644,19 @@
       "dependencies": [],
       "usesJs": false
     },
+    "ProgressIndicator": {
+      "name": "ProgressIndicator",
+      "kind": "component",
+      "files": [
+        "ProgressIndicator/ProgressIndicator.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
     "Prose": {
       "name": "Prose",
+      "kind": "component",
       "files": [
         "Prose/Prose.astro"
       ],
@@ -497,19 +666,37 @@
     },
     "Radio": {
       "name": "Radio",
+      "kind": "component",
       "files": [
         "Radio/Radio.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "RadioGroup": {
+      "name": "RadioGroup",
+      "kind": "component",
+      "files": [
+        "RadioGroup/RadioGroup.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Rating": {
       "name": "Rating",
+      "kind": "component",
       "files": [
         "Rating/Rating.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -517,20 +704,33 @@
     },
     "RichTextEditor": {
       "name": "RichTextEditor",
+      "kind": "component",
       "files": [
         "RichTextEditor/RichTextEditor.astro"
       ],
       "registryDependencies": [
         "ToggleButton",
-        "ToggleButtonGroup"
+        "ToggleButtonGroup",
+        "utils"
       ],
       "dependencies": [
         "@lucide/astro"
       ],
       "usesJs": true
     },
+    "ScrollArea": {
+      "name": "ScrollArea",
+      "kind": "component",
+      "files": [
+        "ScrollArea/ScrollArea.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
     "Section": {
       "name": "Section",
+      "kind": "component",
       "files": [
         "Section/Section.astro"
       ],
@@ -540,22 +740,41 @@
       "dependencies": [],
       "usesJs": false
     },
+    "SectionHeader": {
+      "name": "SectionHeader",
+      "kind": "component",
+      "files": [
+        "SectionHeader/SectionHeader.astro"
+      ],
+      "registryDependencies": [
+        "Eyebrow",
+        "Heading",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "SegmentedControl": {
       "name": "SegmentedControl",
+      "kind": "component",
       "files": [
         "SegmentedControl/SegmentedControl.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Select": {
       "name": "Select",
+      "kind": "component",
       "files": [
         "Select/Select.astro"
       ],
       "registryDependencies": [
-        "Field"
+        "Field",
+        "utils"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -564,10 +783,13 @@
     },
     "Sidebar": {
       "name": "Sidebar",
+      "kind": "component",
       "files": [
         "Sidebar/Sidebar.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -575,6 +797,7 @@
     },
     "Skeleton": {
       "name": "Skeleton",
+      "kind": "component",
       "files": [
         "Skeleton/Skeleton.astro"
       ],
@@ -584,6 +807,7 @@
     },
     "SkipLink": {
       "name": "SkipLink",
+      "kind": "component",
       "files": [
         "SkipLink/SkipLink.astro"
       ],
@@ -593,15 +817,19 @@
     },
     "Slider": {
       "name": "Slider",
+      "kind": "component",
       "files": [
         "Slider/Slider.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": true
     },
     "Spinner": {
       "name": "Spinner",
+      "kind": "component",
       "files": [
         "Spinner/Spinner.astro"
       ],
@@ -613,15 +841,19 @@
     },
     "Stack": {
       "name": "Stack",
+      "kind": "component",
       "files": [
         "Stack/Stack.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Stat": {
       "name": "Stat",
+      "kind": "component",
       "files": [
         "Stat/Stat.astro"
       ],
@@ -633,6 +865,7 @@
     },
     "Steps": {
       "name": "Steps",
+      "kind": "component",
       "files": [
         "Steps/Steps.astro"
       ],
@@ -644,15 +877,19 @@
     },
     "Switch": {
       "name": "Switch",
+      "kind": "component",
       "files": [
         "Switch/Switch.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Table": {
       "name": "Table",
+      "kind": "component",
       "files": [
         "Table/Table.astro"
       ],
@@ -662,15 +899,19 @@
     },
     "Tabs": {
       "name": "Tabs",
+      "kind": "component",
       "files": [
         "Tabs/Tabs.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": true
     },
     "Tag": {
       "name": "Tag",
+      "kind": "component",
       "files": [
         "Tag/Tag.astro"
       ],
@@ -682,10 +923,13 @@
     },
     "TagInput": {
       "name": "TagInput",
+      "kind": "component",
       "files": [
         "TagInput/TagInput.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -693,26 +937,32 @@
     },
     "Text": {
       "name": "Text",
+      "kind": "component",
       "files": [
         "Text/Text.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": false
     },
     "Textarea": {
       "name": "Textarea",
+      "kind": "component",
       "files": [
         "Textarea/Textarea.astro"
       ],
       "registryDependencies": [
-        "Field"
+        "Field",
+        "utils"
       ],
       "dependencies": [],
       "usesJs": false
     },
     "Timeline": {
       "name": "Timeline",
+      "kind": "component",
       "files": [
         "Timeline/Timeline.astro"
       ],
@@ -722,6 +972,7 @@
     },
     "Toast": {
       "name": "Toast",
+      "kind": "component",
       "files": [
         "Toast/Toaster.astro"
       ],
@@ -733,26 +984,416 @@
     },
     "ToggleButton": {
       "name": "ToggleButton",
+      "kind": "component",
       "files": [
         "ToggleButton/ToggleButton.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": true
     },
     "ToggleButtonGroup": {
       "name": "ToggleButtonGroup",
+      "kind": "component",
       "files": [
         "ToggleButtonGroup/ToggleButtonGroup.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [],
       "usesJs": true
     },
     "Tooltip": {
       "name": "Tooltip",
+      "kind": "component",
       "files": [
         "Tooltip/Tooltip.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "utils": {
+      "name": "utils",
+      "kind": "component",
+      "files": [
+        "utils/field.ts",
+        "utils/island.ts",
+        "utils/radius.ts",
+        "utils/responsive-tables.ts",
+        "utils/responsive.ts",
+        "utils/uid.ts"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "BlogList": {
+      "name": "BlogList",
+      "kind": "section",
+      "files": [
+        "sections/BlogList/BlogList.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Grid",
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "CTA": {
+      "name": "CTA",
+      "kind": "section",
+      "files": [
+        "sections/CTA/CTA.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "Contact": {
+      "name": "Contact",
+      "kind": "section",
+      "files": [
+        "sections/Contact/Contact.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader",
+        "Textarea",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "Content": {
+      "name": "Content",
+      "kind": "section",
+      "files": [
+        "sections/Content/Content.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Image",
+        "Prose",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "EmptyStateSection": {
+      "name": "EmptyStateSection",
+      "kind": "section",
+      "files": [
+        "sections/EmptyStateSection/EmptyStateSection.astro"
+      ],
+      "registryDependencies": [
+        "EmptyState",
+        "Section",
+        "_shared"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "FAQ": {
+      "name": "FAQ",
+      "kind": "section",
+      "files": [
+        "sections/FAQ/FAQ.astro"
+      ],
+      "registryDependencies": [
+        "Accordion",
+        "Grid",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "Text",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "Features": {
+      "name": "Features",
+      "kind": "section",
+      "files": [
+        "sections/Features/Features.astro"
+      ],
+      "registryDependencies": [
+        "Grid",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader",
+        "Text",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "FooterSection": {
+      "name": "FooterSection",
+      "kind": "section",
+      "files": [
+        "sections/FooterSection/FooterSection.astro"
+      ],
+      "registryDependencies": [
+        "Footer",
+        "Grid",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "Hero": {
+      "name": "Hero",
+      "kind": "section",
+      "files": [
+        "sections/Hero/Hero.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Image",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "LogoCloud": {
+      "name": "LogoCloud",
+      "kind": "section",
+      "files": [
+        "sections/LogoCloud/LogoCloud.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "NotFound": {
+      "name": "NotFound",
+      "kind": "section",
+      "files": [
+        "sections/NotFound/NotFound.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "PageHeader": {
+      "name": "PageHeader",
+      "kind": "section",
+      "files": [
+        "sections/PageHeader/PageHeader.astro"
+      ],
+      "registryDependencies": [
+        "Breadcrumbs",
+        "Heading",
+        "Section",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "PostHeader": {
+      "name": "PostHeader",
+      "kind": "section",
+      "files": [
+        "sections/PostHeader/PostHeader.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Image",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "Pricing": {
+      "name": "Pricing",
+      "kind": "section",
+      "files": [
+        "sections/Pricing/Pricing.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Grid",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "SegmentedControl",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
+    },
+    "SettingsForm": {
+      "name": "SettingsForm",
+      "kind": "section",
+      "files": [
+        "sections/SettingsForm/SettingsForm.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Input",
+        "Section",
+        "Select",
+        "Switch",
+        "Textarea",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "Stats": {
+      "name": "Stats",
+      "kind": "section",
+      "files": [
+        "sections/Stats/Stats.astro"
+      ],
+      "registryDependencies": [
+        "Grid",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "StatsCards": {
+      "name": "StatsCards",
+      "kind": "section",
+      "files": [
+        "sections/StatsCards/StatsCards.astro"
+      ],
+      "registryDependencies": [
+        "Grid",
+        "Section",
+        "Stat",
+        "_shared"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "TableShell": {
+      "name": "TableShell",
+      "kind": "section",
+      "files": [
+        "sections/TableShell/TableShell.astro"
+      ],
+      "registryDependencies": [
+        "DataGrid",
+        "Heading",
+        "Input",
+        "Pagination",
+        "Section",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "Team": {
+      "name": "Team",
+      "kind": "section",
+      "files": [
+        "sections/Team/Team.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Grid",
+        "Link",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "Testimonials": {
+      "name": "Testimonials",
+      "kind": "section",
+      "files": [
+        "sections/Testimonials/Testimonials.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Grid",
+        "Section",
+        "SectionHeader",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "_shared": {
+      "name": "_shared",
+      "kind": "section",
+      "files": [
+        "sections/_shared/date.ts",
+        "sections/_shared/spine.ts"
       ],
       "registryDependencies": [],
       "dependencies": [],

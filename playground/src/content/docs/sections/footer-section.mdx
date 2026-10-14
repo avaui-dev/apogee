@@ -1,0 +1,48 @@
+---
+title: Footer section
+description: A ready site footer; link columns or a single row, copyright and social links.
+group: Sections
+order: 15
+---
+
+import Preview from '../../../components/Preview.astro'
+import FooterSection from '../../../../../registry/sections/FooterSection/FooterSection.astro'
+import { footerColumns, social } from '../../../components/demo-data'
+
+<Preview block code={`<FooterSection columns={[{ heading, links: [{ label, href }] }, …]} copyright="© 2026 Example" social={[{ label, href, icon }]}>
+  <span slot="brand">Example</span>
+</FooterSection>`}>
+  <FooterSection columns={footerColumns} copyright="© 2026 Example, Inc." social={social}>
+    <span slot="brand" class="font-semibold">Example</span>
+  </FooterSection>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footer-section
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `columns` | `{ heading, links: { label, href }[] }[]` | `[]` | content | Link groups; `simple` flattens them into one row. |
+| `copyright` | `string` | — | content | Bottom row text. |
+| `social` | `{ label, href, icon }[]` | `[]` | content | Icons: `mail`, `globe`, `rss`, `at-sign`, `share`, `message`. The icon set has no brand marks; put your own SVG links in the `social` slot instead. |
+| `brand` slot | | | content | Logo or wordmark. |
+| `social` slot | | | content | Replaces the `social` list; your own `<a aria-label>` links with brand SVGs. |
+| `navLabel` | `string` | `'Footer'` | content | Name of the link nav in `simple`. |
+| `layout` | `'simple' \| 'columns'` | `'columns'` | layout | |
+
+## Layouts
+
+<Preview block code={`<FooterSection layout="simple" columns={…} copyright="…" social={…} />`}>
+  <FooterSection layout="simple" columns={footerColumns} copyright="© 2026 Example, Inc." social={social}>
+    <span slot="brand" class="font-semibold">Example</span>
+  </FooterSection>
+</Preview>
+
+## Accessibility
+
+- Each column is a `nav` named by its heading; social links carry `aria-label` and a 40px hit area.

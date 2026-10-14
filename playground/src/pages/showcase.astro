@@ -16,30 +16,49 @@ const built: { name: string; href: string }[] = [
   { name: 'Extras', href: '/extras' },
   { name: 'RTL', href: '/rtl' },
 ]
+const showcase = [
+  { name: 'Home', href: '/showcase/home' },
+  { name: 'About', href: '/showcase/about' },
+  { name: 'Pricing', href: '/showcase/pricing' },
+  { name: 'Blog', href: '/showcase/blog' },
+  { name: 'Blog post', href: '/showcase/blog/post' },
+  { name: 'Contact', href: '/showcase/contact' },
+  { name: '404', href: '/showcase/404' },
+  { name: 'App', href: '/showcase/app' },
+]
 ---
 
 <Base title="Apogee playground">
   <h1 class="text-2xl font-semibold tracking-tight">Apogee playground</h1>
-  <p class="mt-2 text-muted-foreground">
-    Local preview. Run <code class="rounded bg-muted px-1 py-0.5">npm run dev</code>,
-    build a component, add a page in <code class="rounded bg-muted px-1 py-0.5">src/pages/</code>,
+  <p class="mt-2 text-neutral-faded">
+    Local preview. Run <code class="rounded bg-neutral-faded px-1 py-0.5">npm run dev</code>,
+    build a component, add a page in <code class="rounded bg-neutral-faded px-1 py-0.5">src/pages/</code>,
     and see it here live.
   </p>
 
-  <h2 class="mt-10 text-xs font-medium uppercase tracking-wide text-muted-foreground">Components</h2>
+  <h2 class="mt-10 text-xs font-medium uppercase tracking-wide text-neutral-faded">Components</h2>
   {
     built.length === 0 ? (
-      <p class="mt-2 text-muted-foreground">
+      <p class="mt-2 text-neutral-faded">
         Nothing built yet — next up: Phase 0 (tokens), then Button.
       </p>
     ) : (
       <ul class="mt-3 space-y-1">
         {built.map((c) => (
           <li>
-            <a class="text-accent underline underline-offset-2" href={c.href}>{c.name}</a>
+            <a class="text-primary underline underline-offset-2" href={c.href}>{c.name}</a>
           </li>
         ))}
       </ul>
     )
   }
+
+  <h2 class="mt-10 text-xs font-medium uppercase tracking-wide text-neutral-faded">Showcase sites</h2>
+  <ul class="mt-3 space-y-1">
+    {showcase.map((c) => (
+      <li>
+        <a class="text-primary underline underline-offset-2" href={c.href}>{c.name}</a>
+      </li>
+    ))}
+  </ul>
 </Base>

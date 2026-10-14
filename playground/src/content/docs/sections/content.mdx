@@ -1,0 +1,57 @@
+---
+title: Content
+description: A text block beside media, or long-form prose.
+group: Sections
+order: 8
+---
+
+import Preview from '../../../components/Preview.astro'
+import ContentSection from '../../../../../registry/sections/Content/Content.astro'
+import { picture } from '../../../components/demo-data'
+
+<Preview block code={`<ContentSection eyebrow="About" heading="Why we built it" media={{ src, alt }} primaryAction={{ label: 'Our story', href: '#' }}>
+  <p>…</p>
+</ContentSection>`}>
+  <ContentSection eyebrow="About" heading="Why we built it" description="A design system should make the next page cheaper than the last." media={picture('content-1')} primaryAction={{ label: 'Our story', href: '#' }} spacing="medium">
+    <p>Every section here is built from the components you already use, reads only tokens, and renders without JavaScript.</p>
+    <p>Editors fill the props; developers reach for slots when they need more.</p>
+  </ContentSection>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add content
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Optional header. |
+| `primaryAction` | `{ label, href }` | — | content | Button under the body. |
+| `media` | `{ src, alt, width?, height? }` | — | content | For `split`; or the `media` slot. |
+| default slot | | | content | The body (paragraphs; `prose` styles any element). |
+| `mediaFirst` | `boolean` | `false` | layout | Media on the start side. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `layout` | `'split' \| 'prose'` | `'split'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<ContentSection layout="split" mediaFirst media={…}>…</ContentSection>
+<ContentSection layout="prose" heading="Long form"><h3>…</h3><p>…</p><ul>…</ul></ContentSection>`}>
+  <ContentSection layout="split" mediaFirst eyebrow="Media first" heading="Picture on the start side" media={picture('content-2')} spacing="medium">
+    <p>Swap sides with `mediaFirst`; on phones the text still comes first.</p>
+  </ContentSection>
+  <ContentSection layout="prose" eyebrow="Prose" heading="Long form" description="Headings, lists and quotes inside, styled by Prose." spacing="medium" background="neutral-faded" class="rounded-xl">
+    <h3>A subheading</h3>
+    <p>Prose takes over inside: lists, quotes, code and tables all get the system's styles.</p>
+    <ul><li>One</li><li>Two</li></ul>
+    <blockquote><p>Quoted text in the serif face.</p><cite>Someone</cite></blockquote>
+  </ContentSection>
+</Preview>
+
+## Accessibility
+
+- A labelled `section` when a heading is given; otherwise named "Content".

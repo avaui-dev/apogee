@@ -1,0 +1,43 @@
+---
+title: Contact
+description: A message form, with or without a column of contact details.
+group: Sections
+order: 13
+---
+
+import Preview from '../../../components/Preview.astro'
+import Contact from '../../../../../registry/sections/Contact/Contact.astro'
+import { contactDetails } from '../../../components/demo-data'
+
+<Preview block code={`<Contact heading="Get in touch" details={[{ icon: 'mail' | 'phone' | 'map-pin', label, value, href? }, …]} action="/api/contact" method="post" />`}>
+  <Contact eyebrow="Contact" heading="Get in touch" description="We answer within a working day." details={contactDetails} action="#" spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | `heading` required. |
+| `details` | `{ icon, label, value, href? }[]` | `[]` | content | Shown in `form-details`. Icons: `mail`, `phone`, `map-pin`. |
+| `action`, `method` | `string`, `'get' \| 'post'` | —, `'post'` | content | Passed to the `form`. |
+| `submitLabel` | `string` | `'Send message'` | content | |
+| `labels` | `{ name?, email?, message? }` | English | content | Field labels. |
+| `layout` | `'form-details' \| 'form-only'` | `'form-details'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<Contact layout="form-only" heading="Say hello" action="#" />`}>
+  <Contact layout="form-only" heading="Say hello" description="Name, email and a message." action="#" spacing="medium" background="neutral-faded" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Plain HTML form: labelled fields, `required` validation, submits without JS.
+- Detail values with `href` are links; icons are decorative.

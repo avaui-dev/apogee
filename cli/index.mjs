@@ -1,14 +1,15 @@
 #!/usr/bin/env node
-// Apogee CLI — copy components into your project (shadcn/Starwind model).
+// Apogee CLI — copy components into your project (copy-in model).
 //   apogee init            scaffold tokens + config
 //   apogee add <names...>  copy components (+ their deps)
 //   apogee list            list available components
 // Dependency-free: Node built-ins only.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve, join } from 'node:path'
 import { parseArgs } from 'node:util'
+import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom } from './lib.mjs'
 
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const registryDir = join(pkgRoot, 'registry')
@@ -32,37 +33,17 @@ const die = (msg) => {
 
 const readConfig = () => {
   const p = join(process.cwd(), CONFIG)
-  if (existsSync(p)) return { ...DEFAULTS, ...JSON.parse(readFileSync(p, 'utf8')) }
-  return null
-}
-
-// Match user input (case / hyphen insensitive) to a canonical component name.
-const canonical = (input) => {
-  const norm = (s) => s.replace(/-/g, '').toLowerCase()
-  const target = norm(input)
-  return Object.keys(index.components).find((k) => norm(k) === target)
-}
-
-// Resolve a component + all its registry dependencies (transitive).
-const resolveDeps = (names) => {
-  const out = new Set()
-  const visit = (name) => {
-    if (out.has(name)) return
-    out.add(name)
-    for (const dep of index.components[name].registryDependencies) visit(dep)
+  if (!existsSync(p)) return null
+  try {
+    return { ...DEFAULTS, ...JSON.parse(readFileSync(p, 'utf8')) }
+  } catch (err) {
+    die(`${CONFIG} is not valid JSON: ${err.message}`)
   }
-  for (const n of names) visit(n)
-  return [...out]
 }
 
-const copyInto = (relFile, destRoot, overwrite) => {
-  const src = join(registryDir, 'components', relFile)
-  const dest = join(destRoot, relFile)
-  if (existsSync(dest) && !overwrite) return 'skip'
-  mkdirSync(dirname(dest), { recursive: true })
-  writeFileSync(dest, readFileSync(src, 'utf8'))
-  return existsSync(dest) ? 'ok' : 'ok'
-}
+const canonical = (input) => canonicalIn(index, input)
+const resolveDeps = (names) => resolveDepsIn(index, names)
+const copyInto = (relFile, destRoot, overwrite) => copyIntoFrom(registryDir, relFile, destRoot, overwrite)
 
 // --- commands ---
 function cmdInit(opts) {
@@ -143,7 +124,9 @@ function cmdAdd(names, opts) {
 }
 
 function cmdList() {
-  const names = Object.keys(index.components).sort()
+  const sections = Object.keys(index.components).filter((n) => index.components[n].kind === 'section').sort()
+  const names = Object.keys(index.components).filter((n) => index.components[n].kind !== 'section').sort()
+  if (sections.length) say(bold(`${sections.length} sections:`) + '\n  ' + sections.join('  ') + '\n')
   say(bold(`${names.length} components:\n`))
   const width = Math.max(...names.map((n) => n.length)) + 2
   let line = ''

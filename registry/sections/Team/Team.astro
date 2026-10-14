@@ -1,0 +1,79 @@
+---
+/**
+ * Team — people as a grid of cards or a list with bios.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import Link from '../../components/Link/Link.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Align, Background, Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ eyebrow?: string
+  /** @category content */ heading?: string
+  /** @category content */ description?: string
+  /** Landmark name when there is no heading. @category content */ label?: string
+  /** People. @shape { name: string, role: string, avatar?: string, bio?: string, links?: { label: string, href: string }[] } @category content */
+  items: { name: string; role: string; avatar?: string; bio?: string; links?: { label: string; href: string }[] }[]
+  /** @category layout */ layout?: 'grid' | 'list'
+  /** @category layout */ align?: Align
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { eyebrow, heading, description, label, items, layout = 'grid', align = 'start', background = 'page', spacing = 'large', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'team')
+const headingId = `${id}-heading`
+const solid = background === 'primary' || background === 'inverted'
+const faded = solid ? 'opacity-85' : 'text-neutral-faded'
+const linkColor = solid ? 'inherit' : 'primary'
+---
+
+<Section as="section" id={id} aria-labelledby={heading ? headingId : undefined} aria-label={heading ? undefined : label ?? 'Team'} background={background} spacing={spacing} class={className} {...rest}>
+  {heading && <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={align} background={background} class="mb-12" />}
+  {layout === 'grid' ? (
+    <Grid cols={{ base: 2, sm: 3, lg: 4 }} gap={8}>
+      {items.map((p) => (
+        <div class:list={['flex flex-col gap-3', align === 'center' && 'items-center text-center']}>
+          <Avatar src={p.avatar} name={p.name} size="large" class="size-20! text-2xl!" />
+          <div class="flex flex-col">
+            <span class="font-medium">{p.name}</span>
+            <span class:list={['text-sm', faded]}>{p.role}</span>
+          </div>
+          {p.links && (
+            <ul class="flex flex-wrap gap-3 text-sm">
+              {p.links.map((l) => <li><Link href={l.href} color={linkColor} underline="hover">{l.label}</Link></li>)}
+            </ul>
+          )}
+        </div>
+      ))}
+    </Grid>
+  ) : (
+    <ul class="flex max-w-3xl flex-col divide-y divide-neutral">
+      {items.map((p) => (
+        <li class="flex gap-5 py-6 first:pt-0 last:pb-0">
+          <Avatar src={p.avatar} name={p.name} size="large" class="shrink-0" />
+          <div class="flex flex-col gap-1">
+            <span class="font-medium">{p.name}</span>
+            <span class:list={['text-sm', faded]}>{p.role}</span>
+            {p.bio && <p class="mt-1 text-sm">{p.bio}</p>}
+            {p.links && (
+              <ul class="mt-1 flex flex-wrap gap-3 text-sm">
+                {p.links.map((l) => <li><Link href={l.href} color={linkColor} underline="hover">{l.label}</Link></li>)}
+              </ul>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</Section>

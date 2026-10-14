@@ -1,0 +1,83 @@
+---
+title: SectionHeader
+description: Eyebrow, heading and description at the top of a section, with the level, alignment and colours every section shares.
+group: Components
+order: 0
+---
+
+import Preview from '../../components/Preview.astro'
+import SectionHeader from '../../../../registry/components/SectionHeader/SectionHeader.astro'
+import Section from '../../../../registry/components/Section/Section.astro'
+
+<Preview block code={`<SectionHeader eyebrow="Features" heading="Everything a page needs" description="Composable sections built from the same tokens as every component." />`}>
+  <SectionHeader eyebrow="Features" heading="Everything a page needs" description="Composable sections built from the same tokens as every component." />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add section-header
+```
+
+Depends on `Eyebrow`, `Heading`, `Text`.
+
+## Usage
+
+```astro
+---
+import SectionHeader from '@/components/apogee/SectionHeader/SectionHeader.astro'
+---
+<section aria-labelledby="pricing-heading">
+  <SectionHeader id="pricing-heading" eyebrow="Pricing" heading="Simple plans" align="center" />
+</section>
+```
+
+## API
+
+`@composable`. Any other native attribute passes through to the wrapper.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `eyebrow` | `string` | — | Small label above the heading. |
+| `heading` | `string` | — | Required. |
+| `description` | `string` | — | One or two sentences under the heading. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4` | `2` | Semantic level of the heading element. |
+| `align` | `'start' \| 'center'` | `'start'` | Alignment; `center` also centres the block. |
+| `background` | `'page' \| 'neutral-faded' \| 'primary-faded' \| 'primary' \| 'inverted'` | `'page'` | The surrounding section's background, so eyebrow and description colours stay readable. |
+| `size` | `'medium' \| 'large'` | `'medium'` | `large` uses the display size (Hero). |
+| `id` | `string` | — | Id on the heading for `aria-labelledby`. |
+| `class` | `string` | — | Extra classes on the wrapper. |
+
+## Variants
+
+<Preview block code={`<SectionHeader heading="Start aligned" description="…" />
+<SectionHeader heading="Centred" description="…" align="center" />
+<SectionHeader heading="Large" size="large" headingLevel={1} description="…" />`}>
+  <SectionHeader eyebrow="Eyebrow" heading="Start aligned" description="The default. Text wraps at a comfortable measure." />
+  <SectionHeader eyebrow="Eyebrow" heading="Centred" description="Centred text and a centred block." align="center" />
+  <SectionHeader eyebrow="Eyebrow" heading="Large, level one" size="large" headingLevel={1} description="Hero size." />
+</Preview>
+
+On each section background:
+
+<Preview block code={`<Section background="primary"><SectionHeader background="primary" … /></Section>`}>
+  <Section background="neutral-faded" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Neutral faded" heading="Readable on a tint" description="Eyebrow stays primary." background="neutral-faded" /></Section>
+  <Section background="primary-faded" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Primary faded" heading="Readable on the brand tint" description="Eyebrow stays primary." background="primary-faded" /></Section>
+  <Section background="primary" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Primary" heading="On the brand fill" description="Everything inherits the on-colour." background="primary" /></Section>
+  <Section background="inverted" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Inverted" heading="On the inverted surface" description="Everything inherits the on-colour." background="inverted" /></Section>
+</Preview>
+
+## Accessibility
+
+- The heading is a real `h1`–`h4`; keep the page's heading order and point the section's `aria-labelledby` at `id`.
+- Colours per `background` keep AA in both themes; solid fills inherit the on-colour.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-primary` | Eyebrow on page and tinted backgrounds |
+| `--foreground-neutral-faded` | Description on page and tinted backgrounds |
+| `--on-primary`, `--on-inverted` | Everything on the solid fills (inherited) |
+
+Layout primitive, so no content rules.

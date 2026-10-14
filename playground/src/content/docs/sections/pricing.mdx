@@ -1,0 +1,50 @@
+---
+title: Pricing
+description: Plan tiers side by side, with an optional monthly / annual switch.
+group: Sections
+order: 10
+---
+
+import Preview from '../../../components/Preview.astro'
+import JsNote from '../../../components/JsNote.astro'
+import Pricing from '../../../../../registry/sections/Pricing/Pricing.astro'
+import { plans } from '../../../components/demo-data'
+
+<JsNote fallback="The switch is hidden and the monthly prices show.">
+  With `layout="tiers-toggle"` a small island listens to the billing switch and swaps the visible price in each tier; it dispatches `apogee:pricing-change` (`detail: { period }`).
+</JsNote>
+
+<Preview block code={`<Pricing heading="Simple pricing" layout="tiers-toggle" items={[{ name, price, annualPrice, period, description, features, action, featured? }, …]} />`}>
+  <Pricing eyebrow="Pricing" heading="Simple pricing" description="Three plans, no surprises." layout="tiers-toggle" items={plans} spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pricing
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Optional header. |
+| `items` | `{ name, price, annualPrice?, period?, description, features: string[], action: { label, href }, featured?, badge? }[]` | — | content | Required. `featured` gets the primary border, button and a "Popular" badge (`badge` overrides the text). |
+| `periods` | `{ monthly, annual }` | `Monthly` / `Annual` | content | Labels on the switch. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `periodLabel` | `string` | `'Billing period'` | content | Name of the billing switch. |
+| `layout` | `'tiers' \| 'tiers-toggle'` | `'tiers'` | layout | |
+| `align` | `'start' \| 'center'` | `'center'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<Pricing layout="tiers" items={…} />
+<Pricing background="inverted" items={…} />`}>
+  <Pricing heading="Without the switch" items={plans} spacing="medium" />
+  <Pricing background="inverted" heading="On the inverted surface" items={plans} spacing="medium" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- The switch is a native radio group labelled "Billing period"; prices use tabular figures; each plan's name is a heading one level below the section heading.

@@ -1,0 +1,78 @@
+---
+/**
+ * FooterSection — a ready site footer on top of `Footer`: link columns or a
+ * single row, a copyright line and social links.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Mail, Globe, Rss, AtSign, Share2, MessageCircle } from '@lucide/astro'
+import Footer from '../../components/Footer/Footer.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import Link from '../../components/Link/Link.astro'
+
+// ponytail: the icon set ships no brand glyphs; for brand marks use the `social` slot with your own SVG links.
+const icons = { mail: Mail, globe: Globe, rss: Rss, 'at-sign': AtSign, share: Share2, message: MessageCircle } as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'footer'> {
+  /** Link groups (`columns`) or one flat row of links (`simple`, the first column's links). @shape { heading: string, links: { label: string, href: string }[] }[] @category content */
+  columns?: { heading: string; links: { label: string; href: string }[] }[]
+  /** @category content */ copyright?: string
+  /** Icon links on the bottom row; or fill the `social` slot with your own brand SVG links. @shape { label: string, href: string, icon: 'mail'|'globe'|'rss'|'at-sign'|'share'|'message' }[] @category content */
+  social?: { label: string; href: string; icon: keyof typeof icons }[]
+  /** Name of the link nav in `simple`. @category content */ navLabel?: string
+  /** @category layout */ layout?: 'simple' | 'columns'
+  class?: string
+}
+
+const { columns = [], copyright, social = [], navLabel = 'Footer', layout = 'columns', class: className, ...rest } = Astro.props
+const hasBrand = Astro.slots.has('brand')
+const hasSocial = Astro.slots.has('social')
+const flat = columns.flatMap((c) => c.links)
+---
+
+<Footer class={className} {...rest}>
+  {layout === 'columns' ? (
+    <Grid cols={{ base: 2, md: 4 }} gap={8}>
+      {hasBrand && <div class="col-span-2 md:col-span-1"><slot name="brand" /></div>}
+      {columns.map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="mb-3 text-sm font-semibold">{c.heading}</p>
+          <ul class="flex flex-col gap-2 text-sm">
+            {c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}
+          </ul>
+        </nav>
+      ))}
+    </Grid>
+  ) : (
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+      {hasBrand && <slot name="brand" />}
+      {flat.length > 0 && (
+        <nav aria-label={navLabel}>
+          <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            {flat.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}
+          </ul>
+        </nav>
+      )}
+    </div>
+  )}
+  <Fragment slot="bottom">
+    {copyright && <p>{copyright}</p>}
+    {hasSocial && <div class="flex gap-1"><slot name="social" /></div>}
+    {!hasSocial && social.length > 0 && (
+      <ul class="flex gap-1">
+        {social.map((s) => {
+          const Icon = icons[s.icon]
+          return (
+            <li>
+              <a href={s.href} aria-label={s.label} class="inline-flex size-10 items-center justify-center rounded-md text-neutral-faded transition-colors duration-fast hover:bg-neutral-faded hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                <Icon class="size-5" aria-hidden="true" />
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    )}
+  </Fragment>
+</Footer>

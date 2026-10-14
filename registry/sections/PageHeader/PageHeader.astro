@@ -1,0 +1,53 @@
+---
+/**
+ * PageHeader — the top of an application page: breadcrumbs, title,
+ * description, actions and an optional row of tab links.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'header'>, 'id'> {
+  /** @shape { label: string, href?: string }[] @category content */ breadcrumbs?: { label: string; href?: string }[]
+  /** @category content */ heading: string
+  /** @category content */ description?: string
+  /** Tab links under the title (`with-tabs`). @shape { label: string, href: string, active?: boolean }[] @category content */ tabs?: { label: string; href: string; active?: boolean }[]
+  /** Name of the tabs nav. @category content */ tabsLabel?: string
+  /** @category layout */ layout?: 'simple' | 'with-actions' | 'with-tabs'
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { breadcrumbs, heading, description, tabs = [], tabsLabel = 'Page sections', layout = 'simple', spacing = 'small', headingLevel = 1, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'page-header')
+const headingId = `${id}-heading`
+const hasActions = layout === 'with-actions' && Astro.slots.has('actions')
+---
+
+<Section as="header" id={id} aria-labelledby={headingId} spacing={spacing} class:list={['border-b border-neutral', className]} {...rest}>
+  <div class="flex flex-col gap-4">
+    {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div class="flex flex-col gap-1">
+        <Heading as={`h${headingLevel}` as 'h1' | 'h2' | 'h3' | 'h4'} size="h3" id={headingId}>{heading}</Heading>
+        {description && <p class="text-neutral-faded">{description}</p>}
+      </div>
+      {hasActions && <div class="flex shrink-0 flex-wrap gap-2"><slot name="actions" /></div>}
+    </div>
+    {layout === 'with-tabs' && tabs.length > 0 && (
+      <nav aria-label={tabsLabel} class="-mb-px flex gap-6 overflow-x-auto">
+        {tabs.map((t) => (
+          <a href={t.href} aria-current={t.active ? 'page' : undefined} class:list={['-mb-px border-b-2 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary', t.active ? 'border-primary text-primary' : 'border-transparent text-neutral-faded hover:border-neutral hover:text-neutral']}>{t.label}</a>
+        ))}
+      </nav>
+    )}
+  </div>
+</Section>

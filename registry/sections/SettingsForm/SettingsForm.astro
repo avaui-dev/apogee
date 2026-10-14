@@ -1,0 +1,85 @@
+---
+/**
+ * SettingsForm — groups of fields described by data, rendered as one plain
+ * HTML form. Pass `action` and `method`; it posts without JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Input from '../../components/Input/Input.astro'
+import Select from '../../components/Select/Select.astro'
+import Switch from '../../components/Switch/Switch.astro'
+import Textarea from '../../components/Textarea/Textarea.astro'
+import Button from '../../components/Button/Button.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Spacing } from '../_shared/spine.ts'
+
+type FieldDescriptor = {
+  kind: 'input' | 'select' | 'switch' | 'textarea'
+  name: string
+  label: string
+  hint?: string
+  /** For `select`. */
+  options?: { label: string; value: string }[]
+  /** Initial value; for `switch`, `'on'` means checked. */
+  value?: string
+  required?: boolean
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'date'
+}
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @shape { heading: string, description?: string, fields: { kind: 'input'|'select'|'switch'|'textarea', name, label, hint?, options?, value?, required?, type? }[] }[] @category content */
+  groups: { heading: string; description?: string; fields: FieldDescriptor[] }[]
+  /** Landmark name. @category content */ label?: string
+  /** @category content */ action?: string
+  /** @category content */ method?: 'get' | 'post'
+  /** @category content */ submitLabel?: string
+  /** Shows a reset button with this label. @category content */ cancelLabel?: string
+  /** @category layout */ layout?: 'stacked' | 'two-column'
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { groups, label = 'Settings', action, method = 'post', submitLabel = 'Save changes', cancelLabel, layout = 'stacked', spacing = 'small', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'settings')
+const two = layout === 'two-column'
+const tag = `h${headingLevel}` as 'h2' | 'h3' | 'h4'
+---
+
+<Section as="section" id={id} aria-label={label} spacing={spacing} class={className} {...rest}>
+  <form action={action} method={method} class="flex flex-col divide-y divide-neutral">
+    {groups.map((g, gi) => {
+      const gid = `${id}-g${gi}`
+      return (
+        <fieldset aria-labelledby={gid} class:list={['py-8 first:pt-0', two ? 'grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]' : 'flex flex-col gap-6']}>
+          <div class="flex flex-col gap-1">
+            <Heading as={tag} size="h5" id={gid}>{g.heading}</Heading>
+            {g.description && <p class="text-sm text-neutral-faded">{g.description}</p>}
+          </div>
+          <div class="flex max-w-xl flex-col gap-5">
+            {g.fields.map((f) => {
+              const fid = `${id}-${f.name}`
+              if (f.kind === 'select') return (
+                <Select id={fid} name={f.name} label={f.label} hint={f.hint} required={f.required}>
+                  {(f.options ?? []).map((o) => <option value={o.value} selected={o.value === f.value}>{o.label}</option>)}
+                </Select>
+              )
+              if (f.kind === 'switch') return <Switch id={fid} name={f.name} label={f.label} checked={f.value === 'on'} />
+              if (f.kind === 'textarea') return <Textarea id={fid} name={f.name} label={f.label} hint={f.hint} required={f.required} value={f.value} rows={4} />
+              return <Input id={fid} name={f.name} label={f.label} hint={f.hint} required={f.required} value={f.value} type={f.type ?? 'text'} />
+            })}
+          </div>
+        </fieldset>
+      )
+    })}
+    <div class="flex flex-wrap justify-end gap-3 pt-6">
+      {cancelLabel && <Button type="reset" variant="outline" color="neutral">{cancelLabel}</Button>}
+      <Button type="submit">{submitLabel}</Button>
+    </div>
+  </form>
+</Section>

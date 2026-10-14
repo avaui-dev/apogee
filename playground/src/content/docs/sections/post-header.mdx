@@ -1,0 +1,47 @@
+---
+title: Post header
+description: The top of an article; category, title, byline, date, reading time, cover image.
+group: Sections
+order: 12
+---
+
+import Preview from '../../../components/Preview.astro'
+import PostHeader from '../../../../../registry/sections/PostHeader/PostHeader.astro'
+import { picture } from '../../../components/demo-data'
+
+export const author = { name: 'Ada Lovelace', role: 'Head of Design', avatar: 'https://i.pravatar.cc/64?img=5' }
+
+<Preview block code={`<PostHeader eyebrow="Engineering" heading="Zero JavaScript until it earns its place" author={{ name, avatar?, role? }} date="2026-09-18" readingTime="6 min read" media={{ src, alt }} />`}>
+  <PostHeader eyebrow="Engineering" heading="Zero JavaScript until it earns its place" description="Why every section renders without a runtime, and what the islands are for." author={author} date="2026-09-18" readingTime="6 min read" media={picture('post-hero', 1600, 900)} headingLevel={2} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add post-header
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow` | `string` | — | content | Category or kicker. |
+| `heading` | `string` | — | content | Required. |
+| `description` | `string` | — | content | Standfirst. |
+| `author` | `{ name, avatar?, role? }` | — | content | |
+| `date` | `string` | — | content | Required ISO date. |
+| `readingTime` | `string` | — | content | Free text, e.g. "6 min read". |
+| `media` | `{ src, alt, width?, height? }` | — | content | Cover image. |
+| `locale` | `string` | page locale or `'en'` | content | Date formatting locale. |
+| `layout` | `'centered' \| 'split'` | `'centered'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | `headingLevel` is `1` | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<PostHeader layout="split" … />`}>
+  <PostHeader layout="split" eyebrow="Design" heading="Designing sections that editors can fill" author={author} date="2026-10-02" readingTime="4 min read" media={picture('post-split', 1200, 900)} headingLevel={2} background="neutral-faded" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Renders a `header` labelled by the title; the default heading level is 1, one per page.

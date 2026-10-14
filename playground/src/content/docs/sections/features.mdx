@@ -1,0 +1,50 @@
+---
+title: Features
+description: Benefits as a 3-up icon grid, alternating rows with media, or a list.
+group: Sections
+order: 3
+---
+
+import Preview from '../../../components/Preview.astro'
+import Features from '../../../../../registry/sections/Features/Features.astro'
+import { features, picture } from '../../../components/demo-data'
+
+<Preview block code={`<Features eyebrow="Why Apogee" heading="Built for real pages" items={[{ icon, title, description, href? }, …]} />`}>
+  <Features eyebrow="Why Apogee" heading="Built for real pages" description="Six reasons, three columns on desktop, one on phones." items={features} spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add features
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Section header (heading optional). |
+| `items` | `{ icon?, title, description, href?, media? }[]` | — | content | Required. `icon` is one of `check zap shield globe sparkles layers lock rocket gauge heart`; `media` is used by `alternating`. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `linkLabel` | `string` | `'Learn more'` | content | Item link text; an item's own `linkLabel` wins. |
+| `layout` | `'grid' \| 'alternating' \| 'list'` | `'grid'` | layout | |
+| `align` | `'start' \| 'center'` | `'start'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. Item titles sit one level below `headingLevel`. |
+
+## Layouts
+
+<Preview block code={`<Features layout="alternating" items={[{ title, description, media: { src, alt } }, …]} />`}>
+  <Features layout="alternating" heading="Alternating rows" items={[{ ...features[0], media: picture('feat-1') }, { ...features[1], media: picture('feat-2') }, { ...features[2], media: picture('feat-3') }]} spacing="medium" />
+</Preview>
+
+<Preview block code={`<Features layout="list" items={…} />
+<Features align="center" background="neutral-faded" items={…} />`}>
+  <Features layout="list" heading="As a list" items={features.slice(0, 4)} spacing="medium" />
+  <Features align="center" background="neutral-faded" heading="Centred on a tint" items={features.slice(0, 3)} spacing="medium" class="rounded-xl" />
+  <Features background="primary" heading="On the brand fill" items={features.slice(0, 3)} spacing="medium" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Item titles are headings one level below the section heading, so the outline stays in order.
+- Icons are decorative (`aria-hidden`); meaning is in the title.

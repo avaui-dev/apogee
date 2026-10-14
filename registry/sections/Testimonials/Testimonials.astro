@@ -1,0 +1,77 @@
+---
+/**
+ * Testimonials — one featured quote, or a grid of quote cards, with the
+ * person's name, role and avatar.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Align, Background, Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ eyebrow?: string
+  /** @category content */ heading?: string
+  /** @category content */ description?: string
+  /** Landmark name when there is no heading. @category content */ label?: string
+  /** Quotes. @shape { quote: string, name: string, role?: string, avatar?: string } @category content */
+  items: { quote: string; name: string; role?: string; avatar?: string }[]
+  /** @category layout */ layout?: 'single' | 'grid'
+  /** @category layout */ align?: Align
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const { eyebrow, heading, description, label, items, layout = 'single', align = 'center', background = 'page', spacing = 'large', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'quotes')
+const headingId = `${id}-heading`
+const solid = background === 'primary' || background === 'inverted'
+const faded = solid ? 'opacity-85' : 'text-neutral-faded'
+const card = solid ? 'rounded-lg bg-page/10 p-6' : 'rounded-lg border border-neutral bg-elevation-raised p-6'
+const shown = layout === 'single' ? items.slice(0, 1) : items
+---
+
+<Section as="section" id={id} aria-labelledby={heading ? headingId : undefined} aria-label={heading ? undefined : label ?? 'Testimonials'} background={background} spacing={spacing} class={className} {...rest}>
+  {heading && <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={align} background={background} class="mb-12" />}
+  {layout === 'single' ? (
+    shown.map((t) => (
+      <figure class:list={['mx-auto flex max-w-3xl flex-col gap-6', align === 'center' && 'items-center text-center']}>
+        <blockquote class="font-serif text-2xl leading-snug text-balance italic sm:text-3xl">
+          <p>“{t.quote}”</p>
+        </blockquote>
+        <figcaption class="flex items-center gap-3 text-sm">
+          <Avatar src={t.avatar} name={t.name} size="medium" />
+          <span class="flex flex-col text-start">
+            <span class="font-medium">{t.name}</span>
+            {t.role && <span class={faded}>{t.role}</span>}
+          </span>
+        </figcaption>
+      </figure>
+    ))
+  ) : (
+    <Grid cols={{ base: 1, md: 2, lg: Math.min(shown.length, 3) as 1 | 2 | 3 }} gap={6}>
+      {shown.map((t) => (
+        <figure class:list={['flex flex-col justify-between gap-6', card]}>
+          <blockquote class="font-serif text-lg leading-relaxed">
+            <p>“{t.quote}”</p>
+          </blockquote>
+          <figcaption class="flex items-center gap-3 text-sm">
+            <Avatar src={t.avatar} name={t.name} size="small" />
+            <span class="flex flex-col">
+              <span class="font-medium">{t.name}</span>
+              {t.role && <span class={faded}>{t.role}</span>}
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </Grid>
+  )}
+</Section>

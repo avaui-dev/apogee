@@ -1,0 +1,37 @@
+---
+title: Not found
+description: The 404 page body; a status code, heading, description and a way back.
+group: Sections
+order: 14
+---
+
+import Preview from '../../../components/Preview.astro'
+import NotFound from '../../../../../registry/sections/NotFound/NotFound.astro'
+
+<Preview block code={`<NotFound />
+<NotFound code="500" heading="Something broke" description="…" primaryAction={{ label: 'Try again', href: '/' }} secondaryAction={{ label: 'Status page', href: '#' }} />`}>
+  <NotFound spacing="medium" headingLevel={2} />
+  <NotFound code="500" heading="Something broke" description="We have been notified and are on it." primaryAction={{ label: 'Try again', href: '#' }} secondaryAction={{ label: 'Status page', href: '#' }} spacing="medium" headingLevel={2} background="inverted" class="rounded-xl" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `code` | `string` | `'404'` | content | |
+| `heading` | `string` | `'Page not found'` | content | |
+| `description` | `string` | a default line | content | |
+| `primaryAction` | `{ label, href }` | Go home → `/` | content | |
+| `secondaryAction` | `{ label, href }` | — | content | |
+| `layout` | `'centered'` | `'centered'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | `headingLevel` is `1` | layout | As on every section. |
+
+## Accessibility
+
+- The heading is the page's `h1` by default; the code is a plain paragraph so screen readers hear the heading first.

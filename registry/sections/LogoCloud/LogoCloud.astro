@@ -1,0 +1,50 @@
+---
+/**
+ * LogoCloud — a row or grid of customer and partner logos, optionally with a
+ * short heading.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Background, Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ heading?: string
+  /** Landmark name when there is no heading. @category content */ label?: string
+  /** Logos. @shape { src: string, alt: string, href?: string } @category content */ items: { src: string; alt: string; href?: string }[]
+  /** @category layout */ layout?: 'row' | 'grid'
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  id?: string
+  class?: string
+}
+
+const { heading, label, items, layout = 'row', background = 'page', spacing = 'small', id: idProp, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'logos')
+const headingId = `${id}-heading`
+const mono = background === 'primary' || background === 'inverted' ? 'brightness-0 invert' : ''
+---
+
+<Section as="section" id={id} aria-labelledby={heading ? headingId : undefined} aria-label={heading ? undefined : label ?? 'Partners'} background={background} spacing={spacing} class={className} {...rest}>
+  {heading && <p id={headingId} class="mb-8 text-center text-sm font-medium opacity-80">{heading}</p>}
+  <ul
+    class:list={[
+      layout === 'row' ? 'flex flex-wrap items-center justify-center gap-x-12 gap-y-8' : 'grid grid-cols-2 items-center justify-items-center gap-8 sm:grid-cols-3 lg:grid-cols-6',
+    ]}
+  >
+    {items.map((logo) => (
+      <li class="shrink-0">
+        {logo.href ? (
+          <a href={logo.href} class="block rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+            <img src={logo.src} alt={logo.alt} height="32" class:list={['h-8 w-auto', mono]} loading="lazy" decoding="async" />
+          </a>
+        ) : (
+          <img src={logo.src} alt={logo.alt} height="32" class:list={['h-8 w-auto opacity-70', mono]} loading="lazy" decoding="async" />
+        )}
+      </li>
+    ))}
+  </ul>
+</Section>

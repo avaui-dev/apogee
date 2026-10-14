@@ -1,0 +1,80 @@
+---
+title: Hero
+description: The opening section — eyebrow, heading, description, actions and optional media, in three layouts.
+group: Sections
+order: 1
+---
+
+import Preview from '../../../components/Preview.astro'
+import Hero from '../../../../../registry/sections/Hero/Hero.astro'
+import { picture } from '../../../components/demo-data'
+
+<Preview block code={`<Hero
+  eyebrow="Design system"
+  heading="Pages that are fast, accessible and yours"
+  description="Composable sections built from the same primitives as every component."
+  primaryAction={{ label: 'Get started', href: '#' }}
+  secondaryAction={{ label: 'Read the docs', href: '#' }}
+/>`}>
+  <Hero eyebrow="Design system" heading="Pages that are fast, accessible and yours" description="Composable sections built from the same primitives as every component." primaryAction={{ label: 'Get started', href: '#' }} secondaryAction={{ label: 'Read the docs', href: '#' }} headingLevel={2} spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add hero
+```
+
+Copies to `sections/Hero/` and pulls in Section, SectionHeader, Button, Grid, Image and utils.
+
+## API
+
+`@composable`. Every section wraps `Section` + `Container`, is a labelled landmark, and reads only tokens.
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow` | `string` | — | content | Small label above the heading. |
+| `heading` | `string` | — | content | Required. |
+| `description` | `string` | — | content | Supporting copy. |
+| `primaryAction` | `{ label, href }` | — | content | Solid button. |
+| `secondaryAction` | `{ label, href }` | — | content | Outline button. |
+| `media` | `{ src, alt, width?, height? }` | — | content | Image beside (`split`) or below (`stacked`) the text. Or use the `media` slot. |
+| `layout` | `'centered' \| 'split' \| 'stacked'` | `'centered'` | layout | Composition. |
+| `align` | `'start' \| 'center'` | by layout | layout | Text alignment; `centered` defaults to `center`. |
+| `background` | `'page' \| 'neutral-faded' \| 'primary-faded' \| 'primary' \| 'inverted'` | `'page'` | layout | Surface token. |
+| `spacing` | `'small' \| 'medium' \| 'large'` | `'large'` | layout | Vertical rhythm. |
+| `headingLevel` | `1 \| 2 \| 3 \| 4` | `1` | layout | Heading element. |
+| `id` | `string` | auto | layout | Section id; the heading gets `{id}-heading`. |
+
+## Layouts
+
+<Preview block code={`<Hero layout="split" media={{ src, alt }} … />`}>
+  <Hero layout="split" eyebrow="Split" heading="Text beside the picture" description="Media on the end side; stacks below the text on phones." primaryAction={{ label: 'Start', href: '#' }} media={picture('hero-split')} headingLevel={2} spacing="medium" />
+</Preview>
+
+<Preview block code={`<Hero layout="stacked" media={{ src, alt }} … />`}>
+  <Hero layout="stacked" eyebrow="Stacked" heading="Text above a wide picture" description="A product shot or screenshot under the message." primaryAction={{ label: 'Start', href: '#' }} secondaryAction={{ label: 'Learn more', href: '#' }} media={picture('hero-stacked', 1600, 900)} headingLevel={2} spacing="medium" />
+</Preview>
+
+## Backgrounds
+
+<Preview block code={`<Hero background="primary" … />
+<Hero background="inverted" … />
+<Hero background="primary-faded" … />`}>
+  <Hero background="primary" eyebrow="Primary" heading="On the brand fill" description="Buttons switch to neutral so they stay readable." primaryAction={{ label: 'Start', href: '#' }} secondaryAction={{ label: 'Docs', href: '#' }} headingLevel={2} spacing="small" class="rounded-xl" />
+  <Hero background="inverted" eyebrow="Inverted" heading="On the inverted surface" description="Same rule." primaryAction={{ label: 'Start', href: '#' }} headingLevel={2} spacing="small" class="rounded-xl" />
+  <Hero background="primary-faded" align="start" layout="stacked" eyebrow="Primary faded" heading="Start aligned on a tint" primaryAction={{ label: 'Start', href: '#' }} headingLevel={2} spacing="small" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- A `section` labelled by its heading; `headingLevel` defaults to `1`, so use one Hero per page or lower the level.
+- Actions are real links styled as buttons; media gets the `alt` you pass.
+
+## Tokens
+
+Reads the Section background tokens and the on-colours; see [SectionHeader](/docs/section-header).
+
+## Content
+
+- One idea in the heading, one sentence of support, at most two actions.

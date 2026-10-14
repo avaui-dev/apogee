@@ -1,0 +1,103 @@
+---
+/**
+ * Pricing — plan tiers side by side. `tiers-toggle` adds a monthly / annual
+ * switch: both prices render, a small island swaps them; without JS the
+ * monthly prices show and the switch is hidden.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Check } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
+import { uid } from '../../components/utils/uid.ts'
+import { onBackground, type Action, type Align, type Background, type Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ eyebrow?: string
+  /** @category content */ heading?: string
+  /** @category content */ description?: string
+  /** Landmark name when there is no heading. @category content */ label?: string
+  /** Name of the billing switch. @category content */ periodLabel?: string
+  /** Plans. @shape { name, price, annualPrice?, period?, description, features: string[], action: { label, href }, featured?: boolean, badge?: string } @category content */
+  items: { name: string; price: string; annualPrice?: string; period?: string; description: string; features: string[]; action: Action; featured?: boolean; badge?: string }[]
+  /** @category layout */ layout?: 'tiers' | 'tiers-toggle'
+  /** Labels for the toggle. @category content */ periods?: { monthly: string; annual: string }
+  /** @category layout */ align?: Align
+  /** @category layout */ background?: Background
+  /** @category layout */ spacing?: Spacing
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const {
+  eyebrow, heading, description, label, items, layout = 'tiers', periods = { monthly: 'Monthly', annual: 'Annual' }, periodLabel = 'Billing period',
+  align = 'center', background = 'page', spacing = 'large', headingLevel = 2, id: idProp, class: className, ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals, 'pricing')
+const headingId = `${id}-heading`
+const solid = background === 'primary' || background === 'inverted'
+const faded = solid ? 'opacity-85' : 'text-neutral-faded'
+const toggle = layout === 'tiers-toggle'
+const cols = Math.min(Math.max(items.length, 1), 4) as 1 | 2 | 3 | 4
+const nameAs = `h${heading ? Math.min(headingLevel + 1, 6) : headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5'
+---
+
+<Section as="section" id={id} aria-labelledby={heading ? headingId : undefined} aria-label={heading ? undefined : label ?? 'Pricing'} background={background} spacing={spacing} class={className} {...rest} data-apogee-pricing={toggle ? '' : undefined}>
+  {heading && <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={align} background={background} class="mb-8" />}
+  {toggle && (
+    <div class:list={['mb-10 flex no-js:hidden', align === 'center' ? 'justify-center' : 'justify-start']}>
+      <SegmentedControl name={`${id}-period`} options={[{ label: periods.monthly, value: 'monthly' }, { label: periods.annual, value: 'annual' }]} value="monthly" aria-label={periodLabel} class="apogee-pricing-toggle" />
+    </div>
+  )}
+  <Grid cols={{ base: 1, md: cols === 1 ? 1 : 2, lg: cols }} gap={6} align="stretch">
+    {items.map((plan) => {
+      const featured = Boolean(plan.featured)
+      const { class: actionClass, ...action } = featured ? { variant: 'solid' as const, color: 'primary' as const, class: undefined } : solid ? onBackground[background].secondary : { variant: 'outline' as const, color: 'neutral' as const, class: undefined }
+      const card = solid
+        ? featured ? 'bg-page text-neutral' : 'bg-page/10'
+        : featured ? 'border-primary bg-elevation-raised shadow-raised' : 'border-neutral bg-elevation-raised'
+      return (
+        <div class:list={['relative flex flex-col gap-6 rounded-xl border p-6', solid ? 'border-transparent' : '', card]}>
+          {(plan.badge || featured) && <Badge color="primary" variant="solid" rounded class="absolute -top-3 start-6">{plan.badge ?? 'Popular'}</Badge>}
+          <div class="flex flex-col gap-1">
+            <Heading as={nameAs} size="h5">{plan.name}</Heading>
+            <p class:list={['text-sm', featured && solid ? 'text-neutral-faded' : faded]}>{plan.description}</p>
+          </div>
+          <p class="flex items-baseline gap-1">
+            <span class="text-4xl font-semibold tracking-tight tabular-nums" data-period="monthly">{plan.price}</span>
+            {toggle && <span class="text-4xl font-semibold tracking-tight tabular-nums" data-period="annual" hidden>{plan.annualPrice ?? plan.price}</span>}
+            {plan.period && <span class:list={['text-sm', featured && solid ? 'text-neutral-faded' : faded]}>/ {plan.period}</span>}
+          </p>
+          <ul class="flex flex-col gap-2 text-sm">
+            {plan.features.map((f) => (
+              <li class="flex items-start gap-2"><Check class:list={['mt-0.5 size-4 shrink-0', featured && solid ? 'text-primary' : solid ? 'text-inherit' : 'text-primary']} aria-hidden="true" /><span>{f}</span></li>
+            ))}
+          </ul>
+          <Button href={plan.action.href} fullWidth {...action} class:list={['mt-auto', actionClass]}>{plan.action.label}</Button>
+        </div>
+      )
+    })}
+  </Grid>
+</Section>
+
+<script>
+  import { island } from '../../components/utils/island.ts'
+
+  // Swap the visible price set when the billing period changes.
+  island('[data-apogee-pricing]', (root) => {
+    const toggle = root.querySelector<HTMLElement>('.apogee-pricing-toggle')
+    toggle?.addEventListener('change', (e) => {
+      const period = (e.target as HTMLInputElement).value
+      for (const el of root.querySelectorAll<HTMLElement>('[data-period]')) el.hidden = el.dataset.period !== period
+      root.dispatchEvent(new CustomEvent('apogee:pricing-change', { bubbles: true, detail: { period } }))
+    })
+  })
+</script>

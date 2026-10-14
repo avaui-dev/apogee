@@ -1,0 +1,33 @@
+---
+title: Stats cards
+description: A row of metric cards for dashboards.
+group: Sections
+order: 17
+---
+
+import Preview from '../../../components/Preview.astro'
+import StatsCards from '../../../../../registry/sections/StatsCards/StatsCards.astro'
+import { metrics } from '../../../components/demo-data'
+
+<Preview block code={`<StatsCards items={[{ label, value, change?, trend? }, …]} />`}>
+  <StatsCards items={metrics} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add stats-cards
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `items` | `{ label, value, change?, trend? }[]` | — | content | `Stat` props. |
+| `label` | `string` | `'Key metrics'` | content | Landmark name. |
+| `layout` | `'row'` | `'row'` | layout | One to four columns by viewport. |
+| `spacing` | | `'small'` | layout | |
+
+## Accessibility
+
+- A labelled region ("Key metrics") holding a list; numbers use tabular figures.

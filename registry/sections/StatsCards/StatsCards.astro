@@ -1,0 +1,31 @@
+---
+/**
+ * StatsCards — a row of metric cards for dashboards. Each item is a `Stat`.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import Stat from '../../components/Stat/Stat.astro'
+import type { Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends HTMLAttributes<'section'> {
+  /** @shape { label: string, value: string, change?: string, trend?: 'up' | 'down' }[] @category content */
+  items: { label: string; value: string; change?: string; trend?: 'up' | 'down' }[]
+  /** Landmark name. @category content */ label?: string
+  /** @category layout */ layout?: 'row'
+  /** @category layout */ spacing?: Spacing
+  class?: string
+}
+
+const { items, label = 'Key metrics', layout = 'row', spacing = 'small', class: className, ...rest } = Astro.props
+void layout
+---
+
+<Section as="section" aria-label={label} spacing={spacing} class={className} {...rest}>
+  <Grid as="ul" cols={{ base: 1, sm: 2, lg: 4 }} gap={4} class="list-none p-0">
+    {items.map((s) => <li class="flex"><Stat label={s.label} value={s.value} change={s.change} trend={s.trend} class="w-full rounded-lg border border-neutral bg-elevation-raised p-5" /></li>)}
+  </Grid>
+</Section>

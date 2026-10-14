@@ -1,0 +1,31 @@
+---
+/**
+ * EmptyStateSection — an `EmptyState` with section spacing, for a whole
+ * empty page or panel. Slots `icon` and `actions` pass through.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Section from '../../components/Section/Section.astro'
+import EmptyState from '../../components/EmptyState/EmptyState.astro'
+import type { Spacing } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends HTMLAttributes<'section'> {
+  /** @category content */ heading: string
+  /** @category content */ description?: string
+  /** @category layout */ layout?: 'centered'
+  /** @category layout */ spacing?: Spacing
+  class?: string
+}
+
+const { heading, description, layout = 'centered', spacing = 'medium', class: className, ...rest } = Astro.props
+void layout
+---
+
+<Section as="section" aria-label={heading} spacing={spacing} class={className} {...rest}>
+  <EmptyState title={heading} description={description} class="mx-auto max-w-xl py-16">
+    {Astro.slots.has('icon') && <Fragment slot="icon"><slot name="icon" /></Fragment>}
+    {Astro.slots.has('actions') && <Fragment slot="actions"><slot name="actions" /></Fragment>}
+  </EmptyState>
+</Section>

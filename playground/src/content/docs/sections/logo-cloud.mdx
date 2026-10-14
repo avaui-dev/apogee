@@ -1,0 +1,45 @@
+---
+title: LogoCloud
+description: A row or grid of customer and partner logos.
+group: Sections
+order: 2
+---
+
+import Preview from '../../../components/Preview.astro'
+import LogoCloud from '../../../../../registry/sections/LogoCloud/LogoCloud.astro'
+import { logos } from '../../../components/demo-data'
+
+<Preview block code={`<LogoCloud heading="Trusted by teams at" items={[{ src, alt, href? }, …]} />`}>
+  <LogoCloud heading="Trusted by teams at" items={logos} />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add logo-cloud
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `heading` | `string` | — | content | Short line above the logos. |
+| `items` | `{ src: string, alt: string, href?: string }[]` | — | content | Required. Logos, 32px tall. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `layout` | `'row' \| 'grid'` | `'row'` | layout | Wrapping row or a 2/3/6-column grid. |
+| `background` | Section background | `'page'` | layout | On solid fills logos are inverted to white. |
+| `spacing` | `'small' \| 'medium' \| 'large'` | `'small'` | layout | Vertical rhythm. |
+| `id` | `string` | auto | layout | |
+
+## Layouts
+
+<Preview block code={`<LogoCloud layout="grid" items={…} />
+<LogoCloud background="inverted" items={…} />`}>
+  <LogoCloud layout="grid" items={logos} />
+  <LogoCloud background="inverted" heading="Also on dark" items={logos} class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Each logo's `alt` is the company name; linked logos get the focus ring.
+- Without a `heading` the section is labelled "Partners".

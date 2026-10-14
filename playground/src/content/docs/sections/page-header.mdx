@@ -1,0 +1,54 @@
+---
+title: Page header
+description: The top of an application page; breadcrumbs, title, description, actions, tab links.
+group: Sections
+order: 16
+---
+
+import Preview from '../../../components/Preview.astro'
+import PageHeader from '../../../../../registry/sections/PageHeader/PageHeader.astro'
+import Button from '../../../../../registry/components/Button/Button.astro'
+
+export const crumbs = [{ label: 'Home', href: '#' }, { label: 'Customers', href: '#' }, { label: 'Northwind' }]
+export const tabs = [{ label: 'Overview', href: '#', active: true }, { label: 'Billing', href: '#' }, { label: 'Members', href: '#' }, { label: 'Settings', href: '#' }]
+
+<Preview block code={`<PageHeader layout="with-actions" breadcrumbs={[{ label, href? }]} heading="Northwind" description="…">
+  <Button slot="actions" variant="outline" color="neutral">Export</Button>
+  <Button slot="actions">New invoice</Button>
+</PageHeader>`}>
+  <PageHeader layout="with-actions" breadcrumbs={crumbs} heading="Northwind" description="Customer since March 2024." headingLevel={2}>
+    <Button slot="actions" variant="outline" color="neutral">Export</Button>
+    <Button slot="actions">New invoice</Button>
+  </PageHeader>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add page-header
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `breadcrumbs` | `{ label, href? }[]` | — | content | |
+| `heading` | `string` | — | content | Required. |
+| `description` | `string` | — | content | |
+| `tabs` | `{ label, href, active? }[]` | `[]` | content | Links under the title in `with-tabs`. |
+| `actions` slot | | | content | Buttons on the end side in `with-actions`. |
+| `tabsLabel` | `string` | `'Page sections'` | content | Name of the tabs nav. |
+| `layout` | `'simple' \| 'with-actions' \| 'with-tabs'` | `'simple'` | layout | |
+| `spacing`, `headingLevel`, `id` | | `spacing` is `small`, `headingLevel` is `1` | layout | |
+
+## Layouts
+
+<Preview block code={`<PageHeader heading="Customers" />
+<PageHeader layout="with-tabs" heading="Northwind" tabs={[{ label, href, active? }]} />`}>
+  <PageHeader heading="Customers" description="Everyone with an account." headingLevel={2} />
+  <PageHeader layout="with-tabs" breadcrumbs={crumbs} heading="Northwind" tabs={tabs} headingLevel={2} />
+</Preview>
+
+## Accessibility
+
+- Renders a `header` labelled by the title; tabs are a `nav` of links with `aria-current="page"` on the active one.

@@ -1,0 +1,46 @@
+---
+/**
+ * SectionHeader — eyebrow, heading and description at the top of a section,
+ * with the heading level, alignment and colours every section shares.
+ * Pass the `id` the section's `aria-labelledby` points at.
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Eyebrow from '../Eyebrow/Eyebrow.astro'
+import Heading from '../Heading/Heading.astro'
+import Text from '../Text/Text.astro'
+
+const eyebrows = { page: 'primary', 'neutral-faded': 'primary', 'primary-faded': 'primary', primary: 'inherit', inverted: 'inherit' } as const
+const descriptions = { page: 'text-neutral-faded', 'neutral-faded': 'text-neutral-faded', 'primary-faded': 'text-neutral-faded', primary: 'opacity-85', inverted: 'opacity-85' } as const
+const levels = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4' } as const
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** @category content */
+  eyebrow?: string
+  /** @category content */
+  heading: string
+  /** @category content */
+  description?: string
+  /** Semantic heading level. @category layout */
+  headingLevel?: 1 | 2 | 3 | 4
+  /** @category layout */
+  align?: 'start' | 'center'
+  /** The section background, to pick readable colours. @category layout */
+  background?: keyof typeof eyebrows
+  /** `large` uses the display size (Hero). @category layout */
+  size?: 'medium' | 'large'
+  /** Id for the heading, for `aria-labelledby`. */
+  id?: string
+  class?: string
+}
+
+const { eyebrow, heading, description, headingLevel = 2, align = 'start', background = 'page', size = 'medium', id, class: className, ...rest } = Astro.props
+const as = levels[headingLevel]
+const visual = size === 'large' ? (headingLevel === 1 ? 'display' : 'h1') : headingLevel === 1 ? 'h1' : 'h2'
+---
+
+<div class:list={['flex max-w-prose flex-col gap-3', align === 'center' && 'mx-auto items-center text-center', className]} {...rest}>
+  {eyebrow && <Eyebrow as="p" color={eyebrows[background]}>{eyebrow}</Eyebrow>}
+  <Heading as={as} size={visual} id={id}>{heading}</Heading>
+  {description && <Text size={size === 'large' ? 'large' : 'medium'} class={descriptions[background]}>{description}</Text>}
+</div>

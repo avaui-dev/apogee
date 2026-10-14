@@ -1,0 +1,43 @@
+---
+title: Team
+description: People as a grid of cards or a list with bios.
+group: Sections
+order: 9
+---
+
+import Preview from '../../../components/Preview.astro'
+import Team from '../../../../../registry/sections/Team/Team.astro'
+import { team } from '../../../components/demo-data'
+
+<Preview block code={`<Team heading="The team" items={[{ name, role, avatar?, bio?, links? }, …]} />`}>
+  <Team eyebrow="People" heading="The team" items={team} spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add team
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Optional header. |
+| `items` | `{ name, role, avatar?, bio?, links? }[]` | — | content | Required. `bio` shows in `list`. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `layout` | `'grid' \| 'list'` | `'grid'` | layout | |
+| `align` | `'start' \| 'center'` | `'start'` | layout | |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<Team layout="list" items={…} />
+<Team align="center" background="neutral-faded" items={…} />`}>
+  <Team layout="list" heading="With bios" items={team} spacing="medium" />
+  <Team align="center" background="neutral-faded" heading="Centred on a tint" items={team} spacing="medium" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Avatars carry the person's name; links are real links with the focus ring.

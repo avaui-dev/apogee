@@ -1,0 +1,43 @@
+---
+title: Blog list
+description: Post cards in a grid, or one featured post above the grid.
+group: Sections
+order: 11
+---
+
+import Preview from '../../../components/Preview.astro'
+import BlogList from '../../../../../registry/sections/BlogList/BlogList.astro'
+import { posts } from '../../../components/demo-data'
+
+<Preview block code={`<BlogList heading="From the blog" items={[{ title, excerpt, href, image?, date, author? }, …]} />`}>
+  <BlogList eyebrow="Blog" heading="From the blog" description="Notes on building the system." items={posts} spacing="medium" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog-list
+```
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `eyebrow`, `heading`, `description` | `string` | — | content | Optional header. |
+| `items` | `{ title, excerpt, href, image?, date, author? }[]` | — | content | Required. `date` is an ISO string, rendered in a `<time>`. |
+| `label` | `string` | English | content | Landmark name when there is no heading. |
+| `locale` | `string` | page locale or `'en'` | content | Date formatting locale. |
+| `layout` | `'grid' \| 'featured'` | `'grid'` | layout | `featured` shows the first post full width. |
+| `align` | `'start' \| 'center'` | `'start'` | layout | Header alignment. |
+| `background`, `spacing`, `headingLevel`, `id` | | | layout | As on every section. |
+
+## Layouts
+
+<Preview block code={`<BlogList layout="featured" items={…} />`}>
+  <BlogList layout="featured" heading="Featured first" items={posts} spacing="medium" background="neutral-faded" class="rounded-xl" />
+</Preview>
+
+## Accessibility
+
+- Each card is an `article`; the title is the link and the whole card is its hit area.
+- Dates are `<time datetime>` elements.
