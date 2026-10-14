@@ -3,7 +3,8 @@
  * Button — the Apogee action control. Renders a <button>, or an <a> when `href`
  * is set. `color` is the hue, `variant` is the fill style, `size` the height.
  * Icons go in the `start` / `end` slots; `iconOnly` makes a square button
- * (pass an `aria-label`). `class` is appended last, so a consumer utility wins
+ * (pass an `aria-label`). State lives on the root as `data-icon-only` and
+ * `data-loading`, so the size table styles both without rewriting classes. `class` is appended last, so a consumer utility wins
  * only when it is more specific or later in the stylesheet; there is no class
  * merging.
  */
@@ -11,7 +12,7 @@ import type { HTMLAttributes } from 'astro/types'
 import Spinner from '../Spinner/Spinner.astro'
 import {
   buttonSizes,
-  iconOnlySizes,
+  linkSizes,
   buttonStyles,
   highlightedStyles,
   type ButtonColor,
@@ -41,8 +42,10 @@ interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
   href?: string
   /** Native button type (ignored with `href`). */
   type?: 'button' | 'submit' | 'reset'
-  /** Shows a spinner and blocks interaction. */
+  /** Shows a spinner and blocks interaction; the button keeps its width. */
   loading?: boolean
+  /** Keeps the label visible beside the spinner while loading. */
+  showTextWhileLoading?: boolean
   disabled?: boolean
   /** Invoker command for a Dialog or popover target. */
   command?: 'show-modal' | 'close' | 'request-close' | 'show-popover' | 'hide-popover' | 'toggle-popover' | (string & {})
@@ -63,6 +66,7 @@ const {
   href,
   type = 'button',
   loading = false,
+  showTextWhileLoading = false,
   disabled = false,
   class: className,
   ...rest
@@ -72,17 +76,17 @@ const Tag = href ? 'a' : 'button'
 const isDisabled = disabled || loading
 
 const base =
-  'inline-flex items-center justify-center whitespace-nowrap font-medium transition ' +
+  'relative inline-flex items-center justify-center whitespace-nowrap font-medium transition ' +
   'active:scale-[0.985] motion-reduce:active:scale-100 ' +
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ' +
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ' +
   'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled disabled:border-disabled disabled:shadow-none ' +
   'aria-disabled:pointer-events-none aria-disabled:bg-disabled aria-disabled:text-disabled ' +
-  '[&_svg]:shrink-0'
+  '[&>svg]:shrink-0'
 
-// Icon-only keeps the size's text/gap/radius but swaps padding + height for a square.
-const sizeClasses = iconOnly
-  ? [iconOnlySizes[size], 'p-0', buttonSizes[size].replace(/\b(px|h)-\S+/g, '')]
-  : buttonSizes[size]
+const link = variant === 'link'
+// Loading fades every child but the centred spinner (opacity, not visibility: the
+// label must stay in the accessibility tree so the button keeps its name).
+const hideWhileLoading = loading && !showTextWhileLoading
 ---
 
 <Tag
@@ -90,12 +94,16 @@ const sizeClasses = iconOnly
     base,
     buttonStyles[variant][color],
     highlighted && highlightedStyles[variant][color],
-    sizeClasses,
+    link ? linkSizes[size] : buttonSizes[size],
+    color === 'critical' && 'focus-visible:outline-critical',
+    hideWhileLoading && '[&>*:not(.apogee-spinner)]:opacity-0',
     rounded && 'rounded-full',
     raised && 'shadow-raised',
     fullWidth && 'w-full',
     className,
   ]}
+  data-icon-only={iconOnly && !link ? '' : undefined}
+  data-loading={loading ? '' : undefined}
   href={Tag === 'a' ? (isDisabled ? undefined : href) : undefined}
   type={Tag === 'button' ? type : undefined}
   disabled={Tag === 'button' ? isDisabled : undefined}
@@ -103,7 +111,8 @@ const sizeClasses = iconOnly
   aria-busy={loading ? 'true' : undefined}
   {...rest}
 >
-  {loading ? <Spinner size={size === 'small' ? 'small' : 'medium'} /> : <slot name="start" />}
-  <slot />
+  {loading && <Spinner size={size === 'small' ? 'small' : 'medium'} class:list={['apogee-spinner', hideWhileLoading && 'absolute inset-0 m-auto']} />}
+  {(!loading || hideWhileLoading) && <slot name="start" />}
+  {hideWhileLoading ? <span><slot /></span> : <slot />}
   <slot name="end" />
 </Tag>

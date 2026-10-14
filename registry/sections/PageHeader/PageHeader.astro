@@ -45,7 +45,7 @@ const hasActions = layout === 'with-actions' && Astro.slots.has('actions')
     {layout === 'with-tabs' && tabs.length > 0 && (
       <nav aria-label={tabsLabel} class="-mb-px flex gap-6 overflow-x-auto">
         {tabs.map((t) => (
-          <a href={t.href} aria-current={t.active ? 'page' : undefined} class:list={['-mb-px border-b-2 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary', t.active ? 'border-primary text-primary' : 'border-transparent text-neutral-faded hover:border-neutral hover:text-neutral']}>{t.label}</a>
+          <a href={t.href} aria-current={t.active ? 'page' : undefined} class:list={['-mb-px border-b-2 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus', t.active ? 'border-primary text-primary' : 'border-transparent text-neutral-faded hover:border-neutral hover:text-neutral']}>{t.label}</a>
         ))}
       </nav>
     )}

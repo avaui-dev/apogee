@@ -41,7 +41,7 @@ const Tag = href ? 'a' : as
   disabled={Tag === 'button' && disabled ? true : undefined}
   aria-disabled={Tag !== 'button' && disabled ? 'true' : undefined}
   class:list={[
-    'inline-flex cursor-pointer appearance-none items-center bg-transparent text-start text-inherit focus-visible:outline-2 focus-visible:outline-primary',
+    'inline-flex cursor-pointer appearance-none items-center bg-transparent text-start text-inherit focus-visible:outline-2 focus-visible:outline-focus',
     insetFocus ? 'focus-visible:-outline-offset-2' : 'focus-visible:outline-offset-2',
     disabled && 'cursor-not-allowed opacity-50',
     fullWidth && 'flex w-full',

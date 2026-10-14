@@ -1,0 +1,131 @@
+---
+title: Close button
+description: The ✕ every dismissible surface shares, in four sizes and an over-media theme.
+group: Components
+order: 0
+related: [dismissible, dialog, toast, tag]
+---
+
+import Preview from '../../components/Preview.astro'
+import CloseButton from '../../../../registry/components/CloseButton/CloseButton.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+
+<Preview code={`<CloseButton />`}>
+  <CloseButton />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add close-button
+```
+
+No Apogee dependencies. Zero JS. Dialog, Dismissible, Toast and Tag pull it in.
+
+## Usage
+
+```astro
+---
+import CloseButton from '@/components/apogee/CloseButton/CloseButton.astro'
+---
+<CloseButton command="close" commandfor="settings-dialog" />
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<button>`
+attribute passes through (`command`, `commandfor`, `data-*`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | `'Close'` | The accessible name. Say what closes when it is not obvious ("Dismiss notification"). |
+| `size` | `'xsmall' \| 'small' \| 'medium' \| 'large'` | `'medium'` | 16 / 24 / 28 / 32px: Tag, Toast, Dismissible, Dialog. |
+| `theme` | `'light' \| 'dark' \| 'inherit'` | `'light'` | `dark` sits over images and media: a page-coloured disc with a shadow. `inherit` takes the parent's text colour, for a close button inside a coloured chip (Tag uses it). |
+| `class` | `string` | — | Extra classes, appended last. |
+
+The root carries the `apogee-close` hook class.
+
+## Variants
+
+Every `size`:
+
+<Preview code={`<CloseButton size="xsmall" />
+<CloseButton size="small" />
+<CloseButton size="medium" />
+<CloseButton size="large" />`}>
+  <div data-apogee-close="sizes" class="flex items-center gap-4">
+    <CloseButton size="xsmall" />
+    <CloseButton size="small" />
+    <CloseButton size="medium" />
+    <CloseButton size="large" />
+  </div>
+</Preview>
+
+Every `theme`:
+
+<Preview code={`<CloseButton theme="light" />
+<div class="rounded-lg bg-inverted p-4"><CloseButton theme="dark" /></div>
+<span class="inline-flex items-center gap-1 rounded-md bg-primary px-2 text-on-primary">Chip <CloseButton theme="inherit" size="xsmall" /></span>`}>
+  <div class="flex items-center gap-4">
+    <CloseButton theme="light" />
+    <div class="rounded-lg bg-inverted p-4"><CloseButton theme="dark" /></div>
+    <span class="inline-flex h-7 items-center gap-1 rounded-md bg-primary px-2 text-sm text-on-primary">Chip <CloseButton theme="inherit" size="xsmall" /></span>
+  </div>
+</Preview>
+
+## States
+
+- **Hover** — `light` gets the neutral faded fill; `dark` swaps to the faded page fill.
+- **Focus** — the shared focus outline, offset 2px.
+- **Disabled** — pass `disabled`; the browser handles it (no custom styling, the button is always small and secondary).
+
+## Examples
+
+A card header that can be dismissed:
+
+<Preview code={`<Card>
+  <div class="flex items-start gap-3">
+    <div class="min-w-0 flex-1">
+      <p class="font-medium">Welcome back</p>
+      <p class="text-sm text-neutral-faded">Pick up where you left off.</p>
+    </div>
+    <CloseButton label="Dismiss welcome" class="-me-1 -mt-1" />
+  </div>
+</Card>`}>
+  <Card class="w-80">
+    <div class="flex items-start gap-3">
+      <div class="min-w-0 flex-1">
+        <p class="font-medium">Welcome back</p>
+        <p class="text-sm text-neutral-faded">Pick up where you left off.</p>
+      </div>
+      <CloseButton label="Dismiss welcome" class="-me-1 -mt-1" />
+    </div>
+  </Card>
+</Preview>
+
+## Accessibility
+
+- A real `<button type="button">` with `aria-label`; the icon is hidden from assistive tech.
+- Native semantics, no extra ARIA needed. Give `label` a specific object when the page has more than one close button.
+- Inside a Dialog use `command="close"` + `commandfor` so it works without JS.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral-faded` / `--foreground-neutral` | Resting and hover glyph (`light`) |
+| `--background-neutral-faded-highlighted` | Hover fill (`light`) |
+| `--background-page` / `--background-page-faded` / `--shadow-raised` | The `dark` disc |
+| `--outline-color-focus` | Focus ring |
+
+## Do / Don't
+
+- **Do** put it at the top end corner of the surface it closes, with a negative margin so the glyph aligns with the content edge.
+- **Do** use `theme="dark"` over photos, where a bare glyph can vanish.
+- **Don't** make it the only way out of a dialog; Escape and a footer action should also close it.
+- **Don't** use it as a generic icon button; that is `Button iconOnly`.
+
+## Content
+
+- `label` names what closes: "Close", "Dismiss notification", "Remove tag".
+- Never a visible label; the glyph is the label.

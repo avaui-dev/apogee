@@ -42,7 +42,7 @@ const anchor = `--${id}`
         popovertarget={id}
         aria-haspopup="menu"
         style={`anchor-name: ${anchor}`}
-        class="apogee-dropdown-trigger inline-flex h-10 items-center gap-2 rounded-md border border-neutral bg-page px-3 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        class="apogee-dropdown-trigger inline-flex h-10 items-center gap-2 rounded-md border border-neutral bg-page px-3 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
       >
         {label}
         <ChevronDown class="size-4 text-neutral-faded transition-transform" aria-hidden="true" />
@@ -54,6 +54,7 @@ const anchor = `--${id}`
     popover
     role="menu"
     aria-label={label}
+    data-placement={placement}
     style={panelStyle({ anchor, placement, gap: 1.5, width, maxHeight })}
     class:list={[panelClass, panelSurface.overlay, menuClass, 'min-w-48', maxHeight && 'overflow-auto']}
   >

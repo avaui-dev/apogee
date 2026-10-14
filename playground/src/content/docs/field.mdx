@@ -57,11 +57,13 @@ through to the root `<div>`.
 |---|---|---|---|
 | `id` | `string` | — | Required. Matches the control's `id`; used to derive `${id}-hint` / `${id}-error`. |
 | `label` | `string` | — | Optional label text. |
-| `hint` | `string` | — | Optional helper text, hidden when `error` is set. |
-| `error` | `string` | — | Optional error message; replaces `hint` and renders with `role="alert"`. |
+| `tooltip` | `string` | — | Help text behind an info icon after the label. The icon stays focusable when the control is disabled. |
+| `hint` | `string` | — | Optional helper text. Shown with the error when both are set. |
+| `error` | `string` | — | Optional error message, rendered with `role="alert"` after the hint. |
 | `disabled` | `boolean` | `false` | Dims the label and marks the wrapper `aria-disabled`; disable the control too. |
-| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Label text size, matching the control's size. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Label and hint text size, matching the control's size. Also set as `data-size` on the root. |
 | `required` | `boolean` | `false` | Shows a `*` next to the label (visual only — set `required`/`aria-required` on the control itself). |
+| `hideRequiredIndicator` | `boolean` | `false` | Hides the `*` while you keep `required` on the control (a form where every field is required). |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
 ## Examples
@@ -76,7 +78,7 @@ With a hint:
   </Field>
 </Preview>
 
-With an error (overrides the hint):
+With an error:
 
 <Preview code={`<Field id="pw" label="Password" required error="Must be at least 8 characters.">
   <input id="pw" type="password" class="w-full rounded-md border border-critical bg-page px-3 py-2 text-sm" />
@@ -84,6 +86,37 @@ With an error (overrides the hint):
   <Field id="pw" label="Password" required error="Must be at least 8 characters.">
     <input id="pw" type="password" class="w-full rounded-md border border-critical bg-page px-3 py-2 text-sm" />
   </Field>
+</Preview>
+
+Hint and error together (the control lists both ids in `aria-describedby`):
+
+<Preview code={`<Field id="pw2" label="Password" hint="At least 8 characters." error="Too short.">
+  <input id="pw2" type="password" aria-describedby="pw2-hint pw2-error" aria-invalid="true" class="…" />
+</Field>`}>
+  <div data-apogee-field="hint-and-error">
+    <Field id="pw2" label="Password" hint="At least 8 characters." error="Too short.">
+      <input id="pw2" type="password" aria-describedby="pw2-hint pw2-error" aria-invalid="true" class="w-full rounded-md border border-critical bg-page px-3 py-2 text-sm" />
+    </Field>
+  </div>
+</Preview>
+
+A help tooltip after the label. The icon is a button outside the `<label>`, so
+keyboard users reach it even when the control is disabled:
+
+<Preview code={`<Field id="api" label="API key" tooltip="Found under Settings → Developers." hint="Rotates every 90 days.">
+  <input id="api" disabled class="…" />
+</Field>
+<Field id="all" label="Email" required hideRequiredIndicator>
+  <input id="all" type="email" required class="…" />
+</Field>`}>
+  <div data-apogee-field="tooltip-disabled" class="flex flex-col gap-6">
+    <Field id="api" label="API key" tooltip="Found under Settings → Developers." hint="Rotates every 90 days." disabled>
+      <input id="api" disabled class="h-9 w-full rounded-md border border-disabled bg-disabled px-3 text-sm text-disabled" value="sk-…" />
+    </Field>
+    <Field id="all" label="Email" required hideRequiredIndicator>
+      <input id="all" type="email" required class="h-9 w-full rounded-md border border-neutral bg-page px-3 text-sm text-neutral" />
+    </Field>
+  </div>
 </Preview>
 
 Custom control (a `Field` wrapping something other than a native input) — set
@@ -104,7 +137,7 @@ Custom control (a `Field` wrapping something other than a native input) — set
 … medium, large, xlarge …
 <Field id="f-d" label="Disabled" disabled><input id="f-d" disabled class="…" /></Field>`} block>
   {['small', 'medium', 'large', 'xlarge'].map((size) => (
-    <Field id={`f-size-${size}`} label={`Label ${size}`} size={size}>
+    <Field id={`f-size-${size}`} label={`Label ${size}`} size={size} hint={`Hint text scales with ${size}.`}>
       <input id={`f-size-${size}`} class="h-9 rounded-md border border-neutral bg-page px-3 text-sm text-neutral" placeholder={size} />
     </Field>
   ))}
@@ -121,7 +154,11 @@ Custom control (a `Field` wrapping something other than a native input) — set
   control — since the control is an opaque slot, wire that attribute yourself
   (`Input`/`Textarea`/`Select` do this for you).
 - The `*` for `required` is `aria-hidden` (decorative) — set the real
-  `required`/`aria-required` attribute on the control.
+  `required`/`aria-required` attribute on the control. `hideRequiredIndicator`
+  removes only the glyph.
+- `tooltip` renders a `button` with `aria-label="More information"` beside the
+  label, outside it, so it stays in the tab order when the control is disabled;
+  Tooltip describes the button, not the control.
 
 ## Tokens
 

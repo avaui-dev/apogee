@@ -25,7 +25,7 @@ const { href, as = 'div', raised = false, selected = false, padding = 'medium', 
 const paddings = { none: 'p-0', small: 'p-3', medium: 'p-5', large: 'p-8' } as const
 const Tag = href ? 'a' : as
 const interactive = href || as === 'button'
-  ? 'transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+  ? 'transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
   : ''
 const hasMedia = Astro.slots.has('media')
 ---

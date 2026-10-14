@@ -5,36 +5,68 @@
  * standalone for a custom control (pass the same `id` to your control and set
  * its `aria-describedby` to `<id>-hint` / `<id>-error`).
  *
+ * The root carries `data-size`, so label and hint scale with the control. A
+ * `tooltip` adds a help icon after the label that stays focusable when the
+ * control is disabled. Hint and error render together when both are set.
+ *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import { Info } from '@lucide/astro'
+import Tooltip from '../Tooltip/Tooltip.astro'
 const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const
+const hintSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const
 interface Props extends Omit<HTMLAttributes<'label'>, 'size'> {
   id: string
   /** Dims the label and marks the field. */
   disabled?: boolean | undefined
-  /** Label text size, matching the control. @category layout */
+  /** Label and hint text size, matching the control. @category layout */
   size?: keyof typeof labelSizes | undefined
   label?: string | undefined
+  /** Help text behind an info icon after the label. @category content */
+  tooltip?: string | undefined
   hint?: string | undefined
   error?: string | undefined
   required?: boolean | undefined
+  /** Keeps `required` semantics but hides the asterisk. */
+  hideRequiredIndicator?: boolean | undefined
   class?: string | undefined
 }
 
-const { id, label, hint, error, required = false, disabled = false, size = 'medium', class: className, ...rest } = Astro.props
+const {
+  id,
+  label,
+  tooltip,
+  hint,
+  error,
+  required = false,
+  hideRequiredIndicator = false,
+  disabled = false,
+  size = 'medium',
+  class: className,
+  ...rest
+} = Astro.props
 ---
 
-<div class:list={['flex flex-col gap-1.5', className]} aria-disabled={disabled ? 'true' : undefined} {...rest}>
+<div class:list={['flex flex-col gap-1.5', className]} data-size={size} aria-disabled={disabled ? 'true' : undefined} {...rest}>
   {
     label && (
-      <label for={id} id={`${id}-label`} class:list={['font-medium', labelSizes[size], disabled ? 'text-disabled' : 'text-neutral']}>
-        {label}
-        {required && <span class="text-critical" aria-hidden="true"> *</span>}
-      </label>
+      <div class="flex items-center gap-1.5">
+        <label for={id} id={`${id}-label`} class:list={['font-medium', labelSizes[size], disabled ? 'text-disabled' : 'text-neutral']}>
+          {label}
+          {required && !hideRequiredIndicator && <span class="text-critical" aria-hidden="true"> *</span>}
+        </label>
+        {tooltip && (
+          <Tooltip text={tooltip}>
+            <button type="button" class="inline-grid size-4 place-items-center rounded-full text-neutral-faded hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus" aria-label="More information">
+              <Info class="size-3.5" aria-hidden="true" />
+            </button>
+          </Tooltip>
+        )}
+      </div>
     )
   }
   <slot />
-  {hint && !error && <p id={`${id}-hint`} class="text-sm text-neutral-faded">{hint}</p>}
-  {error && <p id={`${id}-error`} role="alert" class="text-sm text-critical">{error}</p>}
+  {hint && <p id={`${id}-hint`} class:list={[hintSizes[size], 'text-neutral-faded']}>{hint}</p>}
+  {error && <p id={`${id}-error`} role="alert" class:list={[hintSizes[size], 'text-critical']}>{error}</p>}
 </div>

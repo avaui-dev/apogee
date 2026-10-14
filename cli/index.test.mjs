@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { canonical, resolveDeps, copyInto } from './lib.mjs'
+import { canonical, resolveDeps, copyInto, copySkin } from './lib.mjs'
 
 const index = {
   components: {
@@ -70,4 +70,25 @@ test('a copied section imports components from the project components dir, not a
     const target = join(dest, 'sections', 'Hero', spec)
     assert.ok(existsSync(target), `${spec} should resolve to ${target}`)
   }
+})
+
+test('copySkin writes the skin beside the tokens file and rejects unknown names', () => {
+  const root = mkdtempSync(join(tmpdir(), 'apogee-skin-'))
+  const registry = join(root, 'registry')
+  mkdirSync(join(registry, 'tokens'), { recursive: true })
+  writeFileSync(join(registry, 'tokens', 'skin-skeuomorphic.css'), "[data-skin='skeuomorphic'] { --shadow-control: 0 0 #000; }\n")
+  const tokens = join(root, 'src', 'styles', 'apogee.css')
+  mkdirSync(join(root, 'src', 'styles'), { recursive: true })
+  writeFileSync(tokens, '')
+  const out = copySkin(registry, 'skeuomorphic', tokens)
+  assert.equal(out, join(root, 'src', 'styles', 'apogee-skin-skeuomorphic.css'))
+  assert.ok(readFileSync(out, 'utf8').includes("data-skin='skeuomorphic'"))
+  assert.throws(() => copySkin(registry, 'nope', tokens), /unknown skin/)
+})
+
+test('the CLI entry loads and answers --help', async () => {
+  const { spawnSync } = await import('node:child_process')
+  const r = spawnSync(process.execPath, [new URL('./index.mjs', import.meta.url).pathname, '--help'], { encoding: 'utf8' })
+  assert.equal(r.status, 0, r.stderr)
+  assert.match(r.stdout, /apogee init/)
 })

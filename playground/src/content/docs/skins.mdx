@@ -1,0 +1,103 @@
+---
+title: Skins
+description: An optional look you switch on with one attribute, built from three variables the components already read.
+group: Foundations
+order: 10
+---
+
+import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Input from '../../../../registry/components/Input/Input.astro'
+import SegmentedControl from '../../../../registry/components/SegmentedControl/SegmentedControl.astro'
+
+A skin changes how controls are drawn without touching a component. The base
+theme defines three inert variables; a skin file redefines them under
+`[data-skin="<name>"]`. Put the attribute on `<html>` for the whole site or on
+any element for a subtree, and remove it to go back. The docs navbar has a
+skin switch next to the theme switch, so you can preview every page both ways.
+
+| Variable | Default | Read by |
+|---|---|---|
+| `--shadow-control` | none | solid and outline Buttons, pressed ToggleButtons, the selected SegmentedControl chip |
+| `--highlight-control` | transparent | the inner top highlight of solid Buttons |
+| `--shadow-field` | none | outlined text fields |
+
+## Skeuomorphic
+
+The first skin: an inset hairline and a bottom shade on controls, a faint white
+highlight along the top of solid fills, a soft drop shadow under fields. Both
+themes are tuned separately.
+
+<Preview code={`<div data-skin="skeuomorphic">
+  <Button>Save</Button>
+  <Button variant="outline" color="neutral">Cancel</Button>
+  <Input label="Email" placeholder="you@example.com" />
+  <SegmentedControl name="view" options={[{ value: 'list', label: 'List' }, { value: 'grid', label: 'Grid' }]} value="list" />
+</div>`} block>
+  <div data-apogee-skin="demo" class="flex flex-wrap items-end gap-4">
+    <Button>Save</Button>
+    <Button variant="outline" color="neutral">Cancel</Button>
+    <Input label="Email" placeholder="you@example.com" class="w-60" />
+    <SegmentedControl name="skin-demo-view" options={[{ value: 'list', label: 'List' }, { value: 'grid', label: 'Grid' }]} value="list" />
+  </div>
+</Preview>
+
+The demo above follows the navbar switch. A subtree can opt in on its own:
+
+<Preview code={`<Button>Plain page</Button>
+<div data-skin="skeuomorphic"><Button>Skinned region</Button></div>`}>
+  <div data-apogee-skin="scoped" class="flex items-center gap-4">
+    <Button>Plain page</Button>
+    <div data-skin="skeuomorphic"><Button>Skinned region</Button></div>
+  </div>
+</Preview>
+
+## Enable it
+
+```sh
+npx @ava-ui/apogee init --skin skeuomorphic   # writes src/styles/apogee-skin-skeuomorphic.css
+```
+
+Or copy `registry/tokens/skin-skeuomorphic.css` beside your tokens file. Then:
+
+```css
+@import "./apogee.css";
+@import "./apogee-skin-skeuomorphic.css";
+```
+
+```html
+<html data-skin="skeuomorphic">
+```
+
+Switch at runtime with the helpers in `utils/theme.ts`; the choice persists
+under `apogee-skin` and `apogee:skin-change` fires on `document`:
+
+```ts
+import { getSkin, setSkin } from '@/components/apogee/utils/theme.ts'
+setSkin('skeuomorphic')   // on
+setSkin(null)             // off
+getSkin()                 // 'skeuomorphic' | null
+```
+
+Restore it before paint the same way as the theme:
+
+```html
+<script is:inline>
+  const s = localStorage.getItem('apogee-skin')
+  if (s) document.documentElement.dataset.skin = s
+</script>
+```
+
+## Writing a skin
+
+A skin is a CSS file that sets the three variables under `[data-skin='<name>']`,
+with a second block for dark mode. It must not touch component classes; if a
+look needs more than the variables, add a variable to the base theme first so
+every skin can use it.
+
+## Do / Don't
+
+- **Do** apply it page-wide or to a whole section; mixed controls side by side look like two products.
+- **Do** keep the alphas: the values are ink over any fill, so they work on every hue.
+- **Don't** nest skins; the inner attribute wins and the seam shows.
+- **Don't** rely on a skin for contrast: the contrast gate measures the base tokens only.

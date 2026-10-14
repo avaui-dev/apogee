@@ -40,3 +40,25 @@ export function resolveInverted(root: ParentNode): void {
     el.dataset.theme = mode === 'dark' ? 'light' : 'dark'
   }
 }
+
+// Skins: an optional look (skin-<name>.css) switched on with data-skin on <html>.
+const SKIN_STORAGE = 'apogee-skin'
+
+export function getSkin(): string | null {
+  return document.documentElement.dataset.skin ?? null
+}
+
+export function setSkin(name: string | null, opts: { persist?: boolean | undefined } = {}): void {
+  const html = document.documentElement
+  if (name) html.dataset.skin = name
+  else delete html.dataset.skin
+  if (opts.persist !== false) {
+    try {
+      if (name) localStorage.setItem(SKIN_STORAGE, name)
+      else localStorage.removeItem(SKIN_STORAGE)
+    } catch {
+      // Storage blocked: the skin still applies for this page.
+    }
+  }
+  document.dispatchEvent(new CustomEvent('apogee:skin-change', { bubbles: true, detail: { skin: name } }))
+}

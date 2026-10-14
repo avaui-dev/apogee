@@ -1,0 +1,51 @@
+---
+/**
+ * CloseButton — the ✕ every dismissible surface shares (Dialog, Dismissible,
+ * Toast, Tag). `size` follows the surface; `theme="dark"` is the over-media
+ * look: a page-coloured disc with a shadow. Zero JS; wire `command` /
+ * `commandfor` or your own handler.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { X } from '@lucide/astro'
+
+const sizes = {
+  xsmall: 'size-4 rounded-sm [&>svg]:size-3.5',
+  small: 'size-6 rounded [&>svg]:size-4',
+  medium: 'size-7 rounded-md [&>svg]:size-4',
+  large: 'size-8 rounded-md [&>svg]:size-4',
+} as const
+const themes = {
+  light: 'text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral',
+  dark: 'bg-page text-neutral shadow-raised hover:bg-page-faded',
+  // Inside a coloured chip: takes the parent's text colour, no fill.
+  inherit: 'text-current opacity-70 hover:opacity-100',
+} as const
+
+interface Props extends HTMLAttributes<'button'> {
+  /** Accessible name. @category content */
+  label?: string
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** `dark` sits over images and media: a page-coloured disc with a shadow; `inherit` takes the parent's text colour (inside a Tag). @category layout */
+  theme?: keyof typeof themes
+  class?: string
+}
+
+const { label = 'Close', size = 'medium', theme = 'light', class: className, ...rest } = Astro.props
+---
+
+<button
+  type="button"
+  aria-label={label}
+  class:list={[
+    'apogee-close grid shrink-0 place-items-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
+    sizes[size],
+    themes[theme],
+    className,
+  ]}
+  {...rest}
+>
+  <X aria-hidden="true" />
+</button>

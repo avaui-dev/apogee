@@ -9,6 +9,7 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Tooltip from '../../../../registry/components/Tooltip/Tooltip.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+import Kbd from '../../../../registry/components/Kbd/Kbd.astro'
 
 <JsNote fallback="A CSS-only bubble above the trigger on hover and focus; no delay, and an overflow ancestor can clip it.">
   Opens the bubble in the top layer with hover intent (500 ms on first hover,
@@ -60,9 +61,15 @@ through to the root wrapper `<span>`.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `text` | `string` | — | The hint. Wraps at 20rem. An empty string renders the slot alone, no bubble. |
+| `description` | `string` | — | A second, muted line under the text; the bubble becomes left-aligned with more padding. |
+| `arrow` | `boolean` | `false` | A small triangle on the edge facing the trigger. |
+| `delay` | `number` | `500` | Hover delay before opening, in ms. |
+| `closeDelay` | `number` | `150` | Delay before closing after the pointer leaves, in ms. |
 | `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'start' \| 'start-top' \| 'start-bottom' \| 'end' \| 'end-top' \| 'end-bottom'` | `'top'` | Side and alignment; flips when out of room. `start`/`end` mirror in RTL. |
 | `panelClass` | `string` | — | Extra classes on the bubble. |
 | `class` | `string` | — | Extra classes on the root wrapper. |
+
+Slots: the default slot is the trigger; `shortcut` renders inline after the text (a `Kbd`).
 
 ## Variants
 
@@ -76,16 +83,36 @@ through to the root wrapper `<span>`.
   </div>
 </Preview>
 
+## Description, arrow and shortcut
+
+<Preview code={`<Tooltip text="Save draft" description="Keeps the draft on this device until you publish.">
+  <Button variant="outline" color="neutral">Save</Button>
+</Tooltip>
+<Tooltip text="Bold" arrow><Button variant="outline" color="neutral">B</Button></Tooltip>
+<Tooltip text="Search"><Kbd slot="shortcut">⌘K</Kbd><Button variant="outline" color="neutral">Search</Button></Tooltip>
+<Tooltip text="Instant" delay={0}><Button variant="outline" color="neutral">No delay</Button></Tooltip>`}>
+  <div class="flex flex-wrap items-center gap-4 py-8">
+    <span data-apogee-tooltip="description">
+      <Tooltip text="Save draft" description="Keeps the draft on this device until you publish." arrow>
+        <Button variant="outline" color="neutral">Save</Button>
+      </Tooltip>
+    </span>
+    <Tooltip text="Bold" arrow><Button variant="outline" color="neutral">B</Button></Tooltip>
+    <Tooltip text="Search"><Kbd slot="shortcut">⌘K</Kbd><Button variant="outline" color="neutral">Search</Button></Tooltip>
+    <Tooltip text="Instant" delay={0} closeDelay={0}><Button variant="outline" color="neutral">No delay</Button></Tooltip>
+  </div>
+</Preview>
+
 ## Placement
 
 All twelve values.
 
 <Preview code={`<Tooltip text="top-start" placement="top-start"><Button variant="outline" color="neutral">top-start</Button></Tooltip>
 … one per value …`} block>
-  <div class="grid grid-cols-3 gap-3 py-10">
+  <div data-apogee-tooltip="placements" class="grid grid-cols-3 gap-3 py-10">
     {['top-start', 'top', 'top-end', 'bottom-start', 'bottom', 'bottom-end', 'start-top', 'start', 'start-bottom', 'end-top', 'end', 'end-bottom'].map((p) => (
       <div class="flex justify-center">
-        <Tooltip text={p} placement={p}><Button variant="outline" color="neutral">{p}</Button></Tooltip>
+        <Tooltip text={p} placement={p} arrow><Button variant="outline" color="neutral">{p}</Button></Tooltip>
       </div>
     ))}
   </div>
@@ -128,10 +155,11 @@ ancestor cannot cut it off.
 ## States
 
 - **Hidden** (default) — the popover is closed.
-- **Shown** — after 500 ms of hover (instantly when a neighbouring tooltip
-  closed within the last 500 ms), or at once on focus; fades and scales in
-  (`--duration-fast`, `--ease-standard`).
-- **Closing** — 150 ms after the pointer leaves, at once on blur or Escape.
+- **Shown** — after `delay` (500 ms) of hover (instantly when a neighbouring
+  tooltip closed within the last 500 ms), or at once on focus; fades in and
+  slides from the trigger's side (`--duration-fast`, `--ease-standard`).
+- **Closing** — `closeDelay` (150 ms) after the pointer leaves, at once on
+  blur or Escape.
 
 ## Examples
 

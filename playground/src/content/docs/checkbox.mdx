@@ -48,9 +48,16 @@ valid and unchecked by the type system).
 | `label` | `string` | — | Visible label text, rendered in a real `<label>`. Omit to render the checkbox alone (then supply your own `aria-label`). |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control and label size. |
 | `hasError` | `boolean` | `false` | Marks the control invalid (`aria-invalid`, critical border). |
+| `hint` | `string` | — | Supporting text under the label; the input lists it in `aria-describedby`. The label turns medium weight to read as a heading. |
 | `indeterminate` | `boolean` | `false` | Mixed state (some children checked): a dash instead of a tick, set by a small island; clears on the first change. |
 | `class` | `string` | — | Extra classes on the wrapping `<div>`, appended last. |
 | `...rest` | `any` | — | Passed straight to the `<input>` — e.g. `checked`, `disabled`, `required`, `name`, `value`. |
+
+## Hint
+
+<Preview code={`<Checkbox label="Email me" hint="Product news, once a month." />`}>
+  <div data-apogee-checkbox="hint" class="contents"><Checkbox label="Email me" hint="Product news, once a month." /></div>
+</Preview>
 
 ## Indeterminate and slot label
 
@@ -120,6 +127,9 @@ Setting indeterminate from script (list "select all" pattern):
 - Native semantics — no extra ARIA needed beyond a label.
 
 ## Tokens
+
+The tick and dash are a CSS mask filled with `--on-primary`, so they follow the theme and the brand.
+
 
 | Token | Used for |
 |---|---|

@@ -109,6 +109,20 @@ Every `variant` for every `color`:
   <Badge rounded>Rounded</Badge>
 </Preview>
 
+## Padding
+
+The side that holds an icon pads less:
+
+<Preview code={`<Badge>Plain</Badge>
+<Badge><Check slot="start" />Verified</Badge>
+<Badge>Next<Check slot="end" /></Badge>`}>
+  <div data-apogee-badge="padding" class="contents">
+    <Badge>Plain</Badge>
+    <Badge><Check slot="start" />Verified</Badge>
+    <Badge>Next<Check slot="end" /></Badge>
+  </div>
+</Preview>
+
 ## States
 
 <Preview code={`<Badge color="primary">Filter</Badge>

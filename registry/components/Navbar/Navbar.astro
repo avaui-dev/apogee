@@ -41,7 +41,7 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
       {actions && <div class="hidden items-center gap-2 md:flex" set:html={actions} />}
       <button
         type="button"
-        class="apogee-navbar-toggle grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary no-js:hidden md:hidden"
+        class="apogee-navbar-toggle grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden md:hidden"
         aria-controls={menuId}
         aria-expanded="false"
         aria-label="Toggle menu"

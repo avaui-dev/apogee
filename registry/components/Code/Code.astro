@@ -47,7 +47,7 @@ const themes = { light: 'github-light-high-contrast', dark: 'github-dark-high-co
       <pre class="overflow-x-auto rounded-lg border border-neutral bg-page-faded p-4 pe-12 text-sm"><code class="apogee-code-src font-mono text-neutral">{lang && code ? <Highlighted code={code} lang={lang} themes={themes} inline /> : <slot />}</code></pre>
       <button
         type="button"
-        class="apogee-code-copy absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        class="apogee-code-copy absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
         aria-label="Copy code"
       >
         <Copy class="apogee-code-icon-copy size-4" aria-hidden="true" />

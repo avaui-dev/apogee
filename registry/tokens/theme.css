@@ -160,6 +160,8 @@
   --border-color-primary: var(--border-primary);
   --border-color-primary-faded: var(--border-primary-faded);
   --outline-color-primary: var(--border-primary);
+  /* The focus ring every control uses (`outline-focus`); critical buttons use `outline-critical`. */
+  --outline-color-focus: var(--border-primary);
   --text-color-primary: var(--foreground-primary);
   --text-color-on-primary: var(--on-primary);
 
@@ -233,6 +235,10 @@
 
 /* Static scales. */
 @theme {
+  /* Skin hooks: inert by default; a skin file (skin-*.css) redefines them under [data-skin]. */
+  --shadow-control: 0 0 #0000;
+  --highlight-control: transparent;
+  --shadow-field: 0 0 #0000;
   /* font families — explicit, overridable tokens (default to the platform system
      stacks Tailwind ships). `--font-sans` drives body text; `--font-mono` code. */
   --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -289,9 +295,14 @@
    utils/panel.ts positions the panel next to its anchor; where anchor
    positioning is unsupported, the browser's centred popover position stays. */
 @layer components {
+  /* Panels slide in from their anchor side (`data-placement` on the panel) and
+     scale from that edge; without the attribute they scale from the centre. */
   .apogee-panel {
+    --apogee-dx: 0;
+    --apogee-dy: 0;
     opacity: 0;
-    transform: scale(0.97);
+    transform: translate(var(--apogee-dx), var(--apogee-dy)) scale(0.97);
+    transform-origin: var(--apogee-origin, center);
     transition:
       opacity var(--duration-fast) var(--ease-standard),
       transform var(--duration-fast) var(--ease-standard),
@@ -305,8 +316,32 @@
   @starting-style {
     .apogee-panel:popover-open {
       opacity: 0;
-      transform: scale(0.97);
+      transform: translate(var(--apogee-dx), var(--apogee-dy)) scale(0.97);
     }
+  }
+  .apogee-panel[data-placement^='top'] {
+    --apogee-dy: 0.25rem;
+    --apogee-origin: bottom center;
+  }
+  .apogee-panel[data-placement^='bottom'] {
+    --apogee-dy: -0.25rem;
+    --apogee-origin: top center;
+  }
+  .apogee-panel[data-placement^='start'] {
+    --apogee-dx: 0.25rem;
+    --apogee-origin: right center;
+  }
+  .apogee-panel[data-placement^='end'] {
+    --apogee-dx: -0.25rem;
+    --apogee-origin: left center;
+  }
+  .apogee-panel[data-placement^='start']:dir(rtl) {
+    --apogee-dx: -0.25rem;
+    --apogee-origin: left center;
+  }
+  .apogee-panel[data-placement^='end']:dir(rtl) {
+    --apogee-dx: 0.25rem;
+    --apogee-origin: right center;
   }
   @supports (anchor-name: --x) {
     .apogee-panel {

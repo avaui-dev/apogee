@@ -10,33 +10,36 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
-interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
+interface Props extends Omit<HTMLAttributes<'fieldset'>, 'type'> {
   type?: 'single' | 'multiple'
+  /** Disables every button inside (native fieldset behaviour, no JS). */
+  disabled?: boolean
   'aria-label'?: string
   class?: string
 }
 
-const { type = 'multiple', class: className, ...rest } = Astro.props
+const { type = 'multiple', disabled = false, class: className, ...rest } = Astro.props
 ---
 
-<div
+<fieldset
   role="group"
   data-type={type}
+  disabled={disabled || undefined}
   class:list={[
-    'apogee-toggle-group inline-flex flex-wrap items-center gap-0.5 rounded-md border border-neutral bg-page p-0.5 [&>.apogee-toggle]:rounded-[calc(var(--radius-md)-0.125rem)]',
+    'apogee-toggle-group m-0 min-w-0 [&>.apogee-toggle]:relative [&>.apogee-toggle:focus-visible]:z-10 inline-flex flex-wrap items-center gap-0.5 rounded-md border border-neutral bg-page p-0.5 [&>.apogee-toggle]:rounded-[calc(var(--radius-md)-0.125rem)]',
     className,
   ]}
   {...rest}
 >
   <slot />
-</div>
+</fieldset>
 
 <script>
   import { island } from '../utils/island.ts'
   import { rovingTabindex } from '../utils/roving.ts'
 
   island('.apogee-toggle-group', (g) => {
-    const btns = [...g.querySelectorAll<HTMLButtonElement>('.apogee-toggle')]
+    const btns = [...g.querySelectorAll<HTMLButtonElement>('.apogee-toggle:not(:disabled)')]
     if (!btns.length) return
     const single = g.dataset.type === 'single'
     const press = (b: HTMLButtonElement, on: boolean) => {

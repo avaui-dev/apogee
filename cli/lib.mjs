@@ -38,3 +38,15 @@ export const copyInto = (registryDir, relFile, destRoot, overwrite) => {
   writeFileSync(dest, relFile.startsWith('sections/') ? body.replaceAll('../../components/', '../../') : body)
   return 'ok'
 }
+
+// Copy a skin file (registry/tokens/skin-<name>.css) next to the tokens file:
+// src/styles/apogee.css → src/styles/apogee-skin-<name>.css. Returns the written path.
+export const copySkin = (registryDir, name, tokensPath) => {
+  const src = join(registryDir, 'tokens', `skin-${name}.css`)
+  if (!existsSync(src)) throw new Error(`unknown skin ${name}`)
+  const base = tokensPath.replace(/\.css$/, '')
+  const dest = `${base}-skin-${name}.css`
+  mkdirSync(dirname(dest), { recursive: true })
+  writeFileSync(dest, readFileSync(src, 'utf8'))
+  return dest
+}

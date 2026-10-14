@@ -23,7 +23,7 @@ const collapse = maxVisible !== undefined && maxVisible >= 3 && items.length > m
 const hiddenRange = collapse ? [1, items.length - (maxVisible - 2)] : null
 const sep = Astro.slots.has('separator') ? await Astro.slots.render('separator') : null
 const link =
-  'rounded-sm transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+  'rounded-sm transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
 ---
 
 <nav aria-label="Breadcrumb" class:list={['apogee-breadcrumbs text-sm', className]} {...rest}>

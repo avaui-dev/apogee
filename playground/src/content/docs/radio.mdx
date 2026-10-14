@@ -47,7 +47,14 @@ attribute (e.g. `checked`, `disabled`, `required`) passes through.
 | `id` | `string` | auto-generated | Ties the label to the input; set your own to target it elsewhere. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control and label size. |
 | `hasError` | `boolean` | `false` | Marks the control invalid (`aria-invalid`, critical border). |
+| `hint` | `string` | — | Supporting text under the label; the input lists it in `aria-describedby`. The label turns medium weight to read as a heading. |
 | `class` | `string` | — | Extra classes on the wrapping `<div>`. |
+
+## Hint
+
+<Preview code={`<Radio name="plan" value="pro" label="Pro" hint="Unlimited projects and priority support." />`}>
+  <div data-apogee-radio="hint" class="contents"><Radio name="plan" value="pro" label="Pro" hint="Unlimited projects and priority support." /></div>
+</Preview>
 
 ## Slot label
 

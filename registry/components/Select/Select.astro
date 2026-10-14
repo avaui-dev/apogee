@@ -67,7 +67,7 @@ const {
 } = Astro.props
 const invalid = Boolean(error) || hasError
 const id = idProp ?? uid(Astro.locals)
-const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
 const values = value === undefined ? [] : Array.isArray(value) ? value : [value]
 const chosen = options?.filter((o) => values.includes(o.value)) ?? []
 const listId = `${id}-list`
@@ -77,7 +77,7 @@ const optionSize = { small: 'small', medium: 'medium', large: 'medium', xlarge: 
 const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fieldVariants[variant], fieldSizes[size]]
 ---
 
-<Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
+<Field id={id} label={label} size={size} hint={hint} error={error} required={required} class={className}>
   <div class="apogee-select relative" data-custom={options ? '' : undefined}>
     {
       hasStart && (
@@ -142,6 +142,7 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
           role="listbox"
           aria-multiselectable={multiple ? 'true' : undefined}
           aria-labelledby={label ? `${id}-label` : undefined}
+          data-placement="bottom-start"
           style={panelStyle({ anchor, placement: 'bottom-start', gap: 1, width: 'trigger', maxHeight: '15rem' })}
           class:list={[panelClass, panelSurface.overlay, menuClass, 'overflow-auto']}
         >

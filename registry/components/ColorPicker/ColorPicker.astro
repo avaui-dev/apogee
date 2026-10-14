@@ -30,7 +30,7 @@ const {
   ...rest
 } = Astro.props
 const id = idProp ?? uid(Astro.locals)
-const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
 ---
 
 <Field id={id} label={label} hint={hint} error={error} class={className}>
@@ -50,7 +50,7 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
       aria-describedby={describedby}
       aria-invalid={error ? 'true' : undefined}
       spellcheck="false"
-      class="apogee-color-hex h-10 w-28 rounded-md border border-neutral bg-page px-3 font-mono text-sm text-neutral uppercase focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-[invalid=true]:border-critical"
+      class="apogee-color-hex h-10 w-28 rounded-md border border-neutral bg-page px-3 font-mono text-sm text-neutral uppercase focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-[invalid=true]:border-critical"
     />
   </div>
 </Field>

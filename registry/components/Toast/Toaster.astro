@@ -18,7 +18,8 @@
  * class; the script clones them. Needs JS (a toast is inherently imperative).
  */
 import type { HTMLAttributes } from 'astro/types'
-import { Info, CircleCheck, TriangleAlert, CircleAlert, X } from '@lucide/astro'
+import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro'
+import CloseButton from '../CloseButton/CloseButton.astro'
 import { buttonSizes, buttonStyles } from '../Button/button.ts'
 
 /** @composable */
@@ -81,17 +82,11 @@ const positions = {
       <div class="apogee-toast-actions mt-2 flex flex-wrap gap-1">
         <button
           type="button"
-          class={`apogee-toast-action inline-flex items-center font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${buttonSizes.small} ${buttonStyles.ghost.neutral}`}
+          class={`apogee-toast-action inline-flex items-center font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${buttonSizes.small} ${buttonStyles.ghost.neutral}`}
         ></button>
       </div>
     </div>
-    <button
-      type="button"
-      class="apogee-toast-close -me-1 -mt-1 grid size-6 shrink-0 place-items-center rounded text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-      aria-label="Dismiss"
-    >
-      <X class="size-4" aria-hidden="true" />
-    </button>
+    <CloseButton size="small" label="Dismiss" class="apogee-toast-close -me-1 -mt-1" />
   </div>
 </template>
 

@@ -2,8 +2,9 @@
 /**
  * Tooltip — a hint on hover / focus. The bubble is a `popover="manual"` panel
  * anchored to the trigger (top layer: never clipped by an overflow ancestor),
- * opened by a small island with hover intent: 500 ms on first hover, instant
- * when another tooltip closed within the last 500 ms, 150 ms to close, focus
+ * opened by a small island with hover intent: `delay` (500 ms) on first hover,
+ * instant when another tooltip closed within the last 500 ms, `closeDelay`
+ * (150 ms) to close, focus
  * opens at once, Escape closes, touch is ignored. Without JS the bubble is a
  * plain CSS `:hover` / `:focus-within` bubble above the trigger.
  * Wrap a focusable trigger so keyboard users get it; the island moves
@@ -16,6 +17,14 @@ import { uid } from '../utils/uid.ts'
 import { panelStyle, type Placement } from '../utils/panel.ts'
 interface Props extends HTMLAttributes<'span'> {
   text: string
+  /** A second, muted line under the text. @category content */
+  description?: string
+  /** A small triangle pointing at the trigger. @category layout */
+  arrow?: boolean
+  /** Hover delay before opening, in ms. */
+  delay?: number
+  /** Delay before closing after the pointer leaves, in ms. */
+  closeDelay?: number
   /** @category layout */
   placement?: Placement
   /** Extra classes on the bubble. */
@@ -23,7 +32,18 @@ interface Props extends HTMLAttributes<'span'> {
   class?: string
 }
 
-const { text, placement = 'top', panelClass: panelClassName, class: className, ...rest } = Astro.props
+const {
+  text,
+  description,
+  arrow = false,
+  delay = 500,
+  closeDelay = 150,
+  placement = 'top',
+  panelClass: panelClassName,
+  class: className,
+  ...rest
+} = Astro.props
+const hasShortcut = Astro.slots.has('shortcut')
 const id = uid(Astro.locals, 'apogee-tt')
 const anchor = `--${id}`
 ---
@@ -32,25 +52,73 @@ const anchor = `--${id}`
   !text ? (
     <slot />
   ) : (
-    <span class:list={['apogee-tooltip inline-flex', className]} style={`anchor-name: ${anchor}`} aria-describedby={id} {...rest}>
+    <span
+      class:list={['apogee-tooltip inline-flex', className]}
+      style={`anchor-name: ${anchor}`}
+      aria-describedby={id}
+      data-delay={delay !== 500 ? delay : undefined}
+      data-close-delay={closeDelay !== 150 ? closeDelay : undefined}
+      {...rest}
+    >
       <slot />
       <span
         id={id}
         role="tooltip"
         popover="manual"
-        style={panelStyle({ anchor, placement, gap: 1.5 })}
+        data-placement={placement}
+        style={panelStyle({ anchor, placement, gap: arrow ? 2 : 1.5 })}
         class:list={[
-          'apogee-panel apogee-tooltip-panel pointer-events-none max-w-80 rounded-md bg-inverted px-2 py-1 text-center text-xs text-on-inverted',
+          'apogee-panel apogee-tooltip-panel pointer-events-none max-w-80 rounded-md bg-inverted text-xs text-on-inverted',
+          description ? 'px-3 py-2 text-start' : 'px-2 py-1 text-center',
+          arrow && 'apogee-tooltip-arrow',
           panelClassName,
         ]}
       >
-        {text}
+        {description ? <span class="block font-medium">{text}</span> : text}
+        {hasShortcut && <span class="ms-1.5 inline-flex align-middle"><slot name="shortcut" /></span>}
+        {description && <span class="mt-0.5 block text-on-inverted/80">{description}</span>}
       </span>
     </span>
   )
 }
 
 <style>
+  /* `arrow`: a rotated square on the edge that faces the trigger. */
+  .apogee-tooltip-arrow::after {
+    content: '';
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--background-inverted);
+    transform: rotate(45deg);
+    top: 100%;
+    left: 50%;
+    translate: -50% -50%;
+  }
+  .apogee-tooltip-arrow[data-placement^='bottom']::after {
+    top: auto;
+    bottom: 100%;
+    translate: -50% 50%;
+  }
+  .apogee-tooltip-arrow[data-placement^='start']::after,
+  .apogee-tooltip-arrow[data-placement^='end']::after {
+    top: 50%;
+    left: auto;
+  }
+  .apogee-tooltip-arrow[data-placement^='start']::after {
+    inset-inline-start: 100%;
+    translate: -50% -50%;
+  }
+  .apogee-tooltip-arrow[data-placement^='end']::after {
+    inset-inline-end: 100%;
+    translate: 50% -50%;
+  }
+  .apogee-tooltip-arrow[data-placement^='start']:dir(rtl)::after {
+    translate: 50% -50%;
+  }
+  .apogee-tooltip-arrow[data-placement^='end']:dir(rtl)::after {
+    translate: -50% -50%;
+  }
   /* No-JS fallback: a plain bubble above the trigger, shown by :hover / :focus-within. */
   :global(html.no-js) .apogee-tooltip {
     position: relative;
@@ -83,6 +151,8 @@ const anchor = `--${id}`
       trigger.setAttribute('aria-describedby', ids.join(' '))
       root.removeAttribute('aria-describedby')
     }
+    const delay = Number(root.dataset.delay ?? 500)
+    const closeDelay = Number(root.dataset.closeDelay ?? 150)
     let timer: ReturnType<typeof setTimeout> | undefined
     const open = () => {
       if (!panel.matches(':popover-open')) panel.showPopover()
@@ -98,9 +168,9 @@ const anchor = `--${id}`
     }
     root.addEventListener('pointerenter', (e) => {
       if (e.pointerType === 'touch') return
-      later(open, Date.now() - lastClose < 500 ? 0 : 500)
+      later(open, Date.now() - lastClose < 500 ? 0 : delay)
     })
-    root.addEventListener('pointerleave', () => later(close, 150))
+    root.addEventListener('pointerleave', () => later(close, closeDelay))
     // Keyboard focus only: a tap or click focuses the button without :focus-visible.
     root.addEventListener('focusin', (e) => (e.target as Element).matches(':focus-visible') && later(open, 0))
     root.addEventListener('focusout', () => later(close, 0))

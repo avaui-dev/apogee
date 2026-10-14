@@ -52,6 +52,7 @@ attribute passes through.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `label` | `string` | — | Accessible label for the group (sets `aria-label` on the `role="group"` root). |
+| `disabled` | `boolean` | `false` | Disables every button inside. The root is a `<fieldset>`, so this is native and needs no JS. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ButtonGroup applies no visual style to itself beyond the join — it targets its
@@ -61,8 +62,35 @@ its own; those come from whatever's composed inside (see Button's Tokens).
 
 ## States
 
-States belong to the composed children (Button's hover / focus / active /
-disabled) — ButtonGroup itself has none.
+Hover, focus and active belong to the composed Buttons. A focused item lifts
+above its overlapping neighbour so its whole outline shows. `disabled` on the
+group disables every button at once.
+
+<Preview code={`<ButtonGroup label="Alignment">
+  <Button variant="outline" color="neutral">Left</Button>
+  <Button variant="outline" color="neutral">Center</Button>
+  <Button variant="outline" color="neutral">Right</Button>
+</ButtonGroup>
+<ButtonGroup label="Alignment" disabled>
+  <Button variant="outline" color="neutral">Left</Button>
+  <Button variant="outline" color="neutral">Center</Button>
+  <Button variant="outline" color="neutral">Right</Button>
+</ButtonGroup>`}>
+  <div data-apogee-button-group="basic">
+    <ButtonGroup label="Alignment">
+      <Button variant="outline" color="neutral">Left</Button>
+      <Button variant="outline" color="neutral">Center</Button>
+      <Button variant="outline" color="neutral">Right</Button>
+    </ButtonGroup>
+  </div>
+  <div data-apogee-button-group="disabled">
+    <ButtonGroup label="Alignment" disabled>
+      <Button variant="outline" color="neutral">Left</Button>
+      <Button variant="outline" color="neutral">Center</Button>
+      <Button variant="outline" color="neutral">Right</Button>
+    </ButtonGroup>
+  </div>
+</Preview>
 
 ## Examples
 

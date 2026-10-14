@@ -58,14 +58,14 @@ const {
 } = Astro.props
 const id = idProp ?? uid(Astro.locals)
 const invalid = Boolean(error) || hasError
-const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
 // The steppers sit inside the box; the input keeps the size's height and text.
 const sizeClasses = fieldSizes[size].replace(/\bpx-\S+\s*/, '') + ' max-md:text-base'
 const btn =
-  'apogee-number-step grid aspect-square place-items-center text-neutral-faded transition-colors no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary disabled:opacity-50'
+  'apogee-number-step grid aspect-square place-items-center text-neutral-faded transition-colors no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus disabled:opacity-50'
 ---
 
-<Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
+<Field id={id} label={label} size={size} hint={hint} error={error} required={required} class={className}>
   <div
     class:list={[
       'apogee-number flex items-stretch overflow-hidden px-0 focus-within:border-primary focus-within:shadow-[inset_0_0_0_1.5px_var(--border-primary)] aria-[invalid=true]:border-critical',

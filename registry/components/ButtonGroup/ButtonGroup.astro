@@ -6,23 +6,27 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
-interface Props extends HTMLAttributes<'div'> {
+interface Props extends HTMLAttributes<'fieldset'> {
   /** Accessible label for the group. */
   label?: string
+  /** Disables every button inside (native fieldset behaviour, no JS). */
+  disabled?: boolean
   class?: string
 }
 
-const { label, class: className, ...rest } = Astro.props
+const { label, disabled = false, class: className, ...rest } = Astro.props
 ---
 
-<div
+{/* A fieldset so `disabled` reaches every button natively; the focused item lifts above its overlapping neighbour. */}
+<fieldset
   role="group"
   aria-label={label}
+  disabled={disabled || undefined}
   class:list={[
-    'inline-flex [&>*:not(:first-child)]:-ms-px [&>*:not(:first-child)]:rounded-s-none [&>*:not(:last-child)]:rounded-e-none',
+    'm-0 inline-flex min-w-0 border-0 p-0 [&>*]:relative [&>*:focus-visible]:z-10 [&>*:not(:first-child)]:-ms-px [&>*:not(:first-child)]:rounded-s-none [&>*:not(:last-child)]:rounded-e-none',
     className,
   ]}
   {...rest}
 >
   <slot />
-</div>
+</fieldset>

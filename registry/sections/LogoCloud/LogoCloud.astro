@@ -38,7 +38,7 @@ const mono = background === 'primary' || background === 'inverted' ? 'brightness
     {items.map((logo) => (
       <li class="shrink-0">
         {logo.href ? (
-          <a href={logo.href} class="block rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+          <a href={logo.href} class="block rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
             <img src={logo.src} alt={logo.alt} height="32" class:list={['h-8 w-auto', mono]} loading="lazy" decoding="async" />
           </a>
         ) : (

@@ -11,6 +11,8 @@ import { uid } from '../utils/uid.ts'
 interface Props extends HTMLAttributes<'input'> {
   id?: string
   label?: string
+  /** Supporting text under the label, read as the control's description. @category content */
+  hint?: string
   name: string
   value: string
   /** @category layout */
@@ -20,7 +22,7 @@ interface Props extends HTMLAttributes<'input'> {
   class?: string
 }
 
-const { id: idProp, label, size = 'medium', hasError = false, class: className, ...rest } = Astro.props
+const { id: idProp, label, hint, size = 'medium', hasError = false, class: className, ...rest } = Astro.props
 const hasLabel = Boolean(label) || Astro.slots.has('default')
 const sizes = { small: 'size-3.5', medium: 'size-4', large: 'size-5' } as const
 const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
@@ -28,8 +30,22 @@ const id = idProp ?? uid(Astro.locals)
 ---
 
 <label for={id} class:list={['flex items-start gap-2', className]}>
-  <input id={id} type="radio" class:list={['apogee-radio', sizes[size]]} aria-invalid={hasError ? 'true' : undefined} {...rest} />
-  {hasLabel && <span class:list={[labelSizes[size], 'text-neutral']}>{label ?? <slot />}</span>}
+  <input
+    id={id}
+    type="radio"
+    class:list={['apogee-radio', sizes[size]]}
+    aria-invalid={hasError ? 'true' : undefined}
+    aria-describedby={hint ? `${id}-hint` : undefined}
+    {...rest}
+  />
+  {
+    hasLabel && (
+      <span class="flex flex-col gap-0.5">
+        <span class:list={[labelSizes[size], 'text-neutral', hint && 'font-medium']}>{label ?? <slot />}</span>
+        {hint && <span id={`${id}-hint`} class:list={[labelSizes[size], 'text-neutral-faded']}>{hint}</span>}
+      </span>
+    )
+  }
 </label>
 
 <style>
@@ -58,7 +74,7 @@ const id = idProp ?? uid(Astro.locals)
     border-color: var(--border-critical);
   }
   .apogee-radio:focus-visible {
-    outline: 2px solid var(--border-primary);
+    outline: 2px solid var(--outline-color-focus);
     outline-offset: 2px;
   }
   .apogee-radio:disabled {

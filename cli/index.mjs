@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve, join } from 'node:path'
 import { parseArgs } from 'node:util'
-import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom } from './lib.mjs'
+import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin } from './lib.mjs'
 
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const registryDir = join(pkgRoot, 'registry')
@@ -69,12 +69,22 @@ function cmdInit(opts) {
     say(`${green('✓')} wrote ${bold(config.tokens)}`)
   }
 
+  if (opts.skin) {
+    try {
+      const skinDest = copySkin(registryDir, opts.skin, tokensDest)
+      say(`${green('✓')} wrote ${bold(skinDest.replace(process.cwd() + '/', ''))}`)
+    } catch (e) {
+      die(e.message)
+    }
+  }
+
   say(`\n${bold('Next steps')}`)
   say(`  1. Install Tailwind v4 + Lucide:`)
   say(dim(`     npm i -D tailwindcss @tailwindcss/vite @lucide/astro`))
   say(`  2. In your global stylesheet, after Tailwind:`)
   say(dim(`     @import "tailwindcss";`))
   say(dim(`     @import "${config.tokens.replace(/^src\/styles\//, './')}";`))
+  if (opts.skin) say(dim(`     @import "${config.tokens.replace(/^src\/styles\//, './').replace(/\.css$/, '')}-skin-${opts.skin}.css"; /* then data-skin="${opts.skin}" on <html> */`))
   say(dim(`     @source "./${config.componentsDir}";`))
   say(`  3. Add components:`)
   say(dim(`     npx @ava-ui/apogee add button`))
@@ -145,7 +155,7 @@ function help() {
   say(`${bold('apogee')} — copy Apogee components into your project
 
 ${bold('Usage')}
-  apogee init [--dir <path>] [--tokens <path>] [--force]
+  apogee init [--dir <path>] [--tokens <path>] [--skin <name>] [--force]
   apogee add <names...> [--overwrite]
   apogee list
 
@@ -161,6 +171,7 @@ const { values, positionals } = parseArgs({
   options: {
     dir: { type: 'string' },
     tokens: { type: 'string' },
+    skin: { type: 'string' },
     force: { type: 'boolean', default: false },
     overwrite: { type: 'boolean', short: 'o', default: false },
     help: { type: 'boolean', short: 'h', default: false },

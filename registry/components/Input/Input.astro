@@ -57,14 +57,14 @@ const {
 } = Astro.props
 const id = idProp ?? uid(Astro.locals)
 const invalid = Boolean(error) || hasError
-const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
 const hasStart = Boolean(prefix) || Astro.slots.has('start')
 const hasEnd = Boolean(suffix) || Astro.slots.has('end')
 const floating = labelPosition === 'floating'
 const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlarge: 'start-5' } as const
 ---
 
-<Field id={id} label={floating ? undefined : label} hint={hint} error={error} required={required} class={className}>
+<Field id={id} label={floating ? undefined : label} size={size} hint={hint} error={error} required={required} class={className}>
   <div class="relative flex items-center">
     {
       hasStart && (

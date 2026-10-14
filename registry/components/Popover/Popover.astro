@@ -46,7 +46,7 @@ const {
 const id = idProp ?? uid(Astro.locals, 'apogee-pop')
 const anchor = `--${id}`
 const triggerClass =
-  'inline-flex items-center gap-1 rounded-md border border-neutral bg-page px-3 py-1.5 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+  'inline-flex items-center gap-1 rounded-md border border-neutral bg-page px-3 py-1.5 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
 ---
 
 {
@@ -64,6 +64,7 @@ const triggerClass =
 <div
   id={id}
   popover
+  data-placement={placement}
   style={panelStyle({ anchor, placement, gap, width, maxHeight })}
   class:list={[
     panelClass,

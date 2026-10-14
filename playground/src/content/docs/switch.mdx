@@ -45,6 +45,7 @@ attribute not listed below (`checked`, `disabled`, `name`, `value`,
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Track and label size. |
 | `reversed` | `boolean` | `false` | Label first, switch last. |
 | `hasError` | `boolean` | `false` | Marks the switch invalid: `aria-invalid` on the input, a critical ring on the track. |
+| `hint` | `string` | — | Supporting text under the label; the input lists it in `aria-describedby`. The label turns medium weight to read as a heading. |
 | `class` | `string` | — | Extra classes on the root `<label>`, appended last. |
 | …rest | — | — | Any other attribute passes through to the `<input type="checkbox" role="switch">`. |
 
@@ -56,6 +57,12 @@ attribute not listed below (`checked`, `disabled`, `name`, `value`,
   <Switch size="small" label="Small" />
   <Switch size="medium" label="Medium" />
   <Switch size="large" label="Large" />
+</Preview>
+
+## Hint
+
+<Preview code={`<Switch label="Two-factor authentication" hint="A code from your authenticator app on every sign-in." />`}>
+  <div data-apogee-switch="hint" class="contents"><Switch label="Two-factor authentication" hint="A code from your authenticator app on every sign-in." /></div>
 </Preview>
 
 ## Reversed and slot label
@@ -82,8 +89,8 @@ attribute not listed below (`checked`, `disabled`, `name`, `value`,
   `peer-checked`.
 - **Focus** — a visible ring on the track when the hidden input has keyboard
   focus (`peer-focus-visible:outline`).
-- **Disabled** — the track dims (`peer-disabled:opacity-50`); pass the
-  native `disabled` attribute.
+- **Disabled** — the track takes the disabled fill (`peer-disabled:bg-disabled`);
+  pass the native `disabled` attribute.
 - **RTL** — the thumb translates the other direction under a `dir="rtl"`
   ancestor.
 
@@ -118,7 +125,8 @@ In a form, submitting a value when checked:
 
 | Token | Used for |
 |---|---|
-| `--background-neutral-faded` | Track background (unchecked) |
+| `--background-neutral` | Track background (unchecked) |
+| `--background-disabled` | Track background (disabled) |
 | `--background-primary` | Track background (checked) |
 | `--border-primary` | Focus ring |
 

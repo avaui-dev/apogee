@@ -5,6 +5,17 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+### Added
+
+- **Button** — `variant="link"`, `showTextWhileLoading`; loading keeps the width (content hidden, spinner centred); `data-icon-only` / `data-loading` on the root replace the class rewrite; critical buttons focus in the critical colour. Focus ring token `--outline-color-focus` (`outline-focus`) replaces every hard-coded primary outline. Icons in buttons are sized as direct children, so a nested Spinner or avatar keeps its own size.
+- **ButtonGroup, ToggleButtonGroup** — `disabled` (the root is now a `<fieldset role="group">`, so it is native); a focused item lifts above its neighbours so the outline is never clipped.
+- **CloseButton** (new) — one ✕ for Dialog, Dismissible, Toast and Tag; `size` (xsmall–large), `theme="dark"` over media, `label`.
+- **Field** — `tooltip` help icon (reachable when the control is disabled), `hideRequiredIndicator`, hint and error render together (`aria-describedby` lists both), hint text scales with `size`, `data-size` on the root. Text fields keep the caret clear of the padding when scrolling and keep their corners under autofill.
+- **Checkbox, Radio, Switch** — `hint` under the label (`aria-describedby`); the checkbox tick and dash are a mask filled with `--on-primary` instead of a literal white; checkbox radius scales with size.
+- **Badge, Tag** — tighter padding on the side that holds an icon or the remove button (`data-slot` wrappers).
+- **Floating panels** slide in from their anchor side and scale from that edge (`data-placement` on every panel; `.apogee-panel` in the tokens file, re-run `init`). **Tooltip** — `description`, `arrow`, `delay` / `closeDelay`, a `shortcut` slot for a Kbd.
+- **Skins** — opt-in `skin-skeuomorphic.css` (bevelled solid and outline buttons, segmented and toggle chips, outlined fields) enabled with `data-skin="skeuomorphic"` on `<html>` or any subtree; `init --skin skeuomorphic` copies it; `getSkin` / `setSkin` in `utils/theme.ts`. The base theme gains three inert variables the components read.
+
 ### Changed
 
 - **Dropdown `align` → `placement`** (`'start'` → `'bottom-start'`, `'end'` → `'bottom-end'`). Tooltip, Dropdown, ContextMenu, Menubar and Combobox panels render in the top layer (no more clipping by `overflow: hidden`); Dropdown and Menubar no longer use `<details>`. **Migration:** the panels need the `.apogee-panel` rules at the end of `registry/tokens/theme.css`; re-run `init` (or copy that block) when you update any of these components, or closed-popover styling and anchoring break.

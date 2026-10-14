@@ -63,7 +63,7 @@ const found = items.findIndex((t) => t.value === value && !t.disabled && !t.href
 const initial = found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
 const id = uid(Astro.locals)
 const tabClass =
-  'shrink-0 cursor-pointer whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary aria-disabled:pointer-events-none aria-disabled:opacity-50'
+  'shrink-0 cursor-pointer whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:opacity-50'
 ---
 
 <div class:list={['apogee-tabs', className]} {...rest}>
@@ -110,7 +110,7 @@ const tabClass =
             hidden={i !== initial}
             tabindex="0"
             class:list={[
-              'pt-4 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+              'pt-4 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
               i !== initial && 'no-js:block',
             ]}
           >

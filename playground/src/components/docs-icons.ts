@@ -29,7 +29,7 @@ export const docsIcons: Record<string, typeof Box> = {
   textarea: AlignLeft, timeline: GitCommitHorizontal, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,
   tokens: Paintbrush, tooltip: MessageCircle, typography: ALargeSmall,
   utilities: Wrench, theme: SunMoon, 'loader-text': LoaderCircle, 'icon-toggle': ToggleLeft, 'content-toggle': ArrowRightLeft,
-  foundations: Compass, components: Shapes, sections: LayoutTemplate,
+  foundations: Compass, components: Shapes, sections: LayoutTemplate, 'close-button': X, skins: Layers,
   'section-header': LayoutTemplate, 'sections/hero': LayoutTemplate, 'sections/logo-cloud': Shapes, 'sections/features': LayoutGrid, 'sections/stats': TrendingUp,
   'sections/testimonials': Quote, 'sections/cta': MousePointerClick, 'sections/faq': ChevronsDownUp, 'sections/content': FileText, 'sections/team': Users,
   'sections/pricing': CreditCard, 'sections/blog-list': List, 'sections/post-header': Heading, 'sections/contact': MessageSquare, 'sections/not-found': Search,

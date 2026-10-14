@@ -11,7 +11,6 @@
 import type { HTMLAttributes } from 'astro/types'
 import {
   buttonSizes,
-  iconOnlySizes,
   buttonStyles,
   pressedStyles,
   type ButtonColor,
@@ -30,7 +29,7 @@ interface Props extends Omit<HTMLAttributes<'button'>, 'size'> {
   /** Resting hue. @category layout */
   color?: ButtonColor
   /** Resting fill style. @category layout */
-  variant?: ButtonVariant
+  variant?: Exclude<ButtonVariant, 'link'>
   /** @category layout */
   size?: ButtonSize
   /** Pressed hue. @category layout */
@@ -60,22 +59,19 @@ const {
   class: className,
   ...rest
 } = Astro.props
-
-const sizeClasses = iconOnly
-  ? [iconOnlySizes[size], 'p-0', buttonSizes[size].replace(/\b(px|h)-\S+/g, '')]
-  : buttonSizes[size]
 ---
 
 <button
   type="button"
   aria-pressed={pressed}
   data-toggle={String(!manual)}
+  data-icon-only={iconOnly ? '' : undefined}
   value={value}
   class:list={[
-    'apogee-toggle inline-flex items-center justify-center whitespace-nowrap font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0',
+    'apogee-toggle relative inline-flex items-center justify-center whitespace-nowrap font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:pointer-events-none disabled:opacity-50 [&>svg]:shrink-0',
     buttonStyles[variant][color],
     pressedStyles[selectedVariant][selectedColor],
-    sizeClasses,
+    buttonSizes[size],
     rounded && 'rounded-full',
     className,
   ]}

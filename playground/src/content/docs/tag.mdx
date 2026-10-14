@@ -123,6 +123,24 @@ passes through to the root `<span data-apogee-tag>`.
   </div>
 </Preview>
 
+## Padding
+
+The side that holds an icon or the remove button pads less, so the glyph sits
+optically inside the chip:
+
+<Preview code={`<Tag>Plain</Tag>
+<Tag><Mail slot="start" />With icon</Tag>
+<Tag removable>Removable</Tag>`}>
+  <div data-apogee-tag="padding" class="contents">
+    <Tag>Plain</Tag>
+    <Tag><Mail slot="start" />With icon</Tag>
+    <Tag removable>Removable</Tag>
+  </div>
+  <div data-apogee-tag="remove-color" class="contents">
+    <Tag color="primary" variant="solid" removable>Solid</Tag>
+  </div>
+</Preview>
+
 ## States
 
 - **Hover / focus** — the label (link or plain text) and the remove button

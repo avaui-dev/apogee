@@ -191,6 +191,18 @@
       "dependencies": [],
       "usesJs": false
     },
+    "CloseButton": {
+      "name": "CloseButton",
+      "kind": "component",
+      "files": [
+        "CloseButton/CloseButton.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "Code": {
       "name": "Code",
       "kind": "component",
@@ -325,11 +337,10 @@
         "Dialog/Dialog.astro"
       ],
       "registryDependencies": [
+        "CloseButton",
         "utils"
       ],
-      "dependencies": [
-        "@lucide/astro"
-      ],
+      "dependencies": [],
       "usesJs": true
     },
     "Dismissible": {
@@ -339,11 +350,10 @@
         "Dismissible/Dismissible.astro"
       ],
       "registryDependencies": [
+        "CloseButton",
         "utils"
       ],
-      "dependencies": [
-        "@lucide/astro"
-      ],
+      "dependencies": [],
       "usesJs": true
     },
     "Divider": {
@@ -411,8 +421,12 @@
       "files": [
         "Field/Field.astro"
       ],
-      "registryDependencies": [],
-      "dependencies": [],
+      "registryDependencies": [
+        "Tooltip"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     },
     "FileUpload": {
@@ -955,10 +969,10 @@
       "files": [
         "Tag/Tag.astro"
       ],
-      "registryDependencies": [],
-      "dependencies": [
-        "@lucide/astro"
+      "registryDependencies": [
+        "CloseButton"
       ],
+      "dependencies": [],
       "usesJs": true
     },
     "TagInput": {
@@ -1029,7 +1043,8 @@
         "Toast/Toaster.astro"
       ],
       "registryDependencies": [
-        "Button"
+        "Button",
+        "CloseButton"
       ],
       "dependencies": [
         "@lucide/astro"

@@ -4,6 +4,7 @@
 @source "../../../registry/components";
 @source "../../../registry/sections";
 @import "../../../registry/tokens/theme.css";
+@import "../../../registry/tokens/skin-skeuomorphic.css";
 
 /* Docs: anchor jumps clear the sticky navbar (h-16 = 4rem). */
 html {

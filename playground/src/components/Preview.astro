@@ -14,7 +14,7 @@
  * and the window resized against it. Escape or the corner button restores it.
  */
 import { Code } from 'astro:components'
-import { ChevronDown, Maximize2, Minimize2, Sun, Moon } from '@lucide/astro'
+import { ChevronDown, Maximize2, Minimize2, Sun, Moon, Layers } from '@lucide/astro'
 import type { ComponentProps } from 'astro/types'
 
 interface Props {
@@ -37,11 +37,14 @@ const { code, lang = 'astro', block = false } = Astro.props
     <slot />
     <!-- Full-screen chrome: theme switch + exit. Bound by the layout's theme script like any [data-theme-toggle]. -->
     <div class="fixed end-3 top-3 hidden gap-1.5 in-data-fullscreen:flex">
-      <button type="button" data-theme-toggle aria-label="Toggle theme" class="grid size-8 place-items-center rounded-md border border-neutral bg-elevation-raised text-neutral-faded shadow-raised transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+      <button type="button" data-skin-toggle aria-label="Toggle skin" title="Skeuomorphic skin" class="grid size-8 place-items-center rounded-md border border-neutral bg-elevation-raised text-neutral-faded shadow-raised transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus in-data-[skin=skeuomorphic]:text-primary">
+        <Layers class="size-4" aria-hidden="true" />
+      </button>
+      <button type="button" data-theme-toggle aria-label="Toggle theme" class="grid size-8 place-items-center rounded-md border border-neutral bg-elevation-raised text-neutral-faded shadow-raised transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
         <Sun class="size-4 hidden dark:block" aria-hidden="true" />
         <Moon class="size-4 dark:hidden" aria-hidden="true" />
       </button>
-      <button type="button" data-preview-collapse aria-label="Exit full screen" class="grid size-8 place-items-center rounded-md border border-neutral bg-elevation-raised text-neutral-faded shadow-raised transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+      <button type="button" data-preview-collapse aria-label="Exit full screen" class="grid size-8 place-items-center rounded-md border border-neutral bg-elevation-raised text-neutral-faded shadow-raised transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
         <Minimize2 class="size-4" aria-hidden="true" />
       </button>
     </div>
@@ -50,7 +53,7 @@ const { code, lang = 'astro', block = false } = Astro.props
   <div class="relative">
   <details class="group not-content border-t border-neutral">
     <summary
-      class="m-0 flex cursor-pointer list-none items-center gap-1.5 rounded-b-lg px-4 py-2 text-xs font-medium text-neutral-faded transition-colors group-open:rounded-b-none hover:bg-neutral-faded hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
+      class="m-0 flex cursor-pointer list-none items-center gap-1.5 rounded-b-lg px-4 py-2 text-xs font-medium text-neutral-faded transition-colors group-open:rounded-b-none hover:bg-neutral-faded hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-focus [&::-webkit-details-marker]:hidden"
     >
       <ChevronDown class="size-3.5 transition-transform group-open:rotate-180" aria-hidden="true" />
       <span class="group-open:hidden">Show code</span>
@@ -65,7 +68,7 @@ const { code, lang = 'astro', block = false } = Astro.props
     data-preview-expand
     aria-label="View full screen"
     title="Full screen"
-    class="absolute end-1.5 top-1 grid size-6 place-items-center no-js:hidden rounded text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+    class="absolute end-1.5 top-1 grid size-6 place-items-center no-js:hidden rounded text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
   >
     <Maximize2 class="size-3.5" aria-hidden="true" />
   </button>

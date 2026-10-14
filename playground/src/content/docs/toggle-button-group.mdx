@@ -66,6 +66,7 @@ through to the root `<div>`.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `type` | `'single' \| 'multiple'` | `'multiple'` | `single`: mutually exclusive (one or none pressed). `multiple`: each button toggles independently. |
+| `disabled` | `boolean` | `false` | Disables every button inside (the root is a `<fieldset>`; native, no JS). |
 | `aria-label` | `string` | — | Label for the group (e.g. "Text alignment"). |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
@@ -102,6 +103,20 @@ Both `type` values:
 - **Multiple-select** — each button toggles independently, no coordination.
 - **No JS** — buttons render at their initial `pressed` values and don't
   respond to clicks (see [`ToggleButton`](/toggle-button)).
+- **Disabled** — `disabled` on the group disables every button; a focused
+  button lifts above its neighbours so its outline is never clipped.
+
+<Preview code={`<ToggleButtonGroup type="single" aria-label="Text alignment" disabled>
+  <ToggleButton iconOnly pressed aria-label="Left"><AlignLeft /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Center"><AlignCenter /></ToggleButton>
+  <ToggleButton iconOnly aria-label="Right"><AlignRight /></ToggleButton>
+</ToggleButtonGroup>`}>
+  <ToggleButtonGroup type="single" aria-label="Text alignment" disabled>
+    <ToggleButton iconOnly pressed aria-label="Left"><AlignLeft /></ToggleButton>
+    <ToggleButton iconOnly aria-label="Center"><AlignCenter /></ToggleButton>
+    <ToggleButton iconOnly aria-label="Right"><AlignRight /></ToggleButton>
+  </ToggleButtonGroup>
+</Preview>
 
 ## In a form
 

@@ -110,14 +110,14 @@ const slideCount = dots
       <>
         <button
           type="button"
-          class="apogee-carousel-prev absolute top-1/2 start-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          class="apogee-carousel-prev absolute top-1/2 start-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           aria-label="Previous"
         >
           <ChevronLeft class="size-5 rtl:-scale-x-100" aria-hidden="true" />
         </button>
         <button
           type="button"
-          class="apogee-carousel-next absolute top-1/2 end-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          class="apogee-carousel-next absolute top-1/2 end-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           aria-label="Next"
         >
           <ChevronRight class="size-5 rtl:-scale-x-100" aria-hidden="true" />
@@ -132,7 +132,7 @@ const slideCount = dots
         {Array.from({ length: slideCount }).map((_, i) => (
           <button
             type="button"
-            class="apogee-carousel-dot group/dot rounded-full p-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            class="apogee-carousel-dot group/dot rounded-full p-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
             aria-label={`Go to slide ${i + 1}`}
             aria-current={i === 0 ? 'true' : 'false'}
           >

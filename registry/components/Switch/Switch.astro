@@ -10,6 +10,8 @@ import { uid } from '../utils/uid.ts'
 interface Props extends HTMLAttributes<'input'> {
   id?: string
   label?: string
+  /** Supporting text under the label, read as the control's description. @category content */
+  hint?: string
   /** @category layout */
   size?: 'small' | 'medium' | 'large'
   /** Marks the control invalid. */
@@ -19,7 +21,7 @@ interface Props extends HTMLAttributes<'input'> {
   class?: string
 }
 
-const { id: idProp, label, size = 'medium', hasError = false, reversed = false, class: className, ...rest } = Astro.props
+const { id: idProp, label, hint, size = 'medium', hasError = false, reversed = false, class: className, ...rest } = Astro.props
 const hasLabel = Boolean(label) || Astro.slots.has('default')
 const tracks = {
   small: 'h-4 w-7 after:size-3 peer-checked:after:translate-x-3 rtl:peer-checked:after:-translate-x-3',
@@ -30,13 +32,28 @@ const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } a
 const id = idProp ?? uid(Astro.locals)
 ---
 
-<label for={id} class:list={['inline-flex items-center gap-2', reversed && 'flex-row-reverse', className]}>
-  <input id={id} type="checkbox" role="switch" class="peer sr-only" aria-invalid={hasError ? 'true' : undefined} {...rest} />
+<label for={id} class:list={['inline-flex gap-2', hint ? 'items-start' : 'items-center', reversed && 'flex-row-reverse', className]}>
+  <input
+    id={id}
+    type="checkbox"
+    role="switch"
+    class="peer sr-only"
+    aria-invalid={hasError ? 'true' : undefined}
+    aria-describedby={hint ? `${id}-hint` : undefined}
+    {...rest}
+  />
   <span
     class:list={[
-      "relative shrink-0 rounded-full bg-neutral transition-colors motion-reduce:transition-none motion-reduce:after:transition-none peer-checked:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary peer-disabled:bg-disabled peer-aria-[invalid=true]:shadow-[0_0_0_1.5px_var(--border-critical)] after:absolute after:start-0.5 after:top-0.5 after:rounded-full after:bg-white after:shadow-outline after:transition-transform after:content-['']",
+      "relative shrink-0 rounded-full bg-neutral transition-colors motion-reduce:transition-none motion-reduce:after:transition-none peer-checked:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus peer-disabled:bg-disabled peer-aria-[invalid=true]:shadow-[0_0_0_1.5px_var(--border-critical)] after:absolute after:start-0.5 after:top-0.5 after:rounded-full after:bg-white after:shadow-outline after:transition-transform after:content-['']",
       tracks[size],
     ]}
   ></span>
-  {hasLabel && <span class:list={[labelSizes[size], 'text-neutral']}>{label ?? <slot />}</span>}
+  {
+    hasLabel && (
+      <span class="flex flex-col gap-0.5">
+        <span class:list={[labelSizes[size], 'text-neutral', hint && 'font-medium']}>{label ?? <slot />}</span>
+        {hint && <span id={`${id}-hint`} class:list={[labelSizes[size], 'text-neutral-faded']}>{hint}</span>}
+      </span>
+    )
+  }
 </label>

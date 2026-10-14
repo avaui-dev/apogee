@@ -10,7 +10,7 @@
  * state, set `dismissOnClick` to also remove the element from the DOM.
  */
 import type { HTMLAttributes } from 'astro/types'
-import { X } from '@lucide/astro'
+import CloseButton from '../CloseButton/CloseButton.astro'
 
 const styles = {
   solid: {
@@ -35,10 +35,11 @@ const styles = {
     warning: 'border border-warning text-warning',
   },
 } as const
+// The side that holds an icon or the remove button pads less.
 const sizes = {
-  small: 'h-6 px-1.5 text-xs gap-1',
-  medium: 'h-7 px-2 text-sm gap-1',
-  large: 'h-8 px-2.5 text-sm gap-1.5',
+  small: 'h-6 px-1.5 text-xs gap-1 has-[>[data-slot=start]]:ps-1 has-[>[data-slot=end]]:pe-1',
+  medium: 'h-7 px-2 text-sm gap-1 has-[>[data-slot=start]]:ps-1.5 has-[>[data-slot=end]]:pe-1.5',
+  large: 'h-8 px-2.5 text-sm gap-1.5 has-[>[data-slot=start]]:ps-2 has-[>[data-slot=end]]:pe-2',
 } as const
 
 /** @composable */
@@ -92,20 +93,13 @@ const Label = href ? 'a' : 'span'
   data-dismiss-on-click={dismissOnClick ? '' : undefined}
   {...rest}
 >
-  <slot name="start" />
-  <Label href={href} class="inline-flex items-center gap-[inherit] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+  {Astro.slots.has('start') && <span data-slot="start" class="inline-flex"><slot name="start" /></span>}
+  <Label href={href} class="inline-flex items-center gap-[inherit] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
     <slot />
   </Label>
   {
     removable && (
-      <button
-        type="button"
-        aria-label={removeLabel}
-        data-tag-remove
-        class="-me-0.5 grid size-4 place-items-center rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary no-js:hidden"
-      >
-        <X class="size-3.5" stroke-width={2.5} aria-hidden="true" />
-      </button>
+      <CloseButton size="xsmall" theme="inherit" label={removeLabel} data-tag-remove data-slot="end" class="no-js:hidden" />
     )
   }
 </span>

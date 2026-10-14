@@ -44,7 +44,7 @@ through to the root `<button>` or `<a>`.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | The hue. |
-| `variant` | `'solid' \| 'outline' \| 'ghost' \| 'faded'` | `'solid'` | The fill style. |
+| `variant` | `'solid' \| 'outline' \| 'ghost' \| 'faded' \| 'link'` | `'solid'` | The fill style; `link` is text-sized with no box. |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
 | `rounded` | `boolean` | `false` | Fully round ends. |
 | `raised` | `boolean` | `false` | Adds the raised shadow. |
@@ -52,14 +52,17 @@ through to the root `<button>` or `<a>`.
 | `iconOnly` | `boolean` | `false` | A square button for a single icon. Give it an `aria-label`. |
 | `href` | `string` | — | Renders an `<a>` instead of a `<button>`. |
 | `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Native button type (ignored with `href`). |
-| `loading` | `boolean` | `false` | Shows a spinner in the `start` slot and blocks interaction. |
+| `loading` | `boolean` | `false` | Shows a centred spinner, hides the content and blocks interaction; the width does not change. |
+| `showTextWhileLoading` | `boolean` | `false` | Keeps the label visible next to the spinner while loading. |
 | `disabled` | `boolean` | `false` | Disables the control (`aria-disabled` on links). |
 | `highlighted` | `boolean` | `false` | Keeps the hover fill on: an active filter, an open menu's trigger. |
 | `class` | `string` | — | Extra classes, appended last. |
 
 Slots: `start` and `end` for icons; the default slot is the label.
 
-For an inline text link use `Link`; Button has no link variant.
+For an inline text link in running text use `Link`; `variant="link"` is a button that only looks like one (a "Cancel" beside a solid "Save").
+
+The root carries `data-icon-only` and `data-loading` while those states apply, so you can style them from outside.
 
 ## Variants × colors
 
@@ -134,6 +137,24 @@ Every variant with `highlighted`:
   <Button variant="ghost" highlighted>Ghost</Button>
 </Preview>
 
+## Link
+
+A button with the weight of a link: no box, underline on hover, every colour.
+
+<Preview code={`<Button variant="link">Cancel</Button>
+<Button variant="link" color="neutral">Learn more</Button>
+<Button variant="link" color="critical">Delete</Button>
+<Button variant="link" color="positive">Approve</Button>
+<Button variant="link" color="warning">Review</Button>`}>
+  <div data-apogee-button="link" class="flex flex-wrap items-center gap-4">
+    <Button variant="link">Cancel</Button>
+    <Button variant="link" color="neutral">Learn more</Button>
+    <Button variant="link" color="critical">Delete</Button>
+    <Button variant="link" color="positive">Approve</Button>
+    <Button variant="link" color="warning">Review</Button>
+  </div>
+</Preview>
+
 ## Sizes
 
 <Preview code={`<Button size="small">Small</Button>
@@ -150,7 +171,7 @@ Every variant with `highlighted`:
     <Button size="large">Large</Button>
     <Button size="xlarge">Extra large</Button>
   </div>
-  <div class="flex flex-wrap items-center gap-2">
+  <div data-apogee-button="icon-only" class="flex flex-wrap items-center gap-2">
     <Button size="small" iconOnly aria-label="Search"><Search /></Button>
     <Button iconOnly aria-label="Search"><Search /></Button>
     <Button size="large" iconOnly aria-label="Search"><Search /></Button>
@@ -176,11 +197,21 @@ Every variant with `highlighted`:
 
 ## States
 
-<Preview code={`<Button loading>Saving…</Button>
+<Preview code={`<Button>Save changes</Button>
+<Button loading>Save changes</Button>
+<Button loading showTextWhileLoading>Save changes</Button>
 <Button disabled>Disabled</Button>
 <Button variant="outline" color="neutral" disabled>Disabled</Button>
 <Button href="/docs" disabled>Disabled link</Button>`}>
-  <Button loading>Saving…</Button>
+  <div data-apogee-button="loading-width" class="flex flex-wrap items-center gap-3">
+    <Button>Save changes</Button>
+    <Button loading>Save changes</Button>
+    <Button loading showTextWhileLoading>Save changes</Button>
+  </div>
+  <div data-apogee-button="loading-width-icon" class="flex flex-wrap items-center gap-3">
+    <Button><Search slot="start" />Search</Button>
+    <Button loading><Search slot="start" />Search</Button>
+  </div>
   <Button disabled>Disabled</Button>
   <Button variant="outline" color="neutral" disabled>Disabled</Button>
   <Button href="/docs" disabled>Disabled link</Button>
@@ -189,9 +220,11 @@ Every variant with `highlighted`:
 - **Hover** — solid fills move to their `-highlighted` token; faded, outline
   and ghost fills get the hue's `-faded-highlighted` tint.
 - **Active** — scales to 98.5% (not under `prefers-reduced-motion`).
-- **Focus** — a 2px outline in the primary border colour, offset 2px.
-- **Loading** — `aria-busy="true"`, a `Spinner` replaces the `start` slot, and
-  the control is disabled.
+- **Focus** — a 2px outline in the focus token (`--outline-color-focus`, the primary border by default), offset 2px; `color="critical"` focuses in the critical colour.
+- **Loading** — `aria-busy="true"` and `data-loading`; a centred `Spinner`
+  fades the content out (it stays in the box and in the accessibility tree, so the width and the name hold)
+  and the control is disabled. `showTextWhileLoading` keeps the label beside
+  the spinner.
 - **Disabled** — the disabled fill and text tokens; a disabled link drops its
   `href` and carries `aria-disabled="true"`.
 
