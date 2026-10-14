@@ -6,6 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 // https://astro.build/config
 export default defineConfig({
   redirects: { '/': '/docs' },
+  // Bind to every interface so the docs open on a phone on the same network.
+  server: { host: true },
   integrations: [mdx()],
   vite: {
     plugins: [tailwindcss()],
