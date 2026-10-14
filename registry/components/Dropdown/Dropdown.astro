@@ -1,138 +1,133 @@
 ---
 /**
- * Dropdown — a menu on native `<details>`. Open/close is native; a small island
- * adds the expected close-on-outside-click and Escape (progressive enhancement —
- * it works without JS, just doesn't auto-close). Put `DropdownItem`s in the slot.
+ * Dropdown — a menu on the native Popover API: open/close and light dismiss
+ * are native (zero JS); the island adds the menu keyboard pattern, close on
+ * item activation, and submenu hover. Put `DropdownItem`s, `DropdownSection`s
+ * and `DropdownSub`s in the slot. Slots: `anchor` (your own trigger with
+ * `popovertarget={id}`), default (menu).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronDown } from '@lucide/astro'
+import { uid } from '../utils/uid.ts'
+import { panelStyle, panelClass, panelSurface, menuClass, type Placement } from '../utils/panel.ts'
 
 /** @composable */
-interface Props extends Omit<HTMLAttributes<'details'>, 'align'> {
+interface Props extends HTMLAttributes<'div'> {
   label: string
-  /** Which edge the menu aligns to. */
-  align?: 'start' | 'end'
+  /** Menu id; set it when an `anchor` slot element needs `popovertarget`. */
+  id?: string
+  /** @category layout */
+  placement?: Placement
+  /** `'trigger'` matches the trigger's width; any CSS length otherwise. */
+  width?: 'trigger' | string
+  /** Scrolls the menu past this height. */
+  maxHeight?: string
   class?: string
 }
 
-const { label, align = 'start', class: className, ...rest } = Astro.props
+const { label, id: idProp, placement = 'bottom-start', width, maxHeight, class: className, ...rest } = Astro.props
+const id = idProp ?? uid(Astro.locals, 'apogee-dd')
+const anchor = `--${id}`
 ---
 
-<details class:list={['apogee-dropdown group relative inline-block', className]} {...rest}>
-  <summary
-    aria-haspopup="menu"
-    aria-expanded="false"
-    class="inline-flex h-10 cursor-pointer list-none items-center gap-2 rounded-md border border-neutral bg-page px-3 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
-  >
-    {label}
-    <ChevronDown class="size-4 text-neutral-faded transition-transform group-open:rotate-180" aria-hidden="true" />
-  </summary>
+<div class:list={['apogee-dropdown inline-block', className]} {...rest}>
+  {
+    Astro.slots.has('anchor') ? (
+      <span class="inline-flex" style={`anchor-name: ${anchor}`}>
+        <slot name="anchor" />
+      </span>
+    ) : (
+      <button
+        type="button"
+        popovertarget={id}
+        aria-haspopup="menu"
+        style={`anchor-name: ${anchor}`}
+        class="apogee-dropdown-trigger inline-flex h-10 items-center gap-2 rounded-md border border-neutral bg-page px-3 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        {label}
+        <ChevronDown class="size-4 text-neutral-faded transition-transform" aria-hidden="true" />
+      </button>
+    )
+  }
   <div
+    id={id}
+    popover
     role="menu"
-    class:list={[
-      'apogee-dropdown-menu absolute z-20 flex min-w-48 flex-col gap-0.5 rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg',
-      align === 'end' ? 'end-0' : 'start-0',
-    ]}
+    aria-label={label}
+    style={panelStyle({ anchor, placement, gap: 1.5, width, maxHeight })}
+    class:list={[panelClass, panelSurface.overlay, menuClass, 'min-w-48', maxHeight && 'overflow-auto']}
   >
     <slot />
   </div>
-</details>
+</div>
 
 <style>
-  .apogee-dropdown-menu {
-    top: 100%;
-    margin-top: 0.375rem;
-    transform-origin: top;
-  }
-  /* Flipped above the trigger when there isn't room below (set by the island). */
-  .apogee-dropdown--up .apogee-dropdown-menu {
-    top: auto;
-    bottom: 100%;
-    margin-top: 0;
-    margin-bottom: 0.375rem;
-    transform-origin: bottom;
-  }
-  .apogee-dropdown[open] .apogee-dropdown-menu {
-    animation: apogee-dropdown-in var(--duration-fast) var(--ease-standard);
-  }
-  @keyframes apogee-dropdown-in {
-    from {
-      opacity: 0;
-      transform: scale(0.97);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .apogee-dropdown[open] .apogee-dropdown-menu {
-      animation: none;
-    }
+  .apogee-dropdown-trigger:has(+ :popover-open) svg {
+    rotate: 180deg;
   }
 </style>
 
 <script>
   import { island } from '../utils/island.ts'
+  import { menuKeydown, menuItems, restoreFocus } from '../utils/menu.ts'
 
-  // Flip the menu above the trigger when there isn't room below the viewport.
-  island<HTMLDetailsElement>('details.apogee-dropdown', (d) => {
-    const summary = d.querySelector<HTMLElement>('summary')
-    d.addEventListener('toggle', () => {
-      summary?.setAttribute('aria-expanded', String(d.open))
-      d.dispatchEvent(new CustomEvent(d.open ? 'apogee:dropdown-open' : 'apogee:dropdown-close', { bubbles: true }))
-      if (!d.open) return
-      const menu = d.querySelector<HTMLElement>('.apogee-dropdown-menu')
-      if (!menu) return
-      const rect = d.getBoundingClientRect()
-      const below = window.innerHeight - rect.bottom
-      const above = rect.top
-      const needed = menu.offsetHeight + 8
-      d.classList.toggle('apogee-dropdown--up', below < needed && above > below)
+  island('.apogee-dropdown', (root) => {
+    const menu = root.querySelector<HTMLElement>(':scope > [role="menu"]')
+    const trigger = root.querySelector<HTMLElement>(':scope > button, :scope > span > *')
+    if (!menu) return
+    if (trigger) restoreFocus(menu, trigger)
+
+    menu.addEventListener('toggle', (e) => {
+      const open = (e as ToggleEvent).newState === 'open'
+      root.dispatchEvent(new CustomEvent(open ? 'apogee:dropdown-open' : 'apogee:dropdown-close', { bubbles: true }))
     })
 
-    // Arrow-key navigation between items (WAI-ARIA menu pattern).
-    d.addEventListener('keydown', (e) => {
-      const items = [...d.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])')]
-      if (!items.length) return
+    root.addEventListener('keydown', (e) => {
+      const active = document.activeElement as HTMLElement | null
       // ArrowDown on the closed trigger opens the menu and lands on the first item.
-      if (!d.open) {
-        if (e.key === 'ArrowDown' && e.target === summary) {
-          e.preventDefault()
-          d.open = true
-          items[0]?.focus()
-        }
+      if (active === trigger && e.key === 'ArrowDown' && !menu.matches(':popover-open')) {
+        e.preventDefault()
+        menu.showPopover()
+        menuItems(menu)[0]?.focus()
         return
       }
-      const idx = items.indexOf(document.activeElement as HTMLElement)
-      if (e.key === 'ArrowDown') {
+      const current = active?.closest<HTMLElement>('[role="menu"]')
+      if (!current || !root.contains(current)) return
+      if (e.key === 'ArrowRight' && active?.hasAttribute('popovertarget')) {
         e.preventDefault()
-        items[idx < items.length - 1 ? idx + 1 : 0]?.focus()
-      } else if (e.key === 'ArrowUp') {
+        const panel = active.closest('.apogee-dropdown-sub')?.querySelector<HTMLElement>(':scope > [role="menu"]')
+        if (!panel) return
+        if (!panel.matches(':popover-open')) panel.showPopover()
+        menuItems(panel)[0]?.focus()
+      } else if (e.key === 'ArrowLeft' && current !== menu) {
         e.preventDefault()
-        items[idx > 0 ? idx - 1 : items.length - 1]?.focus()
-      } else if (e.key === 'Home') {
-        e.preventDefault()
-        items[0]?.focus()
-      } else if (e.key === 'End') {
-        e.preventDefault()
-        items[items.length - 1]?.focus()
-      }
+        current.hidePopover()
+        current.closest('.apogee-dropdown-sub')?.querySelector<HTMLElement>(':scope > [role="menuitem"]')?.focus()
+      } else menuKeydown(e, current)
     })
-  })
 
-  // Progressive enhancement: close on outside-click, on item activation, and Escape.
-  document.addEventListener('click', (event) => {
-    const item = event.target instanceof Element ? event.target.closest('details.apogee-dropdown[open] button[role="menuitem"]') : null
-    if (item) {
-      item.closest<HTMLDetailsElement>('details.apogee-dropdown')!.open = false
-      return
-    }
-    for (const d of document.querySelectorAll<HTMLDetailsElement>('details.apogee-dropdown[open]')) {
-      if (!d.contains(event.target as Node)) d.open = false
-    }
-  })
-  document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape') return
-    for (const d of document.querySelectorAll<HTMLDetailsElement>('details.apogee-dropdown[open]')) {
-      d.open = false
-      d.querySelector<HTMLElement>('summary')?.focus()
+    // Activating an item closes the whole chain (links navigate as well).
+    root.addEventListener('click', (e) => {
+      const item = (e.target as Element).closest('[role="menuitem"]')
+      if (item && !item.hasAttribute('popovertarget') && menu.matches(':popover-open')) menu.hidePopover()
+    })
+
+    // Submenus open on hover with a short delay; leaving trigger and panel closes them.
+    for (const sub of root.querySelectorAll<HTMLElement>('.apogee-dropdown-sub')) {
+      const panel = sub.querySelector<HTMLElement>(':scope > [role="menu"]')
+      const subTrigger = sub.querySelector<HTMLElement>(':scope > [role="menuitem"]')
+      if (!panel || !subTrigger) continue
+      restoreFocus(panel, subTrigger)
+      let t: ReturnType<typeof setTimeout> | undefined
+      sub.addEventListener('pointerenter', () => {
+        clearTimeout(t)
+        // Only while the root menu is still open: a click that closed the chain must not reopen the sub.
+        t = setTimeout(() => menu.matches(':popover-open') && !panel.matches(':popover-open') && panel.showPopover(), 100)
+      })
+      sub.addEventListener('pointerleave', () => {
+        clearTimeout(t)
+        t = setTimeout(() => panel.matches(':popover-open') && panel.hidePopover(), 150)
+      })
     }
   })
 </script>

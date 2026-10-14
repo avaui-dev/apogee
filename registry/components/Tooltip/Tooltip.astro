@@ -1,36 +1,109 @@
 ---
 /**
- * Tooltip — a hint shown on hover / focus. Zero JS (CSS only). Wrap a focusable
- * trigger (button/link) so keyboard users get it too.
+ * Tooltip — a hint on hover / focus. The bubble is a `popover="manual"` panel
+ * anchored to the trigger (top layer: never clipped by an overflow ancestor),
+ * opened by a small island with hover intent: 500 ms on first hover, instant
+ * when another tooltip closed within the last 500 ms, 150 ms to close, focus
+ * opens at once, Escape closes, touch is ignored. Without JS the bubble is a
+ * plain CSS `:hover` / `:focus-within` bubble above the trigger.
+ * Wrap a focusable trigger so keyboard users get it; the island moves
+ * `aria-describedby` onto that element.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
+import { panelStyle, type Placement } from '../utils/panel.ts'
 interface Props extends HTMLAttributes<'span'> {
   text: string
+  /** @category layout */
+  placement?: Placement
+  /** Extra classes on the bubble. */
+  panelClass?: string
   class?: string
 }
 
-const { text, class: className, ...rest } = Astro.props
+const { text, placement = 'top', panelClass: panelClassName, class: className, ...rest } = Astro.props
 const id = uid(Astro.locals, 'apogee-tt')
+const anchor = `--${id}`
 ---
 
 {
   !text ? (
     <slot />
   ) : (
-<span class:list={['group relative inline-flex', className]} {...rest}>
-  <span class="inline-flex" aria-describedby={id}>
-    <slot />
-  </span>
-  <span
-    role="tooltip"
-    id={id}
-    class="pointer-events-none absolute bottom-full left-1/2 mb-1.5 w-max max-w-80 -translate-x-1/2 translate-y-1 text-center whitespace-normal rounded-md bg-inverted px-2 py-1 text-xs text-on-inverted opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"
-  >
-    {text}
-  </span>
-</span>
+    <span class:list={['apogee-tooltip inline-flex', className]} style={`anchor-name: ${anchor}`} aria-describedby={id} {...rest}>
+      <slot />
+      <span
+        id={id}
+        role="tooltip"
+        popover="manual"
+        style={panelStyle({ anchor, placement, gap: 1.5 })}
+        class:list={[
+          'apogee-panel apogee-tooltip-panel pointer-events-none max-w-80 rounded-md bg-inverted px-2 py-1 text-center text-xs text-on-inverted',
+          panelClassName,
+        ]}
+      >
+        {text}
+      </span>
+    </span>
   )
 }
+
+<style>
+  /* No-JS fallback: a plain bubble above the trigger, shown by :hover / :focus-within. */
+  :global(html.no-js) .apogee-tooltip {
+    position: relative;
+  }
+  :global(html.no-js) .apogee-tooltip-panel {
+    display: block;
+    position: absolute;
+    inset: auto auto 100% 50%;
+    translate: -50% 0;
+    margin: 0 0 0.375rem;
+    width: max-content;
+    opacity: 0;
+  }
+  :global(html.no-js) .apogee-tooltip:is(:hover, :focus-within) .apogee-tooltip-panel {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  let lastClose = 0 // shared "warm" window: a neighbour opens instantly
+  island('.apogee-tooltip', (root) => {
+    const panel = root.querySelector<HTMLElement>('[role="tooltip"]')
+    if (!panel) return
+    const trigger = root.querySelector<HTMLElement>('button, a, input, [tabindex]')
+    if (trigger) {
+      const ids = (trigger.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean)
+      if (!ids.includes(panel.id)) ids.push(panel.id)
+      trigger.setAttribute('aria-describedby', ids.join(' '))
+      root.removeAttribute('aria-describedby')
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const open = () => {
+      if (!panel.matches(':popover-open')) panel.showPopover()
+    }
+    const close = () => {
+      if (!panel.matches(':popover-open')) return
+      panel.hidePopover()
+      lastClose = Date.now()
+    }
+    const later = (fn: () => void, ms: number) => {
+      clearTimeout(timer)
+      timer = setTimeout(fn, ms)
+    }
+    root.addEventListener('pointerenter', (e) => {
+      if (e.pointerType === 'touch') return
+      later(open, Date.now() - lastClose < 500 ? 0 : 500)
+    })
+    root.addEventListener('pointerleave', () => later(close, 150))
+    // Keyboard focus only: a tap or click focuses the button without :focus-visible.
+    root.addEventListener('focusin', (e) => (e.target as Element).matches(':focus-visible') && later(open, 0))
+    root.addEventListener('focusout', () => later(close, 0))
+    root.addEventListener('keydown', (e) => e.key === 'Escape' && close())
+  })
+</script>

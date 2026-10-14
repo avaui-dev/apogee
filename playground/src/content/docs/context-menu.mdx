@@ -1,6 +1,6 @@
 ---
 title: ContextMenu
-description: A styleable right-click menu — opens at the cursor over a target, closes on outside click, Escape, or scroll.
+description: A styleable right-click menu — a native popover at the cursor over a target; closes on outside click, Escape, or scroll.
 group: Components
 order: 0
 ---
@@ -12,8 +12,10 @@ import DropdownItem from '../../../../registry/components/Dropdown/DropdownItem.
 import { Scissors, Copy, ClipboardPaste } from '@lucide/astro'
 
 <JsNote fallback="The panel stays hidden and the target's normal browser right-click menu opens instead — nothing is broken or lost.">
-  Opens a custom menu at the cursor on right-click, and closes it on outside click,
-  Escape, or scroll.
+  Opens a native popover at the cursor on right-click (top layer), moves
+  focus to the first item, wires the arrow keys, closes on item activation
+  and on scroll or resize. Outside click and Escape are the browser's own
+  light dismiss.
 </JsNote>
 
 <Preview code={`<ContextMenu class="w-full">
@@ -59,7 +61,8 @@ import DropdownItem from '@/components/apogee/Dropdown/DropdownItem.astro'
 ## Anatomy
 
 - **Target** — default slot; the element(s) that trigger the menu on right-click.
-- **Menu panel** — `slot="menu"`; a `role="menu"` panel positioned at the cursor.
+- **Menu panel** — `slot="menu"`; a `role="menu"` popover placed at the cursor,
+  in the top layer (no ancestor can clip it).
   Fill it with `DropdownItem`s (`role="menuitem"`).
 
 ## API
@@ -73,12 +76,12 @@ through to the root `<div>`.
 
 ## States
 
-- **Closed** (default) — the panel is `hidden`.
+- **Closed** (default) — the popover is closed.
 - **Open** — right-click (or the keyboard context-menu key / Shift+F10) shows the
   panel at the cursor, clamped inside the viewport. Try it in the hero preview
   above.
-- **No JS** — the panel stays hidden; the browser's native context menu opens
-  instead.
+- **No JS** — a closed popover renders nothing; the browser's native context
+  menu opens instead.
 
 ## Examples
 
@@ -104,7 +107,9 @@ With leading icons:
 
 ## Events
 
-The panel dispatches `apogee:contextmenu-open` (`detail: { x, y }`) and `apogee:contextmenu-close`, both bubbling.
+The panel dispatches `apogee:contextmenu-open` (`detail: { x, y }`, the clamped
+position) and `apogee:contextmenu-close`, both bubbling, alongside the native
+`toggle` event.
 
 ## Accessibility
 
@@ -114,8 +119,9 @@ The panel dispatches `apogee:contextmenu-open` (`detail: { x, y }`) and `apogee:
   `contextmenu` event as a right-click, so keyboard-only users can still open it.
   On open, focus moves to the first menu item. `ArrowDown` / `ArrowUp` navigate
   between items, wrapping from last to first and back; `Home` / `End` jump to
-  the first / last item. Escape closes it.
-- **No JS** — the panel stays hidden (`no-js:hidden`); the browser's native
+  the first / last item. Escape and clicking outside close it (native light
+  dismiss) and focus returns to where it was.
+- **No JS** — the panel never opens; the browser's native
   context menu opens instead, so the actions remain reachable through it.
 
 ## Tokens
@@ -123,7 +129,7 @@ The panel dispatches `apogee:contextmenu-open` (`detail: { x, y }`) and `apogee:
 | Token | Used for |
 |---|---|
 | `--border-neutral` | Panel border |
-| `--background-elevation-raised` | Panel background |
+| `--background-elevation-overlay` | Panel background |
 | `--duration-fast` / `--ease-standard` | Panel open fade/scale animation |
 
 ## Do / Don't

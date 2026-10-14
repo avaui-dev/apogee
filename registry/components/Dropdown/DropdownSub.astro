@@ -1,0 +1,61 @@
+---
+/**
+ * DropdownSub — a nested menu: an item that opens a second panel beside it.
+ * Click or ArrowRight opens, ArrowLeft / Escape closes, hover opens with a
+ * short delay (Dropdown island). Zero JS: click opens, light dismiss closes.
+ * Slots: `start` (icon), default (`DropdownItem`s).
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { ChevronRight } from '@lucide/astro'
+import { uid } from '../utils/uid.ts'
+import {
+  panelStyle,
+  panelClass,
+  panelSurface,
+  menuClass,
+  itemBase,
+  itemSizes,
+  itemColors,
+  type ItemSize,
+  type Placement,
+} from '../utils/panel.ts'
+interface Props extends HTMLAttributes<'div'> {
+  label: string
+  /** @category layout */
+  size?: ItemSize
+  /** @category layout */
+  placement?: Placement
+  class?: string
+}
+const { label, size = 'medium', placement = 'end-top', class: className, ...rest } = Astro.props
+const id = uid(Astro.locals, 'apogee-sub')
+const anchor = `--${id}`
+---
+
+<div class:list={['apogee-dropdown-sub', className]} {...rest}>
+  <button
+    type="button"
+    popovertarget={id}
+    popovertargetaction="show"
+    role="menuitem"
+    aria-haspopup="menu"
+    style={`anchor-name: ${anchor}`}
+    class:list={[itemBase, itemSizes[size], itemColors.neutral]}
+  >
+    {Astro.slots.has('start') && <span class="inline-flex shrink-0 text-neutral-faded"><slot name="start" /></span>}
+    {label}
+    <ChevronRight class="ms-auto text-neutral-faded rtl:-scale-x-100" aria-hidden="true" />
+  </button>
+  <div
+    id={id}
+    popover
+    role="menu"
+    aria-label={label}
+    style={panelStyle({ anchor, placement, gap: 1 })}
+    class:list={[panelClass, panelSurface.overlay, menuClass]}
+  >
+    <slot />
+  </div>
+</div>

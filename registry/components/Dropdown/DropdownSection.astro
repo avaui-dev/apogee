@@ -1,0 +1,26 @@
+---
+/**
+ * DropdownSection — a labelled `role="group"` of items, with a rule above it
+ * when it is not the first child of the menu.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
+interface Props extends HTMLAttributes<'div'> {
+  label?: string
+  class?: string
+}
+const { label, class: className, ...rest } = Astro.props
+const id = uid(Astro.locals, 'apogee-sec')
+---
+
+<div
+  role="group"
+  aria-labelledby={label ? id : undefined}
+  class:list={['flex flex-col gap-0.5 not-first:mt-1 not-first:border-t not-first:border-neutral not-first:pt-1', className]}
+  {...rest}
+>
+  {label && <div id={id} class="px-2 pt-1 pb-0.5 text-xs font-medium text-neutral-faded">{label}</div>}
+  <slot />
+</div>

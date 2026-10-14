@@ -1,29 +1,39 @@
 ---
 /**
  * DropdownItem — a menu item. A link when `href` is set, otherwise a button.
- * Put an optional leading icon (e.g. a Lucide `<svg>`) before the label.
+ * Slots: `start` (icon), default (label), `end` (shortcut, badge).
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import { itemBase, itemSizes, itemColors, itemSelected, type ItemSize, type ItemColor } from '../utils/panel.ts'
 interface Props extends HTMLAttributes<'button'> {
   href?: string
+  color?: ItemColor
+  /** @category layout */
+  size?: ItemSize
+  /** The chosen item (`aria-current`). */
+  selected?: boolean
+  disabled?: boolean
   class?: string
 }
 
-const { href, class: className, ...rest } = Astro.props
+const { href, color = 'neutral', size = 'medium', selected = false, disabled = false, class: className, ...rest } = Astro.props
 const Tag = href ? 'a' : 'button'
 ---
 
 <Tag
-  href={href}
+  href={disabled ? undefined : href}
   type={href ? undefined : 'button'}
   role="menuitem"
-  class:list={[
-    'flex w-full items-center gap-2 rounded px-2 py-1.5 text-start text-sm text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:bg-neutral-faded-highlighted focus-visible:outline-none [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-neutral-faded',
-    className,
-  ]}
+  disabled={!href && disabled ? true : undefined}
+  aria-disabled={href && disabled ? 'true' : undefined}
+  tabindex={href && disabled ? -1 : undefined}
+  aria-current={selected ? 'true' : undefined}
+  class:list={[itemBase, itemSizes[size], itemColors[color], selected && itemSelected[color], className]}
   {...rest}
 >
+  {Astro.slots.has('start') && <span class="inline-flex shrink-0 text-neutral-faded"><slot name="start" /></span>}
   <slot />
+  {Astro.slots.has('end') && <span class="ms-auto inline-flex shrink-0 ps-4 text-xs text-neutral-faded"><slot name="end" /></span>}
 </Tag>

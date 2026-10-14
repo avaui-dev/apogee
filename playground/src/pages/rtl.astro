@@ -9,6 +9,9 @@ import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.as
 import Pagination from '../../../registry/components/Pagination/Pagination.astro'
 import Dropdown from '../../../registry/components/Dropdown/Dropdown.astro'
 import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
+import DropdownSub from '../../../registry/components/Dropdown/DropdownSub.astro'
+import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
+import Popover from '../../../registry/components/Popover/Popover.astro'
 import Blockquote from '../../../registry/components/Blockquote/Blockquote.astro'
 import Steps from '../../../registry/components/Steps/Steps.astro'
 import Table from '../../../registry/components/Table/Table.astro'
@@ -71,6 +74,10 @@ import { picture } from '../components/demo-data'
           <option>السعودية</option>
           <option>الإمارات</option>
         </Select>
+        <Select label="الخطة" name="plan" placeholder="اختر خطة" options={[
+          { value: 'free', label: 'مجاني', description: 'للتجربة' },
+          { value: 'pro', label: 'احترافي', description: 'للفرق' },
+        ]} />
         <label class="flex items-center gap-2 text-sm">
           <Switch name="notify" checked label="الإشعارات" />
         </label>
@@ -83,8 +90,23 @@ import { picture } from '../components/demo-data'
       <Dropdown label="إجراءات">
         <DropdownItem>تعديل</DropdownItem>
         <DropdownItem>تكرار</DropdownItem>
+        <DropdownSub label="مشاركة">
+          <DropdownItem>نسخ الرابط</DropdownItem>
+          <DropdownItem>بريد إلكتروني</DropdownItem>
+        </DropdownSub>
         <DropdownItem>حذف</DropdownItem>
       </Dropdown>
+
+      <Tooltip text="تلميح على الجانب الأيمن" placement="start">
+        <Button variant="outline" color="neutral">تلميح</Button>
+      </Tooltip>
+
+      <div data-apogee-popover="end">
+        <Popover placement="end">
+          <span slot="trigger">المزيد</span>
+          <p>تفتح اللوحة على الجانب الأيسر في الاتجاه من اليمين إلى اليسار.</p>
+        </Popover>
+      </div>
 
       <Blockquote cite="أدا لوفليس">
         <p>الآلة التحليلية تنسج الأنماط الجبرية.</p>

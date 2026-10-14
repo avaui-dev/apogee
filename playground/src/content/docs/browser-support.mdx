@@ -22,11 +22,12 @@ order: 10
 | Feature | Support | Components | Fallback |
 |---|---|---|---|
 | `<dialog>` + `showModal()` | Baseline (widely available) | Dialog, CommandPalette | — |
-| Popover API (`[popover]`, `popovertarget`) | Baseline 2024 | Popover | — |
+| Popover API (`[popover]`, `popovertarget`, `popover="manual"`) | Baseline 2025 | Popover, Tooltip, Dropdown, ContextMenu, Menubar, Select (custom), Combobox | — |
 | Invoker commands (`command`, `commandfor`) | Newer; Baseline ~2026 | Dialog | small `showModal()` script |
 | `closedby="any"` | Chromium-first | Dialog, CommandPalette | JS backdrop-close (shipped) |
-| CSS anchor positioning + `position-try-fallbacks` | Chromium-first | Popover | panel centers on screen |
-| `@starting-style` + `transition-behavior: allow-discrete` / `overlay` | Chrome, Safari 17.4+, Firefox 129+ | Dialog, Popover, Dropdown | appears with no fade |
+| CSS anchor positioning (`position-area`, `position-try-fallbacks`) | Baseline January 2026 (Chrome 125, Safari 26, Firefox 147) | Popover, Tooltip, Dropdown, Menubar, Select (custom), Combobox | panel centers on screen |
+| `anchor-size()` (`width="trigger"`) | Newer; reached Firefox after the rest | Popover, Dropdown, Select (custom), Combobox | panel is content-sized |
+| `@starting-style` + `transition-behavior: allow-discrete` / `overlay` | Chrome, Safari 17.4+, Firefox 129+ | Dialog and every anchored panel | appears with no fade |
 | `::details-content` + `interpolate-size: allow-keywords` | Chromium-first | Accordion, Collapsible | opens/closes instantly, no height animation |
 | `<meter>` pseudo-elements (`::-webkit-meter-*`, `::-moz-meter-bar`) | WebKit/Blink + Firefox | Meter | native meter styling |
 | Scroll-snap | Baseline | Carousel | plain horizontal scroll |
@@ -46,11 +47,9 @@ that year.
 
 ## Chromium-first, called out
 
-Three features render best in Chromium today and degrade — never break —
+Two features render best in Chromium today and degrade — never break —
 elsewhere:
 
-- **Popover** — CSS anchor positioning; the panel centers on screen where
-  unsupported instead of anchoring to its trigger.
 - **Dialog** — invoker commands + `closedby="any"`; a tiny JS fallback
   (already shipped in the component) covers older engines.
 - **Accordion / Collapsible** — `interpolate-size` height animation; the

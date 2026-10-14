@@ -1,12 +1,21 @@
 ---
 title: Select
-description: A labeled, native <select> — full keyboard and mobile picker support for free.
+description: A labeled, native <select> — full keyboard and mobile picker support for free — or a custom listbox with rich options over the same form control.
 group: Components
 order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Select from '../../../../registry/components/Select/Select.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import { Globe } from '@lucide/astro'
+
+<JsNote fallback="The native select shows and works on its own; the custom listbox is never rendered.">
+  Only with `options`: hides the native `<select>` and opens a custom listbox
+  (arrows, Home/End, type-ahead, Enter/Space, Escape; multiple with
+  checkmarks) that writes the choice back into that `<select>`.
+</JsNote>
 
 <Preview code={`<Select label="Country" name="country">
   <option value="">Select a country</option>
@@ -28,7 +37,8 @@ import Select from '../../../../registry/components/Select/Select.astro'
 npx @ava-ui/apogee add select
 ```
 
-Pulls in `Field`. Uses `@lucide/astro` for the chevron.
+Pulls in `Field` and `utils`. Uses `@lucide/astro` for the chevron and the
+checkmark.
 
 ## Usage
 
@@ -40,33 +50,133 @@ import Select from '@/components/apogee/Select/Select.astro'
   <option value="us">United States</option>
   <option value="ca">Canada</option>
 </Select>
+
+<Select label="Plan" name="plan" placeholder="Pick a plan" options={[
+  { value: 'free', label: 'Free', description: 'For trying things out' },
+  { value: 'pro', label: 'Pro', description: 'For teams' },
+]} />
 ```
 
 ## Anatomy
 
 - **Field** — the `Field` wrapper: label, hint/error text.
 - **`<select>`** — the native control; pass `<option>`s (and `<optgroup>`s)
-  in the default slot.
-- **Chevron** — a decorative `ChevronDown`, `aria-hidden`, positioned over
-  the select.
+  in the default slot. With `options` it is generated from the array and
+  hidden while JS runs, but it is still the form control.
+- **Trigger** (custom mode) — a field-styled `<button popovertarget>` showing
+  the chosen label or the placeholder.
+- **Listbox** (custom mode) — a `role="listbox"` popover anchored under the
+  trigger, as wide as it, scrolling past 15rem.
+- **Start / end** — `start` slot icon inside the control; `end` slot replaces
+  the decorative chevron.
 
 ## API
 
 `@composable` — exposed to Content Editors in AVA. Any other native
-`<select>` attribute (e.g. `multiple`, `disabled`, `name`) passes through to
-the `<select>` itself.
+`<select>` attribute (e.g. `name`, `autocomplete`) passes through to the
+`<select>` itself.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `id` | `string` | auto-generated | Ties the `Field` label to the `<select>`. |
 | `label` | `string` | — | Field label. |
 | `hint` | `string` | — | Helper text below the control (hidden when `error` is set). |
-| `error` | `string` | — | Error text; sets `aria-invalid` and switches the border to `--background-critical`. |
+| `error` | `string` | — | Error text; sets `aria-invalid` and switches the border to the critical colour. |
+| `options` | `{ value, label, description?, disabled? }[]` | — | Renders the custom listbox (JS) over a generated native `<select>`. |
+| `placeholder` | `string` | — | Empty first choice; shown faded until a value is picked. Disabled when `required`. |
+| `value` | `string \| string[]` | — | Initial value(s). `selected` on an `<option>` works too. |
+| `multiple` | `boolean` | `false` | Multi-select: native listbox, or checkmarks in the custom listbox. |
+| `disabled` | `boolean` | `false` | Disables the control (and the custom trigger). |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `required` | `boolean` | `false` | Marks the field required (native `required` + a visible `*` on the label). |
 | `class` | `string` | — | Extra classes on the `Field` wrapper. |
+
+Slots: `start` (icon inside the control), `end` (replaces the chevron).
+
+## Custom listbox
+
+Pass `options`. The native `<select>` stays the form control, so the value
+submits with the form, `change` fires on it, and `required` still blocks an
+empty submit (the message shows under the trigger, which takes focus).
+
+<Preview code={`<form>
+  <Select label="Plan" name="plan" placeholder="Pick a plan" required options={[
+    { value: 'free', label: 'Free', description: 'For trying things out' },
+    { value: 'pro', label: 'Pro', description: 'For teams' },
+    { value: 'business', label: 'Business', description: 'For organisations' },
+    { value: 'enterprise', label: 'Enterprise', disabled: true },
+  ]} />
+  <Button type="submit">Continue</Button>
+</form>`} block>
+  <form class="flex max-w-sm flex-col items-start gap-4" onsubmit="event.preventDefault()">
+    <Select label="Plan" name="plan" placeholder="Pick a plan" required options={[
+      { value: 'free', label: 'Free', description: 'For trying things out' },
+      { value: 'pro', label: 'Pro', description: 'For teams' },
+      { value: 'business', label: 'Business', description: 'For organisations' },
+      { value: 'enterprise', label: 'Enterprise', disabled: true },
+    ]} />
+    <Button type="submit">Continue</Button>
+  </form>
+</Preview>
+
+### Multiple
+
+<Preview code={`<Select label="Regions" name="regions" multiple value={['eu']} options={[
+  { value: 'na', label: 'North America' },
+  { value: 'eu', label: 'Europe' },
+  { value: 'apac', label: 'Asia Pacific' },
+]} />`} block>
+  <div class="max-w-sm">
+    <Select label="Regions" name="regions" multiple value={['eu']} options={[
+      { value: 'na', label: 'North America' },
+      { value: 'eu', label: 'Europe' },
+      { value: 'apac', label: 'Asia Pacific' },
+    ]} />
+  </div>
+</Preview>
+
+## Placeholder and start icon
+
+`placeholder` injects an empty first option and greys the text until a value
+is chosen. The `start` slot works in both modes.
+
+<Preview code={`<Select label="Country" name="ph-native" placeholder="Select a country">
+  <Globe slot="start" />
+  <option value="us">United States</option>
+  <option value="ca">Canada</option>
+</Select>
+<Select label="Country" name="ph-custom" placeholder="Select a country" options={[
+  { value: 'us', label: 'United States' },
+  { value: 'ca', label: 'Canada' },
+]}>
+  <Globe slot="start" />
+</Select>`}>
+  <Select label="Country" name="ph-native" placeholder="Select a country">
+    <Globe slot="start" />
+    <option value="us">United States</option>
+    <option value="ca">Canada</option>
+  </Select>
+  <Select label="Country" name="ph-custom" placeholder="Select a country" options={[
+    { value: 'us', label: 'United States' },
+    { value: 'ca', label: 'Canada' },
+  ]}>
+    <Globe slot="start" />
+  </Select>
+</Preview>
+
+## Variants
+
+<Preview code={`<Select label="Outline" name="v-outline" variant="outline"><option>Option</option></Select>
+<Select label="Faded" name="v-faded" variant="faded"><option>Option</option></Select>
+<Select label="Ghost" name="v-ghost" variant="ghost"><option>Option</option></Select>
+<Select label="Headless" name="v-headless" variant="headless"><option>Option</option></Select>`}>
+  <Select label="Outline" name="v-outline" variant="outline"><option>Option</option></Select>
+  <Select label="Faded" name="v-faded" variant="faded"><option>Option</option></Select>
+  <Select label="Ghost" name="v-ghost" variant="ghost"><option>Option</option></Select>
+  <Select label="Headless" name="v-headless" variant="headless"><option>Option</option></Select>
+</Preview>
 
 ## Sizes
 
@@ -74,19 +184,44 @@ Every size:
 
 <Preview code={`<Select label="Small" name="size-sm" size="small"><option>Option</option></Select>
 <Select label="Medium" name="size-md"><option>Option</option></Select>
-<Select label="Large" name="size-lg" size="large"><option>Option</option></Select>`}>
+<Select label="Large" name="size-lg" size="large"><option>Option</option></Select>
+<Select label="Extra large" name="size-xl" size="xlarge"><option>Option</option></Select>`}>
   <Select label="Small" name="size-sm" size="small"><option>Option</option></Select>
   <Select label="Medium" name="size-md"><option>Option</option></Select>
   <Select label="Large" name="size-lg" size="large"><option>Option</option></Select>
+  <Select label="Extra large" name="size-xl" size="xlarge"><option>Option</option></Select>
+</Preview>
+
+## Option groups and disabled options
+
+<Preview code={`<Select label="Timezone" name="tz">
+  <optgroup label="Europe">
+    <option value="lisbon">Lisbon</option>
+    <option value="bucharest">Bucharest</option>
+  </optgroup>
+  <optgroup label="Americas">
+    <option value="toronto">Toronto</option>
+    <option value="lima" disabled>Lima (soon)</option>
+  </optgroup>
+</Select>`}>
+  <Select label="Timezone" name="tz">
+    <optgroup label="Europe">
+      <option value="lisbon">Lisbon</option>
+      <option value="bucharest">Bucharest</option>
+    </optgroup>
+    <optgroup label="Americas">
+      <option value="toronto">Toronto</option>
+      <option value="lima" disabled>Lima (soon)</option>
+    </optgroup>
+  </Select>
 </Preview>
 
 ## States
 
 - **Hover / focus** — a visible `focus-visible` ring (`--border-primary`).
-- **Disabled** — dimmed, `cursor-not-allowed`. Pass the native `disabled`
-  attribute.
-- **Error** — `aria-invalid="true"`, border switches to `--background-critical`, `Field`
-  shows the error text with `role="alert"`.
+- **Disabled** — dimmed, `cursor-not-allowed`.
+- **Error** — `aria-invalid="true"`, border switches to the critical colour,
+  `Field` shows the error text with `role="alert"`.
 - **Required** — the label shows a `*`.
 
 <Preview code={`<Select label="Plan" name="state-required" required>
@@ -120,45 +255,57 @@ With hint text:
 </Select>
 ```
 
-With an error:
+Listening for a choice (both modes fire `change` on the `<select>`):
 
 ```astro
-<Select label="Country" name="country" error="Choose a country">
-  <option value="">Select a country</option>
-</Select>
+<script>
+  document.querySelector('select[name="plan"]').addEventListener('change', (e) => {
+    console.log(e.target.value)
+  })
+</script>
 ```
 
 ## Accessibility
 
-- Real `<select>` — full native keyboard (type-ahead, arrow keys) and mobile
-  picker support for free.
+- Native mode: a real `<select>` — full native keyboard (type-ahead, arrow
+  keys) and mobile picker support for free.
+- Custom mode: a `<button aria-haspopup="listbox">` labelled by the field
+  label and the shown value, and a `role="listbox"` of `role="option"`s with
+  `aria-selected` (and `aria-multiselectable` when `multiple`). Opening
+  focuses the chosen option; arrows and `Home` / `End` move, typing jumps,
+  `Enter` / `Space` choose, `Escape` and outside click close (native light
+  dismiss) and focus returns to the trigger. Clicking the label focuses the
+  trigger. A `required` field that submits empty focuses the trigger, marks
+  it `aria-invalid` and shows the browser's message as a `role="alert"`.
 - `label` renders a real `<label for>` via `Field`.
 - `hint` / `error` are wired to the control through `aria-describedby`;
   `error` also sets `aria-invalid` and announces via `role="alert"`.
-- The chevron is purely decorative (`aria-hidden="true"`) — it never carries
-  meaning on its own.
+- The chevron and checkmark are decorative (`aria-hidden="true"`).
 
 ## Tokens
 
 | Token | Used for |
 |---|---|
-| `--border-neutral` | Control border |
+| `--border-neutral` | Control and listbox border |
 | `--background-page` | Control fill |
-| `--foreground-neutral` | Selected value text |
-| `--foreground-neutral-faded` | Chevron icon |
+| `--background-elevation-overlay` | Listbox background |
+| `--background-neutral-faded` | Selected option fill |
+| `--background-neutral-faded-highlighted` | Option hover / focus |
+| `--foreground-neutral` | Selected value and option text |
+| `--foreground-neutral-faded` | Chevron, placeholder, descriptions |
+| `--foreground-disabled` | Disabled options |
 | `--border-primary` | Focus ring |
 | `--foreground-critical` | Error border (`aria-invalid`) + `Field`'s error text |
 
 ## Do / Don't
 
-- **Do** use Select for 6+ options, or when the native mobile picker UX is
-  wanted.
-- **Do** give the first `<option>` a clear placeholder ("Select a country")
-  when nothing should be pre-selected.
+- **Do** use the native mode by default — the platform picker is the best
+  one on phones.
+- **Do** reach for `options` when choices need a description, an icon-sized
+  layout or a consistent look across platforms.
+- **Do** set a `placeholder` when nothing should be pre-selected.
 - **Don't** use Select for 2–5 always-visible options — `SegmentedControl`
   or `Radio` shows every choice at once.
-- **Don't** style away the native chevron/appearance beyond what's already
-  handled — it breaks the platform picker affordance.
 
 ## Content
 

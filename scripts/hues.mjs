@@ -1,9 +1,15 @@
 // The five hue inputs. Edit these; run `npm run build:tokens`.
+//
+// Accents take a Tailwind colour name (`'blue'` is the 600 step; `'blue-700'`
+// picks a step from 400 to 700) or an OKLCH object `{ l, c, h }`.
+// The neutral takes a Tailwind grey name (slate, gray, zinc, neutral, stone,
+// mauve, olive, mist, taupe) whose tint colours every grey, or `{ l, c, h }`
+// where `c` is the peak chroma at mid lightness (`c: 0` is pure grey).
+// Names are listed in scripts/palettes.mjs.
 export default {
-  // Brand: a dark blue.
-  primary: { l: 0.47, c: 0.2, h: 262 },
-  critical: { l: 0.59, c: 0.205, h: 20.28 },
-  warning: { l: 0.82, c: 0.22, h: 80 },
-  positive: { l: 0.55, c: 0.13, h: 151.8 },
-  neutral: { l: 0.94, c: 0, h: 0 },
+  primary: 'blue-700',
+  critical: 'red-600',
+  warning: 'amber-400',
+  positive: 'green-700',
+  neutral: 'slate',
 }

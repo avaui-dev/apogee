@@ -23,7 +23,7 @@ const { id, label, hint, error, required = false, class: className, ...rest } = 
 <div class:list={['flex flex-col gap-1.5', className]} {...rest}>
   {
     label && (
-      <label for={id} class="text-sm font-medium text-neutral">
+      <label for={id} id={`${id}-label`} class="text-sm font-medium text-neutral">
         {label}
         {required && <span class="text-critical" aria-hidden="true"> *</span>}
       </label>

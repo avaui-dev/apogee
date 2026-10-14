@@ -1,6 +1,6 @@
 ---
 title: Dropdown
-description: A menu on native <details> — the trigger opens a list of DropdownItems.
+description: A menu on the native Popover API — the trigger opens a list of DropdownItems in the top layer, with sections and submenus.
 group: Components
 order: 0
 ---
@@ -9,12 +9,17 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Dropdown from '../../../../registry/components/Dropdown/Dropdown.astro'
 import DropdownItem from '../../../../registry/components/Dropdown/DropdownItem.astro'
-import Divider from '../../../../registry/components/Divider/Divider.astro'
-import { Pencil, Copy, Trash2 } from '@lucide/astro'
+import DropdownSection from '../../../../registry/components/Dropdown/DropdownSection.astro'
+import DropdownSub from '../../../../registry/components/Dropdown/DropdownSub.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Kbd from '../../../../registry/components/Kbd/Kbd.astro'
+import { Pencil, Copy, Trash2, Share2, Mail, Link } from '@lucide/astro'
 
-<JsNote fallback="The menu is a native details/summary disclosure — it still opens and closes by clicking the trigger. It just won't auto-close on outside click or Escape, and won't flip above the trigger when space below is tight.">
-  Adds close-on-outside-click and Escape-to-close, and flips the menu above the
-  trigger when there isn't room below the viewport.
+<JsNote fallback="The menu opens and closes natively (popovertarget), including Escape and outside click. Without JS there is no arrow-key navigation, items don't close the menu on activation, and submenus open on click only.">
+  Adds the menu keyboard pattern (ArrowDown on the trigger opens and focuses
+  the first item; arrows, Home and End move; ArrowRight / ArrowLeft open and
+  close submenus), closes the whole menu when an item is activated, opens
+  submenus on hover, and dispatches `apogee:dropdown-open` / `-close`.
 </JsNote>
 
 <Preview code={`<Dropdown label="Options">
@@ -35,8 +40,9 @@ import { Pencil, Copy, Trash2 } from '@lucide/astro'
 npx @ava-ui/apogee add dropdown
 ```
 
-Uses `@lucide/astro` (`ChevronDown`). Ships `DropdownItem.astro` (same folder)
-for menu entries.
+Uses `@lucide/astro` (`ChevronDown`, `ChevronRight`) and `utils`. Ships
+`DropdownItem.astro`, `DropdownSection.astro` and `DropdownSub.astro` in the
+same folder.
 
 ## Usage
 
@@ -45,139 +51,248 @@ for menu entries.
 import Dropdown from '@/components/apogee/Dropdown/Dropdown.astro'
 import DropdownItem from '@/components/apogee/Dropdown/DropdownItem.astro'
 ---
-<Dropdown label="Options">
+<Dropdown label="Options" placement="bottom-end">
   <DropdownItem href="/edit">Edit</DropdownItem>
-  <DropdownItem>Delete</DropdownItem>
+  <DropdownItem color="critical">Delete</DropdownItem>
 </Dropdown>
 ```
 
 ## Anatomy
 
-- **Trigger** — the `<summary>`; shows `label` and a chevron that rotates on
-  open.
-- **Menu** — `role="menu"` panel; default slot. Fill it with `DropdownItem`s
-  (`role="menuitem"`).
+- **Trigger** — a `<button popovertarget>` showing `label` and a chevron that
+  rotates while open. Or your own element in the `anchor` slot.
+- **Menu** — the `role="menu"` popover, anchored to the trigger; default slot.
+  Fill it with `DropdownItem`s (`role="menuitem"`), `DropdownSection`s
+  (`role="group"`) and `DropdownSub`s (an item that opens a nested menu).
 
 ## API
 
 `@composable` — exposed to Content Editors in AVA. Any other attribute passes
-through to the root `<details>`.
+through to the root `<div>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `label` | `string` | — | Trigger text. |
-| `align` | `'start' \| 'end'` | `'start'` | Which edge the menu aligns to. |
-| `class` | `string` | — | Extra classes on the root `<details>`, merged last. |
+| `label` | `string` | — | Trigger text and the menu's accessible name. |
+| `id` | `string` | auto-generated | Menu id. Set it when an `anchor` element needs `popovertarget`. |
+| `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'start' \| 'start-top' \| 'start-bottom' \| 'end' \| 'end-top' \| 'end-bottom'` | `'bottom-start'` | Side and alignment; flips when out of room. See [Popover](/docs/popover#placement) for all twelve. |
+| `width` | `'trigger' \| string` | — | `'trigger'` matches the trigger's width; otherwise any CSS length. |
+| `maxHeight` | `string` | — | Caps the menu height; items scroll past it. |
+| `class` | `string` | — | Extra classes on the root `<div>`, merged last. |
 
 ### `DropdownItem` props
 
-A link when `href` is set, otherwise a `<button>`. `@composable`.
+A link when `href` is set, otherwise a `<button>`. `@composable`. Slots:
+`start` (icon), default (label), `end` (shortcut or badge).
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `href` | `string` | — | Renders an `<a>` instead of a `<button>`. |
+| `color` | `'neutral' \| 'primary' \| 'critical'` | `'neutral'` | Text and hover tint. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Padding, text and icon size. |
+| `selected` | `boolean` | `false` | The chosen item: `aria-current="true"` and a faded fill. |
+| `disabled` | `boolean` | `false` | Native `disabled` on a button; `aria-disabled` + `tabindex="-1"` on a link. |
 | `class` | `string` | — | Extra classes, merged last. |
 
-Any other attribute passes through; `role="menuitem"` is fixed.
+### `DropdownSection` props
 
-## Variants
+A `role="group"` with an optional label and a rule above it when it is not first.
 
-Every `align`:
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Group heading (`aria-labelledby`). |
 
-<Preview code={`<div class="flex w-full justify-between">
-  <Dropdown label="Start" align="start">
-    <DropdownItem href="#">Edit</DropdownItem>
-    <DropdownItem href="#">Delete</DropdownItem>
-  </Dropdown>
-  <Dropdown label="End" align="end">
-    <DropdownItem href="#">Edit</DropdownItem>
-    <DropdownItem href="#">Delete</DropdownItem>
-  </Dropdown>
-</div>`}>
-  <div class="flex w-full justify-between">
-    <Dropdown label="Start" align="start">
+### `DropdownSub` props
+
+An item that opens a nested menu beside it. Slots: `start` (icon), default (items).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Item text and the nested menu's accessible name. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Matches the items around it. |
+| `placement` | placement | `'end-top'` | Where the nested menu opens. |
+
+## Placement
+
+<Preview code={`<Dropdown label="bottom-start" placement="bottom-start">…</Dropdown>
+<Dropdown label="bottom-end" placement="bottom-end">…</Dropdown>
+<Dropdown label="top-start" placement="top-start">…</Dropdown>
+<Dropdown label="end-top" placement="end-top">…</Dropdown>`}>
+  {['bottom-start', 'bottom-end', 'top-start', 'end-top'].map((p) => (
+    <Dropdown label={p} placement={p}>
       <DropdownItem href="#">Edit</DropdownItem>
       <DropdownItem href="#">Delete</DropdownItem>
     </Dropdown>
-    <Dropdown label="End" align="end">
-      <DropdownItem href="#">Edit</DropdownItem>
-      <DropdownItem href="#">Delete</DropdownItem>
+  ))}
+</Preview>
+
+## Custom trigger
+
+<Preview code={`<Dropdown id="dd-actions" label="Actions">
+  <Button slot="anchor" popovertarget="dd-actions" variant="outline" color="primary">Actions</Button>
+  <DropdownItem href="#">Edit</DropdownItem>
+  <DropdownItem href="#">Delete</DropdownItem>
+</Dropdown>`}>
+  <Dropdown id="dd-actions" label="Actions">
+    <Button slot="anchor" popovertarget="dd-actions" variant="outline" color="primary">Actions</Button>
+    <DropdownItem href="#">Edit</DropdownItem>
+    <DropdownItem href="#">Delete</DropdownItem>
+  </Dropdown>
+</Preview>
+
+## Sizes
+
+<Preview code={`<DropdownItem size="small">…</DropdownItem>
+<DropdownItem size="medium">…</DropdownItem>
+<DropdownItem size="large">…</DropdownItem>`}>
+  {['small', 'medium', 'large'].map((s) => (
+    <Dropdown label={s}>
+      <DropdownItem size={s} href="#"><Pencil slot="start" /> Edit</DropdownItem>
+      <DropdownItem size={s} href="#"><Copy slot="start" /> Duplicate</DropdownItem>
     </Dropdown>
-  </div>
+  ))}
+</Preview>
+
+## Colours
+
+<Preview code={`<DropdownItem color="neutral">Rename</DropdownItem>
+<DropdownItem color="primary">Make default</DropdownItem>
+<DropdownItem color="critical">Delete</DropdownItem>`}>
+  <Dropdown label="Colours">
+    <DropdownItem color="neutral">Rename</DropdownItem>
+    <DropdownItem color="primary">Make default</DropdownItem>
+    <DropdownItem color="critical"><Trash2 slot="start" /> Delete</DropdownItem>
+  </Dropdown>
+</Preview>
+
+## Selected and disabled
+
+<Preview code={`<DropdownItem selected>Grid</DropdownItem>
+<DropdownItem>List</DropdownItem>
+<DropdownItem disabled>Board (soon)</DropdownItem>
+<DropdownItem href="#" disabled>Timeline (soon)</DropdownItem>`}>
+  <Dropdown label="View">
+    <DropdownItem selected>Grid</DropdownItem>
+    <DropdownItem>List</DropdownItem>
+    <DropdownItem disabled>Board (soon)</DropdownItem>
+    <DropdownItem href="#" disabled>Timeline (soon)</DropdownItem>
+  </Dropdown>
+</Preview>
+
+## Sections and end slot
+
+<Preview code={`<Dropdown label="File">
+  <DropdownSection label="Edit">
+    <DropdownItem><Pencil slot="start" /> Rename <Kbd slot="end">F2</Kbd></DropdownItem>
+    <DropdownItem><Copy slot="start" /> Duplicate <Kbd slot="end">⌘D</Kbd></DropdownItem>
+  </DropdownSection>
+  <DropdownSection label="Danger">
+    <DropdownItem color="critical"><Trash2 slot="start" /> Delete <Kbd slot="end">⌫</Kbd></DropdownItem>
+  </DropdownSection>
+</Dropdown>`}>
+  <Dropdown label="File">
+    <DropdownSection label="Edit">
+      <DropdownItem><Pencil slot="start" /> Rename <Kbd slot="end">F2</Kbd></DropdownItem>
+      <DropdownItem><Copy slot="start" /> Duplicate <Kbd slot="end">⌘D</Kbd></DropdownItem>
+    </DropdownSection>
+    <DropdownSection label="Danger">
+      <DropdownItem color="critical"><Trash2 slot="start" /> Delete <Kbd slot="end">⌫</Kbd></DropdownItem>
+    </DropdownSection>
+  </Dropdown>
+</Preview>
+
+## Submenu
+
+Hover, click or `ArrowRight` opens the nested menu; `ArrowLeft` or `Escape`
+closes it. Picking an item closes the whole chain.
+
+<Preview code={`<Dropdown label="Options">
+  <DropdownItem><Pencil slot="start" /> Edit</DropdownItem>
+  <DropdownSub label="Share">
+    <Share2 slot="start" />
+    <DropdownItem><Link slot="start" /> Copy link</DropdownItem>
+    <DropdownItem><Mail slot="start" /> Email</DropdownItem>
+  </DropdownSub>
+  <DropdownItem color="critical"><Trash2 slot="start" /> Delete</DropdownItem>
+</Dropdown>`}>
+  <Dropdown label="Options">
+    <DropdownItem><Pencil slot="start" /> Edit</DropdownItem>
+    <DropdownSub label="Share">
+      <Share2 slot="start" />
+      <DropdownItem><Link slot="start" /> Copy link</DropdownItem>
+      <DropdownItem><Mail slot="start" /> Email</DropdownItem>
+    </DropdownSub>
+    <DropdownItem color="critical"><Trash2 slot="start" /> Delete</DropdownItem>
+  </Dropdown>
+</Preview>
+
+## Width and max height
+
+<Preview code={`<Dropdown label="Pick a month (matches the trigger)" width="trigger" maxHeight="10rem">
+  …twelve items…
+</Dropdown>`}>
+  <Dropdown label="Pick a month (matches the trigger)" width="trigger" maxHeight="10rem">
+    {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((m) => (
+      <DropdownItem>{m}</DropdownItem>
+    ))}
+  </Dropdown>
 </Preview>
 
 ## States
 
-- **Closed / open** — the native `<details>` toggle; the chevron rotates 180°
-  when open.
-- **Flipped** — the island adds `.apogee-dropdown--up` when there isn't room
-  below the viewport, opening the menu upward instead.
+- **Closed / open** — the native popover toggle; the chevron rotates 180°
+  while open.
+- **Out of room** — the menu flips to the opposite side, no JS.
 - **Hover / focus** — the trigger tints on hover; keyboard focus shows a
-  visible ring.
+  visible ring. Items tint on hover and on keyboard focus.
 - **No JS** — see the JsNote above.
-
-## Examples
-
-With leading icons, and a destructive item set off by a `Divider`:
-
-<Preview code={`<Dropdown label="Options">
-  <DropdownItem href="#"><Pencil /> Edit</DropdownItem>
-  <DropdownItem href="#"><Copy /> Duplicate</DropdownItem>
-  <Divider class="my-1" />
-  <DropdownItem><Trash2 /> Delete</DropdownItem>
-</Dropdown>`}>
-  <Dropdown label="Options">
-    <DropdownItem href="#"><Pencil /> Edit</DropdownItem>
-    <DropdownItem href="#"><Copy /> Duplicate</DropdownItem>
-    <Divider class="my-1" />
-    <DropdownItem><Trash2 /> Delete</DropdownItem>
-  </Dropdown>
-</Preview>
 
 ## Events
 
-The `<details>` root dispatches `apogee:dropdown-open` and `apogee:dropdown-close` (bubbling) alongside the native `toggle` event. A button item closes the menu when activated.
+The root `<div>` dispatches `apogee:dropdown-open` and `apogee:dropdown-close`
+(bubbling) alongside the native `toggle` event on the menu. Activating an
+item closes the menu, nested menus included.
 
 ## Accessibility
 
-- The panel has `role="menu"`; `DropdownItem`s carry `role="menuitem"`.
-- Native `<details>` / `<summary>` — keyboard-operable out of the box (`Enter` /
-  `Space` toggles it), no script required for the base open/close. The trigger
-  carries `aria-haspopup="menu"` and `aria-expanded` (synced by JS).
-- `ArrowDown` on the closed trigger opens the menu and focuses the first item —
-  JS behavior, only with JS enabled.
-- `Escape` closes it and returns focus to the trigger (`summary`) — JS behavior,
-  only with JS enabled.
-- `ArrowDown` / `ArrowUp` move focus between menu items, wrapping from last to
-  first and back; `Home` / `End` jump to the first / last item — JS behavior,
-  only with JS enabled.
-- **No JS** — fully usable: `<details>` opens and closes without any script;
-  items stay reachable via `Tab` in document order, but the outside-click/Escape
-  auto-close, viewport flip, and arrow-key navigation are lost.
+- The menu has `role="menu"` and takes `label` as its accessible name;
+  `DropdownItem`s carry `role="menuitem"`; sections are `role="group"`.
+- The trigger is a `<button popovertarget>` with `aria-haspopup="menu"`;
+  the browser sets `aria-expanded`. `Enter` / `Space` toggle it, `Escape`
+  and clicking outside close it — all native.
+- With JS: `ArrowDown` on the closed trigger opens the menu and focuses the
+  first item; `ArrowDown` / `ArrowUp` wrap through the items; `Home` / `End`
+  jump; `ArrowRight` opens a submenu and `ArrowLeft` closes it; closing a
+  menu returns focus to its trigger.
+- A disabled link item keeps its text but is `aria-disabled` and out of the
+  tab order.
+- **No JS** — the menu still opens, closes and light-dismisses; items are
+  reachable with `Tab` in document order.
 
 ## Tokens
 
 | Token | Used for |
 |---|---|
-| `--border-neutral` | Trigger + menu panel border |
+| `--border-neutral` | Trigger + menu border, section rules |
 | `--background-page` | Trigger background |
-| `--background-neutral-faded` | Trigger hover background |
-| `--foreground-neutral` | Trigger label + item text |
-| `--foreground-neutral-faded` | Chevron + item icon color |
-| `--background-elevation-raised` | Menu panel background |
+| `--background-neutral-faded-highlighted` | Trigger and neutral item hover |
+| `--background-neutral-faded` | Selected neutral item |
+| `--background-primary-faded` / `--background-critical-faded` | Primary / critical item hover and selected |
+| `--foreground-neutral` / `-primary` / `-critical` | Item text by colour |
+| `--foreground-neutral-faded` | Chevrons, icons, end slot, section labels |
+| `--foreground-disabled` | Disabled items |
+| `--background-elevation-overlay` | Menu background |
 | `--border-primary` | Trigger focus ring |
-| `--duration-fast` / `--ease-standard` | Menu open fade/scale animation |
+| `--duration-fast` / `--ease-standard` | Menu open fade/scale |
 
 ## Do / Don't
 
 - **Do** keep the trigger `label` short — it's the only cue for what the menu
   holds.
-- **Do** order items by frequency of use, with destructive actions last
-  (optionally set off with a `Divider`).
+- **Do** order items by frequency of use, with destructive actions last, in
+  their own section and `color="critical"`.
 - **Don't** pack more than a handful of items in one menu — use a full page or
   `Combobox` / `CommandPalette` for long lists.
-- **Don't** nest another `Dropdown` inside the menu — one level of disclosure
-  only.
+- **Don't** nest more than one level of `DropdownSub`.
 
 ## Content
 

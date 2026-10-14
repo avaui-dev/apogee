@@ -1,12 +1,13 @@
 ---
 title: Popover
-description: Rich content on click, built on the native Popover API — top layer and light dismiss for free.
+description: Rich content on click, built on the native Popover API — top layer and light dismiss for free, anchored with CSS anchor positioning.
 group: Components
 order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
 import Popover from '../../../../registry/components/Popover/Popover.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 
 <Preview code={`<Popover>
   <span slot="trigger">More info</span>
@@ -24,8 +25,9 @@ import Popover from '../../../../registry/components/Popover/Popover.astro'
 npx @ava-ui/apogee add popover
 ```
 
-No Apogee component dependencies, no icons. Zero JS — the native Popover API
-(`popover`, `popovertarget`) plus CSS anchor positioning do the work.
+Depends on `utils` (the anchored-panel helper). No icons. Zero JS — the
+native Popover API (`popover`, `popovertarget`) plus CSS anchor positioning
+do the work.
 
 ## Usage
 
@@ -33,7 +35,7 @@ No Apogee component dependencies, no icons. Zero JS — the native Popover API
 ---
 import Popover from '@/components/apogee/Popover/Popover.astro'
 ---
-<Popover>
+<Popover placement="bottom-start" width="trigger">
   <span slot="trigger">Filters</span>
   <p>Panel content goes here.</p>
 </Popover>
@@ -41,60 +43,157 @@ import Popover from '@/components/apogee/Popover/Popover.astro'
 
 ## Anatomy
 
-- **Trigger** — the `<button popovertarget>`; its label is the `trigger` slot
-  (defaults to "Open").
-- **Panel** — the `<div popover>` anchored to the trigger; its content is the
-  default slot.
+- **Trigger** — the built-in `<button popovertarget>`; its label is the
+  `trigger` slot (defaults to "Open").
+- **Anchor** — alternatively, your own element in the `anchor` slot. Give
+  it `popovertarget={id}` and pass the same `id` to the Popover.
+- **Panel** — the `<div popover>` anchored to the trigger; its content is
+  the default slot. It paints in the top layer, so no ancestor can clip it.
 
 ## API
 
 `@composable` — exposed to Content Editors in AVA. Any other attribute passes
-through to the trigger `<button>` (not the panel).
+through to the trigger (the built-in button, or the wrapper around your
+`anchor` element).
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `placement` | `'bottom' \| 'top'` | `'bottom'` | Which side of the trigger the panel opens on, where CSS anchor positioning is supported. `position-try-fallbacks: flip-block` swaps sides automatically when there's no room. |
-| `class` | `string` | — | Extra classes on the trigger button, merged last. |
+| `id` | `string` | auto-generated | Panel id. Set it when an `anchor` element needs `popovertarget`. |
+| `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'start' \| 'start-top' \| 'start-bottom' \| 'end' \| 'end-top' \| 'end-bottom'` | `'bottom'` | Side and alignment. `start`/`end` are logical and mirror in RTL. The panel flips to the opposite side when there is no room. |
+| `gap` | `number` | `2` | Space between trigger and panel, in spacing steps (2 = 0.5rem). |
+| `width` | `'trigger' \| string` | — | `'trigger'` matches the trigger's width; otherwise any CSS length. |
+| `maxHeight` | `string` | — | Caps the panel height; content scrolls past it. |
+| `padding` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `4` | Panel padding in spacing steps. |
+| `elevation` | `'raised' \| 'overlay'` | `'overlay'` | Surface and shadow of the panel. |
+| `panelClass` | `string` | — | Extra classes on the panel. |
+| `class` | `string` | — | Extra classes on the trigger, merged last. |
 
-## Variants
+## Placement
 
-<Preview code={`<Popover placement="bottom">
-  <span slot="trigger">Bottom</span>
-  <p>Opens below the trigger.</p>
-</Popover>
-<Popover placement="top">
-  <span slot="trigger">Top</span>
-  <p>Opens above the trigger.</p>
+All twelve values. Each panel flips to the opposite side when it would leave
+the viewport (`position-try-fallbacks`).
+
+<Preview code={`<Popover placement="top-start"><span slot="trigger">top-start</span>…</Popover>
+<Popover placement="top"><span slot="trigger">top</span>…</Popover>
+<Popover placement="top-end"><span slot="trigger">top-end</span>…</Popover>
+<Popover placement="bottom-start"><span slot="trigger">bottom-start</span>…</Popover>
+<Popover placement="bottom"><span slot="trigger">bottom</span>…</Popover>
+<Popover placement="bottom-end"><span slot="trigger">bottom-end</span>…</Popover>
+<Popover placement="start-top"><span slot="trigger">start-top</span>…</Popover>
+<Popover placement="start"><span slot="trigger">start</span>…</Popover>
+<Popover placement="start-bottom"><span slot="trigger">start-bottom</span>…</Popover>
+<Popover placement="end-top"><span slot="trigger">end-top</span>…</Popover>
+<Popover placement="end"><span slot="trigger">end</span>…</Popover>
+<Popover placement="end-bottom"><span slot="trigger">end-bottom</span>…</Popover>`} block>
+  <div class="grid grid-cols-3 gap-3 py-16">
+    {['top-start', 'top', 'top-end', 'bottom-start', 'bottom', 'bottom-end', 'start-top', 'start', 'start-bottom', 'end-top', 'end', 'end-bottom'].map((p) => (
+      <div class="flex justify-center" data-apogee-popover={p === 'end' ? 'end' : undefined}>
+        <Popover placement={p} id={`pop-${p}`}>
+          <span slot="trigger">{p}</span>
+          <p>Opens on the <strong>{p}</strong> side.</p>
+        </Popover>
+      </div>
+    ))}
+  </div>
+</Preview>
+
+### Edge flip
+
+A trigger at the end of the row with `placement="end"` has no room on that
+side, so the panel opens on the start side instead.
+
+<Preview code={`<div class="flex w-full justify-end">
+  <Popover placement="end">
+    <span slot="trigger">At the edge</span>
+    <p>Flipped to the start side.</p>
+  </Popover>
+</div>`} block>
+  <div class="flex w-full justify-end" data-apogee-popover="edge">
+    <Popover placement="end">
+      <span slot="trigger">At the edge</span>
+      <p>Flipped to the start side.</p>
+    </Popover>
+  </div>
+</Preview>
+
+## Width and max height
+
+`width="trigger"` matches the trigger; `maxHeight` scrolls the content. The
+panel is in the top layer, so an `overflow: hidden` ancestor cannot clip it.
+
+<Preview code={`<div class="w-64 overflow-hidden rounded-md border border-neutral p-4">
+  <Popover width="trigger" maxHeight="8rem" placement="bottom-start">
+    <span slot="trigger">Pick a region (long list)</span>
+    <ul class="flex flex-col gap-1">
+      <li>Africa</li><li>Antarctica</li><li>Asia</li><li>Europe</li>
+      <li>North America</li><li>Oceania</li><li>South America</li>
+    </ul>
+  </Popover>
+</div>`}>
+  <div class="w-64 overflow-hidden rounded-md border border-neutral p-4" data-apogee-popover="clip">
+    <Popover width="trigger" maxHeight="8rem" placement="bottom-start">
+      <span slot="trigger">Pick a region (long list)</span>
+      <ul class="flex flex-col gap-1">
+        <li>Africa</li><li>Antarctica</li><li>Asia</li><li>Europe</li>
+        <li>North America</li><li>Oceania</li><li>South America</li>
+      </ul>
+    </Popover>
+  </div>
+</Preview>
+
+## Custom trigger
+
+Put your own element in the `anchor` slot with `popovertarget` set to the
+Popover's `id`. The element must be a `<button>` (or any element with
+invoker support) so it works with zero JS.
+
+<Preview code={`<Popover id="pop-profile" placement="bottom-end">
+  <Button slot="anchor" popovertarget="pop-profile" variant="ghost" color="neutral">Jane Doe</Button>
+  <p class="font-medium">Jane Doe</p>
+  <p class="text-neutral-faded">jane@example.com</p>
 </Popover>`}>
-  <Popover placement="bottom">
-    <span slot="trigger">Bottom</span>
-    <p>Opens below the trigger.</p>
+  <Popover id="pop-profile" placement="bottom-end">
+    <Button slot="anchor" popovertarget="pop-profile" variant="ghost" color="neutral">Jane Doe</Button>
+    <p class="font-medium">Jane Doe</p>
+    <p class="text-neutral-faded">jane@example.com</p>
   </Popover>
-  <Popover placement="top">
-    <span slot="trigger">Top</span>
-    <p>Opens above the trigger.</p>
-  </Popover>
+</Preview>
+
+## Padding, elevation and gap
+
+<Preview code={`<Popover padding={0}><span slot="trigger">padding 0</span><div class="h-24 w-56 rounded-lg bg-neutral-faded" /></Popover>
+<Popover padding={2}><span slot="trigger">padding 2</span><p>Tight panel.</p></Popover>
+<Popover elevation="raised"><span slot="trigger">raised</span><p>Lighter shadow.</p></Popover>
+<Popover gap={0}><span slot="trigger">gap 0</span><p>Touches the trigger.</p></Popover>
+<Popover gap={4}><span slot="trigger">gap 4</span><p>One rem away.</p></Popover>`}>
+  <Popover padding={0}><span slot="trigger">padding 0</span><div class="h-24 w-56 rounded-lg bg-neutral-faded" /></Popover>
+  <Popover padding={2}><span slot="trigger">padding 2</span><p>Tight panel.</p></Popover>
+  <Popover elevation="raised"><span slot="trigger">raised</span><p>Lighter shadow.</p></Popover>
+  <Popover gap={0}><span slot="trigger">gap 0</span><p>Touches the trigger.</p></Popover>
+  <Popover gap={4}><span slot="trigger">gap 4</span><p>One rem away.</p></Popover>
 </Preview>
 
 ## States
 
-- **Closed → open** — a fade + slight upward slide (`--duration-fast`,
-  `--ease-standard`), using `@starting-style` for the entry transition; driven
-  entirely by the browser's `:popover-open` pseudo-class.
-- **Unsupported anchor positioning** (no `@supports (anchor-name: --x)`) — the
-  panel falls back to the popover API's default centered position, still fully
-  usable.
+- **Closed → open** — a fade + slight scale (`--duration-fast`,
+  `--ease-standard`), using `@starting-style` for the entry transition;
+  driven entirely by the browser's `:popover-open` pseudo-class.
+- **Out of room** — the panel flips to the opposite side, then the opposite
+  alignment, with no JS.
+- **Unsupported anchor positioning** — the panel falls back to the popover
+  API's default centered position, still fully usable. Anchor positioning is
+  Baseline since January 2026.
 
 ## Examples
 
 A short list inside the panel:
 
 ```astro
-<Popover>
+<Popover placement="bottom-start" padding={1}>
   <span slot="trigger">Share</span>
-  <ul class="flex flex-col gap-1">
-    <li><a href="/copy-link">Copy link</a></li>
-    <li><a href="/email">Email</a></li>
+  <ul class="flex flex-col gap-0.5">
+    <li><a href="/copy-link" class="block rounded px-2 py-1.5 hover:bg-neutral-faded-highlighted">Copy link</a></li>
+    <li><a href="/email" class="block rounded px-2 py-1.5 hover:bg-neutral-faded-highlighted">Email</a></li>
   </ul>
 </Popover>
 ```
@@ -102,7 +201,7 @@ A short list inside the panel:
 ## Accessibility
 
 - The trigger is a real `<button popovertarget>` — fully keyboard-operable
-  (`Enter` / `Space` toggles it).
+  (`Enter` / `Space` toggles it); the browser sets `aria-expanded` on it.
 - `Esc` closes the panel and clicking outside closes it — both are the
   browser's native light-dismiss behaviour (`popover="auto"`, the implicit
   default), no JS involved.
@@ -112,16 +211,17 @@ A short list inside the panel:
   menu, add `role="dialog"` / `role="menu"` (and a label) yourself.
 - Opening doesn't move focus into the panel — there's no `autofocus`. Add one to
   a focusable child if the panel needs immediate keyboard interaction.
-- The open/close fade-and-slide is disabled under `prefers-reduced-motion: reduce`.
+- The open/close fade is disabled under `prefers-reduced-motion: reduce`.
 
 ## Tokens
 
 | Token | Used for |
 |---|---|
 | `--border-neutral` | Trigger + panel border |
-| `--background-page` | Trigger + panel background |
+| `--background-page` | Trigger background |
+| `--background-elevation-overlay` / `-raised` | Panel background (`elevation`) |
 | `--foreground-neutral` | Trigger + panel text |
-| `--background-neutral-faded` | Trigger hover background |
+| `--background-neutral-faded-highlighted` | Trigger hover background |
 | `--border-primary` | Focus ring |
 | `--duration-fast` / `--ease-standard` | Open/close transition |
 | `--radius-md` | Trigger corner radius |
@@ -131,13 +231,11 @@ A short list inside the panel:
 
 - **Do** keep the panel's first interactive element reachable by `Tab` — there's
   no focus trap, so keyboard order just follows DOM order.
-- **Do** use `placement="top"` when the trigger sits near the bottom of the
-  viewport.
+- **Do** use `width="trigger"` for panels that act like a picker under a field.
 - **Don't** put a page's primary content only in a Popover — a stray click or
   `Esc` dismisses it.
-- **Don't** rely on `placement` alone everywhere — anchor positioning isn't
-  supported in every browser yet; the fallback is a screen-centered panel, so
-  test that path too.
+- **Don't** forget `popovertarget` on an `anchor` element — without it the
+  panel never opens.
 
 ## Content
 

@@ -1,13 +1,20 @@
 ---
 title: Tooltip
-description: A short hint shown on hover and keyboard focus. CSS only — wrap a focusable trigger and the hint appears for mouse and keyboard users alike.
+description: A short hint shown on hover and keyboard focus, anchored to its trigger in the top layer with hover intent.
 group: Components
 order: 0
 ---
 
 import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
 import Tooltip from '../../../../registry/components/Tooltip/Tooltip.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+
+<JsNote fallback="A CSS-only bubble above the trigger on hover and focus; no delay, and an overflow ancestor can clip it.">
+  Opens the bubble in the top layer with hover intent (500 ms on first hover,
+  instant for neighbours), opens on focus at once, closes on Escape, ignores
+  touch pointers, and moves `aria-describedby` onto the focusable trigger.
+</JsNote>
 
 <Preview code={`<Tooltip text="Copy to clipboard">
   <Button variant="outline" color="neutral">Copy</Button>
@@ -23,26 +30,27 @@ import Button from '../../../../registry/components/Button/Button.astro'
 npx @ava-ui/apogee add tooltip
 ```
 
-No Apogee component dependencies, no icons, zero JS.
+Depends on `utils` (anchored-panel helper, `island`). No icons.
 
 ## Usage
 
 ```astro
 ---
 import Tooltip from '@/components/apogee/Tooltip/Tooltip.astro'
+import Button from '@/components/apogee/Button/Button.astro'
 ---
-<Tooltip text="Copy to clipboard">
-  <button type="button">Copy</button>
+<Tooltip text="Copy to clipboard" placement="bottom">
+  <Button variant="outline" color="neutral">Copy</Button>
 </Tooltip>
 ```
 
 ## Anatomy
 
 - **Trigger** — whatever you put in the default slot. Make it focusable (a
-  button or link) so keyboard users get the hint too; it carries
-  `aria-describedby` pointing at the tooltip.
-- **Tooltip** — a `role="tooltip"` span above the trigger, centered, shown on
-  `:hover` and `:focus-within`.
+  button or link) so keyboard users get the hint too; the island moves
+  `aria-describedby` onto it.
+- **Bubble** — a `role="tooltip"` `popover="manual"` span anchored to the
+  trigger, in the top layer.
 
 ## API
 
@@ -51,12 +59,12 @@ through to the root wrapper `<span>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `text` | `string` | — | The hint. Keep it to a few words; it does not wrap. |
+| `text` | `string` | — | The hint. Wraps at 20rem. An empty string renders the slot alone, no bubble. |
+| `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'start' \| 'start-top' \| 'start-bottom' \| 'end' \| 'end-top' \| 'end-bottom'` | `'top'` | Side and alignment; flips when out of room. `start`/`end` mirror in RTL. |
+| `panelClass` | `string` | — | Extra classes on the bubble. |
 | `class` | `string` | — | Extra classes on the root wrapper. |
 
 ## Variants
-
-One shape. The tooltip always sits above the trigger, horizontally centered.
 
 <Preview code={`<Tooltip text="Edit"><Button variant="ghost" color="neutral" iconOnly aria-label="Edit">✎</Button></Tooltip>
 <Tooltip text="Delete"><Button color="critical">Delete</Button></Tooltip>
@@ -68,11 +76,62 @@ One shape. The tooltip always sits above the trigger, horizontally centered.
   </div>
 </Preview>
 
+## Placement
+
+All twelve values.
+
+<Preview code={`<Tooltip text="top-start" placement="top-start"><Button variant="outline" color="neutral">top-start</Button></Tooltip>
+… one per value …`} block>
+  <div class="grid grid-cols-3 gap-3 py-10">
+    {['top-start', 'top', 'top-end', 'bottom-start', 'bottom', 'bottom-end', 'start-top', 'start', 'start-bottom', 'end-top', 'end', 'end-bottom'].map((p) => (
+      <div class="flex justify-center">
+        <Tooltip text={p} placement={p}><Button variant="outline" color="neutral">{p}</Button></Tooltip>
+      </div>
+    ))}
+  </div>
+</Preview>
+
+## With an existing description
+
+The island appends the bubble's id to any `aria-describedby` the trigger
+already has, so a control keeps its other descriptions.
+
+<Preview code={`<p id="tt-note">Deletes the draft; this cannot be undone.</p>
+<Tooltip text="Delete draft">
+  <Button color="critical" iconOnly aria-label="Delete" aria-describedby="tt-note">✕</Button>
+</Tooltip>`}>
+  <div class="flex items-center gap-4" data-apogee-tooltip="described">
+    <p id="tt-note" class="text-sm text-neutral-faded">Deletes the draft; this cannot be undone.</p>
+    <Tooltip text="Delete draft">
+      <Button color="critical" iconOnly aria-label="Delete" aria-describedby="tt-note">✕</Button>
+    </Tooltip>
+  </div>
+</Preview>
+
+## Long text and clipping
+
+Text wraps at 20rem. The bubble is in the top layer, so an `overflow: hidden`
+ancestor cannot cut it off.
+
+<Preview code={`<div class="w-56 overflow-hidden rounded-md border border-neutral p-4">
+  <Tooltip text="Exports every row that matches the current filters as a comma-separated file, including hidden columns.">
+    <Button variant="outline" color="neutral">Export</Button>
+  </Tooltip>
+</div>`}>
+  <div class="w-56 overflow-hidden rounded-md border border-neutral p-4">
+    <Tooltip text="Exports every row that matches the current filters as a comma-separated file, including hidden columns.">
+      <Button variant="outline" color="neutral">Export</Button>
+    </Tooltip>
+  </div>
+</Preview>
+
 ## States
 
-- **Hidden** (default) — `opacity: 0`, nudged down 4px, `pointer-events: none`.
-- **Shown** — on `:hover` or `:focus-within` of the wrapper: fades in and
-  settles into place (`--duration-fast`, `--ease-standard`).
+- **Hidden** (default) — the popover is closed.
+- **Shown** — after 500 ms of hover (instantly when a neighbouring tooltip
+  closed within the last 500 ms), or at once on focus; fades and scales in
+  (`--duration-fast`, `--ease-standard`).
+- **Closing** — 150 ms after the pointer leaves, at once on blur or Escape.
 
 ## Examples
 
@@ -87,24 +146,23 @@ the accessible name is `aria-label`.
 
 ## Accessibility
 
-- The tooltip has `role="tooltip"` and the trigger wrapper points at it with
+- The bubble has `role="tooltip"`; the focusable trigger points at it with
   `aria-describedby`, so screen readers read the hint after the trigger's
-  name.
-- Appears on keyboard focus, not only hover, because it is driven by
-  `:focus-within`. Put a focusable element in the slot or keyboard users never
-  see it.
+  name (hidden popover content still counts as a description).
+- Appears on keyboard focus, not only hover. Put a focusable element in the
+  slot or keyboard users never see it.
+- `Esc` dismisses it (WCAG 1.4.13).
 - The hint is supplementary. Never put the only label of a control in a
   tooltip; give the control an accessible name of its own.
-- There is no `Esc` to dismiss (WCAG 1.4.13 asks for one). Moving focus or the
-  pointer away hides it. If the hint is long or essential, use a Popover.
+- Touch pointers never open it: a tap goes to the control, not the hint.
 - The fade respects `prefers-reduced-motion`.
 
 ## Tokens
 
 | Token | Used for |
 |---|---|
-| `--background-inverted` | Tooltip background |
-| `--on-inverted` | Tooltip text |
+| `--background-inverted` | Bubble background |
+| `--on-inverted` | Bubble text |
 | `--radius-md` | Corner radius |
 | `--duration-fast` / `--ease-standard` | Fade transition |
 
@@ -113,10 +171,10 @@ the accessible name is `aria-label`.
 - **Do** use it for a two-to-five-word hint on icon buttons and truncated
   labels.
 - **Do** keep the trigger focusable.
-- **Don't** put links, buttons or formatted text in it; the tooltip is plain
+- **Don't** put links, buttons or formatted text in it; the bubble is plain
   text and cannot be hovered.
-- **Don't** rely on it on touch screens; there is no hover, so the hint only
-  shows while the control has focus.
+- **Don't** rely on it on touch screens; use visible text or a Popover for
+  anything essential.
 
 ## Content
 

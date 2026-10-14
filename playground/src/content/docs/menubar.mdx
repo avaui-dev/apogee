@@ -9,10 +9,11 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Menubar from '../../../../registry/components/Menubar/Menubar.astro'
 
-<JsNote fallback="Each menu is a native details/summary disclosure — it still opens and closes with a click. Without JS, sibling menus don't auto-close and arrow keys / outside-click won't close a menu, but nothing is hidden or broken.">
-  Wires the expected desktop menubar behaviour: opening one menu closes its
-  siblings, ← / → move between top-level menus, Escape and outside-click
-  close any open menu, and activating an item dispatches `apogee:menu`.
+<JsNote fallback="Each menu opens and closes natively (popovertarget); opening one closes the others, and Escape or an outside click closes it. Without JS there are no arrow keys, no hover switching, and items don't close the menu.">
+  Wires the desktop menubar keys: ← / → move between menus (and switch the
+  open one), ↓ opens a menu on its first item, arrows move inside a menu;
+  hovering a sibling while a menu is open switches to it; activating an item
+  closes the menu and dispatches `apogee:menu`.
 </JsNote>
 
 <Preview code={`<Menubar menus={[
@@ -59,7 +60,7 @@ import Menubar from '../../../../registry/components/Menubar/Menubar.astro'
 npx @ava-ui/apogee add menubar
 ```
 
-No Apogee dependencies. Ships one scoped JS island (progressive enhancement).
+Depends on `utils`. Ships one scoped JS island (progressive enhancement).
 
 ## Usage
 
@@ -81,11 +82,11 @@ import Menubar from '@/components/apogee/Menubar/Menubar.astro'
 ## Anatomy
 
 - **Menubar root** — `role="menubar"`, a row of top-level menus.
-- **Menu** — one `<details>` per top-level entry (`menus[i]`).
-  - **Summary (trigger)** — `role="menuitem"`, `aria-haspopup="true"`; the
-    visible label. Native `<details>` open/close, zero JS required.
-  - **Panel** — `role="menu"`, positioned under the trigger; holds the
-    items.
+- **Menu** — one wrapper per top-level entry (`menus[i]`).
+  - **Trigger** — a `<button popovertarget>` with `role="menuitem"` and
+    `aria-haspopup="menu"`; the visible label. Native open/close, zero JS.
+  - **Panel** — a `role="menu"` popover anchored under the trigger, in the
+    top layer; holds the items.
     - **Item** — `role="menuitem"`; an `<a>` when `item.href` is set,
       otherwise a `<button data-id>` that dispatches `apogee:menu` on
       click.
@@ -133,14 +134,14 @@ passes through to the root (`role="menubar"`) div.
   ]} />
 </Preview>
 
-- **Closed** (default) — each menu's `<details>` is collapsed.
-- **Open** — click, or `Enter` / `Space` on a trigger; siblings auto-close
-  (JS); the panel fades and slides in (`--duration-fast`, respects reduced
-  motion).
+- **Closed** (default) — each popover is closed.
+- **Open** — click, or `Enter` / `Space` on a trigger; siblings close
+  natively; the panel fades and scales in (`--duration-fast`, respects
+  reduced motion).
 - **Hover / focus** — triggers and items lighten on hover; a visible
   `focus-visible` ring on triggers.
-- **No JS** — see the JsNote above: menus still open individually; the
-  cross-menu behaviour is JS-only.
+- **No JS** — see the JsNote above: menus open, close and light-dismiss
+  natively; the keyboard and hover behaviour is JS-only.
 
 ## Examples
 
@@ -157,14 +158,15 @@ Listening for item activation:
 ## Accessibility
 
 - `role="menubar"` root; each trigger `role="menuitem"` with
-  `aria-haspopup="true"`; panel `role="menu"`; items `role="menuitem"`.
-- **Keyboard** — native `<details>` gives `Enter` / `Space` to toggle a
-  menu; JS adds `←` / `→` to move focus between top-level triggers, and
-  `Escape` or an outside click closes any open menu.
+  `aria-haspopup="menu"` (the browser sets `aria-expanded`); panel
+  `role="menu"` named by its label; items `role="menuitem"`.
+- **Keyboard** — `Enter` / `Space` toggle a menu and `Escape` closes it
+  (native); JS adds `←` / `→` between triggers (switching the open menu),
+  `↓` to open on the first item, and arrows / `Home` / `End` inside a menu.
 - Focus-visible ring on triggers and items.
-- **No JS** — every menu still opens and closes on its own (native
-  disclosure); auto-closing siblings, arrow-key navigation, and
-  outside-click close are JS-only enhancements — nothing is hidden.
+- **No JS** — every menu still opens, closes, light-dismisses and closes
+  its siblings (native popovers); the keyboard and hover behaviour is a
+  JS-only enhancement — nothing is hidden.
 
 ## Tokens
 
@@ -172,7 +174,7 @@ Listening for item activation:
 |---|---|
 | `--border-neutral` | Root and panel border |
 | `--background-page` | Root background |
-| `--background-elevation-raised` | Panel background |
+| `--background-elevation-overlay` | Panel background |
 | `--foreground-neutral` | Trigger and item text |
 | `--background-neutral-faded` | Hover / focus background on triggers and items |
 | `--border-primary` | Focus ring |

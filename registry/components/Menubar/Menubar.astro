@@ -1,13 +1,17 @@
 ---
 /**
  * Menubar — a desktop-style app menubar (File, Edit, View…). Each top item is a
- * native `<details>` menu, so open/close works with zero JS; a small island adds
- * the expected menubar behaviour: opening one closes the siblings, and ← / →
- * move between menus. Items with `href` navigate; others dispatch `apogee:menu`
- * (`detail: { id, label }`) on `document`.
+ * `<button popovertarget>` whose menu is a native popover: open/close, light
+ * dismiss and "opening one closes the others" are native, zero JS. The island
+ * adds ← / → between menus, ↓ into a menu, arrow keys inside a menu, hover
+ * switching while a menu is open, and item activation. Items with `href`
+ * navigate; others dispatch `apogee:menu` (`detail: { id, label }`) on
+ * `document`.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { innerRadius } from '../utils/radius.ts'
+import { uid } from '../utils/uid.ts'
+import { panelStyle, panelClass, panelSurface, menuClass, itemBase, itemSizes, itemColors } from '../utils/panel.ts'
 interface MenuItem {
   label?: string
   href?: string
@@ -22,7 +26,8 @@ interface Props extends HTMLAttributes<'div'> {
 
 const { menus, class: className, ...rest } = Astro.props
 
-const itemClass = `apogee-menubar-item flex w-full items-center gap-2 ${innerRadius['md-1']} px-2 py-1.5 text-start text-sm text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:bg-neutral-faded-highlighted focus-visible:outline-none`
+const itemClass = `apogee-menubar-item ${itemBase} ${itemSizes.medium} ${itemColors.neutral}`
+const ids = menus.map(() => uid(Astro.locals, 'apogee-mb'))
 ---
 
 <div
@@ -31,18 +36,28 @@ const itemClass = `apogee-menubar-item flex w-full items-center gap-2 ${innerRad
   {...rest}
 >
   {
-    menus.map((menu) => (
-      <details class="apogee-menubar-menu relative">
-        <summary
+    menus.map((menu, i) => (
+      <div class="apogee-menubar-menu">
+        <button
+          type="button"
+          popovertarget={ids[i]}
           role="menuitem"
-          aria-haspopup="true"
-          class:list={['cursor-pointer list-none px-3 py-1.5 text-sm font-medium text-neutral transition-colors select-none hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden', innerRadius['md-1']]}
+          aria-haspopup="menu"
+          style={`anchor-name: --${ids[i]}`}
+          class:list={[
+            'apogee-menubar-trigger cursor-pointer px-3 py-1.5 text-sm font-medium text-neutral transition-colors select-none hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+            innerRadius['md-1'],
+          ]}
         >
           {menu.label}
-        </summary>
+        </button>
         <div
+          id={ids[i]}
+          popover
           role="menu"
-          class="apogee-menubar-panel absolute top-full start-0 z-30 mt-1 flex min-w-44 flex-col gap-0.5 rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg"
+          aria-label={menu.label}
+          style={panelStyle({ anchor: `--${ids[i]}`, placement: 'bottom-start', gap: 1 })}
+          class:list={[panelClass, panelSurface.overlay, menuClass]}
         >
           {menu.items.map((item) =>
             item.separator ? (
@@ -58,73 +73,62 @@ const itemClass = `apogee-menubar-item flex w-full items-center gap-2 ${innerRad
             ),
           )}
         </div>
-      </details>
+      </div>
     ))
   }
 </div>
 
-<style>
-  /* Fade + slide in when a menu opens. */
-  .apogee-menubar-menu[open] .apogee-menubar-panel {
-    animation: apogee-menubar-in var(--duration-fast) var(--ease-standard);
-  }
-  @keyframes apogee-menubar-in {
-    from {
-      opacity: 0;
-      transform: translateY(-0.25rem);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .apogee-menubar-panel {
-      animation: none;
-    }
-  }
-</style>
-
 <script>
   import { island } from '../utils/island.ts'
+  import { menuKeydown, menuItems, restoreFocus } from '../utils/menu.ts'
 
   island('.apogee-menubar', (bar) => {
-    const menus = [...bar.querySelectorAll<HTMLDetailsElement>('.apogee-menubar-menu')]
+    const menus = [...bar.querySelectorAll<HTMLElement>('.apogee-menubar-menu')]
+    const panelOf = (m: HTMLElement) => m.querySelector<HTMLElement>(':scope > [role="menu"]')!
+    const triggerOf = (m: HTMLElement) => m.querySelector<HTMLElement>(':scope > button')!
+    const anyOpen = () => menus.some((m) => panelOf(m).matches(':popover-open'))
+    const openMenu = (m: HTMLElement, focusFirst: boolean) => {
+      const p = panelOf(m)
+      // Focus the trigger first: the browser restores focus to whatever was focused at
+      // show time, so Escape later lands on this menu's trigger, not the previous one.
+      triggerOf(m).focus()
+      if (!p.matches(':popover-open')) p.showPopover() // opening one closes the others natively
+      if (focusFirst) menuItems(p)[0]?.focus()
+      else triggerOf(m).focus()
+    }
 
-    menus.forEach((d, i) => {
-      // Opening one closes the others.
-      d.addEventListener('toggle', () => {
-        if (d.open) menus.forEach((o) => o !== d && (o.open = false))
-      })
-      // Arrow keys move between top-level menus.
-      const summary = d.querySelector<HTMLElement>('summary')
-      summary?.addEventListener('keydown', (e) => {
+    menus.forEach((m, i) => {
+      restoreFocus(panelOf(m), triggerOf(m))
+      const step = (d: number, focusFirst: boolean) => {
+        const next = menus[(i + d + menus.length) % menus.length]!
+        if (anyOpen()) openMenu(next, focusFirst)
+        else triggerOf(next).focus()
+      }
+      // Hovering a sibling trigger while a menu is open switches menus.
+      triggerOf(m).addEventListener('pointerenter', () => anyOpen() && openMenu(m, false))
+      m.addEventListener('keydown', (e) => {
+        const onTrigger = document.activeElement === triggerOf(m)
         if (e.key === 'ArrowRight') {
           e.preventDefault()
-          menus[(i + 1) % menus.length]?.querySelector<HTMLElement>('summary')?.focus()
+          step(1, !onTrigger || anyOpen())
         } else if (e.key === 'ArrowLeft') {
           e.preventDefault()
-          menus[(i - 1 + menus.length) % menus.length]?.querySelector<HTMLElement>('summary')?.focus()
-        }
+          step(-1, !onTrigger || anyOpen())
+        } else if (e.key === 'ArrowDown' && onTrigger) {
+          e.preventDefault()
+          openMenu(m, true)
+        } else menuKeydown(e, panelOf(m))
       })
     })
 
     // Activate an item: close the menu, then navigate (anchor) or dispatch.
     for (const btn of bar.querySelectorAll<HTMLButtonElement>('.apogee-menubar-item[data-id]')) {
       btn.addEventListener('click', () => {
-        btn.closest('details')!.open = false
+        btn.closest<HTMLElement>('[role="menu"]')!.hidePopover()
         document.dispatchEvent(
           new CustomEvent('apogee:menu', { detail: { id: btn.dataset.id, label: btn.textContent?.trim() } }),
         )
       })
     }
-
-  })
-
-  // Close on outside click / Escape — one listener for every menubar on the page.
-  document.addEventListener('click', (e) => {
-    for (const d of document.querySelectorAll<HTMLDetailsElement>('.apogee-menubar-menu[open]')) {
-      if (!d.closest('.apogee-menubar')?.contains(e.target as Node)) d.open = false
-    }
-  })
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return
-    for (const d of document.querySelectorAll<HTMLDetailsElement>('.apogee-menubar-menu[open]')) d.open = false
   })
 </script>

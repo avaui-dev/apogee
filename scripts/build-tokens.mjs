@@ -7,6 +7,21 @@ import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 import { contrast, formatOklch, toGamut } from './color.mjs'
 import hues from './hues.mjs'
+import { accents, greys } from './palettes.mjs'
+
+// A hue input is an OKLCH object or a palette name ('blue', 'blue-700', 'slate').
+export function resolveHue(name, value) {
+  if (typeof value !== 'string') return value
+  if (name === 'neutral') {
+    const g = greys[value]
+    if (!g) throw new Error(`unknown grey "${value}"; one of ${Object.keys(greys).join(', ')}`)
+    return { l: 0.94, ...g }
+  }
+  const [base, step = '600'] = value.split('-')
+  const a = accents[base]?.[step]
+  if (!a) throw new Error(`unknown colour "${value}"; a name from scripts/palettes.mjs, optionally with a step 400-700`)
+  return a
+}
 
 const WHITE = { l: 1, c: 0, h: 0, alpha: 1 }
 const BLACK = { l: 0, c: 0, h: 0, alpha: 1 }
@@ -39,16 +54,27 @@ function highlight(bg, fgL, amount, on) {
   return toward(bg, on.l === 1 ? 0 : 1, amount)
 }
 
-export function generateHue(name, input) {
-  const bg = toGamut({ alpha: 1, ...input })
+export function generateHue(name, rawInput) {
+  const input = resolveHue(name, rawInput)
+  // Every grey of the neutral scale carries the input's tint; chroma peaks at
+  // mid lightness and tapers to nothing at white and black (the sRGB gamut
+  // clamps it anyway at the extremes).
+  const grey = (l, alpha = 1) => toGamut({ l, c: input.c * Math.min(1, 4 * l * (1 - l)), h: input.h, alpha })
+  // Borders use a near-black / near-white ink; fills use a mid-lightness ink so
+  // the tint survives the low alpha (a 7% wash of near-black has no visible hue).
+  const inkLight = grey(0.2)
+  const inkDark = grey(0.95)
+  const fillLight = grey(0.55)
+  const fillDark = grey(0.8)
   const neutral = name === 'neutral'
+  const bg = neutral ? grey(input.l) : toGamut({ alpha: 1, ...input })
   const warning = name === 'warning'
   const bgDark = toGamut(darkOf(bg))
 
   const bgFaded = neutral
-    ? { ...bg, l: 0, c: 0, alpha: 0.05 }
+    ? { ...fillLight, alpha: 0.07 }
     : { ...bg, l: 0.98, c: Math.min(warning ? 0.04 : 0.02, bg.c / 5) }
-  const bgFadedDark = neutral ? { ...bgDark, l: 1, alpha: 0.08 } : { ...bgDark, l: 0.24, c: bgDark.c / 9.8 }
+  const bgFadedDark = neutral ? { ...fillDark, alpha: 0.1 } : { ...bgDark, l: 0.24, c: bgDark.c / 9.8 }
 
   const fgL = neutral ? 0.24 : 0.52
   const fgDarkL = neutral ? 0.96 : 0.75
@@ -58,30 +84,29 @@ export function generateHue(name, input) {
     [`background-${name}`]: bg,
     [`background-${name}-faded`]: bgFaded,
     [`background-${name}-highlighted`]: highlight(bg, fgL, neutral ? 0.03 : 0.1, onLight),
-    [`background-${name}-faded-highlighted`]: neutral ? { l: 0, c: 0, h: 0, alpha: 0.1 } : { ...bg, alpha: 0.06 },
-    [`border-${name}`]: neutral ? { ...bg, l: 0, alpha: 0.12 } : { ...bg, l: bg.l - 0.04 },
-    [`border-${name}-faded`]: neutral ? { ...bgFaded, l: 0, alpha: 0.08 } : { ...bgFaded, l: bgFaded.l - 0.04 },
-    [`foreground-${name}`]: { ...bg, l: fgL },
+    [`background-${name}-faded-highlighted`]: neutral ? { ...fillLight, alpha: 0.13 } : { ...bg, alpha: 0.06 },
+    [`border-${name}`]: neutral ? { ...inkLight, alpha: 0.12 } : { ...bg, l: bg.l - 0.04 },
+    [`border-${name}-faded`]: neutral ? { ...inkLight, alpha: 0.08 } : { ...bgFaded, l: bgFaded.l - 0.04 },
+    [`foreground-${name}`]: neutral ? grey(fgL) : { ...bg, l: fgL },
     [`on-${name}`]: onLight,
   }
   const dark = {
     [`background-${name}`]: bgDark,
     [`background-${name}-faded`]: bgFadedDark,
     [`background-${name}-highlighted`]: highlight(bgDark, fgDarkL, neutral ? 0.06 : 0.1, onDark),
-    [`background-${name}-faded-highlighted`]: neutral ? { l: 1, c: 0, h: 0, alpha: 0.14 } : { ...bgDark, alpha: 0.08 },
-    [`border-${name}`]: neutral ? { ...bgDark, l: 1, alpha: 0.12 } : { ...bgDark, l: bgDark.l + 0.1 },
-    [`border-${name}-faded`]: neutral ? { ...bgFadedDark, l: 1, alpha: 0.08 } : { ...bgFadedDark, l: bgFadedDark.l + 0.06 },
-    [`foreground-${name}`]: neutral ? { ...bgDark, l: fgDarkL } : { ...bgDark, l: fgDarkL, c: bg.c * 0.85 },
+    [`background-${name}-faded-highlighted`]: neutral ? { ...fillDark, alpha: 0.16 } : { ...bgDark, alpha: 0.08 },
+    [`border-${name}`]: neutral ? { ...inkDark, alpha: 0.12 } : { ...bgDark, l: bgDark.l + 0.1 },
+    [`border-${name}-faded`]: neutral ? { ...inkDark, alpha: 0.08 } : { ...bgFadedDark, l: bgFadedDark.l + 0.06 },
+    [`foreground-${name}`]: neutral ? grey(fgDarkL) : { ...bgDark, l: fgDarkL, c: bg.c * 0.85 },
     [`on-${name}`]: onDark,
   }
 
   if (neutral) {
-    const grey = (l, alpha = 1) => ({ l, c: 0, h: 0, alpha })
     Object.assign(light, {
       'foreground-neutral-faded': grey(fgL + 0.28),
       'background-disabled': grey(0.95),
       'background-disabled-faded': grey(0.98),
-      'border-disabled': grey(0, 0.06),
+      'border-disabled': { ...inkLight, alpha: 0.06 },
       'foreground-disabled': grey(0.65),
       'background-elevation-base': grey(1),
       'background-elevation-raised': grey(1),
@@ -95,7 +120,7 @@ export function generateHue(name, input) {
       'foreground-neutral-faded': grey(fgDarkL - 0.22),
       'background-disabled': grey(0.28),
       'background-disabled-faded': grey(0.225),
-      'border-disabled': grey(1, 0.06),
+      'border-disabled': { ...inkDark, alpha: 0.06 },
       'foreground-disabled': grey(0.45),
       'background-elevation-base': grey(0.2),
       'background-elevation-raised': grey(0.22),

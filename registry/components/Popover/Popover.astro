@@ -1,94 +1,77 @@
 ---
 /**
- * Popover — rich content on click with the native Popover API: top layer +
- * light dismiss (click-away / Esc) for free, zero JS. Positioned with CSS
- * anchor positioning; where that's unsupported the panel centers on screen
- * (still fully usable). Slots: `trigger` (button label), default (panel).
+ * Popover — rich content on click with the native Popover API: top layer and
+ * light dismiss (click-away / Esc) for free, zero JS. Anchored to its trigger
+ * with CSS anchor positioning (12 placements, flips when out of room); where
+ * unsupported the panel centres on screen and stays usable.
+ * Slots: `trigger` (label of the built-in button), `anchor` (your own element —
+ * give it `popovertarget={id}`), default (panel).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
-const id = uid(Astro.locals, 'apogee-pop')
-const anchor = `--${id}`
+import { panelStyle, panelClass, panelSurface, panelPadding, type Placement } from '../utils/panel.ts'
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
-  placement?: 'bottom' | 'top'
+  /** Panel id; set it when an `anchor` slot element needs `popovertarget`. */
+  id?: string
+  /** @category layout */
+  placement?: Placement
+  /** Space between trigger and panel, in spacing steps. */
+  gap?: number
+  /** `'trigger'` matches the trigger's width; any CSS length otherwise. */
+  width?: 'trigger' | string
+  /** Scrolls the panel content past this height. */
+  maxHeight?: string
+  padding?: keyof typeof panelPadding
+  elevation?: keyof typeof panelSurface
+  /** Extra classes on the panel. */
+  panelClass?: string
+  /** Extra classes on the trigger (built-in button or anchor wrapper). */
   class?: string
 }
 
-const { placement = 'bottom', class: className, ...rest } = Astro.props
+const {
+  id: idProp,
+  placement = 'bottom',
+  gap = 2,
+  width,
+  maxHeight,
+  padding = 4,
+  elevation = 'overlay',
+  panelClass: panelClassName,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals, 'apogee-pop')
+const anchor = `--${id}`
+const triggerClass =
+  'inline-flex items-center gap-1 rounded-md border border-neutral bg-page px-3 py-1.5 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 ---
 
-<button
-  type="button"
-  popovertarget={id}
-  style={`anchor-name: ${anchor}`}
-  class:list={[
-    'inline-flex items-center gap-1 rounded-md border border-neutral bg-page px-3 py-1.5 text-sm font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
-    className,
-  ]}
-  {...rest}
->
-  <slot name="trigger">Open</slot>
-</button>
+{
+  Astro.slots.has('anchor') ? (
+    <span class:list={['inline-flex', className]} style={`anchor-name: ${anchor}`} {...rest}>
+      <slot name="anchor" />
+    </span>
+  ) : (
+    <button type="button" popovertarget={id} style={`anchor-name: ${anchor}`} class:list={[triggerClass, className]} {...rest}>
+      <slot name="trigger">Open</slot>
+    </button>
+  )
+}
 
 <div
   id={id}
   popover
-  data-placement={placement}
-  style={`position-anchor: ${anchor}`}
-  class="apogee-popover w-64 rounded-lg border border-neutral bg-page p-4 text-sm text-neutral shadow-lg"
+  style={panelStyle({ anchor, placement, gap, width, maxHeight })}
+  class:list={[
+    panelClass,
+    panelSurface[elevation],
+    panelPadding[padding],
+    maxHeight && 'overflow-auto',
+    panelClassName,
+  ]}
 >
   <slot />
 </div>
-
-<style>
-  .apogee-popover {
-    margin: 0;
-    opacity: 0;
-    transform: translateY(-0.25rem);
-    transition:
-      opacity var(--duration-fast) var(--ease-standard),
-      transform var(--duration-fast) var(--ease-standard),
-      overlay var(--duration-fast) allow-discrete,
-      display var(--duration-fast) allow-discrete;
-  }
-  .apogee-popover:popover-open {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .apogee-popover {
-      transition: none;
-      transform: none;
-    }
-  }
-  @starting-style {
-    .apogee-popover:popover-open {
-      opacity: 0;
-      transform: translateY(-0.25rem);
-    }
-  }
-
-  /* Anchor to the trigger where supported (Chromium-first); otherwise the
-     popover's default centering applies. `flip-block` is the native equivalent
-     of the Dropdown's flip — the panel swaps above the trigger when there's no
-     room below, no JS. */
-  @supports (anchor-name: --x) {
-    .apogee-popover {
-      position: fixed;
-      inset: auto;
-      position-try-fallbacks: flip-block;
-    }
-    .apogee-popover[data-placement='bottom'] {
-      top: anchor(bottom);
-      left: anchor(left);
-      margin-top: 0.5rem;
-    }
-    .apogee-popover[data-placement='top'] {
-      bottom: anchor(top);
-      left: anchor(left);
-      margin-bottom: 0.5rem;
-    }
-  }
-</style>

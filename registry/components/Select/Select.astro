@@ -1,16 +1,31 @@
 ---
 /**
  * Select — a labeled native `<select>` (styled, with a chevron). Pass `<option>`s
- * in the slot. Native = zero JS, full keyboard + mobile support.
+ * in the slot: native = zero JS, full keyboard + mobile support.
+ *
+ * Pass `options` instead for a custom listbox: a field-styled button opens a
+ * `role="listbox"` popover anchored under it (arrows, Home/End, type-ahead,
+ * Enter/Space, Escape), with descriptions, disabled options and `multiple`.
+ * The native `<select>` stays in the DOM as the form control (hidden while JS
+ * runs, shown without JS), so the value submits like any other field.
+ * Slots: `start` (icon inside the control), `end` (replaces the chevron).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
 import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
-import { ChevronDown } from '@lucide/astro'
+import { panelStyle, panelClass, panelSurface, menuClass, itemBase, itemSizes, itemColors } from '../utils/panel.ts'
+import { ChevronDown, Check } from '@lucide/astro'
+
+export interface SelectOption {
+  value: string
+  label: string
+  description?: string
+  disabled?: boolean
+}
 
 /** @composable */
-interface Props extends Omit<HTMLAttributes<'select'>, 'size'> {
+interface Props extends Omit<HTMLAttributes<'select'>, 'size' | 'value' | 'multiple' | 'disabled'> {
   id?: string
   label?: string
   hint?: string
@@ -22,28 +37,238 @@ interface Props extends Omit<HTMLAttributes<'select'>, 'size'> {
   /** @category layout */
   variant?: FieldVariant
   required?: boolean
+  /** Rich options render a custom listbox (JS island) over the native select. */
+  options?: SelectOption[]
+  /** Empty first choice; shown faded until a value is picked. */
+  placeholder?: string
+  /** Initial value(s); `selected` on an `<option>` works too. */
+  value?: string | string[]
+  multiple?: boolean
+  disabled?: boolean
   class?: string
 }
 
-const { id: idProp, label, hint, error, hasError = false, size = 'medium', variant = 'outline', required = false, class: className, ...rest } = Astro.props
+const {
+  id: idProp,
+  label,
+  hint,
+  error,
+  hasError = false,
+  size = 'medium',
+  variant = 'outline',
+  required = false,
+  options,
+  placeholder,
+  value,
+  multiple = false,
+  disabled = false,
+  class: className,
+  ...rest
+} = Astro.props
 const invalid = Boolean(error) || hasError
 const id = idProp ?? uid(Astro.locals)
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
-
+const values = value === undefined ? [] : Array.isArray(value) ? value : [value]
+const chosen = options?.filter((o) => values.includes(o.value)) ?? []
+const listId = `${id}-list`
+const anchor = `--${id}`
+const hasStart = Astro.slots.has('start')
+const optionSize = { small: 'small', medium: 'medium', large: 'medium', xlarge: 'large' } as const
+const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fieldVariants[variant], fieldSizes[size]]
 ---
 
 <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
-  <div class="relative">
+  <div class="apogee-select relative" data-custom={options ? '' : undefined}>
+    {
+      hasStart && (
+        <span class="pointer-events-none absolute start-3 top-1/2 z-10 inline-flex -translate-y-1/2 text-neutral-faded [&_svg]:size-4">
+          <slot name="start" />
+        </span>
+      )
+    }
     <select
       id={id}
       required={required}
+      multiple={multiple || undefined}
+      disabled={disabled || undefined}
       aria-describedby={describedby}
       aria-invalid={invalid ? 'true' : undefined}
-      class:list={['appearance-none pe-9', fieldBase, fieldVariants[variant], fieldSizes[size]]}
+      class:list={[...controlClass, options && 'js:hidden']}
       {...rest}
     >
-      <slot />
+      {placeholder && <option value="" disabled={required} selected={!values.length}>{placeholder}</option>}
+      {
+        options ? (
+          options.map((o) => (
+            <option value={o.value} disabled={o.disabled} selected={values.includes(o.value)}>
+              {o.label}
+            </option>
+          ))
+        ) : (
+          <slot />
+        )
+      }
     </select>
-    <ChevronDown class="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-neutral-faded" aria-hidden="true" />
+    {
+      options && (
+        <button
+          type="button"
+          popovertarget={listId}
+          aria-haspopup="listbox"
+          aria-controls={listId}
+          aria-labelledby={label ? `${id}-label ${id}-value` : `${id}-value`}
+          aria-describedby={describedby}
+          aria-invalid={invalid ? 'true' : undefined}
+          disabled={disabled || undefined}
+          style={`anchor-name: ${anchor}`}
+          class:list={['no-js:hidden flex items-center text-start', ...controlClass]}
+        >
+          <span id={`${id}-value`} class:list={['truncate', !chosen.length && 'text-neutral-faded']} data-placeholder={placeholder}>
+            {chosen.length ? chosen.map((o) => o.label).join(', ') : placeholder}
+          </span>
+        </button>
+      )
+    }
+    <span class="pointer-events-none absolute end-3 top-1/2 inline-flex -translate-y-1/2 text-neutral-faded [&_svg]:size-4">
+      <slot name="end">
+        <ChevronDown aria-hidden="true" />
+      </slot>
+    </span>
+    {
+      options && (
+        <div
+          id={listId}
+          popover
+          role="listbox"
+          aria-multiselectable={multiple ? 'true' : undefined}
+          aria-labelledby={label ? `${id}-label` : undefined}
+          style={panelStyle({ anchor, placement: 'bottom-start', gap: 1, width: 'trigger', maxHeight: '15rem' })}
+          class:list={[panelClass, panelSurface.overlay, menuClass, 'overflow-auto']}
+        >
+          {options.map((o) => (
+            <div
+              role="option"
+              tabindex="-1"
+              data-value={o.value}
+              data-label={o.label}
+              aria-selected={values.includes(o.value) ? 'true' : 'false'}
+              aria-disabled={o.disabled ? 'true' : undefined}
+              class:list={['group cursor-pointer', itemBase, itemSizes[optionSize[size]], itemColors.neutral, 'aria-selected:bg-neutral-faded']}
+            >
+              <span class="flex-1">
+                {o.label}
+                {o.description && <span class="block text-xs text-neutral-faded">{o.description}</span>}
+              </span>
+              <Check class="hidden group-aria-selected:block" aria-hidden="true" />
+            </div>
+          ))}
+        </div>
+      )
+    }
   </div>
 </Field>
+
+<script>
+  import { island } from '../utils/island.ts'
+  import { restoreFocus } from '../utils/menu.ts'
+
+  island('.apogee-select[data-custom]', (root) => {
+    const select = root.querySelector<HTMLSelectElement>('select')
+    const trigger = root.querySelector<HTMLButtonElement>('button[aria-haspopup="listbox"]')
+    const list = root.querySelector<HTMLElement>('[role="listbox"]')
+    const value = trigger?.querySelector<HTMLElement>('span')
+    if (!select || !trigger || !list || !value) return
+    const options = [...list.querySelectorAll<HTMLElement>('[role="option"]')]
+    const enabled = () => options.filter((o) => o.getAttribute('aria-disabled') !== 'true')
+    restoreFocus(list, trigger)
+    const optionFor = (o: HTMLElement) => select.querySelector<HTMLOptionElement>(`option[value="${CSS.escape(o.dataset.value ?? '')}"]`)
+
+    // The label points at the hidden select; send its click to the trigger.
+    document.querySelector<HTMLLabelElement>(`label[for="${CSS.escape(select.id)}"]`)?.addEventListener('click', (e) => {
+      e.preventDefault()
+      trigger.focus()
+    })
+
+    const render = () => {
+      const picked = options.filter((o) => optionFor(o)?.selected)
+      options.forEach((o) => o.setAttribute('aria-selected', String(picked.includes(o))))
+      value.textContent = picked.length ? picked.map((o) => o.dataset.label ?? '').join(', ') : (value.dataset.placeholder ?? '')
+      value.classList.toggle('text-neutral-faded', !picked.length)
+    }
+    const choose = (o: HTMLElement) => {
+      const opt = optionFor(o)
+      if (!opt) return
+      if (select.multiple) opt.selected = !opt.selected
+      else select.value = opt.value
+      render()
+      select.dispatchEvent(new Event('change', { bubbles: true }))
+      if (!select.multiple) {
+        list.hidePopover()
+        trigger.focus()
+      }
+    }
+
+    const focusCurrent = () => (options.find((o) => o.getAttribute('aria-selected') === 'true') ?? enabled()[0])?.focus()
+    list.addEventListener('toggle', (e) => {
+      if ((e as ToggleEvent).newState === 'open') focusCurrent()
+    })
+    list.addEventListener('click', (e) => {
+      const o = (e.target as Element).closest<HTMLElement>('[role="option"]')
+      if (o && o.getAttribute('aria-disabled') !== 'true') choose(o)
+    })
+    let typed = ''
+    let typedAt = 0
+    list.addEventListener('keydown', (e) => {
+      const items = enabled()
+      const idx = items.indexOf(document.activeElement as HTMLElement)
+      const go = (i: number) => {
+        e.preventDefault()
+        items[i]?.focus()
+      }
+      if (e.key === 'ArrowDown') go(Math.min(idx + 1, items.length - 1))
+      else if (e.key === 'ArrowUp') go(Math.max(idx - 1, 0))
+      else if (e.key === 'Home') go(0)
+      else if (e.key === 'End') go(items.length - 1)
+      else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        const item = items[idx]
+        if (item) choose(item)
+      } else if (e.key === 'Tab') list.hidePopover()
+      else if (e.key.length === 1 && !e.metaKey && !e.ctrlKey) {
+        // Type-ahead across option text.
+        typed = (Date.now() - typedAt < 600 ? typed : '') + e.key.toLowerCase()
+        typedAt = Date.now()
+        items.find((o) => (o.dataset.label ?? '').toLowerCase().startsWith(typed))?.focus()
+      }
+    })
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        if (list.matches(':popover-open')) focusCurrent()
+        else list.showPopover()
+      }
+    })
+    // The hidden select cannot show the browser's validation bubble: surface it on the trigger.
+    select.addEventListener('invalid', (e) => {
+      e.preventDefault()
+      trigger.setAttribute('aria-invalid', 'true')
+      let msg = root.parentElement?.querySelector<HTMLElement>(`#${CSS.escape(select.id)}-error`)
+      if (!msg) {
+        msg = document.createElement('p')
+        msg.id = `${select.id}-error`
+        msg.setAttribute('role', 'alert')
+        msg.className = 'text-sm text-critical'
+        root.after(msg)
+        trigger.setAttribute('aria-describedby', msg.id)
+      }
+      msg.textContent = select.validationMessage
+      trigger.focus()
+    })
+    select.addEventListener('change', (e) => {
+      if (select.checkValidity()) trigger.removeAttribute('aria-invalid')
+      if (e.isTrusted) render() // a form reset or script change
+    })
+    select.form?.addEventListener('reset', () => setTimeout(render))
+    render()
+  })
+</script>

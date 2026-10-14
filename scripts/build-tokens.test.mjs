@@ -3,18 +3,45 @@ import assert from 'node:assert/strict'
 import { generateHue, renderBlocks } from './build-tokens.mjs'
 import { contrast, composite, oklchToLinear } from './color.mjs'
 import hues from './hues.mjs'
+import { resolveHue } from './build-tokens.mjs'
 
 test('dark primary keeps its hue, lowers chroma by 20%, never below L 0.32', () => {
   const { dark } = generateHue('primary', hues.primary)
-  assert.equal(dark['background-primary'].h, 262)
-  assert.ok(Math.abs(dark['background-primary'].c - 0.16) < 1e-9)
+  const { h, c } = resolveHue('primary', hues.primary)
+  assert.equal(dark['background-primary'].h, h)
+  assert.ok(Math.abs(dark['background-primary'].c - c * 0.8) < 1e-9)
   assert.ok(dark['background-primary'].l >= 0.32)
 })
 
-test('neutral faded is black at 5% alpha in light and white at 8% in dark', () => {
+test('neutral fills are a mid-lightness tinted ink: light 7% / 13%, dark 10% / 16%', () => {
   const { light, dark } = generateHue('neutral', hues.neutral)
-  assert.deepEqual(light['background-neutral-faded'], { l: 0, c: 0, h: 0, alpha: 0.05 })
-  assert.deepEqual(dark['background-neutral-faded'], { l: 1, c: 0, h: 0, alpha: 0.08 })
+  const lf = light['background-neutral-faded']
+  assert.equal(lf.alpha, 0.07)
+  assert.equal(light['background-neutral-faded-highlighted'].alpha, 0.13)
+  assert.equal(lf.h, resolveHue('neutral', hues.neutral).h)
+  assert.ok(lf.c > 0.03 && lf.l === 0.55, 'fill ink keeps its tint at low alpha')
+  assert.equal(light['border-neutral'].l, 0.2, 'borders keep the dark ink')
+  assert.equal(dark['background-neutral-faded'].alpha, 0.1)
+  assert.equal(dark['background-neutral-faded-highlighted'].alpha, 0.16)
+})
+
+test('palette names resolve: accents to a step, greys to a tint', () => {
+  assert.deepEqual(resolveHue('primary', 'blue'), resolveHue('primary', 'blue-600'))
+  assert.notDeepEqual(resolveHue('primary', 'blue-700'), resolveHue('primary', 'blue-600'))
+  assert.equal(resolveHue('neutral', 'stone').h, 58.071)
+  assert.equal(resolveHue('neutral', 'neutral').c, 0)
+  assert.deepEqual(resolveHue('primary', { l: 0.5, c: 0.1, h: 10 }), { l: 0.5, c: 0.1, h: 10 })
+  assert.throws(() => resolveHue('primary', 'teal-950'), /unknown colour/)
+  assert.throws(() => resolveHue('neutral', 'blue'), /unknown grey/)
+})
+
+test('grey chroma peaks at mid lightness and vanishes at white', () => {
+  const { light } = generateHue('neutral', hues.neutral)
+  assert.equal(light['background-page'].c, 0)
+  assert.ok(light['foreground-neutral-faded'].c > light['foreground-neutral'].c)
+  assert.ok(light['foreground-neutral'].c > light['background-page-faded'].c)
+  const plain = generateHue('neutral', 'neutral')
+  for (const v of Object.values(plain.light)) assert.equal(v.c, 0)
 })
 
 test('on-colour is white for primary in both modes and black for warning', () => {
@@ -46,8 +73,8 @@ test('foreground on page clears 4.5 for every hue, both modes, with alpha compos
 
 test('renderBlocks emits one declaration per variable with oklch values', () => {
   const { light, dark } = renderBlocks(hues)
-  assert.match(light, /^  --background-primary: oklch\(0\.47 0\.2 262\);$/m)
-  assert.match(dark, /^  --background-page: oklch\(0\.16 0 0\);$/m)
+  assert.match(light, /^  --background-primary: oklch\(0\.488 0\.243 264\.376\);$/m)
+  assert.match(dark, /^  --background-page: oklch\(0\.16 [0-9.]+ 257\.417\);$/m)
   assert.match(light, /^  --on-primary: oklch\(1 0 0\);$/m)
 })
 
@@ -61,7 +88,7 @@ test('writeTheme fills empty marker blocks and replaces filled ones', async () =
   writeTheme(file, hues)
   const once = readFileSync(file, 'utf8')
   assert.match(once, /start \*\/\n  --background-primary: oklch/)
-  assert.match(once, /--on-inverted: oklch\(0\.16 0 0\);\n  \/\* @generated colors dark end/)
+  assert.match(once, /--on-inverted: oklch\(0\.16 [0-9.]+ 257\.417\);\n  \/\* @generated colors dark end/)
   writeTheme(file, hues)
   assert.equal(readFileSync(file, 'utf8'), once) // idempotent
 })

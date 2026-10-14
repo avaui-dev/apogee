@@ -3,16 +3,28 @@
  * Combobox — a text input with a styled, filterable dropdown of suggestions.
  * A real editable ARIA combobox (the platform can't style a `<datalist>` popup),
  * so it's a JS island: without JS the input still works as a plain text field.
+ * The listbox is a `popover="manual"` panel anchored under the input (top
+ * layer, as wide as the input, scrolls past 15rem).
  *
  * Typing filters the list and highlights the closest match (prefers a prefix
- * match); Enter or click commits it into the input. Free-typing is allowed.
+ * match); Enter or click commits its label into the input. Free-typing is
+ * allowed. Options are strings or `{ value, label?, description?, disabled? }`.
  * Renders a full accessible field (label + hint/error) via Field, like Input.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
 import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
+import { panelStyle, panelClass, panelSurface, menuClass, itemBase, itemSizes, itemColors } from '../utils/panel.ts'
 import { ChevronDown } from '@lucide/astro'
+
+export interface ComboboxOption {
+  value: string
+  /** Shown in the list and written into the input; defaults to `value`. */
+  label?: string
+  description?: string
+  disabled?: boolean
+}
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
@@ -21,7 +33,7 @@ interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
   hint?: string
   error?: string
   /** Suggestions shown in the dropdown. */
-  options: string[]
+  options: (string | ComboboxOption)[]
   /** Marks the field invalid without a message. */
   hasError?: boolean
   /** @category layout */
@@ -50,11 +62,14 @@ const {
 } = Astro.props
 const id = idProp ?? uid(Astro.locals)
 const listId = `${id}-list`
+const anchor = `--${id}`
 const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
+const items = options.map((o) => (typeof o === 'string' ? { value: o, label: o } : { ...o, label: o.label ?? o.value }))
+const optionSize = { small: 'small', medium: 'medium', large: 'medium', xlarge: 'large' } as const
 ---
 
 <Field id={id} label={label} hint={hint} error={error} required={required} class={className}>
-  <div class="apogee-combobox relative" data-open="false">
+  <div class="apogee-combobox relative" data-open="false" style={`anchor-name: ${anchor}`}>
     <input
       id={id}
       type="text"
@@ -65,7 +80,7 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
       autocomplete="off"
       required={required}
       aria-describedby={describedby}
-      aria-invalid={error ? 'true' : undefined}
+      aria-invalid={error || hasError ? 'true' : undefined}
       class:list={[fieldBase, fieldVariants[variant], fieldSizes[size], caret && 'pe-9']}
       {...rest}
     />
@@ -79,55 +94,32 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
     }
     <ul
       id={listId}
+      popover="manual"
       role="listbox"
-      class="apogee-combobox-list absolute z-20 flex max-h-60 w-full flex-col gap-0.5 overflow-auto rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg no-js:hidden"
-      hidden
+      style={panelStyle({ anchor, placement: 'bottom-start', gap: 1, width: 'trigger', maxHeight: '15rem' })}
+      class:list={[panelClass, panelSurface.overlay, menuClass, 'overflow-auto']}
     >
       {
-        options.map((opt, i) => (
+        items.map((o, i) => (
           <li
             id={`${listId}-${i}`}
             role="option"
             aria-selected="false"
-            data-value={opt}
-            class="cursor-pointer rounded px-2 py-1.5 text-sm text-neutral hover:bg-neutral-faded-highlighted aria-selected:bg-neutral-faded-highlighted"
+            aria-disabled={o.disabled ? 'true' : undefined}
+            data-value={o.value}
+            data-label={o.label}
+            class:list={['cursor-pointer', itemBase, itemSizes[optionSize[size]], itemColors.neutral, 'aria-selected:bg-neutral-faded']}
           >
-            {opt}
+            <span class="flex-1">
+              {o.label}
+              {o.description && <span class="block text-xs text-neutral-faded">{o.description}</span>}
+            </span>
           </li>
         ))
       }
     </ul>
   </div>
 </Field>
-
-<style>
-  /* Opens below the input; flips above when there isn't room (set by the island). */
-  .apogee-combobox-list {
-    top: 100%;
-    margin-top: 0.25rem;
-  }
-  .apogee-combobox--up .apogee-combobox-list {
-    top: auto;
-    bottom: 100%;
-    margin-top: 0;
-    margin-bottom: 0.25rem;
-  }
-  /* Fade + slide in each time the list opens. */
-  .apogee-combobox-list:not([hidden]) {
-    animation: apogee-combobox-in var(--duration-fast) var(--ease-standard);
-  }
-  @keyframes apogee-combobox-in {
-    from {
-      opacity: 0;
-      transform: translateY(-0.25rem);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .apogee-combobox-list {
-      animation: none;
-    }
-  }
-</style>
 
 <script>
   import { island } from '../utils/island.ts'
@@ -139,24 +131,18 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
     if (!input || !list || !options.length) return
 
     let active = -1
-    const visible = () => options.filter((o) => !o.hidden)
+    const isOpen = () => list.matches(':popover-open')
+    // Navigable options: shown by the filter and not disabled.
+    const visible = () => options.filter((o) => !o.hidden && o.getAttribute('aria-disabled') !== 'true')
+    const labelOf = (o: HTMLElement) => o.dataset.label ?? ''
 
-    // Flip the list above the input when there isn't room below the viewport.
-    const place = () => {
-      const rect = cb.getBoundingClientRect()
-      const below = window.innerHeight - rect.bottom
-      const above = rect.top
-      const needed = list.offsetHeight + 8
-      cb.classList.toggle('apogee-combobox--up', below < needed && above > below)
-    }
     const open = () => {
-      list.hidden = false
+      if (!isOpen()) list.showPopover()
       input.setAttribute('aria-expanded', 'true')
       cb.dataset.open = 'true'
-      place()
     }
     const close = () => {
-      list.hidden = true
+      if (isOpen()) list.hidePopover()
       input.setAttribute('aria-expanded', 'false')
       cb.dataset.open = 'false'
       setActive(-1)
@@ -180,25 +166,22 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
       const q = input.value.trim().toLowerCase()
       const vis = visible()
       if (!q) return vis.length ? 0 : -1
-      const pre = vis.findIndex((o) => (o.dataset.value ?? '').toLowerCase().startsWith(q))
+      const pre = vis.findIndex((o) => labelOf(o).toLowerCase().startsWith(q))
       return pre >= 0 ? pre : vis.length ? 0 : -1
     }
     const filter = () => {
       const q = input.value.trim().toLowerCase()
-      for (const o of options) {
-        const text = (o.dataset.value ?? '').toLowerCase()
-        o.hidden = q !== '' && !text.includes(q)
-      }
+      for (const o of options) o.hidden = q !== '' && !labelOf(o).toLowerCase().includes(q)
       setActive(matchIndex())
-      place() // list height changed — re-check the flip
     }
     const commit = (o: HTMLElement) => {
       const value = o.dataset.value ?? ''
-      input.value = value
+      const label = labelOf(o)
+      input.value = label
       close()
       input.dispatchEvent(new Event('input', { bubbles: true }))
       input.dispatchEvent(new Event('change', { bubbles: true }))
-      cb.dispatchEvent(new CustomEvent('apogee:combobox-select', { bubbles: true, detail: { value } }))
+      cb.dispatchEvent(new CustomEvent('apogee:combobox-select', { bubbles: true, detail: { value, label } }))
     }
 
     input.addEventListener('focus', () => {
@@ -215,18 +198,19 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
       const vis = visible()
       if (e.key === 'ArrowDown') {
         e.preventDefault()
-        if (list.hidden) {
+        if (!isOpen()) {
           open()
           showAll()
         }
-        setActive(Math.min(active + 1, vis.length - 1))
+        if (vis.length) setActive((active + 1) % vis.length)
       } else if (e.key === 'ArrowUp') {
         e.preventDefault()
-        setActive(Math.max(active - 1, 0))
+        if (vis.length) setActive((active - 1 + vis.length) % vis.length)
       } else if (e.key === 'Enter') {
-        if (!list.hidden && active >= 0 && vis[active]) {
+        const v = active >= 0 ? vis[active] : undefined
+        if (isOpen() && v) {
           e.preventDefault()
-          { const v = vis[active]; if (v) commit(v) }
+          commit(v)
         }
       } else if (e.key === 'Escape') {
         close()
@@ -237,6 +221,7 @@ const describedby = error ? `${id}-error` : hint ? `${id}-hint` : undefined
     list.addEventListener('mousedown', (e) => e.preventDefault())
     options.forEach((o) =>
       o.addEventListener('click', () => {
+        if (o.getAttribute('aria-disabled') === 'true') return
         commit(o)
         input.focus()
       }),

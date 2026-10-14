@@ -1,6 +1,6 @@
 ---
 title: Combobox
-description: A text input with a styled, filterable dropdown of suggestions.
+description: A text input with a styled, filterable dropdown of suggestions, anchored under the input in the top layer.
 group: Components
 order: 0
 ---
@@ -9,10 +9,11 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Combobox from '../../../../registry/components/Combobox/Combobox.astro'
 
-<JsNote fallback="The dropdown (`no-js:hidden`) never appears — the field still works as a plain text input, free-typed and submitted under its `name`.">
+<JsNote fallback="The listbox is a closed popover and never appears — the field still works as a plain text input, free-typed and submitted under its `name`.">
   Wires a real ARIA combobox: typing filters the list and highlights the
-  closest match (prefers a prefix match); arrow keys move the highlight,
-  Enter or a click commits it into the input. Free-typing is always allowed.
+  closest match (prefers a prefix match); arrow keys move the highlight and
+  wrap, Enter or a click commits it into the input. Free-typing is always
+  allowed.
 </JsNote>
 
 <Preview code={`<Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />`}>
@@ -25,9 +26,9 @@ import Combobox from '../../../../registry/components/Combobox/Combobox.astro'
 npx @ava-ui/apogee add combobox
 ```
 
-Pulls in `Field` (label, hint, error scaffold). Uses `@lucide/astro`
-internally (`ChevronDown`) for the caret — no icon import needed in your
-usage.
+Pulls in `Field` (label, hint, error scaffold) and `utils`. Uses
+`@lucide/astro` internally (`ChevronDown`) for the caret — no icon import
+needed in your usage.
 
 ## Usage
 
@@ -36,6 +37,10 @@ usage.
 import Combobox from '@/components/apogee/Combobox/Combobox.astro'
 ---
 <Combobox label="Country" options={['Canada', 'France', 'Germany', 'Japan']} />
+<Combobox label="Assignee" name="assignee" options={[
+  { value: 'u1', label: 'Ada Lovelace', description: 'Engineering' },
+  { value: 'u2', label: 'Grace Hopper', description: 'Research', disabled: true },
+]} />
 ```
 
 ## Anatomy
@@ -43,8 +48,9 @@ import Combobox from '@/components/apogee/Combobox/Combobox.astro'
 - **Label / hint / error** — from `Field`.
 - **Input** — the visible text field, `role="combobox"`.
 - **Caret** — optional chevron icon (toggle with `caret`).
-- **Listbox** — `role="listbox"` dropdown of `role="option"` suggestions,
-  filtered as you type.
+- **Listbox** — a `role="listbox"` popover of `role="option"` suggestions,
+  anchored under the input and as wide as it, filtered as you type; scrolls
+  past 15rem.
 
 ## API
 
@@ -57,7 +63,7 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 | `label` | `string` | — | Field label. |
 | `hint` | `string` | — | Helper text (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid` and renders via `role="alert"`. |
-| `options` | `string[]` | — | Suggestions shown in the dropdown. Required. |
+| `options` | `(string \| { value, label?, description?, disabled? })[]` | — | Suggestions. A string is both value and label; an object can carry a different `value`, a `description` line and `disabled`. Required. |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
@@ -65,14 +71,50 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 | `caret` | `boolean` | `true` | Shows the chevron caret. Set `false` to hide it. |
 | `class` | `string` | — | Extra classes, passed to the `Field` wrapper. |
 
+## Rich options
+
+Objects give each suggestion its own `value` (sent in the select event), a
+description line, and a `disabled` state the arrow keys skip.
+
+<Preview code={`<Combobox label="Assignee" name="assignee" options={[
+  { value: 'u1', label: 'Ada Lovelace', description: 'Engineering' },
+  { value: 'u2', label: 'Grace Hopper', description: 'Research' },
+  { value: 'u3', label: 'Katherine Johnson', description: 'On leave', disabled: true },
+  { value: 'u4', label: 'Margaret Hamilton', description: 'Flight software' },
+]} />`} block>
+  <div class="max-w-sm">
+    <Combobox label="Assignee" name="assignee" options={[
+      { value: 'u1', label: 'Ada Lovelace', description: 'Engineering' },
+      { value: 'u2', label: 'Grace Hopper', description: 'Research' },
+      { value: 'u3', label: 'Katherine Johnson', description: 'On leave', disabled: true },
+      { value: 'u4', label: 'Margaret Hamilton', description: 'Flight software' },
+    ]} />
+  </div>
+</Preview>
+
+## Long list and clipping
+
+The listbox scrolls past 15rem and sits in the top layer, so an
+`overflow: hidden` ancestor cannot cut it off.
+
+<Preview code={`<div class="w-64 overflow-hidden rounded-md border border-neutral p-4">
+  <Combobox label="Month" options={['January', 'February', …]} />
+</div>`}>
+  <div class="w-64 overflow-hidden rounded-md border border-neutral p-4">
+    <Combobox label="Month" options={['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']} />
+  </div>
+</Preview>
+
 ## Sizes
 
 <Preview code={`<Combobox label="Small" size="small" options={['One', 'Two', 'Three']} />
 <Combobox label="Medium" options={['One', 'Two', 'Three']} />
-<Combobox label="Large" size="large" options={['One', 'Two', 'Three']} />`}>
+<Combobox label="Large" size="large" options={['One', 'Two', 'Three']} />
+<Combobox label="Extra large" size="xlarge" options={['One', 'Two', 'Three']} />`}>
   <Combobox label="Small" size="small" options={['One', 'Two', 'Three']} />
   <Combobox label="Medium" options={['One', 'Two', 'Three']} />
   <Combobox label="Large" size="large" options={['One', 'Two', 'Three']} />
+  <Combobox label="Extra large" size="xlarge" options={['One', 'Two', 'Three']} />
 </Preview>
 
 ## States
@@ -80,10 +122,10 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 - **Default** — closed, empty or pre-filled input.
 - **Open** — focusing or typing in the input opens the listbox; the closest
   match is highlighted (`aria-selected` + `aria-activedescendant`).
-- **Error** — border turns `--background-critical`, `aria-invalid="true"`, error text
-  replaces the hint.
+- **Error** — critical border, `aria-invalid="true"`, error text replaces
+  the hint.
 - **Disabled** — via passthrough `disabled`; dimmed, not interactive.
-- **No JS** — listbox stays `hidden`; the input is a plain text field.
+- **No JS** — the listbox never opens; the input is a plain text field.
 
 <Preview code={`<Combobox label="Country" options={['Canada', 'France']} error="Pick a country from the list." />
 <Combobox label="Country" options={['Canada', 'France']} disabled value="Canada" />`}>
@@ -107,21 +149,26 @@ Required, wired into a form with a submit name:
 
 ## Events
 
-Committing an option (Enter or click) sets the input value and dispatches native `input` and `change` events plus `apogee:combobox-select` (`detail: { value }`, bubbles) on the root, so forms and listeners see the selection.
+Committing an option (Enter or click) writes its label into the input and
+dispatches native `input` and `change` events plus `apogee:combobox-select`
+(`detail: { value, label }`, bubbles) on the root, so forms and listeners see
+the selection. The input submits the label; read `value` from the event when
+the two differ.
 
 ## Accessibility
 
 - Full ARIA combobox pattern: `role="combobox"` on the input, wired with
   `aria-expanded`, `aria-controls`, `aria-autocomplete="list"`, and
   `aria-activedescendant` on the highlighted option; `role="listbox"` /
-  `role="option"` with `aria-selected` on the dropdown.
+  `role="option"` with `aria-selected` on the dropdown; disabled options
+  carry `aria-disabled`.
 - **Keyboard** — focus opens the list and shows every option; typing filters
-  and highlights the closest prefix match; `↓` / `↑` move the highlight
-  (opens the list first if closed); `Enter` commits the highlighted option;
-  `Escape` closes the list.
+  and highlights the closest prefix match; `↓` / `↑` move the highlight and
+  wrap (opening the list first if closed); `Enter` commits the highlighted
+  option; `Escape` closes the list.
 - Clicking an option commits it without losing input focus.
 - Focus leaving the whole widget (tab away, click elsewhere) closes the list.
-- **No JS:** the listbox carries `no-js:hidden` and never opens — the input
+- **No JS:** the listbox is a closed popover and never opens — the input
   still works as a plain, free-typed text field that submits under its
   `name`.
 
@@ -131,13 +178,15 @@ Committing an option (Enter or click) sets the input value and dispatches native
 |---|---|
 | `--border-neutral` | Input and listbox border |
 | `--background-page` | Input background |
-| `--background-elevation-raised` | Listbox panel background |
+| `--background-elevation-overlay` | Listbox panel background |
 | `--foreground-neutral` | Input and option text |
-| `--foreground-neutral-faded` | Placeholder text, caret |
-| `--background-neutral-faded` | Option hover / selected background |
-| `--background-critical` | Error border |
+| `--foreground-neutral-faded` | Placeholder text, caret, descriptions |
+| `--foreground-disabled` | Disabled options |
+| `--background-neutral-faded` | Highlighted option background |
+| `--background-neutral-faded-highlighted` | Option hover |
+| `--border-critical` | Error border |
 | `--border-primary` | Focus ring |
-| `--duration-fast` / `--ease-standard` | Listbox open animation |
+| `--duration-fast` / `--ease-standard` | Listbox open fade/scale |
 
 ## Do / Don't
 

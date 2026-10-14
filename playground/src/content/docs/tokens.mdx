@@ -63,8 +63,9 @@ generated `-faded` roles, which were tuned for contrast.
 
 ## Changing the brand
 
-The colours are generated. Edit the three inputs per hue in
-`scripts/hues.mjs` (OKLCH lightness, chroma, hue angle) and run:
+The colours are generated. Edit the five inputs in `scripts/hues.mjs` (a
+Tailwind colour name such as `'blue-700'`, a grey family such as `'slate'`,
+or an OKLCH object; see [Color](/docs/color)) and run:
 
 ```sh
 npm run build:tokens      # rewrites the generated blocks in registry/tokens/theme.css

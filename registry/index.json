@@ -347,7 +347,9 @@
       "kind": "component",
       "files": [
         "Dropdown/Dropdown.astro",
-        "Dropdown/DropdownItem.astro"
+        "Dropdown/DropdownItem.astro",
+        "Dropdown/DropdownSection.astro",
+        "Dropdown/DropdownSub.astro"
       ],
       "registryDependencies": [
         "utils"
@@ -779,7 +781,7 @@
       "dependencies": [
         "@lucide/astro"
       ],
-      "usesJs": false
+      "usesJs": true
     },
     "Sidebar": {
       "name": "Sidebar",
@@ -1016,7 +1018,7 @@
         "utils"
       ],
       "dependencies": [],
-      "usesJs": false
+      "usesJs": true
     },
     "utils": {
       "name": "utils",
@@ -1024,6 +1026,8 @@
       "files": [
         "utils/field.ts",
         "utils/island.ts",
+        "utils/menu.ts",
+        "utils/panel.ts",
         "utils/radius.ts",
         "utils/responsive-tables.ts",
         "utils/responsive.ts",

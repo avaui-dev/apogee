@@ -1,15 +1,17 @@
 ---
 /**
  * ContextMenu — a right-click menu (browsers dropped the native styleable one),
- * so it's a JS island: opens at the cursor over the target, closes on
- * outside-click / Escape / scroll. Wrap the target in the default slot and put
- * `DropdownItem`s in the `menu` slot. Without JS the target's normal right-click
- * menu is left untouched.
+ * so it's a JS island: opens a native popover at the cursor over the target,
+ * in the top layer. Outside click and Escape are native light dismiss; scroll
+ * and resize close it. Wrap the target in the default slot and put
+ * `DropdownItem`s in the `menu` slot. Without JS the target's normal
+ * right-click menu is left untouched.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
+import { panelClass, panelSurface, menuClass } from '../utils/panel.ts'
 interface Props extends HTMLAttributes<'div'> {
   class?: string
 }
@@ -20,94 +22,48 @@ const id = uid(Astro.locals, 'apogee-ctx')
 
 <div class:list={['apogee-contextmenu', className]} data-menu={id} {...rest}>
   <slot />
-  <div
-    id={id}
-    role="menu"
-    class="apogee-contextmenu-panel fixed z-50 flex min-w-44 flex-col gap-0.5 rounded-md border border-neutral bg-elevation-raised p-1 shadow-lg no-js:hidden"
-    hidden
-  >
+  <div id={id} popover role="menu" style="inset: auto" class:list={[panelClass, panelSurface.overlay, menuClass, 'fixed']}>
     <slot name="menu" />
   </div>
 </div>
 
-<style>
-  /* Fade + scale in when the menu opens at the cursor. */
-  .apogee-contextmenu-panel:not([hidden]) {
-    animation: apogee-contextmenu-in var(--duration-fast) var(--ease-standard);
-  }
-  @keyframes apogee-contextmenu-in {
-    from {
-      opacity: 0;
-      transform: scale(0.97);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .apogee-contextmenu-panel {
-      animation: none;
-    }
-  }
-</style>
-
 <script>
   import { island } from '../utils/island.ts'
+  import { menuKeydown, menuItems } from '../utils/menu.ts'
 
   island('.apogee-contextmenu', (root) => {
-    const panel = root.querySelector<HTMLElement>('.apogee-contextmenu-panel')
+    const panel = root.querySelector<HTMLElement>(':scope > [role="menu"]')
     if (!panel) return
 
-    const close = () => {
-      if (panel.hidden) return
-      panel.hidden = true
-      panel.dispatchEvent(new CustomEvent('apogee:contextmenu-close', { bubbles: true }))
-    }
-    const openAt = (x: number, y: number) => {
-      panel.hidden = false
-      panel.dispatchEvent(new CustomEvent('apogee:contextmenu-open', { bubbles: true, detail: { x, y } }))
-      // Clamp inside the viewport now that we can measure it.
-      const { offsetWidth: w, offsetHeight: h } = panel
-      panel.style.left = `${Math.min(x, window.innerWidth - w - 8)}px`
-      panel.style.top = `${Math.min(y, window.innerHeight - h - 8)}px`
-      panel.querySelector<HTMLElement>('[role="menuitem"]')?.focus()
-    }
-
-    // Arrow-key navigation between items (WAI-ARIA menu pattern).
-    panel.addEventListener('keydown', (e) => {
-      const items = [...panel.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])')]
-      if (!items.length) return
-      const idx = items.indexOf(document.activeElement as HTMLElement)
-      if (e.key === 'ArrowDown') {
-        e.preventDefault()
-        items[idx < items.length - 1 ? idx + 1 : 0]?.focus()
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault()
-        items[idx > 0 ? idx - 1 : items.length - 1]?.focus()
-      } else if (e.key === 'Home') {
-        e.preventDefault()
-        items[0]?.focus()
-      } else if (e.key === 'End') {
-        e.preventDefault()
-        items[items.length - 1]?.focus()
-      }
+    panel.addEventListener('toggle', (e) => {
+      const open = (e as ToggleEvent).newState === 'open'
+      panel.dispatchEvent(
+        new CustomEvent(open ? 'apogee:contextmenu-open' : 'apogee:contextmenu-close', {
+          bubbles: true,
+          detail: open ? { x: panel.offsetLeft, y: panel.offsetTop } : undefined,
+        }),
+      )
     })
 
     root.addEventListener('contextmenu', (e) => {
       if (panel.contains(e.target as Node)) return
       e.preventDefault()
-      openAt(e.clientX, e.clientY)
+      if (!panel.matches(':popover-open')) panel.showPopover()
+      // Clamp inside the viewport now that it has a size.
+      panel.style.left = `${Math.min(e.clientX, window.innerWidth - panel.offsetWidth - 8)}px`
+      panel.style.top = `${Math.min(e.clientY, window.innerHeight - panel.offsetHeight - 8)}px`
+      menuItems(panel)[0]?.focus()
     })
+    panel.addEventListener('keydown', (e) => menuKeydown(e, panel))
     // Activating an item closes the menu.
-    panel.addEventListener('click', () => close())
+    panel.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('[role="menuitem"]')) panel.hidePopover()
+    })
   })
 
-  // Dismissal is global, bound once for every menu on the page.
-  const openPanels = () => document.querySelectorAll<HTMLElement>('.apogee-contextmenu-panel:not([hidden])')
-  const closeAll = () => openPanels().forEach((p) => (p.hidden = true))
-  document.addEventListener('click', (e) => {
-    for (const p of openPanels()) if (!p.contains(e.target as Node)) p.hidden = true
-  })
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeAll()
-  })
+  // Scrolling or resizing closes every open menu (its anchor point moved).
+  const closeAll = () =>
+    document.querySelectorAll<HTMLElement>('.apogee-contextmenu > [role="menu"]:popover-open').forEach((p) => p.hidePopover())
   window.addEventListener('scroll', closeAll, true)
   window.addEventListener('resize', closeAll)
 </script>
