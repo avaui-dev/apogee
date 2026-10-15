@@ -5,6 +5,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-10-15
+
 ### Changed
 
 - **Input** end-slot buttons sit 4px from the edge (text suffixes keep their inset); the password reveal is a ghost icon Button sized to the field. **TagInput** remove buttons are CloseButtons; the docs' clear example uses one too.
@@ -33,6 +35,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **Progress** root is now a wrapper around the `role="progressbar"` track (so value labels can sit beside or above it); `aria-labelledby` / `aria-describedby` still reach the track. **TagInput**, **PinInput** and **RichTextEditor** are now wrapped in Field, so `class` lands on the Field root and the control carries a generated `id`.
 
 ### Added
+- **Docs** — `npm run check:docs` gate, keyboard tables, full token reference, Dark mode and Migrating to 0.4 pages, related links on every component page.
 
 - **Pressed state** — a `press` utility (tokens file) lays an ink layer over any fill while it is pressed, stronger than hover; buttons, links, nav links, tabs, menu items, pagination, breadcrumbs, close buttons, interactive cards, tree rows, segmented options and toggles use it. Add `document.addEventListener('touchstart', () => {}, { passive: true })` to the head script so iOS shows it (Progressive enhancement page). Tap highlight is off.
 - **Sliding selection** — Tabs and SegmentedControl move one indicator between items with CSS anchor positioning (`data-apogee-slide` + `.apogee-slide` in the tokens file); browsers without it keep the per-item fill.
@@ -292,5 +295,7 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.4.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.4.0
+[0.3.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.3.0
 [0.2.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.2.0
 [0.1.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.1.0
