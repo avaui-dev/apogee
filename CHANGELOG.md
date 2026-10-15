@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **Input** end-slot buttons sit 4px from the edge (text suffixes keep their inset); the password reveal is a ghost icon Button sized to the field. **TagInput** remove buttons are CloseButtons; the docs' clear example uses one too.
 - **Tokens** set `color-scheme` per theme, so native pickers, scrollbars and autofill follow dark mode.
 - **Text fields** reach 16px on touch screens and narrow viewports (no iOS zoom); large sizes no longer shrink on phones.
 - **Rating** fills stars with the vivid fill tokens instead of the darker text ones.

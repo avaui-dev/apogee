@@ -7,6 +7,7 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Input from '../../../../registry/components/Input/Input.astro'
+import CloseButton from '../../../../registry/components/CloseButton/CloseButton.astro'
 import JsNote from '../../components/JsNote.astro'
 
 <JsNote fallback="The field is a plain password input; the eye button is hidden, so the value stays masked.">
@@ -120,14 +121,17 @@ shifts with the control's padding — shown together:
 
 ## Examples
 
-A clear button in the `end` slot (the slot accepts buttons):
+A clear button in the `end` slot: a CloseButton labelled for what it does. A
+button in either slot sits 4px from the field's edge; text keeps its inset.
 
 <Preview code={`<Input label="Search" id="q" value="astro">
-  <button slot="end" type="button" aria-label="Clear" onclick="const i=document.getElementById('q'); i.value=''; i.focus()">×</button>
+  <CloseButton slot="end" size="small" label="Clear search" onclick="const i = document.getElementById('q'); i.value = ''; i.focus()" />
 </Input>`}>
-  <Input label="Search" id="q" value="astro">
-    <button slot="end" type="button" aria-label="Clear" class="grid size-6 place-items-center rounded-sm hover:bg-neutral-faded-highlighted" onclick="const i=document.getElementById('q'); i.value=''; i.focus()">×</button>
-  </Input>
+  <div data-apogee-input="clear">
+    <Input label="Search" id="q" value="astro">
+      <CloseButton slot="end" size="small" label="Clear search" onclick="const i = document.getElementById('q'); i.value = ''; i.focus()" />
+    </Input>
+  </div>
 </Preview>
 
 <Preview code={`<Input label="Password" type="password" hint="At least 8 characters" required />

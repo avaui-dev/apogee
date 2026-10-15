@@ -13,6 +13,7 @@ import Field from '../Field/Field.astro'
 import { uid } from '../utils/uid.ts'
 import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 import { Eye, EyeOff } from '@lucide/astro'
+import Button from '../Button/Button.astro'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
@@ -69,6 +70,10 @@ const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolea
 const hasStart = Boolean(prefix) || Astro.slots.has('start')
 const reveal = revealable && type === 'password'
 const hasEnd = Boolean(suffix) || Astro.slots.has('end') || reveal
+// Room for an end button that sits 4px from the edge, per field size.
+const endPad = { small: 'pe-7', medium: 'pe-9', large: 'pe-11', xlarge: 'pe-12' } as const
+// The reveal button is a ghost icon Button sized to fit inside the field.
+const revealSize = { small: 'small', medium: 'small', large: 'medium', xlarge: 'medium' } as const
 const floating = labelPosition === 'floating'
 const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlarge: 'start-5' } as const
 ---
@@ -88,24 +93,27 @@ const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlar
       required={required}
       aria-describedby={describedby}
       aria-invalid={invalid ? 'true' : undefined}
-      class:list={[fieldBase, fieldVariants[variant], fieldSizes[size], hasStart && 'ps-9', hasEnd && 'pe-9', floating && 'peer']}
+      class:list={[fieldBase, fieldVariants[variant], fieldSizes[size], hasStart && 'ps-9', hasEnd && endPad[size], floating && 'peer']}
       placeholder={floating ? ' ' : undefined}
       {...rest}
     />
     {
       hasEnd && (
-        <span class="pointer-events-none absolute end-3 flex items-center text-sm text-neutral-faded [&_svg]:size-4 [&_button]:pointer-events-auto">
+        <span class="pointer-events-none absolute inset-y-0 end-3 flex items-center text-sm text-neutral-faded has-[button]:end-1 [&_svg]:size-4 [&_button]:pointer-events-auto">
           {
             reveal ? (
-              <button
-                type="button"
-                class="apogee-reveal grid size-6 place-items-center rounded text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden"
+              <Button
+                variant="ghost"
+                color="neutral"
+                size={revealSize[size]}
+                iconOnly
+                class:list={['apogee-reveal text-neutral-faded hover:text-neutral no-js:hidden', size === 'small' && 'size-5!']}
                 aria-label="Show password"
                 aria-pressed="false"
               >
                 <Eye class="apogee-reveal-show" aria-hidden="true" />
                 <EyeOff class="apogee-reveal-hide" aria-hidden="true" />
-              </button>
+              </Button>
             ) : (
               suffix ?? <slot name="end" />
             )

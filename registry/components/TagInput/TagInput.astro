@@ -6,8 +6,8 @@
  * typed text is never lost. Tags submit as repeated `name` fields.
  */
 import type { HTMLAttributes } from 'astro/types'
-import { X } from '@lucide/astro'
 import Field from '../Field/Field.astro'
+import CloseButton from '../CloseButton/CloseButton.astro'
 import { uid } from '../utils/uid.ts'
 import { fieldVariants, type FieldSize, type FieldVariant } from '../utils/field.ts'
 
@@ -87,13 +87,7 @@ const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolea
       <span class="apogee-tag inline-flex items-center gap-1 rounded bg-neutral-faded px-2 py-0.5 text-sm text-neutral">
         <span class="apogee-tag-label">{tag}</span>
         <input type="hidden" name={name} value={tag} />
-        <button
-          type="button"
-          class="apogee-tag-remove text-neutral-faded transition-colors no-js:hidden hover:text-neutral"
-          aria-label={`Remove ${tag}`}
-        >
-          <X class="size-3.5" aria-hidden="true" />
-        </button>
+        <CloseButton size="xsmall" theme="inherit" label={`Remove ${tag}`} class="apogee-tag-remove no-js:hidden" />
       </span>
     ))
   }
@@ -113,9 +107,7 @@ const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolea
   <span class="apogee-tag inline-flex items-center gap-1 rounded bg-neutral-faded px-2 py-0.5 text-sm text-neutral">
     <span class="apogee-tag-label"></span>
     <input type="hidden" />
-    <button type="button" class="apogee-tag-remove text-neutral-faded transition-colors hover:text-neutral" aria-label="Remove">
-      <X class="size-3.5" aria-hidden="true" />
-    </button>
+    <CloseButton size="xsmall" theme="inherit" label="Remove" class="apogee-tag-remove" />
   </span>
 </template>
 </div>

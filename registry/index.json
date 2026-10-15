@@ -1067,12 +1067,11 @@
         "TagInput/TagInput.astro"
       ],
       "registryDependencies": [
+        "CloseButton",
         "Field",
         "utils"
       ],
-      "dependencies": [
-        "@lucide/astro"
-      ],
+      "dependencies": [],
       "usesJs": true
     },
     "Text": {

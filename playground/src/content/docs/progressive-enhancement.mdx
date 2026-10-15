@@ -70,13 +70,7 @@ follows from them:
 
 ```astro
 <!-- Tag.astro — the × only works once the island runs, so it's gated -->
-<button
-  type="button"
-  aria-label="Remove"
-  class="... no-js:hidden"
->
-  <X />
-</button>
+<CloseButton size="xsmall" label="Remove" class="no-js:hidden" />
 ```
 
 - A component that swaps to an **enhanced presentation** once its script

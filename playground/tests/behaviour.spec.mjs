@@ -2044,3 +2044,29 @@ test('polish: tabs selection slides to the chosen tab', async ({ page }) => {
   await expect.poll(() => slide.evaluate((e) => Math.round(e.getBoundingClientRect().left))).toBe(target)
   expect(await slide.evaluate((e) => e.getBoundingClientRect().height)).toBeLessThan(4)
 })
+
+test('clear buttons are CloseButton and clear the field', async ({ page }) => {
+  await page.goto('/docs/input')
+  const root = page.locator('[data-apogee-input="clear"]')
+  const btn = root.locator('button.apogee-close')
+  await expect(btn).toHaveAttribute('aria-label', 'Clear search')
+  await btn.click()
+  await expect(root.locator('input')).toHaveValue('')
+  await expect(root.locator('input')).toBeFocused()
+  await page.goto('/docs/tag-input')
+  expect(await page.locator('.apogee-taginput .apogee-tag-remove').first().evaluate((e) => e.classList.contains('apogee-close'))).toBe(true)
+})
+
+test('end-slot buttons sit near the input edge; reveal is an icon button', async ({ page }) => {
+  await page.goto('/docs/input')
+  for (const hook of ['clear', 'reveal']) {
+    const root = page.locator(`[data-apogee-input="${hook}"]`)
+    const input = await root.locator('input').evaluate((e) => e.getBoundingClientRect())
+    const btn = await root.locator('button').first().evaluate((e) => e.getBoundingClientRect())
+    expect(input.right - btn.right).toBeLessThanOrEqual(6)
+    expect(Math.abs(input.top + input.height / 2 - (btn.top + btn.height / 2))).toBeLessThan(1.5)
+  }
+  const reveal = page.locator('[data-apogee-input="reveal"] button.apogee-reveal')
+  await reveal.hover()
+  expect(await reveal.evaluate((e) => getComputedStyle(e).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
+})
