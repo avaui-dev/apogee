@@ -1,0 +1,47 @@
+---
+/**
+ * MapEmbed — an embedded street map centred on a place, with a marker, from
+ * OpenStreetMap (no key, no script of ours). The iframe loads lazily and is
+ * named by `title`; a link under it opens the full map for anyone who cannot
+ * use the frame. Size it with `class` (it fills its box). Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Link from '../Link/Link.astro'
+
+/** @composable */
+interface Props extends HTMLAttributes<'figure'> {
+  /** Latitude of the place. */
+  lat: number
+  /** Longitude of the place. */
+  lon: number
+  /** Names the frame for screen readers ("Map of our Melbourne office"). @category content */
+  title: string
+  /** Degrees of longitude shown across; smaller is closer. @category layout */
+  span?: number
+  /** Rounded corners. @category layout */
+  rounded?: boolean
+  /** Text of the link to the full map; empty hides it. @category content */
+  linkLabel?: string
+  class?: string
+}
+
+const { lat, lon, title, span = 0.04, rounded = true, linkLabel = 'Open the full map', class: className, ...rest } = Astro.props
+const h = span / 2
+const v = span / 3
+const bbox = [lon - h, lat - v, lon + h, lat + v].map((n) => n.toFixed(5)).join('%2C')
+const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lon}`
+const full = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=15/${lat}/${lon}`
+---
+
+<figure class:list={['apogee-map m-0 flex flex-col gap-2', className]} data-apogee-map {...rest}>
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    class:list={['min-h-60 w-full flex-1 border-0 bg-neutral-faded', rounded && 'rounded-2xl']}
+  ></iframe>
+  {linkLabel && <figcaption class="text-sm"><Link href={full} color="inherit" external>{linkLabel}</Link></figcaption>}
+</figure>

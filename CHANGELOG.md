@@ -43,10 +43,16 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Contact sections**: 35 contact blocks; forms beside a map or a photo, ways to reach you as items or cards, store lists, store tabs with maps, a world map of offices, sidebars with links, and brand-colour versions.
+- **ContactForm**: names, email, a phone with a country code, the message, an optional services checklist and a privacy checkbox; posts without JS.
+- **ContactMethod**: one way to reach you (icon, title, line and link), plain or on a card, start or centred.
+- **MapEmbed**: an OpenStreetMap street map centred on a place, lazy, named, with a link to the full map; no key.
+- **WorldMap**: a dotted world map (Natural Earth, public domain, ~18 KB) with office pins that link to the place and show its address on hover or focus.
 - **Careers sections**: 12 careers blocks; open positions as rows or cards, in one or two columns, beside a heading or a photo, with department tabs that filter, a location menu, department groups, and brand-colour versions.
 - **JobCard**: one open position, as a list row under a rule (reads on the brand colour too) or a bordered card with the department; location, type and salary as a labelled description list.
 - **Blog sections**: 21 blog blocks; 16 blog index headers (featured post, centred or brand headers with an email sign-up, category links, search, sidebars, pagination or Load more) and 5 latest-posts sections (carousel, split, centred grid).
 - **PostCard**: one article in a blog list, vertical or horizontal (by its own width), plain, a bordered card or with a frosted overlay, with a category, badge or byline line and an author, tags or Read post footer. BlogList now renders its posts with it.
+- **Tooltip** `description` accepts `undefined` (strict types).
 - **Tabs** renders a `<nav>` of links (named by `label`, the current one marked `aria-current="page"`) when every tab is a link, so link rows are navigation, not tabs. A `selected` variant styles the selected tab and the current link alike.
 - **Blocks**: parts of a page in the registry, keyed `<category>/<name>` like pages (digits split off: `featured-post-01`). `apogee add banner/slim` copies one into `<dir>/blocks/banner/` with what it uses; `apogee list` shows them. The first set is 20 banner blocks (Banner sections in the docs).
 - **Banner** section: a one-line announcement as a floating card (optionally `fixed` to the bottom of the viewport) or a full-width bar, on any section background, with `icon`, description and `actions` slots and a close button.

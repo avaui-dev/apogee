@@ -18,7 +18,7 @@ import { panelStyle, type Placement } from '../utils/panel.ts'
 interface Props extends HTMLAttributes<'span'> {
   text: string
   /** A second, muted line under the text. @category content */
-  description?: string
+  description?: string | undefined
   /** A small triangle pointing at the trigger. @category layout */
   arrow?: boolean
   /** Hover delay before opening, in ms. */

@@ -1,0 +1,23 @@
+---
+title: "Simple form 01"
+description: "A centred heading over a contact form capped to a readable width.."
+group: Contact sections
+order: 22
+related: [contact-form, contact-method, map-embed, world-map]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="contact/simple-form-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact/simple-form-01
+```
+
+This copies the block to `src/components/apogee/blocks/contact/` with everything it uses: ContactForm, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.

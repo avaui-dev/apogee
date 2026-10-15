@@ -1,0 +1,56 @@
+---
+/**
+ * WorldMap — a dotted world map with pins for your offices. Each pin is a link
+ * to that place on a full map, with a tooltip naming it and its address on
+ * hover or focus. The dots are decoration; the pins carry the meaning. Pins
+ * sit by latitude and longitude (84°N to 60°S). Zero JS of its own (the
+ * tooltips use Tooltip's small island, and work without it).
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Tooltip from '../Tooltip/Tooltip.astro'
+import { land } from './land.ts'
+
+type Pin = { label: string; lat: number; lon: number; detail?: string | undefined; href?: string | undefined }
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** @shape { label: string, lat: number, lon: number, detail?: string, href?: string }[] @category content */
+  pins: Pin[]
+  /** Names the map for screen readers. @category content */
+  label?: string
+  class?: string
+}
+
+const { pins, label = 'Our offices', class: className, ...rest } = Astro.props
+// Same projection as the dots: x across 360° of longitude, y from 84°N to 60°S.
+const x = (lon: number) => ((lon + 180) / 360) * 100
+const y = (lat: number) => ((84 - lat) / 144) * 100
+const mapHref = (p: Pin) => p.href ?? `https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=12/${p.lat}/${p.lon}`
+---
+
+<div role="group" aria-label={label} class:list={['apogee-world-map relative aspect-[5/2] w-full', className]} {...rest}>
+  <svg viewBox="0 0 1000 400" class="absolute inset-0 size-full text-neutral-faded" aria-hidden="true" focusable="false">
+    <path d={land} fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+  </svg>
+  <ul class="m-0 list-none p-0">
+    {
+      pins.map((p) => (
+        <li class="absolute -translate-x-1/2 -translate-y-1/2" style={`left: ${x(p.lon).toFixed(2)}%; top: ${y(p.lat).toFixed(2)}%`}>
+          <Tooltip text={p.label} description={p.detail} placement="top">
+            <a
+              href={mapHref(p)}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${p.label}${p.detail ? `, ${p.detail}` : ''} (opens a map in a new tab)`}
+              class="grid size-6 place-items-center rounded-full bg-primary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            >
+              <span class="size-2.5 rounded-full bg-primary shadow-[0_0_0_2px_var(--background-page)]" />
+            </a>
+          </Tooltip>
+        </li>
+      ))
+    }
+  </ul>
+</div>

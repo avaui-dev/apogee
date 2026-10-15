@@ -1,0 +1,78 @@
+---
+title: WorldMap
+description: A dotted world map with office pins; each pin names its place on hover or focus and links to it on a full map.
+group: Components
+order: 0
+related: [map-embed, tooltip]
+---
+
+import Preview from '../../components/Preview.astro'
+import WorldMap from '../../../../registry/components/WorldMap/WorldMap.astro'
+
+export const pins = [
+  { label: 'Melbourne', detail: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
+  { label: 'London', detail: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
+  { label: 'San Francisco', detail: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
+  { label: 'Tokyo', detail: '1-1 Marunouchi, Chiyoda City, Tokyo JP', lat: 35.6812, lon: 139.7671 },
+]
+
+<Preview block code={`<WorldMap pins={pins} />`}>
+  <div data-apogee-world-map="default"><WorldMap pins={pins} /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add world-map
+```
+
+Pulls in Tooltip. The land is drawn from Natural Earth (public domain) as about 1,900 dots in one path, around 18 KB.
+
+## Usage
+
+```astro
+---
+import WorldMap from '@/components/apogee/WorldMap/WorldMap.astro'
+---
+<WorldMap pins={[{ label: 'London', detail: '100 Oxford Street', lat: 51.5154, lon: -0.141 }]} />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `pins` | `{ label, lat, lon, detail?, href? }[]` | — | Required. `detail` is the second tooltip line (an address); `href` overrides the full-map link. |
+| `label` | `string` | `'Our offices'` | Names the map for screen readers. |
+| `class` | `string` | — | Extra classes on the root, merged last. Width fills; height follows (5:2). |
+
+## States
+
+- **Hover or focus a pin** — a tooltip shows the place and its address.
+
+## Examples
+
+On a contact page: [Map 02](/docs/contact-sections/map-02) and [Vector map 03](/docs/contact-sections/vector-map-03).
+
+## Accessibility
+
+- The dots are decoration and hidden from screen readers; the pins carry the meaning.
+- Each pin is a link named by its place and address ("Melbourne, 100 Flinders Street…, opens a map in a new tab"), reachable by Tab, with the tooltip on focus.
+- The map is a named group, so a screen reader announces "Our offices" before the pins.
+- Pins sit between 84°N and 60°S; places outside that band fall off the edge.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral-faded` | The dots (at half strength) |
+| `--background-primary` | Pins |
+| `--outline-color-focus` | Pin focus ring |
+
+## Do / Don't
+
+- **Do** pair it with the addresses as text; hide it on phones, where the pins get too small to tap.
+- **Don't** use it for more than a dozen places; they crowd.
+
+## Content
+
+- Pin labels are the city; the address goes in `detail`.

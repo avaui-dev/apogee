@@ -1,0 +1,48 @@
+---
+/**
+ * Features tabs map 01: A heading over store tabs, each showing that store on a map.
+ *
+ * @block contact
+ * @order 19
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import MapEmbed from '../../components/MapEmbed/MapEmbed.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+
+const stores = [
+  { city: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
+  { city: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
+  { city: 'Byron Bay', address: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
+  { city: 'London', address: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
+  { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
+  { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
+]
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+---
+
+<Section spacing="large">
+  <div class="mb-12 flex flex-col items-start gap-4">
+    <Badge color="primary" rounded>Stores</Badge>
+    <SectionHeader heading="Our locations" description="Find us at these locations." />
+  </div>
+  <Tabs tabs={stores.slice(0, 3).map((s) => ({ label: s.city, value: slug(s.city) }))} fullWidth>
+    {stores.slice(0, 3).map((s) => (
+      <div slot={`panel-${slug(s.city)}`} class="mt-6 flex flex-col gap-4">
+        <MapEmbed lat={s.lat} lon={s.lon} title={`Map of our ${s.city} store`} class="h-96 md:h-[30rem]" />
+        <p class="apogee-store-address">{s.address}</p>
+      </div>
+    ))}
+  </Tabs>
+</Section>
+
+<style>
+  .apogee-store-address {
+    color: var(--foreground-neutral-faded);
+  }
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-store-address {
+    color: inherit;
+    opacity: 0.85;
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+/**
+ * ContactForm — the message form contact pages share: first and last name,
+ * email, an optional phone with a country code, the message, an optional
+ * services checklist and a privacy checkbox. Plain HTML: pass `action` and
+ * `method` and it posts without JS; the browser checks required fields.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Input from '../Input/Input.astro'
+import InputGroup from '../InputGroup/InputGroup.astro'
+import Textarea from '../Textarea/Textarea.astro'
+import Checkbox from '../Checkbox/Checkbox.astro'
+import CheckboxGroup from '../CheckboxGroup/CheckboxGroup.astro'
+import Button from '../Button/Button.astro'
+import Link from '../Link/Link.astro'
+import { uid } from '../utils/uid.ts'
+
+/** @composable */
+interface Props extends HTMLAttributes<'form'> {
+  /** Form target. @category content */ action?: string
+  /** @category content */ method?: 'get' | 'post'
+  /** Show the phone field with a country code. @category layout */ phone?: boolean
+  /** Country codes for the phone field; the first is selected. @category content */ countryCodes?: string[]
+  /** A checklist of services under the message ("Website design", …). @category content */ services?: string[]
+  /** Legend of the services checklist. @category content */ servicesLabel?: string
+  /** Link of the privacy checkbox; omit to drop the checkbox. @category content */ privacyHref?: string
+  /** @category content */ submitLabel?: string
+  /** Rows of the message box. @category layout */ rows?: number
+  class?: string
+}
+
+const {
+  action,
+  method = 'post',
+  phone = true,
+  countryCodes = ['US', 'GB', 'DE', 'FR', 'RO', 'AU'],
+  services = [],
+  servicesLabel = 'Services',
+  privacyHref = '#',
+  submitLabel = 'Send message',
+  rows = 5,
+  class: className,
+  ...rest
+} = Astro.props
+const id = uid(Astro.locals, 'contact-form')
+---
+
+<form action={action} method={method} class:list={['flex flex-col gap-8', className]} {...rest}>
+  <div class="flex flex-col gap-6">
+    <div class="grid gap-6 sm:grid-cols-2">
+      <Input id={`${id}-first`} name="first-name" label="First name" placeholder="First name" autocomplete="given-name" required />
+      <Input id={`${id}-last`} name="last-name" label="Last name" placeholder="Last name" autocomplete="family-name" required />
+    </div>
+    <Input id={`${id}-email`} name="email" type="email" label="Email" placeholder="you@company.com" autocomplete="email" required />
+    {
+      phone && (
+        <InputGroup id={`${id}-phone`} label="Phone number">
+          <select slot="start" name="country" aria-label="Country code" class="h-9 rounded-md border border-neutral bg-page px-2 text-sm text-neutral max-md:text-base pointer-coarse:text-base">
+            {countryCodes.map((c) => <option>{c}</option>)}
+          </select>
+          <Input id={`${id}-phone`} grouped name="phone" type="tel" placeholder="+1 (555) 000-0000" autocomplete="tel" />
+        </InputGroup>
+      )
+    }
+    <Textarea id={`${id}-message`} name="message" label="Message" placeholder="Leave us a message…" rows={rows} required />
+    {
+      services.length > 0 && (
+        <CheckboxGroup legend={servicesLabel} class="[&>div]:grid [&>div]:gap-x-8 sm:[&>div]:grid-cols-2">
+          {services.map((s) => <Checkbox name="services" value={s} label={s} />)}
+        </CheckboxGroup>
+      )
+    }
+    {
+      privacyHref && (
+        <Checkbox name="privacy" value="yes" required>
+          You agree to our friendly <Link href={privacyHref} color="neutral">privacy policy</Link>.
+        </Checkbox>
+      )
+    }
+  </div>
+  <Button type="submit" size="large" fullWidth>{submitLabel}</Button>
+</form>

@@ -1,0 +1,25 @@
+---
+title: Contact sections
+navTitle: Overview
+description: Contact forms, ways to reach you, store lists and maps, on the page or the brand colour.
+group: Contact sections
+order: -1
+related: [contact-form, contact-method, map-embed, world-map]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a block built on [ContactForm](/docs/contact-form),
+[ContactMethod](/docs/contact-method), [MapEmbed](/docs/map-embed) and
+[WorldMap](/docs/world-map): a form beside a map or a photo, ways to reach
+you as plain items or cards, store lists, a world map of offices, and
+brand-colour versions.
+
+```sh
+npx @ava-ui/apogee add contact/simple-form
+```
+
+Each block holds its sample data at the top (`methods`, `stores`, `pins`);
+replace it with yours, and point the form's `action` at your endpoint.
+
+<DocsIndex group="Contact sections" self="contact-sections" />

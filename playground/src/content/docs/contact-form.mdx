@@ -1,0 +1,84 @@
+---
+title: ContactForm
+description: The message form contact pages share; names, email, an optional phone with a country code, the message, an optional services checklist and a privacy checkbox.
+group: Components
+order: 0
+related: [input, input-group, textarea, checkbox-group]
+---
+
+import Preview from '../../components/Preview.astro'
+import ContactForm from '../../../../registry/components/ContactForm/ContactForm.astro'
+
+<Preview code={`<ContactForm action="/contact" />`}>
+  <div class="w-full max-w-lg" data-apogee-contact-form="default"><ContactForm action="#" /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact-form
+```
+
+Pulls in Input, InputGroup, Textarea, Checkbox, CheckboxGroup, Button and Link.
+
+## Usage
+
+```astro
+---
+import ContactForm from '@/components/apogee/ContactForm/ContactForm.astro'
+---
+<ContactForm action="/api/contact" services={['Website design', 'Strategy']} />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `action` | `string` | — | Where the form posts. |
+| `method` | `'get' \| 'post'` | `'post'` | |
+| `phone` | `boolean` | `true` | Show the phone field with a country-code select. |
+| `countryCodes` | `string[]` | `US`, `GB`, `DE`, `FR`, `RO`, `AU` | Options of the country-code select; the first is selected. |
+| `services` | `string[]` | `[]` | A checklist under the message, in two columns from `sm`. |
+| `servicesLabel` | `string` | `'Services'` | Legend of the checklist. |
+| `privacyHref` | `string` | `'#'` | Link of the privacy checkbox; an empty string drops the checkbox. |
+| `submitLabel` | `string` | `'Send message'` | |
+| `rows` | `number` | `5` | Rows of the message box. |
+| `class` | `string` | — | Extra classes on the `<form>`, merged last. |
+
+Field names: `first-name`, `last-name`, `email`, `country`, `phone`, `message`, `services` (repeated) and `privacy`.
+
+## Variants
+
+No phone, a services checklist and another button label:
+
+<Preview code={`<ContactForm phone={false} services={['Website design', 'Content creation', 'UX design', 'Strategy']} submitLabel="Get started" />`}>
+  <div class="w-full max-w-lg"><ContactForm phone={false} services={['Website design', 'Content creation', 'UX design', 'Strategy']} submitLabel="Get started" /></div>
+</Preview>
+
+## States
+
+- **Required** — first name, last name, email, message and the privacy checkbox are `required`; the browser stops the submit and points at the first empty one.
+- **Invalid email** — `type="email"` is checked by the browser before the form posts.
+
+## Examples
+
+Every contact layout: [Contact sections](/docs/contact-sections).
+
+## Accessibility
+
+- Every field has a visible label; the country-code select is named "Country code".
+- The checklist is a `fieldset` with a legend.
+- It works without JS: a plain form with native validation.
+
+## Tokens
+
+Reads the field and button tokens (see [Input](/docs/input) and [Button](/docs/button)).
+
+## Do / Don't
+
+- **Do** ask only for what you will use; drop `phone` when you never call back.
+- **Don't** rename the privacy link to something vague; say where it goes.
+
+## Content
+
+- The submit says what happens: "Send message", not "Submit".

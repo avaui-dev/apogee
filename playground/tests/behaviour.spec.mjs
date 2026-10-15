@@ -2648,3 +2648,32 @@ test('job card: the title link covers the card and the details are labelled', as
   expect(await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest('a')?.textContent, [desc.x + 10, desc.y + 5])).toBe('Product Designer')
   await expect(card.locator('dt')).toHaveText(['Location', 'Type', 'Salary'])
 })
+
+// ---- Contact sections ----
+
+test('contact form: labelled fields, required ones marked, posts without JS', async ({ page }) => {
+  await page.goto('/docs/contact-form')
+  const form = page.locator('[data-apogee-contact-form="default"] form')
+  for (const name of ['First name', 'Last name', 'Email', 'Message']) await expect(form.getByLabel(name, { exact: false }).first()).toHaveAttribute('required', '')
+  await expect(form.getByRole('combobox', { name: 'Country code' })).toBeVisible()
+  await form.getByRole('button', { name: 'Send message' }).click()
+  // The browser stops the submit at the first empty required field.
+  await expect(page).toHaveURL(/\/docs\/contact-form/)
+})
+
+test('world map pins are named links with the address in a tooltip', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/docs/world-map')
+  const pin = page.getByRole('link', { name: /^Melbourne, 100 Flinders Street/ })
+  await expect(pin).toHaveAttribute('href', /openstreetmap\.org/)
+  await pin.focus()
+  await expect(page.getByText('100 Flinders Street, Melbourne VIC 3000 AU').first()).toBeVisible()
+})
+
+test('map embed is a named frame with a link to the full map', async ({ page }) => {
+  await page.goto('/docs/map-embed')
+  const map = page.locator('[data-apogee-map-embed="default"] figure')
+  await expect(map.locator('iframe')).toHaveAttribute('title', 'Map of our Melbourne office')
+  await expect(map.locator('iframe')).toHaveAttribute('loading', 'lazy')
+  await expect(map.getByRole('link', { name: /Open the full map/ })).toHaveAttribute('href', /mlat=-37\.8183/)
+})

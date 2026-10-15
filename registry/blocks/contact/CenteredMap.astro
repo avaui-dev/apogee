@@ -1,0 +1,54 @@
+---
+/**
+ * Centred map: A centred heading over store addresses on either side of a map.
+ *
+ * @block contact
+ * @order 18
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import MapEmbed from '../../components/MapEmbed/MapEmbed.astro'
+import Heading from '../../components/Heading/Heading.astro'
+
+const stores = [
+  { city: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
+  { city: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
+  { city: 'Byron Bay', address: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
+  { city: 'London', address: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
+  { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
+  { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Locations" heading="Visit our stores" description="Find us at these locations." align="center" class="mb-16" />
+  <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)]">
+    <ul class="list-none p-0 flex flex-col gap-8">
+    {stores.slice(0, 3).map((s) => (
+      <li class="flex flex-col gap-1">
+        <Heading as="h3" size="h6">{s.city}</Heading>
+        <p class="apogee-store-address">{s.address}</p>
+      </li>
+    ))}
+  </ul>
+    <MapEmbed lat={stores[0]!.lat} lon={stores[0]!.lon} title={`Map of our ${stores[0]!.city} office`} class="min-h-96 max-lg:hidden" />
+    <ul class="list-none p-0 flex flex-col gap-8">
+    {stores.slice(3).map((s) => (
+      <li class="flex flex-col gap-1">
+        <Heading as="h3" size="h6">{s.city}</Heading>
+        <p class="apogee-store-address">{s.address}</p>
+      </li>
+    ))}
+  </ul>
+  </div>
+</Section>
+
+<style>
+  .apogee-store-address {
+    color: var(--foreground-neutral-faded);
+  }
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-store-address {
+    color: inherit;
+    opacity: 0.85;
+  }
+</style>

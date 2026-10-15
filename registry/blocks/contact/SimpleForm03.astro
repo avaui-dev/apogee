@@ -1,0 +1,27 @@
+---
+/**
+ * Simple form 03: A heading, an email link and a contact form with a services checklist beside a photo.
+ *
+ * @block contact
+ * @order 24
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import ContactForm from '../../components/ContactForm/ContactForm.astro'
+import Image from '../../components/Image/Image.astro'
+import Link from '../../components/Link/Link.astro'
+
+---
+
+<Section spacing="none" container={false}>
+  <div class="grid lg:grid-cols-2">
+    <div class="px-gutter py-section lg:px-16">
+      <div class="mx-auto max-w-lg">
+        <SectionHeader heading="Let's level up your brand, together" class="mb-4" />
+        <p class="mb-12 text-neutral-faded">You can reach us anytime via <Link href="mailto:hi@example.com">hi@example.com</Link></p>
+        <ContactForm services={['Website design', 'Content creation', 'UX design', 'Strategy & consulting', 'User research', 'Other']} submitLabel="Get started" />
+      </div>
+    </div>
+    <Image src="https://picsum.photos/seed/apogee-contact-5/1200/1600" alt="" width={1200} height={1600} fit="cover" class="h-full min-h-[50rem] w-full max-lg:hidden" />
+  </div>
+</Section>

@@ -1,0 +1,34 @@
+---
+/**
+ * Icon cards 03: A centred heading and a wide photo over three contact cards.
+ *
+ * @block contact
+ * @order 20
+ */
+import { MapPin, MessagesSquare, Phone } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Image from '../../components/Image/Image.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+const methods = [
+  { icon: MessagesSquare, title: 'Chat to sales', description: "Speak to our friendly team.", link: { label: 'sales@example.com', href: 'mailto:sales@example.com' } },
+  { icon: MapPin, title: 'Visit us', description: "Visit our office HQ.", link: { label: 'View on the map', href: '#map' } },
+  { icon: Phone, title: 'Call us', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
+]
+---
+
+<Section spacing="large">
+  <div class="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-4 text-center">
+    <Badge color="primary" rounded>Contact us</Badge>
+    <SectionHeader heading="We'd love to hear from you" description="Our friendly team is always here to chat." align="center" />
+  </div>
+  <Image src="https://picsum.photos/seed/apogee-contact-4/1600/700" alt="" width={1600} height={700} fit="cover" radius="xl" class="mb-16 aspect-[16/7] w-full" />
+  <ul class="list-none p-0 grid gap-6 md:grid-cols-3">
+    {methods.map((m) => (
+      <li><ContactMethod title={m.title} description={m.description} link={m.link} variant="card"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
+    ))}
+  </ul>
+</Section>

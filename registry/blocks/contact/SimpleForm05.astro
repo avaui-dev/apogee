@@ -1,0 +1,51 @@
+---
+/**
+ * Simple form 05: A brand-colour sidebar with contact methods and links (from lg) beside a form with a services checklist.
+ *
+ * @block contact
+ * @order 31
+ */
+import { AtSign, Globe, MapPin, MessageCircle, Phone, Rss, Users, Video } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import ContactForm from '../../components/ContactForm/ContactForm.astro'
+import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
+
+const methods = [
+  { icon: MessageCircle, title: 'Live chat', description: "Our friendly team is here to help.", link: { label: 'Start new chat', href: '#chat' } },
+  { icon: MapPin, title: 'Office', description: "Come say hello at our office HQ.", link: { label: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' } },
+  { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
+]
+---
+
+<Section spacing="none" container={false}>
+  <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+    <aside class="flex flex-col justify-between gap-12 bg-primary px-gutter py-section text-on-primary max-lg:hidden lg:px-12" aria-label="Contact details">
+      <div>
+        <SectionHeader heading="Get in touch" description="We'd love to hear from you." background="primary" class="mb-12" />
+        <ul class="list-none p-0 flex flex-col gap-8">
+    {methods.map((m) => (
+      <li><ContactMethod title={m.title} description={m.description} link={m.link} inline><m.icon slot="icon" class="size-6" aria-hidden="true" /></ContactMethod></li>
+    ))}
+  </ul>
+      </div>
+      <ul class="flex list-none gap-4 p-0" aria-label="Elsewhere">
+        {[
+          { icon: Globe, label: 'Website' },
+          { icon: Rss, label: 'Blog' },
+          { icon: Users, label: 'Community' },
+          { icon: Video, label: 'Videos' },
+          { icon: AtSign, label: 'Newsletter' },
+        ].map((s) => (
+          <li><a href="#" aria-label={s.label} class="grid size-6 place-items-center rounded-xs opacity-80 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><s.icon class="size-6" aria-hidden="true" /></a></li>
+        ))}
+      </ul>
+    </aside>
+    <div class="px-gutter py-section lg:px-16">
+      <div class="mx-auto max-w-xl">
+        <SectionHeader heading="Level up your brand" description="You can reach us anytime via hi@example.com." class="mb-12" />
+        <ContactForm services={['Website design', 'Content creation', 'UX design', 'Strategy & consulting', 'User research', 'Other']} />
+      </div>
+    </div>
+  </div>
+</Section>

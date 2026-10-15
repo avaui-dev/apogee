@@ -1,0 +1,29 @@
+---
+/**
+ * Simple links 02: A heading over four contact cards.
+ *
+ * @block contact
+ * @order 6
+ */
+import { LifeBuoy, MapPin, MessagesSquare, Phone } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+
+const methods = [
+  { icon: MessagesSquare, title: 'Chat to sales', description: "Speak to our friendly team.", link: { label: 'sales@example.com', href: 'mailto:sales@example.com' } },
+  { icon: LifeBuoy, title: 'Chat to support', description: "We're here to help.", link: { label: 'support@example.com', href: 'mailto:support@example.com' } },
+  { icon: MapPin, title: 'Visit us', description: "Visit our office HQ.", link: { label: 'View on the map', href: '#map' } },
+  { icon: Phone, title: 'Call us', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Contact us" heading="Contact us" description="Our friendly team would love to hear from you." class="mb-16" />
+  <ul class="list-none p-0 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {methods.map((m) => (
+      <li><ContactMethod title={m.title} description={m.description} link={m.link} variant="card"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
+    ))}
+  </ul>
+</Section>

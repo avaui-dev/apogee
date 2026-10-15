@@ -1,0 +1,79 @@
+---
+title: MapEmbed
+description: An embedded street map centred on a place, with a marker and a link to the full map; no key, no script.
+group: Components
+order: 0
+related: [world-map, image, link]
+---
+
+import Preview from '../../components/Preview.astro'
+import MapEmbed from '../../../../registry/components/MapEmbed/MapEmbed.astro'
+
+<Preview block code={`<MapEmbed lat={-37.8183} lon={144.9671} title="Map of our Melbourne office" class="h-80" />`}>
+  <div data-apogee-map-embed="default"><MapEmbed lat={-37.8183} lon={144.9671} title="Map of our Melbourne office" class="h-80" /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add map-embed
+```
+
+Pulls in Link. The map comes from OpenStreetMap, so there is no account or API key to set up.
+
+## Usage
+
+```astro
+---
+import MapEmbed from '@/components/apogee/MapEmbed/MapEmbed.astro'
+---
+<MapEmbed lat={51.5154} lon={-0.141} title="Map of our London office" class="aspect-video" />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `lat` | `number` | — | Required. Latitude of the place. |
+| `lon` | `number` | — | Required. Longitude of the place. |
+| `title` | `string` | — | Required. Names the frame for screen readers ("Map of our Melbourne office"). |
+| `span` | `number` | `0.04` | Degrees of longitude shown across; smaller is closer. |
+| `rounded` | `boolean` | `true` | Rounded corners. |
+| `linkLabel` | `string` | `'Open the full map'` | Text of the link under the map; an empty string hides it. |
+| `class` | `string` | — | Size it here (`h-96`, `aspect-video`); the map fills the box. |
+
+## Variants
+
+Closer, square corners, no link:
+
+<Preview block code={`<MapEmbed lat={51.5154} lon={-0.141} span={0.01} rounded={false} linkLabel="" title="Map of our London office" class="h-64" />`}>
+  <MapEmbed lat={51.5154} lon={-0.141} span={0.01} rounded={false} linkLabel="" title="Map of our London office" class="h-64" />
+</Preview>
+
+## States
+
+- **Loading** — the frame loads lazily and shows a neutral fill until it arrives.
+
+## Examples
+
+Maps in contact layouts: [Contact sections](/docs/contact-sections).
+
+## Accessibility
+
+- The iframe is named by `title`; the link under it opens the same place in a new tab for anyone who cannot use the frame.
+- The map is someone else's page; Apogee's checks skip inside it.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-neutral-faded` | The frame while it loads |
+
+## Do / Don't
+
+- **Do** write the address as text next to the map; a map alone is not an address.
+- **Don't** embed a map for a place people never visit.
+
+## Content
+
+- Name the place in the title: "Map of our Melbourne office", not "Map".

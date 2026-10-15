@@ -1,0 +1,65 @@
+---
+/**
+ * ContactMethod — one way to reach you: an icon, a title, a line about it and
+ * the address, number or link itself. `variant="card"` sets it on a tinted
+ * card; `align="center"` stacks it centred. Put the icon in the `icon` slot (a
+ * FeaturedIcon, or a bare Lucide icon). Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Heading from '../Heading/Heading.astro'
+import Link from '../Link/Link.astro'
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** @category content */ title: string
+  /** A line about it ("Our friendly team is here to help."). @category content */ description?: string | undefined
+  /** The address, email or number, as a link. @shape { label: string, href: string } @category content */ link?: { label: string; href: string } | undefined
+  /** @category layout */ variant?: 'plain' | 'card'
+  /** @category layout */ align?: 'start' | 'center'
+  /** Icon beside the text instead of above it (`start` only). @category layout */ inline?: boolean
+  /** @category layout */ headingLevel?: 2 | 3 | 4 | 5
+  class?: string
+}
+
+const { title, description, link, variant = 'plain', align = 'start', inline = false, headingLevel = 3, class: className, ...rest } = Astro.props
+const Tag = `h${headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5'
+const centred = align === 'center'
+---
+
+<div
+  class:list={[
+    'apogee-contact-method flex gap-4',
+    inline && !centred ? 'flex-row items-start' : 'flex-col',
+    centred && 'items-center text-center',
+    variant === 'card' && 'rounded-2xl bg-neutral-faded p-6',
+    className,
+  ]}
+  {...rest}
+>
+  {Astro.slots.has('icon') && <div class="flex shrink-0"><slot name="icon" /></div>}
+  <div class:list={['flex flex-col', variant === 'card' && !inline ? 'gap-5 md:mt-6' : 'gap-4']}>
+    <div class="flex flex-col gap-1">
+      <Heading as={Tag} size="h6">{title}</Heading>
+      {description && <p class="apogee-contact-muted">{description}</p>}
+    </div>
+    {link && <Link href={link.href} color="primary" underline="hover" class="apogee-contact-link font-semibold">{link.label}</Link>}
+    <slot />
+  </div>
+</div>
+
+<style>
+  .apogee-contact-muted {
+    color: var(--foreground-neutral-faded);
+  }
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-contact-muted {
+    color: inherit;
+    opacity: 0.85;
+  }
+  /* On a solid fill the link takes the on-colour, underlined so it still reads as a link. */
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-contact-link {
+    color: inherit;
+    text-decoration-line: underline;
+  }
+</style>

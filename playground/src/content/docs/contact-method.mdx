@@ -1,0 +1,96 @@
+---
+title: ContactMethod
+description: One way to reach you; an icon, a title, a line about it and the address, number or link, plain or on a card.
+group: Components
+order: 0
+related: [featured-icon, link, card]
+---
+
+import Preview from '../../components/Preview.astro'
+import ContactMethod from '../../../../registry/components/ContactMethod/ContactMethod.astro'
+import FeaturedIcon from '../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import { Mail, Phone } from '@lucide/astro'
+
+<Preview code={`<ContactMethod title="Email" description="Our friendly team is here to help." link={{ label: 'hi@example.com', href: 'mailto:hi@example.com' }}>
+  <FeaturedIcon slot="icon" theme="outline" color="neutral"><Mail /></FeaturedIcon>
+</ContactMethod>`}>
+  <div class="w-72" data-apogee-contact-method="default">
+    <ContactMethod title="Email" description="Our friendly team is here to help." link={{ label: 'hi@example.com', href: 'mailto:hi@example.com' }}>
+      <FeaturedIcon slot="icon" theme="outline" color="neutral"><Mail /></FeaturedIcon>
+    </ContactMethod>
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact-method
+```
+
+Pulls in Heading and Link. Bring your own icon (a FeaturedIcon or a bare Lucide icon).
+
+## Usage
+
+```astro
+<ContactMethod title="Phone" description="Mon–Fri from 8am to 5pm." link={{ label: '+1 (555) 000-0000', href: 'tel:+15550000000' }} variant="card">
+  <FeaturedIcon slot="icon" theme="outline" color="neutral"><Phone /></FeaturedIcon>
+</ContactMethod>
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | — | Required. |
+| `description` | `string` | — | A line about it. |
+| `link` | `{ label, href }` | — | The address, email or number, as a link (`mailto:`, `tel:` or a page). |
+| `variant` | `'plain' \| 'card'` | `'plain'` | `card` sets it on a tinted card. |
+| `align` | `'start' \| 'center'` | `'start'` | `center` stacks it centred. |
+| `inline` | `boolean` | `false` | The icon beside the text instead of above it (with `start`). |
+| `headingLevel` | `2 \| 3 \| 4 \| 5` | `3` | The title's heading level. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+`variant="card"`, `align="center"` and `inline`:
+
+<Preview code={`<ContactMethod variant="card" … />
+<ContactMethod align="center" … />
+<ContactMethod inline … />`}>
+  <div class="grid w-full gap-8 sm:grid-cols-3">
+    <ContactMethod variant="card" title="Call us" description="Mon–Fri from 8am to 5pm." link={{ label: '+1 (555) 000-0000', href: 'tel:+15550000000' }}><FeaturedIcon slot="icon" theme="outline" color="neutral"><Phone /></FeaturedIcon></ContactMethod>
+    <ContactMethod align="center" title="Email" description="Our friendly team is here to help." link={{ label: 'hi@example.com', href: 'mailto:hi@example.com' }}><FeaturedIcon slot="icon" theme="outline" color="neutral"><Mail /></FeaturedIcon></ContactMethod>
+    <ContactMethod inline title="Email" description="Our friendly team is here to help." link={{ label: 'hi@example.com', href: 'mailto:hi@example.com' }}><Mail slot="icon" class="size-6 text-primary" aria-hidden="true" /></ContactMethod>
+  </div>
+</Preview>
+
+## States
+
+- **On the brand colour** — the line and the link take the on-colour; the link stays underlined so it still reads as a link.
+
+## Examples
+
+Every contact layout: [Contact sections](/docs/contact-sections).
+
+## Accessibility
+
+- The title is a heading (`headingLevel`), so a page of contact methods has a scannable outline.
+- The link names where it goes: the address itself, the email, the number.
+- The icon is decorative; FeaturedIcon hides it from screen readers.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral-faded` | The line |
+| `--foreground-primary` | The link |
+| `--background-neutral-faded` | `card` fill |
+
+## Do / Don't
+
+- **Do** show the real address or number as the link text.
+- **Don't** hide the email behind "Email us"; people copy it.
+
+## Content
+
+- One line about when or how you answer: "Mon–Fri from 8am to 5pm."

@@ -2,6 +2,9 @@
 import {
   Puzzle,
   Megaphone,
+  Contact,
+  MapPinned,
+  Earth,
   BriefcaseBusiness,
   Newspaper,
   Timer,
@@ -28,7 +31,7 @@ export const docsIcons: Record<string, typeof Box> = {
   'nav-link': Navigation, navbar: PanelTop, 'number-input': Hash, pagination: ChevronsRight, 'pin-input': KeyRound,
   popover: MessageSquare, 'progress-indicator': CircleDot, progress: Activity, 'progressive-enhancement': Layers, prose: BookOpen,
   'radio-group': Circle, radio: CircleDot, rating: Star, 'rich-text-editor': PenLine, rtl: Languages, 'scroll-area': ScrollText,
-  section: LayoutTemplate, patterns: Puzzle, 'banner-sections': Megaphone, 'blog-sections': Newspaper, 'careers-sections': BriefcaseBusiness, 'job-card': BriefcaseBusiness, 'post-card': Newspaper, 'sections/banner': Megaphone, countdown: Timer, 'segmented-control': ToggleLeft, select: ChevronsUpDown, sidebar: PanelLeft, skeleton: Rows3,
+  section: LayoutTemplate, patterns: Puzzle, 'banner-sections': Megaphone, 'blog-sections': Newspaper, 'careers-sections': BriefcaseBusiness, 'contact-sections': Contact, 'contact-form': Contact, 'contact-method': Contact, 'map-embed': MapPinned, 'world-map': Earth, 'job-card': BriefcaseBusiness, 'post-card': Newspaper, 'sections/banner': Megaphone, countdown: Timer, 'segmented-control': ToggleLeft, select: ChevronsUpDown, sidebar: PanelLeft, skeleton: Rows3,
   'skip-link': SkipForward, slider: SlidersHorizontal, spacing: Ruler, spinner: LoaderCircle, stack: Rows3, stat: TrendingUp,
   steps: ListOrdered, switch: ToggleRight, table: Table, tabs: PanelsTopLeft, 'tag-input': Tags, tag: Tag, text: Text,
   textarea: AlignLeft, timeline: GitCommitHorizontal, 'tree-view': ListTree, message: MessageSquareText, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,

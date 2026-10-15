@@ -301,6 +301,38 @@
       ],
       "usesJs": true
     },
+    "ContactForm": {
+      "name": "ContactForm",
+      "kind": "component",
+      "files": [
+        "ContactForm/ContactForm.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Checkbox",
+        "CheckboxGroup",
+        "Input",
+        "InputGroup",
+        "Link",
+        "Textarea",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "ContactMethod": {
+      "name": "ContactMethod",
+      "kind": "component",
+      "files": [
+        "ContactMethod/ContactMethod.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Link"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "Container": {
       "name": "Container",
       "kind": "component",
@@ -656,6 +688,18 @@
         "LoaderText/LoaderText.astro"
       ],
       "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "MapEmbed": {
+      "name": "MapEmbed",
+      "kind": "component",
+      "files": [
+        "MapEmbed/MapEmbed.astro"
+      ],
+      "registryDependencies": [
+        "Link"
+      ],
       "dependencies": [],
       "usesJs": false
     },
@@ -1252,6 +1296,19 @@
         "@lucide/astro"
       ],
       "usesJs": true
+    },
+    "WorldMap": {
+      "name": "WorldMap",
+      "kind": "component",
+      "files": [
+        "WorldMap/WorldMap.astro",
+        "WorldMap/land.ts"
+      ],
+      "registryDependencies": [
+        "Tooltip"
+      ],
+      "dependencies": [],
+      "usesJs": false
     },
     "utils": {
       "name": "utils",
@@ -3927,6 +3984,683 @@
         "SectionHeader"
       ],
       "dependencies": [],
+      "usesJs": false
+    },
+    "contact/centered-map": {
+      "name": "contact/centered-map",
+      "kind": "block",
+      "category": "contact",
+      "title": "Centred map",
+      "description": "A centred heading over store addresses on either side of a map.",
+      "files": [
+        "blocks/contact/CenteredMap.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "MapEmbed",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/features-tabs-map-01": {
+      "name": "contact/features-tabs-map-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Features tabs map 01",
+      "description": "A heading over store tabs, each showing that store on a map.",
+      "files": [
+        "blocks/contact/FeaturesTabsMap01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "MapEmbed",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/features-tabs-map-02": {
+      "name": "contact/features-tabs-map-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Features tabs map 02",
+      "description": "A heading and store tabs beside the selected store on a map.",
+      "files": [
+        "blocks/contact/FeaturesTabsMap02.astro"
+      ],
+      "registryDependencies": [
+        "MapEmbed",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/form-and-image-01": {
+      "name": "contact/form-and-image-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Form and image 01",
+      "description": "A heading and contact form beside a photo (the photo shows from lg).",
+      "files": [
+        "blocks/contact/FormAndImage01.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/form-and-image-02": {
+      "name": "contact/form-and-image-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Form and image 02",
+      "description": "A photo beside a heading, an email link and a contact form with a services checklist.",
+      "files": [
+        "blocks/contact/FormAndImage02.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/form-and-map": {
+      "name": "contact/form-and-map",
+      "kind": "block",
+      "category": "contact",
+      "title": "Form and map",
+      "description": "A heading and contact form beside a map (the map shows from lg).",
+      "files": [
+        "blocks/contact/FormAndMap.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "MapEmbed",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/icon-cards-01": {
+      "name": "contact/icon-cards-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icon cards 01",
+      "description": "A centred heading over four contact cards.",
+      "files": [
+        "blocks/contact/IconCards01.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/icon-cards-02": {
+      "name": "contact/icon-cards-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icon cards 02",
+      "description": "A heading in one column beside four contact cards.",
+      "files": [
+        "blocks/contact/IconCards02.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/icon-cards-03": {
+      "name": "contact/icon-cards-03",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icon cards 03",
+      "description": "A centred heading and a wide photo over three contact cards.",
+      "files": [
+        "blocks/contact/IconCards03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "ContactMethod",
+        "FeaturedIcon",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/icons-and-form": {
+      "name": "contact/icons-and-form",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and form",
+      "description": "A heading and four contact methods beside a contact form.",
+      "files": [
+        "blocks/contact/IconsAndForm.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/icons-and-form-brand": {
+      "name": "contact/icons-and-form-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and form brand",
+      "description": "Icons and form on the brand colour: a heading and four contact methods beside a form on a page-coloured panel.",
+      "files": [
+        "blocks/contact/IconsAndFormBrand.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/icons-and-image": {
+      "name": "contact/icons-and-image",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and image",
+      "description": "A heading and two offices on a tinted band, over a wide photo that overlaps its edge.",
+      "files": [
+        "blocks/contact/IconsAndImage.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/icons-and-image-brand": {
+      "name": "contact/icons-and-image-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and image brand",
+      "description": "A heading and two offices on a brand band, over a wide photo that overlaps its edge.",
+      "files": [
+        "blocks/contact/IconsAndImageBrand.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/icons-and-map-01": {
+      "name": "contact/icons-and-map-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and map 01",
+      "description": "A heading and three contact methods in a narrow column beside a map.",
+      "files": [
+        "blocks/contact/IconsAndMap01.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "MapEmbed",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/icons-and-map-01-brand": {
+      "name": "contact/icons-and-map-01-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and map 01 brand",
+      "description": "Icons and map 01 on the brand colour: a heading and three contact methods beside a map.",
+      "files": [
+        "blocks/contact/IconsAndMap01Brand.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "MapEmbed",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/icons-and-map-02-brand": {
+      "name": "contact/icons-and-map-02-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and map 02 brand",
+      "description": "A heading and two offices on a brand band, over a map that overlaps its edge.",
+      "files": [
+        "blocks/contact/IconsAndMap02Brand.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "MapEmbed",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/map-01": {
+      "name": "contact/map-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Map 01",
+      "description": "A centred heading, a wide map and three office cards with their hours and addresses.",
+      "files": [
+        "blocks/contact/Map01.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "MapEmbed",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/map-02": {
+      "name": "contact/map-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Map 02",
+      "description": "A centred heading, a world map with office pins (from lg) and three contact cards.",
+      "files": [
+        "blocks/contact/Map02.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader",
+        "WorldMap"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-form": {
+      "name": "contact/simple-form",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple form",
+      "description": "A centred heading over a contact form.",
+      "files": [
+        "blocks/contact/SimpleForm.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/simple-form-01": {
+      "name": "contact/simple-form-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple form 01",
+      "description": "A centred heading over a contact form capped to a readable width.",
+      "files": [
+        "blocks/contact/SimpleForm01.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/simple-form-02": {
+      "name": "contact/simple-form-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple form 02",
+      "description": "A portrait photo (from lg) beside a heading and a contact form.",
+      "files": [
+        "blocks/contact/SimpleForm02.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/simple-form-03": {
+      "name": "contact/simple-form-03",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple form 03",
+      "description": "A heading, an email link and a contact form with a services checklist beside a photo.",
+      "files": [
+        "blocks/contact/SimpleForm03.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/simple-form-04": {
+      "name": "contact/simple-form-04",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple form 04",
+      "description": "A tinted sidebar with contact methods and links (from lg) beside a contact form.",
+      "files": [
+        "blocks/contact/SimpleForm04.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "ContactMethod",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-form-05": {
+      "name": "contact/simple-form-05",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple form 05",
+      "description": "A brand-colour sidebar with contact methods and links (from lg) beside a form with a services checklist.",
+      "files": [
+        "blocks/contact/SimpleForm05.astro"
+      ],
+      "registryDependencies": [
+        "ContactForm",
+        "ContactMethod",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-icons-01": {
+      "name": "contact/simple-icons-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 01",
+      "description": "Three contact methods with icons and links, no heading.",
+      "files": [
+        "blocks/contact/SimpleIcons01.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-icons-01-brand": {
+      "name": "contact/simple-icons-01-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 01 brand",
+      "description": "Simple icons 01 on the brand colour: three contact methods, no heading.",
+      "files": [
+        "blocks/contact/SimpleIcons01Brand.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-icons-02": {
+      "name": "contact/simple-icons-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 02",
+      "description": "A centred heading over three contact methods.",
+      "files": [
+        "blocks/contact/SimpleIcons02.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-icons-02-brand": {
+      "name": "contact/simple-icons-02-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 02 brand",
+      "description": "Simple icons 02 on the brand colour: a centred heading over three contact methods.",
+      "files": [
+        "blocks/contact/SimpleIcons02Brand.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-icons-03": {
+      "name": "contact/simple-icons-03",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 03",
+      "description": "A heading over three contact methods aligned to the start edge.",
+      "files": [
+        "blocks/contact/SimpleIcons03.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-icons-03-brand": {
+      "name": "contact/simple-icons-03-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 03 brand",
+      "description": "Simple icons 03 on the brand colour: a heading over three contact methods.",
+      "files": [
+        "blocks/contact/SimpleIcons03Brand.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-icons-04": {
+      "name": "contact/simple-icons-04",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 04",
+      "description": "A heading beside six store addresses.",
+      "files": [
+        "blocks/contact/SimpleIcons04.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/simple-icons-04-brand": {
+      "name": "contact/simple-icons-04-brand",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple icons 04 brand",
+      "description": "Simple icons 04 on the brand colour: a heading beside six store addresses.",
+      "files": [
+        "blocks/contact/SimpleIcons04Brand.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/simple-links-01": {
+      "name": "contact/simple-links-01",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple links 01",
+      "description": "A centred heading over three contact methods with icons and links.",
+      "files": [
+        "blocks/contact/SimpleLinks01.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/simple-links-02": {
+      "name": "contact/simple-links-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Simple links 02",
+      "description": "A heading over four contact cards.",
+      "files": [
+        "blocks/contact/SimpleLinks02.astro"
+      ],
+      "registryDependencies": [
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "contact/vector-map-03": {
+      "name": "contact/vector-map-03",
+      "kind": "block",
+      "category": "contact",
+      "title": "Vector map 03",
+      "description": "A heading over a world map with office pins (from lg) and three contact cards.",
+      "files": [
+        "blocks/contact/VectorMap03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "ContactMethod",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader",
+        "WorldMap"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     }
   }

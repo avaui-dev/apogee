@@ -1,0 +1,26 @@
+---
+/**
+ * Simple icons 01: Three contact methods with icons and links, no heading.
+ *
+ * @block contact
+ * @order 9
+ */
+import { Mail, MapPin, Phone } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+
+const methods = [
+  { icon: Mail, title: 'Email', description: "Our friendly team is here to help.", link: { label: 'hi@example.com', href: 'mailto:hi@example.com' } },
+  { icon: MapPin, title: 'Office', description: "Come say hello at our office HQ.", link: { label: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' } },
+  { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
+]
+---
+
+<Section spacing="large" aria-label="Contact">
+  <ul class="list-none p-0 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    {methods.map((m) => (
+      <li><ContactMethod title={m.title} description={m.description} link={m.link} align="center"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
+    ))}
+  </ul>
+</Section>

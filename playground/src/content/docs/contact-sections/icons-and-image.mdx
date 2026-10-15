@@ -1,0 +1,24 @@
+---
+title: "Icons and image"
+description: "A heading and two offices on a tinted band, over a wide photo that overlaps its edge.."
+group: Contact sections
+order: 17
+related: [contact-form, contact-method, map-embed, world-map]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="contact/icons-and-image" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact/icons-and-image
+```
+
+This copies the block to `src/components/apogee/blocks/contact/` with everything it uses: Heading, Image, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.
