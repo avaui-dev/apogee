@@ -13,7 +13,7 @@ const fills = { primary: 'bg-primary', neutral: 'bg-inverted', critical: 'bg-cri
 interface Props extends HTMLAttributes<'div'> {
   /** Number of steps. @category content */
   total: number
-  /** Completed steps (1-based current step). @category content */
+  /** The step in progress, 1-based (clamped to 0..total); segments fill up to and including it. @category content */
   current: number
   /** @category layout */
   color?: keyof typeof fills

@@ -18,6 +18,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Docs** — a Patterns page (recipe index, filter bar as a GET form, inline calls to action); recipes for date inputs, a notification count, an upload list and an account switcher; Tokens tables now name `--outline-color-focus` for focus rings and the `-highlighted` hover fills the components use.
 - **Message** (new) — a chat message: sender in `<cite>`, `<time datetime>`, own messages (`me`) at the end, `status` sent | read | failed, `typing` dots, slots for avatar, reply quote, link preview, attachment and reactions. Zero JS.
 - **Carousel** — `controlsVariant="overlay"` (translucent borderless arrows), `dotsPosition="overlay"`.
 - **Breadcrumbs** — `variant` text | button | line; items take `icon` and `ariaLabel` (icon-only crumbs).

@@ -16,7 +16,9 @@ import { FolderPlus, FileText, Settings, SearchX } from '@lucide/astro'
   Opens on ⌘K / Ctrl+K (or a configurable `shortcut`), or from any element
   with `data-command-open="<id>"`. Typing filters commands by label and
   keywords; arrow keys move the highlight, Enter activates it — navigating to
-  `href`, or dispatching an `apogee:command` event on `document`.
+  `href`, or dispatching an `apogee:command` event on `document`. Commands
+  with a `shortcut` run from anywhere on the page, and key caps read Ctrl
+  instead of ⌘ outside macOS.
 </JsNote>
 
 <Preview code={`<button type="button" data-command-open="apogee-command" class="rounded-md border border-neutral px-3 py-2 text-sm">Open (⌘K)</button>

@@ -9,6 +9,9 @@ import Preview from '../../components/Preview.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
 import JsNote from '../../components/JsNote.astro'
 import FileUpload from '../../../../registry/components/FileUpload/FileUpload.astro'
+import Progress from '../../../../registry/components/Progress/Progress.astro'
+import CloseButton from '../../../../registry/components/CloseButton/CloseButton.astro'
+import { FileText } from '@lucide/astro'
 
 <JsNote fallback="The native picker still works — clicking or tabbing to the label opens it, and the field submits with the form. The selected-file-name text stays hidden (`no-js:hidden`), and drag-and-drop isn't available.">
   Shows the selected file name(s) after a pick, and adds drag-and-drop: dropping
@@ -119,6 +122,42 @@ dispatches a native `change` event, the same as picking a file. A refused file
 leaves `input.files` empty; a picked file that fails the same checks is
 cleared. Native `accept` only filters the picker dialog, so the island
 applies the same rule to drops.
+
+## Upload list
+
+Rows under the zone while files upload: a Progress with its value at the end,
+a CloseButton to cancel, and a failed row with a retry. `readableSize` from
+`utils/files.ts` formats the size.
+
+<Preview code={`<ul class="flex flex-col gap-2">
+  <li class="flex items-center gap-3 rounded-lg border border-neutral p-3">
+    <FileText class="size-5 text-neutral-faded" aria-hidden="true" />
+    <div class="min-w-0 flex-1">
+      <p class="truncate text-sm font-medium">brief.pdf <span class="font-normal text-neutral-faded">· 240 KB</span></p>
+      <Progress value={64} labelPosition="end" label="Uploading brief.pdf" size="small" />
+    </div>
+    <CloseButton size="small" label="Cancel upload" />
+  </li>
+</ul>`} block>
+  <ul class="flex flex-col gap-2">
+    <li class="flex items-center gap-3 rounded-lg border border-neutral p-3">
+      <FileText class="size-5 shrink-0 text-neutral-faded" aria-hidden="true" />
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-medium text-neutral">brief.pdf <span class="font-normal text-neutral-faded">· 240 KB</span></p>
+        <Progress value={64} labelPosition="end" label="Uploading brief.pdf" size="small" />
+      </div>
+      <CloseButton size="small" label="Cancel upload" />
+    </li>
+    <li class="flex items-center gap-3 rounded-lg border border-critical p-3">
+      <FileText class="size-5 shrink-0 text-critical" aria-hidden="true" />
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-medium text-neutral">photo.heic <span class="font-normal text-neutral-faded">· 4.2 MB</span></p>
+        <p class="text-xs text-critical">Upload failed. <Button variant="link" color="critical" size="small">Try again</Button></p>
+      </div>
+      <CloseButton size="small" label="Remove photo.heic" />
+    </li>
+  </ul>
+</Preview>
 
 ## Accessibility
 

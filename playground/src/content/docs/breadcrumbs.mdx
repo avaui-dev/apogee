@@ -9,6 +9,10 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Breadcrumbs from '../../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
 import { Home, Folder } from '@lucide/astro'
+import Dropdown from '../../../../registry/components/Dropdown/Dropdown.astro'
+import DropdownItem from '../../../../registry/components/Dropdown/DropdownItem.astro'
+import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+import { ChevronsUpDown } from '@lucide/astro'
 
 <JsNote fallback="Every item renders and the … button is hidden, so nothing is unreachable.">
   With `maxVisible`, the "…" button reveals the collapsed items and moves focus to the first of them.
@@ -132,6 +136,33 @@ A single-item trail (just the current page, no links):
   <Breadcrumbs items={[{ label: 'Dashboard' }]} />
 </Preview>
 
+## Account switcher
+
+A workspace switcher before the trail: a Dropdown whose anchor shows the
+current account, with radio items.
+
+<Preview code={`<div class="flex items-center gap-2">
+  <Dropdown id="acct" label="Switch workspace">
+    <button slot="anchor" popovertarget="acct" class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 text-sm">
+      <Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown class="size-3.5" />
+    </button>
+    <DropdownItem indicator="radio" selected>Acme</DropdownItem>
+    <DropdownItem indicator="radio">Globex</DropdownItem>
+  </Dropdown>
+  <span aria-hidden="true">/</span>
+  <Breadcrumbs items={[…]} />
+</div>`}>
+  <div class="flex flex-wrap items-center gap-2">
+    <Dropdown id="bc-acct" label="Switch workspace">
+      <button slot="anchor" popovertarget="bc-acct" type="button" class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 text-sm font-medium whitespace-nowrap text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown class="size-3.5 text-neutral-faded" aria-hidden="true" /></button>
+      <DropdownItem indicator="radio" selected>Acme</DropdownItem>
+      <DropdownItem indicator="radio">Globex</DropdownItem>
+    </Dropdown>
+    <span class="text-neutral-faded" aria-hidden="true">/</span>
+    <Breadcrumbs items={[{ label: 'Projects', href: '#' }, { label: 'Spring launch' }]} />
+  </div>
+</Preview>
+
 ## Accessibility
 
 - Wrapped in `<nav aria-label="Breadcrumb">` so assistive tech can jump to it
@@ -150,7 +181,7 @@ A single-item trail (just the current page, no links):
 |---|---|
 | `--foreground-neutral-faded` | Default crumb text |
 | `--foreground-neutral` | Hovered crumb + current-page text |
-| `--border-primary` | Focus ring on linked crumbs |
+| `--outline-color-focus` | Focus ring on linked crumbs |
 
 ## Do / Don't
 

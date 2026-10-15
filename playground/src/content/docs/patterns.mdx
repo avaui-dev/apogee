@@ -1,0 +1,130 @@
+---
+title: Patterns
+description: Application recipes built from existing components — filter bars, inline calls to action, and an index of every recipe on the component pages.
+group: Foundations
+order: 11
+related: [popover, card, section-header, table]
+---
+
+import Preview from '../../components/Preview.astro'
+import Popover from '../../../../registry/components/Popover/Popover.astro'
+import Select from '../../../../registry/components/Select/Select.astro'
+import Input from '../../../../registry/components/Input/Input.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import SegmentedControl from '../../../../registry/components/SegmentedControl/SegmentedControl.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import Heading from '../../../../registry/components/Heading/Heading.astro'
+import Text from '../../../../registry/components/Text/Text.astro'
+import { Filter, Search, CircleCheck } from '@lucide/astro'
+
+Patterns are compositions, not components: copy the markup and change it.
+Each one uses only components you already have.
+
+## Recipe index
+
+| Recipe | Where |
+|---|---|
+| Page header (breadcrumbs, back link, actions, search) | [SectionHeader](/docs/section-header#examples) |
+| Card header with actions and a menu | [Card](/docs/card#examples) |
+| Table card (title, table, pagination footer) | [Table](/docs/table#examples) |
+| Metric card | [Stat](/docs/stat#variants) |
+| Dialog bodies (confirm, form, media, drawer) | [Dialog](/docs/dialog#examples) |
+| Activity feed | [Timeline](/docs/timeline#examples) |
+| Conversation and composers | [Message](/docs/message#examples) |
+| Sidebar groups, headings, featured card | [Sidebar](/docs/sidebar#examples) |
+| Table footer with page size | [Pagination](/docs/pagination#examples) |
+| Date inputs | [Input](/docs/input#date-inputs) |
+| Upload list | [FileUpload](/docs/file-upload#upload-list) |
+| Tabbed install commands | [Code](/docs/code#examples) |
+| Notification count on an icon button | [Button](/docs/button#notification-count) |
+| Account switcher crumb | [Breadcrumbs](/docs/breadcrumbs#account-switcher) |
+
+## Filter bar
+
+Search, a period switch and a Filters popover holding a GET form: the filters
+submit with zero JS and the server renders the filtered page. Clear is a link
+to the unfiltered URL, not a reset button: a reset would restore the values
+the server just rendered. The badge on
+the trigger counts the applied filters.
+
+<Preview code={`<div class="flex flex-wrap items-end gap-3">
+  <div class="min-w-48 flex-1"><Input aria-label="Search" placeholder="Search"><Search slot="start" /></Input></div>
+  <SegmentedControl aria-label="Period" options={['7d', '30d', '12m']} value="30d" />
+  <Popover id="filters" width="20rem" placement="bottom-end">
+    <Button slot="anchor" popovertarget="filters" variant="outline" color="neutral">
+      <Filter slot="start" />Filters<Badge slot="end" size="small" rounded>2</Badge>
+    </Button>
+    <form method="get" class="flex flex-col gap-3">
+      <Select label="Status" name="status">…</Select>
+      <Select label="Owner" name="owner">…</Select>
+      <div class="flex justify-end gap-2">
+        <Button href="?" variant="ghost" color="neutral" size="small">Clear</Button>
+        <Button type="submit" size="small">Apply</Button>
+      </div>
+    </form>
+  </Popover>
+</div>`} block>
+  <div data-apogee-pattern="filter-bar" class="flex flex-wrap items-end gap-3">
+    <div class="min-w-48 flex-1"><Input aria-label="Search projects" placeholder="Search"><Search slot="start" /></Input></div>
+    <SegmentedControl aria-label="Period" options={['7d', '30d', '12m']} value="30d" />
+    <Popover id="filters" width="20rem" placement="bottom-end">
+      <Button slot="anchor" popovertarget="filters" variant="outline" color="neutral"><Filter slot="start" />Filters<Badge slot="end" size="small" rounded>2</Badge></Button>
+      <form id="filters-form" method="get" class="flex flex-col gap-3">
+        <Select label="Status" name="status">
+          <option value="">Any</option>
+          <option value="active">Active</option>
+          <option value="paused">Paused</option>
+        </Select>
+        <Select label="Owner" name="owner">
+          <option value="">Anyone</option>
+          <option value="me">Me</option>
+        </Select>
+        <div class="flex justify-end gap-2">
+          <Button href="?" variant="ghost" color="neutral" size="small">Clear</Button>
+          <Button type="submit" size="small">Apply</Button>
+        </div>
+      </form>
+    </Popover>
+  </div>
+</Preview>
+
+## Inline calls to action
+
+Primary action on top on phones (`flex-col-reverse`), side by side from `sm`;
+a media card; an email capture whose button lines up with the field; a
+checklist.
+
+<Preview code={`<Card>
+  <Heading as="h3" size="h4">Upgrade to Pro</Heading>
+  <Text size="small" color="neutral-faded">Unlimited projects and priority support.</Text>
+  <div class="mt-4 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+    <Button variant="outline" color="neutral">Compare plans</Button>
+    <Button>Upgrade</Button>
+  </div>
+</Card>`} block>
+  <Card>
+    <Heading as="h3" size="h4">Upgrade to Pro</Heading>
+    <Text size="small" color="neutral-faded">Unlimited projects and priority support.</Text>
+    <div class="mt-4 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+      <Button variant="outline" color="neutral">Compare plans</Button>
+      <Button>Upgrade</Button>
+    </div>
+  </Card>
+  <Card mediaPosition="start">
+    <img slot="media" src="https://picsum.photos/seed/apogee-cta/480/480" alt="" />
+    <Heading as="h3" size="h4">Invite your team</Heading>
+    <Text size="small" color="neutral-faded">Projects move faster with more hands.</Text>
+    <ul class="mt-3 flex flex-col gap-1.5 text-sm text-neutral">
+      {['Shared boards', 'Comments and mentions', 'Role-based access'].map((t) => <li class="flex items-center gap-2"><CircleCheck class="size-4 text-positive" aria-hidden="true" />{t}</li>)}
+    </ul>
+    <Button class="mt-4" size="small">Send invites</Button>
+  </Card>
+  <Card>
+    <Heading as="h3" size="h4">Get the changelog</Heading>
+    <form class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end" onsubmit="event.preventDefault()">
+      <div class="flex-1"><Input label="Email" type="email" placeholder="you@example.com" /></div>
+      <Button type="submit">Subscribe</Button>
+    </form>
+  </Card>
+</Preview>

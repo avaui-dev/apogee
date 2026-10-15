@@ -9,6 +9,8 @@ import Preview from '../../components/Preview.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
 import Link from '../../../../registry/components/Link/Link.astro'
 import { Mail, ArrowRight, Search, Plus } from '@lucide/astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import { Bell } from '@lucide/astro'
 
 <Preview code={`<Button>Get started</Button>
 <Button variant="outline" color="neutral">Learn more</Button>`}>
@@ -244,6 +246,21 @@ As a link, and the text link that is not a Button:
 <Link href="/docs">Read the docs</Link>`}>
   <Button href="/docs">Read the docs</Button>
   <Link href="/docs">Read the docs</Link>
+</Preview>
+
+## Notification count
+
+A Badge over an icon button's corner. Put the count in the label too, so it
+is announced.
+
+<Preview code={`<span class="relative inline-flex">
+  <Button variant="ghost" color="neutral" iconOnly aria-label="Notifications, 3 unread"><Bell /></Button>
+  <Badge rounded size="small" color="critical" variant="solid" class="pointer-events-none absolute -top-1 -end-1" aria-hidden="true">3</Badge>
+</span>`}>
+  <span class="relative inline-flex">
+    <Button variant="ghost" color="neutral" iconOnly aria-label="Notifications, 3 unread"><Bell /></Button>
+    <Badge rounded size="small" color="critical" variant="solid" class="pointer-events-none absolute -top-1 -end-1" aria-hidden="true">3</Badge>
+  </span>
 </Preview>
 
 ## Accessibility

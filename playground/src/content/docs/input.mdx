@@ -136,6 +136,27 @@ A clear button in the `end` slot (the slot accepts buttons):
   <Input label="Search" type="search" labelPosition="floating" />
 </Preview>
 
+## Date inputs
+
+Use the native pickers: `type="date"`, `type="time"` and
+`type="datetime-local"` give every platform its own accessible picker with
+zero JS. A range is two dates whose `min` and `max` point at each other on
+the server.
+
+<Preview code={`<Input type="date" label="Start date" />
+<Input type="datetime-local" label="Meeting" />
+<div class="flex gap-3">
+  <Input type="date" label="From" max="2026-12-31" />
+  <Input type="date" label="To" min="2026-10-15" />
+</div>`}>
+  <div class="grid gap-3 sm:grid-cols-2">
+    <Input type="date" label="Start date" />
+    <Input type="datetime-local" label="Meeting" />
+    <Input type="date" label="From" value="2026-10-15" max="2026-12-31" />
+    <Input type="date" label="To" min="2026-10-15" />
+  </div>
+</Preview>
+
 ## Accessibility
 
 - Every control is at least 16px text on viewports below `md`, so focusing a field never zooms the page on a phone; desktop sizes keep their smaller type.
@@ -159,7 +180,7 @@ A clear button in the `end` slot (the slot accepts buttons):
 | `--foreground-neutral-faded` | Placeholder, hint text, floating label (idle) |
 | `--foreground-critical` | Error border, error text, required `*` |
 | `--foreground-primary` | Floating label colour on focus |
-| `--border-primary` | Focus ring |
+| `--border-primary` / `--outline-color-focus` | Focus border / focus ring |
 
 ## Do / Don't
 

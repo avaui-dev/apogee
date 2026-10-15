@@ -1820,3 +1820,18 @@ test('review L: icon-only current crumb is named; toast progress is quiet; code 
   expect(await inner.getAttribute('tabindex')).toBe('0')
   expect(await inner.evaluate((e) => getComputedStyle(e).overflowX)).toBe('auto')
 })
+
+test('patterns filter bar submits its filters with GET', async ({ page }) => {
+  await page.goto('/docs/patterns')
+  const bar = page.locator('[data-apogee-pattern="filter-bar"]')
+  await bar.locator('button', { hasText: 'Filters' }).click()
+  const form = page.locator('#filters-form')
+  await form.locator('select[name="status"]').selectOption('active')
+  await form.locator('button[type="submit"]').click()
+  await page.waitForURL(/status=active/)
+  expect(page.url()).toContain('status=active')
+  await page.locator('[data-apogee-pattern="filter-bar"] button', { hasText: 'Filters' }).click()
+  await page.locator('#filters-form').getByText('Clear').click()
+  await page.waitForURL((u) => !u.search.includes('status='))
+  expect(page.url()).not.toContain('status=')
+})

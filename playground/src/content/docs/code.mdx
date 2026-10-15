@@ -10,9 +10,10 @@ import JsNote from '../../components/JsNote.astro'
 import Code from '../../../../registry/components/Code/Code.astro'
 import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
 
-<JsNote fallback="The copy button (`no-js:hidden`) doesn't render — the code stays visible and selectable, so it's still copyable by hand.">
+<JsNote fallback="The copy button and the Show more toggle (`no-js:hidden`) don't render. The code stays visible and selectable, and a collapsed block scrolls instead.">
   Copies the block's text to the clipboard on click, then swaps the icon to a
-  checkmark and shows a "Copied" label for 3 seconds.
+  checkmark and shows a "Copied" label for 3 seconds. With `maxHeight`, a
+  Show more button expands and collapses the block.
 </JsNote>
 
 <Preview block code={`<Code copy>npm install @ava-ui/apogee</Code>`}>
@@ -151,12 +152,14 @@ Block with copy, for install commands and config snippets:
 | Token | Used for |
 |---|---|
 | `--border-neutral` | Inline `<code>` and block `<pre>` border |
-| `--background-neutral-faded-highlighted` | Inline/block background; copy button hover background |
+| `--background-neutral-faded` | Inline code background |
+| `--background-page-faded` | Block background |
+| `--background-neutral-faded-highlighted` | Copy and Show more button hover |
 | `--background-page` | Copy button background |
 | `--foreground-neutral` | Code text; copy button hover/copied text |
 | `--foreground-neutral-faded` | Copy button default icon/text colour |
 | `--foreground-positive` | Copy button "copied" colour |
-| `--border-primary` | Focus ring |
+| `--outline-color-focus` | Focus ring |
 | `--duration-fast` / `--ease-standard` | "Copied" label fade transition |
 
 ## Do / Don't
