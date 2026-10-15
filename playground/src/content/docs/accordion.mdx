@@ -37,7 +37,7 @@ import AccordionItem from '../../../../registry/components/Accordion/AccordionIt
 npx @ava-ui/apogee add accordion
 ```
 
-`AccordionItem` uses `@lucide/astro` (`ChevronDown`) for the disclosure icon.
+`AccordionItem` uses `@lucide/astro` (`ChevronDown`, `CirclePlus`, `CircleMinus`) for the disclosure icon.
 
 ## Usage
 
@@ -66,6 +66,7 @@ import AccordionItem from '@/components/apogee/Accordion/AccordionItem.astro'
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
+| `variant` | `'outline' \| 'plain'` | `'outline'` | A bordered box, or dividers only. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 **`AccordionItem`**
@@ -73,7 +74,10 @@ import AccordionItem from '@/components/apogee/Accordion/AccordionItem.astro'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `title` | `string` | — | The `<summary>` label; the `trigger` slot replaces it with rich content. |
-| `iconPosition` | `'start' \| 'end'` | `'end'` | Chevron side. |
+| `iconPosition` | `'start' \| 'end'` | `'end'` | Icon side. |
+| `icon` | `'chevron' \| 'plus'` | `'chevron'` | A chevron that flips, or a circled plus that turns to a minus. |
+| `variant` | `'plain' \| 'card'` | `'plain'` | `card` sets the item on a rounded card, tinted while open. Stack cards in a `flex flex-col gap-2` wrapper instead of `Accordion`. |
+| `size` | `'medium' \| 'large'` | `'medium'` | `large` for FAQ-sized questions and answers. |
 | `group` | `string` | — | Shared across items → single-open (exclusive): opening one closes the rest with the same `group`. Maps to `<details name>`. |
 | `open` | `boolean` | `false` | Open on load. |
 | `class` | `string` | — | Extra classes, merged last. |
@@ -97,6 +101,32 @@ The `trigger` slot replaces `title` with rich content; `iconPosition` moves the 
       <p>A rich summary with a badge.</p>
     </AccordionItem>
   </Accordion>
+</Preview>
+
+## Variants
+
+A plain list with plus icons at the large size, and a stack of cards:
+
+<Preview code={`<Accordion variant="plain">
+  <AccordionItem title="Is there a free trial?" icon="plus" size="large" group="plain" open>Yes, 30 days.</AccordionItem>
+  <AccordionItem title="Can I change plans later?" icon="plus" size="large" group="plain">Any time.</AccordionItem>
+</Accordion>
+<div class="flex flex-col gap-2">
+  <AccordionItem title="Is there a free trial?" icon="plus" variant="card" iconPosition="start" group="cards" open>Yes, 30 days.</AccordionItem>
+  <AccordionItem title="Can I change plans later?" icon="plus" variant="card" iconPosition="start" group="cards">Any time.</AccordionItem>
+</div>`}>
+  <div class="flex w-full max-w-[500px] flex-col gap-8">
+    <div data-apogee-accordion-plus>
+      <Accordion variant="plain">
+        <AccordionItem title="Is there a free trial?" icon="plus" size="large" group="plain">Yes, you can try it free for 30 days.</AccordionItem>
+        <AccordionItem title="Can I change plans later?" icon="plus" size="large" group="plain">Any time, from your billing settings.</AccordionItem>
+      </Accordion>
+    </div>
+    <div class="flex flex-col gap-2">
+      <AccordionItem title="Is there a free trial?" icon="plus" variant="card" iconPosition="start" group="cards" open>Yes, you can try it free for 30 days.</AccordionItem>
+      <AccordionItem title="Can I change plans later?" icon="plus" variant="card" iconPosition="start" group="cards">Any time, from your billing settings.</AccordionItem>
+    </div>
+  </div>
 </Preview>
 
 ## States
@@ -148,7 +178,7 @@ A single-panel FAQ, exclusive within itself, pre-opening the first item:
 | `Shift` `Tab` | Moves focus to the previous item header. |
 | `Enter` `Space` | Opens or closes the focused item. |
 
-- The chevron is `aria-hidden`; the visible label is the accessible name.
+- The chevron or plus icon is `aria-hidden`; the visible label is the accessible name.
 - Exclusive grouping uses the native `<details name>` attribute — no JS, no ARIA
   wiring needed.
 - Height animation respects `prefers-reduced-motion` (transitions are removed).

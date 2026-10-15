@@ -2,10 +2,12 @@
 /**
  * AccordionItem — a native `<details>` disclosure. Open/close is 100% native
  * (zero JS); CSS animates the height. Give several items the same `group` for
- * single-open (exclusive) behavior.
+ * single-open (exclusive) behavior. `icon="plus"` shows a circled plus that
+ * turns to a minus when open; `variant="card"` sets the item on a rounded card
+ * that tints while open; `size="large"` is for FAQ-sized questions.
  */
 import type { HTMLAttributes } from 'astro/types'
-import { ChevronDown } from '@lucide/astro'
+import { ChevronDown, CirclePlus, CircleMinus } from '@lucide/astro'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'details'>, 'title'> {
@@ -17,23 +19,42 @@ interface Props extends Omit<HTMLAttributes<'details'>, 'title'> {
   group?: string
   /** Open on load. */
   open?: boolean
+  /** A chevron that flips, or a circled plus that turns to a minus. @category layout */
+  icon?: 'chevron' | 'plus'
+  /** `card`: a rounded card, tinted while open. @category layout */
+  variant?: 'plain' | 'card'
+  /** `large` for FAQ-sized questions and answers. @category layout */
+  size?: 'medium' | 'large'
   class?: string
 }
 
-const { title, group, open = false, iconPosition = 'end', class: className, ...rest } = Astro.props
+const { title, group, open = false, iconPosition = 'end', icon = 'chevron', variant = 'plain', size = 'medium', class: className, ...rest } = Astro.props
+const large = size === 'large'
+const card = variant === 'card'
 ---
 
-<details name={group} open={open} class:list={['apogee-accordion', className]} {...rest}>
+<details name={group} open={open} class:list={['apogee-accordion', card && 'apogee-accordion-card rounded-2xl transition-colors open:bg-neutral-faded', className]} {...rest}>
   <summary
     class:list={[
-      'press flex cursor-pointer list-none items-center gap-3 px-4 py-4 text-sm font-medium text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden',
+      'press flex cursor-pointer list-none items-center gap-3 text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden',
+      large ? 'px-6 py-6 text-lg font-semibold' : 'px-4 py-4 text-sm font-medium',
+      card && 'rounded-2xl',
       iconPosition === 'end' ? 'justify-between' : 'flex-row-reverse justify-end',
     ]}
   >
     <span class="min-w-0 flex-1"><slot name="trigger">{title}</slot></span>
-    <ChevronDown class="apogee-accordion-icon size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
+    {
+      icon === 'plus' ? (
+        <span class="flex shrink-0 text-neutral-faded [&>svg]:size-6" aria-hidden="true">
+          <CirclePlus class="apogee-accordion-plus" />
+          <CircleMinus class="apogee-accordion-minus" />
+        </span>
+      ) : (
+        <ChevronDown class="apogee-accordion-icon size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
+      )
+    }
   </summary>
-  <div class="px-4 pb-4 text-sm text-neutral-faded">
+  <div class:list={['text-neutral-faded', large ? 'px-6 pb-6 text-base' : 'px-4 pb-4 text-sm', icon === 'plus' && iconPosition === 'start' && (large ? 'ps-15' : 'ps-13')]}>
     <slot />
   </div>
 </details>
@@ -47,6 +68,24 @@ const { title, group, open = false, iconPosition = 'end', class: className, ...r
   }
   .apogee-accordion[open] .apogee-accordion-icon {
     rotate: 180deg;
+  }
+  /* On a solid fill (the brand colour, inverted) the text and icon take the on-colour. */
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-accordion :is(summary, summary *, .text-neutral-faded) {
+    color: inherit;
+  }
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-accordion > div {
+    opacity: 0.85;
+  }
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-accordion-card[open] {
+    background: color-mix(in oklab, currentColor 10%, transparent);
+  }
+  /* The tint lowers contrast, so the answer takes the full on-colour on a card. */
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-accordion-card > div {
+    opacity: 1;
+  }
+  .apogee-accordion:not([open]) .apogee-accordion-minus,
+  .apogee-accordion[open] .apogee-accordion-plus {
+    display: none;
   }
   .apogee-accordion::details-content {
     block-size: 0;

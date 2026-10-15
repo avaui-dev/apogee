@@ -2723,3 +2723,13 @@ test('device frame swaps to the dark screenshot in dark mode', async ({ page }) 
   await expect(frame.locator('img')).toHaveCount(2)
   await expect(frame.locator('img:visible')).toHaveCount(1)
 })
+
+test('accordion plus icon turns to a minus when the item opens', async ({ page }) => {
+  await page.goto('/docs/accordion')
+  const item = page.locator('[data-apogee-accordion-plus] details').first()
+  await expect(item.locator('.apogee-accordion-plus')).toBeVisible()
+  await expect(item.locator('.apogee-accordion-minus')).toBeHidden()
+  await item.locator('summary').click()
+  await expect(item.locator('.apogee-accordion-minus')).toBeVisible()
+  await expect(item.locator('.apogee-accordion-plus')).toBeHidden()
+})

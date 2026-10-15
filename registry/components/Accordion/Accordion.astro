@@ -2,19 +2,23 @@
 /**
  * Accordion — a styled container for AccordionItems. For single-open behavior
  * (opening one closes the others), give every item the same `group` name.
+ * `variant="plain"` drops the outer border and keeps the dividers, for FAQ
+ * lists that sit straight on a section.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 interface Props extends HTMLAttributes<'div'> {
+  /** `outline`: a bordered box. `plain`: dividers only. @category layout */
+  variant?: 'outline' | 'plain'
   class?: string
 }
 
-const { class: className, ...rest } = Astro.props
+const { variant = 'outline', class: className, ...rest } = Astro.props
 ---
 
 <div
-  class:list={['divide-y divide-neutral overflow-hidden rounded-lg border border-neutral', className]}
+  class:list={['divide-y divide-neutral', variant === 'outline' && 'overflow-hidden rounded-lg border border-neutral', className]}
   {...rest}
 >
   <slot />

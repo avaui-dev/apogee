@@ -1,0 +1,35 @@
+---
+/**
+ * Accordion 04: A heading with a chat link beside six question cards that open one at a time.
+ *
+ * @block faq
+ * @order 8
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import AccordionItem from '../../components/Accordion/AccordionItem.astro'
+import Link from '../../components/Link/Link.astro'
+
+const faqs = [
+  { question: 'Is there a free trial available?', answer: 'Yes, you can try us for free for 30 days. If you want, we will give you a free 30-minute onboarding call to get you up and running.' },
+  { question: 'Can I change my plan later?', answer: 'Of course. Our pricing scales with your company. Chat to our friendly team to find a solution that works for you.' },
+  { question: 'What is your cancellation policy?', answer: 'We understand that things change. You can cancel your plan at any time and we will refund you the difference already paid.' },
+  { question: 'Can other info be added to an invoice?', answer: 'Yes. Add your company details, a purchase order number or a note in your billing settings, and every invoice carries them.' },
+  { question: 'How does billing work?', answer: 'Plans are per workspace, not per account. You can upgrade one workspace and still have any number of free workspaces.' },
+  { question: 'How do I change my account email?', answer: 'You can change the email address associated with your account by going to your account settings from a laptop or desktop.' },
+]
+---
+
+<Section spacing="large">
+  <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
+    <div class=" flex flex-col gap-4">
+    <SectionHeader eyebrow="Support" heading="FAQs" />
+    <p class="text-neutral-faded">Can't find the answer you're looking for? Please <Link href="#" color="neutral">chat to our friendly team</Link>.</p>
+  </div>
+    <div class="flex flex-col gap-2">
+    {faqs.map((f, i) => (
+      <AccordionItem title={f.question} open={i === 0} icon="plus" size="large" group="faq" variant="card">{f.answer}</AccordionItem>
+    ))}
+  </div>
+  </div>
+</Section>

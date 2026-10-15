@@ -1,0 +1,24 @@
+---
+title: "Accordion 04 brand"
+description: "A heading with a chat link beside six question cards that open one at a time, on the brand colour."
+group: FAQ sections
+order: 16
+related: [accordion, featured-icon, avatar-group]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="faq/accordion-04-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add faq/accordion-04-brand
+```
+
+This copies the block to `src/components/apogee/blocks/faq/` with everything it uses: AccordionItem, Link, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- Each question is a native disclosure (`<details>`): Enter or Space opens it, and opening one closes the others. It works without JS.
