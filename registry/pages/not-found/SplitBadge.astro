@@ -1,0 +1,13 @@
+---
+/**
+ * Split with badge: A badge, heading and buttons beside a landscape photo.
+ *
+ * @page not-found
+ */
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import Image from '../../components/Image/Image.astro'
+---
+
+<NotFound fullHeight back="Go back" layout="split" codeStyle="badge" code="404 error" heading="Page not found" description="Sorry, the page you are looking for doesn't exist. Here are some helpful links:">
+  <Image slot="media" src="https://picsum.photos/seed/apogee-404-mountain/1200/1000" alt="" width={1200} height={1000} fit="cover" radius="xl" class="aspect-[6/5] w-full" />
+</NotFound>

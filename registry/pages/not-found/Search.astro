@@ -1,0 +1,20 @@
+---
+/**
+ * Search: A site search under the heading, over a faint 404 behind the text.
+ *
+ * @page not-found
+ */
+import { Search } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<NotFound fullHeight back="Go back" watermark code="404" heading="We lost this page" description="The page you are looking for doesn't exist or has been moved.">
+  <form role="search" action="/search" method="get" class="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+    <Input type="search" name="q" aria-label="Search the site" placeholder="Search our site" class="flex-1">
+      <Search slot="start" aria-hidden="true" />
+    </Input>
+    <Button type="submit" variant="outline" color="neutral">Search</Button>
+  </form>
+</NotFound>

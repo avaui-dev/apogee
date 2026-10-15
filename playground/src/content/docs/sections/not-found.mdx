@@ -1,6 +1,6 @@
 ---
 title: Not found
-description: The 404 page body; a status code, heading, description and a way back.
+description: The 404 page body; a status line, heading, description and a way back, centred, left-aligned or beside media.
 group: Sections
 order: 14
 ---
@@ -13,6 +13,8 @@ import NotFound from '../../../../../registry/sections/NotFound/NotFound.astro'
   <NotFound spacing="medium" headingLevel={2} />
   <NotFound code="500" heading="Something broke" description="We have been notified and are on it." primaryAction={{ label: 'Try again', href: '#' }} secondaryAction={{ label: 'Status page', href: '#' }} spacing="medium" headingLevel={2} background="inverted" class="rounded-xl" />
 </Preview>
+
+Whole pages built on it: [404 pages](/docs/not-found-pages).
 
 ## Add
 
@@ -29,9 +31,23 @@ npx @ava-ui/apogee add not-found
 | `description` | `string` | a default line | content | |
 | `primaryAction` | `{ label, href }` | Go home → `/` | content | |
 | `secondaryAction` | `{ label, href }` | — | content | |
-| `layout` | `'centered'` | `'centered'` | layout | |
+| `back` | `string` | — | content | Label of a "Go back" button that returns to the previous page; hidden without JS. |
+| `layout` | `'centered' \| 'start' \| 'split'` | `'centered'` | layout | `split` puts the `media` slot beside the text from `lg`, under it on phones. |
+| `codeStyle` | `'text' \| 'badge'` | `'text'` | layout | The status line as small text or a badge. An empty `code` hides it. |
+| `watermark` | `boolean` | `false` | layout | The code, huge and faint, behind the text from `md`. |
+| `fullHeight` | `boolean` | `false` | layout | Fill the viewport height and centre the content. |
 | `background`, `spacing`, `headingLevel`, `id` | | `headingLevel` is `1` | layout | As on every section. |
+
+## Slots
+
+| Slot | What goes in it |
+|---|---|
+| `icon` | Above the status line: a FeaturedIcon. |
+| default | Under the buttons: a site search, a list of help links. |
+| `below` | Full width under the text: a row of cards. |
+| `media` | Beside the text in `split`: a photo, an illustration, a product screen. |
 
 ## Accessibility
 
 - The heading is the page's `h1` by default; the code is a plain paragraph so screen readers hear the heading first.
+- "Go back" is a button with a tiny script. Without JS it hides, and the primary action still links home.

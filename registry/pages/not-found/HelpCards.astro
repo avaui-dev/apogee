@@ -1,0 +1,38 @@
+---
+/**
+ * Help cards: Centred, with a row of three cards that point somewhere useful.
+ *
+ * @page not-found
+ */
+import { ArrowRight, FileCode, BookOpen, MessageCircle } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import Card from '../../components/Card/Card.astro'
+import Link from '../../components/Link/Link.astro'
+
+const links = [
+  { title: 'Documentation', text: 'Dive in to learn all about our product.', href: '#', icon: FileCode, cta: 'Start learning' },
+  { title: 'Our blog', text: 'Read the latest posts on our blog.', href: '#', icon: BookOpen, cta: 'View latest posts' },
+  { title: 'Chat to us', text: "Can't find what you're looking for?", href: '#', icon: MessageCircle, cta: 'Chat to our team' },
+]
+---
+
+<NotFound fullHeight back="Go back" code="404 error" heading="We lost this page" description="We searched high and low, but couldn't find what you're looking for. Let's find a better place for you to go.">
+  <ul slot="below" class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
+    {links.map((l) => (
+      <li>
+        <Card padding="large" class="h-full">
+          <div class="flex h-full flex-col gap-8">
+            <l.icon class="size-6 text-primary" aria-hidden="true" />
+            <div class="flex flex-col gap-2">
+              <h2 class="text-lg font-semibold">{l.title}</h2>
+              <p class="text-neutral-faded">{l.text}</p>
+            </div>
+            <Link href={l.href} underline="hover" class="mt-auto inline-flex items-center gap-2 font-semibold">
+              {l.cta} <ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+            </Link>
+          </div>
+        </Card>
+      </li>
+    ))}
+  </ul>
+</NotFound>

@@ -2351,3 +2351,37 @@ test('auth shell pattern stays centred on the brand mark in both directions', as
     expect(Math.abs((await centre('.apogee-auth-pattern')) - (await centre('.apogee-auth-pattern + div')))).toBeLessThan(2)
   }
 })
+
+test('404 go back returns to the previous page; hidden without JS', async ({ page, browser }) => {
+  await page.goto('/examples/not-found/help-cards')
+  await page.goto('/examples/not-found/simple')
+  await page.getByRole('button', { name: 'Go back' }).click()
+  await expect(page).toHaveURL(/help-cards/)
+  const ctx = await browser.newContext({ javaScriptEnabled: false })
+  const nojs = await ctx.newPage()
+  await nojs.goto('/examples/not-found/simple')
+  await expect(nojs.getByRole('button', { name: 'Go back' })).toBeHidden()
+  await expect(nojs.getByRole('link', { name: 'Take me home' })).toBeVisible()
+  await ctx.close()
+})
+
+test('404 split puts the media beside the text from lg and under it on phones', async ({ browser }) => {
+  for (const [width, beside] of [[1280, true], [390, false]]) {
+    const page = await browser.newPage({ viewport: { width, height: 900 } })
+    await page.goto('/examples/not-found/split-image')
+    const text = await page.locator('h1').boundingBox()
+    const media = await page.locator('[data-not-found-media]').boundingBox()
+    if (beside) expect(media.x).toBeGreaterThan(text.x + text.width)
+    else expect(media.y).toBeGreaterThan(text.y)
+    await page.close()
+  }
+})
+
+test('404 search posts a query; the default NotFound still renders unchanged', async ({ page }) => {
+  await page.goto('/examples/not-found/search')
+  const search = page.getByRole('search')
+  await expect(search.getByRole('searchbox', { name: 'Search the site' })).toHaveAttribute('name', 'q')
+  await page.goto('/showcase/404')
+  await expect(page.locator('h1')).toHaveText('Page not found')
+  await expect(page.getByText('404', { exact: true })).toBeVisible()
+})

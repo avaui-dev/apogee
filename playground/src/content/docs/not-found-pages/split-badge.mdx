@@ -1,0 +1,24 @@
+---
+title: "Split with badge"
+description: "A badge, heading and buttons beside a landscape photo."
+group: 404 pages
+order: 10
+related: [sections/not-found, image]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/split-badge" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/split-badge
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: Image, NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- "Go back" returns to the previous page (or home when the page was opened directly). It needs JS, so it hides without it; "Take me home" always works.

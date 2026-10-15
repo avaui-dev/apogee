@@ -1,0 +1,20 @@
+---
+/**
+ * Illustration: The status and buttons beside a search icon in soft rings.
+ *
+ * @page not-found
+ */
+import { Search } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+---
+
+<NotFound fullHeight back="Go back" layout="split" code="404 error" heading="Page not found" description="Sorry, the page you are looking for doesn't exist." primaryAction={{ label: 'Take me home', href: '/' }}>
+  <!-- Decoration: a search icon inside rings that fade out. -->
+  <div slot="media" class="relative mx-auto grid size-72 place-items-center md:size-96" aria-hidden="true">
+    {['size-full', 'size-3/4', 'size-1/2'].map((size, i) => (
+      <span class:list={['absolute rounded-full border border-neutral', size]} style={`opacity: ${0.4 + i * 0.3}`} />
+    ))}
+    <FeaturedIcon theme="outline" color="primary" size="xlarge"><Search /></FeaturedIcon>
+  </div>
+</NotFound>

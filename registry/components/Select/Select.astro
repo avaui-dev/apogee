@@ -34,40 +34,40 @@ export interface SelectOption {
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'select'>, 'size' | 'value' | 'multiple' | 'disabled'> {
-  id?: string
-  label?: string
-  hint?: string
-  error?: string
+  id?: string | undefined
+  label?: string | undefined
+  hint?: string | undefined
+  error?: string | undefined
   /** Marks the field invalid without a message. */
-  hasError?: boolean
+  hasError?: boolean | undefined
   /** @category layout */
-  size?: FieldSize
+  size?: FieldSize | undefined
   /** @category layout */
-  variant?: FieldVariant
-  required?: boolean
+  variant?: FieldVariant | undefined
+  required?: boolean | undefined
   /** Rich options render a custom listbox (JS island) over the native select. */
-  options?: SelectOption[]
+  options?: SelectOption[] | undefined
   /** Empty first choice; shown faded until a value is picked. */
-  placeholder?: string
+  placeholder?: string | undefined
   /** Initial value(s); `selected` on an `<option>` works too. */
-  value?: string | string[]
-  multiple?: boolean
-  disabled?: boolean
+  value?: string | string[] | undefined
+  multiple?: boolean | undefined
+  disabled?: boolean | undefined
   /** A search box at the top of the custom listbox that filters options by label. */
-  search?: boolean
+  search?: boolean | undefined
   /** "Select all" / "Clear" footer (multiple only). */
-  selectAll?: boolean
+  selectAll?: boolean | undefined
   /** Trigger text when more than one option is chosen; `{count}` is replaced. @category content */
-  countLabel?: string
+  countLabel?: string | undefined
   /** Shown when the search hides every option. @category content */
-  emptyText?: string
+  emptyText?: string | undefined
   /** @category content */
-  searchPlaceholder?: string
+  searchPlaceholder?: string | undefined
   /** @category content */
-  selectAllLabel?: string
+  selectAllLabel?: string | undefined
   /** @category content */
-  clearLabel?: string
-  class?: string
+  clearLabel?: string | undefined
+  class?: string | undefined
 }
 
 const {

@@ -1,0 +1,25 @@
+---
+title: "Split with search"
+description: "A search icon and a site search beside a photo."
+group: 404 pages
+order: 7
+related: [sections/not-found, featured-icon, image]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/split-search" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/split-search
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: Button, FeaturedIcon, Image, Input, NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- The search is a `role="search"` form that sends `q` to `/search` with GET; point `action` at your own search page.
+- The photo has empty alt text: it is decoration.

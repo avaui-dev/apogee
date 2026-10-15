@@ -1,0 +1,41 @@
+---
+/**
+ * Maintenance with mockup: A maintenance notice beside a product screen built from the components.
+ *
+ * @page not-found
+ */
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import Card from '../../components/Card/Card.astro'
+import Stat from '../../components/Stat/Stat.astro'
+import Table from '../../components/Table/Table.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+const stats = [
+  { label: 'Active users', value: '4,862', change: '+12%', trend: 'up' as const },
+  { label: 'Sessions', value: '18,204', change: '+8%', trend: 'up' as const },
+]
+const rows = [
+  ['Northwind', 'Team', 24],
+  ['Globex', 'Business', 120],
+  ['Initech', 'Team', 8],
+]
+---
+
+<NotFound fullHeight back="Go back" layout="split" code="503 error" heading="Under maintenance" description="Sorry, the site is down for scheduled work. We'll be back soon.">
+  <!-- A product screen built from the components; decorative, so hidden from assistive tech. -->
+  <div slot="media" class="overflow-hidden rounded-xl border-[6px] border-neutral bg-page text-neutral shadow-raised" aria-hidden="true" inert>
+    <div class="flex items-center justify-between border-b border-neutral px-5 py-3">
+      <p class="font-semibold">Dashboard</p>
+      <Badge color="warning" variant="faded">Maintenance</Badge>
+    </div>
+    <div class="flex flex-col gap-5 p-5">
+      <div class="grid grid-cols-2 gap-4">
+        {stats.map((s) => <Card padding="medium"><Stat {...s} /></Card>)}
+      </div>
+      <Table size="small" border>
+        <thead><tr><th>Customer</th><th>Plan</th><th>Seats</th></tr></thead>
+        <tbody>{rows.map((r) => <tr><td>{r[0]}</td><td>{r[1]}</td><td class="tabular-nums">{r[2]}</td></tr>)}</tbody>
+      </Table>
+    </div>
+  </div>
+</NotFound>

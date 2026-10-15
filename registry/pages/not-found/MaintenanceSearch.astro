@@ -1,0 +1,22 @@
+---
+/**
+ * Maintenance with search: A maintenance notice with a site search, beside a large 503.
+ *
+ * @page not-found
+ */
+import { Search } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<NotFound fullHeight layout="split" code="503 error" heading="Under maintenance" description="Sorry, the site is down for scheduled work. Search for what you need in the meantime.">
+  <form role="search" action="/search" method="get" class="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+    <Input type="search" name="q" aria-label="Search the site" placeholder="Search our site" class="flex-1">
+      <Search slot="start" aria-hidden="true" />
+    </Input>
+    <Button type="submit" variant="outline" color="neutral">Search</Button>
+  </form>
+  <!-- Decoration drawn as generated content, so it is never read or contrast-checked as text. -->
+  <p slot="media" data-mark="503" class="hidden text-center text-[14rem] leading-none font-bold tracking-tighter text-primary tabular-nums opacity-15 select-none before:content-[attr(data-mark)] lg:block" aria-hidden="true"></p>
+</NotFound>

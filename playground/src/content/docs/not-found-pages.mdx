@@ -1,0 +1,33 @@
+---
+title: 404 pages
+navTitle: Overview
+description: Whole 404 and maintenance pages on the NotFound section, from a centred apology to a split with a photo and a site search.
+group: 404 pages
+order: -1
+related: [sections/not-found, input]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a complete page built on the [NotFound](/docs/sections/not-found)
+section: a status line, a heading, a way back and, where it helps, a site
+search or a few places to go next. Astro serves `src/pages/404.astro` for
+missing pages, so render one there:
+
+```sh
+npx @ava-ui/apogee add not-found/help-links
+```
+
+```astro
+---
+// src/pages/404.astro
+import Layout from '../layouts/Layout.astro'
+import NotFound from '../components/apogee/pages/not-found/HelpLinks.astro'
+---
+
+<Layout title="Page not found">
+  <NotFound />
+</Layout>
+```
+
+<DocsIndex group="404 pages" self="not-found-pages" />

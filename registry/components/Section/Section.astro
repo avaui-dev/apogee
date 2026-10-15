@@ -10,18 +10,18 @@ import Container from '../Container/Container.astro'
 
 /** @composable */
 interface Props extends HTMLAttributes<'section'> {
-  as?: string
+  as?: string | undefined
   /** Colors this section and its children by flipping the tokens. */
-  theme?: 'inherit' | 'light' | 'dark'
+  theme?: 'inherit' | 'light' | 'dark' | undefined
   /** Vertical padding. @category layout */
-  spacing?: 'none' | 'small' | 'medium' | 'large' | 'xlarge'
+  spacing?: 'none' | 'small' | 'medium' | 'large' | 'xlarge' | undefined
   /** Surface token for the band. Solid fills also set the on-colour text. @category layout */
-  background?: 'page' | 'neutral-faded' | 'primary-faded' | 'primary' | 'inverted'
+  background?: 'page' | 'neutral-faded' | 'primary-faded' | 'primary' | 'inverted' | undefined
   /** Inner Container width. @category layout */
-  containerWidth?: 'small' | 'medium' | 'large' | 'xlarge' | 'full'
+  containerWidth?: 'small' | 'medium' | 'large' | 'xlarge' | 'full' | undefined
   /** Set false to skip the inner Container (content spans full width). */
-  container?: boolean
-  class?: string
+  container?: boolean | undefined
+  class?: string | undefined
 }
 
 const {

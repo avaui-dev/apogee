@@ -17,32 +17,32 @@ import Button from '../Button/Button.astro'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
-  id?: string
+  id?: string | undefined
   /** @category content */
-  label?: string
+  label?: string | undefined
   /** @category content */
-  hint?: string
+  hint?: string | undefined
   /** @category content */
-  error?: string
+  error?: string | undefined
   /** Marks the field invalid without a message. */
-  hasError?: boolean
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week'
+  hasError?: boolean | undefined
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week' | undefined
   /** @category layout */
-  size?: FieldSize
+  size?: FieldSize | undefined
   /** @category layout */
-  variant?: FieldVariant
+  variant?: FieldVariant | undefined
   /** Floating label animates from placeholder position to the top border (CSS only). @category layout */
-  labelPosition?: 'top' | 'floating'
+  labelPosition?: 'top' | 'floating' | undefined
   /** Text before the value (currency sign, protocol). Replaces the `start` slot. @category content */
-  prefix?: string
+  prefix?: string | undefined
   /** Text after the value (unit). Replaces the `end` slot. @category content */
-  suffix?: string
-  required?: boolean
+  suffix?: string | undefined
+  required?: boolean | undefined
   /** Inside an InputGroup: no label, hint or error of its own (the group owns them). */
-  grouped?: boolean
+  grouped?: boolean | undefined
   /** With `type="password"`: an eye button in the end slot that shows or hides the value (small island). */
-  revealable?: boolean
-  class?: string
+  revealable?: boolean | undefined
+  class?: string | undefined
 }
 
 const {

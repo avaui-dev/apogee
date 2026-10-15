@@ -3,7 +3,9 @@
   "include": [
     ".astro/types.d.ts",
     "**/*",
-    "../registry/components/**/*"
+    "../registry/components/**/*",
+    "../registry/sections/**/*",
+    "../registry/pages/**/*"
   ],
   "exclude": [
     "dist"

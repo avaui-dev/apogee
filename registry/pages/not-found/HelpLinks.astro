@@ -1,0 +1,29 @@
+---
+/**
+ * Help links: Left-aligned, with a badge and three places to go next.
+ *
+ * @page not-found
+ */
+import { ArrowRight, FileCode, BookOpen, MessageCircle } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import Link from '../../components/Link/Link.astro'
+
+const links = [
+  { title: 'Documentation', text: 'Dive in to learn all about our product.', href: '#', icon: FileCode, cta: 'Start learning' },
+  { title: 'Our blog', text: 'Read the latest posts on our blog.', href: '#', icon: BookOpen, cta: 'View latest posts' },
+  { title: 'Chat to support', text: 'Our friendly team is here to help.', href: '#', icon: MessageCircle, cta: 'Chat to our team' },
+]
+---
+
+<NotFound fullHeight back="Go back" layout="start" codeStyle="badge" code="404 error" heading="Page not found" description="Sorry, the page you are looking for doesn't exist.">
+  <ul class="flex flex-col gap-6">
+    {links.map((l) => (
+      <li class="flex flex-col gap-1">
+        <Link href={l.href} underline="hover" class="inline-flex items-center gap-2 font-semibold">
+          {l.title} <ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+        </Link>
+        <p class="text-neutral-faded">{l.text}</p>
+      </li>
+    ))}
+  </ul>
+</NotFound>

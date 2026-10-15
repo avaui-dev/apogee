@@ -11,23 +11,23 @@ const resizes = { none: 'resize-none', vertical: 'resize-y', auto: 'resize-none 
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'textarea'>, 'size'> {
-  id?: string
-  label?: string
-  hint?: string
-  error?: string
-  rows?: number
+  id?: string | undefined
+  label?: string | undefined
+  hint?: string | undefined
+  error?: string | undefined
+  rows?: number | undefined
   /** Initial text (a textarea carries its value as content, not an attribute). */
-  value?: string
+  value?: string | undefined
   /** Marks the field invalid without a message. */
-  hasError?: boolean
+  hasError?: boolean | undefined
   /** @category layout */
-  size?: FieldSize
+  size?: FieldSize | undefined
   /** @category layout */
-  variant?: FieldVariant
+  variant?: FieldVariant | undefined
   /** `auto` grows with the content (`field-sizing: content`, with a small island where unsupported). @category layout */
-  resize?: keyof typeof resizes
-  required?: boolean
-  class?: string
+  resize?: keyof typeof resizes | undefined
+  required?: boolean | undefined
+  class?: string | undefined
 }
 
 const {

@@ -1,0 +1,25 @@
+---
+title: "Illustration"
+description: "The status and buttons beside a search icon in soft rings."
+group: 404 pages
+order: 13
+related: [sections/not-found, featured-icon]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/illustration" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/illustration
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: FeaturedIcon, NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- "Go back" returns to the previous page (or home when the page was opened directly). It needs JS, so it hides without it; "Take me home" always works.
+- The rings and icon are decoration (`aria-hidden`).

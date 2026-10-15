@@ -1,0 +1,26 @@
+---
+title: "Maintenance with search"
+description: "A maintenance notice with a site search, beside a large 503."
+group: 404 pages
+order: 14
+related: [sections/not-found, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/maintenance-search" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/maintenance-search
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: Button, Input, NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- The search is a `role="search"` form that sends `q` to `/search` with GET; point `action` at your own search page.
+- The large 503 is decoration and hides below `lg`.
+- For real downtime, serve it with status 503 and a `Retry-After` header.

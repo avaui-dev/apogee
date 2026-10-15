@@ -1,0 +1,24 @@
+---
+/**
+ * Split with search: A search icon and a site search beside a photo.
+ *
+ * @page not-found
+ */
+import { Search } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Image from '../../components/Image/Image.astro'
+---
+
+<NotFound fullHeight layout="split" code="" heading="Page not found" description="We couldn't find that page. Try searching our site instead.">
+  <FeaturedIcon slot="icon" theme="outline" color="neutral" size="large"><Search /></FeaturedIcon>
+  <form role="search" action="/search" method="get" class="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+    <Input type="search" name="q" aria-label="Search the site" placeholder="Search our site" class="flex-1">
+      <Search slot="start" aria-hidden="true" />
+    </Input>
+    <Button type="submit" variant="outline" color="neutral">Search</Button>
+  </form>
+  <Image slot="media" src="https://picsum.photos/seed/apogee-404-1/1200/1000" alt="" width={1200} height={1000} fit="cover" radius="xl" class="aspect-[6/5] w-full" />
+</NotFound>

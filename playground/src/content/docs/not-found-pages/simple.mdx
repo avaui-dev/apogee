@@ -1,0 +1,24 @@
+---
+title: "Simple"
+description: "The status, a short apology, and buttons back and home."
+group: 404 pages
+order: 1
+related: [sections/not-found]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/simple" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/simple
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- "Go back" returns to the previous page (or home when the page was opened directly). It needs JS, so it hides without it; "Take me home" always works.

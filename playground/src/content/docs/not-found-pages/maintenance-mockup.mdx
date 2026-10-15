@@ -1,0 +1,26 @@
+---
+title: "Maintenance with mockup"
+description: "A maintenance notice beside a product screen built from the components."
+group: 404 pages
+order: 12
+related: [sections/not-found, card]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/maintenance-mockup" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/maintenance-mockup
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: Badge, Card, NotFound, Stat, Table. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- "Go back" returns to the previous page (or home when the page was opened directly). It needs JS, so it hides without it; "Take me home" always works.
+- The product screen is decoration: `aria-hidden` and `inert`.
+- For real downtime, serve it with status 503 and a `Retry-After` header.

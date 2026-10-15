@@ -20,24 +20,24 @@ const levels = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4' } as const
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** @category content */
-  eyebrow?: string
+  eyebrow?: string | undefined
   /** @category content */
   heading: string
   /** @category content */
-  description?: string
+  description?: string | undefined
   /** Semantic heading level. @category layout */
-  headingLevel?: 1 | 2 | 3 | 4
+  headingLevel?: 1 | 2 | 3 | 4 | undefined
   /** @category layout */
-  align?: 'start' | 'center'
+  align?: 'start' | 'center' | undefined
   /** The section background, to pick readable colours. @category layout */
-  background?: keyof typeof eyebrows
+  background?: keyof typeof eyebrows | undefined
   /** `small` is the in-app size; `large` uses the display size (Hero). @category layout */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | undefined
   /** A rule under the header. @category layout */
-  divider?: boolean
+  divider?: boolean | undefined
   /** Id for the heading, for `aria-labelledby`. */
-  id?: string
-  class?: string
+  id?: string | undefined
+  class?: string | undefined
 }
 
 const {

@@ -11,14 +11,16 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Fixed
 
+- **Types:** sections and pages are now type-checked (they were outside the check). Section, SectionHeader, Avatar, EmptyState, Footer, Select, Textarea, Input and Stat accept `undefined` for optional props, so the sections compile under `exactOptionalPropertyTypes`.
 - **Steps** puts `aria-current="step"` on the current step's list item instead of its marker, which had no text with `marker="icon"` or `"dot"`.
 - **ProgressIndicator** remaining dots and segments use the solid neutral fill; the faded one nearly vanished in dark mode.
 - **Carousel** current dot takes the on-primary colour on a `bg-primary` fill, where the primary dot was invisible.
 
 ### Added
 
-- **Pages**: whole pages in the registry, keyed `<category>/<name>`. `apogee add log-in/split-quote` copies the page to `<dir>/pages/log-in/` with every section and component it uses; `apogee list` shows each page with its description. The first sets are 14 log in pages, 20 sign up pages, 3 verification pages and 5 forgot password pages.
+- **Pages**: whole pages in the registry, keyed `<category>/<name>`. `apogee add log-in/split-quote` copies the page to `<dir>/pages/log-in/` with every section and component it uses; `apogee list` shows each page with its description. The first sets are 14 log in pages, 20 sign up pages, 3 verification pages, 5 forgot password pages and 14 404 pages.
 - **AuthShell** section: the frame of a log in, sign up or recovery page, `centered`, `card`, `split` (a panel on either side) or `sidebar` (a narrow step column), with an optional pattern behind the brand mark and a `below` slot for a step list.
+- **NotFound** takes `layout="start"` and `"split"` (with a `media` slot), `codeStyle="badge"`, a `back` button, `watermark`, `fullHeight`, and `icon`, default and `below` slots for search forms, help links and cards.
 - **PasswordChecklist**: the rules a new password must meet, ticked off as the user types; keeps the field invalid until they hold, and a `match` rule checks a confirm field.
 - **Carousel** `controlsPosition="below"`: arrows in a row under the track, with the dots between them, for slides the side arrows would cover.
 - **Docs**: a Log in pages group; each page shows the example in a desktop or mobile frame with a Copy code button.

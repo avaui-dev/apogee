@@ -1433,14 +1433,17 @@
         "sections/NotFound/NotFound.astro"
       ],
       "registryDependencies": [
+        "Badge",
         "Button",
         "Heading",
         "Section",
         "_shared",
         "utils"
       ],
-      "dependencies": [],
-      "usesJs": false
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
     },
     "PageHeader": {
       "name": "PageHeader",
@@ -1947,8 +1950,7 @@
         "FeaturedIcon",
         "Image",
         "Input",
-        "Link",
-        "Rating"
+        "Link"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -2046,6 +2048,265 @@
         "FeaturedIcon",
         "Input",
         "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/help-cards": {
+      "name": "not-found/help-cards",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Help cards",
+      "description": "Centred, with a row of three cards that point somewhere useful.",
+      "files": [
+        "pages/not-found/HelpCards.astro"
+      ],
+      "registryDependencies": [
+        "Card",
+        "Link",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/help-links": {
+      "name": "not-found/help-links",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Help links",
+      "description": "Left-aligned, with a badge and three places to go next.",
+      "files": [
+        "pages/not-found/HelpLinks.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/icon-help": {
+      "name": "not-found/icon-help",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Icon and help",
+      "description": "A search icon leads; help links with icons sit under the buttons.",
+      "files": [
+        "pages/not-found/IconHelp.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/illustration": {
+      "name": "not-found/illustration",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Illustration",
+      "description": "The status and buttons beside a search icon in soft rings.",
+      "files": [
+        "pages/not-found/Illustration.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/maintenance-mockup": {
+      "name": "not-found/maintenance-mockup",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Maintenance with mockup",
+      "description": "A maintenance notice beside a product screen built from the components.",
+      "files": [
+        "pages/not-found/MaintenanceMockup.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Card",
+        "NotFound",
+        "Stat",
+        "Table"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "not-found/maintenance-search": {
+      "name": "not-found/maintenance-search",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Maintenance with search",
+      "description": "A maintenance notice with a site search, beside a large 503.",
+      "files": [
+        "pages/not-found/MaintenanceSearch.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/search": {
+      "name": "not-found/search",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Search",
+      "description": "A site search under the heading, over a faint 404 behind the text.",
+      "files": [
+        "pages/not-found/Search.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/search-links": {
+      "name": "not-found/search-links",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Search and links",
+      "description": "A badge, a site search, and a divided list of places to go.",
+      "files": [
+        "pages/not-found/SearchLinks.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/simple": {
+      "name": "not-found/simple",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Simple",
+      "description": "The status, a short apology, and buttons back and home.",
+      "files": [
+        "pages/not-found/Simple.astro"
+      ],
+      "registryDependencies": [
+        "NotFound"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "not-found/split-badge": {
+      "name": "not-found/split-badge",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Split with badge",
+      "description": "A badge, heading and buttons beside a landscape photo.",
+      "files": [
+        "pages/not-found/SplitBadge.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "NotFound"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "not-found/split-image": {
+      "name": "not-found/split-image",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Split with image",
+      "description": "The status, heading and buttons beside a photo.",
+      "files": [
+        "pages/not-found/SplitImage.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "NotFound"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "not-found/split-image-search": {
+      "name": "not-found/split-image-search",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Split with image and search",
+      "description": "A site search beside a photo.",
+      "files": [
+        "pages/not-found/SplitImageSearch.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Input",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/split-search": {
+      "name": "not-found/split-search",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Split with search",
+      "description": "A search icon and a site search beside a photo.",
+      "files": [
+        "pages/not-found/SplitSearch.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "NotFound"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "not-found/split-search-links": {
+      "name": "not-found/split-search-links",
+      "kind": "page",
+      "category": "not-found",
+      "title": "Split with search and links",
+      "description": "A site search and three help links beside a photo.",
+      "files": [
+        "pages/not-found/SplitSearchLinks.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Input",
+        "Link",
+        "NotFound"
       ],
       "dependencies": [
         "@lucide/astro"

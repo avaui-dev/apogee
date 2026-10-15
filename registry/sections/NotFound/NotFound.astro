@@ -1,25 +1,41 @@
 ---
 /**
- * NotFound — the 404 page body: a big status code, heading, description and
- * a way back.
+ * NotFound — the 404 page body: the status code, heading, description and a
+ * way back. `centered` (default) and `start` are one column; `split` puts the
+ * `media` slot beside it from `lg` (under it on phones).
+ *
+ * Slots: `icon` (above the code, e.g. a FeaturedIcon), default (under the
+ * buttons: a search form, a list of help links),
+ * `below` (full width under the section's text: a row of cards), `media`
+ * (`split` only: a photo, an illustration, a product screen).
+ *
+ * `back` adds a "Go back" button that returns to the previous page (a tiny
+ * script; hidden without JS, and it falls back to `primaryAction` when there is
+ * no page to go back to).
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import { ArrowLeft } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import { uid } from '../../components/utils/uid.ts'
 import { onBackground, type Action, type Background, type Spacing } from '../_shared/spine.ts'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
-  /** @category content */ code?: string
+  /** The status line, e.g. "404" or "404 error". Empty hides it. @category content */ code?: string
   /** @category content */ heading?: string
   /** @category content */ description?: string
   /** @category content */ primaryAction?: Action
   /** @category content */ secondaryAction?: Action
-  /** @category layout */ layout?: 'centered'
+  /** Label of a "Go back" button that returns to the previous page. @category content */ back?: string
+  /** @category layout */ layout?: 'centered' | 'start' | 'split'
+  /** The code as small text or as a badge. @category layout */ codeStyle?: 'text' | 'badge'
+  /** The code, huge and faint, behind the text (from `md`). @category layout */ watermark?: boolean
+  /** Fill the viewport height and centre the content in it. @category layout */ fullHeight?: boolean
   /** @category layout */ background?: Background
   /** @category layout */ spacing?: Spacing
   /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
@@ -29,24 +45,63 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
 
 const {
   code = '404', heading = 'Page not found', description = 'The page you are looking for has moved or never existed.',
-  primaryAction = { label: 'Go home', href: '/' }, secondaryAction,
-  layout = 'centered', background = 'page', spacing = 'large', headingLevel = 1, id: idProp, class: className, ...rest
+  primaryAction = { label: 'Go home', href: '/' }, secondaryAction, back,
+  layout = 'centered', codeStyle = 'text', watermark = false, fullHeight = false,
+  background = 'page', spacing = 'large', headingLevel = 1, id: idProp, class: className, ...rest
 } = Astro.props
 const id = idProp ?? uid(Astro.locals, 'not-found')
 const headingId = `${id}-heading`
 const colours = onBackground[background]
 const solid = background === 'primary' || background === 'inverted'
-void layout
+const centred = layout === 'centered'
+const split = layout === 'split'
 ---
 
-<Section as="section" id={id} aria-labelledby={headingId} background={background} spacing={spacing} class={className} {...rest}>
-  <div class="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-    <p class:list={['text-sm font-semibold tabular-nums tracking-wider', solid ? 'text-inherit opacity-85' : 'text-primary']}>{code}</p>
-    <Heading id={headingId} as={`h${headingLevel}` as 'h1' | 'h2' | 'h3' | 'h4'} size="h1">{heading}</Heading>
-    {description && <p class:list={['text-lg', solid ? 'opacity-85' : 'text-neutral-faded']}>{description}</p>}
-    <div class="mt-6 flex flex-wrap justify-center gap-3">
-      <Button href={primaryAction.href} size="large" {...colours.primary}>{primaryAction.label}</Button>
-      {secondaryAction && <Button href={secondaryAction.href} size="large" {...colours.secondary}>{secondaryAction.label}</Button>}
+<Section
+  as="section"
+  id={id}
+  aria-labelledby={headingId}
+  background={background}
+  spacing={spacing}
+  class:list={['overflow-hidden', fullHeight && 'flex min-h-dvh flex-col justify-center', className]}
+  {...rest}
+>
+  <div class:list={[split ? 'grid items-center gap-12 lg:grid-cols-2 lg:gap-16' : 'flex flex-col gap-16']}>
+    <div class:list={['relative flex flex-col gap-4', centred ? 'mx-auto max-w-3xl items-center text-center' : 'max-w-2xl items-start text-start']}>
+      {watermark && code && (
+        <span data-mark={code} class="pointer-events-none absolute start-1/2 top-0 hidden -translate-x-1/2 -translate-y-1/3 text-[18rem] leading-none font-bold tracking-tighter tabular-nums opacity-[0.04] select-none before:content-[attr(data-mark)] md:block rtl:translate-x-1/2" aria-hidden="true"></span>
+      )}
+      {Astro.slots.has('icon') && <div class="relative mb-2"><slot name="icon" /></div>}
+      {code && (codeStyle === 'badge' ? (
+        <Badge color="primary" variant="faded" rounded class="relative">{code}</Badge>
+      ) : (
+        <p class:list={['relative text-sm font-semibold tabular-nums tracking-wider', solid ? 'text-inherit opacity-85' : 'text-primary']}>{code}</p>
+      ))}
+      <Heading id={headingId} as={`h${headingLevel}` as 'h1' | 'h2' | 'h3' | 'h4'} size="h1" class="relative text-balance">{heading}</Heading>
+      {description && <p class:list={['relative text-lg', solid ? 'opacity-85' : 'text-neutral-faded']}>{description}</p>}
+      <div class:list={['relative mt-6 flex flex-wrap gap-3', centred && 'justify-center']}>
+        {back && (
+          <Button type="button" size="large" class="no-js:hidden" data-not-found-back data-fallback={primaryAction.href} {...colours.secondary}>
+            <ArrowLeft slot="start" class="rtl:-scale-x-100" aria-hidden="true" />
+            {back}
+          </Button>
+        )}
+        <Button href={primaryAction.href} size="large" {...colours.primary}>{primaryAction.label}</Button>
+        {secondaryAction && <Button href={secondaryAction.href} size="large" {...colours.secondary}>{secondaryAction.label}</Button>}
+      </div>
+      {Astro.slots.has('default') && <div class:list={['relative mt-6 w-full', centred && 'flex flex-col items-center']}><slot /></div>}
     </div>
+    {split && Astro.slots.has('media') && <div class="relative min-w-0" data-not-found-media><slot name="media" /></div>}
+    {Astro.slots.has('below') && <div class:list={['relative', split && 'lg:col-span-2']}><slot name="below" /></div>}
   </div>
 </Section>
+
+<script>
+  // "Go back": the previous page, or the primary action when this page was opened directly.
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest<HTMLElement>('[data-not-found-back]')
+    if (!btn) return
+    if (history.length > 1) history.back()
+    else location.href = btn.dataset.fallback ?? '/'
+  })
+</script>

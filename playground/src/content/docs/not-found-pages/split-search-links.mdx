@@ -1,0 +1,24 @@
+---
+title: "Split with search and links"
+description: "A site search and three help links beside a photo."
+group: 404 pages
+order: 11
+related: [sections/not-found, image, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/split-search-links" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/split-search-links
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: Button, Image, Input, Link, NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- The search is a `role="search"` form that sends `q` to `/search` with GET; point `action` at your own search page.

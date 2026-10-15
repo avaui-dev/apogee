@@ -17,16 +17,16 @@ const sizes = {
 
 interface Props extends HTMLAttributes<'div'> {
   title: string
-  description?: string
+  description?: string | undefined
   /** Element for the title; use a heading when the empty state is the page's only content. @category layout */
-  as?: 'p' | 'h2' | 'h3'
+  as?: 'p' | 'h2' | 'h3' | undefined
   /** `plain` drops the dashed box. @category layout */
-  variant?: 'bordered' | 'plain'
+  variant?: 'bordered' | 'plain' | undefined
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: keyof typeof sizes | undefined
   /** A faint decoration behind the icon. @category layout */
-  pattern?: 'none' | 'rings' | 'grid'
-  class?: string
+  pattern?: 'none' | 'rings' | 'grid' | undefined
+  class?: string | undefined
 }
 
 const {

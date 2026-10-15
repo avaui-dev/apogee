@@ -1,0 +1,35 @@
+---
+/**
+ * Icon and help: A search icon leads; help links with icons sit under the buttons.
+ *
+ * @page not-found
+ */
+import { Search, ArrowRight, FileCode, BookOpen, MessageCircle } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Link from '../../components/Link/Link.astro'
+
+const links = [
+  { title: 'Documentation', text: 'Dive in to learn all about our product.', href: '#', icon: FileCode, cta: 'Start learning' },
+  { title: 'Our blog', text: 'Read the latest posts on our blog.', href: '#', icon: BookOpen, cta: 'View latest posts' },
+  { title: 'Chat to support', text: 'Our friendly team is here to help.', href: '#', icon: MessageCircle, cta: 'Chat to our team' },
+]
+---
+
+<NotFound fullHeight back="Go back" code="" heading="Page not found" description="The page you are looking for doesn't exist. Here are some helpful links instead." primaryAction={{ label: 'Take me home', href: '/' }}>
+  <FeaturedIcon slot="icon" theme="outline" color="neutral" size="large"><Search /></FeaturedIcon>
+  <ul class="flex w-full max-w-md flex-col gap-6 text-start">
+    {links.map((l) => (
+      <li class="flex gap-4">
+        <FeaturedIcon theme="light" color="primary" size="medium"><l.icon /></FeaturedIcon>
+        <div class="flex flex-col gap-1">
+          <p class="font-semibold">{l.title}</p>
+          <p class="text-neutral-faded">{l.text}</p>
+          <Link href={l.href} underline="hover" class="mt-2 inline-flex items-center gap-2 font-semibold">
+            {l.cta} <ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+          </Link>
+        </div>
+      </li>
+    ))}
+  </ul>
+</NotFound>

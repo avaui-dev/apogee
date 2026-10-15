@@ -19,15 +19,15 @@ interface Props extends HTMLAttributes<'div'> {
   label: string
   value: string
   /** Optional change, e.g. "+12%". */
-  change?: string
-  trend?: 'up' | 'down'
+  change?: string | undefined
+  trend?: 'up' | 'down' | undefined
   /** How the change reads. @category layout */
-  changeStyle?: keyof typeof glyphs
+  changeStyle?: keyof typeof glyphs | undefined
   /** Text after the change, e.g. "vs last month". @category content */
-  comparison?: string
+  comparison?: string | undefined
   /** @category layout */
-  size?: 'medium' | 'large'
-  class?: string
+  size?: 'medium' | 'large' | undefined
+  class?: string | undefined
 }
 
 const { label, value, change, trend = 'up', changeStyle = 'trend', comparison, size = 'medium', class: className, ...rest } = Astro.props

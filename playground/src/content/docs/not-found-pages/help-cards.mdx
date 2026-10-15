@@ -1,0 +1,25 @@
+---
+title: "Help cards"
+description: "Centred, with a row of three cards that point somewhere useful."
+group: 404 pages
+order: 4
+related: [sections/not-found, card]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/help-cards" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/help-cards
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: Card, Link, NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- "Go back" returns to the previous page (or home when the page was opened directly). It needs JS, so it hides without it; "Take me home" always works.
+- Each card title is an `h2` under the page heading.

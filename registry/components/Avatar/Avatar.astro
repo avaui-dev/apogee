@@ -28,24 +28,24 @@ const fills = {
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'span'>, 'size'> {
   /** Image URL. */
-  src?: string
+  src?: string | undefined
   /** Alt text for the image (falls back to `name`). */
-  alt?: string
+  alt?: string | undefined
   /** Name — used for the initials fallback and the label. */
-  name?: string
+  name?: string | undefined
   /** @category layout */
-  size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge'
+  size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | undefined
   /** Presence dot at the bottom end corner; read with the name ("Ana Lima, online"). @category layout */
-  status?: 'online' | 'offline'
+  status?: 'online' | 'offline' | undefined
   /** A ring around the avatar, offset from it. @category layout */
-  border?: boolean
+  border?: boolean | undefined
   /** Fallback hue. @category layout */
-  color?: keyof typeof fills.faded
+  color?: keyof typeof fills.faded | undefined
   /** Fallback fill style. @category layout */
-  variant?: keyof typeof fills
+  variant?: keyof typeof fills | undefined
   /** Rounded square instead of a circle. @category layout */
-  squared?: boolean
-  class?: string
+  squared?: boolean | undefined
+  class?: string | undefined
 }
 
 const { src, alt, name, size = 'medium', status, border = false, color = 'neutral', variant = 'faded', squared = false, class: className, ...rest } = Astro.props

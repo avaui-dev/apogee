@@ -1,0 +1,26 @@
+---
+title: "Search"
+description: "A site search under the heading, over a faint 404 behind the text."
+group: 404 pages
+order: 5
+related: [sections/not-found, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="not-found/search" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add not-found/search
+```
+
+This copies the page to `src/components/apogee/pages/not-found/` with everything it uses: Button, Input, NotFound. Render it from `src/pages/404.astro`, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`.
+- "Go back" returns to the previous page (or home when the page was opened directly). It needs JS, so it hides without it; "Take me home" always works.
+- The search is a `role="search"` form that sends `q` to `/search` with GET; point `action` at your own search page.
+- The large 404 behind the text is decoration (`aria-hidden`).

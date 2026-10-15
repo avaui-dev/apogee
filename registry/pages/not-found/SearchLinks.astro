@@ -1,0 +1,39 @@
+---
+/**
+ * Search and links: A badge, a site search, and a divided list of places to go.
+ *
+ * @page not-found
+ */
+import { Search, ChevronRight, FileCode, BookOpen, MessageCircle } from '@lucide/astro'
+import NotFound from '../../sections/NotFound/NotFound.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+
+const links = [
+  { title: 'Documentation', text: 'Dive in to learn all about our product.', href: '#', icon: FileCode, cta: 'Start learning' },
+  { title: 'Our blog', text: 'Read the latest posts on our blog.', href: '#', icon: BookOpen, cta: 'View latest posts' },
+  { title: 'Chat to support', text: 'Our friendly team is here to help.', href: '#', icon: MessageCircle, cta: 'Chat to our team' },
+]
+---
+
+<NotFound fullHeight back="Go back" codeStyle="badge" code="404 error" heading="We can't find this page" description="The page you are looking for doesn't exist or has been moved.">
+  <form role="search" action="/search" method="get" class="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+    <Input type="search" name="q" aria-label="Search the site" placeholder="Search our site" class="flex-1">
+      <Search slot="start" aria-hidden="true" />
+    </Input>
+    <Button type="submit" variant="outline" color="neutral">Search</Button>
+  </form>
+  <ul class="mt-8 w-full max-w-md divide-y divide-neutral border-y border-neutral text-start">
+    {links.map((l) => (
+      <li>
+        <a href={l.href} class="flex items-center gap-4 py-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
+          <span class="flex-1">
+            <span class="block font-semibold">{l.title}</span>
+            <span class="block text-neutral-faded">{l.text}</span>
+          </span>
+          <ChevronRight class="size-5 shrink-0 rtl:-scale-x-100" aria-hidden="true" />
+        </a>
+      </li>
+    ))}
+  </ul>
+</NotFound>
