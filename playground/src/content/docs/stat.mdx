@@ -7,6 +7,10 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Stat from '../../../../registry/components/Stat/Stat.astro'
+import FeaturedIcon from '../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import { Users } from '@lucide/astro'
 
 <Preview code={`<Stat label="Revenue" value="$48,900" change="+12%" trend="up" />
 <Stat label="Refunds" value="$1,204" change="-4%" trend="down" />
@@ -22,8 +26,7 @@ import Stat from '../../../../registry/components/Stat/Stat.astro'
 npx @ava-ui/apogee add stat
 ```
 
-No Apogee component dependencies. Depends on `@lucide/astro` (renders the trend
-arrow internally).
+No Apogee component dependencies. Depends on `@lucide/astro` for the arrows.
 
 ## Usage
 
@@ -44,10 +47,53 @@ through to the root `<div>`.
 | `label` | `string` | — | The metric's name. |
 | `value` | `string` | — | The metric's value, rendered large and bold. Not formatted — bring your own currency/percent formatting. |
 | `change` | `string` | — | Optional change indicator text, e.g. `"+12%"`. |
-| `trend` | `'up' \| 'down'` | — | Colors the change text/icon and picks the icon direction. Only `'down'` is checked explicitly, so omitting it behaves like `'up'` (success color, up arrow) whenever `change` is set. |
+| `trend` | `'up' \| 'down'` | `'up'` | Colours the change and picks the arrow direction. |
+| `changeStyle` | `'simple' \| 'trend' \| 'modern'` | `'trend'` | A plain arrow, a trend line, or a bordered pill where only the arrow is coloured. |
+| `comparison` | `string` | — | Text after the change, e.g. `"vs last month"`. |
+| `size` | `'medium' \| 'large'` | `'medium'` | Value size. |
 | `class` | `string` | — | Extra classes, merged last. |
 
+Slot `start` takes a FeaturedIcon beside the stack.
+
 ## Variants
+
+Every `changeStyle`:
+
+<Preview code={`<Stat label="Revenue" value="$48,900" change="12%" changeStyle="simple" />
+<Stat label="Revenue" value="$48,900" change="12%" changeStyle="trend" />
+<Stat label="Revenue" value="$48,900" change="12%" changeStyle="modern" />`}>
+  <div data-apogee-stat="styles" class="flex flex-wrap gap-8">
+    <Stat label="Simple" value="$48,900" change="12%" changeStyle="simple" />
+    <Stat label="Trend" value="$48,900" change="12%" changeStyle="trend" />
+    <Stat label="Modern" value="$48,900" change="4%" trend="down" changeStyle="modern" />
+  </div>
+</Preview>
+
+Comparison, a leading icon, and the large size:
+
+<Preview code={`<Stat label="Customers" value="2,318" change="8%" comparison="vs last month" />
+<Stat label="Members" value="48" change="2" comparison="this week"><FeaturedIcon slot="start" color="primary"><Users /></FeaturedIcon></Stat>
+<Stat size="large" label="Annual revenue" value="$1.2M" />`}>
+  <div class="flex flex-wrap gap-8">
+    <div data-apogee-stat="comparison"><Stat label="Customers" value="2,318" change="8%" comparison="vs last month" /></div>
+    <div data-apogee-stat="start"><Stat label="Members" value="48" change="2" comparison="this week"><FeaturedIcon slot="start" color="primary"><Users /></FeaturedIcon></Stat></div>
+    <div data-apogee-stat="large"><Stat size="large" label="Annual revenue" value="$1.2M" /></div>
+  </div>
+</Preview>
+
+A metric card: Card with a footer link.
+
+<Preview code={`<Card padding="none">
+  <div class="p-5"><Stat label="Active users" value="2,318" change="8%" comparison="vs last month" changeStyle="modern" /></div>
+  <Button slot="footer" variant="link" size="small" class="ms-auto">View report</Button>
+</Card>`}>
+  <Card padding="none" class="max-w-xs">
+    <div class="p-5"><Stat label="Active users" value="2,318" change="8%" comparison="vs last month" changeStyle="modern" /></div>
+    <Button slot="footer" variant="link" size="small" class="ms-auto">View report</Button>
+  </Card>
+</Preview>
+
+Up and down:
 
 The only meaningful configuration is whether — and which way — `change` moves:
 

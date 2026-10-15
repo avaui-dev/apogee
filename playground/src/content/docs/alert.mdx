@@ -1,6 +1,6 @@
 ---
 title: Alert
-description: An inline message with a status color and icon — info, success, warning, or danger.
+description: An inline message with a status color and icon — info, success, warning, or critical; inline, filled or as a full-width banner.
 group: Components
 order: 0
 ---
@@ -8,6 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import { Rocket } from '@lucide/astro'
 import Alert from '../../../../registry/components/Alert/Alert.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 
 <Preview block code={`<Alert color="primary" title="Heads up">
   A new version of this page is available.
@@ -42,7 +43,8 @@ import Alert from '@/components/apogee/Alert/Alert.astro'
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | The hue. |
-| `variant` | `'faded' \| 'solid'` | `'faded'` | Tinted (default) or filled. |
+| `variant` | `'faded' \| 'solid' \| 'banner'` | `'faded'` | Tinted (default), filled, or a full-width strip with a bottom rule and the content in a centred column. |
+| `featured` | `boolean` | `false` | Puts the icon in a FeaturedIcon tile. |
 | `title` | `string` | — | Optional bold heading above the message. |
 | `inline` | `boolean` | `false` | Hides the icon column. |
 | `role` | `string` | `'alert'` for critical and warning | Live-region role. Critical and warning alerts announce themselves; pass `role` (or `role="status"`) to override. |
@@ -77,6 +79,32 @@ Every `color`, each with its fixed icon, tinted and filled:
     <Alert variant="solid" color="critical" title="Error">Something went wrong.</Alert>
   </div>
 </Preview>
+
+## Banner and featured icon
+
+A banner spans its container with a rule at the bottom; its content sits in a
+centred column, the icon hides on phones and the actions move to the end from
+`md`. Pin it to the bottom on phones with `class="max-md:sticky max-md:bottom-0"`.
+
+<Preview code={`<Alert variant="banner" color="primary" title="New version available">
+  Reload to get the latest fixes.
+  <Button slot="actions" size="small">Reload</Button>
+</Alert>
+<Alert featured color="positive" title="Payment received">Your invoice is paid.</Alert>`} block>
+  <div data-apogee-alert="banner">
+    <Alert variant="banner" color="primary" title="New version available">
+      <span>Reload to get the latest fixes and the new export panel.</span>
+      <Button slot="actions" size="small" variant="outline" color="neutral">Later</Button>
+      <Button slot="actions" size="small">Reload</Button>
+    </Alert>
+  </div>
+  <div data-apogee-alert="featured" class="grid gap-3">
+    <Alert featured color="positive" title="Payment received">Your invoice for October is paid.</Alert>
+    <Alert featured variant="solid" color="critical" title="Card declined">Update your card to keep the workspace active.</Alert>
+  </div>
+</Preview>
+
+Dismissal is a Dismissible around the alert: `<Dismissible align="top"><Alert class="pe-10">…</Alert></Dismissible>`.
 
 ## Icon slot and roles
 
@@ -130,9 +158,9 @@ With a link in the body:
 ## Accessibility
 
 - Icons are `aria-hidden` — the status is conveyed by the adjacent text, not color/icon alone.
-- Static, page-authored alerts need no role.
-- A dynamically-shown alert (e.g. a form result) should get `role="alert"` (passed
-  through via `...rest`) so assistive tech announces it on insertion.
+- Critical and warning alerts get `role="alert"` by default, so they are
+  announced when inserted. Other colours have no role: a static callout needs
+  none. Pass `role` (`"status"`, or `""` for none) to override.
 
 ## Tokens
 
@@ -146,12 +174,12 @@ With a link in the body:
 
 ## Do / Don't
 
-- **Do** match the variant to the message's actual severity — don't use `danger` for a neutral notice.
+- **Do** match the variant to the message's actual severity — don't use `critical` for a neutral notice.
 - **Do** keep the title short; put detail in the body.
 - **Don't** stack more than one Alert for the same event — pick the highest-severity one.
-- **Don't** use `danger` for destructive-action confirmation — that's a dialog's job, not an inline alert's.
+- **Don't** use `critical` for destructive-action confirmation — that's a dialog's job, not an inline alert's.
 
 ## Content
 
 - Title: 2–5 words, sentence case, no ending period, states the outcome ("Couldn't save", not "Error").
-- Body: one or two short sentences. Say what happened and, for warnings/danger, what to do next.
+- Body: one or two short sentences. Say what happened and, for warnings and critical alerts, what to do next.

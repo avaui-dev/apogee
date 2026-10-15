@@ -31,7 +31,9 @@
       "files": [
         "Alert/Alert.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "FeaturedIcon"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -261,7 +263,9 @@
         "Field",
         "utils"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": true
     },
     "Combobox": {
@@ -288,6 +292,8 @@
         "CommandPalette/CommandPalette.astro"
       ],
       "registryDependencies": [
+        "Avatar",
+        "Kbd",
         "utils"
       ],
       "dependencies": [
@@ -648,6 +654,18 @@
       ],
       "dependencies": [],
       "usesJs": true
+    },
+    "Message": {
+      "name": "Message",
+      "kind": "component",
+      "files": [
+        "Message/Message.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
     },
     "Meter": {
       "name": "Meter",
@@ -1113,7 +1131,8 @@
       ],
       "registryDependencies": [
         "Button",
-        "CloseButton"
+        "CloseButton",
+        "FeaturedIcon"
       ],
       "dependencies": [
         "@lucide/astro"

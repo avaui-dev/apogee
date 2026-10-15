@@ -1,0 +1,180 @@
+---
+title: Message
+description: One chat message with sender, time, a bubble, reply quote, preview, attachment, reactions and delivery status.
+group: Components
+order: 0
+related: [avatar, textarea, divider, timeline]
+---
+
+import Preview from '../../components/Preview.astro'
+import Message from '../../../../registry/components/Message/Message.astro'
+import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+import Divider from '../../../../registry/components/Divider/Divider.astro'
+import Textarea from '../../../../registry/components/Textarea/Textarea.astro'
+import Input from '../../../../registry/components/Input/Input.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import { FileText, Send, Paperclip, Link as LinkIcon } from '@lucide/astro'
+
+<Preview code={`<ol aria-label="Conversation" class="flex flex-col gap-4">
+  <Message name="Ana Lima" time="9:41" datetime="2026-10-15T09:41">
+    <Avatar slot="avatar" name="Ana Lima" size="small" status="online" />
+    Can you check the launch brief before lunch?
+  </Message>
+  <Message me time="9:43" datetime="2026-10-15T09:43" status="read">
+    <span slot="reply">Can you check the launch brief before lunch?</span>
+    On it. The copy section needs one more pass.
+  </Message>
+</ol>`} block>
+  <ol data-apogee-message="thread" aria-label="Conversation" class="flex flex-col gap-4">
+    <Message name="Ana Lima" time="9:41" datetime="2026-10-15T09:41">
+      <Avatar slot="avatar" name="Ana Lima" size="small" status="online" />
+      Can you check the launch brief before lunch?
+    </Message>
+    <Message me time="9:43" datetime="2026-10-15T09:43" status="read">
+      <span slot="reply">Can you check the launch brief before lunch?</span>
+      <span>On it. The copy section needs one more pass.</span>
+    </Message>
+  </ol>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add message
+```
+
+Uses `@lucide/astro` for the status glyphs. Pair with `Avatar` in the
+`avatar` slot.
+
+## Usage
+
+```astro
+---
+import Message from '@/components/apogee/Message/Message.astro'
+---
+<ol aria-label="Conversation">
+  <Message name="Ana" time="9:41">Hi!</Message>
+  <Message me time="9:42" status="sent">Hello.</Message>
+</ol>
+```
+
+## Anatomy
+
+- **Row** — an `<li>` (or `div` with `as="div"`); your own messages (`me`)
+  run end to start.
+- **`avatar`** slot — beside the bubble, aligned to its bottom.
+- **Header** — `<cite>` for the sender and `<time>` for the time.
+- **Bubble** — the text; the corner nearest the sender is square. Holds the
+  `reply` quote above the text, and the `preview` and `attachment` below it.
+- **`reactions`** slot — a row under the bubble.
+- **Status** — a glyph with screen-reader text; failures also show the text.
+
+## API
+
+`@composable` — any other attribute passes through to the row.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `name` | `string` | — | Sender, in `<cite>`. |
+| `time` | `string` | — | Shown time. |
+| `datetime` | `string` | — | Machine-readable time for `<time datetime>`. |
+| `me` | `boolean` | `false` | Your own message: end-aligned, primary bubble. |
+| `status` | `'sent' \| 'read' \| 'failed'` | — | Delivery status under the bubble. |
+| `typing` | `boolean` | `false` | Three animated dots instead of the text, labelled with the sender, e.g. "Ana Lima is typing". |
+| `as` | `'li' \| 'div'` | `'li'` | Row element. |
+| `class` | `string` | — | Extra classes on the row. |
+
+## Variants
+
+Every `status`, a link preview, an attachment and reactions:
+
+<Preview code={`<Message me status="sent">Sent</Message>
+<Message me status="read">Read</Message>
+<Message me status="failed">Failed</Message>`} block>
+  <ol class="flex flex-col gap-4">
+    <Message me time="9:50" status="sent"><span>Sent, not read yet.</span></Message>
+    <Message me time="9:51" status="read"><span>Read by everyone.</span></Message>
+    <Message me time="9:52" status="failed"><span>This one did not go through.</span></Message>
+    <Message name="Marco Ricci" time="10:02">
+      <Avatar slot="avatar" name="Marco Ricci" size="small" />
+      <span>Here is the reference.</span>
+      <span slot="preview" class="flex items-center gap-2"><LinkIcon class="size-4 shrink-0 text-neutral-faded" aria-hidden="true" /><span class="min-w-0 truncate">example.com/brand-guidelines</span></span>
+      <span slot="attachment" class="flex items-center gap-2 rounded-md bg-page p-2 text-xs text-neutral"><FileText class="size-4 text-neutral-faded" aria-hidden="true" />brief-v3.pdf · 240 KB</span>
+      <span slot="reactions" class="contents">
+        <span class="rounded-full border border-neutral px-1.5">👍 2</span>
+        <span class="rounded-full border border-neutral px-1.5">🎉 1</span>
+      </span>
+    </Message>
+  </ol>
+</Preview>
+
+## States
+
+- **Typing** — three dots, labelled for assistive tech; still under reduced motion.
+
+<Preview code={`<Message name="Ana Lima" typing><Avatar slot="avatar" name="Ana Lima" size="small" /></Message>`}>
+  <ol data-apogee-message="typing">
+    <Message name="Ana Lima" typing><Avatar slot="avatar" name="Ana Lima" size="small" /></Message>
+  </ol>
+</Preview>
+
+## Examples
+
+A conversation with a day marker, and a composer under it. Composers are plain
+forms: a Textarea and a send Button.
+
+<Preview code={`<ol aria-label="Conversation" class="flex flex-col gap-4">
+  <li><Divider>Today</Divider></li>
+  <Message …>…</Message>
+</ol>
+<form class="flex items-end gap-2">
+  <Textarea label="Message" rows={2} class="flex-1" />
+  <Button type="submit" iconOnly aria-label="Send"><Send /></Button>
+</form>`} block>
+  <ol aria-label="Conversation" class="flex flex-col gap-4">
+    <li><Divider>Today</Divider></li>
+    <Message name="Ana Lima" time="11:02" datetime="2026-10-15T11:02"><Avatar slot="avatar" name="Ana Lima" size="small" /><span>Ready for review?</span></Message>
+    <Message me time="11:05" datetime="2026-10-15T11:05" status="sent"><span>Ten minutes.</span></Message>
+  </ol>
+  <form class="flex items-end gap-2" onsubmit="event.preventDefault()">
+    <div class="flex-1"><Textarea label="Message" rows={2} /></div>
+    <Button type="button" variant="ghost" color="neutral" iconOnly aria-label="Attach a file"><Paperclip /></Button>
+    <Button type="submit" iconOnly aria-label="Send"><Send /></Button>
+  </form>
+  <form class="flex gap-2" onsubmit="event.preventDefault()">
+    <div class="flex-1"><Input aria-label="Quick reply" placeholder="Reply…" /></div>
+    <Button type="submit">Send</Button>
+  </form>
+</Preview>
+
+## Accessibility
+
+- Put Messages in an `<ol>` with an `aria-label`; each row is a list item, so
+  screen readers announce position and count.
+- The sender is `<cite>` and the time is `<time datetime>`.
+- Status glyphs carry screen-reader text ("Sent", "Read", "Failed to send").
+- The typing bubble is an image labelled with the sender, e.g. "Ana Lima is typing"; its dots
+  stop moving under reduced motion.
+- Bubble colours come from the hue tokens and keep AA in both themes.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-neutral-faded` / `--foreground-neutral` | Others' bubbles |
+| `--background-primary` / `--on-primary` | Your bubbles |
+| `--border-primary` | Reply quote rule (others) |
+| `--foreground-neutral-faded` | Time, status |
+| `--foreground-critical` | Failed status |
+
+## Do / Don't
+
+- **Do** keep one Message per send; split long thoughts into several.
+- **Do** show `status` only on your own messages.
+- **Don't** colour bubbles per person; the side and the avatar carry identity.
+- **Don't** hide actions behind hover only; put them in a menu reachable by keyboard.
+
+## Content
+
+- Times are short ("9:41", "Yesterday"); the full date belongs in `datetime`.
+- Day markers in the list ("Today", "Monday") use a Divider.

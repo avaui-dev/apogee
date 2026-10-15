@@ -37,6 +37,10 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
   loop?: boolean
   /** Accessible name of the carousel region. @category content */
   label?: string
+  /** `overlay`: borderless translucent arrows for image carousels. @category layout */
+  controlsVariant?: 'default' | 'overlay'
+  /** Dots under the track, or floating over its bottom edge. @category layout */
+  dotsPosition?: 'below' | 'overlay'
   class?: string
 }
 
@@ -52,6 +56,8 @@ const {
   interval = 4000,
   loop = false,
   label = 'Carousel',
+  controlsVariant = 'default',
+  dotsPosition = 'below',
   class: className,
   ...rest
 } = Astro.props
@@ -77,6 +83,12 @@ const slideCount = dots
       return n
     })()
   : 0
+const arrow = [
+  'grid size-11 -translate-y-1/2 place-items-center rounded-full text-neutral no-js:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-50',
+  controlsVariant === 'overlay'
+    ? 'border-0 bg-page/90 backdrop-blur-xs enabled:hover:bg-page'
+    : 'border border-neutral bg-page shadow-md enabled:hover:bg-page-faded',
+].join(' ')
 ---
 
 <div
@@ -110,14 +122,14 @@ const slideCount = dots
       <>
         <button
           type="button"
-          class="apogee-carousel-prev absolute top-1/2 start-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          class:list={['apogee-carousel-prev absolute top-1/2 start-2', arrow]}
           aria-label="Previous"
         >
           <ChevronLeft class="size-5 rtl:-scale-x-100" aria-hidden="true" />
         </button>
         <button
           type="button"
-          class="apogee-carousel-next absolute top-1/2 end-2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral bg-page text-neutral shadow-md no-js:hidden hover:bg-page-faded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          class:list={['apogee-carousel-next absolute top-1/2 end-2', arrow]}
           aria-label="Next"
         >
           <ChevronRight class="size-5 rtl:-scale-x-100" aria-hidden="true" />
@@ -128,7 +140,16 @@ const slideCount = dots
 
   {
     dots && slideCount > 0 && (
-      <div class="apogee-carousel-dots mt-3 flex justify-center gap-2 no-js:hidden" role="group" aria-label="Slides">
+      <div
+        class:list={[
+          'apogee-carousel-dots flex justify-center gap-2 no-js:hidden',
+          dotsPosition === 'overlay'
+            ? 'absolute bottom-3 left-1/2 -translate-x-1/2 gap-0 rounded-full bg-page/80 px-1 backdrop-blur-xs'
+            : 'mt-3',
+        ]}
+        role="group"
+        aria-label="Slides"
+      >
         {Array.from({ length: slideCount }).map((_, i) => (
           <button
             type="button"
@@ -167,11 +188,16 @@ const slideCount = dots
     const next = c.querySelector<HTMLElement>('.apogee-carousel-next')
     prev?.addEventListener('click', () => go(-1))
     next?.addEventListener('click', () => go(1))
-    // Hide an arrow at its edge; `Math.abs` keeps it right under RTL.
+    // Disable an arrow at its edge (it keeps its place); `Math.abs` keeps it right under RTL.
     const edges = () => {
       const pos = Math.abs(track.scrollLeft)
-      prev?.toggleAttribute('hidden', pos <= 1)
-      next?.toggleAttribute('hidden', pos + track.clientWidth >= track.scrollWidth - 1)
+      const atStart = pos <= 1
+      const atEnd = pos + track.clientWidth >= track.scrollWidth - 1
+      // A focused arrow that becomes disabled would drop focus: hand it to the other one.
+      if (atEnd && next && document.activeElement === next) prev?.focus()
+      if (atStart && prev && document.activeElement === prev) next?.focus()
+      prev?.toggleAttribute('disabled', atStart)
+      next?.toggleAttribute('disabled', atEnd)
     }
     edges()
     track.addEventListener('scroll', edges, { passive: true })

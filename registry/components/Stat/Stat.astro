@@ -1,9 +1,18 @@
 ---
 /**
- * Stat — a metric with a label and an optional trend. Zero JS.
+ * Stat — a metric with a label and an optional change. Zero JS.
+ * `changeStyle` picks how the change reads: a plain arrow, a trend line, or a
+ * small bordered pill where only the arrow takes the colour. `comparison`
+ * adds "vs last month"; the `start` slot takes a FeaturedIcon.
  */
 import type { HTMLAttributes } from 'astro/types'
-import { TrendingUp, TrendingDown } from '@lucide/astro'
+import { TrendingUp, TrendingDown, ArrowUp, ArrowDown, ArrowUpRight, ArrowDownRight } from '@lucide/astro'
+
+const glyphs = {
+  simple: { up: ArrowUp, down: ArrowDown },
+  trend: { up: TrendingUp, down: TrendingDown },
+  modern: { up: ArrowUpRight, down: ArrowDownRight },
+} as const
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -12,22 +21,48 @@ interface Props extends HTMLAttributes<'div'> {
   /** Optional change, e.g. "+12%". */
   change?: string
   trend?: 'up' | 'down'
+  /** How the change reads. @category layout */
+  changeStyle?: keyof typeof glyphs
+  /** Text after the change, e.g. "vs last month". @category content */
+  comparison?: string
+  /** @category layout */
+  size?: 'medium' | 'large'
   class?: string
 }
 
-const { label, value, change, trend, class: className, ...rest } = Astro.props
-const Trend = trend === 'down' ? TrendingDown : TrendingUp
+const { label, value, change, trend = 'up', changeStyle = 'trend', comparison, size = 'medium', class: className, ...rest } = Astro.props
+const Glyph = glyphs[changeStyle][trend]
+const tone = trend === 'down' ? 'text-critical' : 'text-positive'
+const modern = changeStyle === 'modern'
+const hasStart = Astro.slots.has('start')
 ---
 
-<div class:list={['flex flex-col gap-1', className]} {...rest}>
-  <span class="text-sm text-neutral-faded">{label}</span>
-  <span class="text-2xl font-semibold tracking-tight text-neutral tabular-nums">{value}</span>
-  {
-    change && (
-      <span class:list={['inline-flex items-center gap-1 text-sm tabular-nums', trend === 'down' ? 'text-critical' : 'text-positive']}>
-        <Trend class="size-4" aria-hidden="true" />
-        {change}
-      </span>
-    )
-  }
+<div class:list={['apogee-stat', hasStart && 'flex items-start gap-3', className]} {...rest}>
+  {hasStart && <slot name="start" />}
+  <div class="flex min-w-0 flex-col gap-1">
+    <span class="text-sm text-neutral-faded">{label}</span>
+    <span class:list={['apogee-stat-value font-semibold tracking-tight text-neutral tabular-nums', size === 'large' ? 'text-4xl' : 'text-2xl']}>{value}</span>
+    {
+      (change || comparison) && (
+        <span class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+          {change && (
+            <span
+              data-style={changeStyle}
+              class:list={[
+                'apogee-stat-change inline-flex items-center gap-1 tabular-nums',
+                modern
+                  ? ['rounded-md border border-neutral bg-elevation-raised px-1.5 py-0.5 font-medium text-neutral shadow-raised', trend === 'down' ? '[&>svg]:text-critical' : '[&>svg]:text-positive']
+                  : tone,
+              ]}
+            >
+              <Glyph class="size-4" aria-hidden="true" />
+              <span class="sr-only">{trend === 'down' ? 'Down' : 'Up'}</span>
+              {change}
+            </span>
+          )}
+          {comparison && <span class="text-neutral-faded">{comparison}</span>}
+        </span>
+      )
+    }
+  </div>
 </div>

@@ -77,6 +77,8 @@ attribute passes through to the root.
 | `interval` | `number` | `4000` | Autoplay delay in ms. |
 | `loop` | `boolean` | `false` | With autoplay, jump back to the start after the last slide. |
 | `label` | `string` | `'Carousel'` | Accessible name of the carousel region. |
+| `controlsVariant` | `'default' \| 'overlay'` | `'default'` | `overlay`: borderless translucent arrows for image carousels. |
+| `dotsPosition` | `'below' \| 'overlay'` | `'below'` | Dots under the track, or in a pill over its bottom edge. |
 | `visibleItems` | `Responsive<1 \| 2 \| 3 \| 4 \| 5 \| 6>` | — | Slides per view, per breakpoint (`{ base: 1, md: 3 }`); sizes every slide to fit, gap included. Overrides `itemWidth`. |
 | `gap` | `2 \| 3 \| 4 \| 6 \| 8` | `4` | Space between slides, in spacing steps. |
 | `bleed` | `boolean` | `false` | Let the track run under the page gutters. |
@@ -109,6 +111,22 @@ Snap alignment — `start` (default) vs `center`:
     <div class="rounded-lg border border-neutral bg-neutral-faded p-6">B</div>
     <div class="rounded-lg border border-neutral bg-neutral-faded p-6">C</div>
   </Carousel>
+</Preview>
+
+## Overlay controls
+
+For image carousels: borderless translucent arrows and dots floating over the
+bottom edge. Arrows at an edge are disabled, not removed, so nothing shifts.
+
+<Preview code={`<Carousel visibleItems={1} controlsVariant="overlay" dots dotsPosition="overlay" label="Gallery">
+  <img src="…" alt="…" class="aspect-video w-full rounded-lg object-cover" />
+  …
+</Carousel>`} block>
+  <div data-apogee-carousel="overlay">
+    <Carousel visibleItems={1} controlsVariant="overlay" dots dotsPosition="overlay" label="Gallery">
+      {['coast', 'forest', 'city'].map((seed) => <img src={`https://picsum.photos/seed/apogee-${seed}/960/540`} alt={`${seed} photo`} class="aspect-video w-full rounded-lg object-cover" />)}
+    </Carousel>
+  </div>
 </Preview>
 
 ## Visible items, gap and bleed

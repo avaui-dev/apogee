@@ -1,6 +1,6 @@
 ---
 title: Code
-description: Inline code or a code block, with an optional copy-to-clipboard button.
+description: Inline code or a code block with build-time highlighting, line numbers, a copy button and a collapsible long view.
 group: Components
 order: 0
 ---
@@ -8,6 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Code from '../../../../registry/components/Code/Code.astro'
+import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
 
 <JsNote fallback="The copy button (`no-js:hidden`) doesn't render — the code stays visible and selectable, so it's still copyable by hand.">
   Copies the block's text to the clipboard on click, then swaps the icon to a
@@ -51,6 +52,8 @@ element.
 | `copy` | `boolean` | `false` | Adds a copy-to-clipboard button. Implies `block`. |
 | `lang` | `string` | — | Syntax-highlights at build time (both themes). Implies `block`. Requires `code`; without it the slot renders plain. |
 | `code` | `string` | — | Source to highlight when `lang` is set. |
+| `lineNumbers` | `boolean` | `false` | Numbers each line (CSS counters; copying skips them). Needs `lang` and `code`. |
+| `maxHeight` | `string` | — | Collapses a long block to this height with a "Show more" toggle (JS); without JS the block scrolls. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
@@ -70,7 +73,7 @@ The three render modes — inline, block, and block with copy:
 - **Default** — copy button shows a copy icon, muted-foreground colour.
 - **Hover / focus** — button background shifts to `--background-neutral-faded`; a visible
   `focus-visible` ring on keyboard focus.
-- **Copied** — icon swaps to a checkmark, button turns `--background-positive`, and a
+- **Copied** — icon swaps to a checkmark, button turns `--foreground-positive`, and a
   "Copied" label fades in for 3 seconds (`role="status"`).
 
 <Preview block code={`<Code copy>git commit -m "fix: copy button"</Code>`}>
@@ -84,6 +87,28 @@ Highlighted (build time, follows the theme):
 export const tsSnippet = "export const greet = (name: string) => 'Hello, ' + name"
 export const cssSnippet = ".card { border-radius: var(--radius-lg); }"
 export const htmlSnippet = '<button class="bg-primary text-on-primary">Save</button>'
+export const longSnippet = Array.from({ length: 24 }, (_, i) => `const step${i + 1} = await run(${i + 1}) // step ${i + 1}`).join('\n')
+
+Line numbers, and a long block collapsed to `10rem`:
+
+<Preview block code={`<Code lang="ts" code={src} lineNumbers copy />
+<Code lang="ts" code={longSrc} lineNumbers maxHeight="10rem" />`}>
+  <div data-apogee-code="numbered"><Code lang="ts" code={"const total = items.length\nconst done = items.filter((i) => i.done).length\nexport const progress = done / total"} lineNumbers copy /></div>
+  <div data-apogee-code="collapsed"><Code lang="ts" code={longSnippet} lineNumbers maxHeight="10rem" /></div>
+</Preview>
+
+Tabbed install commands: Tabs with a copyable block per panel.
+
+<Preview block code={`<Tabs variant="pills" tabs={['npm', 'pnpm', 'yarn']}>
+  <Code slot="panel-0" copy>npm i @ava-ui/apogee</Code>
+  …
+</Tabs>`}>
+  <Tabs variant="pills" size="small" tabs={['npm', 'pnpm', 'yarn']}>
+    <Code slot="panel-0" copy>npm i @ava-ui/apogee</Code>
+    <Code slot="panel-1" copy>pnpm add @ava-ui/apogee</Code>
+    <Code slot="panel-2" copy>yarn add @ava-ui/apogee</Code>
+  </Tabs>
+</Preview>
 
 <Preview block code={`<Code lang="ts" copy code={tsSnippet} />
 <Code lang="css" code={cssSnippet} />
@@ -126,7 +151,7 @@ Block with copy, for install commands and config snippets:
 | Token | Used for |
 |---|---|
 | `--border-neutral` | Inline `<code>` and block `<pre>` border |
-| `--background-neutral-faded` | Inline/block background; copy button hover background |
+| `--background-neutral-faded-highlighted` | Inline/block background; copy button hover background |
 | `--background-page` | Copy button background |
 | `--foreground-neutral` | Code text; copy button hover/copied text |
 | `--foreground-neutral-faded` | Copy button default icon/text colour |

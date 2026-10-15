@@ -8,6 +8,11 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Breadcrumbs from '../../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
+import { Home, Folder } from '@lucide/astro'
+
+<JsNote fallback="Every item renders and the … button is hidden, so nothing is unreachable.">
+  With `maxVisible`, the "…" button reveals the collapsed items and moves focus to the first of them.
+</JsNote>
 
 <Preview code={`<Breadcrumbs items={[
   { label: 'Home', href: '/' },
@@ -34,10 +39,6 @@ No Apogee dependencies. Uses `@lucide/astro` for the chevron separator.
 ```astro
 ---
 import Breadcrumbs from '@/components/apogee/Breadcrumbs/Breadcrumbs.astro'
-
-<JsNote fallback="Every item renders and the … button is hidden, so nothing is unreachable.">
-  With `maxVisible`, the "…" button reveals the collapsed items and moves focus to the first of them.
-</JsNote>
 ---
 <Breadcrumbs items={[
   { label: 'Home', href: '/' },
@@ -52,10 +53,14 @@ attribute passes through.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `items` | `{ label: string; href?: string }[]` | — | The trail, in order. An item without `href` (or the last item) renders as plain text. |
+| `items` | `{ label: string; href?: string; icon?; ariaLabel? }[]` | — | The trail, in order. An item without `href` (or the last item) renders as plain text. `icon` is a Lucide component shown before the label; with an empty `label` the crumb is icon-only and needs `ariaLabel`. |
 | `items[].disabled` | `boolean` | `false` | Renders the item as plain text with `aria-disabled`. |
 | `maxVisible` | `number` | — | Show at most this many items: the first, an "…" button that reveals the rest, and the last ones. |
+| `expandLabel` | `string` | `'Show all'` | Accessible name of the "…" button (localise it). |
+| `variant` | `'text' \| 'button' \| 'line'` | `'text'` | Plain links, small button-like crumbs with the current one filled, or the trail between two rules. |
 | `class` | `string` | — | Extra classes on the root `<nav>`, merged last. |
+
+Slot `separator` replaces the chevron between crumbs.
 
 The last item in `items` is always treated as the current page: it renders as
 a `<span aria-current="page">`, even if it has an `href`.
@@ -72,10 +77,22 @@ a `<span aria-current="page">`, even if it has an `href`.
   <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Archive', disabled: true }, { label: 'Entry' }]} />
 </Preview>
 
+## Variants and icons
+
+<Preview code={`<Breadcrumbs variant="button" items={[…]} />
+<Breadcrumbs variant="line" items={[…]} />
+<Breadcrumbs items={[{ label: '', ariaLabel: 'Home', icon: Home, href: '/' }, { label: 'Projects', icon: Folder, href: '#' }, { label: 'Spring launch' }]} />`} block>
+  <div data-apogee-breadcrumbs="button"><Breadcrumbs variant="button" items={[{ label: 'Home', href: '/' }, { label: 'Projects', href: '#' }, { label: 'Spring launch' }]} /></div>
+  <div data-apogee-breadcrumbs="line"><Breadcrumbs variant="line" items={[{ label: 'Home', href: '/' }, { label: 'Projects', href: '#' }, { label: 'Spring launch' }]} /></div>
+  <div data-apogee-breadcrumbs="icon-current"><Breadcrumbs items={[{ label: 'Projects', href: '#' }, { label: '', ariaLabel: 'Overview', icon: Home }]} /></div>
+  <div data-apogee-breadcrumbs="icons"><Breadcrumbs items={[{ label: '', ariaLabel: 'Home', icon: Home, href: '/' }, { label: 'Projects', icon: Folder, href: '#' }, { label: 'Spring launch' }]} /></div>
+</Preview>
+
 ## States
 
 - **Hover / focus** — linked crumbs (all but the last, when `href` is set)
-  lighten on hover; keyboard focus shows a visible ring (`--border-primary`).
+  go from faded to full neutral on hover (`button` also fills); keyboard focus
+  shows a visible ring (`--outline-color-focus`).
 - **Current page** — the last item is bold text, never a link, with
   `aria-current="page"`.
 

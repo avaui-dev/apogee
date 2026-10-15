@@ -1,6 +1,6 @@
 ---
 title: ColorPicker
-description: A styled native color swatch with a synced hex text field.
+description: A native colour swatch with a synced hex field, preset swatches and an optional eyedropper.
 group: Components
 order: 0
 ---
@@ -9,9 +9,10 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import ColorPicker from '../../../../registry/components/ColorPicker/ColorPicker.astro'
 
-<JsNote fallback="The swatch and hex field each still work on their own — the native color input opens the system picker, and the hex field accepts typed input — they just don't stay in sync with each other.">
-  Keeps the swatch and hex field in sync both ways: picking a color updates
-  the hex text, and typing a valid 6-digit hex (`#RRGGBB`) updates the swatch.
+<JsNote fallback="The native colour input and the hex field each still work on their own, but don't stay in sync. Preset swatches and the eyedropper are hidden, since they only work through the script.">
+  Keeps the native colour input and the hex field in sync both ways, applies
+  a chosen preset swatch to both, and wires the eyedropper where the browser
+  has one.
 </JsNote>
 
 <Preview code={`<ColorPicker label="Accent color" name="accent" value="#3b82f6" />`}>
@@ -52,10 +53,14 @@ through to the swatch (`<input type="color">`) — e.g. `disabled`, or an
 |---|---|---|---|
 | `id` | `string` | auto-generated | Id for the hex field; wires `Field`'s label and `aria-describedby`. |
 | `label` | `string` | — | Field label. |
-| `hint` | `string` | — | Helper text under the control (hidden when `error` is set). |
+| `hint` | `string` | — | Helper text under the control; it stays when `error` is set. |
 | `error` | `string` | — | Error text; sets `aria-invalid` on the hex field and renders via `role="alert"`. |
 | `name` | `string` | — | Name attribute for the hex text field (this is what submits). |
-| `value` | `string` | `'#3b82f6'` | Initial color, applied to both the swatch and hex field. |
+| `value` | `string` | `'#3b82f6'` | Initial colour for both inputs. A form default, not a style. |
+| `required` | `boolean` | `false` | Marks the hex field (the one that submits) required. |
+| `swatches` | `string[]` | — | Preset colours as selectable swatches (native radios); picking one sets both inputs. |
+| `presets` | `string[]` | — | Suggestions for the native picker via `<datalist>` (zero JS; Chromium shows them in its popup). |
+| `eyedropper` | `boolean` | `false` | A button that samples a colour from the screen; removed where the browser has no EyeDropper. |
 | `class` | `string` | — | Extra classes, passed to the `Field` wrapper. |
 
 ## States
@@ -64,13 +69,21 @@ through to the swatch (`<input type="color">`) — e.g. `disabled`, or an
 - **Focus** — the hex field shows a visible `focus-visible` ring; the swatch
   uses the browser's native focus indicator.
 - **Hint** — helper text under the field.
-- **Error** — hex field border turns `--background-critical`, `aria-invalid="true"`, and the
-  error text replaces the hint.
+- **Error** — hex field border turns `--border-critical`, `aria-invalid="true"`, and the
+  error text shows under the hint.
 
 <Preview code={`<ColorPicker label="Brand color" hint="Used for buttons and links." />
 <ColorPicker label="Brand color" value="#ff0000zz" error="Enter a valid hex color (#RRGGBB)." />`}>
   <ColorPicker label="Brand color" hint="Used for buttons and links." />
   <ColorPicker label="Brand color" value="#ff0000zz" error="Enter a valid hex color (#RRGGBB)." />
+</Preview>
+
+## Swatches, presets and eyedropper
+
+<Preview code={`<ColorPicker label="Label colour" name="label" swatches={['#0f766e', '#2563eb', '#7c3aed', '#db2777', '#ea580c']} eyedropper />
+<ColorPicker label="Accent" presets={['#0f766e', '#2563eb', '#db2777']} />`}>
+  <div data-apogee-color-picker="swatches"><ColorPicker label="Label colour" name="label" value="#0f766e" swatches={['#0f766e', '#2563eb', '#7c3aed', '#db2777', '#ea580c']} eyedropper /></div>
+  <ColorPicker label="Accent" presets={['#0f766e', '#2563eb', '#db2777']} />
 </Preview>
 
 ## Examples
@@ -83,9 +96,9 @@ Without a label (still pass one where possible — see Accessibility):
 
 Required field, wired into a form:
 
-```astro
-<ColorPicker label="Theme color" name="theme" required value="#3b82f6" />
-```
+<Preview code={`<ColorPicker label="Theme color" name="theme" required />`}>
+  <div data-apogee-color-picker="required"><ColorPicker label="Theme color" name="theme" required /></div>
+</Preview>
 
 ## Accessibility
 
@@ -109,7 +122,7 @@ Required field, wired into a form:
 | `--background-page` | Hex field background |
 | `--foreground-neutral` | Hex field text |
 | `--foreground-neutral-faded` | Hint text |
-| `--foreground-critical` | Error border + error text |
+| `--border-critical` / `--foreground-critical` | Error border / error text |
 | `--border-primary` | Hex field focus ring |
 
 ## Do / Don't

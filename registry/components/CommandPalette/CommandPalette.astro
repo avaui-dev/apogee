@@ -9,14 +9,40 @@
  * `apogee:command` event (`detail: { id, label }`) on `document` for the app to
  * handle. Without JS the dialog and shortcut don't run — pair the trigger with a
  * real link/menu as a fallback.
+ *
+ * Commands take an `icon` (Lucide component) or `avatar`, a `description`
+ * (inline, or on its own line with `stacked`) and a `shortcut` such as
+ * `['mod', 'shift', 'p']`: it renders as key caps and runs the command from
+ * anywhere on the page. Slots: `empty` (no results), `footer` (key hints).
+ * Search ignores accents ("resume" finds "Résumé").
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Search } from '@lucide/astro'
+import Avatar from '../Avatar/Avatar.astro'
+import Kbd from '../Kbd/Kbd.astro'
+
+interface Command {
+  label: string
+  href?: string
+  group?: string
+  keywords?: string
+  id?: string
+  /** A Lucide (or any Astro) icon component. */
+  icon?: any
+  avatar?: { src?: string; name?: string }
+  description?: string
+  /** Keys pressed together, e.g. ['mod', 'shift', 'p']: modifiers are `mod` (⌘ on macOS, Ctrl elsewhere), `shift` and `alt`. */
+  shortcut?: string[]
+  /** Description on its own line under the label. */
+  stacked?: boolean
+}
+// Server renders macOS glyphs; the island swaps them where `mod` is Ctrl.
+const keyGlyph: Record<string, string> = { mod: '⌘', shift: '⇧', alt: '⌥' }
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
   id?: string
-  commands: { label: string; href?: string; group?: string; keywords?: string; id?: string }[]
+  commands: Command[]
   placeholder?: string
   /** Key pressed with ⌘/Ctrl to open. */
   shortcut?: string
@@ -32,7 +58,7 @@ const {
 } = Astro.props
 
 // Group the commands, preserving first-seen order.
-const groups: { name: string; items: typeof commands }[] = []
+const groups: { name: string; items: Command[] }[] = []
 for (const c of commands) {
   const g = c.group ?? ''
   let entry = groups.find((x) => x.name === g)
@@ -85,18 +111,46 @@ for (const c of commands) {
                 class="apogee-command-item flex w-full items-center gap-2 rounded px-2 py-2 text-start text-sm text-neutral hover:bg-neutral-faded-highlighted aria-selected:bg-neutral-faded-highlighted [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-neutral-faded"
                 data-label={c.label}
                 data-keywords={c.keywords ?? ''}
+                data-description={c.description ?? ''}
                 data-href={c.href ?? ''}
                 data-id={c.id ?? ''}
+                data-shortcut={c.shortcut?.join('+')}
               >
-                {c.label}
+                {c.icon && <c.icon aria-hidden="true" />}
+                {c.avatar && <Avatar size={c.stacked ? 'small' : 'xsmall'} {...c.avatar} name={c.avatar.name ?? c.label} alt="" />}
+                <span class:list={['min-w-0 flex-1', c.stacked ? 'flex flex-col' : 'truncate']}>
+                  {c.label}
+                  {c.description && (
+                    <span class:list={['text-neutral-faded', !c.stacked && 'ms-1.5']}>
+                      {!c.stacked && '· '}
+                      {c.description}
+                    </span>
+                  )}
+                </span>
+                {c.shortcut && (
+                  <span class="ms-auto flex shrink-0 gap-1" aria-hidden="true">
+                    {c.shortcut.map((k) => (
+                      <Kbd data-key={k}>{keyGlyph[k] ?? k.toUpperCase()}</Kbd>
+                    ))}
+                  </span>
+                )}
               </button>
             ))}
           </div>
         </div>
       ))
     }
-    <p class="apogee-command-empty hidden px-2 py-6 text-center text-sm text-neutral-faded">No results.</p>
+    <div class="apogee-command-empty px-2 py-6 text-center text-sm text-neutral-faded" hidden>
+      <slot name="empty">No results.</slot>
+    </div>
   </div>
+  {
+    Astro.slots.has('footer') && (
+      <div class="apogee-command-footer hidden items-center gap-4 border-t border-neutral px-3 py-2 text-xs text-neutral-faded md:flex">
+        <slot name="footer" />
+      </div>
+    )
+  }
 </dialog>
 
 <style>
@@ -128,7 +182,11 @@ for (const c of commands) {
 
 <script>
   import { island } from '../utils/island.ts'
-  import { hotkey } from '../utils/hotkey.ts'
+  import { hotkey, detectMac } from '../utils/hotkey.ts'
+
+  // Accent- and case-insensitive text for matching.
+  const fold = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
+  const words: Record<string, string> = { mod: 'Ctrl', shift: 'Shift', alt: 'Alt' }
 
   island<HTMLDialogElement>('.apogee-command', (dialog) => {
     const input = dialog.querySelector<HTMLInputElement>('.apogee-command-input')
@@ -151,9 +209,9 @@ for (const c of commands) {
       }
     }
     const filter = () => {
-      const q = input.value.trim().toLowerCase()
+      const q = fold(input.value.trim())
       for (const it of items) {
-        const hay = `${it.dataset.label} ${it.dataset.keywords}`.toLowerCase()
+        const hay = fold(`${it.dataset.label} ${it.dataset.keywords} ${it.dataset.description}`)
         it.hidden = q !== '' && !hay.includes(q)
       }
       for (const s of sections) {
@@ -164,7 +222,7 @@ for (const c of commands) {
       setActive(vis.length ? 0 : -1)
     }
     const activate = (el: HTMLElement) => {
-      dialog.close()
+      if (dialog.open) dialog.close()
       if (el.dataset.href) {
         window.location.href = el.dataset.href
       } else {
@@ -183,8 +241,24 @@ for (const c of commands) {
     }
 
     // Shortcut (mod + key) and any trigger with data-command-open.
-    const unbind = hotkey(`mod+${dialog.dataset.shortcut ?? 'k'}`, open, { ignoreInputs: false })
-    document.addEventListener('astro:before-swap', unbind, { once: true })
+    const unbinds = [hotkey(`mod+${dialog.dataset.shortcut ?? 'k'}`, open, { ignoreInputs: false })]
+    // Per-command shortcuts run from anywhere except while typing in a field.
+    for (const it of items) {
+      if (!it.dataset.shortcut) continue
+      unbinds.push(
+        hotkey(it.dataset.shortcut, () => {
+          // Another open modal owns the keyboard; don't act behind it.
+          const modal = document.querySelector('dialog:modal')
+          if (modal && modal !== dialog) return
+          activate(it)
+        }),
+      )
+    }
+    document.addEventListener('astro:before-swap', () => unbinds.forEach((u) => u()), { once: true })
+    if (!detectMac()) for (const k of dialog.querySelectorAll<HTMLElement>('kbd[data-key]')) {
+      const w = words[k.dataset.key ?? '']
+      if (w) k.textContent = w
+    }
     for (const trigger of document.querySelectorAll(`[data-command-open="${dialog.id}"]`)) {
       trigger.addEventListener('click', open)
     }

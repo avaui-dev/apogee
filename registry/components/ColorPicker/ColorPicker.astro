@@ -3,10 +3,16 @@
  * ColorPicker — a styled native color swatch with a synced hex field. The color
  * input works with zero JS; a small island keeps the hex text field in sync both
  * ways. The hex field submits under `name`. Field-wired like Input.
+ *
+ * `swatches` adds preset colours as native radios; `presets` feeds the
+ * browser's own suggestion row (`<datalist>`, zero JS, Chromium shows it);
+ * `eyedropper` adds a button that samples a colour from the screen where the
+ * browser supports it (the island removes it elsewhere).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
+import { Pipette } from '@lucide/astro'
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -15,7 +21,15 @@ interface Props extends HTMLAttributes<'div'> {
   hint?: string
   error?: string
   name?: string
+  /** A form default, not a style: any hex the user may change. */
   value?: string
+  required?: boolean
+  /** Preset colours shown as selectable swatches. */
+  swatches?: string[]
+  /** Suggestions for the native picker (`<datalist>`). */
+  presets?: string[]
+  /** A screen colour sampler button (JS, where supported). */
+  eyedropper?: boolean
   class?: string
 }
 
@@ -26,32 +40,80 @@ const {
   error,
   name,
   value = '#3b82f6',
+  required = false,
+  swatches,
+  presets,
+  eyedropper = false,
   class: className,
   ...rest
 } = Astro.props
 const id = idProp ?? uid(Astro.locals)
 const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
+const listId = presets?.length ? `${id}-presets` : undefined
+const same = (a: string, b: string) => a.toLowerCase() === b.toLowerCase()
 ---
 
 <Field id={id} label={label} hint={hint} error={error} class={className}>
-  <div class="apogee-color flex items-center gap-2">
-    <input
-      type="color"
-      value={value}
-      class="apogee-color-swatch size-10 shrink-0 cursor-pointer rounded-md border border-neutral"
-      aria-label="Color picker"
-      {...rest}
-    />
-    <input
-      id={id}
-      type="text"
-      name={name}
-      value={value}
-      aria-describedby={describedby}
-      aria-invalid={error ? 'true' : undefined}
-      spellcheck="false"
-      class="apogee-color-hex h-10 w-28 rounded-md border border-neutral bg-page px-3 font-mono text-sm text-neutral uppercase focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-[invalid=true]:border-critical"
-    />
+  <div class="apogee-color flex flex-col gap-2">
+    <div class="flex items-center gap-2">
+      <input
+        type="color"
+        value={value}
+        list={listId}
+        class="apogee-color-swatch size-10 shrink-0 cursor-pointer rounded-md border border-neutral"
+        aria-label="Color picker"
+        {...rest}
+      />
+      <input
+        id={id}
+        type="text"
+        name={name}
+        value={value}
+        required={required}
+        aria-describedby={describedby}
+        aria-invalid={error ? 'true' : undefined}
+        spellcheck="false"
+        class="apogee-color-hex h-10 w-28 rounded-md border border-neutral bg-page px-3 font-mono text-sm text-neutral uppercase focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-[invalid=true]:border-critical"
+      />
+      {
+        eyedropper && (
+          <button
+            type="button"
+            class="apogee-color-eyedropper grid size-10 shrink-0 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            aria-label="Pick a colour from the screen"
+          >
+            <Pipette class="size-4" aria-hidden="true" />
+          </button>
+        )
+      }
+    </div>
+    {
+      swatches?.length ? (
+        <fieldset class="apogee-color-swatches m-0 flex flex-wrap gap-2 border-0 p-0 no-js:hidden">
+          <legend class="sr-only">Presets</legend>
+          {swatches.map((c) => (
+            <label class="relative inline-flex cursor-pointer">
+              <input type="radio" name={`${id}-swatch`} value={c} checked={same(c, value)} class="peer sr-only" />
+              {/* The swatch colour is user data, not a palette token. */}
+              <span
+                class="block size-6 rounded-full ring-1 ring-(--border-neutral-faded) ring-inset peer-checked:shadow-[0_0_0_2px_var(--background-page),0_0_0_4px_var(--swatch)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-focus"
+                style={`--swatch: ${c}; background: var(--swatch)`}
+              />
+              <span class="sr-only">{c}</span>
+            </label>
+          ))}
+        </fieldset>
+      ) : null
+    }
+    {
+      listId && (
+        <datalist id={listId}>
+          {presets!.map((c) => (
+            <option value={c} />
+          ))}
+        </datalist>
+      )
+    }
   </div>
 </Field>
 
@@ -81,9 +143,32 @@ const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolea
     const swatch = root.querySelector<HTMLInputElement>('.apogee-color-swatch')
     const hex = root.querySelector<HTMLInputElement>('.apogee-color-hex')
     if (!swatch || !hex) return
-    swatch.addEventListener('input', () => (hex.value = swatch.value.toUpperCase()))
+    const radios = [...root.querySelectorAll<HTMLInputElement>('.apogee-color-swatches input')]
+    // One path for every source: native picker, typed hex, swatch, eyedropper.
+    const set = (value: string, from?: HTMLInputElement) => {
+      if (from !== swatch) swatch.value = value.toLowerCase()
+      if (from !== hex) hex.value = value.toUpperCase()
+      for (const r of radios) r.checked = r.value.toLowerCase() === value.toLowerCase()
+      if (from !== swatch) swatch.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+    swatch.addEventListener('input', () => set(swatch.value, swatch))
     hex.addEventListener('input', () => {
-      if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) swatch.value = hex.value
+      if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) set(hex.value, hex)
     })
+    for (const r of radios) r.addEventListener('change', () => r.checked && set(r.value))
+
+    const picker = root.querySelector<HTMLButtonElement>('.apogee-color-eyedropper')
+    if (picker) {
+      const EyeDropper = (window as unknown as { EyeDropper?: new () => { open(): Promise<{ sRGBHex: string }> } }).EyeDropper
+      if (!EyeDropper) picker.remove()
+      else
+        picker.addEventListener('click', async () => {
+          try {
+            set((await new EyeDropper().open()).sRGBHex)
+          } catch {
+            // The user pressed Escape; keep the current colour.
+          }
+        })
+    }
   })
 </script>

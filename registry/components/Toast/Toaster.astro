@@ -12,7 +12,11 @@
  * corner per call (regions are created as needed); `apogeeToast.dismiss(id)`
  * closes one early. `actions` render as small ghost buttons under the message
  * (click runs `onClick` or follows `href`, then dismisses); `width` is
- * `short` (20rem), `long` (25rem) or a CSS length.
+ * `short` (20rem), `long` (25rem) or a CSS length. `featured` puts the icon in a
+ * tinted tile; `avatar` ({ src?, name, status? }) with `time` turns the title
+ * into a "name · time" line; `progress` (0–100) adds a bar that
+ * `apogeeToast.update(id, { progress, message, title })` moves. A progress
+ * toast stays until it reaches 100, then its timer starts.
  *
  * The markup lives in a build-time <template> + icon set so Tailwind sees every
  * class; the script clones them. Needs JS (a toast is inherently imperative).
@@ -20,6 +24,7 @@
 import type { HTMLAttributes } from 'astro/types'
 import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro'
 import CloseButton from '../CloseButton/CloseButton.astro'
+import FeaturedIcon from '../FeaturedIcon/FeaturedIcon.astro'
 import { buttonSizes, buttonStyles } from '../Button/button.ts'
 
 /** @composable */
@@ -73,12 +78,34 @@ const positions = {
   <span data-color="critical"><CircleAlert class="size-5 text-critical" /></span>
 </div>
 
+<div id="apogee-toast-icons-featured" hidden>
+  <span data-color="primary"><FeaturedIcon color="primary" size="small"><Info /></FeaturedIcon></span>
+  <span data-color="neutral"><FeaturedIcon color="neutral" size="small"><Info /></FeaturedIcon></span>
+  <span data-color="positive"><FeaturedIcon color="positive" size="small"><CircleCheck /></FeaturedIcon></span>
+  <span data-color="warning"><FeaturedIcon color="warning" size="small"><TriangleAlert /></FeaturedIcon></span>
+  <span data-color="critical"><FeaturedIcon color="critical" size="small"><CircleAlert /></FeaturedIcon></span>
+</div>
+
+<template id="apogee-toast-avatar">
+  <span class="apogee-toast-avatar relative inline-grid size-10 shrink-0 place-items-center rounded-full bg-neutral-faded text-sm font-medium text-neutral">
+    <img class="hidden size-full rounded-full object-cover" alt="" />
+    <span class="apogee-toast-initials"></span>
+    <span class="apogee-toast-status absolute end-0 bottom-0 hidden size-2.5 rounded-full bg-positive ring-2 ring-(--background-elevation-raised)"></span>
+  </span>
+</template>
+
 <template id="apogee-toast-template">
   <div class="apogee-toast pointer-events-auto flex w-80 max-w-[calc(100vw-2rem)] items-start gap-3 rounded-lg border border-neutral bg-elevation-raised p-3 text-sm shadow-lg">
     <span class="apogee-toast-icon mt-0.5 shrink-0"></span>
     <div class="min-w-0 flex-1">
       <p class="apogee-toast-title font-medium text-neutral"></p>
       <p class="apogee-toast-msg text-neutral-faded"></p>
+      <div class="apogee-toast-progress mt-2 flex items-center gap-2" aria-live="off">
+        <div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progress" class="h-1.5 flex-1 overflow-hidden rounded-full bg-neutral-faded">
+          <div class="apogee-toast-fill h-full w-full rounded-full bg-primary"></div>
+        </div>
+        <span class="apogee-toast-pct text-xs text-neutral-faded tabular-nums"></span>
+      </div>
       <div class="apogee-toast-actions mt-2 flex flex-wrap gap-1">
         <button
           type="button"
@@ -99,6 +126,10 @@ const positions = {
   .apogee-toast[data-color='positive'] { border-color: var(--border-positive-faded); }
   .apogee-toast[data-color='warning'] { border-color: var(--border-warning-faded); }
   .apogee-toast[data-color='critical'] { border-color: var(--border-critical-faded); }
+  .apogee-toast-fill {
+    translate: -100% 0;
+    transition: translate var(--duration-medium) var(--ease-standard);
+  }
   .apogee-toast--out {
     animation: apogee-toast-out var(--duration-fast) var(--ease-standard) forwards;
   }
@@ -119,6 +150,9 @@ const positions = {
     .apogee-toast--out {
       animation: none;
     }
+    .apogee-toast-fill {
+      transition: none;
+    }
   }
 </style>
 
@@ -126,6 +160,8 @@ const positions = {
   const host = document.querySelector<HTMLElement>('[data-apogee-toaster]')
   const template = document.getElementById('apogee-toast-template') as HTMLTemplateElement | null
   const icons = document.getElementById('apogee-toast-icons')
+  const featuredIcons = document.getElementById('apogee-toast-icons-featured')
+  const avatarTpl = document.getElementById('apogee-toast-avatar') as HTMLTemplateElement | null
   const positions: Record<string, string> = host?.dataset.positions ? JSON.parse(host.dataset.positions) : {}
   const BASE = 'pointer-events-none fixed z-50 flex gap-2'
 
@@ -146,14 +182,28 @@ const positions = {
   }
 
   let seq = 0
-  const open = new Map<number, () => void>()
+  type Patch = { message?: string; title?: string; progress?: number }
+  const open = new Map<number, { dismiss: () => void; update: (p: Patch) => void }>()
 
   type Action = { label: string; onClick?: () => void; href?: string }
   function toast(
     message: string,
-    opts: { color?: string; title?: string; duration?: number; position?: string; actions?: Action[]; width?: string } = {},
+    opts: {
+      color?: string
+      title?: string
+      duration?: number
+      position?: string
+      actions?: Action[]
+      width?: string
+      featured?: boolean
+      avatar?: { src?: string; name: string; status?: 'online' | 'offline' }
+      time?: string
+      progress?: number
+    } = {},
   ): number {
-    const { color = 'primary', title, duration = 4000, position = host?.dataset.position ?? 'bottom-end', actions = [], width } = opts
+    const { color = 'primary', title, position = host?.dataset.position ?? 'bottom-end', actions = [], width, featured, avatar, time, progress } = opts
+    // A progress toast waits for 100 before its timer starts.
+    const duration = progress !== undefined && progress < 100 ? 0 : (opts.duration ?? 4000)
     const region = regionFor(position)
     if (!region || !template?.content.firstElementChild) return -1
 
@@ -162,16 +212,60 @@ const positions = {
     el.setAttribute('role', color === 'critical' || color === 'warning' ? 'alert' : 'status')
 
     const iconEl = el.querySelector('.apogee-toast-icon')
-    const iconSrc = icons?.querySelector(`[data-color="${color}"]`)
-    if (iconEl && iconSrc) iconEl.innerHTML = iconSrc.innerHTML
+    if (iconEl && avatar && avatarTpl?.content.firstElementChild) {
+      const av = avatarTpl.content.firstElementChild.cloneNode(true) as HTMLElement
+      const img = av.querySelector('img')!
+      if (avatar.src) {
+        img.src = avatar.src
+        img.classList.remove('hidden')
+      } else {
+        av.querySelector('.apogee-toast-initials')!.textContent = avatar.name
+          .split(/\s+/)
+          .map((w) => w[0])
+          .join('')
+          .slice(0, 2)
+          .toUpperCase()
+      }
+      if (avatar.status) {
+        const dot = av.querySelector<HTMLElement>('.apogee-toast-status')!
+        dot.classList.remove('hidden')
+        if (avatar.status === 'offline') dot.classList.replace('bg-positive', 'bg-neutral-faded')
+      }
+      iconEl.replaceWith(av)
+    } else {
+      const iconSrc = (featured ? featuredIcons : icons)?.querySelector(`[data-color="${color}"]`)
+      if (iconEl && iconSrc) iconEl.innerHTML = iconSrc.innerHTML
+    }
 
     const titleEl = el.querySelector<HTMLElement>('.apogee-toast-title')
     const msgEl = el.querySelector<HTMLElement>('.apogee-toast-msg')
+    const heading = avatar?.name ?? title
     if (titleEl) {
-      if (title) titleEl.textContent = title
-      else titleEl.remove()
+      if (heading) {
+        titleEl.textContent = heading
+        if (time) {
+          const t = document.createElement('span')
+          t.className = 'ms-1.5 font-normal text-neutral-faded'
+          t.textContent = `· ${time}`
+          titleEl.append(t)
+        }
+      } else titleEl.remove()
     }
     if (msgEl) msgEl.textContent = message
+
+    const bar = el.querySelector<HTMLElement>('[role="progressbar"]')
+    const fill = el.querySelector<HTMLElement>('.apogee-toast-fill')
+    const pct = el.querySelector<HTMLElement>('.apogee-toast-pct')
+    const setProgress = (v: number) => {
+      const n = Math.max(0, Math.min(100, Math.round(v)))
+      bar?.setAttribute('aria-valuenow', String(n))
+      // The fill slides in from the inline start, mirrored in RTL.
+      const sign = getComputedStyle(region).direction === 'rtl' ? -1 : 1
+      if (fill) fill.style.translate = `calc((${n}% - 100%) * ${sign}) 0`
+      if (pct) pct.textContent = `${n}%`
+    }
+    if (progress === undefined) el.querySelector('.apogee-toast-progress')?.remove()
+    else setProgress(progress)
 
     const id = ++seq
     let removed = false
@@ -206,39 +300,55 @@ const positions = {
     if (width) el.style.width = width === 'short' ? '20rem' : width === 'long' ? '25rem' : width
 
     // Auto-dismiss timer that pauses while the pointer or focus is on the toast.
-    if (duration > 0) {
-      let remaining = duration
-      let startedAt = Date.now()
-      let timer: number | undefined
-      let running = false
-      let hovered = false
-      let focused = false
-      const resume = () => {
-        if (running || hovered || focused) return
-        clearTimeout(timer)
-        startedAt = Date.now()
-        running = true
-        timer = window.setTimeout(dismiss, remaining)
-      }
-      const pause = () => {
-        if (!running) return
-        clearTimeout(timer)
-        running = false
-        remaining = Math.max(0, remaining - (Date.now() - startedAt))
-      }
-      el.addEventListener('mouseenter', () => { hovered = true; pause() })
-      el.addEventListener('mouseleave', () => { hovered = false; resume() })
-      el.addEventListener('focusin', () => { focused = true; pause() })
-      el.addEventListener('focusout', () => { focused = false; resume() })
+    // `arm` starts it once: at creation, or when a progress toast reaches 100.
+    let remaining = 0
+    let startedAt = 0
+    let timer: number | undefined
+    let armed = false
+    let running = false
+    let hovered = false
+    let focused = false
+    const resume = () => {
+      if (!armed || running || hovered || focused) return
+      clearTimeout(timer)
+      startedAt = Date.now()
+      running = true
+      timer = window.setTimeout(dismiss, remaining)
+    }
+    const pause = () => {
+      if (!running) return
+      clearTimeout(timer)
+      running = false
+      remaining = Math.max(0, remaining - (Date.now() - startedAt))
+    }
+    const arm = (ms: number) => {
+      if (armed || ms <= 0) return
+      armed = true
+      remaining = ms
       resume()
+    }
+    el.addEventListener('mouseenter', () => { hovered = true; pause() })
+    el.addEventListener('mouseleave', () => { hovered = false; resume() })
+    el.addEventListener('focusin', () => { focused = true; pause() })
+    el.addEventListener('focusout', () => { focused = false; resume() })
+    arm(duration)
+
+    const update = (patch: Patch) => {
+      if (patch.message !== undefined && msgEl) msgEl.textContent = patch.message
+      if (patch.title !== undefined && titleEl?.isConnected) titleEl.textContent = patch.title
+      if (patch.progress !== undefined) {
+        setProgress(patch.progress)
+        if (patch.progress >= 100) arm(opts.duration ?? 4000)
+      }
     }
 
     el.querySelector('.apogee-toast-close')?.addEventListener('click', dismiss)
     region.appendChild(el)
-    open.set(id, dismiss)
+    open.set(id, { dismiss, update })
     return id
   }
-  toast.dismiss = (id: number) => open.get(id)?.()
+  toast.dismiss = (id: number) => open.get(id)?.dismiss()
+  toast.update = (id: number, patch: Patch) => open.get(id)?.update(patch)
 
   ;(window as unknown as { apogeeToast: typeof toast }).apogeeToast = toast
 </script>

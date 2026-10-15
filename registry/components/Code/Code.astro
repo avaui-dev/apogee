@@ -1,15 +1,17 @@
 ---
 /**
  * Code — inline `<code>` or a `block` code panel. Zero JS by default.
- * No syntax highlighting — pair with Astro's built-in Shiki / Expressive Code
- * in Markdown for that; this is the bare styled element.
+ * `lang` + `code` highlight at build time in both themes (Shiki).
  *
- *   Run <Code>npm i</Code>            →  inline
- *   <Code block>{snippet}</Code>      →  block
- *   <Code copy>{snippet}</Code>       →  block + copy button (small JS island)
+ *   Run <Code>npm i</Code>                    →  inline
+ *   <Code block>{snippet}</Code>              →  block
+ *   <Code copy>{snippet}</Code>               →  block + copy button (small JS island)
+ *   <Code lang="ts" code={src} lineNumbers /> →  numbered lines (CSS only)
+ *   <Code lang="ts" code={src} maxHeight="12rem" /> → collapsed with "Show more"
  *
- * `copy` adds a copy-to-clipboard button (progressive enhancement — hidden with
- * `no-js:hidden` when JS is off, since the code is still selectable).
+ * The copy button and the "Show more" toggle are progressive enhancement
+ * (`no-js:hidden`); without JS the code stays selectable and a collapsed block
+ * scrolls instead.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Copy, Check } from '@lucide/astro'
@@ -25,12 +27,21 @@ interface Props extends Omit<HTMLAttributes<'code'>, 'lang'> {
   lang?: ComponentProps<typeof Highlighted>['lang']
   /** Source to highlight when `lang` is set (the slot is plain text otherwise). */
   code?: string
+  /** Number the lines (needs `lang` and `code`). */
+  lineNumbers?: boolean
+  /** Collapse a long block to this height (CSS length) behind a "Show more" toggle. */
+  maxHeight?: string
   class?: string
 }
 
-const { block = false, copy = false, lang, code, class: className, ...rest } = Astro.props
-const isBlock = block || copy || Boolean(lang)
+const { block = false, copy = false, lang, code, lineNumbers = false, maxHeight, class: className, ...rest } = Astro.props
+const isBlock = block || copy || Boolean(lang) || Boolean(maxHeight)
+const wrapped = copy || Boolean(maxHeight)
 const themes = { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' } as const
+const numbered = lineNumbers && Boolean(lang && code)
+const highlighted = Boolean(lang && code)
+// Highlighted code renders its own <pre>; plain code gets ours.
+const panel = 'apogee-code-pre rounded-lg border border-neutral bg-page-faded p-4 font-mono text-sm text-neutral'
 ---
 
 {
@@ -42,27 +53,48 @@ const themes = { light: 'github-light-high-contrast', dark: 'github-dark-high-co
       ]}
       {...rest}
     ><slot /></code>
-  ) : copy ? (
-    <div class:list={['apogee-code relative', className]} {...rest}>
-      <pre class="overflow-x-auto rounded-lg border border-neutral bg-page-faded p-4 pe-12 text-sm"><code class="apogee-code-src font-mono text-neutral">{lang && code ? <Highlighted code={code} lang={lang} themes={themes} inline /> : <slot />}</code></pre>
-      <button
-        type="button"
-        class="apogee-code-copy absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-        aria-label="Copy code"
-      >
-        <Copy class="apogee-code-icon-copy size-4" aria-hidden="true" />
-        <Check class="apogee-code-icon-check size-4 text-positive" aria-hidden="true" />
-        <span class="apogee-code-label absolute top-full end-0 mt-1.5 rounded-md bg-inverted px-2 py-1 text-xs text-on-inverted" role="status">Copied</span>
-      </button>
+  ) : wrapped ? (
+    <div
+      class:list={['apogee-code relative', className]}
+      data-line-numbers={numbered ? 'true' : undefined}
+      data-expanded={maxHeight ? 'false' : undefined}
+      style={maxHeight ? `--apogee-code-max: ${maxHeight}` : undefined}
+      {...rest}
+    >
+      {highlighted ? (
+        <div class:list={[panel, 'apogee-code-src', copy && 'pe-12']}><Highlighted code={code!} lang={lang!} themes={themes} /></div>
+      ) : (
+        <pre class:list={[panel, 'overflow-x-auto', copy && 'pe-12']}><code class="apogee-code-src"><slot /></code></pre>
+      )}
+      {copy && (
+        <button
+          type="button"
+          class="apogee-code-copy absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          aria-label="Copy code"
+        >
+          <Copy class="apogee-code-icon-copy size-4" aria-hidden="true" />
+          <Check class="apogee-code-icon-check size-4 text-positive" aria-hidden="true" />
+          <span class="apogee-code-label absolute top-full end-0 mt-1.5 rounded-md bg-inverted px-2 py-1 text-xs text-on-inverted" role="status">Copied</span>
+        </button>
+      )}
+      {maxHeight && (
+        <div class="mt-2 flex justify-center no-js:hidden">
+          <button
+            type="button"
+            class="apogee-code-more rounded-md border border-neutral bg-page px-3 py-1 text-xs font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            aria-expanded="false"
+          >Show more</button>
+        </div>
+      )}
     </div>
   ) : (
-    <pre
-      class:list={[
-        'overflow-x-auto rounded-lg border border-neutral bg-page-faded p-4 text-sm',
-        className,
-      ]}
-      {...rest}
-    ><code class="apogee-code-plain font-mono text-neutral">{lang && code ? <Highlighted code={code} lang={lang} themes={themes} inline /> : <slot />}</code></pre>
+    highlighted ? (
+      <div class:list={[panel, 'apogee-code-plain', className]} data-line-numbers={numbered ? 'true' : undefined} {...rest}>
+        <Highlighted code={code!} lang={lang!} themes={themes} />
+      </div>
+    ) : (
+      <pre class:list={[panel, 'overflow-x-auto', className]} {...rest}><code class="apogee-code-plain"><slot /></code></pre>
+    )
   )
 }
 
@@ -71,6 +103,37 @@ const themes = { light: 'github-light-high-contrast', dark: 'github-dark-high-co
   :global([data-theme="dark"]) .apogee-code-src :global(span),
   :global([data-theme="dark"]) .apogee-code-plain :global(span) {
     color: var(--shiki-dark) !important;
+  }
+  /* The highlighter's own <pre> sits inside our panel: drop its box; it keeps
+     the horizontal scroll (and its tab stop) so wide lines stay reachable. */
+  .apogee-code-pre :global(pre.astro-code) {
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    background-color: transparent !important;
+  }
+  /* Line numbers: a counter in a pseudo-element, so copying skips them. */
+  [data-line-numbers] :global(.astro-code) {
+    counter-reset: apogee-line;
+  }
+  [data-line-numbers] :global(.line)::before {
+    counter-increment: apogee-line;
+    content: counter(apogee-line);
+    display: inline-block;
+    inline-size: 3ch;
+    margin-inline-end: 1rem;
+    text-align: end;
+    color: var(--foreground-neutral-faded) !important;
+    user-select: none;
+  }
+  /* Collapsed block: clipped with a fade until expanded. */
+  .apogee-code[data-expanded='false'] .apogee-code-pre {
+    max-block-size: var(--apogee-code-max);
+    overflow: auto;
+  }
+  :global(.js) .apogee-code[data-expanded='false'] .apogee-code-pre {
+    overflow-y: hidden;
+    mask-image: linear-gradient(to bottom, black 60%, transparent);
   }
   /* Copy button state, driven by data-copied on the button. */
   .apogee-code-icon-check {
@@ -92,6 +155,11 @@ const themes = { light: 'github-light-high-contrast', dark: 'github-dark-high-co
   }
   .apogee-code-copy[data-copied='true'] .apogee-code-label {
     opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-code-label {
+      transition: none;
+    }
   }
 </style>
 
@@ -117,6 +185,18 @@ const themes = { light: 'github-light-high-contrast', dark: 'github-dark-high-co
           btn.dataset.copied = 'false'
         }, 3000),
       )
+    })
+  })
+
+  // Expand / collapse a long block.
+  island('.apogee-code-more', (btn) => {
+    const root = btn.closest<HTMLElement>('.apogee-code')
+    if (!root) return
+    btn.addEventListener('click', () => {
+      const open = root.dataset.expanded !== 'true'
+      root.dataset.expanded = String(open)
+      btn.setAttribute('aria-expanded', String(open))
+      btn.textContent = open ? 'Show less' : 'Show more'
     })
   })
 </script>

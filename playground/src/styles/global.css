@@ -53,6 +53,10 @@ html {
     border: 0;
     padding: 0;
     color: inherit;
+    font-family: inherit;
+    font-style: normal;
+    font-size: inherit;
+    quotes: none;
   }
   :is([data-preview-live], .not-content) :is(figure, figcaption, dt, dd, small, h5, h6, .lead):not([data-preview-live] .apogee-prose *, .not-content .apogee-prose *) {
     color: inherit;

@@ -7,6 +7,9 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **Carousel** arrows at an edge are disabled instead of hidden, so the layout does not shift.
+- **Code** with `lang` keeps line breaks: highlighted code renders in its own block inside the panel (it used the inline mode, which joined lines).
+- **CommandPalette** "No results." now actually shows when nothing matches (it was stuck hidden).
 - **Table** header row has a faded fill by default, matching DataGrid (`headerFill={false}` restores the old look). DataGrid checkboxes use `data-row` / `data-all` instead of `data-datagrid-row` / `data-datagrid-all`.
 - **NavLink** wraps its label in a span that truncates with an ellipsis instead of wrapping to a second line.
 - **SectionHeader** moves `max-w-prose` from the root to the text block, so the root spans its container (actions can sit beside the text).
@@ -15,6 +18,15 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Message** (new) — a chat message: sender in `<cite>`, `<time datetime>`, own messages (`me`) at the end, `status` sent | read | failed, `typing` dots, slots for avatar, reply quote, link preview, attachment and reactions. Zero JS.
+- **Carousel** — `controlsVariant="overlay"` (translucent borderless arrows), `dotsPosition="overlay"`.
+- **Breadcrumbs** — `variant` text | button | line; items take `icon` and `ariaLabel` (icon-only crumbs).
+- **ColorPicker** — `swatches` (preset colours as native radios), `presets` (`<datalist>` suggestions), `eyedropper` (screen sampler where supported); `required` now reaches the hex field that submits.
+- **Code** — `lineNumbers` (CSS counters, skipped when copying), `maxHeight` collapses a long block behind a "Show more" toggle (scrolls without JS); the "Copied" label respects reduced motion.
+- **Stat** — `changeStyle` simple | trend | modern, `comparison`, `start` slot, `size`; `trend` defaults to `up`; the change announces "Up" or "Down".
+- **CommandPalette** — commands take `icon`, `avatar`, `description` (`stacked` puts it on its own line) and `shortcut` (key caps that also run the command from anywhere); `empty` and `footer` slots; search ignores accents.
+- **Toast** — `featured` icon tile, `avatar` + `time` for message toasts, `progress` with `apogeeToast.update(id, { progress, message, title })`; a progress toast stays until 100.
+- **Alert** — `variant="banner"` (full-width strip, content in a centred column, actions at the end from `md`), `featured` (icon in a FeaturedIcon tile).
 - **TreeView** (new) with **TreeItem** — branches on native `<details>`, leaves as rows or links; the island adds `role="tree"`, one tab stop, arrow keys, Home / End, typeahead and cascading checkboxes (`apogee:tree-select`). Without JS it stays a nested list.
 - **Timeline** — items take `avatar` (as the marker), `datetime`, `href`; `line` solid | dotted | none; `size`; an `item-<index>` slot per item for rich bodies (activity feeds).
 - **Pagination** — below `md` the numbers give way to a "Page x of y" summary (zero JS); `labels` shows Previous / Next text; `rounded` cells.

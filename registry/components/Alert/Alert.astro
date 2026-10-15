@@ -2,21 +2,25 @@
 /**
  * Alert — an inline message with a status colour and icon. Zero JS.
  *
- * For a dynamically-shown alert (e.g. a form result), add `role="alert"` so it's
- * announced; a static callout needs no role. Buttons go in the `actions` slot.
+ * Critical and warning alerts get `role="alert"` so they are announced; pass
+ * `role` to override. Buttons go in the `actions` slot. `variant="banner"` is
+ * a full-width strip for the top or bottom of a page; `featured` puts the icon
+ * in a tinted tile (FeaturedIcon).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro'
+import FeaturedIcon from '../FeaturedIcon/FeaturedIcon.astro'
 
 const icons = { primary: Info, neutral: Info, positive: CircleCheck, warning: TriangleAlert, critical: CircleAlert } as const
+const faded = {
+  primary: 'bg-primary-faded border-primary-faded',
+  neutral: 'bg-neutral-faded border-neutral-faded',
+  critical: 'bg-critical-faded border-critical-faded',
+  positive: 'bg-positive-faded border-positive-faded',
+  warning: 'bg-warning-faded border-warning-faded',
+} as const
 const styles = {
-  faded: {
-    primary: 'bg-primary-faded border-primary-faded',
-    neutral: 'bg-neutral-faded border-neutral-faded',
-    critical: 'bg-critical-faded border-critical-faded',
-    positive: 'bg-positive-faded border-positive-faded',
-    warning: 'bg-warning-faded border-warning-faded',
-  },
+  faded,
   solid: {
     primary: 'bg-primary text-on-primary border-transparent',
     neutral: 'bg-neutral text-on-neutral border-transparent',
@@ -24,6 +28,7 @@ const styles = {
     positive: 'bg-positive text-on-positive border-transparent',
     warning: 'bg-warning text-on-warning border-transparent',
   },
+  banner: faded,
 } as const
 const tints = {
   primary: 'text-primary',
@@ -37,42 +42,76 @@ const tints = {
 interface Props extends Omit<HTMLAttributes<'div'>, 'title'> {
   /** Hue. @category layout */
   color?: keyof typeof icons
-  /** Fill style. @category layout */
+  /** Fill style; `banner` is a full-width strip. @category layout */
   variant?: keyof typeof styles
   /** @category content */
   title?: string
   /** Hides the icon column. @category layout */
   inline?: boolean
+  /** The icon in a tinted tile (FeaturedIcon). @category layout */
+  featured?: boolean
   class?: string
 }
 
-const { color = 'neutral', variant = 'faded', title, inline = false, role, class: className, ...rest } = Astro.props
+const { color = 'neutral', variant = 'faded', title, inline = false, featured = false, role, class: className, ...rest } = Astro.props
 const Icon = icons[color]
 const solid = variant === 'solid'
+const banner = variant === 'banner'
 // Critical and warning alerts announce themselves; pass `role` to override.
 const liveRole = role ?? (color === 'critical' || color === 'warning' ? 'alert' : undefined)
+const hasIcon = Astro.slots.has('icon')
 ---
 
-<div role={liveRole} class:list={['flex gap-3 rounded-lg border p-4', styles[variant][color], className]} {...rest}>
-  {
-    !inline &&
-      (Astro.slots.has('icon') ? (
-        <span class:list={['mt-0.5 inline-flex shrink-0 [&_svg]:size-5', solid ? 'text-current' : tints[color]]} aria-hidden="true">
-          <slot name="icon" />
-        </span>
-      ) : (
-        <Icon class:list={['mt-0.5 size-5 shrink-0', solid ? 'text-current' : tints[color]]} aria-hidden="true" />
-      ))
-  }
-  <div class="min-w-0 flex-1 text-sm">
-    {title && <p class:list={['font-medium', solid ? 'text-current' : 'text-neutral']}>{title}</p>}
-    <div class:list={[title && 'mt-0.5', solid ? 'text-current' : title ? 'text-neutral-faded' : 'text-neutral']}>
-      <slot />
-    </div>
-    {Astro.slots.has('actions') && (
-      <div class="mt-3 flex flex-wrap gap-2">
-        <slot name="actions" />
+<div
+  role={liveRole}
+  class:list={[
+    banner ? 'border-x-0 border-t-0 border-b px-gutter py-3' : 'flex gap-3 rounded-lg border p-4',
+    styles[variant][color],
+    className,
+  ]}
+  {...rest}
+>
+  <div class:list={banner ? 'mx-auto flex w-full max-w-7xl gap-3 md:items-center' : 'contents'}>
+    {
+      !inline &&
+        (featured ? (
+          <span class:list={['apogee-alert-icon inline-flex shrink-0', banner && 'max-md:hidden']}>
+            {solid ? (
+              // On a solid fill the tile takes the on-colour, so the glyph stays visible.
+              <span class="inline-grid size-10 place-items-center rounded-lg bg-current/15 [&>svg]:size-5" aria-hidden="true">
+                {hasIcon ? <slot name="icon" /> : <Icon />}
+              </span>
+            ) : (
+              <FeaturedIcon theme="light" color={color} size="medium">
+                {hasIcon ? <slot name="icon" /> : <Icon />}
+              </FeaturedIcon>
+            )}
+          </span>
+        ) : hasIcon ? (
+          <span
+            class:list={['mt-0.5 inline-flex shrink-0 [&_svg]:size-5', solid ? 'text-current' : tints[color], banner && 'max-md:hidden md:mt-0']}
+            aria-hidden="true"
+          >
+            <slot name="icon" />
+          </span>
+        ) : (
+          <Icon class:list={['mt-0.5 size-5 shrink-0', solid ? 'text-current' : tints[color], banner && 'max-md:hidden md:mt-0']} aria-hidden="true" />
+        ))
+    }
+    <div class:list={['min-w-0 flex-1 text-sm', banner && 'md:flex md:items-center md:gap-4']}>
+      <div class="min-w-0 flex-1">
+        {title && <p class:list={['font-medium', solid ? 'text-current' : 'text-neutral']}>{title}</p>}
+        <div class:list={[title && 'mt-0.5', solid ? 'text-current' : title ? 'text-neutral-faded' : 'text-neutral']}>
+          <slot />
+        </div>
       </div>
-    )}
+      {
+        Astro.slots.has('actions') && (
+          <div class:list={['apogee-alert-actions mt-3 flex flex-wrap gap-2', banner && 'md:ms-auto md:mt-0 md:shrink-0']}>
+            <slot name="actions" />
+          </div>
+        )
+      }
+    </div>
   </div>
 </div>

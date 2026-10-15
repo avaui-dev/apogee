@@ -8,6 +8,9 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import CommandPalette from '../../../../registry/components/CommandPalette/CommandPalette.astro'
+import Kbd from '../../../../registry/components/Kbd/Kbd.astro'
+import EmptyState from '../../../../registry/components/EmptyState/EmptyState.astro'
+import { FolderPlus, FileText, Settings, SearchX } from '@lucide/astro'
 
 <JsNote fallback="There is no fallback — the dialog and shortcut don't run at all. Always pair a trigger with a real, independently reachable link or menu.">
   Opens on ⌘K / Ctrl+K (or a configurable `shortcut`), or from any element
@@ -76,10 +79,38 @@ dialog doesn't spread `...rest`.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `id` | `string` | `'apogee-command'` | Dialog id; also the target for `data-command-open="<id>"` triggers. |
-| `commands` | `{ label: string; href?: string; group?: string; keywords?: string; id?: string }[]` | — | The command list. Required. |
+| `commands` | `{ label; href?; group?; keywords?; id?; icon?; avatar?; description?; shortcut?; stacked? }[]` | — | The command list. Required. `icon` is a Lucide component; `avatar` is `{ src?, name? }`; `description` shows after the label, or under it with `stacked`; `shortcut` (e.g. `['mod', 'shift', 'p']`) renders key caps and runs the command from anywhere on the page. |
 | `placeholder` | `string` | `'Type a command or search…'` | Search input placeholder. |
 | `shortcut` | `string` | `'k'` | Key pressed with ⌘ / Ctrl to open. |
 | `class` | `string` | — | Extra classes on the `<dialog>`. |
+
+Slots: `empty` replaces "No results." (an EmptyState fits); `footer` is a row of
+key hints under the list, shown from `md`.
+
+## Rich commands
+
+Icons, avatars, descriptions and shortcuts. Try typing "resume" (accents are
+ignored) or press ⌘⇧P / Ctrl+Shift+P anywhere on this page.
+
+<Preview code={`<CommandPalette id="rich-command" commands={[
+  { label: 'New project', id: 'new-project', group: 'Actions', icon: FolderPlus, shortcut: ['mod', 'shift', 'p'] },
+  { label: 'Résumé', group: 'Files', icon: FileText, description: 'Updated yesterday' },
+  { label: 'Ana Lima', group: 'People', avatar: { name: 'Ana Lima' }, description: 'Product designer', stacked: true },
+]}>
+  <EmptyState slot="empty" variant="plain" size="small" title="Nothing matches"><SearchX slot="icon" /></EmptyState>
+  <Fragment slot="footer"><span><Kbd>↑</Kbd> <Kbd>↓</Kbd> to move</span><span><Kbd>↵</Kbd> to select</span><span><Kbd>esc</Kbd> to close</span></Fragment>
+</CommandPalette>`}>
+  <button type="button" data-command-open="rich-command" class="rounded-md border border-neutral px-3 py-2 text-sm">Open rich palette</button>
+  <CommandPalette id="rich-command" shortcut="j" commands={[
+    { label: 'New project', id: 'new-project', group: 'Actions', icon: FolderPlus, shortcut: ['mod', 'shift', 'p'] },
+    { label: 'Settings', href: '#', group: 'Actions', icon: Settings, shortcut: ['mod', ','] },
+    { label: 'Résumé', group: 'Files', icon: FileText, description: 'Updated yesterday' },
+    { label: 'Ana Lima', group: 'People', avatar: { name: 'Ana Lima' }, description: 'Product designer', stacked: true },
+  ]}>
+    <EmptyState slot="empty" variant="plain" size="small" title="Nothing matches"><SearchX slot="icon" /></EmptyState>
+    <Fragment slot="footer"><span><Kbd>↑</Kbd> <Kbd>↓</Kbd> to move</span><span><Kbd>↵</Kbd> to select</span><span><Kbd>esc</Kbd> to close</span></Fragment>
+  </CommandPalette>
+</Preview>
 
 ## States
 
@@ -87,8 +118,8 @@ dialog doesn't spread `...rest`.
 - **Open** — backdrop + dialog fade in (`@starting-style`).
 - **Highlighted option** — the active result (`aria-selected`), moved with
   arrow keys or reset to the first result on every filter.
-- **Empty** — "No results." shows when nothing matches the query; empty
-  groups hide their heading.
+- **Empty** — "No results." (or the `empty` slot) shows when nothing matches
+  the query; empty groups hide their heading.
 
 ## Examples
 
@@ -146,7 +177,7 @@ Custom shortcut key:
 | `--background-page` | Dialog background |
 | `--foreground-neutral` | Option text |
 | `--foreground-neutral-faded` | Search icon, group heading, placeholder, empty state |
-| `--background-neutral-faded` | Option hover / selected background |
+| `--background-neutral-faded-highlighted` | Option hover / selected background |
 | `--duration-fast` / `--ease-standard` | Open/close transition |
 
 ## Do / Don't
