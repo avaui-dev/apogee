@@ -2462,7 +2462,8 @@ test('color picker: a swatch fires one change, on the named hex field', async ({
 test('pagination: a disabled edge is hidden from assistive tech', async ({ page }) => {
   await page.goto('/docs/pagination')
   await expect(page.locator('nav[aria-label="Pagination"] > span[aria-hidden="true"]').first()).toBeAttached()
-  await expect(page.locator('nav[aria-label="Pagination"] [aria-disabled]')).toHaveCount(0)
+  // Marked inactive too, so contrast rules treat the faded label as a disabled control.
+  await expect(page.locator('nav[aria-label="Pagination"] > span[aria-hidden="true"]').first()).toHaveAttribute('aria-disabled', 'true')
 })
 
 test('disabled checkbox uses the disabled tokens, not opacity', async ({ page }) => {
@@ -2532,6 +2533,8 @@ test('docs sidebar keeps its scroll position across link clicks, on desktop and 
   }
   await openMenu()
   const body = page.locator('#docs-mobile-nav .apogee-dialog-body')
+  // Let the menu finish opening (it restores its own position two frames in) before the "reader" scrolls.
+  await page.waitForTimeout(200)
   await body.evaluate((el) => (el.scrollTop = 300))
   const mtop = await body.evaluate((el) => el.scrollTop)
   await page.locator('#docs-mobile-nav a[href="/docs/badge"]').evaluate((a) => a.click())
@@ -2595,4 +2598,53 @@ test('block previews fit their frame to the block', async ({ page }) => {
   await page.goto('/docs/banner-sections/slim')
   const frame = page.locator('[data-page-preview-frame]')
   await expect.poll(async () => (await frame.boundingBox()).height, { timeout: 5000 }).toBeLessThan(120)
+})
+
+// ---- Blog sections ----
+
+test('tabs whose items are all links render as a nav with the current page marked', async ({ page }) => {
+  await page.goto('/docs/tabs')
+  const nav = page.locator('[data-apogee-tabs="links"] nav')
+  await expect(nav).toHaveAttribute('aria-label', 'Categories')
+  await expect(nav.locator('[role="tablist"], [role="tab"]')).toHaveCount(0)
+  await expect(nav.locator('a[aria-current="page"]')).toHaveText('Design')
+  await expect(nav.locator('a[tabindex="-1"]')).toHaveCount(0)
+})
+
+test('post card: the title link covers the card; author and tag links stay on top', async ({ page }) => {
+  await page.goto('/docs/post-card')
+  const card = page.locator('[data-apogee-post-card="default"] article')
+  const title = card.locator('h3 a')
+  const author = card.locator('a', { hasText: 'Ada Lovelace' })
+  await card.scrollIntoViewIfNeeded()
+  // A point on the summary hits the stretched title link; the author's name hits the author link.
+  const summary = await card.locator('p').filter({ hasText: 'critiques' }).boundingBox()
+  expect(await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest('a')?.textContent, [summary.x + 10, summary.y + 5])).toBe(await title.textContent())
+  const a = await author.boundingBox()
+  expect(await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest('a')?.textContent, [a.x + 5, a.y + 5])).toBe('Ada Lovelace')
+})
+
+// ---- Careers sections ----
+
+test('careers department tabs filter the job list; without JS every panel shows', async ({ page, browser }) => {
+  await page.goto('/examples/careers/card-01')
+  await page.getByRole('tab', { name: 'Design' }).click()
+  const panel = page.getByRole('tabpanel')
+  await expect(panel.locator('article')).toHaveCount(2)
+  await expect(panel).toContainText('UX Researcher')
+  await expect(panel).not.toContainText('Account Executive')
+  const ctx = await browser.newContext({ javaScriptEnabled: false })
+  const p = await ctx.newPage()
+  await p.goto('/examples/careers/card-01')
+  expect(await p.locator('[role="tabpanel"]:visible').count()).toBeGreaterThan(1)
+  await ctx.close()
+})
+
+test('job card: the title link covers the card and the details are labelled', async ({ page }) => {
+  await page.goto('/docs/job-card')
+  const card = page.locator('[data-apogee-job-card="row"] article')
+  await card.scrollIntoViewIfNeeded()
+  const desc = await card.locator('p').first().boundingBox()
+  expect(await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest('a')?.textContent, [desc.x + 10, desc.y + 5])).toBe('Product Designer')
+  await expect(card.locator('dt')).toHaveText(['Location', 'Type', 'Salary'])
 })

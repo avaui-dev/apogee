@@ -256,19 +256,32 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
             else if (l.bottom > box.bottom) el.scrollTop += l.bottom - box.bottom
           }
         }
+        // While the menu opens, its focus scroll is not the reader's: don't save it.
+        let opening = false
         if (el.matches('dialog, .apogee-dialog-body')) {
-          // The menu is closed on load: restore when it opens.
+          // The menu is closed on load: restore when it opens, after the open's own focus scroll.
           const dialog = el.closest('dialog')!
-          new MutationObserver(() => dialog.open && restore()).observe(dialog, { attributes: true, attributeFilter: ['open'] })
+          new MutationObserver(() => {
+            if (!dialog.open) return
+            opening = true
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              restore()
+              opening = false
+            }))
+          }).observe(dialog, { attributes: true, attributeFilter: ['open'] })
         } else restore()
-        el.addEventListener('scroll', () => sessionStorage.setItem(key, String(el.scrollTop)), { passive: true })
+        const save = () => opening || sessionStorage.setItem(key, String(el.scrollTop))
+        el.addEventListener('scroll', save, { passive: true })
+        // Scroll events land a moment late; a link click saves the position before the page goes.
+        el.addEventListener('click', save)
       }
 
       // Add a `#` anchor to each prose heading (progressive enhancement).
       for (const h of document.querySelectorAll<HTMLElement>(
         '.apogee-prose h2, .apogee-prose h3, .apogee-prose h4',
       )) {
-        if (!h.id || h.querySelector('.heading-anchor')) continue
+        // Docs headings only: component previews keep their own markup.
+        if (!h.id || h.querySelector('.heading-anchor') || h.closest('[data-preview], [data-page-preview]')) continue
         const a = document.createElement('a')
         a.href = `#${h.id}`
         a.className = 'heading-anchor'

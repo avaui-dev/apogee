@@ -1,0 +1,50 @@
+---
+/**
+ * Split layout 01: A heading and View all posts button beside two posts.
+ *
+ * @block blog
+ * @order 18
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import PostCard, { type Post } from '../../components/PostCard/PostCard.astro'
+import Button from '../../components/Button/Button.astro'
+
+const posts: Post[] = [
+  {
+    title: 'Designing review sessions people look forward to',
+    href: '#',
+    summary: 'How to run critiques that sharpen the work instead of draining the room.',
+    date: '2026-01-20',
+    readingTime: '8 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-1/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Design', href: '#' },
+    author: { name: 'Ada Lovelace', href: '#' },
+    tags: [{ name: 'Design', href: '#', color: 'primary' }, { name: 'Research', href: '#', color: 'neutral' }, { name: 'Process', href: '#', color: 'positive' }],
+  },
+  {
+    title: 'Migrating to a typed component library',
+    href: '#',
+    summary: 'What changed when we moved two hundred screens onto one set of typed parts.',
+    date: '2026-01-19',
+    readingTime: '6 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-2/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Engineering', href: '#' },
+    author: { name: 'Alan Turing', href: '#' },
+    tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'Tooling', href: '#', color: 'neutral' }],
+  },
+]
+---
+
+<Section spacing="large">
+  <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
+    <div class="flex flex-col items-start gap-8">
+      <SectionHeader eyebrow="Our blog" heading="From the blog" description="Interviews, tips, guides, industry best practices, and news." />
+      <Button href="#" size="large" class="max-sm:hidden">View all posts</Button>
+    </div>
+    <ul class="grid list-none gap-8 p-0 md:grid-cols-2">
+      {posts.map((post) => <li><PostCard post={post} headingLevel={3} class="h-full" /></li>)}
+    </ul>
+  </div>
+  <Button href="#" size="large" fullWidth class="mt-8 sm:hidden">View all posts</Button>
+</Section>

@@ -1,0 +1,25 @@
+---
+title: "Card 01"
+description: "Department tabs over cards for each open position; without JS every department shows.."
+group: Careers sections
+order: 5
+related: [job-card, tabs, select]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="careers/card-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add careers/card-01
+```
+
+This copies the block to `src/components/apogee/blocks/careers/` with everything it uses: JobCard, Section, SectionHeader, Tabs. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- Each position is one link: the title stretches over the card. Its details are a description list (Location, Type, Salary) for screen readers.
+- The department tabs are a tab list with one panel each; without JS every panel shows, one after another.

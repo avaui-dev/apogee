@@ -1,0 +1,81 @@
+---
+/**
+ * Simple 03 brand: Simple 03 on the brand colour: a heading over open positions in two columns.
+ *
+ * @block careers
+ * @order 12
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import JobCard, { type Job } from '../../components/JobCard/JobCard.astro'
+
+const jobs: Job[] = [
+  {
+    title: 'Product Designer',
+    href: '#',
+    description: "We're looking for a mid-level product designer to join our team.",
+    department: 'Design',
+    location: 'Remote',
+    type: 'Full-time',
+    salary: '80k – 100k',
+    badge: { label: 'Design', color: 'primary' },
+  },
+  {
+    title: 'Engineering Manager',
+    href: '#',
+    description: "We're looking for an experienced engineering manager to lead a product team.",
+    department: 'Software Development',
+    location: 'Remote',
+    type: 'Full-time',
+    salary: '120k – 150k',
+    badge: { label: 'Software', color: 'neutral' },
+  },
+  {
+    title: 'Customer Success Manager',
+    href: '#',
+    description: "Help our customers get the most out of the product, from first call to renewal.",
+    department: 'Customer Success',
+    location: 'Lisbon, Portugal',
+    type: 'Full-time',
+    salary: '70k – 90k',
+    badge: { label: 'Customer success', color: 'positive' },
+  },
+  {
+    title: 'Account Executive',
+    href: '#',
+    description: "Work with teams who are choosing their next design system.",
+    department: 'Sales',
+    location: 'London, UK',
+    type: 'Full-time',
+    salary: '90k – 120k',
+    badge: { label: 'Sales', color: 'warning' },
+  },
+  {
+    title: 'Content Marketing Lead',
+    href: '#',
+    description: "Write and plan the guides, notes and case studies people share.",
+    department: 'Marketing',
+    location: 'Remote',
+    type: 'Part-time',
+    salary: '60k – 80k',
+    badge: { label: 'Marketing', color: 'primary' },
+  },
+  {
+    title: 'UX Researcher',
+    href: '#',
+    description: "Talk to the people who use what we build and bring what you learn back.",
+    department: 'Design',
+    location: 'Remote',
+    type: 'Contract',
+    salary: '75k – 95k',
+    badge: { label: 'Design', color: 'primary' },
+  },
+]
+---
+
+<Section spacing="large" background="primary">
+  <SectionHeader eyebrow="We're hiring!" heading="Open positions" description="Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work." background="primary" class="mb-12" />
+  <ul class="list-none p-0 grid gap-x-12 gap-y-8 lg:grid-cols-2">
+    {jobs.slice(0, 6).map((job) => <li><JobCard job={job} /></li>)}
+  </ul>
+</Section>

@@ -1,0 +1,27 @@
+---
+title: "Alternative layout 03"
+description: "A header with an email form, a large featured post, filter pills with a search field, a grid of posts and a Load more button.."
+group: Blog sections
+order: 15
+related: [post-card, sections/blog-list]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog/alt-layout-03" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog/alt-layout-03
+```
+
+This copies the block to `src/components/apogee/blocks/blog/` with everything it uses: Button, Grid, Input, Link, PostCard, Section, SectionHeader, Tabs. It opens a blog index page (its heading is the page's `h1`). Swap the `posts` array for your content collection. Use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- Each post is one link: the title stretches over the card, and the author, category and tag links sit above it and stay clickable.
+- The decorative arrow and the images are hidden from screen readers (their alt is empty because the title already names the post).
+- The category row is a `<nav>` named "Categories"; the current category carries `aria-current="page"`.
+- The email field is named by `aria-label="Email"` (the placeholder is not a label); the form submits without JS.
+- The search field is named "Search posts".

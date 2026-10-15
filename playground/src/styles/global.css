@@ -4,6 +4,7 @@
 @source "../../../registry/components";
 @source "../../../registry/sections";
 @source "../../../registry/pages";
+@source "../../../registry/blocks";
 @import "../../../registry/tokens/theme.css";
 @import "../../../registry/tokens/skin-skeuomorphic.css";
 
@@ -18,7 +19,7 @@ html {
 }
 
 /* Docs: a `#` anchor that appears on heading hover. */
-.apogee-prose :where(h2, h3, h4) {
+.apogee-prose :where(h2, h3, h4):not(:is([data-preview], [data-page-preview]) *) {
   position: relative;
 }
 .heading-anchor {

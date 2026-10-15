@@ -134,7 +134,7 @@ Route-based links instead of a query param:
   handling.
 - Current page gets `aria-current="page"`.
 - Disabled edges (`currentPage === 1` / `=== totalPages`) render as
-  `<span aria-hidden="true">`, not links: they hold their place (and their
+  `<span aria-hidden="true" aria-disabled="true">`, not links: they hold their place (and their
   label with `labels`) but there is nothing to focus or announce.
 - `rel="prev"` / `rel="next"` on the adjacent links hint the sequential
   relationship to browsers and AT.

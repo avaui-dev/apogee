@@ -604,6 +604,21 @@
       "dependencies": [],
       "usesJs": false
     },
+    "JobCard": {
+      "name": "JobCard",
+      "kind": "component",
+      "files": [
+        "JobCard/JobCard.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Heading"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "Kbd": {
       "name": "Kbd",
       "kind": "component",
@@ -783,6 +798,23 @@
         "utils"
       ],
       "dependencies": [],
+      "usesJs": false
+    },
+    "PostCard": {
+      "name": "PostCard",
+      "kind": "component",
+      "files": [
+        "PostCard/PostCard.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Badge",
+        "Heading",
+        "Image"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     },
     "Progress": {
@@ -1286,10 +1318,8 @@
         "sections/BlogList/BlogList.astro"
       ],
       "registryDependencies": [
-        "Avatar",
         "Grid",
-        "Heading",
-        "Image",
+        "PostCard",
         "Section",
         "SectionHeader",
         "_shared",
@@ -3224,6 +3254,679 @@
       "dependencies": [
         "@lucide/astro"
       ],
+      "usesJs": false
+    },
+    "blog/alt-layout-01": {
+      "name": "blog/alt-layout-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Alternative layout 01",
+      "description": "A header with an email form, then a grid of posts led by a featured post across the full width.",
+      "files": [
+        "blocks/blog/AltLayout01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/alt-layout-02": {
+      "name": "blog/alt-layout-02",
+      "kind": "block",
+      "category": "blog",
+      "title": "Alternative layout 02",
+      "description": "A centred header with an email form, recent posts (one large, two beside it), then all posts with pagination.",
+      "files": [
+        "blocks/blog/AltLayout02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Heading",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/alt-layout-03": {
+      "name": "blog/alt-layout-03",
+      "kind": "block",
+      "category": "blog",
+      "title": "Alternative layout 03",
+      "description": "A header with an email form, a large featured post, filter pills with a search field, a grid of posts and a Load more button.",
+      "files": [
+        "blocks/blog/AltLayout03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "blog/alt-layout-04": {
+      "name": "blog/alt-layout-04",
+      "kind": "block",
+      "category": "blog",
+      "title": "Alternative layout 04",
+      "description": "A centred header with an email form, then one centred column of horizontal posts and pagination.",
+      "files": [
+        "blocks/blog/AltLayout04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/carousel-layout-01": {
+      "name": "blog/carousel-layout-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Carousel layout 01",
+      "description": "Latest posts in a carousel under a heading with a View all posts button.",
+      "files": [
+        "blocks/blog/CarouselLayout01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/carousel-layout-02": {
+      "name": "blog/carousel-layout-02",
+      "kind": "block",
+      "category": "blog",
+      "title": "Carousel layout 02",
+      "description": "A heading, intro and View all posts button over a carousel of four posts.",
+      "files": [
+        "blocks/blog/CarouselLayout02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/featured-post-01": {
+      "name": "blog/featured-post-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Featured post 01",
+      "description": "A blog index: a heading, a large featured post, category tabs with a sort menu, a grid of posts and pagination.",
+      "files": [
+        "blocks/blog/FeaturedPost01.astro"
+      ],
+      "registryDependencies": [
+        "Grid",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Select",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/featured-post-02": {
+      "name": "blog/featured-post-02",
+      "kind": "block",
+      "category": "blog",
+      "title": "Featured post 02",
+      "description": "A centred blog header, a large featured post, then a search field and category list beside a grid of posts.",
+      "files": [
+        "blocks/blog/FeaturedPost02.astro"
+      ],
+      "registryDependencies": [
+        "Grid",
+        "Input",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "blog/featured-post-03": {
+      "name": "blog/featured-post-03",
+      "kind": "block",
+      "category": "blog",
+      "title": "Featured post 03",
+      "description": "A centred header with an email sign-up, a large featured post, a grid of posts and pagination.",
+      "files": [
+        "blocks/blog/FeaturedPost03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/featured-post-04": {
+      "name": "blog/featured-post-04",
+      "kind": "block",
+      "category": "blog",
+      "title": "Featured post 04",
+      "description": "A header on the brand colour with a newsletter form, then a grid of posts and pagination.",
+      "files": [
+        "blocks/blog/FeaturedPost04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/sidebar-01": {
+      "name": "blog/sidebar-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Sidebar 01",
+      "description": "A header with an email form, then a search field and category list beside a grid of posts.",
+      "files": [
+        "blocks/blog/Sidebar01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "blog/sidebar-02": {
+      "name": "blog/sidebar-02",
+      "kind": "block",
+      "category": "blog",
+      "title": "Sidebar 02",
+      "description": "A header, then a search field and category list beside a grid of posts whose featured post spans the full width.",
+      "files": [
+        "blocks/blog/Sidebar02.astro"
+      ],
+      "registryDependencies": [
+        "Grid",
+        "Input",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Select",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "blog/simple-01": {
+      "name": "blog/simple-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple 01",
+      "description": "A centred header with search, category tabs and a sort menu, a grid of posts with a newsletter card inside it, and pagination.",
+      "files": [
+        "blocks/blog/Simple01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Card",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Select",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "blog/simple-02": {
+      "name": "blog/simple-02",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple 02",
+      "description": "A header on a neutral fill with a newsletter form, then a grid of posts and pagination.",
+      "files": [
+        "blocks/blog/Simple02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/simple-03": {
+      "name": "blog/simple-03",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple 03",
+      "description": "A hero on the brand colour with an email sign-up, then a grid of posts and pagination.",
+      "files": [
+        "blocks/blog/Simple03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/simple-04": {
+      "name": "blog/simple-04",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple 04",
+      "description": "A centred hero on the brand colour with an email sign-up, then a grid of posts and a Load more button.",
+      "files": [
+        "blocks/blog/Simple04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/simple-05": {
+      "name": "blog/simple-05",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple 05",
+      "description": "A heading beside a subscribe form, a category filter (a menu on phones, tabs from md), a grid of posts and pagination.",
+      "files": [
+        "blocks/blog/Simple05.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Select",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/simple-06": {
+      "name": "blog/simple-06",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple 06",
+      "description": "A heading beside a subscribe form, a category filter, and a two-column grid of horizontal posts.",
+      "files": [
+        "blocks/blog/Simple06.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "Input",
+        "Link",
+        "Pagination",
+        "PostCard",
+        "Section",
+        "SectionHeader",
+        "Select",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/simple-center-aligned-01": {
+      "name": "blog/simple-center-aligned-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple centre aligned 01",
+      "description": "A centred heading over three posts and a View all posts button.",
+      "files": [
+        "blocks/blog/SimpleCenterAligned01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/split-layout-01": {
+      "name": "blog/split-layout-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Split layout 01",
+      "description": "A heading and View all posts button beside two posts.",
+      "files": [
+        "blocks/blog/SplitLayout01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/split-layout-02": {
+      "name": "blog/split-layout-02",
+      "kind": "block",
+      "category": "blog",
+      "title": "Split layout 02",
+      "description": "A heading and View all posts button beside two stacked posts with large images.",
+      "files": [
+        "blocks/blog/SplitLayout02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/card-01": {
+      "name": "careers/card-01",
+      "kind": "block",
+      "category": "careers",
+      "title": "Card 01",
+      "description": "Department tabs over cards for each open position; without JS every department shows.",
+      "files": [
+        "blocks/careers/Card01.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/card-02": {
+      "name": "careers/card-02",
+      "kind": "block",
+      "category": "careers",
+      "title": "Card 02",
+      "description": "A heading beside a location menu, over cards for each open position.",
+      "files": [
+        "blocks/careers/Card02.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader",
+        "Select"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/card-03": {
+      "name": "careers/card-03",
+      "kind": "block",
+      "category": "careers",
+      "title": "Card 03",
+      "description": "A centred heading and a wide photo, then open positions grouped by department.",
+      "files": [
+        "blocks/careers/Card03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Heading",
+        "Image",
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/card-04": {
+      "name": "careers/card-04",
+      "kind": "block",
+      "category": "careers",
+      "title": "Card 04",
+      "description": "A location menu over open positions grouped by department, each group with a short intro.",
+      "files": [
+        "blocks/careers/Card04.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "JobCard",
+        "Section",
+        "SectionHeader",
+        "Select"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-01": {
+      "name": "careers/simple-01",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 01",
+      "description": "A centred heading over a list of open positions.",
+      "files": [
+        "blocks/careers/Simple01.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-01-brand": {
+      "name": "careers/simple-01-brand",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 01 brand",
+      "description": "Simple 01 on the brand colour: a centred heading over a list of open positions.",
+      "files": [
+        "blocks/careers/Simple01Brand.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-02": {
+      "name": "careers/simple-02",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 02",
+      "description": "A heading on one side and a list of open positions on the other.",
+      "files": [
+        "blocks/careers/Simple02.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-02-brand": {
+      "name": "careers/simple-02-brand",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 02 brand",
+      "description": "Simple 02 on the brand colour: a heading beside a list of open positions.",
+      "files": [
+        "blocks/careers/Simple02Brand.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-03": {
+      "name": "careers/simple-03",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 03",
+      "description": "A heading over open positions in two columns.",
+      "files": [
+        "blocks/careers/Simple03.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-03-brand": {
+      "name": "careers/simple-03-brand",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 03 brand",
+      "description": "Simple 03 on the brand colour: a heading over open positions in two columns.",
+      "files": [
+        "blocks/careers/Simple03Brand.astro"
+      ],
+      "registryDependencies": [
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-04": {
+      "name": "careers/simple-04",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 04",
+      "description": "A heading and a list of open positions beside a photo.",
+      "files": [
+        "blocks/careers/Simple04.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "careers/simple-04-brand": {
+      "name": "careers/simple-04-brand",
+      "kind": "block",
+      "category": "careers",
+      "title": "Simple 04 brand",
+      "description": "Simple 04 on the brand colour: a heading and open positions beside a photo.",
+      "files": [
+        "blocks/careers/Simple04Brand.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "JobCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
       "usesJs": false
     }
   }

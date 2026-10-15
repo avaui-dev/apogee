@@ -1,0 +1,105 @@
+---
+/**
+ * JobCard — one open position: title with a status badge, a short description
+ * and its details (location, type, salary). The title link stretches over the
+ * whole card. `variant="row"` is a list row under a rule (reads on any section
+ * fill, the brand colour included); `card` is a bordered card that also shows
+ * the department and a "View job" cue. Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { ArrowUpRight, Clock, MapPin, CircleDollarSign } from '@lucide/astro'
+import Badge from '../Badge/Badge.astro'
+import Heading from '../Heading/Heading.astro'
+
+export type Job = {
+  title: string
+  href: string
+  description?: string | undefined
+  department?: string | undefined
+  location?: string | undefined
+  type?: string | undefined
+  salary?: string | undefined
+  badge?: { label: string; color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning' | undefined } | undefined
+}
+
+/** @composable */
+interface Props extends HTMLAttributes<'article'> {
+  /** @shape { title, href, description?, department?, location?, type?, salary?, badge?: { label, color? } } @category content */
+  job: Job
+  /** @category layout */ variant?: 'row' | 'card'
+  /** @category layout */ headingLevel?: 2 | 3 | 4 | 5
+  /** The cue on `card` beside the department. @category content */ viewLabel?: string
+  class?: string
+}
+
+const { job, variant = 'row', headingLevel = 3, viewLabel = 'View job', class: className, ...rest } = Astro.props
+const Tag = `h${headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5'
+const card = variant === 'card'
+const details = [
+  job.location && { Icon: MapPin, text: job.location, label: 'Location' },
+  job.type && { Icon: Clock, text: job.type, label: 'Type' },
+  job.salary && { Icon: CircleDollarSign, text: job.salary, label: 'Salary' },
+].filter(Boolean) as { Icon: typeof MapPin; text: string; label: string }[]
+---
+
+<article
+  class:list={[
+    'apogee-job group/job relative flex flex-col',
+    card ? 'rounded-2xl border border-neutral bg-elevation-raised p-6 transition-colors hover:border-primary' : 'border-t border-neutral pt-6',
+    className,
+  ]}
+  {...rest}
+>
+  {
+    card && job.department && (
+      <div class="mb-1 flex items-center justify-between gap-4">
+        <span class="text-sm font-semibold text-primary">{job.department}</span>
+        <span class="inline-flex items-center gap-1 text-sm font-semibold text-primary max-md:hidden" aria-hidden="true">{viewLabel}<ArrowUpRight class="size-4" /></span>
+      </div>
+    )
+  }
+  <div class="flex flex-col items-start gap-2 md:flex-row md:items-center">
+    <Heading as={Tag} size="h6">
+      <a href={job.href} class="rounded-xs after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">{job.title}</a>
+    </Heading>
+    {
+      job.badge && (
+        <Badge color={job.badge.color ?? 'primary'} rounded class="apogee-job-badge">
+          <Badge slot="start" color={job.badge.color ?? 'primary'} />
+          {job.badge.label}
+        </Badge>
+      )
+    }
+  </div>
+  {job.description && <p class="apogee-job-muted mt-2">{job.description}</p>}
+  {
+    details.length > 0 && (
+      <dl class="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium">
+        {details.map(({ Icon, text, label }) => (
+          <div class="flex items-center gap-1.5">
+            <dt class="sr-only">{label}</dt>
+            <Icon class="apogee-job-muted size-5 shrink-0" aria-hidden="true" />
+            <dd class="apogee-job-muted">{text}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+</article>
+
+<style>
+  /* Secondary text and icons: the faded foreground, or the surrounding on-colour on a solid fill. */
+  .apogee-job-muted {
+    color: var(--foreground-neutral-faded);
+  }
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-job-muted {
+    color: inherit;
+    opacity: 0.85;
+  }
+  /* A tinted badge is see-through; on a solid fill it sits on the page colour so its text stays readable. */
+  :global(:is(.bg-primary, .bg-inverted)) .apogee-job-badge {
+    background-color: var(--background-page);
+  }
+</style>

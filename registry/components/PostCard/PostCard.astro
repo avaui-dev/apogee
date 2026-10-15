@@ -1,0 +1,184 @@
+---
+/**
+ * PostCard — one article in a blog list: image, a top line, the title, a
+ * summary and a footer. The whole card is one link (the title stretches over
+ * it); author, category and tag links sit above it and stay clickable.
+ *
+ * `orientation="horizontal"` puts the image beside the text once the card
+ * itself is at least 36rem wide (a container query), so the same card works in
+ * a narrow column and a wide row. `frame`: `plain` (no box), `card` (a bordered
+ * card, the image flush to its top) or `overlay` (author, date and category on
+ * a frosted strip over the image). Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { ArrowUpRight } from '@lucide/astro'
+import Image from '../Image/Image.astro'
+import Avatar from '../Avatar/Avatar.astro'
+import Badge from '../Badge/Badge.astro'
+import Heading from '../Heading/Heading.astro'
+
+type Link = { name: string; href?: string | undefined }
+export type Post = {
+  title: string
+  href: string
+  summary?: string | undefined
+  /** ISO date. */
+  date: string
+  image?: { src: ImageMetadata | string; alt: string; width?: number; height?: number } | undefined
+  readingTime?: string | undefined
+  category?: Link | undefined
+  author?: (Link & { avatar?: string | undefined }) | undefined
+  tags?: (Link & { color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning' | undefined })[] | undefined
+}
+
+/** @composable */
+interface Props extends HTMLAttributes<'article'> {
+  /** @shape { title, href, summary?, date, image?: { src, alt }, readingTime?, category?: { name, href? }, author?: { name, href?, avatar? }, tags?: { name, href?, color? }[] } @category content */
+  post: Post
+  /** @category layout */ orientation?: 'vertical' | 'horizontal'
+  /** @category layout */ frame?: 'plain' | 'card' | 'overlay'
+  /** The line above the title. @category layout */ meta?: 'category' | 'badge' | 'byline' | 'none'
+  /** @category layout */ footer?: 'author' | 'tags' | 'link' | 'none'
+  /** Rounded image corners (`plain` and `overlay`). @category layout */ rounded?: boolean
+  /** `large` for a featured post. @category layout */ size?: 'medium' | 'large'
+  /** @category layout */ headingLevel?: 2 | 3 | 4 | 5
+  /** Footer link text with `footer="link"`. @category content */ linkLabel?: string
+  /** Date locale. @category content */ locale?: string
+  class?: string
+}
+
+const {
+  post,
+  orientation = 'vertical',
+  frame = 'plain',
+  meta = 'category',
+  footer = 'author',
+  rounded = true,
+  size = 'medium',
+  headingLevel = 3,
+  linkLabel = 'Read post',
+  locale = 'en',
+  class: className,
+  ...rest
+} = Astro.props
+const horizontal = orientation === 'horizontal'
+const large = size === 'large'
+const date = new Date(post.date).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
+const Tag = `h${headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5'
+// Links inside the card sit above the stretched title link.
+const inner = 'relative z-10 rounded-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
+const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') : rounded ? 'rounded-2xl' : ''
+---
+
+<article
+  class:list={[
+    'apogee-post group/post @container relative flex flex-col',
+    frame === 'card' && 'overflow-hidden rounded-2xl border border-neutral bg-elevation-raised',
+    className,
+  ]}
+  {...rest}
+>
+  <div class:list={['flex flex-col', frame === 'card' ? 'gap-0' : 'gap-4', horizontal && '@xl:flex-row @xl:items-start', horizontal && frame !== 'card' && '@xl:gap-6']}>
+    {
+      post.image && (
+        <div class:list={['relative shrink-0 overflow-hidden', imageCorners, horizontal && (large ? '@xl:w-1/2' : '@xl:w-2/5')]}>
+          <Image
+            src={post.image.src}
+            alt={post.image.alt}
+            width={post.image.width ?? 960}
+            height={post.image.height ?? 640}
+            fit="cover"
+            class:list={['apogee-post-image aspect-[3/2] w-full', horizontal && frame === 'card' && '@xl:h-full']}
+          />
+          {
+            frame === 'overlay' && (
+              <div class="absolute inset-x-0 bottom-0 flex items-start justify-between gap-4 bg-inverted/40 p-4 text-sm text-on-inverted backdrop-blur-md md:p-5">
+                <div class="min-w-0">
+                  {post.author && (post.author.href ? <a href={post.author.href} class:list={['block font-semibold', inner]}>{post.author.name}</a> : <span class="block font-semibold">{post.author.name}</span>)}
+                  <time datetime={post.date} class="block">{date}</time>
+                </div>
+                {post.category && (post.category.href ? <a href={post.category.href} class:list={['font-semibold', inner]}>{post.category.name}</a> : <span class="font-semibold">{post.category.name}</span>)}
+              </div>
+            )
+          }
+        </div>
+      )
+    }
+
+    <div class:list={['flex min-w-0 flex-1 flex-col', large ? 'gap-6' : 'gap-5', frame === 'card' && 'px-5 pt-5 pb-6 md:p-6']}>
+      <div class:list={['flex flex-col items-start', meta === 'badge' ? 'gap-3' : 'gap-2']}>
+        {meta === 'category' && post.category && <span class="text-sm font-semibold text-primary">{post.category.name}</span>}
+        {
+          meta === 'badge' && post.category && (
+            <Badge color="primary" rounded size="medium">
+              <Badge slot="start" variant="outline" color="primary" rounded size="small" class="bg-page">{post.category.name}</Badge>
+              {post.readingTime}
+            </Badge>
+          )
+        }
+        {
+          meta === 'byline' && (
+            <p class="text-sm font-semibold text-primary">
+              {post.author?.name}{post.author && ' • '}<time datetime={post.date}>{date}</time>
+            </p>
+          )
+        }
+        <div class="flex w-full flex-col gap-1">
+          <Heading as={Tag} size={large ? 'h3' : 'h5'} class="flex justify-between gap-x-4">
+            <a href={post.href} class="rounded-xs after:absolute after:inset-0 after:z-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">{post.title}</a>
+            <ArrowUpRight class="mt-0.5 size-5 shrink-0 text-neutral-faded transition-colors group-hover/post:text-neutral" aria-hidden="true" />
+          </Heading>
+          {post.summary && <p class:list={['text-neutral-faded', large ? 'line-clamp-3' : 'line-clamp-2']}>{post.summary}</p>}
+        </div>
+      </div>
+
+      {
+        footer === 'author' && post.author && (
+          <div class="flex items-center gap-2">
+            <Avatar src={post.author.avatar} name={post.author.name} alt="" size="medium" />
+            <div class="text-sm">
+              {post.author.href ? <a href={post.author.href} class:list={['block font-semibold', inner]}>{post.author.name}</a> : <span class="block font-semibold">{post.author.name}</span>}
+              <time datetime={post.date} class="block text-neutral-faded">{date}</time>
+            </div>
+          </div>
+        )
+      }
+      {
+        footer === 'tags' && post.tags?.length && (
+          <ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Tags">
+            {post.tags.map((t) => (
+              <li>{t.href ? <a href={t.href} class:list={['inline-flex', inner]}><Badge color={t.color ?? 'neutral'} rounded>{t.name}</Badge></a> : <Badge color={t.color ?? 'neutral'} rounded>{t.name}</Badge>}</li>
+            ))}
+          </ul>
+        )
+      }
+      {
+        footer === 'link' && (
+          <span class="inline-flex items-center gap-1.5 font-semibold text-primary" aria-hidden="true">
+            {linkLabel}
+            <ArrowUpRight class="size-5" />
+          </span>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .apogee-post-image {
+    transition: scale var(--duration-fast) var(--ease-standard);
+  }
+  .apogee-post:hover .apogee-post-image {
+    scale: 1.05;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-post-image {
+      transition: none;
+    }
+    .apogee-post:hover .apogee-post-image {
+      scale: none;
+    }
+  }
+</style>

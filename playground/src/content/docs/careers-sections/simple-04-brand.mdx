@@ -1,0 +1,25 @@
+---
+title: "Simple 04 brand"
+description: "Simple 04 on the brand colour: a heading and open positions beside a photo.."
+group: Careers sections
+order: 10
+related: [job-card, tabs, select]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="careers/simple-04-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add careers/simple-04-brand
+```
+
+This copies the block to `src/components/apogee/blocks/careers/` with everything it uses: Image, JobCard, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- Each position is one link: the title stretches over the card. Its details are a description list (Location, Type, Salary) for screen readers.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

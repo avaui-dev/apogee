@@ -1,0 +1,36 @@
+---
+title: Blog sections
+navTitle: Overview
+description: Blog index headers with a featured post, filters and pagination, and latest-posts sections for any page.
+group: Blog sections
+order: -1
+related: [post-card, sections/blog-list, pagination]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a block built on [PostCard](/docs/post-card) and the layout
+primitives. The first sixteen open a blog index page: a heading, often an email
+sign-up, a featured post, category links or a search, a grid of posts and
+pagination. The last five show the latest posts on any page.
+
+```sh
+npx @ava-ui/apogee add blog/featured-post-01
+```
+
+Each block holds a sample `posts` array; replace it with your content collection:
+
+```astro
+---
+import { getCollection } from 'astro:content'
+const posts = (await getCollection('blog')).map((p) => ({
+  title: p.data.title,
+  href: `/blog/${p.id}`,
+  summary: p.data.description,
+  date: p.data.date.toISOString(),
+  image: p.data.cover,
+}))
+---
+```
+
+<DocsIndex group="Blog sections" self="blog-sections" />

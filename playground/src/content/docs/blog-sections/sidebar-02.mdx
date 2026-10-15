@@ -1,0 +1,27 @@
+---
+title: "Sidebar 02"
+description: "A header, then a search field and category list beside a grid of posts whose featured post spans the full width.."
+group: Blog sections
+order: 12
+related: [post-card, sections/blog-list]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog/sidebar-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog/sidebar-02
+```
+
+This copies the block to `src/components/apogee/blocks/blog/` with everything it uses: Grid, Input, Pagination, PostCard, Section, SectionHeader, Select, Tabs. It opens a blog index page (its heading is the page's `h1`). Swap the `posts` array for your content collection. Use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- Each post is one link: the title stretches over the card, and the author, category and tag links sit above it and stay clickable.
+- The decorative arrow and the images are hidden from screen readers (their alt is empty because the title already names the post).
+- The category row is a `<nav>` named "Categories"; the current category carries `aria-current="page"`.
+- The search field is named "Search posts".
+- Pagination is a `<nav>` of links; the current page carries `aria-current="page"`.

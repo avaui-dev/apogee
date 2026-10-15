@@ -1,0 +1,124 @@
+---
+/**
+ * Featured post 02: A centred blog header, a large featured post, then a search field and category list beside a grid of posts.
+ *
+ * @block blog
+ * @order 2
+ */
+import { Search as SearchIcon } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import PostCard, { type Post } from '../../components/PostCard/PostCard.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+import Pagination from '../../components/Pagination/Pagination.astro'
+import Input from '../../components/Input/Input.astro'
+
+const posts: Post[] = [
+  {
+    title: 'Designing review sessions people look forward to',
+    href: '#',
+    summary: 'How to run critiques that sharpen the work instead of draining the room.',
+    date: '2026-01-20',
+    readingTime: '8 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-1/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Design', href: '#' },
+    author: { name: 'Ada Lovelace', href: '#' },
+    tags: [{ name: 'Design', href: '#', color: 'primary' }, { name: 'Research', href: '#', color: 'neutral' }, { name: 'Process', href: '#', color: 'positive' }],
+  },
+  {
+    title: 'Migrating to a typed component library',
+    href: '#',
+    summary: 'What changed when we moved two hundred screens onto one set of typed parts.',
+    date: '2026-01-19',
+    readingTime: '6 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-2/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Engineering', href: '#' },
+    author: { name: 'Alan Turing', href: '#' },
+    tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'Tooling', href: '#', color: 'neutral' }],
+  },
+  {
+    title: 'Building your first internal API',
+    href: '#',
+    summary: 'The shape of a small API that teams can grow without rewriting.',
+    date: '2026-01-18',
+    readingTime: '7 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-3/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Engineering', href: '#' },
+    author: { name: 'Grace Hopper', href: '#' },
+    tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'APIs', href: '#', color: 'warning' }],
+  },
+  {
+    title: 'A field guide to product discovery',
+    href: '#',
+    summary: 'Questions that turn a vague request into something you can build.',
+    date: '2026-01-16',
+    readingTime: '5 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-4/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Product', href: '#' },
+    author: { name: 'Katherine Johnson', href: '#' },
+    tags: [{ name: 'Product', href: '#', color: 'primary' }, { name: 'Research', href: '#', color: 'neutral' }],
+  },
+  {
+    title: 'Writing release notes people read',
+    href: '#',
+    summary: 'Lead with what changed for the reader, not what changed in the code.',
+    date: '2026-01-15',
+    readingTime: '4 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-5/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Product', href: '#' },
+    author: { name: 'Margaret Hamilton', href: '#' },
+    tags: [{ name: 'Product', href: '#', color: 'primary' }, { name: 'Writing', href: '#', color: 'positive' }],
+  },
+  {
+    title: 'Leadership lessons from a year of remote teams',
+    href: '#',
+    summary: 'Rituals, writing and trust: what held a distributed team together.',
+    date: '2026-01-14',
+    readingTime: '9 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-6/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Leadership', href: '#' },
+    author: { name: 'Alan Kay', href: '#' },
+    tags: [{ name: 'Leadership', href: '#', color: 'primary' }, { name: 'Remote', href: '#', color: 'neutral' }],
+  },
+  {
+    title: 'Accessible colour, measured',
+    href: '#',
+    summary: 'Why our build fails when a colour pair misses AA, and how we fixed the misses.',
+    date: '2026-01-12',
+    readingTime: '6 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-7/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Design', href: '#' },
+    author: { name: 'Hedy Lamarr', href: '#' },
+    tags: [{ name: 'Design', href: '#', color: 'primary' }, { name: 'Accessibility', href: '#', color: 'positive' }],
+  },
+]
+const categories = [
+  { label: 'View all', value: 'all', href: '#' },
+  { label: 'Design', value: 'design', href: '#design' },
+  { label: 'Product', value: 'product', href: '#product' },
+  { label: 'Engineering', value: 'engineering', href: '#engineering' },
+  { label: 'Leadership', value: 'leadership', href: '#leadership' },
+  { label: 'Marketing', value: 'marketing', href: '#marketing' },
+]
+
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Our blog" heading="The latest writings from our team" description="The latest industry news, interviews, technologies and resources." align="center" headingLevel={1} class="mb-12" />
+  <PostCard post={posts[0]!} orientation="horizontal" size="large" meta="badge" headingLevel={2} class="mb-16" />
+  <div class="grid gap-12 lg:grid-cols-[16rem_minmax(0,1fr)]">
+    <aside class="flex flex-col gap-6">
+      <Input type="search" name="q" placeholder="Search" aria-label="Search posts"><SearchIcon slot="start" /></Input>
+      <Tabs label="Categories" value="all" orientation="vertical" variant="borderless" tabs={categories} />
+    </aside>
+    <div>
+      <Grid as="ul" cols={{ base: 1, md: 2 }} gap={8} class="list-none p-0">
+    {posts.slice(1).map((post) => (
+      <li><PostCard post={post} meta="badge" headingLevel={2} class="h-full" /></li>
+    ))}
+  </Grid>
+      <Pagination currentPage={1} totalPages={10} getHref={(p) => `?page=${p}`} labels class="mt-12 justify-between border-t border-neutral pt-5" />
+    </div>
+  </div>
+</Section>

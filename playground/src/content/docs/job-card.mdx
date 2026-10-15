@@ -1,0 +1,97 @@
+---
+title: JobCard
+description: One open position; title with a status badge, a short description and its location, type and salary, as a list row or a card.
+group: Components
+order: 0
+related: [post-card, badge, card]
+---
+
+import Preview from '../../components/Preview.astro'
+import JobCard from '../../../../registry/components/JobCard/JobCard.astro'
+
+export const job = {
+  title: 'Product Designer',
+  href: '#',
+  description: "We're looking for a mid-level product designer to join our team.",
+  department: 'Design',
+  location: 'Remote',
+  type: 'Full-time',
+  salary: '80k – 100k',
+  badge: { label: 'Design', color: 'primary' },
+}
+
+<Preview code={`<JobCard job={job} />`}>
+  <div class="w-full max-w-xl" data-apogee-job-card="row"><JobCard job={job} /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add job-card
+```
+
+Pulls in Badge and Heading.
+
+## Usage
+
+```astro
+---
+import JobCard, { type Job } from '@/components/apogee/JobCard/JobCard.astro'
+const job: Job = { title: 'Product Designer', href: '/careers/product-designer', location: 'Remote', type: 'Full-time' }
+---
+<JobCard job={job} variant="card" />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `job` | `{ title, href, description?, department?, location?, type?, salary?, badge? }` | — | Required. `badge` is `{ label, color? }`. Details show only when set. |
+| `variant` | `'row' \| 'card'` | `'row'` | A list row under a rule, or a bordered card that also shows the department and a "View job" cue. |
+| `headingLevel` | `2 \| 3 \| 4 \| 5` | `3` | The title's heading level. |
+| `viewLabel` | `string` | `'View job'` | The cue beside the department on `card`. |
+| `class` | `string` | — | Extra classes on the `<article>`, merged last. |
+
+## Variants
+
+<Preview code={`<JobCard job={job} variant="card" />`}>
+  <div class="w-full max-w-xl"><JobCard job={job} variant="card" /></div>
+</Preview>
+
+On the brand colour, the row's secondary text takes the on-colour:
+
+<Preview code={`<Section background="primary"><JobCard job={job} /></Section>`}>
+  <div class="w-full max-w-xl rounded-xl bg-primary p-6 text-on-primary"><JobCard job={job} /></div>
+</Preview>
+
+## States
+
+- **Hover** — the `card` border turns primary.
+- **Focus** — the title link shows the focus ring.
+
+## Examples
+
+Lists and groups of positions: [Careers sections](/docs/careers-sections).
+
+## Accessibility
+
+- The card is an `<article>`; the title is a heading holding the link, stretched over the whole card.
+- Location, type and salary are a description list with hidden terms ("Location", "Type", "Salary"), so a screen reader hears what each value is; the icons are hidden.
+- The "View job" cue is hidden from screen readers; the title already names the link.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral` / `--foreground-neutral-faded` | Title / description and details |
+| `--foreground-primary` | Department and "View job" |
+| `--border-neutral` / `--border-primary` | Row rule and card edge / card hover |
+
+## Do / Don't
+
+- **Do** keep the description to one sentence.
+- **Don't** list a salary range you would not offer.
+
+## Content
+
+- Titles are the role, not the team: "Product Designer", not "Join Design".

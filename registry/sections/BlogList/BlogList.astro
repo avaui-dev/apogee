@@ -8,12 +8,9 @@ import type { HTMLAttributes } from 'astro/types'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Grid from '../../components/Grid/Grid.astro'
-import Image from '../../components/Image/Image.astro'
-import Avatar from '../../components/Avatar/Avatar.astro'
-import Heading from '../../components/Heading/Heading.astro'
+import PostCard, { type Post as Card } from '../../components/PostCard/PostCard.astro'
 import { uid } from '../../components/utils/uid.ts'
 import type { Align, Background, Media, Spacing } from '../_shared/spine.ts'
-import { formatDate } from '../_shared/date.ts'
 
 type Post = { title: string; excerpt: string; href: string; image?: Media; date: string; author?: { name: string; avatar?: string } }
 
@@ -38,39 +35,20 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
 const { eyebrow, heading, description, label, items, locale: localeProp, layout = 'grid', align = 'start', background = 'page', spacing = 'large', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
 const id = idProp ?? uid(Astro.locals, 'blog')
 const headingId = `${id}-heading`
-const solid = background === 'primary' || background === 'inverted'
-const faded = solid ? 'opacity-85' : 'text-neutral-faded'
-const cardTag = `h${heading ? Math.min(headingLevel + 1, 6) : headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5'
+const cardLevel = (heading ? Math.min(headingLevel + 1, 5) : Math.max(headingLevel, 2)) as 2 | 3 | 4 | 5
 const [first, ...others] = items
 const rest_ = layout === 'featured' && first ? others : items
 const locale = localeProp ?? Astro.currentLocale ?? 'en'
-const fmt = (iso: string) => formatDate(iso, locale, 'short')
+// BlogList's post shape, as a PostCard post.
+const toCard = (p: Post): Card => ({ title: p.title, href: p.href, summary: p.excerpt, date: p.date, image: p.image, author: p.author })
 ---
 
 <Section as="section" id={id} aria-labelledby={heading ? headingId : undefined} aria-label={heading ? undefined : label ?? 'Posts'} background={background} spacing={spacing} class={className} {...rest}>
   {heading && <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={align} background={background} class="mb-12" />}
-  {layout === 'featured' && first && (
-    <article class="relative mb-12 grid gap-8 md:grid-cols-2 md:items-center">
-      {first.image && <Image src={first.image.src} alt={first.image.alt} width={first.image.width ?? 1200} height={first.image.height ?? 675} radius="lg" fit="cover" class="aspect-video w-full" />}
-      <div class="flex flex-col gap-3">
-        <time datetime={first.date} class:list={['text-sm', faded]}>{fmt(first.date)}</time>
-        <Heading as={cardTag} size="h3"><a href={first.href} class="after:absolute after:inset-0 hover:underline underline-offset-4">{first.title}</a></Heading>
-        <p class:list={faded}>{first.excerpt}</p>
-        {first.author && <span class="flex items-center gap-2 text-sm"><Avatar src={first.author.avatar} name={first.author.name} size="small" />{first.author.name}</span>}
-      </div>
-    </article>
-  )}
+  {layout === 'featured' && first && <PostCard post={toCard(first)} orientation="horizontal" size="large" meta="none" headingLevel={cardLevel} locale={locale} class="mb-12" />}
   <Grid as="ul" cols={{ base: 1, sm: 2, lg: 3 }} gap={8} class="list-none p-0">
     {rest_.map((p) => (
-      <li>
-        <article class="relative flex h-full flex-col gap-3">
-          {p.image && <Image src={p.image.src} alt={p.image.alt} width={p.image.width ?? 800} height={p.image.height ?? 450} radius="lg" fit="cover" class="aspect-video w-full" />}
-          <time datetime={p.date} class:list={['text-sm', faded]}>{fmt(p.date)}</time>
-          <Heading as={cardTag} size="h5"><a href={p.href} class="after:absolute after:inset-0 hover:underline underline-offset-4">{p.title}</a></Heading>
-          <p class:list={['text-sm', faded]}>{p.excerpt}</p>
-          {p.author && <span class="mt-auto flex items-center gap-2 pt-2 text-sm"><Avatar src={p.author.avatar} name={p.author.name} size="small" />{p.author.name}</span>}
-        </article>
-      </li>
+      <li><PostCard post={toCard(p)} meta="none" headingLevel={cardLevel} locale={locale} class="h-full" /></li>
     ))}
   </Grid>
 </Section>

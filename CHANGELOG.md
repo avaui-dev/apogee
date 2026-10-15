@@ -43,11 +43,16 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
-- **Blocks**: parts of a page in the registry, keyed `<category>/<name>` like pages. `apogee add banner/slim` copies one into `<dir>/blocks/banner/` with what it uses; `apogee list` shows them. The first set is 20 banner blocks (Banner sections in the docs).
+- **Careers sections**: 12 careers blocks; open positions as rows or cards, in one or two columns, beside a heading or a photo, with department tabs that filter, a location menu, department groups, and brand-colour versions.
+- **JobCard**: one open position, as a list row under a rule (reads on the brand colour too) or a bordered card with the department; location, type and salary as a labelled description list.
+- **Blog sections**: 21 blog blocks; 16 blog index headers (featured post, centred or brand headers with an email sign-up, category links, search, sidebars, pagination or Load more) and 5 latest-posts sections (carousel, split, centred grid).
+- **PostCard**: one article in a blog list, vertical or horizontal (by its own width), plain, a bordered card or with a frosted overlay, with a category, badge or byline line and an author, tags or Read post footer. BlogList now renders its posts with it.
+- **Tabs** renders a `<nav>` of links (named by `label`, the current one marked `aria-current="page"`) when every tab is a link, so link rows are navigation, not tabs. A `selected` variant styles the selected tab and the current link alike.
+- **Blocks**: parts of a page in the registry, keyed `<category>/<name>` like pages (digits split off: `featured-post-01`). `apogee add banner/slim` copies one into `<dir>/blocks/banner/` with what it uses; `apogee list` shows them. The first set is 20 banner blocks (Banner sections in the docs).
 - **Banner** section: a one-line announcement as a floating card (optionally `fixed` to the bottom of the viewport) or a full-width bar, on any section background, with `icon`, description and `actions` slots and a close button.
 - **Countdown**: the time left until a date, ticking every second, with the end date as text for screen readers and without JS; fires `apogee:countdown-end`.
 - **Dismissible** documents closing from your own `data-dismiss` button.
-- **Docs**: the Apogee logo in the navbar; a favicon that follows light and dark mode, with `.ico`, Apple touch and manifest icons. Block previews fit their frame to the block.
+- **Docs**: heading anchors and their positioning stay out of component previews. The Apogee logo in the navbar; a favicon that follows light and dark mode, with `.ico`, Apple touch and manifest icons. Block previews fit their frame to the block.
 - **Pages**: whole pages in the registry, keyed `<category>/<name>`. `apogee add log-in/split-quote` copies the page to `<dir>/pages/log-in/` with every section and component it uses; `apogee list` shows each page with its description. The first sets are 14 log in pages, 20 sign up pages, 3 verification pages, 5 forgot password pages and 14 404 pages.
 - **AuthShell** section: the frame of a log in, sign up or recovery page, `centered`, `card`, `split` (a panel on either side) or `sidebar` (a narrow step column), with an optional pattern behind the brand mark and a `below` slot for a step list.
 - **NotFound** takes `layout="start"` and `"split"` (with a `media` slot), `codeStyle="badge"`, a `back` button, `watermark`, `fullHeight`, and `icon`, default and `below` slots for search forms, help links and cards.

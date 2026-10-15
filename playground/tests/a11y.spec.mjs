@@ -13,7 +13,7 @@ const showcase = readdirSync('src/pages/showcase', { recursive: true })
   .map((f) => `/showcase/${f.replace('.astro', '')}`)
 const examples = ['pages', 'blocks'].flatMap((d) => readdirSync(`../registry/${d}`, { recursive: true }))
   .filter((f) => f.endsWith('.astro'))
-  .map((f) => `/examples/${f.replace('.astro', '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`)
+  .map((f) => `/examples/${f.replace('.astro', '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-z])([0-9])/g, '$1-$2').toLowerCase()}`)
 
 for (const theme of ['light', 'dark']) {
   for (const path of ['/docs', '/rtl', ...pages, ...showcase, ...examples]) {

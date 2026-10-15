@@ -66,7 +66,7 @@ const numberCell = `${cell} max-md:hidden`
         {labels && <span class="max-md:sr-only">{previousLabel}</span>}
       </a>
     ) : (
-      <span aria-hidden="true" class:list={[cell, 'text-disabled']}>
+      <span aria-hidden="true" aria-disabled="true" class:list={[cell, 'text-disabled']}>
         <ChevronLeft class="size-4 rtl:-scale-x-100" />
         {labels && <span class="max-md:sr-only">{previousLabel}</span>}
       </span>
@@ -97,7 +97,7 @@ const numberCell = `${cell} max-md:hidden`
         <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
       </a>
     ) : (
-      <span aria-hidden="true" class:list={[cell, 'text-disabled']}>
+      <span aria-hidden="true" aria-disabled="true" class:list={[cell, 'text-disabled']}>
         {labels && <span class="max-md:sr-only">{nextLabel}</span>}
         <ChevronRight class="size-4 rtl:-scale-x-100" />
       </span>

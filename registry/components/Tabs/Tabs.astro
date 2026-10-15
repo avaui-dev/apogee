@@ -11,7 +11,10 @@
  *   </Tabs>
  *
  * A tab's panel slot is `panel-<value>`; `value` defaults to the index. A tab
- * with `href` is a link (no panel). `disabled` tabs are skipped by the arrows.
+ * with `href` is a link (no panel). When every tab is a link, the row is a
+ * `<nav>` of plain links named by `label`, `value` marks the current page
+ * (`aria-current="page"`) and the arrow keys are not used: navigation, not tabs.
+ * `disabled` tabs are skipped by the arrows.
  * Items take an `icon` (Lucide component) and a `badge` (count or text).
  * `orientation="vertical"` stacks the list beside the panels (Up/Down move);
  * `activation="manual"` moves focus with the arrows and selects on Enter/Space.
@@ -32,16 +35,16 @@ const lists = {
   primary: 'gap-1',
 } as const
 const tabStyles = {
-  bordered: 'border-b-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
-  borderless: 'border-b-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
-  pills: 'rounded-md aria-selected:bg-neutral-faded aria-selected:text-neutral',
-  'pills-raised': `${innerRadius['md-0.5']} aria-selected:bg-page aria-selected:text-neutral aria-selected:shadow-outline dark:aria-selected:bg-neutral`,
-  primary: 'rounded-md aria-selected:bg-primary-faded aria-selected:text-primary',
+  bordered: 'border-b-2 border-transparent selected:border-primary selected:text-neutral',
+  borderless: 'border-b-2 border-transparent selected:border-primary selected:text-neutral',
+  pills: 'rounded-md selected:bg-neutral-faded selected:text-neutral',
+  'pills-raised': `${innerRadius['md-0.5']} selected:bg-page selected:text-neutral selected:shadow-outline dark:selected:bg-neutral`,
+  primary: 'rounded-md selected:bg-primary-faded selected:text-primary',
 } as const
 // Vertical underline variants draw the line on the start edge.
 const verticalTabStyles = {
-  bordered: 'border-s-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
-  borderless: 'border-s-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
+  bordered: 'border-s-2 border-transparent selected:border-primary selected:text-neutral',
+  borderless: 'border-s-2 border-transparent selected:border-primary selected:text-neutral',
 } as const
 const verticalLists = { bordered: 'border-s border-neutral', borderless: '' } as const
 const sizes = {
@@ -74,6 +77,8 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   fullWidth?: boolean
   /** `manual`: arrows move focus, Enter or Space selects. */
   activation?: 'automatic' | 'manual'
+  /** Name of the navigation when every tab is a link (it renders as a `<nav>`). @category content */
+  label?: string
   class?: string
 }
 
@@ -85,6 +90,7 @@ const {
   orientation = 'horizontal',
   fullWidth = false,
   activation = 'automatic',
+  label = 'Sections',
   class: className,
   ...rest
 } = Astro.props
@@ -104,23 +110,27 @@ const items = tabs.map((t, i) => {
   const o: TabItem = typeof t === 'string' ? { label: t } : t
   return { ...o, value: o.value ?? String(i) }
 })
-const found = items.findIndex((t) => t.value === value && !t.disabled && !t.href)
-const initial = found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
+// Every tab a link: a row of links styled as tabs, in a <nav>; `value` marks the current page.
+const nav = items.length > 0 && items.every((t) => t.href)
+const found = items.findIndex((t) => t.value === value && !t.disabled && (nav || !t.href))
+const initial = nav ? found : found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
 const id = uid(Astro.locals)
+const Root = nav ? 'nav' : 'div'
 const tabClass =
   'press inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:text-disabled'
 ---
 
-<div
+<Root
   class:list={['apogee-tabs', vertical && 'flex gap-6 no-js:flex-col', className]}
+  aria-label={nav ? label : undefined}
   data-orientation={orientation}
   data-activation={activation}
   {...rest}
 >
   <div
-    role="tablist"
+    role={nav ? undefined : 'tablist'}
     data-apogee-slide={slides ? '' : undefined}
-    aria-orientation={vertical ? 'vertical' : undefined}
+    aria-orientation={vertical && !nav ? 'vertical' : undefined}
     class:list={[
       'apogee-tabs-list flex [scrollbar-width:none]',
       vertical
@@ -140,13 +150,14 @@ const tabClass =
           <Tag
             type={t.href ? undefined : 'button'}
             href={t.href}
-            role="tab"
+            role={nav ? undefined : 'tab'}
             id={`${id}-tab-${i}`}
             data-value={t.value}
             aria-controls={hasPanel ? `${id}-panel-${i}` : undefined}
-            aria-selected={on ? 'true' : 'false'}
+            aria-selected={nav ? undefined : on ? 'true' : 'false'}
+            aria-current={nav && on ? 'page' : undefined}
             aria-disabled={t.disabled ? 'true' : undefined}
-            tabindex={on ? 0 : -1}
+            tabindex={nav ? undefined : on ? 0 : -1}
             class:list={[
               tabClass,
               vertical && underline ? [verticalTabStyles[variant], '-ms-px'] : tabStyles[variant],
@@ -162,7 +173,7 @@ const tabClass =
                 size="small"
                 variant="faded"
                 color="neutral"
-                class="apogee-tabs-badge tabular-nums max-md:hidden in-aria-selected:bg-primary-faded in-aria-selected:text-primary"
+                class="apogee-tabs-badge tabular-nums max-md:hidden in-selected:bg-primary-faded in-selected:text-primary"
               >
                 {t.badge}
               </Badge>
@@ -181,12 +192,12 @@ const tabClass =
             role="tabpanel"
             id={`${id}-panel-${i}`}
             aria-labelledby={`${id}-tab-${i}`}
-            hidden={i !== initial}
             tabindex="0"
             class:list={[
               vertical ? 'min-w-0 flex-1 text-sm' : 'pt-4 text-sm',
               'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
-              i !== initial && 'no-js:block',
+              // Hidden by a JS-only class, not the attribute: without JS every panel shows.
+              i !== initial && 'js:hidden',
             ]}
           >
             <slot name={`panel-${t.value}`} />
@@ -194,10 +205,11 @@ const tabClass =
         ),
     )
   }
-</div>
+</Root>
 
 <style>
-  .apogee-tabs [role='tabpanel']:not([hidden]) {
+  /* Only after the reader switches tabs: never on page load. */
+  .apogee-tabs[data-switched] [role='tabpanel']:not([hidden]) {
     animation: apogee-tab-in var(--duration-medium) var(--ease-standard);
   }
   @keyframes apogee-tab-in {
@@ -207,7 +219,7 @@ const tabClass =
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .apogee-tabs [role='tabpanel']:not([hidden]) {
+    .apogee-tabs[data-switched] [role='tabpanel']:not([hidden]) {
       animation: none;
     }
   }
@@ -230,6 +242,7 @@ const tabClass =
     const orientation = root.dataset.orientation === 'vertical' ? 'vertical' : 'horizontal'
 
     const select = (index: number) => {
+      root.dataset.switched = ''
       tabs.forEach((t, i) => {
         const on = i === index
         t.setAttribute('aria-selected', String(on))
@@ -243,6 +256,14 @@ const tabClass =
     }
 
     edgeFade(list)
+
+    // Hand panel visibility over from the server's JS-only class to the hidden attribute.
+    for (const t of tabs) {
+      const panel = panelOf(t)
+      if (!panel) continue
+      panel.classList.remove('js:hidden')
+      panel.hidden = t.getAttribute('aria-selected') !== 'true'
+    }
 
     // Manual mode: when focus leaves the tablist, the Tab stop returns to the selected tab.
     if (manual) list.addEventListener('focusout', (e) => {

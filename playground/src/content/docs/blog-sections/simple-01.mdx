@@ -1,0 +1,28 @@
+---
+title: "Simple 01"
+description: "A centred header with search, category tabs and a sort menu, a grid of posts with a newsletter card inside it, and pagination.."
+group: Blog sections
+order: 5
+related: [post-card, sections/blog-list]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog/simple-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog/simple-01
+```
+
+This copies the block to `src/components/apogee/blocks/blog/` with everything it uses: Button, Card, Grid, Input, Link, Pagination, PostCard, Section, SectionHeader, Select, Tabs. It opens a blog index page (its heading is the page's `h1`). Swap the `posts` array for your content collection. Use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- Each post is one link: the title stretches over the card, and the author, category and tag links sit above it and stay clickable.
+- The decorative arrow and the images are hidden from screen readers (their alt is empty because the title already names the post).
+- The category row is a `<nav>` named "Categories"; the current category carries `aria-current="page"`.
+- The email field is named by `aria-label="Email"` (the placeholder is not a label); the form submits without JS.
+- The search field is named "Search posts".
+- Pagination is a `<nav>` of links; the current page carries `aria-current="page"`.

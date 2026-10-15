@@ -71,6 +71,7 @@ through to the root `<div>`.
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | `vertical` stacks the list beside the panels; Up and Down move between tabs; underline variants draw on the start edge. |
 | `fullWidth` | `boolean` | `false` | Tabs share the list width equally (horizontal only). |
 | `activation` | `'automatic' \| 'manual'` | `'automatic'` | `manual`: arrows move focus, Enter or Space selects. Use it when a panel is expensive to show. |
+| `label` | `string` | `'Sections'` | Name of the `<nav>` when every tab is a link. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Tab height and text size. |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
@@ -214,6 +215,19 @@ The tab that starts active is not scrolled into view on load. Put it among the f
 - **No JS** — every panel is shown (the `no-js:block` fallback).
 
 ## Examples
+
+Every tab a link (category pages, a blog filter): the row becomes a `<nav>` named by `label`, and `value` marks the current page with `aria-current="page"`. Tab moves through the links; the arrow keys are left alone.
+
+<Preview code={`<Tabs label="Categories" value="design" tabs={[
+  { label: 'View all', value: 'all', href: '/blog' },
+  { label: 'Design', value: 'design', href: '/blog/design' },
+  { label: 'Product', value: 'product', href: '/blog/product' },
+]} />`}>
+  <div data-apogee-tabs="links" class="w-full">
+    <Tabs label="Categories" value="design" tabs={[{ label: 'View all', value: 'all', href: '#all' }, { label: 'Design', value: 'design', href: '#design' }, { label: 'Product', value: 'product', href: '#product' }]} />
+  </div>
+</Preview>
+
 
 More than a handful of tabs — they wrap; the pattern is unchanged:
 

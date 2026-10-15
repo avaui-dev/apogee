@@ -71,7 +71,8 @@ for (const [folder, kind] of [['pages', 'page'], ['blocks', 'block']]) {
   for (const category of listDirs(kindRoot)) {
     for (const file of readdirSync(join(kindRoot, category)).filter((f) => f.endsWith('.astro')).sort()) {
       const src = readFileSync(join(kindRoot, category, file), 'utf8')
-      const name = `${category}/${file.replace(/\.astro$/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`
+      // Kebab case, digits split off too (FeaturedPost01 → featured-post-01).
+      const name = `${category}/${file.replace(/\.astro$/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-z])([0-9])/g, '$1-$2').toLowerCase()}`
       if (components[name]) throw new Error(`${name}: a page and a block share this name`)
       // First doc-comment line: "Title: description."
       const line = src.match(/\/\*\*\s*\n\s*\*\s*(.+)/)?.[1] ?? ''

@@ -1,0 +1,120 @@
+---
+title: PostCard
+description: One article in a blog list; image, a top line, title, summary and a footer, as plain, a card or with an overlay.
+group: Components
+order: 0
+related: [card, avatar, badge, pagination]
+---
+
+import Preview from '../../components/Preview.astro'
+import PostCard from '../../../../registry/components/PostCard/PostCard.astro'
+
+export const post = {
+  title: 'Designing review sessions people look forward to',
+  href: '#',
+  summary: 'How to run critiques that sharpen the work instead of draining the room.',
+  date: '2026-01-20',
+  readingTime: '8 min read',
+  image: { src: 'https://picsum.photos/seed/apogee-blog-1/960/640', alt: '', width: 960, height: 640 },
+  category: { name: 'Design', href: '#' },
+  author: { name: 'Ada Lovelace', href: '#' },
+  tags: [{ name: 'Design', href: '#', color: 'primary' }, { name: 'Research', href: '#' }],
+}
+
+<Preview code={`<PostCard post={post} />`}>
+  <div class="w-80" data-apogee-post-card="default"><PostCard post={post} /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add post-card
+```
+
+Pulls in Image, Avatar, Badge and Heading.
+
+## Usage
+
+```astro
+---
+import PostCard, { type Post } from '@/components/apogee/PostCard/PostCard.astro'
+const post: Post = { title: '…', href: '/blog/review-sessions', summary: '…', date: '2026-01-20', category: { name: 'Design' }, author: { name: 'Ada Lovelace' } }
+---
+<PostCard post={post} />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `post` | `{ title, href, summary?, date, image?, readingTime?, category?, author?, tags? }` | — | Required. `date` is an ISO date; `image` is `{ src, alt, width?, height? }`; `category` and `author` are `{ name, href? }` (the author adds `avatar?`); `tags` are `{ name, href?, color? }[]`. |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | `horizontal` puts the image beside the text once the card is 36rem wide (a container query). |
+| `frame` | `'plain' \| 'card' \| 'overlay'` | `'plain'` | No box; a bordered card with the image flush to its top; or author, date and category on a frosted strip over the image. |
+| `meta` | `'category' \| 'badge' \| 'byline' \| 'none'` | `'category'` | The line above the title: the category, a badge with the category and reading time, "author • date", or nothing. |
+| `footer` | `'author' \| 'tags' \| 'link' \| 'none'` | `'author'` | The author with the date, the tags, a "Read post" line, or nothing. |
+| `rounded` | `boolean` | `true` | Rounded image corners (`plain` and `overlay`). |
+| `size` | `'medium' \| 'large'` | `'medium'` | `large` for a featured post: a bigger title and a three-line summary. |
+| `headingLevel` | `2 \| 3 \| 4 \| 5` | `3` | The title's heading level; one below the list's heading. |
+| `linkLabel` | `string` | `'Read post'` | Text of the `link` footer. |
+| `locale` | `string` | `'en'` | Date locale. |
+| `class` | `string` | — | Extra classes on the `<article>`, merged last. |
+
+## Variants
+
+`frame` × `meta` × `footer`:
+
+<Preview code={`<PostCard post={post} frame="card" meta="badge" />
+<PostCard post={post} meta="byline" footer="tags" />
+<PostCard post={post} frame="overlay" footer="link" />
+<PostCard post={post} meta="none" footer="none" rounded={false} />`}>
+  <div class="grid w-full gap-8 sm:grid-cols-2">
+    <PostCard post={post} frame="card" meta="badge" />
+    <PostCard post={post} meta="byline" footer="tags" />
+    <PostCard post={post} frame="overlay" footer="link" />
+    <PostCard post={post} meta="none" footer="none" rounded={false} />
+  </div>
+</Preview>
+
+`orientation="horizontal"` and `size="large"` (the image moves beside the text once the card is wide enough):
+
+<Preview block code={`<PostCard post={post} orientation="horizontal" size="large" />
+<PostCard post={post} orientation="horizontal" frame="card" />`}>
+  <div class="flex flex-col gap-10">
+    <PostCard post={post} orientation="horizontal" size="large" />
+    <PostCard post={post} orientation="horizontal" frame="card" />
+  </div>
+</Preview>
+
+## States
+
+- **Hover** — the image zooms a little and the arrow darkens (no zoom under reduced motion).
+- **Focus** — the title link shows the focus ring; author, category and tag links have their own.
+
+## Examples
+
+Whole blog layouts built on it: [Blog sections](/docs/blog-sections).
+
+## Accessibility
+
+- The card is an `<article>`. The title is a heading (`headingLevel`) holding the link; the link stretches over the whole card, so a click anywhere opens the post.
+- Author, category and tag links sit above the stretched link and stay reachable by keyboard and pointer.
+- The arrow is `aria-hidden`; give the image an empty `alt` when it only illustrates the title.
+- The tags are a list named "Tags".
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-primary` | Category and byline line |
+| `--foreground-neutral` / `--foreground-neutral-faded` | Title / summary and date |
+| `--border-neutral` / `--background-elevation-raised` | `card` frame |
+| `--background-inverted` / `--on-inverted` | `overlay` strip |
+
+## Do / Don't
+
+- **Do** keep summaries to two lines; the card clamps longer ones.
+- **Don't** put a second link on the summary; the whole card already opens the post.
+
+## Content
+
+- Titles say what the reader learns, not just the topic.

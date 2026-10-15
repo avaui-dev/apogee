@@ -16,6 +16,8 @@
    variant) so it degrades cleanly when JavaScript is unavailable. */
 @custom-variant no-js (html.no-js &);
 @custom-variant js (html.js &);
+/* The selected tab, or the current page in a row of links styled as tabs. */
+@custom-variant selected (&:is([aria-selected="true"], [aria-current="page"]));
 
 @layer base {
   html {
@@ -318,7 +320,7 @@
 
 /* Sliding selection: a row marked [data-apogee-slide] holds one
    .apogee-slide element that follows the selected item (a checked radio's
-   label, or an aria-selected tab) by CSS anchor positioning and animates
+   label, an aria-selected tab or the current page's link) by CSS anchor positioning and animates
    between items. Without anchor support each item paints its own selected
    background, as before. */
 .apogee-slide {
@@ -329,13 +331,13 @@
     position: relative;
     anchor-scope: --apogee-selected;
   }
-  [data-apogee-slide] :is(:checked + label, [aria-selected='true']) {
+  [data-apogee-slide] :is(:checked + label, [aria-selected='true'], [aria-current='page']) {
     anchor-name: --apogee-selected;
     background-color: transparent !important;
     box-shadow: none !important;
     border-color: transparent !important;
   }
-  [data-apogee-slide] :is(label, [role='tab']) {
+  [data-apogee-slide] :is(label, [role='tab'], a) {
     position: relative;
     z-index: 1;
   }

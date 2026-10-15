@@ -1,0 +1,92 @@
+---
+/**
+ * Carousel layout 01: Latest posts in a carousel under a heading with a View all posts button.
+ *
+ * @block blog
+ * @order 17
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import PostCard, { type Post } from '../../components/PostCard/PostCard.astro'
+import Button from '../../components/Button/Button.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+
+const posts: Post[] = [
+  {
+    title: 'Designing review sessions people look forward to',
+    href: '#',
+    summary: 'How to run critiques that sharpen the work instead of draining the room.',
+    date: '2026-01-20',
+    readingTime: '8 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-1/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Design', href: '#' },
+    author: { name: 'Ada Lovelace', href: '#' },
+    tags: [{ name: 'Design', href: '#', color: 'primary' }, { name: 'Research', href: '#', color: 'neutral' }, { name: 'Process', href: '#', color: 'positive' }],
+  },
+  {
+    title: 'Migrating to a typed component library',
+    href: '#',
+    summary: 'What changed when we moved two hundred screens onto one set of typed parts.',
+    date: '2026-01-19',
+    readingTime: '6 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-2/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Engineering', href: '#' },
+    author: { name: 'Alan Turing', href: '#' },
+    tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'Tooling', href: '#', color: 'neutral' }],
+  },
+  {
+    title: 'Building your first internal API',
+    href: '#',
+    summary: 'The shape of a small API that teams can grow without rewriting.',
+    date: '2026-01-18',
+    readingTime: '7 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-3/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Engineering', href: '#' },
+    author: { name: 'Grace Hopper', href: '#' },
+    tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'APIs', href: '#', color: 'warning' }],
+  },
+  {
+    title: 'A field guide to product discovery',
+    href: '#',
+    summary: 'Questions that turn a vague request into something you can build.',
+    date: '2026-01-16',
+    readingTime: '5 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-4/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Product', href: '#' },
+    author: { name: 'Katherine Johnson', href: '#' },
+    tags: [{ name: 'Product', href: '#', color: 'primary' }, { name: 'Research', href: '#', color: 'neutral' }],
+  },
+  {
+    title: 'Writing release notes people read',
+    href: '#',
+    summary: 'Lead with what changed for the reader, not what changed in the code.',
+    date: '2026-01-15',
+    readingTime: '4 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-5/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Product', href: '#' },
+    author: { name: 'Margaret Hamilton', href: '#' },
+    tags: [{ name: 'Product', href: '#', color: 'primary' }, { name: 'Writing', href: '#', color: 'positive' }],
+  },
+  {
+    title: 'Leadership lessons from a year of remote teams',
+    href: '#',
+    summary: 'Rituals, writing and trust: what held a distributed team together.',
+    date: '2026-01-14',
+    readingTime: '9 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-6/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Leadership', href: '#' },
+    author: { name: 'Alan Kay', href: '#' },
+    tags: [{ name: 'Leadership', href: '#', color: 'primary' }, { name: 'Remote', href: '#', color: 'neutral' }],
+  },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Our blog" heading="Latest blog posts" description="Tools and strategies modern teams need to help their companies grow." class="mb-12">
+    <Button slot="actions" href="#" size="large" class="max-sm:hidden">View all posts</Button>
+  </SectionHeader>
+  <Carousel label="Latest posts" visibleItems={{ base: 1, md: 2, lg: 3 }} gap={8} controlsPosition="below">
+    {posts.map((post) => <PostCard post={post} meta="badge" headingLevel={3} class="h-full" />)}
+  </Carousel>
+  <Button href="#" size="large" fullWidth class="mt-8 sm:hidden">View all posts</Button>
+</Section>

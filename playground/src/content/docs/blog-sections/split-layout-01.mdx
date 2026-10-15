@@ -1,0 +1,24 @@
+---
+title: "Split layout 01"
+description: "A heading and View all posts button beside two posts.."
+group: Blog sections
+order: 18
+related: [post-card, sections/blog-list]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog/split-layout-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog/split-layout-01
+```
+
+This copies the block to `src/components/apogee/blocks/blog/` with everything it uses: Button, PostCard, Section, SectionHeader. It slots into any page, such as a home page or a product page. Swap the `posts` array for your content collection. Use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- Each post is one link: the title stretches over the card, and the author, category and tag links sit above it and stay clickable.
+- The decorative arrow and the images are hidden from screen readers (their alt is empty because the title already names the post).

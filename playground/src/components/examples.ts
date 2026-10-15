@@ -5,7 +5,7 @@ const modules = import.meta.glob<{ default: any }>(['../../../registry/pages/**/
 const sources = import.meta.glob<string>(['../../../registry/pages/**/*.astro', '../../../registry/blocks/**/*.astro'], { eager: true, query: '?raw', import: 'default' })
 
 const slugOf = (path: string) =>
-  path.replace(/^.*\/registry\/(pages|blocks)\//, '').replace(/\.astro$/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+  path.replace(/^.*\/registry\/(pages|blocks)\//, '').replace(/\.astro$/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-z])([0-9])/g, '$1-$2').toLowerCase()
 
 export const examples = Object.fromEntries(
   Object.entries(modules).map(([path, m]) => {
