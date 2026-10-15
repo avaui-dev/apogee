@@ -1,0 +1,73 @@
+---
+/**
+ * Split with carousel: The form beside a dark panel that walks through what is new.
+ *
+ * @page log-in
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Checkbox from '../../components/Checkbox/Checkbox.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+import Card from '../../components/Card/Card.astro'
+import Stat from '../../components/Stat/Stat.astro'
+import CircularProgress from '../../components/CircularProgress/CircularProgress.astro'
+
+const slides = [
+  { title: 'Welcome to your new dashboard', text: 'Sign in to explore what changed.', stat: { label: 'Active users', value: '4,862', change: '+12%', trend: 'up' as const }, goal: 72 },
+  { title: 'Reports that build themselves', text: 'Weekly summaries land in your inbox.', stat: { label: 'Reports sent', value: '1,204', change: '+31%', trend: 'up' as const }, goal: 88 },
+  { title: 'Invite your whole team', text: 'Roles and seats, managed in one place.', stat: { label: 'Seats used', value: '38', change: '+6', trend: 'up' as const }, goal: 54 },
+]
+---
+
+<AuthShell layout="split" panelBackground="inverted" heading="Log in" description="Welcome back! Please enter your details.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <Checkbox label="Remember for 30 days" name="remember" />
+      <Link href="#" underline="hover" class="text-sm font-semibold">Forgot password</Link>
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Sign in</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign in with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Don't have an account? <Link href="#" underline="hover" class="font-semibold">Sign up</Link>
+  </p>
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="flex w-full items-center justify-center px-16 py-16">
+    <Carousel itemWidth="100%" dots controlsPosition="below" label="What's new" class="w-full max-w-md">
+      {slides.map((s) => (
+        <div class="flex flex-col items-center gap-10 text-center">
+          <Card raised padding="large" class="w-full text-start">
+            <div class="flex items-center justify-between gap-6">
+              <Stat {...s.stat} comparison="vs last month" />
+              <CircularProgress value={s.goal} size="xlarge" label="Monthly goal" />
+            </div>
+          </Card>
+          <div class="flex flex-col gap-2">
+            <p class="text-xl font-semibold">{s.title}</p>
+            <p class="opacity-80">{s.text}</p>
+          </div>
+        </div>
+      ))}
+    </Carousel>
+  </div>
+</AuthShell>

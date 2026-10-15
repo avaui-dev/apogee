@@ -1,0 +1,24 @@
+---
+title: Card combined
+description: "One card holds the logo, the heading and the form."
+group: Sign up pages
+order: 5
+related: [sections/auth-shell, input, button]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/card-combined" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/card-combined
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Button, FeaturedIcon, Input, Link. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The SSO button is a link to your identity provider; swap its `href` for your own.

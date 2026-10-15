@@ -1,0 +1,25 @@
+---
+title: Split with image background
+description: "The form beside a photo under a brand tint, with a pitch and social proof."
+group: Sign up pages
+order: 17
+related: [sections/auth-shell, avatar-group, image, rating]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/split-image-background" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/split-image-background
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, AvatarGroup, Button, FeaturedIcon, Image, Input, Link, Rating. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The tint is the primary fill at 85%, with on-primary text, so the copy keeps its contrast over any photo.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

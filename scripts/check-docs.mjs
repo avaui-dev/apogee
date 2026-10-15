@@ -93,9 +93,16 @@ const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
   const index = JSON.parse(readFileSync(`${root}/registry/index.json`, 'utf8'))
-  const comps = Object.entries(index.components).filter(([n, c]) => n !== 'utils' && !(c.files ?? []).some((x) => x.startsWith('sections/')))
+  const comps = Object.entries(index.components).filter(([n, c]) => n !== 'utils' && c.kind === 'component')
   const ids = new Set(comps.map(([n]) => kebab(n)))
   let bad = 0
+  // Pages: each has a docs page at <category>-pages/<slug>.mdx that previews it.
+  for (const [name, c] of Object.entries(index.components).filter(([, c]) => c.kind === 'page')) {
+    const [category, slug] = name.split('/')
+    const page = `${root}/playground/src/content/docs/${category}-pages/${slug}.mdx`
+    if (!existsSync(page)) { console.log(`${name}: no page`); bad++; continue }
+    if (!readFileSync(page, 'utf8').includes(`<PagePreview slug="${name}"`)) { console.log(`${name}: page does not preview it`); bad++ }
+  }
   for (const [name, c] of comps) {
     const page = `${root}/playground/src/content/docs/${kebab(name)}.mdx`
     if (!existsSync(page)) { console.log(`${kebab(name)}: no page`); bad++; continue }

@@ -1,0 +1,44 @@
+---
+/**
+ * Split with image: The form beside a full-height photo.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Image from '../../components/Image/Image.astro'
+---
+
+<AuthShell layout="split" heading="Sign up" description="Start your 30-day free trial.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" hint="Must be at least 8 characters." required />
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign up with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+
+  <p slot="legal">© Example 2026</p>
+
+  <Image slot="panel" src="https://picsum.photos/seed/apogee-signup-1/1200/1600" alt="" width={1200} height={1600} fit="cover" class="absolute inset-0 size-full" />
+</AuthShell>

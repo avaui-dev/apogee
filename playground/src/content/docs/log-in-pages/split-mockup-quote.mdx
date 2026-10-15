@@ -1,0 +1,25 @@
+---
+title: Split with mockup and quote
+description: A rated customer quote above the product screen.
+group: Log in pages
+order: 9
+related: [sections/auth-shell, rating, stat, table]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/split-mockup-quote" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/split-mockup-quote
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell (layout split), Rating, Card, Stat, Table, Badge. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- The product screen is `aria-hidden` and `inert`; the quote stays readable.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

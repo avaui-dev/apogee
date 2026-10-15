@@ -1,0 +1,25 @@
+---
+title: Split with app mockup
+description: "The form beside a phone screen built from the components."
+group: Sign up pages
+order: 15
+related: [sections/auth-shell, card, stat]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/split-app-mockup" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/split-app-mockup
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Avatar, Button, Card, FeaturedIcon, Input, Link, Stat. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The phone screen is decoration: `aria-hidden` and `inert`.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

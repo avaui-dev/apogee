@@ -1,0 +1,89 @@
+---
+/**
+ * Split with mockup and quote: A customer quote above the product screen.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Card from '../../components/Card/Card.astro'
+import Stat from '../../components/Stat/Stat.astro'
+import Table from '../../components/Table/Table.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Rating from '../../components/Rating/Rating.astro'
+
+const stats = [
+  { label: 'Active users', value: '4,862', change: '+12%', trend: 'up' as const },
+  { label: 'Sessions', value: '18,204', change: '+8%', trend: 'up' as const },
+  { label: 'Churn', value: '1.9%', change: '-0.4%', trend: 'down' as const },
+]
+const rows = [
+  ['Northwind', 'Team', 24, 'Active'],
+  ['Globex', 'Business', 120, 'Active'],
+  ['Initech', 'Team', 8, 'Trial'],
+  ['Umbrella', 'Enterprise', 410, 'Active'],
+]
+---
+
+<AuthShell layout="split" heading="Sign up" description="Start your 30-day free trial." panelBackground="primary-faded">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" hint="Must be at least 8 characters." required />
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign up with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="relative flex w-full flex-col">
+    <figure class="relative z-10 flex max-w-xl flex-col gap-6 px-20 pt-24">
+      <Rating readonly value={5} aria-label="Rated 5 out of 5" />
+      <blockquote class="text-2xl font-medium text-balance">
+        Setting up automations here makes my week calmer. I spend the time I save on the work itself.
+      </blockquote>
+      <figcaption>
+        <p class="font-semibold">Leah Moreau</p>
+        <p class="text-sm text-neutral-faded">Operations Lead, Northwind</p>
+      </figcaption>
+    </figure>
+    <!-- A product screenshot built from the components; decorative, so hidden from assistive tech. -->
+    <div class="absolute top-[26rem] start-20 w-[60rem] overflow-hidden rounded-xl border-[6px] border-neutral bg-page text-neutral shadow-raised" aria-hidden="true" inert>
+      <div class="flex items-center justify-between border-b border-neutral px-6 py-4">
+        <p class="font-semibold">Dashboard</p>
+        <Badge color="positive" variant="faded">Live</Badge>
+      </div>
+      <div class="flex flex-col gap-6 p-6">
+        <div class="grid grid-cols-3 gap-4">
+          {stats.map((s) => <Card padding="medium"><Stat {...s} comparison="vs last month" /></Card>)}
+        </div>
+        <Table size="small" border>
+          <thead><tr><th>Customer</th><th>Plan</th><th>Seats</th><th>Status</th></tr></thead>
+          <tbody>
+            {rows.map((r) => <tr><td>{r[0]}</td><td>{r[1]}</td><td class="tabular-nums">{r[2]}</td><td><Badge size="small" variant="faded" color={r[3] === 'Active' ? 'positive' : 'neutral'}>{r[3]}</Badge></td></tr>)}
+          </tbody>
+        </Table>
+      </div>
+    </div>
+  </div>
+</AuthShell>

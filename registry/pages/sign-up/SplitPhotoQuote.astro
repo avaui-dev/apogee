@@ -1,0 +1,67 @@
+---
+/**
+ * Split with photo and quote: Reviews rotate over a photo, on a dark scrim.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Image from '../../components/Image/Image.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+
+const reviews = [
+  { quote: 'We set up the whole team before lunch. The onboarding just gets out of the way.', name: 'Mara Okafor', role: 'Head of Operations, Northwind', avatar: 'https://i.pravatar.cc/96?img=47' },
+  { quote: 'Single sign-on took ten minutes. Our security review took longer to schedule.', name: 'Jonas Weber', role: 'IT Lead, Globex', avatar: 'https://i.pravatar.cc/96?img=12' },
+  { quote: 'The trial had everything we needed to decide. No sales call, no surprises.', name: 'Ana Lima', role: 'Founder, Initech', avatar: 'https://i.pravatar.cc/96?img=32' },
+]
+---
+
+<AuthShell layout="split" heading="Sign up" description="Start your 30-day free trial.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" hint="Must be at least 8 characters." required />
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign up with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="relative flex w-full items-end">
+    <Image src="https://picsum.photos/seed/apogee-signup-2/1200/1600" alt="" width={1200} height={1600} fit="cover" class="absolute inset-0 size-full" />
+    <!-- Scoped to the dark theme so the scrim and text stay readable over the photo in both themes. -->
+    <div data-theme="dark" class="relative w-full bg-linear-to-t from-page/90 via-page/60 to-transparent px-12 pt-40 pb-12 text-neutral">
+      <Carousel itemWidth="100%" controlsPosition="below" controlsVariant="overlay" label="Customer reviews">
+        {reviews.map((r) => (
+          <figure class="flex flex-col gap-6">
+            <blockquote class="text-3xl font-medium text-balance">{r.quote}</blockquote>
+            <figcaption class="flex flex-col gap-1">
+              <p class="text-2xl font-semibold">{r.name}</p>
+              <p class="text-neutral-faded">{r.role}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </Carousel>
+    </div>
+  </div>
+</AuthShell>

@@ -1,0 +1,78 @@
+---
+title: Auth shell
+description: The frame of a log in, sign up or recovery page; brand mark, heading and your form, centred, in a card, beside a panel, or beside a step sidebar.
+group: Sections
+order: 15
+related: [log-in-pages, sign-up-pages, card, steps]
+---
+
+import Preview from '../../../components/Preview.astro'
+import AuthShell from '../../../../../registry/sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../../../../registry/components/Input/Input.astro'
+import Button from '../../../../../registry/components/Button/Button.astro'
+import { Orbit } from '@lucide/astro'
+
+<Preview block code={`<AuthShell heading="Log in to your account" description="Welcome back! Please enter your details." pattern="grid">
+  <FeaturedIcon slot="brand" theme="solid" color="primary" size="large"><Orbit /></FeaturedIcon>
+  <form method="post">…</form>
+  <p slot="footer">Don't have an account? <Link href="/sign-up">Sign up</Link></p>
+</AuthShell>`}>
+  {['centered', 'card'].map((layout) => (
+    <AuthShell layout={layout} heading={layout === 'card' ? 'Welcome back' : 'Log in to your account'} description="Please enter your details." pattern={layout === 'centered' ? 'grid' : 'none'} fullHeight={false} headingLevel={2} class="rounded-lg border border-neutral">
+      <FeaturedIcon slot="brand" theme="solid" color="primary" size="large"><Orbit /></FeaturedIcon>
+      <form class="flex flex-col gap-4" onsubmit="event.preventDefault()">
+        <Input label="Email" type="email" name="email" autocomplete="email" />
+        <Button type="submit" fullWidth>Continue</Button>
+      </form>
+    </AuthShell>
+  ))}
+</Preview>
+
+Whole pages built on it: [Log in pages](/docs/log-in-pages) and [Sign up pages](/docs/sign-up-pages).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add auth-shell
+```
+
+## Layouts
+
+- `centered`: the header and form centred on the page. `pattern` draws a faint grid or rings behind the brand mark.
+- `card`: the header and form inside one raised card on a grey page. For the heading on the page and only the form in a card, use `centered` with `background="neutral-faded"` and put your form in a Card.
+- `split`: the form in one column and the `panel` slot in the other. The panel hides below `lg`. `panelSide` picks the side, `panelBackground` the fill, and the `legal` slot sits at the foot of the form column.
+- `sidebar`: a narrow `panel` column (26rem) at the start, usually the steps of a multi-step flow, beside a centred form. See [Sidebar progress](/docs/sign-up-pages/sidebar-progress).
+
+## Slots
+
+| Slot | What goes in it |
+|---|---|
+| default | Your form. |
+| `brand` | The logo, above the heading. |
+| `intro` | Under the heading, before the form: a sign up / log in switch (`centered` only). |
+| `footer` | Under the form: "Don't have an account? Sign up". |
+| `below` | Under the form and wider than it (up to 48rem): a step list or a progress indicator. |
+| `header` | A top bar above the page. |
+| `legal` | Copyright at the foot of the form column (`split` only). |
+| `panel` | The other half in `split` (a photo, a quote, a carousel), or the side column in `sidebar`. |
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `heading` | `string` | — | content | The page heading. |
+| `description` | `string` | — | content | |
+| `layout` | `'centered' \| 'card' \| 'split' \| 'sidebar'` | `'centered'` | layout | |
+| `align` | `'start' \| 'center'` | `'center'`; `'start'` in `split` | layout | Header alignment. |
+| `background` | `'page' \| 'neutral-faded' \| 'primary-faded' \| 'primary' \| 'inverted'` | `'page'`; `'neutral-faded'` in `card` | layout | Page fill. |
+| `pattern` | `'none' \| 'grid' \| 'circles'` | `'none'` | layout | Behind the brand mark. |
+| `panelSide` | `'start' \| 'end'` | `'end'`; `'start'` in `sidebar` | layout | |
+| `panelBackground` | as `background` | `'neutral-faded'` | layout | |
+| `fullHeight` | `boolean` | `true` | layout | Fill the viewport height. |
+| `headingLevel`, `id` | | `headingLevel` is `1` | layout | As on every section. |
+
+## Accessibility
+
+- The section is labelled by its heading, which is the page's `h1` by default.
+- The pattern is decoration (`aria-hidden`), and the panel sits after the form in the source, so keyboard and screen reader users reach the form first even with `panelSide="start"`.

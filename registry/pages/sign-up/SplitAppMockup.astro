@@ -1,0 +1,76 @@
+---
+/**
+ * Split with app mockup: The form beside a phone screen built from the components.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Card from '../../components/Card/Card.astro'
+import Stat from '../../components/Stat/Stat.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+
+const payments = [
+  { name: 'Mara Okafor', note: 'Design retainer', amount: '+$2,400' },
+  { name: 'Jonas Weber', note: 'Hosting', amount: '-$120' },
+  { name: 'Ana Lima', note: 'Workshop', amount: '+$860' },
+]
+---
+
+<AuthShell layout="split" heading="Sign up" description="Start your 30-day free trial.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" hint="Must be at least 8 characters." required />
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign up with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="flex w-full items-center justify-center p-16">
+    <!-- A phone screen built from the components; decorative, so hidden from assistive tech. -->
+    <div class="w-[20rem] rounded-[3rem] bg-inverted p-3 shadow-raised" aria-hidden="true" inert>
+      <div class="flex h-[38rem] flex-col gap-5 overflow-hidden rounded-[2.4rem] bg-page px-5 pt-12 text-neutral">
+        <div>
+          <p class="text-sm text-neutral-faded">Good morning</p>
+          <p class="text-xl font-semibold">Mara</p>
+        </div>
+        <Card padding="medium"><Stat label="Balance" value="$12,480" change="+8%" trend="up" comparison="this month" /></Card>
+        <p class="text-sm font-semibold">Recent</p>
+        <ul class="flex flex-col gap-4">
+          {payments.map((p) => (
+            <li class="flex items-center gap-3">
+              <Avatar name={p.name} size="small" />
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-sm font-medium">{p.name}</span>
+                <span class="block text-xs text-neutral-faded">{p.note}</span>
+              </span>
+              <span class="text-sm tabular-nums">{p.amount}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</AuthShell>

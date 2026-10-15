@@ -1,0 +1,68 @@
+---
+/**
+ * Split with carousel: The form beside a dark panel that walks through what you get.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+import Card from '../../components/Card/Card.astro'
+import Stat from '../../components/Stat/Stat.astro'
+
+const slides = [
+  { title: 'Reports that build themselves', text: 'Product and growth numbers, sent to your inbox every Monday.', stats: [{ label: 'Reports sent', value: '1,204', change: '+31%', trend: 'up' as const }, { label: 'Open rate', value: '68%', change: '+4%', trend: 'up' as const }] },
+  { title: 'See who stays', text: 'Retention by plan, cohort and channel, without a spreadsheet.', stats: [{ label: 'Retention', value: '91%', change: '+2%', trend: 'up' as const }, { label: 'Churn', value: '1.9%', change: '-0.4%', trend: 'down' as const }] },
+  { title: 'Invite your whole team', text: 'Roles and seats, managed in one place.', stats: [{ label: 'Seats used', value: '38', change: '+6', trend: 'up' as const }, { label: 'Admins', value: '4' }] },
+]
+---
+
+<AuthShell layout="split" heading="Sign up" description="Start your 30-day free trial." panelBackground="inverted">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" hint="Must be at least 8 characters." required />
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign up with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="flex w-full items-center justify-center px-16 py-16">
+    <Carousel itemWidth="100%" dots controlsPosition="below" label="What you get" class="w-full max-w-md">
+      {slides.map((s) => (
+        <div class="flex flex-col items-center gap-10 text-center">
+          <Card raised padding="large" class="w-full text-start">
+            <div class="grid grid-cols-2 gap-6">
+              {s.stats.map((st) => <Stat {...st} />)}
+            </div>
+          </Card>
+          <div class="flex flex-col gap-2">
+            <p class="text-xl font-semibold">{s.title}</p>
+            <p class="opacity-80">{s.text}</p>
+          </div>
+        </div>
+      ))}
+    </Carousel>
+  </div>
+</AuthShell>

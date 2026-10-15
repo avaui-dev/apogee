@@ -1,0 +1,74 @@
+---
+/**
+ * Split with photo and card: Reviews rotate in a solid card over a photo.
+ *
+ * @page log-in
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Checkbox from '../../components/Checkbox/Checkbox.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Image from '../../components/Image/Image.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+import Rating from '../../components/Rating/Rating.astro'
+import Card from '../../components/Card/Card.astro'
+
+const reviews = [
+  { quote: 'We moved our whole team over in an afternoon. Nobody has asked how to log in since.', name: 'Mara Okafor', role: 'Head of Operations, Northwind' },
+  { quote: 'Single sign-on took ten minutes to set up. Our security review took longer to schedule.', name: 'Jonas Weber', role: 'IT Lead, Globex' },
+  { quote: 'The onboarding is so calm that our clients stopped sending us screenshots.', name: 'Ana Lima', role: 'Founder, Initech' },
+]
+---
+
+<AuthShell layout="split" heading="Log in" description="Welcome back! Please enter your details.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <Checkbox label="Remember for 30 days" name="remember" />
+      <Link href="#" underline="hover" class="text-sm font-semibold">Forgot password</Link>
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Sign in</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign in with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Don't have an account? <Link href="#" underline="hover" class="font-semibold">Sign up</Link>
+  </p>
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="relative flex w-full items-end">
+    <Image src="https://picsum.photos/seed/apogee-auth-4/1200/1600" alt="" width={1200} height={1600} fit="cover" class="absolute inset-0 size-full" />
+    <Card raised padding="large" class="relative m-8 flex-1">
+      <Carousel itemWidth="100%" controlsPosition="below" label="Customer reviews">
+        {reviews.map((r) => (
+          <figure class="flex flex-col gap-6">
+            <blockquote class="text-xl font-medium text-balance">{r.quote}</blockquote>
+            <figcaption class="flex items-end justify-between gap-4">
+              <div>
+                <p class="font-semibold">{r.name}</p>
+                <p class="text-sm text-neutral-faded">{r.role}</p>
+              </div>
+              <Rating readonly value={5} size="small" aria-label="Rated 5 out of 5" />
+            </figcaption>
+          </figure>
+        ))}
+      </Carousel>
+    </Card>
+  </div>
+</AuthShell>

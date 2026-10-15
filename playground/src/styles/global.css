@@ -3,6 +3,7 @@
    Tailwind to scan them so their utilities get generated. */
 @source "../../../registry/components";
 @source "../../../registry/sections";
+@source "../../../registry/pages";
 @import "../../../registry/tokens/theme.css";
 @import "../../../registry/tokens/skin-skeuomorphic.css";
 

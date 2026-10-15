@@ -2180,3 +2180,124 @@ test('ContentToggle: no slide on page load, slide on swap', async ({ page }) => 
   await root.evaluate((r) => (r.dataset.active = 'b'))
   expect(await running()).toBeGreaterThan(0)
 })
+
+test('carousel controlsPosition below puts the arrows in a row under the track', async ({ page }) => {
+  await page.goto('/docs/carousel')
+  const [withDots, without] = [page.locator('[data-apogee-carousel-below]').nth(0), page.locator('[data-apogee-carousel-below]').nth(1)]
+  const track = withDots.locator('.apogee-carousel-track')
+  const next = withDots.locator('.apogee-carousel-next')
+  const [t, n] = [await track.boundingBox(), await next.boundingBox()]
+  expect(n.y).toBeGreaterThanOrEqual(t.y + t.height)
+  expect(await next.evaluate((b) => getComputedStyle(b).position)).toBe('static')
+  // Dots sit between the arrows.
+  const order = await withDots.evaluate((r) => [...r.querySelectorAll('.apogee-carousel-prev, .apogee-carousel-dots, .apogee-carousel-next')].map((e) => e.className.match(/apogee-carousel-(prev|dots|next)/)[1]))
+  expect(order).toEqual(['prev', 'dots', 'next'])
+  await next.click()
+  await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0)
+  // Without dots the arrows sit at the end of the row.
+  const row = without.locator('.apogee-carousel-next').locator('..')
+  expect(await row.evaluate((r) => getComputedStyle(r).justifyContent)).toBe('flex-end')
+})
+
+test('log in example pages: one h1, labelled fields, split panel only from lg', async ({ browser }) => {
+  for (const [width, panel] of [[1280, true], [800, false]]) {
+    const page = await browser.newPage({ viewport: { width, height: 900 } })
+    await page.goto('/examples/log-in/split-quote')
+    await expect(page.locator('h1')).toHaveCount(1)
+    await expect(page.getByLabel('Email')).toHaveAttribute('autocomplete', 'email')
+    await expect(page.getByLabel('Password')).toHaveAttribute('autocomplete', 'current-password')
+    await expect(page.locator('blockquote')).toBeVisible({ visible: panel })
+    await page.close()
+  }
+})
+
+test('auth shell panel on the start side still follows the form in source order', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await page.goto('/examples/log-in/split-quote')
+  const [form, quote] = [await page.locator('form').boundingBox(), await page.locator('blockquote').boundingBox()]
+  expect(quote.x).toBeLessThan(form.x)
+  expect(await page.evaluate(() => document.querySelector('form').compareDocumentPosition(document.querySelector('blockquote')) & Node.DOCUMENT_POSITION_FOLLOWING)).toBeTruthy()
+})
+
+test('page preview scales the desktop frame and switches to mobile width', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.goto('/docs/log-in-pages/simple')
+  const frame = page.locator('[data-page-preview-frame]')
+  await expect.poll(() => frame.evaluate((f) => f.style.transform)).toMatch(/scale\(0\.\d+\)/)
+  expect(await frame.evaluate((f) => f.style.width)).toBe('1280px')
+  await page.locator('[data-page-preview-width]').getByText('Mobile').click()
+  await expect.poll(() => frame.evaluate((f) => f.style.width)).toBe('390px')
+  expect(await frame.evaluate((f) => f.style.transform)).toBe('')
+})
+
+test('page preview frame follows the docs theme', async ({ page }) => {
+  await page.goto('/docs/log-in-pages/simple')
+  const frame = page.frameLocator('[data-page-preview-frame]')
+  await expect(frame.locator('h1')).toBeVisible()
+  await page.locator('[data-theme-toggle]:visible').first().click()
+  const docs = await page.evaluate(() => document.documentElement.dataset.theme)
+  await expect.poll(() => frame.locator('html').getAttribute('data-theme')).toBe(docs)
+})
+
+test('page preview copies the whole page source', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.goto('/docs/log-in-pages/split-quote')
+  await page.getByRole('button', { name: 'Copy code' }).first().click()
+  const text = await page.evaluate(() => navigator.clipboard.readText())
+  expect(text).toContain("import AuthShell from '@/components/apogee/sections/AuthShell/AuthShell.astro'")
+  expect(text).toContain('<AuthShell layout="split" panelSide="start"')
+  await expect(page.getByRole('button', { name: 'Copied' })).toBeVisible()
+})
+
+test('password checklist ticks rules as you type and blocks a mismatched confirm', async ({ page }) => {
+  await page.goto('/docs/password-checklist')
+  const demo = page.locator('[data-demo="password-checklist"]')
+  const password = demo.getByLabel('Password', { exact: true })
+  const confirm = demo.getByLabel('Confirm password')
+  const rule = (name) => demo.locator('[data-password-rule]', { hasText: name })
+  await expect(rule('8 characters')).toHaveAttribute('data-met', 'false')
+  await password.fill('abc')
+  await expect(rule('8 characters')).toHaveAttribute('data-met', 'false')
+  await password.fill('abcdefgh!')
+  await expect(rule('8 characters')).toHaveAttribute('data-met', 'true')
+  await expect(rule('special character')).toHaveAttribute('data-met', 'true')
+  // The rules describe the field, and an unmet rule makes the field invalid.
+  const listId = await demo.locator('[data-password-checklist]').first().getAttribute('id')
+  expect(await password.getAttribute('aria-describedby')).toContain(listId)
+  await password.fill('abc')
+  expect(await password.evaluate((i) => i.validity.customError)).toBe(true)
+  await password.fill('abcdefgh!')
+  expect(await password.evaluate((i) => i.validity.valid)).toBe(true)
+  // Confirm: invalid until it matches, and re-checks when the password changes.
+  await confirm.fill('abcdefgh')
+  await expect(rule('Passwords match')).toHaveAttribute('data-met', 'false')
+  expect(await confirm.evaluate((i) => i.validity.valid)).toBe(false)
+  await confirm.fill('abcdefgh!')
+  await expect(rule('Passwords match')).toHaveAttribute('data-met', 'true')
+  await password.fill('abcdefgh!?')
+  await expect(rule('Passwords match')).toHaveAttribute('data-met', 'false')
+})
+
+test('auth shell sidebar: a narrow side column at the start, steps under the form', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/examples/sign-up/sidebar-progress')
+  const form = await page.locator('form').boundingBox()
+  const steps = await page.getByText('Invite your team').boundingBox()
+  expect(steps.x).toBeLessThan(form.x)
+  expect(steps.x).toBeLessThan(26 * 16)
+  // The progress dots sit centred under the form.
+  const dots = await page.getByRole('progressbar').boundingBox()
+  expect(Math.abs(dots.x + dots.width / 2 - (form.x + form.width / 2))).toBeLessThan(4)
+  expect(dots.y).toBeGreaterThan(form.y + form.height)
+})
+
+test('sign up password step will not submit until the rules and the match hold', async ({ page }) => {
+  await page.goto('/examples/sign-up/progress')
+  await page.getByRole('textbox', { name: 'Password', exact: true }).fill('short')
+  await page.getByRole('textbox', { name: 'Confirm password' }).fill('short')
+  await page.getByRole('button', { name: 'Continue' }).click()
+  expect(await page.evaluate(() => document.querySelector('form').checkValidity())).toBe(false)
+  await page.getByRole('textbox', { name: 'Password', exact: true }).fill('longenough!')
+  await page.getByRole('textbox', { name: 'Confirm password' }).fill('longenough!')
+  expect(await page.evaluate(() => document.querySelector('form').checkValidity())).toBe(true)
+})

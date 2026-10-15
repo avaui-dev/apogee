@@ -1,0 +1,115 @@
+---
+/**
+ * PagePreview — a whole page example in a frame, over its source. The frame
+ * loads the example's own route (/examples/<slug>), so breakpoints answer to the
+ * frame, not the docs column: Desktop renders 1280px wide and scales down to
+ * fit, Mobile renders 390px wide at full size. The frame follows the docs theme.
+ * Without JS the frame shows the page at the column width.
+ */
+import { Code } from 'astro:components'
+import { ChevronDown, ExternalLink, Copy } from '@lucide/astro'
+import SegmentedControl from '../../../registry/components/SegmentedControl/SegmentedControl.astro'
+import Link from '../../../registry/components/Link/Link.astro'
+import Button from '../../../registry/components/Button/Button.astro'
+import { examples } from './examples'
+
+interface Props {
+  /** Example slug, e.g. "log-in/simple". */
+  slug: string
+}
+const { slug } = Astro.props
+const example = examples[slug]
+if (!example) throw new Error(`PagePreview: no page "${slug}" in registry/pages`)
+const href = `/examples/${slug}`
+---
+
+<div class="not-content my-6 rounded-lg border border-neutral" data-page-preview>
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-neutral px-3 py-2">
+    <SegmentedControl size="small" options={['Desktop', 'Mobile']} value="Desktop" aria-label="Frame width" class="no-js:hidden" data-page-preview-width />
+    <div class="flex items-center gap-4">
+      <Button size="small" variant="outline" color="neutral" class="no-js:hidden" data-page-preview-copy>
+        <Copy slot="start" aria-hidden="true" />
+        <span data-page-preview-copy-label>Copy code</span>
+      </Button>
+      <Link href={href} external class="inline-flex items-center gap-1.5 text-sm">
+        Open page <ExternalLink class="size-3.5" aria-hidden="true" />
+      </Link>
+    </div>
+  </div>
+  <div class="overflow-hidden bg-neutral-faded" data-page-preview-stage>
+    <iframe src={href} title={`${example.title} example`} loading="lazy" class="block h-[50rem] w-full border-0 bg-page" data-page-preview-frame></iframe>
+  </div>
+  <template data-page-preview-source>{example.source}</template>
+  <details class="group border-t border-neutral">
+    <summary
+      class="m-0 flex cursor-pointer list-none items-center gap-1.5 rounded-b-lg px-4 py-2 text-xs font-medium text-neutral-faded transition-colors group-open:rounded-b-none hover:bg-neutral-faded hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-focus [&::-webkit-details-marker]:hidden"
+    >
+      <ChevronDown class="size-3.5 transition-transform group-open:rotate-180" aria-hidden="true" />
+      <span class="group-open:hidden">Show code</span>
+      <span class="hidden group-open:inline">Hide code</span>
+    </summary>
+    <div class="max-h-[40rem] overflow-auto rounded-b-lg border-t border-neutral [&_pre]:m-0 [&_pre]:rounded-none [&_pre]:border-0 [&_pre]:p-4 [&_pre]:text-sm">
+      <Code code={example.source} lang="astro" themes={{ light: 'github-light', dark: 'github-dark' }} />
+    </div>
+  </details>
+</div>
+
+<script>
+  import { copyText } from '../../../registry/components/utils/clipboard.ts'
+
+  const DESKTOP = 1280
+  const HEIGHT = 800
+  const MOBILE = 390
+
+  // Desktop: render at 1280px and scale to the stage. Mobile: 390px, unscaled, centred.
+  const fit = (root: HTMLElement) => {
+    const stage = root.querySelector<HTMLElement>('[data-page-preview-stage]')!
+    const frame = root.querySelector<HTMLIFrameElement>('[data-page-preview-frame]')!
+    const mobile = root.querySelector<HTMLInputElement>('[data-page-preview-width] input:checked')?.value === 'Mobile'
+    if (mobile) {
+      Object.assign(frame.style, { width: `${MOBILE}px`, height: `${HEIGHT}px`, transform: '', marginInline: 'auto' })
+      stage.style.height = ''
+      stage.style.paddingBlock = '1.5rem'
+      return
+    }
+    const scale = Math.min(1, stage.clientWidth / DESKTOP)
+    Object.assign(frame.style, { width: `${DESKTOP}px`, height: `${HEIGHT}px`, transform: `scale(${scale})`, transformOrigin: '0 0', marginInline: '0' })
+    stage.style.height = `${HEIGHT * scale}px`
+    stage.style.paddingBlock = '0'
+  }
+
+  // Mirror the docs theme and skin into a frame.
+  const sync = (frame: HTMLIFrameElement) => {
+    const doc = frame.contentDocument?.documentElement
+    if (!doc) return
+    const { theme, skin } = document.documentElement.dataset
+    if (theme) doc.dataset.theme = theme
+    if (skin) doc.dataset.skin = skin
+    else delete doc.dataset.skin
+  }
+
+  const roots = [...document.querySelectorAll<HTMLElement>('[data-page-preview]')]
+  const ro = new ResizeObserver((entries) => {
+    for (const e of entries) fit(e.target.closest<HTMLElement>('[data-page-preview]')!)
+  })
+  for (const root of roots) {
+    const frame = root.querySelector<HTMLIFrameElement>('[data-page-preview-frame]')!
+    ro.observe(root.querySelector('[data-page-preview-stage]')!)
+    root.querySelector('[data-page-preview-width]')?.addEventListener('change', () => fit(root))
+    frame.addEventListener('load', () => sync(frame))
+    fit(root)
+    const copy = root.querySelector<HTMLButtonElement>('[data-page-preview-copy]')
+    const label = copy?.querySelector('[data-page-preview-copy-label]')
+    let timer: number | undefined
+    copy?.addEventListener('click', async () => {
+      const source = root.querySelector<HTMLTemplateElement>('[data-page-preview-source]')?.content.textContent ?? ''
+      if (!(await copyText(source)) || !label) return
+      label.textContent = 'Copied'
+      clearTimeout(timer)
+      timer = window.setTimeout(() => (label.textContent = 'Copy code'), 2000)
+    })
+  }
+  new MutationObserver(() => {
+    for (const f of document.querySelectorAll<HTMLIFrameElement>('[data-page-preview-frame]')) sync(f)
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-skin'] })
+</script>

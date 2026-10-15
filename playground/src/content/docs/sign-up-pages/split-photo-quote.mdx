@@ -1,0 +1,25 @@
+---
+title: Split with photo and quote
+description: "Reviews rotate over a photo, on a dark scrim."
+group: Sign up pages
+order: 13
+related: [sections/auth-shell, carousel, image]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/split-photo-quote" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/split-photo-quote
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Button, Carousel, FeaturedIcon, Image, Input, Link. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The scrim and text are scoped to the dark theme (`data-theme="dark"`), so the quote stays readable over the photo in both themes.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

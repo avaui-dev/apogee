@@ -1,0 +1,24 @@
+---
+title: Split with photo and card
+description: Reviews rotate in a solid card over a photo.
+group: Log in pages
+order: 14
+related: [sections/auth-shell, carousel, card, rating]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/split-photo-quote-card" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/split-photo-quote-card
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell (layout split), Image, Carousel, Card, Rating. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

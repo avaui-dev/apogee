@@ -1,0 +1,24 @@
+---
+title: Card separated
+description: "The heading sits on a grey page and the form in its own raised card."
+group: Sign up pages
+order: 4
+related: [sections/auth-shell, card]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/card-separated" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/card-separated
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Button, Card, FeaturedIcon, Input, Link. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The SSO button is a link to your identity provider; swap its `href` for your own.

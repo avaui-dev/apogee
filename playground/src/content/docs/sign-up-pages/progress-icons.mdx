@@ -1,0 +1,24 @@
+---
+title: Progress with icons
+description: "The password step, with an icon and a short line for each step below."
+group: Sign up pages
+order: 7
+related: [sections/auth-shell, password-checklist, steps]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/progress-icons" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/progress-icons
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Button, FeaturedIcon, Input, PasswordChecklist, Steps. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The step icons are decoration; each step's title and line carry the meaning.

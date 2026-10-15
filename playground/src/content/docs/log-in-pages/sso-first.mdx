@@ -1,0 +1,24 @@
+---
+title: SSO first
+description: Single sign-on leads; email is the fallback under an "or" divider.
+group: Log in pages
+order: 2
+related: [sections/auth-shell, divider, button, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/sso-first" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/sso-first
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell, Button, Divider, Input, Link, FeaturedIcon. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

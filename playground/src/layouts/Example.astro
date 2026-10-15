@@ -1,0 +1,36 @@
+---
+/**
+ * Example — a bare page for one page example: tokens, theme and nothing else,
+ * so the example renders exactly as it would in a real project. The docs embed
+ * it in a frame (PagePreview).
+ */
+import '../styles/global.css'
+
+interface Props {
+  title: string
+}
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Apogee examples</title>
+    <script is:inline>
+      document.documentElement.classList.replace('no-js', 'js')
+      try {
+        const s = localStorage.getItem('apogee-skin')
+        if (s) document.documentElement.dataset.skin = s
+        const t = localStorage.getItem('apogee-theme')
+        document.documentElement.dataset.theme = t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      } catch {}
+    </script>
+  </head>
+  <body class="min-h-dvh bg-page text-neutral">
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

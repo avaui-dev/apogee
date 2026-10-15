@@ -732,6 +732,20 @@
       ],
       "usesJs": false
     },
+    "PasswordChecklist": {
+      "name": "PasswordChecklist",
+      "kind": "component",
+      "files": [
+        "PasswordChecklist/PasswordChecklist.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
+    },
     "PinInput": {
       "name": "PinInput",
       "kind": "component",
@@ -1218,6 +1232,22 @@
       "dependencies": [],
       "usesJs": false
     },
+    "AuthShell": {
+      "name": "AuthShell",
+      "kind": "section",
+      "files": [
+        "sections/AuthShell/AuthShell.astro"
+      ],
+      "registryDependencies": [
+        "Card",
+        "Heading",
+        "Text",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "BlogList": {
       "name": "BlogList",
       "kind": "section",
@@ -1582,6 +1612,805 @@
       ],
       "registryDependencies": [],
       "dependencies": [],
+      "usesJs": false
+    },
+    "log-in/card-combined": {
+      "name": "log-in/card-combined",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Card combined",
+      "description": "One card holds the logo, the heading and the form.",
+      "files": [
+        "pages/log-in/CardCombined.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Checkbox",
+        "FeaturedIcon",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/card-separated": {
+      "name": "log-in/card-separated",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Card separated",
+      "description": "The heading sits on a grey page and the form in its own raised card.",
+      "files": [
+        "pages/log-in/CardSeparated.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Card",
+        "Checkbox",
+        "FeaturedIcon",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/header-navigation": {
+      "name": "log-in/header-navigation",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Header navigation",
+      "description": "A top bar carries the logo and the sign up link; the form sits below it.",
+      "files": [
+        "pages/log-in/HeaderNavigation.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Checkbox",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/minimal": {
+      "name": "log-in/minimal",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Minimal",
+      "description": "Email, password and two buttons, with the account links under the form.",
+      "files": [
+        "pages/log-in/Minimal.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/simple": {
+      "name": "log-in/simple",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Simple",
+      "description": "A centred form with a sign up / log in switch, remember me, and an SSO button.",
+      "files": [
+        "pages/log-in/Simple.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Checkbox",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-carousel": {
+      "name": "log-in/split-carousel",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with carousel",
+      "description": "The form beside a dark panel that walks through what is new.",
+      "files": [
+        "pages/log-in/SplitCarousel.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Card",
+        "Carousel",
+        "Checkbox",
+        "CircularProgress",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Stat"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-image": {
+      "name": "log-in/split-image",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with image",
+      "description": "The form beside a full-height photo.",
+      "files": [
+        "pages/log-in/SplitImage.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Checkbox",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-mockup": {
+      "name": "log-in/split-mockup",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with mockup",
+      "description": "The form beside a product screen built from the components.",
+      "files": [
+        "pages/log-in/SplitMockup.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Badge",
+        "Button",
+        "Card",
+        "Checkbox",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Stat",
+        "Table"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-mockup-quote": {
+      "name": "log-in/split-mockup-quote",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with mockup and quote",
+      "description": "A rated customer quote above the product screen.",
+      "files": [
+        "pages/log-in/SplitMockupQuote.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Badge",
+        "Button",
+        "Card",
+        "Checkbox",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Rating",
+        "Stat",
+        "Table"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-photo-quote": {
+      "name": "log-in/split-photo-quote",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with photo and quote",
+      "description": "Reviews rotate over a photo, on a dark scrim.",
+      "files": [
+        "pages/log-in/SplitPhotoQuote.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Carousel",
+        "Checkbox",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-photo-quote-card": {
+      "name": "log-in/split-photo-quote-card",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with photo and card",
+      "description": "Reviews rotate in a solid card over a photo.",
+      "files": [
+        "pages/log-in/SplitPhotoQuoteCard.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Card",
+        "Carousel",
+        "Checkbox",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-photo-quote-glass": {
+      "name": "log-in/split-photo-quote-glass",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with photo and glass card",
+      "description": "Reviews rotate in a frosted card over a photo.",
+      "files": [
+        "pages/log-in/SplitPhotoQuoteGlass.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Carousel",
+        "Checkbox",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/split-quote": {
+      "name": "log-in/split-quote",
+      "kind": "page",
+      "category": "log-in",
+      "title": "Split with quote",
+      "description": "The panel leads with a customer quote, portrait and rating.",
+      "files": [
+        "pages/log-in/SplitQuote.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Avatar",
+        "Button",
+        "Checkbox",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "log-in/sso-first": {
+      "name": "log-in/sso-first",
+      "kind": "page",
+      "category": "log-in",
+      "title": "SSO first",
+      "description": "Single sign-on leads; email is the fallback under an \"or\" divider.",
+      "files": [
+        "pages/log-in/SsoFirst.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Divider",
+        "FeaturedIcon",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/card-combined": {
+      "name": "sign-up/card-combined",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Card combined",
+      "description": "One card holds the logo, the heading and the form.",
+      "files": [
+        "pages/sign-up/CardCombined.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/card-separated": {
+      "name": "sign-up/card-separated",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Card separated",
+      "description": "The heading sits on a grey page and the form in its own raised card.",
+      "files": [
+        "pages/sign-up/CardSeparated.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Card",
+        "FeaturedIcon",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/header-navigation": {
+      "name": "sign-up/header-navigation",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Header navigation",
+      "description": "A top bar carries the logo and the log in link; the form sits below it.",
+      "files": [
+        "pages/sign-up/HeaderNavigation.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/progress": {
+      "name": "sign-up/progress",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Progress",
+      "description": "The password step of a sign up flow, with the steps below: down the page on phones, across from md.",
+      "files": [
+        "pages/sign-up/Progress.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "PasswordChecklist",
+        "Steps"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/progress-icons": {
+      "name": "sign-up/progress-icons",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Progress with icons",
+      "description": "The password step, with an icon and a short line for each step below.",
+      "files": [
+        "pages/sign-up/ProgressIcons.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "PasswordChecklist",
+        "Steps"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/progress-numbers": {
+      "name": "sign-up/progress-numbers",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Progress with numbers",
+      "description": "The password step, with numbered steps joined by a line below.",
+      "files": [
+        "pages/sign-up/ProgressNumbers.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "PasswordChecklist",
+        "Steps"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/sidebar-progress": {
+      "name": "sign-up/sidebar-progress",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Sidebar progress",
+      "description": "A side column holds the logo and the steps with icons; the password step fills the rest.",
+      "files": [
+        "pages/sign-up/SidebarProgress.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "PasswordChecklist",
+        "ProgressIndicator",
+        "Steps"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/sidebar-progress-numbers": {
+      "name": "sign-up/sidebar-progress-numbers",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Sidebar progress with numbers",
+      "description": "A tinted side column with numbered steps; a segmented bar under the form.",
+      "files": [
+        "pages/sign-up/SidebarProgressNumbers.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "PasswordChecklist",
+        "ProgressIndicator",
+        "Steps"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/simple": {
+      "name": "sign-up/simple",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Simple",
+      "description": "A centred form with a sign up / log in switch and live password checks.",
+      "files": [
+        "pages/sign-up/Simple.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "PasswordChecklist",
+        "Tabs"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-app-mockup": {
+      "name": "sign-up/split-app-mockup",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with app mockup",
+      "description": "The form beside a phone screen built from the components.",
+      "files": [
+        "pages/sign-up/SplitAppMockup.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Avatar",
+        "Button",
+        "Card",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Stat"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-carousel": {
+      "name": "sign-up/split-carousel",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with carousel",
+      "description": "The form beside a dark panel that walks through what you get.",
+      "files": [
+        "pages/sign-up/SplitCarousel.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Card",
+        "Carousel",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Stat"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-image": {
+      "name": "sign-up/split-image",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with image",
+      "description": "The form beside a full-height photo.",
+      "files": [
+        "pages/sign-up/SplitImage.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-image-background": {
+      "name": "sign-up/split-image-background",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with image background",
+      "description": "The form beside a photo under a brand tint, with a pitch and social proof.",
+      "files": [
+        "pages/sign-up/SplitImageBackground.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "AvatarGroup",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-mockup": {
+      "name": "sign-up/split-mockup",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with mockup",
+      "description": "The form beside a product screen built from the components.",
+      "files": [
+        "pages/sign-up/SplitMockup.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Badge",
+        "Button",
+        "Card",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Stat",
+        "Table"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-mockup-quote": {
+      "name": "sign-up/split-mockup-quote",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with mockup and quote",
+      "description": "A customer quote above the product screen.",
+      "files": [
+        "pages/sign-up/SplitMockupQuote.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Badge",
+        "Button",
+        "Card",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Rating",
+        "Stat",
+        "Table"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-photo-quote": {
+      "name": "sign-up/split-photo-quote",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with photo and quote",
+      "description": "Reviews rotate over a photo, on a dark scrim.",
+      "files": [
+        "pages/sign-up/SplitPhotoQuote.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Carousel",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-photo-quote-glass": {
+      "name": "sign-up/split-photo-quote-glass",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with photo and glass card",
+      "description": "SSO first, beside reviews that rotate in a frosted card over a photo.",
+      "files": [
+        "pages/sign-up/SplitPhotoQuoteGlass.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Carousel",
+        "Divider",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-pitch": {
+      "name": "sign-up/split-pitch",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with pitch",
+      "description": "The form beside a portrait, a short pitch and social proof.",
+      "files": [
+        "pages/sign-up/SplitPitch.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "AvatarGroup",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/split-quote-carousel": {
+      "name": "sign-up/split-quote-carousel",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "Split with quote carousel",
+      "description": "Customer quotes rotate in the panel, with dots and arrows underneath.",
+      "files": [
+        "pages/sign-up/SplitQuoteCarousel.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Avatar",
+        "Button",
+        "Carousel",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Rating"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "sign-up/sso-first": {
+      "name": "sign-up/sso-first",
+      "kind": "page",
+      "category": "sign-up",
+      "title": "SSO first",
+      "description": "Single sign-on leads; email is the fallback under an \"or\" divider.",
+      "files": [
+        "pages/sign-up/SsoFirst.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "Divider",
+        "FeaturedIcon",
+        "Input",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     }
   }

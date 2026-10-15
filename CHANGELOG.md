@@ -5,6 +5,14 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+### Added
+
+- **Pages**: whole pages in the registry, keyed `<category>/<name>`. `apogee add log-in/split-quote` copies the page to `<dir>/pages/log-in/` with every section and component it uses; `apogee list` shows each page with its description. The first sets are 14 log in pages and 20 sign up pages.
+- **AuthShell** section: the frame of a log in, sign up or recovery page, `centered`, `card`, `split` (a panel on either side) or `sidebar` (a narrow step column), with an optional pattern behind the brand mark and a `below` slot for a step list.
+- **PasswordChecklist**: the rules a new password must meet, ticked off as the user types; keeps the field invalid until they hold, and a `match` rule checks a confirm field.
+- **Carousel** `controlsPosition="below"`: arrows in a row under the track, with the dots between them, for slides the side arrows would cover.
+- **Docs**: a Log in pages group; each page shows the example in a desktop or mobile frame with a Copy code button.
+
 ## [0.4.0] — 2026-10-15
 
 ### Changed

@@ -1,0 +1,25 @@
+---
+title: Split with photo and glass card
+description: "SSO first, beside reviews that rotate in a frosted card over a photo."
+group: Sign up pages
+order: 14
+related: [sections/auth-shell, carousel, divider, image]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/split-photo-quote-glass" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/split-photo-quote-glass
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Button, Carousel, Divider, FeaturedIcon, Image, Input, Link, Rating. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The frosted card is scoped to the dark theme, so its text stays readable over any photo.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

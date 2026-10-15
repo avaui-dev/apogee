@@ -1,0 +1,24 @@
+---
+title: Sign up pages
+navTitle: Overview
+description: Whole sign up pages built on the AuthShell section, from a centred form to multi-step flows with a progress sidebar.
+group: Sign up pages
+order: -1
+related: [sections/auth-shell, password-checklist, steps]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a complete page. The frame comes from the
+[AuthShell](/docs/sections/auth-shell) section; the form inside is plain
+composition, because it posts to your own backend. New passwords use
+[PasswordChecklist](/docs/password-checklist), and multi-step flows show their
+place with [Steps](/docs/steps) or [ProgressIndicator](/docs/progress-indicator).
+
+```sh
+npx @ava-ui/apogee add sign-up/simple
+```
+
+`npx @ava-ui/apogee list` shows every page.
+
+<DocsIndex group="Sign up pages" self="sign-up-pages" />

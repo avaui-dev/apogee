@@ -1,0 +1,67 @@
+---
+/**
+ * Split with photo and glass card: SSO first, beside reviews that rotate in a frosted card over a photo.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Image from '../../components/Image/Image.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+import Rating from '../../components/Rating/Rating.astro'
+import Divider from '../../components/Divider/Divider.astro'
+
+const reviews = [
+  { quote: 'We set up the whole team before lunch. The onboarding just gets out of the way.', name: 'Mara Okafor', role: 'Head of Operations, Northwind', avatar: 'https://i.pravatar.cc/96?img=47' },
+  { quote: 'Single sign-on took ten minutes. Our security review took longer to schedule.', name: 'Jonas Weber', role: 'IT Lead, Globex', avatar: 'https://i.pravatar.cc/96?img=12' },
+  { quote: 'The trial had everything we needed to decide. No sales call, no surprises.', name: 'Ana Lima', role: 'Founder, Initech', avatar: 'https://i.pravatar.cc/96?img=32' },
+]
+---
+
+<AuthShell layout="split" heading="Sign up" description="Start your 30-day free trial.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <div class="flex flex-col gap-6">
+    <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+      <KeyRound slot="start" aria-hidden="true" />
+      Sign up with SSO
+    </Button>
+    <Divider>or</Divider>
+    <form method="post" class="flex flex-col gap-4">
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+    </form>
+  </div>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="relative flex w-full items-end">
+    <Image src="https://picsum.photos/seed/apogee-signup-3/1200/1600" alt="" width={1200} height={1600} fit="cover" class="absolute inset-0 size-full" />
+    <!-- A frosted card: scoped to the dark theme so its text stays readable over the photo. -->
+    <div data-theme="dark" class="relative m-8 flex-1 rounded-2xl border border-neutral-faded bg-page/40 p-8 text-neutral backdrop-blur-md">
+      <Carousel itemWidth="100%" controlsPosition="below" controlsVariant="overlay" label="Customer reviews">
+        {reviews.map((r) => (
+          <figure class="flex flex-col gap-6">
+            <Rating readonly value={5} aria-label="Rated 5 out of 5" />
+            <blockquote class="text-2xl font-medium text-balance">{r.quote}</blockquote>
+            <figcaption>
+              <p class="font-semibold">{r.name}</p>
+              <p class="text-sm text-neutral-faded">{r.role}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </Carousel>
+    </div>
+  </div>
+</AuthShell>

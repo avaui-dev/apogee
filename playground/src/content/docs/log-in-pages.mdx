@@ -1,0 +1,35 @@
+---
+title: Log in pages
+navTitle: Overview
+description: Whole log in pages built on the AuthShell section, from a centred form to split layouts with a panel.
+group: Log in pages
+order: -1
+related: [sections/auth-shell]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a complete page. The frame comes from the
+[AuthShell](/docs/sections/auth-shell) section; the form inside is plain
+composition, because it posts to your own auth backend. Add one with
+everything it uses, then render it from a route:
+
+```sh
+npx @ava-ui/apogee add log-in/split-quote
+```
+
+```astro
+---
+// src/pages/login.astro
+import Layout from '../layouts/Layout.astro'
+import LogIn from '../components/apogee/pages/log-in/SplitQuote.astro'
+---
+
+<Layout title="Log in">
+  <LogIn />
+</Layout>
+```
+
+`npx @ava-ui/apogee list` shows every page.
+
+<DocsIndex group="Log in pages" self="log-in-pages" />

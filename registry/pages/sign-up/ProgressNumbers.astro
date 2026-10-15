@@ -1,0 +1,37 @@
+---
+/**
+ * Progress with numbers: The password step, with numbered steps joined by a line below.
+ *
+ * @page sign-up
+ */
+import { KeyRound, User, UserPlus, Share2 } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import PasswordChecklist from '../../components/PasswordChecklist/PasswordChecklist.astro'
+import Button from '../../components/Button/Button.astro'
+import Steps from '../../components/Steps/Steps.astro'
+
+const steps = [
+  { title: 'Your details', description: 'Please provide your name and email', icon: User },
+  { title: 'Choose a password', description: 'Choose a secure password', icon: KeyRound },
+  { title: 'Invite your team', description: 'Start collaborating with your team', icon: UserPlus },
+  { title: 'Add your socials', description: 'Share posts to your social accounts', icon: Share2 },
+]
+---
+
+<AuthShell heading="Choose a password" description="Use something you have not used anywhere else." pattern="grid">
+  <FeaturedIcon slot="brand" theme="outline" color="neutral" size="large"><KeyRound /></FeaturedIcon>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-3">
+      <Input id="new-password" label="Password" type="password" name="password" placeholder="Choose a password" autocomplete="new-password" minlength="8" required />
+      <PasswordChecklist for="new-password" rules={[{ label: 'At least 8 characters', minLength: 8 }, { label: 'One special character', pattern: '[^A-Za-z0-9]' }]} />
+      <Input id="confirm-password" label="Confirm password" type="password" name="password_confirm" placeholder="Confirm password" autocomplete="new-password" required class="mt-2" />
+      <PasswordChecklist for="confirm-password" rules={[{ label: 'Passwords match', match: 'new-password' }]} />
+    </div>
+    <Button type="submit" size="large" fullWidth>Continue</Button>
+  </form>
+
+  <Steps slot="below" items={steps.map(({ icon, ...s }) => s)} current={2} marker="number" orientation={{ base: 'vertical', md: 'horizontal' }} aria-label="Sign up progress" />
+</AuthShell>

@@ -41,6 +41,8 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
   controlsVariant?: 'default' | 'overlay'
   /** Dots under the track, or floating over its bottom edge. @category layout */
   dotsPosition?: 'below' | 'overlay'
+  /** Arrows on the track's sides, or in a row under it (with the dots between them). @category layout */
+  controlsPosition?: 'sides' | 'below'
   class?: string
 }
 
@@ -58,6 +60,7 @@ const {
   label = 'Carousel',
   controlsVariant = 'default',
   dotsPosition = 'below',
+  controlsPosition = 'sides',
   class: className,
   ...rest
 } = Astro.props
@@ -83,8 +86,10 @@ const slideCount = dots
       return n
     })()
   : 0
+const below = controls && controlsPosition === 'below'
 const arrow = [
-  'press grid size-11 -translate-y-1/2 place-items-center rounded-full text-neutral no-js:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:[&>svg]:opacity-35',
+  below ? '' : 'absolute top-1/2 -translate-y-1/2',
+  'press grid size-11 place-items-center rounded-full text-neutral no-js:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:[&>svg]:opacity-35',
   controlsVariant === 'overlay'
     ? 'border-0 bg-page/90 backdrop-blur-xs enabled:hover:bg-page'
     : 'border border-neutral bg-page shadow-md enabled:hover:bg-page-faded',
@@ -118,20 +123,12 @@ const arrow = [
   </div>
 
   {
-    controls && (
+    controls && !below && (
       <>
-        <button
-          type="button"
-          class:list={['apogee-carousel-prev absolute top-1/2 start-2', arrow]}
-          aria-label="Previous"
-        >
+        <button type="button" class:list={['apogee-carousel-prev start-2', arrow]} aria-label="Previous">
           <ChevronLeft class="size-5 rtl:-scale-x-100" aria-hidden="true" />
         </button>
-        <button
-          type="button"
-          class:list={['apogee-carousel-next absolute top-1/2 end-2', arrow]}
-          aria-label="Next"
-        >
+        <button type="button" class:list={['apogee-carousel-next end-2', arrow]} aria-label="Next">
           <ChevronRight class="size-5 rtl:-scale-x-100" aria-hidden="true" />
         </button>
       </>
@@ -139,33 +136,47 @@ const arrow = [
   }
 
   {
-    dots && slideCount > 0 && (
-      <div
-        class:list={[
-          'apogee-carousel-dots flex justify-center gap-2 no-js:hidden',
-          dotsPosition === 'overlay'
-            ? 'absolute bottom-3 left-1/2 -translate-x-1/2 gap-0 rounded-full bg-page/80 px-1 backdrop-blur-xs'
-            : 'mt-3',
-        ]}
-        role="group"
-        aria-label="Slides"
-      >
-        {Array.from({ length: slideCount }).map((_, i) => (
-          <button
-            type="button"
-            class="apogee-carousel-dot group/dot rounded-full p-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-            aria-label={`Go to slide ${i + 1}`}
-            aria-current={i === 0 ? 'true' : 'false'}
-          >
-            <span
-              class:list={[
-                'block size-2.5 rounded-full transition-colors group-aria-[current=true]/dot:bg-primary',
-                // Over media the inactive dots need more weight to read on the pill.
-                dotsPosition === 'overlay' ? 'bg-(--foreground-neutral-faded)' : 'bg-neutral',
-              ]}
-            />
+    (below || (dots && slideCount > 0)) && (
+      <div class:list={below ? ['mt-4 flex items-center gap-3 no-js:hidden', dots ? 'justify-center' : 'justify-end'] : 'contents'}>
+        {below && (
+          <button type="button" class:list={['apogee-carousel-prev', arrow]} aria-label="Previous">
+            <ChevronLeft class="size-5 rtl:-scale-x-100" aria-hidden="true" />
           </button>
-        ))}
+        )}
+        {dots && slideCount > 0 && (
+          <div
+            class:list={[
+              'apogee-carousel-dots flex justify-center gap-2 no-js:hidden',
+              below ? 'gap-0' : dotsPosition === 'overlay'
+                ? 'absolute bottom-3 left-1/2 -translate-x-1/2 gap-0 rounded-full bg-page/80 px-1 backdrop-blur-xs'
+                : 'mt-3',
+            ]}
+            role="group"
+            aria-label="Slides"
+          >
+            {Array.from({ length: slideCount }).map((_, i) => (
+              <button
+                type="button"
+                class="apogee-carousel-dot group/dot rounded-full p-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === 0 ? 'true' : 'false'}
+              >
+                <span
+                  class:list={[
+                    'block size-2.5 rounded-full transition-colors group-aria-[current=true]/dot:bg-primary',
+                    // Over media the inactive dots need more weight to read on the pill.
+                    dotsPosition === 'overlay' ? 'bg-(--foreground-neutral-faded)' : 'bg-neutral',
+                  ]}
+                />
+              </button>
+            ))}
+          </div>
+        )}
+        {below && (
+          <button type="button" class:list={['apogee-carousel-next', arrow]} aria-label="Next">
+            <ChevronRight class="size-5 rtl:-scale-x-100" aria-hidden="true" />
+          </button>
+        )}
       </div>
     )
   }

@@ -1,0 +1,51 @@
+---
+/**
+ * Simple: A centred form with a sign up / log in switch and live password checks.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+import Input from '../../components/Input/Input.astro'
+import PasswordChecklist from '../../components/PasswordChecklist/PasswordChecklist.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+---
+
+<AuthShell heading="Create an account" description="Start your 30-day free trial." pattern="grid">
+  <FeaturedIcon slot="brand" theme="solid" color="primary" size="large"><Orbit /></FeaturedIcon>
+
+  <Tabs
+    slot="intro"
+    variant="pills-raised"
+    size="small"
+    fullWidth
+    class="w-full"
+    tabs={[{ label: 'Sign up', value: 'sign-up' }, { label: 'Log in', href: '#' }]}
+    value="sign-up"
+  />
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <div class="flex flex-col gap-3">
+        <Input id="new-password" label="Password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" required />
+        <PasswordChecklist for="new-password" rules={[{ label: 'At least 8 characters', minLength: 8 }, { label: 'One special character', pattern: '[^A-Za-z0-9]' }]} />
+      </div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign up with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+</AuthShell>

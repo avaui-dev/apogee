@@ -7,7 +7,7 @@ import {
   Gauge, ArrowRightLeft, Zap, Navigation, PanelTop, Hash, ChevronsRight, KeyRound, MessageSquare, CircleDot, Activity, Layers,
   BookOpen, Circle, Star, PenLine, Languages, ScrollText, LayoutTemplate, ToggleLeft, PanelLeft, Rows3, SkipForward,
   SlidersHorizontal, Ruler, LoaderCircle, TrendingUp, ListOrdered, ToggleRight, Table, PanelsTopLeft, Tags, Tag, Text, AlignLeft,
-  GitCommitHorizontal, ListTree, MessageSquareText, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Moon, Compass, Sparkles,
+  GitCommitHorizontal, LogIn, UserPlus, ListTree, MessageSquareText, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Moon, Compass, Sparkles,
 } from '@lucide/astro'
 
 export const docsIcons: Record<string, typeof Box> = {
@@ -27,9 +27,12 @@ export const docsIcons: Record<string, typeof Box> = {
   'skip-link': SkipForward, slider: SlidersHorizontal, spacing: Ruler, spinner: LoaderCircle, stack: Rows3, stat: TrendingUp,
   steps: ListOrdered, switch: ToggleRight, table: Table, tabs: PanelsTopLeft, 'tag-input': Tags, tag: Tag, text: Text,
   textarea: AlignLeft, timeline: GitCommitHorizontal, 'tree-view': ListTree, message: MessageSquareText, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,
-  tokens: Paintbrush, tooltip: MessageCircle, typography: ALargeSmall,
+  'password-checklist': ListChecks, tokens: Paintbrush, tooltip: MessageCircle, typography: ALargeSmall,
   utilities: Wrench, theme: SunMoon, 'loader-text': LoaderCircle, 'icon-toggle': ToggleLeft, 'content-toggle': ArrowRightLeft,
   foundations: Compass, components: Shapes, sections: LayoutTemplate, 'close-button': X, skins: Layers, 'featured-icon': Sparkles, 'circular-progress': LoaderCircle, 'choice-card': SquareCheck, 'input-group': TextCursorInput,
+  'sign-up-pages': UserPlus, 'sign-up-pages/simple': UserPlus, 'sign-up-pages/sso-first': UserPlus, 'sign-up-pages/header-navigation': UserPlus, 'sign-up-pages/card-separated': UserPlus, 'sign-up-pages/card-combined': UserPlus, 'sign-up-pages/progress': UserPlus, 'sign-up-pages/progress-icons': UserPlus, 'sign-up-pages/progress-numbers': UserPlus, 'sign-up-pages/split-mockup': UserPlus, 'sign-up-pages/split-mockup-quote': UserPlus, 'sign-up-pages/split-carousel': UserPlus, 'sign-up-pages/split-image': UserPlus, 'sign-up-pages/split-photo-quote': UserPlus, 'sign-up-pages/split-photo-quote-glass': UserPlus, 'sign-up-pages/split-app-mockup': UserPlus, 'sign-up-pages/split-pitch': UserPlus, 'sign-up-pages/split-image-background': UserPlus, 'sign-up-pages/split-quote-carousel': UserPlus, 'sign-up-pages/sidebar-progress': UserPlus, 'sign-up-pages/sidebar-progress-numbers': UserPlus,
+  'log-in-pages': LogIn, 'sections/auth-shell': LogIn,
+  'log-in-pages/simple': LogIn, 'log-in-pages/sso-first': LogIn, 'log-in-pages/minimal': LogIn, 'log-in-pages/header-navigation': LogIn, 'log-in-pages/card-separated': LogIn, 'log-in-pages/card-combined': LogIn, 'log-in-pages/split-carousel': LogIn, 'log-in-pages/split-mockup': LogIn, 'log-in-pages/split-mockup-quote': LogIn, 'log-in-pages/split-image': LogIn, 'log-in-pages/split-quote': LogIn, 'log-in-pages/split-photo-quote': LogIn, 'log-in-pages/split-photo-quote-glass': LogIn, 'log-in-pages/split-photo-quote-card': LogIn,
   'section-header': LayoutTemplate, 'sections/hero': LayoutTemplate, 'sections/logo-cloud': Shapes, 'sections/features': LayoutGrid, 'sections/stats': TrendingUp,
   'sections/testimonials': Quote, 'sections/cta': MousePointerClick, 'sections/faq': ChevronsDownUp, 'sections/content': FileText, 'sections/team': Users,
   'sections/pricing': CreditCard, 'sections/blog-list': List, 'sections/post-header': Heading, 'sections/contact': MessageSquare, 'sections/not-found': Search,

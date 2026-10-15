@@ -1,0 +1,25 @@
+---
+title: Split with carousel
+description: "The form beside a dark panel that walks through what you get."
+group: Sign up pages
+order: 11
+related: [sections/auth-shell, card, carousel, stat]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/split-carousel" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/split-carousel
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Button, Card, Carousel, FeaturedIcon, Input, Link, Stat. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The carousel has a name ("What you get"), and its arrows and dots sit in one row under the slides.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

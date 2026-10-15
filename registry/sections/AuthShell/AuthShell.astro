@@ -1,0 +1,146 @@
+---
+/**
+ * AuthShell — the frame of a log in, sign up or recovery page: a brand mark,
+ * heading and description over your form, centred on the page, inside a card,
+ * beside a panel (`split`), or beside a narrow side column (`sidebar`, e.g. the
+ * steps of a sign up flow). The form itself is yours (it posts to your auth backend).
+ *
+ * Slots: default (the form), `brand` (logo), `header` (a top bar above the
+ * page), `footer` (under the form, e.g. "Don't have an account?"), `below`
+ * (wider than the form, under it: a step list or a progress indicator), `legal`
+ * (bottom of the form column in `split`), `panel` (the other half in `split`,
+ * the side column in `sidebar`; hidden below `lg`).
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Card from '../../components/Card/Card.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Text from '../../components/Text/Text.astro'
+import { uid } from '../../components/utils/uid.ts'
+import type { Background } from '../_shared/spine.ts'
+
+const backgrounds = {
+  page: 'bg-page',
+  'neutral-faded': 'bg-neutral-faded',
+  'primary-faded': 'bg-primary-faded',
+  primary: 'bg-primary text-on-primary',
+  inverted: 'bg-inverted text-on-inverted',
+} as const
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
+  /** @category content */ heading: string
+  /** @category content */ description?: string
+  /** @category layout */ layout?: 'centered' | 'card' | 'split' | 'sidebar'
+  /** Header alignment. Defaults to `center`; `start` in `split`. @category layout */ align?: 'start' | 'center'
+  /** Page fill. Defaults to `neutral-faded` in `card`, else `page`. @category layout */ background?: Background
+  /** Faint pattern behind the brand mark (`centered` and `card`). @category layout */ pattern?: 'none' | 'grid' | 'circles'
+  /** Which side the panel sits on. Defaults to `end`; `start` in `sidebar`. @category layout */ panelSide?: 'start' | 'end'
+  /** Panel fill in `split` and `sidebar`. @category layout */ panelBackground?: Background
+  /** Fill the viewport height. Turn off to embed the shell in a page. @category layout */ fullHeight?: boolean
+  /** @category layout */ headingLevel?: 1 | 2 | 3 | 4
+  id?: string
+  class?: string
+}
+
+const {
+  heading, description, layout = 'centered', align, background, pattern = 'none', panelSide: side,
+  panelBackground = 'neutral-faded', fullHeight = true, headingLevel = 1, id: idProp, class: className, ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals, 'auth')
+const headingId = `${id}-heading`
+const sidebar = layout === 'sidebar'
+const split = layout === 'split'
+const panelSide = side ?? (sidebar ? 'start' : 'end')
+const centred = (align ?? (split ? 'start' : 'center')) === 'center'
+const fill = background ?? (layout === 'card' ? 'neutral-faded' : 'page')
+const hasPanel = (split || sidebar) && Astro.slots.has('panel')
+const Tag = `h${headingLevel}` as const
+---
+
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={['relative isolate flex flex-col overflow-hidden', backgrounds[fill], fullHeight && 'min-h-dvh', className]}
+  {...rest}
+>
+  <slot name="header" />
+  <div class:list={['flex flex-1', hasPanel && (sidebar ? 'lg:grid lg:grid-cols-[26rem_1fr]' : 'lg:grid lg:grid-cols-2')]}>
+    <div class:list={['flex min-w-0 flex-1 flex-col', hasPanel && panelSide === 'start' && 'lg:order-2']}>
+      <div class:list={['flex flex-1 flex-col items-center gap-12 px-gutter md:gap-16', split ? 'py-12 md:justify-center md:py-16' : 'py-12 md:pt-24']}>
+        <div class:list={['relative flex w-full flex-col gap-8', layout === 'card' ? 'max-w-md' : 'max-w-sm']}>
+          {layout === 'card' ? (
+            <Card raised padding="medium" class="sm:[&_.apogee-card-body]:px-10 sm:[&_.apogee-card-body]:py-8">
+              <div class="flex flex-col gap-6">
+                <div class:list={['flex flex-col gap-6', centred && 'items-center text-center']}>
+                  {Astro.slots.has('brand') && <div class="relative"><slot name="brand" /></div>}
+                  <div class="flex flex-col gap-2">
+                    <Heading as={Tag} size="h3" id={headingId}>{heading}</Heading>
+                    {description && <Text color="neutral-faded">{description}</Text>}
+                  </div>
+                </div>
+                <slot />
+                {Astro.slots.has('footer') && <div class="text-center text-sm"><slot name="footer" /></div>}
+              </div>
+            </Card>
+          ) : (
+            <Fragment>
+              <div class:list={['flex flex-col gap-6', centred && 'items-center text-center']}>
+                {Astro.slots.has('brand') && (
+                  <div class="relative">
+                    {pattern !== 'none' && <span class:list={['apogee-auth-pattern', `apogee-auth-pattern-${pattern}`]} aria-hidden="true" />}
+                    <div class="relative"><slot name="brand" /></div>
+                  </div>
+                )}
+                <div class="relative flex flex-col gap-2 md:gap-3">
+                  <Heading as={Tag} size="h2" id={headingId}>{heading}</Heading>
+                  {description && <Text color="neutral-faded">{description}</Text>}
+                </div>
+                <slot name="intro" />
+              </div>
+              <div class="relative"><slot /></div>
+              {Astro.slots.has('footer') && <div class="relative text-center text-sm"><slot name="footer" /></div>}
+            </Fragment>
+          )}
+        </div>
+        {Astro.slots.has('below') && <div class="relative w-full max-w-3xl"><slot name="below" /></div>}
+      </div>
+      {split && Astro.slots.has('legal') && (
+        <div class="px-gutter pb-8 text-sm text-neutral-faded md:px-8"><slot name="legal" /></div>
+      )}
+    </div>
+    {hasPanel && (
+      <div class:list={['relative hidden min-w-0 overflow-hidden lg:flex', sidebar && 'flex-col', backgrounds[panelBackground]]}>
+        <slot name="panel" />
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  /* A faint pattern centred on the brand mark, fading out from the middle. */
+  .apogee-auth-pattern {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    width: 30rem;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    pointer-events: none;
+    mask-image: radial-gradient(closest-side, black, transparent);
+  }
+  .apogee-auth-pattern-grid {
+    background-image:
+      linear-gradient(var(--border-neutral-faded) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-neutral-faded) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    background-position: center;
+  }
+  .apogee-auth-pattern-circles {
+    background-image: repeating-radial-gradient(circle, transparent 0 3rem, var(--border-neutral-faded) 3rem calc(3rem + 1px));
+  }
+  :global([dir='rtl']) .apogee-auth-pattern {
+    translate: 50% -50%;
+  }
+</style>

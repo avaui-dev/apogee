@@ -1,0 +1,25 @@
+---
+title: Simple
+description: "A centred form with a sign up / log in switch and live password checks."
+group: Sign up pages
+order: 1
+related: [sections/auth-shell, password-checklist, tabs]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/simple" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/simple
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Button, FeaturedIcon, Input, Link, PasswordChecklist, Tabs. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The password rules sit under the field and are part of its description; the field stays invalid until they hold. See [PasswordChecklist](/docs/password-checklist).
+- The SSO button is a link to your identity provider; swap its `href` for your own.

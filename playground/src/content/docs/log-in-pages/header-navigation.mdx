@@ -1,0 +1,25 @@
+---
+title: Header navigation
+description: A top bar carries the logo and the sign up link; the form sits below it.
+group: Log in pages
+order: 4
+related: [sections/auth-shell, tabs, navbar, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/header-navigation" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/header-navigation
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell (header slot), Tabs, Input, Checkbox, Button, Link, FeaturedIcon. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- Below `md` the top bar hides and the sign up link moves under the form, so it is never lost.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

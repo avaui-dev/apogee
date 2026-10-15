@@ -15,7 +15,19 @@ test('components importing a helper depend on utils', () => {
 
 test('every entry carries its kind', () => {
   for (const [name, c] of Object.entries(index.components)) {
-    assert.ok(c.kind === 'component' || c.kind === 'section', `${name} has kind ${c.kind}`)
+    assert.ok(['component', 'section', 'page'].includes(c.kind), `${name} has kind ${c.kind}`)
     if (c.kind === 'section') assert.ok(c.files.every((f) => f.startsWith('sections/')), `${name} files under sections/`)
+    if (c.kind === 'page') assert.ok(c.files.every((f) => f.startsWith('pages/')), `${name} files under pages/`)
   }
+})
+
+test('pages are keyed by category/slug, carry a title and description, and depend on what they import', () => {
+  const page = index.components['log-in/split-quote']
+  assert.equal(page?.kind, 'page')
+  assert.equal(page.category, 'log-in')
+  assert.deepEqual(page.files, ['pages/log-in/SplitQuote.astro'])
+  assert.equal(page.title, 'Split with quote')
+  assert.ok(page.description.length > 10)
+  for (const dep of ['AuthShell', 'Avatar', 'Rating', 'Input', 'Button']) assert.ok(page.registryDependencies.includes(dep), `depends on ${dep}`)
+  for (const p of Object.values(index.components).filter((c) => c.kind === 'page')) assert.ok(p.title && p.description, `${p.name} has a title and description`)
 })

@@ -1,0 +1,25 @@
+---
+title: Split with photo and quote
+description: Reviews rotate over a photo, on a dark scrim.
+group: Log in pages
+order: 12
+related: [sections/auth-shell, carousel, image, rating]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/split-photo-quote" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/split-photo-quote
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell (layout split), Image, Carousel. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- The scrim and text are scoped to the dark theme (`data-theme="dark"`), so the quote stays readable over the photo in both themes.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

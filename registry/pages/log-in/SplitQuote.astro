@@ -1,0 +1,60 @@
+---
+/**
+ * Split with quote: The panel leads with a customer quote, portrait and rating.
+ *
+ * @page log-in
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Checkbox from '../../components/Checkbox/Checkbox.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import Rating from '../../components/Rating/Rating.astro'
+---
+
+<AuthShell layout="split" panelSide="start" heading="Welcome back" description="Welcome back! Please enter your details.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <Checkbox label="Remember for 30 days" name="remember" />
+      <Link href="#" underline="hover" class="text-sm font-semibold">Forgot password</Link>
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Sign in</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign in with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Don't have an account? <Link href="#" underline="hover" class="font-semibold">Sign up</Link>
+  </p>
+  <p slot="legal">© Example 2026</p>
+
+  <figure slot="panel" class="m-auto flex max-w-xl flex-col items-center gap-8 px-16 text-center">
+    <blockquote class="text-3xl font-medium text-balance">
+      We start every new project here and can't imagine working without it.
+    </blockquote>
+    <figcaption class="flex flex-col items-center gap-4">
+      <Avatar src="https://i.pravatar.cc/160?img=32" name="Priya Raman" size="xlarge" />
+      <div>
+        <p class="font-semibold">Priya Raman</p>
+        <p class="text-sm text-neutral-faded">Head of Design, Globex</p>
+      </div>
+      <Rating readonly value={5} aria-label="Rated 5 out of 5" />
+    </figcaption>
+  </figure>
+</AuthShell>

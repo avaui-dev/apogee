@@ -1,0 +1,17 @@
+---
+/**
+ * One route per page in registry/pages: /examples/log-in/simple renders
+ * registry/pages/log-in/Simple.astro on a bare page.
+ */
+import Example from '../../layouts/Example.astro'
+import { examples } from '../../components/examples'
+
+export function getStaticPaths() {
+  return Object.entries(examples).map(([slug, e]) => ({ params: { slug }, props: e }))
+}
+const { title, Page } = Astro.props
+---
+
+<Example title={title}>
+  <Page />
+</Example>

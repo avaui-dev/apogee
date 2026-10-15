@@ -1,0 +1,72 @@
+---
+/**
+ * Split with image background: The form beside a photo under a brand tint, with a pitch and social proof.
+ *
+ * @page sign-up
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Image from '../../components/Image/Image.astro'
+import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import Rating from '../../components/Rating/Rating.astro'
+
+const people = [
+  { name: 'Mara Okafor', src: 'https://i.pravatar.cc/96?img=47' },
+  { name: 'Jonas Weber', src: 'https://i.pravatar.cc/96?img=12' },
+  { name: 'Ana Lima', src: 'https://i.pravatar.cc/96?img=32' },
+  { name: 'Priya Raman', src: 'https://i.pravatar.cc/96?img=5' },
+  { name: 'Tomás Ruiz', src: 'https://i.pravatar.cc/96?img=15' },
+]
+---
+
+<AuthShell layout="split" heading="Sign up" description="Start your 30-day free trial.">
+  <a slot="brand" href="#" class="flex items-center gap-2 font-semibold">
+    <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+    Example
+  </a>
+
+  <form method="post" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-5">
+      <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+      <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+      <Input label="Password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" hint="Must be at least 8 characters." required />
+    </div>
+    <div class="flex flex-col gap-4">
+      <Button type="submit" size="large" fullWidth>Get started</Button>
+      <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+        <KeyRound slot="start" aria-hidden="true" />
+        Sign up with SSO
+      </Button>
+    </div>
+  </form>
+
+  <p slot="footer" class="text-neutral-faded">
+    Already have an account? <Link href="#" underline="hover" class="font-semibold">Log in</Link>
+  </p>
+
+  <p slot="legal">© Example 2026</p>
+
+  <div slot="panel" class="relative flex w-full items-end">
+    <Image src="https://picsum.photos/seed/apogee-signup-4/1200/1600" alt="" width={1200} height={1600} fit="cover" class="absolute inset-0 size-full" />
+    <div class="relative flex w-full flex-col gap-8 bg-primary/85 p-16 text-on-primary">
+      <div class="flex flex-col gap-4">
+        <h2 class="text-4xl font-semibold text-balance">Start turning your ideas into reality.</h2>
+        <p class="text-lg opacity-85">Create a free account and get every feature for 30 days. No credit card needed. Trusted by over 4,000 teams.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <AvatarGroup items={people} size="medium" />
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center gap-2">
+            <Rating readonly value={5} size="small" aria-label="Rated 5 out of 5" />
+            <span class="font-semibold tabular-nums">5.0</span>
+          </div>
+          <p class="text-sm opacity-85">from 200+ reviews</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</AuthShell>

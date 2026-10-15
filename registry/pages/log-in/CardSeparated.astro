@@ -1,0 +1,43 @@
+---
+/**
+ * Card separated: The heading sits on a grey page and the form in its own raised card.
+ *
+ * @page log-in
+ */
+import { Orbit, KeyRound } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Card from '../../components/Card/Card.astro'
+import Input from '../../components/Input/Input.astro'
+import Checkbox from '../../components/Checkbox/Checkbox.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+---
+
+<AuthShell heading="Log in to your account" description="Welcome back! Please enter your details." background="neutral-faded" pattern="grid">
+  <FeaturedIcon slot="brand" theme="solid" color="primary" size="large"><Orbit /></FeaturedIcon>
+
+  <Card raised padding="medium" class="sm:[&_.apogee-card-body]:p-8">
+    <form method="post" class="flex flex-col gap-6">
+      <div class="flex flex-col gap-5">
+        <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+        <Input label="Password" type="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <Checkbox label="Remember for 30 days" name="remember" />
+        <Link href="#" underline="hover" class="text-sm font-semibold">Forgot password</Link>
+      </div>
+      <div class="flex flex-col gap-4">
+        <Button type="submit" size="large" fullWidth>Sign in</Button>
+        <Button href="#" variant="outline" color="neutral" size="large" fullWidth>
+          <KeyRound slot="start" aria-hidden="true" />
+          Sign in with SSO
+        </Button>
+      </div>
+    </form>
+  </Card>
+
+  <p slot="footer" class="text-neutral-faded">
+    Don't have an account? <Link href="#" underline="hover" class="font-semibold">Sign up</Link>
+  </p>
+</AuthShell>

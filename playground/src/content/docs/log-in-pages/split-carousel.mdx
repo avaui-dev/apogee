@@ -1,0 +1,25 @@
+---
+title: Split with carousel
+description: The form beside a dark panel that walks through what is new.
+group: Log in pages
+order: 7
+related: [sections/auth-shell, carousel, stat, circular-progress]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/split-carousel" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/split-carousel
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell (layout split), Carousel, Card, Stat, CircularProgress. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- The carousel has a name ("What's new"), each slide reads as "n of 3", and the arrows and dots sit in one row under the slides.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

@@ -92,3 +92,26 @@ test('the CLI entry loads and answers --help', async () => {
   assert.equal(r.status, 0, r.stderr)
   assert.match(r.stdout, /apogee init/)
 })
+
+test('copyInto installs a page under pages/ and points its imports at the project layout', () => {
+  const root = mkdtempSync(join(tmpdir(), 'apogee-'))
+  const registry = join(root, 'registry')
+  mkdirSync(join(registry, 'pages', 'log-in'), { recursive: true })
+  writeFileSync(
+    join(registry, 'pages', 'log-in', 'Simple.astro'),
+    "import Input from '../../components/Input/Input.astro'\nimport AuthShell from '../../sections/AuthShell/AuthShell.astro'\n",
+  )
+  const dest = join(root, 'project')
+  assert.equal(copyInto(registry, 'pages/log-in/Simple.astro', dest, false), 'ok')
+  // In the project: <dir>/pages/log-in/Simple.astro, <dir>/Input/Input.astro, <dir>/sections/AuthShell/AuthShell.astro.
+  assert.equal(
+    readFileSync(join(dest, 'pages', 'log-in', 'Simple.astro'), 'utf8'),
+    "import Input from '../../Input/Input.astro'\nimport AuthShell from '../../sections/AuthShell/AuthShell.astro'\n",
+  )
+})
+
+test('canonical finds a page by its category/slug key', () => {
+  const withPage = { components: { ...index.components, 'log-in/split-quote': { files: [], registryDependencies: [] } } }
+  assert.equal(canonical(withPage, 'log-in/split-quote'), 'log-in/split-quote')
+  assert.equal(canonical(withPage, 'login/SplitQuote'), 'log-in/split-quote')
+})

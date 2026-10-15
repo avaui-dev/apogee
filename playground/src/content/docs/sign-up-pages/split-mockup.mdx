@@ -1,0 +1,25 @@
+---
+title: Split with mockup
+description: "The form beside a product screen built from the components."
+group: Sign up pages
+order: 9
+related: [sections/auth-shell, card, stat]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="sign-up/split-mockup" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add sign-up/split-mockup
+```
+
+This copies the page to `src/components/apogee/pages/sign-up/` with everything it uses: AuthShell, Badge, Button, Card, FeaturedIcon, Input, Link, Stat, Table. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the fields carry visible labels and `autocomplete` hints (`new-password` for new passwords, so password managers offer to generate one).
+- The product screen is decoration: it is `aria-hidden` and `inert`, so screen readers and the Tab key skip it.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

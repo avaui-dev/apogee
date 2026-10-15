@@ -1,0 +1,25 @@
+---
+title: Split with mockup
+description: The form beside a product screen built from the components.
+group: Log in pages
+order: 8
+related: [sections/auth-shell, stat, table, badge]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/split-mockup" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/split-mockup
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell (layout split), Card, Stat, Table, Badge. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- The product screen is decoration: it is `aria-hidden` and `inert`, so screen readers and the Tab key skip it.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

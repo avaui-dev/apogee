@@ -1,0 +1,25 @@
+---
+title: Split with photo and glass card
+description: Reviews rotate in a frosted card over a photo.
+group: Log in pages
+order: 13
+related: [sections/auth-shell, carousel, image, rating]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="log-in/split-photo-quote-glass" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add log-in/split-photo-quote-glass
+```
+
+This copies the page to `src/components/apogee/pages/log-in/` with everything it uses: AuthShell (layout split), Image, Carousel, Rating. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the form fields carry visible labels and `autocomplete` hints, so password managers fill them.
+- The frosted card is scoped to the dark theme, so its text stays readable over any photo.
+- The SSO button is a link to your identity provider; swap its `href` for your own.

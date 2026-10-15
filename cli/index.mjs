@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Apogee CLI — copy components into your project (copy-in model).
 //   apogee init            scaffold tokens + config
-//   apogee add <names...>  copy components (+ their deps)
+//   apogee add <names...>  copy components, sections or pages (+ their deps)
 //   apogee list            list available components
 // Dependency-free: Node built-ins only.
 
@@ -134,8 +134,13 @@ function cmdAdd(names, opts) {
 }
 
 function cmdList() {
-  const sections = Object.keys(index.components).filter((n) => index.components[n].kind === 'section').sort()
-  const names = Object.keys(index.components).filter((n) => index.components[n].kind !== 'section').sort()
+  const of = (kind) => Object.keys(index.components).filter((n) => index.components[n].kind === kind).sort()
+  const [pages, sections, names] = [of('page'), of('section'), of('component')]
+  if (pages.length) {
+    say(bold(`${pages.length} pages:`))
+    for (const p of pages) say(`  ${p.padEnd(32)}${dim(index.components[p].description)}`)
+    say('')
+  }
   if (sections.length) say(bold(`${sections.length} sections:`) + '\n  ' + sections.join('  ') + '\n')
   say(bold(`${names.length} components:\n`))
   const width = Math.max(...names.map((n) => n.length)) + 2
@@ -162,7 +167,8 @@ ${bold('Usage')}
 ${bold('Examples')}
   apogee init
   apogee add button dialog data-grid
-  apogee add combobox --overwrite`)
+  apogee add combobox --overwrite
+  apogee add log-in/split-quote   ${dim('# a whole page, into <dir>/pages/log-in/')}`)
 }
 
 // --- entry ---
