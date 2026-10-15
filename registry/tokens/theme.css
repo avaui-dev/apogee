@@ -155,10 +155,10 @@
   color-scheme: dark;
   --overlay: oklch(0 0 0 / 0.65);
   --press-overlay: oklch(1 0 0 / 0.1);
-  /* Dark surfaces are lit from above: a faint white top highlight, no drop shadow. */
-  --shadow-outline: 0 -1px 2px -0.5px rgb(255 255 255 / 0.06), 0 -1px 3px -1px rgb(255 255 255 / 0.05);
-  --shadow-raised: 0 -8px 12px -4px rgb(255 255 255 / 0.06), 0 -1px 2px rgb(255 255 255 / 0.08);
-  --shadow-overlay: 0 -16px 24px -4px rgb(255 255 255 / 0.08), 0 -4px 8px -2px rgb(255 255 255 / 0.06), 0 -1px 2px rgb(255 255 255 / 0.1);
+  /* Dark surfaces lift by lightness; the shadow is a deeper black than in light mode so it still reads on a dark page. */
+  --shadow-outline: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-raised: 0 8px 16px -4px rgb(0 0 0 / 0.5), 0 2px 4px -1px rgb(0 0 0 / 0.4);
+  --shadow-overlay: 0 20px 32px -8px rgb(0 0 0 / 0.6), 0 8px 12px -4px rgb(0 0 0 / 0.45), 0 1px 3px rgb(0 0 0 / 0.4);
 }
 
 /* Runtime vars → utilities. Namespaced keys keep roles unambiguous. */

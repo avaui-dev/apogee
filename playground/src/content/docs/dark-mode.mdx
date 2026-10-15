@@ -61,8 +61,8 @@ and `setTheme` keeps it opposite after every toggle. See [Theme](/docs/theme).
 
 ## What changes in dark
 
-- Elevation steps up in lightness: base, raised and overlay surfaces get lighter instead of casting darker shadows.
-- `--shadow-overlay` becomes a faint top highlight.
+- Elevation steps up in lightness: base, raised and overlay surfaces get lighter, and keep a drop shadow in a deeper black so it still reads on a dark page.
+- A grey page (`neutral-faded`) behind a card washes out to the card's own lightness in dark mode, so AuthShell keeps the page colour there and the card stays lighter than what it sits on.
 - The dialog backdrop (`--overlay`) darkens from 50% to 65%.
 - `bg-inverted` flips: dark on a light page, light on a dark one.
 - Images that blend into the page need `outline` on [Image](/docs/image) to keep an edge.

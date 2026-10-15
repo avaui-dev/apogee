@@ -62,7 +62,14 @@ const Tag = `h${headingLevel}` as const
 <section
   id={id}
   aria-labelledby={headingId}
-  class:list={['relative isolate flex flex-col overflow-hidden', backgrounds[fill], fullHeight && 'min-h-dvh', className]}
+  class:list={[
+    'relative isolate flex flex-col overflow-hidden',
+    backgrounds[fill],
+    // A grey page lifts a white card in light mode; in dark mode the same wash matches the card, so keep the page colour.
+    fill === 'neutral-faded' && 'dark:bg-page',
+    fullHeight && 'min-h-dvh',
+    className,
+  ]}
   {...rest}
 >
   <slot name="header" />
