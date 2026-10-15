@@ -353,11 +353,12 @@ const listMaxHeight = { small: '14rem', medium: '15rem', large: '16rem', xlarge:
       const vis = visible()
       if (e.key === 'ArrowDown') {
         e.preventDefault()
+        // Opening resets the list, so count and highlight after the reset.
         if (!isOpen()) {
           open()
           showAll()
-        }
-        if (vis.length) setActive((active + 1) % vis.length)
+          setActive(matchIndex())
+        } else if (vis.length) setActive((active + 1) % vis.length)
       } else if (e.key === 'ArrowUp') {
         e.preventDefault()
         if (vis.length) setActive((active - 1 + vis.length) % vis.length)

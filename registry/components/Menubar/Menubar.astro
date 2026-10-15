@@ -109,10 +109,12 @@ const ids = menus.map(() => uid(Astro.locals, 'apogee-mb'))
       triggerOf(m).addEventListener('pointerenter', () => anyOpen() && openMenu(m, false))
       m.addEventListener('keydown', (e) => {
         const onTrigger = document.activeElement === triggerOf(m)
-        if (e.key === 'ArrowRight') {
+        // Next menu is toward the inline end, so the arrows swap under RTL.
+        const rtl = getComputedStyle(m).direction === 'rtl'
+        if (e.key === (rtl ? 'ArrowLeft' : 'ArrowRight')) {
           e.preventDefault()
           step(1, !onTrigger || anyOpen())
-        } else if (e.key === 'ArrowLeft') {
+        } else if (e.key === (rtl ? 'ArrowRight' : 'ArrowLeft')) {
           e.preventDefault()
           step(-1, !onTrigger || anyOpen())
         } else if (e.key === 'ArrowDown' && onTrigger) {

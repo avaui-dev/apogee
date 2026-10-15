@@ -37,6 +37,9 @@ const html = (await Astro.slots.render('default')).replace(`data-key="${active}"
   }
   .apogee-content-toggle > [data-key][data-active] {
     display: block;
+  }
+  /* Animate only after a real swap, never on first paint. */
+  .apogee-content-toggle[data-swapped] > [data-key][data-active] {
     animation: apogee-ct-in var(--duration-medium) var(--ease-standard);
   }
   .apogee-content-toggle > [data-key][data-leaving] {
@@ -84,6 +87,7 @@ const html = (await Astro.slots.render('default')).replace(`data-key="${active}"
     if (!children().some((el) => el.hasAttribute('data-active')))
       for (const el of children()) el.toggleAttribute('data-active', el.dataset.key === root.dataset.active)
     new MutationObserver(() => {
+      root.setAttribute('data-swapped', '')
       const leaving = children().find((el) => el.hasAttribute('data-active') && el.dataset.key !== root.dataset.active)
       if (leaving) {
         leaving.removeAttribute('data-active')

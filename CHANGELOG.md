@@ -153,6 +153,15 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - Tooltip wraps long text (max 20rem) and renders nothing when `text` is empty.
 
 ### Fixed
+- Image: `fit` now works when you size the box with a class; the image no longer forces `h-auto` while `fit` is set.
+- Rating: stars run 1 → 5 in the DOM, so the arrow keys move the way the stars look (`→` raises); the fill uses `:has()`.
+- Dropdown and Menubar: `←` and `→` swap under `dir="rtl"` (submenus open with `←`, the next menu is to the left).
+- RichTextEditor: ⌘K / Ctrl+K opens the link prompt, as the Link button's hint said.
+- CommandPalette: the input sets `aria-activedescendant`, so screen readers announce the highlighted result.
+- Combobox: `↓` after closing a list with no matches reopens it with the first option highlighted.
+- TagInput: removing a tag with its button moves focus to the next tag's button, or the text field, instead of the page.
+- Tooltip: `select` and `textarea` triggers get `aria-describedby`; an `<a>` without `href` is no longer picked as the trigger.
+- ContentToggle: the active child no longer plays its slide-in on page load.
 
 - Carousel slides never received their snap and width styles (scoped CSS could not reach slotted children); arrows lost their fill on hover.
 - SegmentedControl styled every option after the checked one as selected.

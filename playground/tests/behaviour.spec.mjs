@@ -2070,3 +2070,113 @@ test('end-slot buttons sit near the input edge; reveal is an icon button', async
   await reveal.hover()
   expect(await reveal.evaluate((e) => getComputedStyle(e).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
 })
+
+test('Image fit works in a box sized by a class', async ({ page }) => {
+  await page.goto('/docs/image')
+  for (const alt of ['Cover', 'Contain']) {
+    const r = await page.locator(`img[alt="${alt}"]`).evaluate((e) => e.getBoundingClientRect())
+    expect(Math.round(r.width)).toBe(Math.round(r.height))
+  }
+})
+
+test('Rating: ArrowRight raises the value and moves the selection right', async ({ page }) => {
+  await page.goto('/docs/rating')
+  const group = page.locator('[role="radiogroup"]').filter({ has: page.locator('input[name="variant-interactive"]') })
+  await group.locator('input[value="3"]').focus()
+  await page.keyboard.press('ArrowRight')
+  expect(await group.locator('input:checked').getAttribute('value')).toBe('4')
+  const labels = group.locator('label')
+  const xs = await labels.evaluateAll((ls) => ls.map((l) => [Number(document.getElementById(l.htmlFor).value), l.getBoundingClientRect().x]))
+  const pos = Object.fromEntries(xs)
+  expect(pos[4]).toBeGreaterThan(pos[3])
+  // Stars up to the value are lit, the rest are not.
+  const lit = () => labels.evaluateAll((ls) => ls.map((l) => getComputedStyle(l).color))
+  await expect.poll(async () => { const c = await lit(); return c[3] === c[0] && c[4] !== c[0] }).toBe(true)
+})
+
+test('Dropdown under RTL: ArrowLeft opens a submenu, ArrowRight closes it', async ({ page }) => {
+  await page.goto('/rtl')
+  const root = page.locator('.apogee-dropdown').filter({ has: page.getByRole('button', { name: 'إجراءات' }) }).first()
+  await root.getByRole('button', { name: 'إجراءات' }).click()
+  const sub = root.getByRole('menuitem', { name: 'مشاركة' })
+  await sub.focus()
+  await page.keyboard.press('ArrowLeft')
+  await expect(root.getByRole('menuitem', { name: 'نسخ الرابط' })).toBeFocused()
+  await page.keyboard.press('ArrowRight')
+  await expect(sub).toBeFocused()
+})
+
+test('Menubar under RTL: ArrowLeft moves to the next menu', async ({ page }) => {
+  await page.goto('/extras')
+  await page.evaluate(() => {
+    document.documentElement.dir = 'rtl'
+    const bar = [...document.querySelectorAll('[role="menubar"]')].find((m) => m.querySelectorAll('[aria-haspopup="menu"]').length >= 3)
+    bar.dataset.test = 'rtl-bar'
+  })
+  const triggers = page.locator('[data-test="rtl-bar"] [aria-haspopup="menu"]')
+  await triggers.nth(0).focus()
+  await page.keyboard.press('ArrowLeft')
+  await expect(triggers.nth(1)).toBeFocused()
+})
+
+test('RichTextEditor: Cmd/Ctrl+K makes a link', async ({ page }) => {
+  await page.goto('/docs/rich-text-editor')
+  const editor = page.locator('.apogee-rte-editor').first()
+  await editor.click()
+  await page.keyboard.type('Apogee')
+  await page.keyboard.press('ControlOrMeta+a')
+  page.once('dialog', (d) => d.accept('https://example.com/'))
+  await page.keyboard.press('ControlOrMeta+k')
+  await expect(editor.locator('a[href="https://example.com/"]')).toHaveText('Apogee')
+})
+
+test('CommandPalette: the input points at the highlighted option', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 800 })
+  await page.goto('/docs/command-palette')
+  await page.locator('[data-command-open="rich-command"]').click()
+  const dlg = page.locator('#rich-command')
+  await page.keyboard.press('ArrowDown')
+  const input = dlg.locator('.apogee-command-input')
+  const id = await input.getAttribute('aria-activedescendant')
+  expect(id).toBeTruthy()
+  await expect(dlg.locator(`[id="${id}"]`)).toHaveAttribute('aria-selected', 'true')
+})
+
+test('Combobox: ArrowDown after a no-match close highlights the first option', async ({ page }) => {
+  await page.goto('/docs/combobox')
+  const input = page.locator('[role="combobox"]').first()
+  await input.click()
+  await page.keyboard.type('zzzz')
+  await page.keyboard.press('Escape')
+  await page.keyboard.press('ArrowDown')
+  const id = await input.getAttribute('aria-activedescendant')
+  expect(id).toBeTruthy()
+  await expect(page.locator(`[id="${id}"]`)).toBeVisible()
+})
+
+test('TagInput: removing a tag by its button keeps focus in the control', async ({ page }) => {
+  await page.goto('/docs/tag-input')
+  const remove = page.locator('.apogee-tag-remove:visible').first()
+  const root = remove.locator('xpath=ancestor::*[.//input[not(@type="hidden")]][1]')
+  await remove.focus()
+  await page.keyboard.press('Enter')
+  const inside = await root.evaluate((r) => r.contains(document.activeElement) && document.activeElement !== document.body)
+  expect(inside).toBe(true)
+})
+
+test('Tooltip describes a select trigger', async ({ page }) => {
+  await page.goto('/docs/tooltip')
+  const select = page.locator('[data-apogee-tooltip="select"] select')
+  const id = await select.getAttribute('aria-describedby')
+  const tip = page.locator('[data-apogee-tooltip="select"] [role="tooltip"]')
+  expect((id ?? '').split(' ')).toContain(await tip.getAttribute('id'))
+})
+
+test('ContentToggle: no slide on page load, slide on swap', async ({ page }) => {
+  await page.goto('/docs/content-toggle')
+  const root = page.locator('[data-apogee-content-toggle="end"] .apogee-content-toggle')
+  const running = () => root.evaluate((r) => r.querySelector(':scope > [data-active]').getAnimations().length)
+  expect(await running()).toBe(0)
+  await root.evaluate((r) => (r.dataset.active = 'b'))
+  expect(await running()).toBeGreaterThan(0)
+})

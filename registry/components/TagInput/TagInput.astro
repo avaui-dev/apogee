@@ -143,6 +143,12 @@ const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolea
       root.dispatchEvent(new CustomEvent('apogee:tag-input-change', { bubbles: true, detail: { values: values() } }))
     }
     const removeTag = (tag: Element) => {
+      // Removing the focused button would drop focus to the page: move it to
+      // the next tag's remove button, else the typing field.
+      if (tag.contains(document.activeElement)) {
+        const next = tag.nextElementSibling?.querySelector<HTMLElement>('.apogee-tag-remove')
+        ;(next ?? field).focus()
+      }
       tag.remove()
       changed()
     }

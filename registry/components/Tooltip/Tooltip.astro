@@ -152,7 +152,7 @@ const anchor = `--${id}`
   island('.apogee-tooltip', (root) => {
     const panel = root.querySelector<HTMLElement>('[role="tooltip"]')
     if (!panel) return
-    const trigger = root.querySelector<HTMLElement>('button, a, input, [tabindex]')
+    const trigger = root.querySelector<HTMLElement>('button, a[href], input, select, textarea, [tabindex]')
     if (trigger) {
       const ids = (trigger.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean)
       if (!ids.includes(panel.id)) ids.push(panel.id)

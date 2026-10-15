@@ -197,6 +197,8 @@ for (const c of commands) {
 
     let active = -1
     const visible = () => items.filter((i) => !i.hidden)
+    // Options need ids so the input can point at the highlighted one.
+    items.forEach((it, i) => (it.id ||= `${input.getAttribute('aria-controls')}-${i}`))
 
     const setActive = (idx: number) => {
       const vis = visible()
@@ -206,7 +208,8 @@ for (const c of commands) {
       if (el) {
         el.setAttribute('aria-selected', 'true')
         el.scrollIntoView({ block: 'nearest' })
-      }
+        input.setAttribute('aria-activedescendant', el.id)
+      } else input.removeAttribute('aria-activedescendant')
     }
     const filter = () => {
       const q = fold(input.value.trim())

@@ -189,6 +189,16 @@ const tools = [
       if (editor.contains(document.getSelection()?.anchorNode ?? null)) updateStates()
     })
 
+    // ⌘K / Ctrl+K runs the Link button; ⌘B/I/U are the browser's own.
+    editor.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && e.key.toLowerCase() === 'k') {
+        const link = buttons.find((b) => b.dataset.command === 'createLink')
+        if (!link) return
+        e.preventDefault()
+        link.click()
+      }
+    })
+
     for (const btn of buttons) {
       // Keep the selection in the editor when the toolbar is clicked.
       btn.addEventListener('mousedown', (e) => e.preventDefault())

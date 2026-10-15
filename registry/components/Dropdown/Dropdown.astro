@@ -94,13 +94,17 @@ const anchor = `--${id}`
       }
       const current = active?.closest<HTMLElement>('[role="menu"]')
       if (!current || !root.contains(current)) return
-      if (e.key === 'ArrowRight' && active?.hasAttribute('popovertarget')) {
+      // Submenus open toward the inline end: ArrowRight in LTR, ArrowLeft in RTL.
+      const rtl = getComputedStyle(current).direction === 'rtl'
+      const into = rtl ? 'ArrowLeft' : 'ArrowRight'
+      const out = rtl ? 'ArrowRight' : 'ArrowLeft'
+      if (e.key === into && active?.hasAttribute('popovertarget')) {
         e.preventDefault()
         const panel = active.closest('.apogee-dropdown-sub')?.querySelector<HTMLElement>(':scope > [role="menu"]')
         if (!panel) return
         if (!panel.matches(':popover-open')) panel.showPopover()
         menuItems(panel)[0]?.focus()
-      } else if (e.key === 'ArrowLeft' && current !== menu) {
+      } else if (e.key === out && current !== menu) {
         e.preventDefault()
         current.hidePopover()
         current.closest('.apogee-dropdown-sub')?.querySelector<HTMLElement>(':scope > [role^="menuitem"]')?.focus()

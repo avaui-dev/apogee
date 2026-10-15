@@ -1,8 +1,8 @@
 ---
 /**
  * Rating — a star rating on native radios (zero JS). `readonly` renders a static
- * display instead of inputs. Uses the reverse-order CSS trick so hovering /
- * checking a star fills it and every lower one.
+ * display instead of inputs. Stars run 1 → max in DOM order and `:has()`
+ * fills a hovered or checked star and every lower one.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
@@ -71,9 +71,9 @@ const fillOf = (i: number) => Math.max(0, Math.min(100, (value - i) * 100))
       ))}
     </div>
   ) : (
-    <div class:list={['apogee-rating inline-flex flex-row-reverse', className]} style={`--apogee-color: ${colors[color]}`} role="radiogroup" aria-label={ariaLabel ?? 'Rating'} {...rest}>
+    <div class:list={['apogee-rating inline-flex', className]} style={`--apogee-color: ${colors[color]}`} role="radiogroup" aria-label={ariaLabel ?? 'Rating'} {...rest}>
       {Array.from({ length: max }).map((_, i) => {
-        const v = max - i
+        const v = i + 1
         const oid = `${name}-${v}-${rid}`
         return (
           <>
@@ -97,8 +97,8 @@ const fillOf = (i: number) => Math.max(0, Math.min(100, (value - i) * 100))
   .apogee-rating-fill:dir(rtl) {
     clip-path: inset(0 0 0 var(--apogee-cut));
   }
-  /* Reverse-order fill: a star and every lower one light up. Container hover
-     clears the checked state so the hover preview wins. */
+  /* Stars run 1 → max in DOM order, so native arrow keys match what you see.
+     A star lights when it, or any star after it, is checked. */
   .apogee-rating label {
     color: var(--foreground-disabled);
     transition: color var(--duration-fast) var(--ease-standard);
@@ -109,17 +109,18 @@ const fillOf = (i: number) => Math.max(0, Math.min(100, (value - i) * 100))
       padding: 0.25rem 0.125rem;
     }
   }
-  .apogee-rating input:checked ~ label {
+  .apogee-rating input:checked + label,
+  .apogee-rating label:has(~ input:checked) {
     color: var(--apogee-color);
   }
   /* Hover preview only on devices that hover; touch keeps the checked state. */
   @media (hover: hover) {
-    .apogee-rating:hover input:checked ~ label {
+    .apogee-rating:has(label:hover) label {
       color: var(--foreground-disabled);
     }
     /* Doubled class: must outrank the reset above regardless of how the sheet is bundled. */
-    .apogee-rating.apogee-rating:hover label:hover,
-    .apogee-rating.apogee-rating:hover label:hover ~ label {
+    .apogee-rating.apogee-rating:has(label:hover) label:hover,
+    .apogee-rating.apogee-rating label:has(~ label:hover) {
       color: var(--apogee-color);
     }
   }

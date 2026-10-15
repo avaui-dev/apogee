@@ -37,7 +37,8 @@ interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'alt' | 'width' | 'h
 const { src, alt, loading = 'lazy', decoding = 'async', width, height, fit, radius, outline = false, class: className, ...rest } = Astro.props
 const remote = typeof src === 'string'
 const hasFallback = Astro.slots.has('fallback')
-const imgClass = ['h-auto max-w-full', fit && fits[fit], radius && radii[radius], outline && 'ring-1 ring-inset ring-neutral', !hasFallback && className]
+// `fit` needs the box height you set, so it drops `h-auto`.
+const imgClass = ['max-w-full', !fit && 'h-auto', fit && fits[fit], radius && radii[radius], outline && 'ring-1 ring-inset ring-neutral', !hasFallback && className]
 // Remote URLs without explicit dimensions are measured at build time.
 const sizing = remote && width === undefined && height === undefined ? { inferSize: true as const } : { ...(width !== undefined && { width }), ...(height !== undefined && { height }) }
 ---
