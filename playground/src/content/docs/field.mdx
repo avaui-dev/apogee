@@ -63,6 +63,7 @@ through to the root `<div>`.
 | `disabled` | `boolean` | `false` | Dims the label and marks the wrapper `aria-disabled`; disable the control too. |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Label and hint text size, matching the control's size. Also set as `data-size` on the root. |
 | `required` | `boolean` | `false` | Shows a `*` next to the label (visual only — set `required`/`aria-required` on the control itself). |
+| `bare` | `boolean` | `false` | Renders only the slot, no wrapper; the parent owns label, hint and error. InputGroup uses it. |
 | `hideRequiredIndicator` | `boolean` | `false` | Hides the `*` while you keep `required` on the control (a form where every field is required). |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 

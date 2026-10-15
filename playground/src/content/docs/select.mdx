@@ -9,7 +9,7 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Select from '../../../../registry/components/Select/Select.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
-import { Globe } from '@lucide/astro'
+import { Globe, Zap, Building2 } from '@lucide/astro'
 
 <JsNote fallback="The native select shows and works on its own; the custom listbox is never rendered.">
   Only with `options`: hides the native `<select>` and opens a custom listbox
@@ -83,9 +83,17 @@ import Select from '@/components/apogee/Select/Select.astro'
 | `hint` | `string` | — | Helper text below the control (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid` and switches the border to the critical colour. |
 | `options` | `{ value, label, description?, disabled? }[]` | — | Renders the custom listbox (JS) over a generated native `<select>`. |
+| `options[].icon` / `avatar` / `avatarName` | component / `string` | — | Media before the label: a Lucide component, or an image URL (24px avatar, initials fallback from `avatarName`). The trigger shows the chosen option's media. |
 | `placeholder` | `string` | — | Empty first choice; shown faded until a value is picked. Disabled when `required`. |
 | `value` | `string \| string[]` | — | Initial value(s). `selected` on an `<option>` works too. |
 | `multiple` | `boolean` | `false` | Multi-select: native listbox, or checkmarks in the custom listbox. |
+| `search` | `boolean` | `false` | A search box at the top of the custom listbox; filters options by label. |
+| `selectAll` | `boolean` | `false` | A "Select all" / "Clear" footer (multiple only). |
+| `countLabel` | `string` | `'{count} selected'` | Trigger text when more than one option is chosen. |
+| `emptyText` | `string` | `'No matches'` | Shown when the search hides every option. |
+| `searchPlaceholder` | `string` | `'Search…'` | Placeholder and accessible name of the search box. |
+| `selectAllLabel` | `string` | `'Select all'` | Footer button text. |
+| `clearLabel` | `string` | `'Clear'` | Footer button text. |
 | `disabled` | `boolean` | `false` | Disables the control (and the custom trigger). |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
@@ -134,6 +142,48 @@ empty submit (the message shows under the trigger, which takes focus).
       { value: 'eu', label: 'Europe' },
       { value: 'apac', label: 'Asia Pacific' },
     ]} />
+  </div>
+</Preview>
+
+## Icons and avatars
+
+Each option can lead with a Lucide component or an image; the trigger repeats the chosen one.
+
+<Preview code={`<Select label="Workspace" name="ws" options={[
+  { value: 'personal', label: 'Personal', icon: Zap },
+  { value: 'acme', label: 'Acme Inc.', icon: Building2 },
+  { value: 'ana', label: 'Ana Lima', avatar: 'https://i.pravatar.cc/48?img=5', avatarName: 'Ana Lima' },
+]} />`}>
+  <div data-apogee-select="media-initial" class="w-72">
+    <Select label="Assignee" name="ws-initial" value="ana" options={[
+      { value: 'ana', label: 'Ana Lima', avatar: 'https://i.pravatar.cc/48?img=5', avatarName: 'Ana Lima' },
+      { value: 'personal', label: 'Personal', icon: Zap },
+    ]} />
+  </div>
+  <div data-apogee-select="media" class="w-72">
+    <Select label="Workspace" name="ws-media" placeholder="Choose" options={[
+      { value: 'personal', label: 'Personal', icon: Zap },
+      { value: 'acme', label: 'Acme Inc.', icon: Building2 },
+      { value: 'ana', label: 'Ana Lima', avatar: 'https://i.pravatar.cc/48?img=5', avatarName: 'Ana Lima' },
+    ]} />
+  </div>
+</Preview>
+
+## Multiple with search and a footer
+
+A multiple select shows a checkbox on each option, counts the choices in the trigger, and can carry a search box and a footer. The native `<select multiple>` still submits.
+
+<Preview code={`<Select label="Countries" name="countries" multiple search selectAll placeholder="Pick some" options={[
+  { value: 'fr', label: 'France' }, { value: 'ca', label: 'Canada' }, { value: 'jp', label: 'Japan' },
+  { value: 'de', label: 'Germany' }, { value: 'es', label: 'Spain' }, { value: 'it', label: 'Italy' },
+]} />`}>
+  <div data-apogee-select="multi-search" class="w-72">
+    <form>
+      <Select label="Countries" name="countries-multi" multiple search selectAll placeholder="Pick some" options={[
+        { value: 'fr', label: 'France' }, { value: 'ca', label: 'Canada' }, { value: 'jp', label: 'Japan' },
+        { value: 'de', label: 'Germany' }, { value: 'es', label: 'Spain' }, { value: 'it', label: 'Italy' },
+      ]} />
+    </form>
   </div>
 </Preview>
 

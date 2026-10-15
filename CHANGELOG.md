@@ -11,6 +11,9 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Select, Combobox** — options take `icon` (a Lucide component) or `avatar` + `avatarName`; the Select trigger repeats the chosen option's media; listbox height follows `size`. **Select** `multiple`: checkbox marks, `search`, `selectAll` footer, `countLabel` ("2 selected"), `emptyText`. **Combobox** `multiple`: picks become chips in the field (`name`, `value`, `maxItems`, `apogee:combobox-change`).
+- **InputGroup** (new) with **InputGroupAddon** — welds static text, a Button or a native select to an Input (1px seam, square inner corners, the group owns label / hint / error). Input `grouped`; Field `bare`.
+- **Input** — `revealable` on a password field: an eye button shows or hides the value (small island).
 - **FeaturedIcon** (new) — an icon in a tinted tile: `theme` light | solid | outline, every hue, four sizes, `rounded`, optional `label`.
 - **CircularProgress** (new) — a determinate ring or half ring drawn as an SVG stroke (`pathLength="100"`): `value` / `min` / `max`, four sizes, three thicknesses, every hue, `shape="half"`, value text in the slot.
 - **ChoiceCard** (new) — a card that is a native radio or checkbox: `type`, `name` / `value`, `title` / `description`, `indicator` radio | check | none, `indicatorPosition`, two sizes, slots for an icon, a price or a badge. Zero JS; arrows and Space work natively.

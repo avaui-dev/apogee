@@ -16,12 +16,19 @@ import Field from '../Field/Field.astro'
 import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 import { panelStyle, panelClass, panelSurface, menuClass, itemBase, itemSizes, itemColors } from '../utils/panel.ts'
 import { ChevronDown, Check } from '@lucide/astro'
+import Avatar from '../Avatar/Avatar.astro'
 
 export interface SelectOption {
   value: string
   label: string
   description?: string
   disabled?: boolean
+  /** A Lucide component (or any Astro component rendering an svg) shown before the label. */
+  icon?: (props: Record<string, unknown>) => unknown
+  /** Image URL shown as a 24px avatar before the label; wins over `icon`. */
+  avatar?: string
+  /** Name behind `avatar` (initials fallback, alt text). */
+  avatarName?: string
 }
 
 /** @composable */
@@ -45,6 +52,20 @@ interface Props extends Omit<HTMLAttributes<'select'>, 'size' | 'value' | 'multi
   value?: string | string[]
   multiple?: boolean
   disabled?: boolean
+  /** A search box at the top of the custom listbox that filters options by label. */
+  search?: boolean
+  /** "Select all" / "Clear" footer (multiple only). */
+  selectAll?: boolean
+  /** Trigger text when more than one option is chosen; `{count}` is replaced. @category content */
+  countLabel?: string
+  /** Shown when the search hides every option. @category content */
+  emptyText?: string
+  /** @category content */
+  searchPlaceholder?: string
+  /** @category content */
+  selectAllLabel?: string
+  /** @category content */
+  clearLabel?: string
   class?: string
 }
 
@@ -62,6 +83,13 @@ const {
   value,
   multiple = false,
   disabled = false,
+  search = false,
+  selectAll = false,
+  countLabel = '{count} selected',
+  emptyText = 'No matches',
+  searchPlaceholder = 'Search…',
+  selectAllLabel = 'Select all',
+  clearLabel = 'Clear',
   class: className,
   ...rest
 } = Astro.props
@@ -75,6 +103,8 @@ const anchor = `--${id}`
 const hasStart = Astro.slots.has('start')
 const optionSize = { small: 'small', medium: 'medium', large: 'medium', xlarge: 'large' } as const
 const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fieldVariants[variant], fieldSizes[size]]
+const listMaxHeight = { small: '14rem', medium: '15rem', large: '16rem', xlarge: '20rem' } as const
+const single = !multiple && chosen.length === 1 ? chosen[0] : undefined
 ---
 
 <Field id={id} label={label} size={size} hint={hint} error={error} required={required} class={className}>
@@ -115,7 +145,7 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
           type="button"
           popovertarget={listId}
           aria-haspopup="listbox"
-          aria-controls={listId}
+          aria-controls={`${listId}-options`}
           aria-labelledby={label ? `${id}-label ${id}-value` : `${id}-value`}
           aria-describedby={describedby}
           aria-invalid={invalid ? 'true' : undefined}
@@ -123,8 +153,10 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
           style={`anchor-name: ${anchor}`}
           class:list={['no-js:hidden flex items-center text-start', ...controlClass]}
         >
-          <span id={`${id}-value`} class:list={['truncate', !chosen.length && 'text-neutral-faded']} data-placeholder={placeholder}>
-            {chosen.length ? chosen.map((o) => o.label).join(', ') : placeholder}
+          {single?.avatar && <Avatar src={single.avatar} name={single.avatarName ?? single.label} size="xsmall" class="me-2 shrink-0" data-media />}
+          {single && !single.avatar && single.icon && <span class="me-2 inline-flex shrink-0 text-neutral-faded [&>svg]:size-4" data-media><single.icon aria-hidden="true" /></span>}
+          <span id={`${id}-value`} class:list={['truncate', !chosen.length && 'text-neutral-faded']} data-placeholder={placeholder} data-count-label={countLabel}>
+            {chosen.length > 1 ? countLabel.replace('{count}', String(chosen.length)) : chosen.length ? chosen[0]?.label : placeholder}
           </span>
         </button>
       )
@@ -139,13 +171,29 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
         <div
           id={listId}
           popover
+          data-placement="bottom-start"
+          style={panelStyle({ anchor, placement: 'bottom-start', gap: 1, width: 'trigger', maxHeight: listMaxHeight[size] })}
+          class:list={[panelClass, panelSurface.overlay, menuClass, 'overflow-hidden']}
+        >
+          {
+            search && (
+              <input
+                type="search"
+                placeholder={searchPlaceholder}
+                aria-label={searchPlaceholder}
+                aria-controls={`${listId}-options`}
+                autocomplete="off"
+                class="apogee-select-search mb-0.5 h-8 w-full rounded border border-neutral bg-page px-2 text-sm text-neutral outline-none placeholder:text-neutral-faded focus-visible:border-primary"
+              />
+            )
+          }
+          <div
+          id={`${listId}-options`}
           role="listbox"
           aria-multiselectable={multiple ? 'true' : undefined}
           aria-labelledby={label ? `${id}-label` : undefined}
-          data-placement="bottom-start"
-          style={panelStyle({ anchor, placement: 'bottom-start', gap: 1, width: 'trigger', maxHeight: '15rem' })}
-          class:list={[panelClass, panelSurface.overlay, menuClass, 'overflow-auto']}
-        >
+          class="flex min-h-0 flex-col gap-0.5 overflow-auto"
+          >
           {options.map((o) => (
             <div
               role="option"
@@ -154,15 +202,34 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
               data-label={o.label}
               aria-selected={values.includes(o.value) ? 'true' : 'false'}
               aria-disabled={o.disabled ? 'true' : undefined}
-              class:list={['group cursor-pointer', itemBase, itemSizes[optionSize[size]], itemColors.neutral, 'aria-selected:bg-neutral-faded']}
+              class:list={['group cursor-pointer', itemBase, itemSizes[optionSize[size]], itemColors.neutral, !multiple && 'aria-selected:bg-neutral-faded']}
             >
+              {
+                multiple && (
+                  <span class="inline-flex size-3.5 shrink-0 items-center justify-center rounded-[0.25rem] border-[1.5px] border-neutral bg-page transition-colors group-aria-selected:border-primary group-aria-selected:bg-primary" aria-hidden="true">
+                    <Check class="hidden size-3 text-on-primary group-aria-selected:block" />
+                  </span>
+                )
+              }
+              {o.avatar && <Avatar src={o.avatar} name={o.avatarName ?? o.label} size="xsmall" class="shrink-0" />}
+              {!o.avatar && o.icon && <span class="inline-flex shrink-0 text-neutral-faded [&>svg]:size-4"><o.icon aria-hidden="true" /></span>}
               <span class="flex-1">
                 {o.label}
                 {o.description && <span class="block text-xs text-neutral-faded">{o.description}</span>}
               </span>
-              <Check class="hidden group-aria-selected:block" aria-hidden="true" />
+              {!multiple && <Check class="hidden group-aria-selected:block" aria-hidden="true" />}
             </div>
           ))}
+          </div>
+          {search && <p class="apogee-select-empty px-2 py-1.5 text-sm text-neutral-faded" hidden>{emptyText}</p>}
+          {
+            selectAll && multiple && (
+              <div class="mt-0.5 flex gap-1 border-t border-neutral pt-1">
+                <button type="button" data-select-all class="rounded px-2 py-1 text-xs font-medium text-primary hover:bg-primary-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">{selectAllLabel}</button>
+                <button type="button" data-select-clear class="rounded px-2 py-1 text-xs font-medium text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">{clearLabel}</button>
+              </div>
+            )
+          }
         </div>
       )
     }
@@ -177,11 +244,49 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
     const select = root.querySelector<HTMLSelectElement>('select')
     const trigger = root.querySelector<HTMLButtonElement>('button[aria-haspopup="listbox"]')
     const list = root.querySelector<HTMLElement>('[role="listbox"]')
-    const value = trigger?.querySelector<HTMLElement>('span')
-    if (!select || !trigger || !list || !value) return
+    const value = trigger?.querySelector<HTMLElement>('[id$="-value"]')
+    const panel = list?.closest<HTMLElement>('[popover]')
+    if (!select || !trigger || !list || !value || !panel) return
     const options = [...list.querySelectorAll<HTMLElement>('[role="option"]')]
-    const enabled = () => options.filter((o) => o.getAttribute('aria-disabled') !== 'true')
-    restoreFocus(list, trigger)
+    const search = panel.querySelector<HTMLInputElement>('.apogee-select-search')
+    const empty = panel.querySelector<HTMLElement>('.apogee-select-empty')
+    const enabled = () => options.filter((o) => !o.hidden && o.getAttribute('aria-disabled') !== 'true')
+    restoreFocus(panel, trigger)
+    // Search filters by label; the empty line shows when nothing is left.
+    const filter = () => {
+      const q = (search?.value ?? '').trim().toLowerCase()
+      for (const o of options) o.hidden = q !== '' && !(o.dataset.label ?? '').toLowerCase().includes(q)
+      if (empty) empty.hidden = options.some((o) => !o.hidden)
+    }
+    search?.addEventListener('input', filter)
+    const footer = [...panel.querySelectorAll<HTMLButtonElement>('[data-select-all], [data-select-clear]')]
+    const leave = () => {
+      panel.hidePopover()
+      trigger.focus()
+    }
+    search?.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || (e.key === 'Tab' && !e.shiftKey)) {
+        e.preventDefault()
+        ;(enabled()[0] ?? footer[0])?.focus()
+      } else if (e.key === 'Enter') {
+        // Inside a form Enter would submit; toggle the first match instead.
+        e.preventDefault()
+        const first = enabled()[0]
+        if (first) choose(first)
+      }
+    })
+    // Footer: Tab past the last button leaves the panel; Shift+Tab goes back to the options.
+    for (const [i, b] of footer.entries()) {
+      b.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab' && !e.shiftKey && i === footer.length - 1) {
+          e.preventDefault()
+          leave()
+        } else if (e.key === 'Tab' && e.shiftKey && i === 0) {
+          e.preventDefault()
+          focusCurrent()
+        } else if (e.key === 'Escape') leave()
+      })
+    }
     const optionFor = (o: HTMLElement) => select.querySelector<HTMLOptionElement>(`option[value="${CSS.escape(o.dataset.value ?? '')}"]`)
 
     // The label points at the hidden select; send its click to the trigger.
@@ -193,8 +298,22 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
     const render = () => {
       const picked = options.filter((o) => optionFor(o)?.selected)
       options.forEach((o) => o.setAttribute('aria-selected', String(picked.includes(o))))
-      value.textContent = picked.length ? picked.map((o) => o.dataset.label ?? '').join(', ') : (value.dataset.placeholder ?? '')
+      value.textContent =
+        picked.length > 1
+          ? (value.dataset.countLabel ?? '{count} selected').replace('{count}', String(picked.length))
+          : picked.length
+            ? (picked[0]?.dataset.label ?? '')
+            : (value.dataset.placeholder ?? '')
       value.classList.toggle('text-neutral-faded', !picked.length)
+      // The chosen option's icon or avatar sits before the label (single select only).
+      trigger.querySelector('[data-media]')?.remove()
+      const media = !select.multiple && picked.length === 1 ? picked[0]?.querySelector(':scope > .apogee-avatar, :scope > span:not(.flex-1)') : null
+      if (media) {
+        const clone = media.cloneNode(true) as HTMLElement
+        clone.setAttribute('data-media', '')
+        clone.classList.add('me-2')
+        value.before(clone)
+      }
     }
     const choose = (o: HTMLElement) => {
       const opt = optionFor(o)
@@ -204,14 +323,32 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
       render()
       select.dispatchEvent(new Event('change', { bubbles: true }))
       if (!select.multiple) {
-        list.hidePopover()
+        panel.hidePopover()
         trigger.focus()
       }
     }
+    const setAll = (on: boolean) => {
+      // Every enabled option, filtered out or not: Clear must clear everything.
+      for (const o of options.filter((x) => x.getAttribute('aria-disabled') !== 'true')) {
+        const opt = optionFor(o)
+        if (opt) opt.selected = on
+      }
+      render()
+      select.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+    panel.querySelector('[data-select-all]')?.addEventListener('click', () => setAll(true))
+    panel.querySelector('[data-select-clear]')?.addEventListener('click', () => setAll(false))
 
-    const focusCurrent = () => (options.find((o) => o.getAttribute('aria-selected') === 'true') ?? enabled()[0])?.focus()
-    list.addEventListener('toggle', (e) => {
-      if ((e as ToggleEvent).newState === 'open') focusCurrent()
+    function focusCurrent() {
+      ;(options.find((o) => o.getAttribute('aria-selected') === 'true' && !o.hidden) ?? enabled()[0])?.focus()
+    }
+    panel.addEventListener('toggle', (e) => {
+      if ((e as ToggleEvent).newState !== 'open') return
+      if (search) {
+        search.value = ''
+        filter()
+        search.focus()
+      } else focusCurrent()
     })
     list.addEventListener('click', (e) => {
       const o = (e.target as Element).closest<HTMLElement>('[role="option"]')
@@ -222,6 +359,11 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
     list.addEventListener('keydown', (e) => {
       const items = enabled()
       const idx = items.indexOf(document.activeElement as HTMLElement)
+      if (e.key === 'ArrowUp' && idx === 0 && search) {
+        e.preventDefault()
+        search.focus()
+        return
+      }
       const go = (i: number) => {
         e.preventDefault()
         items[i]?.focus()
@@ -234,7 +376,13 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
         e.preventDefault()
         const item = items[idx]
         if (item) choose(item)
-      } else if (e.key === 'Tab') list.hidePopover()
+      } else if (e.key === 'Tab') {
+        // Options are one stop: forward goes to the footer, back to the search, else out.
+        e.preventDefault()
+        if (!e.shiftKey && footer[0]) footer[0].focus()
+        else if (e.shiftKey && search) search.focus()
+        else leave()
+      }
       else if (e.key.length === 1 && !e.metaKey && !e.ctrlKey) {
         // Type-ahead across option text.
         typed = (Date.now() - typedAt < 600 ? typed : '') + e.key.toLowerCase()
@@ -245,8 +393,8 @@ const controlClass = ['appearance-none pe-9', hasStart && 'ps-9', fieldBase, fie
     trigger.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault()
-        if (list.matches(':popover-open')) focusCurrent()
-        else list.showPopover()
+        if (panel.matches(':popover-open')) focusCurrent()
+        else panel.showPopover()
       }
     })
     // The hidden select cannot show the browser's validation bubble: surface it on the trigger.

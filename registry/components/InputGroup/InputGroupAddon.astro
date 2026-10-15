@@ -1,0 +1,26 @@
+---
+/**
+ * InputGroupAddon — static text beside a field inside an InputGroup: a
+ * protocol, a currency, a unit. Zero JS.
+ */
+import type { HTMLAttributes } from 'astro/types'
+const sizes = {
+  small: 'h-7 px-2 text-xs',
+  medium: 'h-9 px-3 text-sm',
+  large: 'h-12 px-4 text-base',
+  xlarge: 'h-14 px-5 text-lg',
+} as const
+interface Props extends HTMLAttributes<'span'> {
+  /** @category layout */
+  size?: keyof typeof sizes
+  class?: string
+}
+const { size = 'medium', class: className, ...rest } = Astro.props
+---
+
+<span
+  class:list={['apogee-input-addon inline-flex shrink-0 items-center rounded-md border border-neutral bg-neutral-faded whitespace-nowrap text-neutral-faded', sizes[size], className]}
+  {...rest}
+>
+  <slot />
+</span>

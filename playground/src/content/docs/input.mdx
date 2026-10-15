@@ -7,6 +7,11 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Input from '../../../../registry/components/Input/Input.astro'
+import JsNote from '../../components/JsNote.astro'
+
+<JsNote fallback="The field is a plain password input; the eye button is hidden, so the value stays masked.">
+  Only `revealable` uses JS: a few lines flip a password field between masked and shown when its eye button is pressed.
+</JsNote>
 
 <Preview code={`<Input label="Email" type="email" placeholder="you@example.com" />`}>
   <Input label="Email" type="email" placeholder="you@example.com" />
@@ -48,6 +53,8 @@ attribute (`placeholder`, `name`, `value`, `min`/`max`, `autocomplete`,
 | `labelPosition` | `'top' \| 'floating'` | `'top'` | `floating` animates the label onto the border on focus / when filled — pure CSS. Ignores a passed `placeholder` (it manages its own). |
 | `prefix` | `string` | — | Text before the value (currency sign, protocol); takes the `start` slot's place. |
 | `suffix` | `string` | — | Text after the value (unit); takes the `end` slot's place. |
+| `grouped` | `boolean` | `false` | Inside an [InputGroup](/docs/input-group): no label, hint or error of its own. |
+| `revealable` | `boolean` | `false` | With `type="password"`: an eye button ("Show password", `aria-pressed`) in the end slot shows or hides the value. |
 | `required` | `boolean` | `false` | Marks the field required (native `required` + a visible `*` next to the label). |
 | `class` | `string` | — | Extra classes, merged onto the outer field wrapper. |
 
@@ -86,6 +93,12 @@ shifts with the control's padding — shown together:
   <Input label="Price" prefix="€" type="number" />
   <Input label="Weight" suffix="kg" type="number" />
   <Input label="Site" prefix="https://" />
+</Preview>
+
+## Password reveal
+
+<Preview code={`<Input label="Password" type="password" revealable autocomplete="current-password" />`}>
+  <div data-apogee-input="reveal" class="w-72"><Input label="Password" type="password" revealable autocomplete="current-password" value="hunter2" /></div>
 </Preview>
 
 ## States

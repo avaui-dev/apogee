@@ -12,6 +12,7 @@ import type { HTMLAttributes } from 'astro/types'
 import Field from '../Field/Field.astro'
 import { uid } from '../utils/uid.ts'
 import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
+import { Eye, EyeOff } from '@lucide/astro'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
@@ -36,6 +37,10 @@ interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
   /** Text after the value (unit). Replaces the `end` slot. @category content */
   suffix?: string
   required?: boolean
+  /** Inside an InputGroup: no label, hint or error of its own (the group owns them). */
+  grouped?: boolean
+  /** With `type="password"`: an eye button in the end slot that shows or hides the value (small island). */
+  revealable?: boolean
   class?: string
 }
 
@@ -52,20 +57,24 @@ const {
   prefix,
   suffix,
   required = false,
+  grouped = false,
+  revealable = false,
   class: className,
   ...rest
 } = Astro.props
 const id = idProp ?? uid(Astro.locals)
 const invalid = Boolean(error) || hasError
+// Grouped: the group renders `${id}-hint` / `${id}-error`; pass `aria-describedby` yourself to name them.
 const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
 const hasStart = Boolean(prefix) || Astro.slots.has('start')
-const hasEnd = Boolean(suffix) || Astro.slots.has('end')
+const reveal = revealable && type === 'password'
+const hasEnd = Boolean(suffix) || Astro.slots.has('end') || reveal
 const floating = labelPosition === 'floating'
 const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlarge: 'start-5' } as const
 ---
 
-<Field id={id} label={floating ? undefined : label} size={size} hint={hint} error={error} required={required} class={className}>
-  <div class="relative flex items-center">
+<Field id={id} label={floating ? undefined : label} size={size} hint={hint} error={error} required={required} bare={grouped} class={className}>
+  <div class:list={['relative flex items-center', grouped && 'min-w-0 flex-1 focus-within:z-10']}>
     {
       hasStart && (
         <span class="pointer-events-none absolute start-3 text-sm text-neutral-faded [&_svg]:size-4">
@@ -86,7 +95,21 @@ const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlar
     {
       hasEnd && (
         <span class="pointer-events-none absolute end-3 flex items-center text-sm text-neutral-faded [&_svg]:size-4 [&_button]:pointer-events-auto">
-          {suffix ?? <slot name="end" />}
+          {
+            reveal ? (
+              <button
+                type="button"
+                class="apogee-reveal grid size-6 place-items-center rounded text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden"
+                aria-label="Show password"
+                aria-pressed="false"
+              >
+                <Eye class="apogee-reveal-show" aria-hidden="true" />
+                <EyeOff class="apogee-reveal-hide" aria-hidden="true" />
+              </button>
+            ) : (
+              suffix ?? <slot name="end" />
+            )
+          }
         </span>
       )
     }
@@ -109,3 +132,30 @@ const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlar
     }
   </div>
 </Field>
+
+<style>
+  /* The eye swaps with the pressed state. */
+  .apogee-reveal-hide,
+  .apogee-reveal[aria-pressed='true'] .apogee-reveal-show {
+    display: none;
+  }
+  .apogee-reveal[aria-pressed='true'] .apogee-reveal-hide {
+    display: block;
+  }
+</style>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  // Reveal: flip the input between password and text; the label follows.
+  island<HTMLButtonElement>('.apogee-reveal', (btn) => {
+    const input = btn.closest('div')?.querySelector<HTMLInputElement>('input')
+    if (!input) return
+    btn.addEventListener('click', () => {
+      const show = input.type === 'password'
+      input.type = show ? 'text' : 'password'
+      btn.setAttribute('aria-pressed', String(show))
+      input.focus()
+    })
+  })
+</script>

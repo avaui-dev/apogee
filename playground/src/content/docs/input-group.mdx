@@ -1,0 +1,169 @@
+---
+title: Input group
+description: Static text, a button or a native select welded to a field, sharing one edge.
+group: Components
+order: 0
+related: [input, field, button, select]
+---
+
+import Preview from '../../components/Preview.astro'
+import InputGroup from '../../../../registry/components/InputGroup/InputGroup.astro'
+import InputGroupAddon from '../../../../registry/components/InputGroup/InputGroupAddon.astro'
+import Input from '../../../../registry/components/Input/Input.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+<Preview code={`<InputGroup id="site" label="Site">
+  <InputGroupAddon slot="start">https://</InputGroupAddon>
+  <Input id="site" grouped placeholder="example.com" />
+  <Button slot="end" variant="outline" color="neutral">Copy</Button>
+</InputGroup>`}>
+  <div data-apogee-input-group="addons" class="w-96">
+    <InputGroup id="site" label="Site">
+      <InputGroupAddon slot="start">https://</InputGroupAddon>
+      <Input id="site" grouped placeholder="example.com" />
+      <Button slot="end" variant="outline" color="neutral">Copy</Button>
+    </InputGroup>
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add input-group
+```
+
+Depends on `Field`. Zero JS. Put an `Input` (with `grouped`), a `Button` or a native `<select>` in the slots.
+
+## Usage
+
+```astro
+---
+import InputGroup from '@/components/apogee/InputGroup/InputGroup.astro'
+import InputGroupAddon from '@/components/apogee/InputGroup/InputGroupAddon.astro'
+import Input from '@/components/apogee/Input/Input.astro'
+---
+<InputGroup id="price" label="Price" hint="Per month, before tax.">
+  <InputGroupAddon slot="start">€</InputGroupAddon>
+  <Input id="price" grouped type="number" aria-describedby="price-hint" />
+  <InputGroupAddon slot="end">/mo</InputGroupAddon>
+</InputGroup>
+```
+
+The group renders the hint and error with the ids `<id>-hint` and `<id>-error`; pass them in `aria-describedby` on the Input so they are read with the field.
+
+## Anatomy
+
+A Field (label, hint, error) around a flex row. Each direct child of the row
+loses its inner corners and overlaps its neighbour by 1px; the child that holds
+focus lifts above the seam. The Input inside renders `grouped`, which drops its
+own label and wrapper so the group's label is the only one.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA.
+
+### `InputGroup`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | — | Required. The id of the Input inside; the group's label points at it. |
+| `label` | `string` | — | Visible label. |
+| `hint` | `string` | — | Helper text under the row. |
+| `error` | `string` | — | Error message. |
+| `required` | `boolean` | `false` | Asterisk on the label; set `required` on the Input too. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Label and hint size; give the Input and the addons the same size. |
+| `class` | `string` | — | Extra classes on the Field root. |
+
+Slots: `start`, default (the field), `end`.
+
+### `InputGroupAddon`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height and text, matching the field. |
+| `class` | `string` | — | Extra classes. |
+
+### `Input`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `grouped` | `boolean` | `false` | Renders without label, hint or error; for use inside InputGroup. |
+
+An addon on one side only keeps the field's outer corners:
+
+<Preview code={`<InputGroup id="amount" label="Amount">
+  <InputGroupAddon slot="start">€</InputGroupAddon>
+  <Input id="amount" grouped type="number" />
+</InputGroup>`}>
+  <div data-apogee-input-group="addon-only" class="w-72">
+    <InputGroup id="amount" label="Amount">
+      <InputGroupAddon slot="start">€</InputGroupAddon>
+      <Input id="amount" grouped type="number" placeholder="0.00" />
+    </InputGroup>
+  </div>
+</Preview>
+
+## Variants
+
+Every `size`:
+
+<Preview code={`<InputGroup id="s" label="Small" size="small">
+  <InputGroupAddon slot="start" size="small">$</InputGroupAddon>
+  <Input id="s" grouped size="small" />
+</InputGroup>
+… medium, large, xlarge …`} block>
+  {['small', 'medium', 'large', 'xlarge'].map((size) => (
+    <InputGroup id={`ig-${size}`} label={size} size={size} class="w-72">
+      <InputGroupAddon slot="start" size={size}>$</InputGroupAddon>
+      <Input id={`ig-${size}`} grouped size={size} placeholder="0.00" />
+    </InputGroup>
+  ))}
+</Preview>
+
+## States
+
+- **Focus** — the focused child takes a higher `z-index`, so its ring is drawn over both seams.
+- **Error** — pass `error` to the group and `hasError` to the Input.
+- **Disabled** — disable the Input and the addon Button individually.
+
+## Examples
+
+A native select as the start addon:
+
+<Preview code={`<InputGroup id="phone" label="Phone">
+  <select slot="start" aria-label="Country code" class="h-9 rounded-md border border-neutral bg-neutral-faded px-2 text-sm text-neutral">
+    <option>+40</option><option>+44</option>
+  </select>
+  <Input id="phone" grouped type="tel" placeholder="700 000 000" />
+</InputGroup>`}>
+  <InputGroup id="phone" label="Phone" class="w-80">
+    <select slot="start" aria-label="Country code" class="h-9 rounded-md border border-neutral bg-neutral-faded px-2 text-sm text-neutral">
+      <option>+40</option><option>+44</option>
+    </select>
+    <Input id="phone" grouped type="tel" placeholder="700 000 000" />
+  </InputGroup>
+</Preview>
+
+## Accessibility
+
+- One label for the whole group, pointing at the Input through `id`.
+- An addon Button needs its own name (text or `aria-label`); a native select needs an `aria-label` since the group's label names the Input.
+- Static addons are plain text; a screen reader does not read them with the field. Repeat the unit in the label or hint when it matters ("Price in euros").
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border-neutral` / `--background-neutral-faded` | Addon border and fill |
+| `--foreground-neutral-faded` | Addon text |
+
+## Do / Don't
+
+- **Do** use an addon for a fixed prefix or suffix the user never types ("https://", "/mo").
+- **Do** keep every child the same `size`.
+- **Don't** put a label on the Input inside; the group has one.
+- **Don't** chain more than one field in a group; that is a form row, not a group.
+
+## Content
+
+- Addon text is a symbol or a short token: "€", "https://", "kg". Never a sentence.

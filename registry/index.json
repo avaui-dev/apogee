@@ -271,6 +271,8 @@
         "Combobox/Combobox.astro"
       ],
       "registryDependencies": [
+        "Avatar",
+        "CloseButton",
         "Field",
         "utils"
       ],
@@ -557,6 +559,22 @@
       "kind": "component",
       "files": [
         "Input/Input.astro"
+      ],
+      "registryDependencies": [
+        "Field",
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
+    },
+    "InputGroup": {
+      "name": "InputGroup",
+      "kind": "component",
+      "files": [
+        "InputGroup/InputGroup.astro",
+        "InputGroup/InputGroupAddon.astro"
       ],
       "registryDependencies": [
         "Field",
@@ -861,6 +879,7 @@
         "Select/Select.astro"
       ],
       "registryDependencies": [
+        "Avatar",
         "Field",
         "utils"
       ],

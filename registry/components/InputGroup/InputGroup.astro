@@ -1,0 +1,49 @@
+---
+/**
+ * InputGroup — welds addons to a field: static text (`InputGroupAddon`), a
+ * Button or a native select before or after an Input, sharing one edge with
+ * a 1px seam and square inner corners. The group owns the label, hint and
+ * error; give the Input inside `grouped` (and the same `id`). Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Field from '../Field/Field.astro'
+import type { FieldSize } from '../utils/field.ts'
+
+interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
+  /** Id of the field inside; the label points at it. */
+  id: string
+  /** @category content */
+  label?: string
+  /** @category content */
+  hint?: string
+  /** @category content */
+  error?: string
+  required?: boolean
+  /** @category layout */
+  size?: FieldSize
+  class?: string
+}
+
+const { id, label, hint, error, required = false, size = 'medium', class: className, ...rest } = Astro.props
+---
+
+<Field id={id} label={label} hint={hint} error={error} required={required} size={size} class={className}>
+  <div
+    class:list={[
+      // Astro renders a component's script in place, so "first" and "last" ignore script elements.
+      'apogee-input-group flex items-stretch [&>*]:min-w-0 [&>*:not(:nth-child(1_of_:not(script)))]:-ms-px [&>*:focus-within]:relative [&>*:focus-within]:z-10',
+      '[&>:nth-child(1_of_:not(script))]:rounded-e-none [&>:nth-child(1_of_:not(script))_input]:rounded-e-none [&>:nth-child(1_of_:not(script))_select]:rounded-e-none [&>:nth-child(1_of_:not(script))_button]:rounded-e-none',
+      '[&>:nth-last-child(1_of_:not(script))]:rounded-s-none [&>:nth-last-child(1_of_:not(script))_input]:rounded-s-none [&>:nth-last-child(1_of_:not(script))_select]:rounded-s-none [&>:nth-last-child(1_of_:not(script))_button]:rounded-s-none',
+      '[&>*:not(:nth-child(1_of_:not(script))):not(:nth-last-child(1_of_:not(script)))]:rounded-none [&>*:not(:nth-child(1_of_:not(script))):not(:nth-last-child(1_of_:not(script)))_input]:rounded-none [&>*:not(:nth-child(1_of_:not(script))):not(:nth-last-child(1_of_:not(script)))_select]:rounded-none [&>*:not(:nth-child(1_of_:not(script))):not(:nth-last-child(1_of_:not(script)))_button]:rounded-none',
+      '[&>*:not(:nth-child(1_of_:not(script))):not(:nth-last-child(1_of_:not(script)))]:flex-1',
+    ]}
+    data-size={size}
+    {...rest}
+  >
+    <slot name="start" />
+    <slot />
+    <slot name="end" />
+  </div>
+</Field>

@@ -30,6 +30,8 @@ interface Props extends Omit<HTMLAttributes<'label'>, 'size'> {
   required?: boolean | undefined
   /** Keeps `required` semantics but hides the asterisk. */
   hideRequiredIndicator?: boolean | undefined
+  /** Renders only the slot, no wrapper: the parent owns label, hint and error. */
+  bare?: boolean | undefined
   class?: string | undefined
 }
 
@@ -41,6 +43,7 @@ const {
   error,
   required = false,
   hideRequiredIndicator = false,
+  bare = false,
   disabled = false,
   size = 'medium',
   class: className,
@@ -48,6 +51,7 @@ const {
 } = Astro.props
 ---
 
+{bare ? <slot /> : (
 <div class:list={['flex flex-col gap-1.5', className]} data-size={size} aria-disabled={disabled ? 'true' : undefined} {...rest}>
   {
     label && (
@@ -70,3 +74,4 @@ const {
   {hint && <p id={`${id}-hint`} class:list={[hintSizes[size], 'text-neutral-faded']}>{hint}</p>}
   {error && <p id={`${id}-error`} role="alert" class:list={[hintSizes[size], 'text-critical']}>{error}</p>}
 </div>
+)}

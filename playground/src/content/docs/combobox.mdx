@@ -8,6 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Combobox from '../../../../registry/components/Combobox/Combobox.astro'
+import { Zap } from '@lucide/astro'
 
 <JsNote fallback="The listbox is a closed popover and never appears — the field still works as a plain text input, free-typed and submitted under its `name`.">
   Wires a real ARIA combobox: typing filters the list and highlights the
@@ -63,12 +64,16 @@ through to the input (e.g. `placeholder`, `disabled`, `name`).
 | `label` | `string` | — | Field label. |
 | `hint` | `string` | — | Helper text (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid` and renders via `role="alert"`. |
-| `options` | `(string \| { value, label?, description?, disabled? })[]` | — | Suggestions. A string is both value and label; an object can carry a different `value`, a `description` line and `disabled`. Required. |
+| `options` | `(string \| { value, label?, description?, disabled?, icon?, avatar?, avatarName? })[]` | — | Suggestions. A string is both value and label; an object can carry a different `value`, a `description` line, `disabled`, and media before the label (a Lucide component, or an image URL with `avatarName` for the fallback). Required. |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Height: 28 / 36 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `required` | `boolean` | `false` | Marks the input required (native + `Field`'s `*` indicator). |
 | `caret` | `boolean` | `true` | Shows the chevron caret. Set `false` to hide it. |
+| `multiple` | `boolean` | `false` | Picks become removable chips inside the field; each posts `name=value` through a hidden input, chosen options leave the list, Backspace on an empty input removes the last chip. |
+| `name` | `string` | — | Form field name (required with `multiple`). |
+| `value` | `string \| string[]` | — | Initial text (single), or initial chips as option values (`multiple`). |
+| `maxItems` | `number` | — | Stops accepting picks at this count. |
 | `class` | `string` | — | Extra classes, passed to the `Field` wrapper. |
 
 ## Rich options
@@ -90,6 +95,44 @@ description line, and a `disabled` state the arrow keys skip.
       { value: 'u4', label: 'Margaret Hamilton', description: 'Flight software' },
     ]} />
   </div>
+</Preview>
+
+## Icons and avatars
+
+<Preview code={`<Combobox label="Mention" name="mention" options={[
+  { value: 'u1', label: 'Ana Lima', avatar: 'https://i.pravatar.cc/48?img=5', avatarName: 'Ana Lima' },
+  { value: 'team', label: 'Whole team', icon: Zap },
+]} />`}>
+  <div data-apogee-combobox="media" class="w-72">
+    <Combobox label="Mention" name="mention" options={[
+      { value: 'u1', label: 'Ana Lima', avatar: 'https://i.pravatar.cc/48?img=5', avatarName: 'Ana Lima' },
+      { value: 'team', label: 'Whole team', icon: Zap },
+    ]} />
+  </div>
+</Preview>
+
+## Multiple
+
+<Preview code={`<form>
+  <Combobox label="Reviewers" name="reviewers" multiple placeholder="Add a reviewer" options={[
+    { value: 'ana', label: 'Ana Lima' }, { value: 'ben', label: 'Ben Ortiz' }, { value: 'cy', label: 'Cy Park' },
+  ]} />
+</form>`}>
+  <div data-apogee-combobox="multi" class="w-80">
+    <form>
+      <Combobox label="Reviewers" name="reviewers" multiple placeholder="Add a reviewer" options={[
+        { value: 'ana', label: 'Ana Lima' }, { value: 'ben', label: 'Ben Ortiz' }, { value: 'cy', label: 'Cy Park' },
+      ]} />
+    </form>
+  </div>
+</Preview>
+
+Without JS the typing field posts free text under `name`.
+
+<Preview code={`<Combobox label="Country" name="country" value="France" options={['Canada', 'France', 'Japan']} />
+<form><Combobox label="Owners" name="owners" multiple required value={['ana']} options={[{ value: 'ana', label: 'Ana Lima' }, { value: 'ben', label: 'Ben Ortiz' }]} /></form>`} block>
+  <div data-apogee-combobox="prefill" class="w-72"><Combobox label="Country" name="country-prefill" value="France" options={['Canada', 'France', 'Japan']} /></div>
+  <div data-apogee-combobox="multi-required" class="w-80"><form><Combobox label="Owners" name="owners" multiple required value={['ana']} options={[{ value: 'ana', label: 'Ana Lima' }, { value: 'ben', label: 'Ben Ortiz' }]} /></form></div>
 </Preview>
 
 ## Long list and clipping
