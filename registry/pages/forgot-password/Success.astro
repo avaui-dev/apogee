@@ -1,0 +1,22 @@
+---
+/**
+ * Success: Step 4. The password is reset; one button carries on to log in.
+ *
+ * @page forgot-password
+ */
+import { CircleCheck, ArrowLeft } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<AuthShell heading="Password reset" description="Your password is reset. Log in with your new password." pattern="grid">
+  <FeaturedIcon slot="brand" theme="outline" color="positive" size="large"><CircleCheck /></FeaturedIcon>
+
+  <Button href="#" size="large" fullWidth>Continue</Button>
+
+  <Button slot="footer" href="#" variant="ghost" color="neutral">
+    <ArrowLeft slot="start" class="rtl:-scale-x-100" aria-hidden="true" />
+    Back to log in
+  </Button>
+</AuthShell>

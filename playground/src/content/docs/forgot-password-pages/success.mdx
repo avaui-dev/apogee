@@ -1,0 +1,24 @@
+---
+title: "Success"
+description: "Step 4. The password is reset; one button carries on to log in."
+group: Forgot password pages
+order: 4
+related: [sections/auth-shell, featured-icon]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="forgot-password/success" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add forgot-password/success
+```
+
+This copies the page to `src/components/apogee/pages/forgot-password/` with everything it uses: AuthShell, Button, FeaturedIcon. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the "Back to log in" arrow flips under right-to-left text.
+- The check icon is decoration; the heading says the same thing in words.

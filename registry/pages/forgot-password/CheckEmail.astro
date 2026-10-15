@@ -1,0 +1,26 @@
+---
+/**
+ * Check email: Step 2. The reset link is on its way, with a shortcut to the mail app and a resend link.
+ *
+ * @page forgot-password
+ */
+import { Mail, ArrowLeft } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+---
+
+<AuthShell heading="Check your email" description="We sent a password reset link to mara@example.com." pattern="grid">
+  <FeaturedIcon slot="brand" theme="outline" color="neutral" size="large"><Mail /></FeaturedIcon>
+
+  <Button href="mailto:" size="large" fullWidth>Open email app</Button>
+
+  <div slot="footer" class="flex flex-col items-center gap-8">
+    <p class="text-neutral-faded">Didn't receive the email? <Link href="#" underline="hover" class="font-semibold">Click to resend</Link></p>
+    <Button href="#" variant="ghost" color="neutral">
+      <ArrowLeft slot="start" class="rtl:-scale-x-100" aria-hidden="true" />
+      Back to log in
+    </Button>
+  </div>
+</AuthShell>

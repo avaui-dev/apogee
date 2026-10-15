@@ -1614,6 +1614,108 @@
       "dependencies": [],
       "usesJs": false
     },
+    "forgot-password/check-email": {
+      "name": "forgot-password/check-email",
+      "kind": "page",
+      "category": "forgot-password",
+      "title": "Check email",
+      "description": "Step 2. The reset link is on its way, with a shortcut to the mail app and a resend link.",
+      "files": [
+        "pages/forgot-password/CheckEmail.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "forgot-password/forgot-password": {
+      "name": "forgot-password/forgot-password",
+      "kind": "page",
+      "category": "forgot-password",
+      "title": "Forgot password",
+      "description": "Step 1. The user enters their email to get a reset link.",
+      "files": [
+        "pages/forgot-password/ForgotPassword.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "forgot-password/set-new-password": {
+      "name": "forgot-password/set-new-password",
+      "kind": "page",
+      "category": "forgot-password",
+      "title": "Set new password",
+      "description": "Step 3. A new password and its confirmation, with the rules ticked off as the user types.",
+      "files": [
+        "pages/forgot-password/SetNewPassword.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "PasswordChecklist"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "forgot-password/sidebar": {
+      "name": "forgot-password/sidebar",
+      "kind": "page",
+      "category": "forgot-password",
+      "title": "Sidebar",
+      "description": "Step 1 beside a side column that lists every step of the reset.",
+      "files": [
+        "pages/forgot-password/Sidebar.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "ProgressIndicator",
+        "Steps"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "forgot-password/success": {
+      "name": "forgot-password/success",
+      "kind": "page",
+      "category": "forgot-password",
+      "title": "Success",
+      "description": "Step 4. The password is reset; one button carries on to log in.",
+      "files": [
+        "pages/forgot-password/Success.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "log-in/card-combined": {
       "name": "log-in/card-combined",
       "kind": "page",
@@ -1675,7 +1777,7 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Tabs"
+        "NavLink"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -1719,7 +1821,7 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Tabs"
+        "NavLink"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -2008,7 +2110,7 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Tabs"
+        "NavLink"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -2142,8 +2244,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "PasswordChecklist",
-        "Tabs"
+        "NavLink",
+        "PasswordChecklist"
       ],
       "dependencies": [
         "@lucide/astro"

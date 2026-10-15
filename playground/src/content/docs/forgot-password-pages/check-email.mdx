@@ -1,0 +1,25 @@
+---
+title: "Check email"
+description: "Step 2. The reset link is on its way, with a shortcut to the mail app and a resend link."
+group: Forgot password pages
+order: 2
+related: [sections/auth-shell, featured-icon]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="forgot-password/check-email" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add forgot-password/check-email
+```
+
+This copies the page to `src/components/apogee/pages/forgot-password/` with everything it uses: AuthShell, Button, FeaturedIcon, Link. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the "Back to log in" arrow flips under right-to-left text.
+- "Open email app" is a `mailto:` link; on a phone it opens the default mail app.
+- "Click to resend" is a link: point it at your resend endpoint.

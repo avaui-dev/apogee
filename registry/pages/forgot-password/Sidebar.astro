@@ -1,0 +1,53 @@
+---
+/**
+ * Sidebar: Step 1 beside a side column that lists every step of the reset.
+ *
+ * @page forgot-password
+ */
+import { Orbit, KeyRound, Mail, Lock, CircleCheck, ArrowLeft } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+import Steps from '../../components/Steps/Steps.astro'
+import ProgressIndicator from '../../components/ProgressIndicator/ProgressIndicator.astro'
+
+const steps = [
+  { title: 'Your email', description: 'Tell us where to send the link', icon: KeyRound },
+  { title: 'Check your email', description: 'Follow the link we send', icon: Mail },
+  { title: 'Set new password', description: 'Choose a secure password', icon: Lock },
+  { title: 'Done', description: 'Log in with your new password', icon: CircleCheck },
+]
+---
+
+<AuthShell layout="sidebar" heading="Forgot password?" description="No worries, we'll send you reset instructions." pattern="grid">
+  <FeaturedIcon slot="brand" theme="outline" color="neutral" size="large"><KeyRound /></FeaturedIcon>
+
+  <form method="post" class="flex flex-col gap-6">
+    <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+    <Button type="submit" size="large" fullWidth>Reset password</Button>
+  </form>
+
+  <Button slot="footer" href="#" variant="ghost" color="neutral">
+    <ArrowLeft slot="start" class="rtl:-scale-x-100" aria-hidden="true" />
+    Back to log in
+  </Button>
+
+  <div slot="below" class="flex justify-center">
+    <ProgressIndicator total={4} current={1} variant="dots" aria-label="Reset progress" />
+  </div>
+
+  <div slot="panel" class="flex h-full flex-col justify-between gap-16 p-8">
+    <div class="flex flex-col gap-16">
+      <a href="#" class="flex items-center gap-2 font-semibold">
+        <FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>
+        Example
+      </a>
+      <Steps items={steps} current={1} marker="icon" orientation="vertical" aria-label="Reset progress" />
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-4 text-sm text-neutral-faded">
+      <p>© Example 2026</p>
+      <p class="flex items-center gap-2"><Mail class="size-4" aria-hidden="true" /> help@example.com</p>
+    </div>
+  </div>
+</AuthShell>
