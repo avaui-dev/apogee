@@ -1,0 +1,71 @@
+---
+/**
+ * DeviceFrame — a screenshot in a device: a `phone` (rounded body, side
+ * buttons, a camera pill) or a `browser` window (a toolbar with three dots and
+ * an address bar). Give `src`, and `srcDark` for a dark-mode screenshot that
+ * swaps with the theme; or put any content in the default slot instead. Drawn
+ * in CSS with the neutral tokens, so it themes. Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Image from '../Image/Image.astro'
+
+/** @composable */
+interface Props extends HTMLAttributes<'figure'> {
+  /** @category layout */ device?: 'phone' | 'browser'
+  /** The screenshot. */ src?: ImageMetadata | string | undefined
+  /** A dark-mode screenshot, shown when the page is dark. */ srcDark?: ImageMetadata | string | undefined
+  /** What the screenshot shows; empty when it only decorates. @category content */ alt?: string
+  /** Text in the browser's address bar. @category content */ address?: string
+  /** Screenshot size, for the browser to reserve space. */ width?: number
+  /** */ height?: number
+  class?: string
+}
+
+const { device = 'phone', src, srcDark, alt = '', address = 'app.example.com', width, height, class: className, ...rest } = Astro.props
+const phone = device === 'phone'
+const w = width ?? (phone ? 780 : 1440)
+const h = height ?? (phone ? 1688 : 900)
+const shot = 'block size-full object-cover object-top'
+---
+
+<figure
+  class:list={[
+    'apogee-device relative m-0',
+    phone ? 'aspect-[9/19.5] w-full max-w-80 rounded-[3rem] bg-inverted p-2.5 shadow-raised ring-1 ring-neutral' : 'w-full overflow-hidden rounded-xl bg-elevation-raised shadow-raised ring-1 ring-neutral',
+    className,
+  ]}
+  {...rest}
+>
+  {
+    phone ? (
+      <>
+        <span class="absolute -start-1 top-24 h-8 w-1 rounded-s bg-inverted" aria-hidden="true" />
+        <span class="absolute -start-1 top-36 h-14 w-1 rounded-s bg-inverted" aria-hidden="true" />
+        <span class="absolute -end-1 top-32 h-20 w-1 rounded-e bg-inverted" aria-hidden="true" />
+        <div class="relative size-full overflow-hidden rounded-[2.4rem] bg-page">
+          <span class="absolute start-1/2 top-2.5 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-inverted rtl:translate-x-1/2" aria-hidden="true" />
+          <slot>
+            {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
+            {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
+          </slot>
+        </div>
+      </>
+    ) : (
+      <>
+        <div class="flex items-center gap-3 border-b border-neutral bg-neutral-faded px-4 py-2.5" aria-hidden="true">
+          <span class="flex gap-1.5"><span class="size-2.5 rounded-full bg-(--border-neutral)" /><span class="size-2.5 rounded-full bg-(--border-neutral)" /><span class="size-2.5 rounded-full bg-(--border-neutral)" /></span>
+          <span class="mx-auto w-full max-w-sm truncate rounded-md bg-page px-3 py-1 text-center text-xs text-neutral-faded">{address}</span>
+          <span class="w-12" />
+        </div>
+        <div class="relative aspect-[16/10] bg-page">
+          <slot>
+            {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
+            {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
+          </slot>
+        </div>
+      </>
+    )
+  }
+</figure>

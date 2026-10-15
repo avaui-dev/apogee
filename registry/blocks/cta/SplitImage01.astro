@@ -1,0 +1,32 @@
+---
+/**
+ * Split image 01: A heading, three checks and two buttons beside a photo.
+ *
+ * @block cta
+ * @order 5
+ */
+import { Check } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Image from '../../components/Image/Image.astro'
+
+---
+
+<Section spacing="none" container={false}>
+  <div class="grid lg:grid-cols-2">
+    <div class="flex flex-col justify-center gap-8 px-gutter py-section lg:px-16">
+      <SectionHeader heading="Join 4,000+ startups growing with us" description="Start your 30-day free trial today." />
+      <ul class="flex list-none flex-col gap-4 p-0">
+      {['30-day free trial', 'Personalised onboarding', 'Access to all features'].map((c) => (
+        <li class="flex items-center gap-3"><span class="grid size-7 shrink-0 place-items-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span>{c}</li>
+      ))}
+    </ul>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral">Learn more</Button>
+      <Button href="#" size="large">Get started</Button>
+    </div>
+    </div>
+    <Image src="https://picsum.photos/seed/apogee-cta-1/1200/1000" alt="" width={1200} height={1000} fit="cover" class="min-h-80 size-full max-lg:aspect-[6/5]" />
+  </div>
+</Section>

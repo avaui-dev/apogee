@@ -404,6 +404,18 @@
       ],
       "usesJs": true
     },
+    "DeviceFrame": {
+      "name": "DeviceFrame",
+      "kind": "component",
+      "files": [
+        "DeviceFrame/DeviceFrame.astro"
+      ],
+      "registryDependencies": [
+        "Image"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "Dialog": {
       "name": "Dialog",
       "kind": "component",
@@ -5109,6 +5121,566 @@
         "Prose",
         "Section",
         "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/abstract-images": {
+      "name": "cta/abstract-images",
+      "kind": "block",
+      "category": "cta",
+      "title": "Abstract images",
+      "description": "A heading and two buttons beside a collage of five images.",
+      "files": [
+        "blocks/cta/AbstractImages.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/abstract-images-brand": {
+      "name": "cta/abstract-images-brand",
+      "kind": "block",
+      "category": "cta",
+      "title": "Abstract images brand",
+      "description": "Abstract images on the brand colour.",
+      "files": [
+        "blocks/cta/AbstractImagesBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/card-horizontal": {
+      "name": "cta/card-horizontal",
+      "kind": "block",
+      "category": "cta",
+      "title": "Card horizontal",
+      "description": "A tinted card with a heading and line beside two buttons.",
+      "files": [
+        "blocks/cta/CardHorizontal.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/card-horizontal-brand": {
+      "name": "cta/card-horizontal-brand",
+      "kind": "block",
+      "category": "cta",
+      "title": "Card horizontal brand",
+      "description": "A brand-colour card, centred, with a heading, line and two buttons.",
+      "files": [
+        "blocks/cta/CardHorizontalBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/card-vertical": {
+      "name": "cta/card-vertical",
+      "kind": "block",
+      "category": "cta",
+      "title": "Card vertical",
+      "description": "A centred tinted card with a heading, line and two buttons.",
+      "files": [
+        "blocks/cta/CardVertical.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/card-vertical-brand": {
+      "name": "cta/card-vertical-brand",
+      "kind": "block",
+      "category": "cta",
+      "title": "Card vertical brand",
+      "description": "A brand-colour card with the heading and line beside two buttons from lg.",
+      "files": [
+        "blocks/cta/CardVerticalBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/iphone-mockup-01": {
+      "name": "cta/iphone-mockup-01",
+      "kind": "block",
+      "category": "cta",
+      "title": "Phone mockup 01",
+      "description": "A heading, line and app download buttons beside a phone showing the app.",
+      "files": [
+        "blocks/cta/IphoneMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/iphone-mockup-02": {
+      "name": "cta/iphone-mockup-02",
+      "kind": "block",
+      "category": "cta",
+      "title": "Phone mockup 02",
+      "description": "A heading and download buttons beside a phone rising out of a tinted band.",
+      "files": [
+        "blocks/cta/IphoneMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/iphone-mockup-03": {
+      "name": "cta/iphone-mockup-03",
+      "kind": "block",
+      "category": "cta",
+      "title": "Phone mockup 03",
+      "description": "A heading and download buttons beside two phones side by side.",
+      "files": [
+        "blocks/cta/IphoneMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/iphone-mockup-04": {
+      "name": "cta/iphone-mockup-04",
+      "kind": "block",
+      "category": "cta",
+      "title": "Phone mockup 04",
+      "description": "A brand-colour card: a heading and download buttons beside a phone.",
+      "files": [
+        "blocks/cta/IphoneMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/screen-mockup-01": {
+      "name": "cta/screen-mockup-01",
+      "kind": "block",
+      "category": "cta",
+      "title": "Screen mockup 01",
+      "description": "A heading, three checks and two buttons beside the app in a browser window.",
+      "files": [
+        "blocks/cta/ScreenMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/screen-mockup-02": {
+      "name": "cta/screen-mockup-02",
+      "kind": "block",
+      "category": "cta",
+      "title": "Screen mockup 02",
+      "description": "A heading and two buttons beside the app in a browser window (from lg).",
+      "files": [
+        "blocks/cta/ScreenMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/screen-mockup-03": {
+      "name": "cta/screen-mockup-03",
+      "kind": "block",
+      "category": "cta",
+      "title": "Screen mockup 03",
+      "description": "A centred heading and two buttons over the app in a browser window.",
+      "files": [
+        "blocks/cta/ScreenMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/screen-mockup-04": {
+      "name": "cta/screen-mockup-04",
+      "kind": "block",
+      "category": "cta",
+      "title": "Screen mockup 04",
+      "description": "A tinted card: a heading and two buttons beside the app in a browser window.",
+      "files": [
+        "blocks/cta/ScreenMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/simple-centered": {
+      "name": "cta/simple-centered",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple centred",
+      "description": "A centred heading, line and two buttons.",
+      "files": [
+        "blocks/cta/SimpleCentered.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/simple-centered-brand": {
+      "name": "cta/simple-centered-brand",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple centred brand",
+      "description": "Simple centred on the brand colour.",
+      "files": [
+        "blocks/cta/SimpleCenteredBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/simple-left": {
+      "name": "cta/simple-left",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple left",
+      "description": "A heading and line with two buttons beside them from lg.",
+      "files": [
+        "blocks/cta/SimpleLeft.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/simple-left-brand": {
+      "name": "cta/simple-left-brand",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple left brand",
+      "description": "Simple left on the brand colour.",
+      "files": [
+        "blocks/cta/SimpleLeftBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/simple-logos-01": {
+      "name": "cta/simple-logos-01",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple logos 01",
+      "description": "A centred heading, line and two buttons over a row of customer logos.",
+      "files": [
+        "blocks/cta/SimpleLogos01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/simple-logos-01-brand": {
+      "name": "cta/simple-logos-01-brand",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple logos 01 brand",
+      "description": "Simple logos 01 on the brand colour.",
+      "files": [
+        "blocks/cta/SimpleLogos01Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/simple-logos-02": {
+      "name": "cta/simple-logos-02",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple logos 02",
+      "description": "A heading and two buttons beside a grid of customer logos.",
+      "files": [
+        "blocks/cta/SimpleLogos02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/simple-logos-02-brand": {
+      "name": "cta/simple-logos-02-brand",
+      "kind": "block",
+      "category": "cta",
+      "title": "Simple logos 02 brand",
+      "description": "Simple logos 02 on the brand colour.",
+      "files": [
+        "blocks/cta/SimpleLogos02Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/split-image-01": {
+      "name": "cta/split-image-01",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image 01",
+      "description": "A heading, three checks and two buttons beside a photo.",
+      "files": [
+        "blocks/cta/SplitImage01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/split-image-02": {
+      "name": "cta/split-image-02",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image 02",
+      "description": "A heading, line and two buttons beside a portrait photo.",
+      "files": [
+        "blocks/cta/SplitImage02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/split-image-03": {
+      "name": "cta/split-image-03",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image 03",
+      "description": "A centred heading block on a tinted band over a wide photo.",
+      "files": [
+        "blocks/cta/SplitImage03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/split-image-04": {
+      "name": "cta/split-image-04",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image 04",
+      "description": "A brand-colour card: a heading and two buttons beside a photo.",
+      "files": [
+        "blocks/cta/SplitImage04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/split-image-quote-01": {
+      "name": "cta/split-image-quote-01",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image quote 01",
+      "description": "A heading, three checks and two buttons beside a sliding testimonial.",
+      "files": [
+        "blocks/cta/SplitImageQuote01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "Image",
+        "Rating",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/split-image-quote-02": {
+      "name": "cta/split-image-quote-02",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image quote 02",
+      "description": "A heading and two buttons beside a sliding testimonial.",
+      "files": [
+        "blocks/cta/SplitImageQuote02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "Image",
+        "Rating",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "cta/split-image-quote-03": {
+      "name": "cta/split-image-quote-03",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image quote 03",
+      "description": "A sliding testimonial (first from lg) beside a heading, three checks and two buttons.",
+      "files": [
+        "blocks/cta/SplitImageQuote03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "Image",
+        "Rating",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "cta/split-image-quote-04": {
+      "name": "cta/split-image-quote-04",
+      "kind": "block",
+      "category": "cta",
+      "title": "Split image quote 04",
+      "description": "A heading and two buttons beside a sliding testimonial with company and role.",
+      "files": [
+        "blocks/cta/SplitImageQuote04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "Image",
+        "Rating",
+        "Section",
+        "SectionHeader"
       ],
       "dependencies": [],
       "usesJs": false

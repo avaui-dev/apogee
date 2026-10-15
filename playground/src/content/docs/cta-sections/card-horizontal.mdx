@@ -1,0 +1,23 @@
+---
+title: "Card horizontal"
+description: "A tinted card with a heading and line beside two buttons.."
+group: CTA sections
+order: 22
+related: [device-frame, button, carousel]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="cta/card-horizontal" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add cta/card-horizontal
+```
+
+This copies the block to `src/components/apogee/blocks/cta/` with everything it uses: Button, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.

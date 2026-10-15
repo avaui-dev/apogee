@@ -1,0 +1,80 @@
+---
+title: DeviceFrame
+description: A screenshot in a phone or a browser window, drawn in CSS with the theme's colours; a dark screenshot swaps in with the theme.
+group: Components
+order: 0
+related: [image, aspect-ratio, card]
+---
+
+import Preview from '../../components/Preview.astro'
+import DeviceFrame from '../../../../registry/components/DeviceFrame/DeviceFrame.astro'
+
+<Preview code={`<DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard on a phone" />`}>
+  <div class="w-64" data-apogee-device-frame="phone"><DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard on a phone" /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add device-frame
+```
+
+Pulls in Image. Zero JS.
+
+## Usage
+
+```astro
+---
+import DeviceFrame from '@/components/apogee/DeviceFrame/DeviceFrame.astro'
+import shot from '../assets/app.png'
+---
+<DeviceFrame device="browser" src={shot} alt="The reports page" address="app.example.com/reports" />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `device` | `'phone' \| 'browser'` | `'phone'` | A phone body, or a browser window with a toolbar and address bar. |
+| `src` | `ImageMetadata \| string` | — | The screenshot. Or put any content in the default slot. |
+| `srcDark` | `ImageMetadata \| string` | — | A dark-mode screenshot, shown when the page is dark. |
+| `alt` | `string` | `''` | What the screenshot shows; empty when it only decorates. |
+| `address` | `string` | `'app.example.com'` | The browser's address bar text. |
+| `width` / `height` | `number` | phone 780 × 1688, browser 1440 × 900 | Screenshot size, so the space is reserved before it loads. |
+| `class` | `string` | — | Size it here (`max-w-64`, `w-full`). |
+
+## Variants
+
+<Preview block code={`<DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard in a browser" />`}>
+  <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard in a browser" />
+</Preview>
+
+## States
+
+- **Dark mode** — `srcDark` replaces `src` when the page is dark; the frame itself follows the theme tokens.
+
+## Examples
+
+Phone and browser CTAs: [CTA sections](/docs/cta-sections).
+
+## Accessibility
+
+- The frame's buttons, notch and toolbar are decoration and hidden from screen readers; only the screenshot's `alt` is read.
+- Write the `alt` for what the screenshot shows, or leave it empty when the text beside it already says it.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-inverted` | Phone body, side buttons and camera |
+| `--background-elevation-raised` / `--background-neutral-faded` | Browser window / toolbar |
+| `--border-neutral` / `--shadow-raised` | Edge and lift |
+
+## Do / Don't
+
+- **Do** use a real screenshot of your product, light and dark.
+- **Don't** put text the reader needs only inside the screenshot.
+
+## Content
+
+- Crop to the part of the screen the heading talks about.

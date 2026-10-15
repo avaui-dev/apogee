@@ -2709,3 +2709,17 @@ test('prose leaves .not-prose blocks alone', async ({ page }) => {
   const h2 = page.locator('.not-prose h2')
   expect(await h2.evaluate((el) => getComputedStyle(el).marginTop)).toBe('0px')
 })
+
+// ---- CTA sections ----
+
+test('device frame swaps to the dark screenshot in dark mode', async ({ page }) => {
+  await page.goto('/docs/device-frame')
+  const frame = page.locator('[data-apogee-device-frame="phone"] figure')
+  const visibleSrc = () => frame.locator('img:visible').getAttribute('src')
+  await page.evaluate(() => (document.documentElement.dataset.theme = 'light'))
+  expect(await visibleSrc()).toMatch(/app-phone-light/)
+  await page.evaluate(() => (document.documentElement.dataset.theme = 'dark'))
+  expect(await visibleSrc()).toMatch(/app-phone-dark/)
+  await expect(frame.locator('img')).toHaveCount(2)
+  await expect(frame.locator('img:visible')).toHaveCount(1)
+})

@@ -1,0 +1,25 @@
+---
+title: "Split image quote 02"
+description: "A heading and two buttons beside a sliding testimonial.."
+group: CTA sections
+order: 10
+related: [device-frame, button, carousel]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="cta/split-image-quote-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add cta/split-image-quote-02
+```
+
+This copies the block to `src/components/apogee/blocks/cta/` with everything it uses: Button, Carousel, Image, Rating, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- The carousel is a named region; its arrows are buttons and it scrolls by swipe or keyboard too.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

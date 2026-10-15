@@ -43,6 +43,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **CTA sections**: 30 calls to action; simple, with customer logos, photos, sliding testimonials, phone and browser mockups, image collages and cards, and brand-colour versions.
+- **DeviceFrame**: a screenshot in a phone or a browser window, drawn in CSS with the theme's colours; a dark screenshot swaps in with the theme. The docs ship light and dark screenshots of the showcase dashboard in `/mockups/`.
 - **Content sections**: 22 content blocks; 12 article pages (centred, split, brand and photo headers, contents and contributors sidebars, newsletter cards, a photo carousel, a policy page with legal and plain tabs) and 10 content sections (text columns, text beside images, a case study, a quote, policy text).
 - **ShareLinks**: Copy link (announced), the device's share sheet where there is one, and email; the email link works without JS.
 - **TableOfContents**: a page's sections as in-page links in a named nav, one level of nesting, the current one marked.
