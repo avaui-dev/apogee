@@ -224,6 +224,19 @@ Self-sized slides (no `itemWidth` — each slide sets its own width):
   </Carousel>
 </Preview>
 
+On a brand fill (`bg-primary`), the current dot switches to the on-primary
+colour so it still stands out:
+
+<Preview code={`<div class="bg-primary text-on-primary">
+  <Carousel visibleItems={1} dots controlsPosition="below" label="What's new">…</Carousel>
+</div>`} block>
+  <div class="rounded-lg bg-primary p-6 text-on-primary" data-apogee-carousel-brand>
+    <Carousel visibleItems={1} dots controlsPosition="below" label="What's new">
+      {['Reports that build themselves.', 'See who stays.', 'Invite your whole team.'].map((t) => <p class="text-lg font-semibold">{t}</p>)}
+    </Carousel>
+  </div>
+</Preview>
+
 ## Accessibility
 
 | Key | Action |

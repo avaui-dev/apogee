@@ -2312,3 +2312,42 @@ test('verification enter-code page: one h1, a named four-box code group, a way b
   expect(await page.locator('form input[type=hidden][name=code]').inputValue()).toBe('4821')
   await expect(page.getByRole('link', { name: 'Back to log in' })).toBeVisible()
 })
+
+test('forgot password: new password waits for the rules and the match; sidebar marks step 1', async ({ page }) => {
+  await page.goto('/examples/forgot-password/set-new-password')
+  const valid = () => page.evaluate(() => document.querySelector('form').checkValidity())
+  await page.getByRole('textbox', { name: 'Password', exact: true }).fill('newpass!1')
+  await page.getByRole('textbox', { name: 'Confirm password' }).fill('newpass!2')
+  expect(await valid()).toBe(false)
+  await page.getByRole('textbox', { name: 'Confirm password' }).fill('newpass!1')
+  expect(await valid()).toBe(true)
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/examples/forgot-password/sidebar')
+  await expect(page.locator('[aria-current="step"]')).toContainText('Your email')
+})
+
+test('carousel current dot stays visible on a primary fill', async ({ page }) => {
+  await page.goto('/docs/carousel')
+  const box = page.locator('[data-apogee-carousel-brand]')
+  const fill = await box.evaluate((e) => getComputedStyle(e).backgroundColor)
+  const dot = await box.locator('.apogee-carousel-dot[aria-current="true"] > span').evaluate((e) => getComputedStyle(e).backgroundColor)
+  expect(dot).not.toBe(fill)
+})
+
+test('sign up / log in switch is navigation, not tabs', async ({ page }) => {
+  for (const [path, current] of [['/examples/log-in/simple', 'Log in'], ['/examples/log-in/header-navigation', 'Log in'], ['/examples/sign-up/simple', 'Sign up'], ['/examples/sign-up/header-navigation', 'Sign up']]) {
+    await page.goto(path)
+    await expect(page.getByRole('tab')).toHaveCount(0)
+    const nav = page.getByRole('navigation', { name: 'Account' })
+    await expect(nav.locator('a[aria-current="page"]')).toHaveText(current)
+  }
+})
+
+test('auth shell pattern stays centred on the brand mark in both directions', async ({ page }) => {
+  await page.goto('/examples/log-in/simple')
+  for (const dir of ['ltr', 'rtl']) {
+    await page.evaluate((d) => (document.documentElement.dir = d), dir)
+    const centre = async (sel) => { const b = await page.locator(sel).first().boundingBox(); return b.x + b.width / 2 }
+    expect(Math.abs((await centre('.apogee-auth-pattern')) - (await centre('.apogee-auth-pattern + div')))).toBeLessThan(2)
+  }
+})

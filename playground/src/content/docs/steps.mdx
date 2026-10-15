@@ -75,7 +75,7 @@ A step's visual state is derived from its position relative to `current`:
 
 - **Done** (`n < current`) — filled accent indicator with a check icon.
 - **Current** (`n === current`) — accent-outlined indicator with the step
-  number, `aria-current="step"`.
+  number; the list item carries `aria-current="step"`.
 - **Upcoming** (`n > current`) — muted indicator with the step number, muted
   title.
 
@@ -145,7 +145,7 @@ Mark the whole flow complete by setting `current` past the last step:
 
 - The `<ol>` conveys the sequence to assistive tech on its own — it's a real
   ordered list.
-- The active step's indicator gets `aria-current="step"`.
+- The active step's list item gets `aria-current="step"`, so its title is what screen readers announce as the current step.
 - The connector line and the check icon inside a done indicator are
   `aria-hidden` — decorative.
 - Native semantics, no extra ARIA needed beyond `aria-current`.

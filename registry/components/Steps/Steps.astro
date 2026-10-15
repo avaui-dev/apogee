@@ -45,6 +45,7 @@ const states: State[] = items.map((step, i) => step.status ?? (i + 1 < current ?
       const Icon = step.icon
       return (
         <li
+          aria-current={state === 'current' ? 'step' : undefined}
           class:list={[
             'relative flex gap-(--steps-gap) [flex-direction:var(--steps-li)] [align-items:var(--steps-align)] [text-align:var(--steps-text)] [flex:var(--steps-flex)] last:pb-0',
             s.pb,
@@ -68,7 +69,6 @@ const states: State[] = items.map((step, i) => step.status ?? (i + 1 < current ?
               state === 'current' && 'border-primary bg-page text-primary',
               state === 'upcoming' && 'border-neutral bg-page text-neutral-faded',
             ]}
-            aria-current={state === 'current' ? 'step' : undefined}
           >
             {marker === 'icon' && Icon ? (
               <Icon aria-hidden="true" />

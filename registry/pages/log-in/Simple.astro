@@ -7,7 +7,7 @@
 import { Orbit, KeyRound } from '@lucide/astro'
 import AuthShell from '../../sections/AuthShell/AuthShell.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
-import Tabs from '../../components/Tabs/Tabs.astro'
+import NavLink from '../../components/NavLink/NavLink.astro'
 import Input from '../../components/Input/Input.astro'
 import Checkbox from '../../components/Checkbox/Checkbox.astro'
 import Button from '../../components/Button/Button.astro'
@@ -16,15 +16,10 @@ import Link from '../../components/Link/Link.astro'
 
 <AuthShell heading="Log in to your account" description="Welcome back! Please enter your details." pattern="grid">
   <FeaturedIcon slot="brand" theme="solid" color="primary" size="large"><Orbit /></FeaturedIcon>
-  <Tabs
-    slot="intro"
-    variant="pills-raised"
-    size="small"
-    fullWidth
-    class="w-full"
-    tabs={[{ label: 'Sign up', href: '#' }, { label: 'Log in', value: 'log-in' }]}
-    value="log-in"
-  />
+  <nav slot="intro" aria-label="Account" class="grid w-full grid-cols-2 gap-0.5 rounded-md bg-neutral-faded p-0.5 text-sm">
+    <NavLink href="#" class="justify-center aria-[current=page]:bg-page aria-[current=page]:shadow-outline dark:aria-[current=page]:bg-neutral">Sign up</NavLink>
+    <NavLink href="#" active class="justify-center aria-[current=page]:bg-page aria-[current=page]:shadow-outline dark:aria-[current=page]:bg-neutral">Log in</NavLink>
+  </nav>
 
   <form method="post" class="flex flex-col gap-6">
     <div class="flex flex-col gap-5">

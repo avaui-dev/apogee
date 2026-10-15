@@ -48,13 +48,13 @@ const inWindow = (i: number) => variant === 'segments' || total <= WINDOW || (i 
         <span
           class:list={[
             'size-1.5 rounded-full transition-colors',
-            i === done - 1 ? fills[color] : 'bg-neutral-faded',
+            i === done - 1 ? fills[color] : 'bg-neutral',
             total > WINDOW && (i === start || i === start + WINDOW - 1) && 'scale-75',
           ]}
         />
       )
     ) : (
-      <span class:list={['h-1.5 flex-1 rounded-full transition-colors', i < done ? fills[color] : 'bg-neutral-faded']} />
+      <span class:list={['h-1.5 flex-1 rounded-full transition-colors', i < done ? fills[color] : 'bg-neutral']} />
     ),
   )}
 </div>

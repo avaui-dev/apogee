@@ -182,6 +182,13 @@ const arrow = [
   }
 </div>
 
+<style>
+  /* On a primary fill the primary dot would vanish; it takes the on-colour there. */
+  :global(.bg-primary) .apogee-carousel-dot[aria-current='true'] > span {
+    background-color: var(--on-primary);
+  }
+</style>
+
 <script>
   import { island } from '../utils/island.ts'
 
