@@ -45,7 +45,7 @@ const ext = external ? { target: '_blank', rel: 'noopener noreferrer' } : {}
   href={disabled ? undefined : href}
   aria-disabled={disabled ? 'true' : undefined}
   class:list={[
-    'rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
+    'press rounded-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
     (hasStart || hasEnd) && 'inline-flex items-center gap-[0.35em] [&_svg]:size-[1em] [&_svg]:shrink-0',
     disabled ? 'pointer-events-none text-disabled' : colors[color],
     underlineMap[underline],

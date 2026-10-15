@@ -17,6 +17,7 @@ import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant
 import { panelStyle, panelClass, panelSurface, menuClass, itemBase, itemSizes, itemColors } from '../utils/panel.ts'
 import { ChevronDown, Check } from '@lucide/astro'
 import Avatar from '../Avatar/Avatar.astro'
+import Checkbox from '../Checkbox/Checkbox.astro'
 
 export interface SelectOption {
   value: string
@@ -183,7 +184,7 @@ const single = !multiple && chosen.length === 1 ? chosen[0] : undefined
                 aria-label={searchPlaceholder}
                 aria-controls={`${listId}-options`}
                 autocomplete="off"
-                class="apogee-select-search mb-0.5 h-8 w-full rounded border border-neutral bg-page px-2 text-sm text-neutral outline-none placeholder:text-neutral-faded focus-visible:border-primary"
+                class="apogee-select-search mb-0.5 h-8 w-full rounded border border-neutral bg-page px-2 text-sm max-md:text-base pointer-coarse:text-base text-neutral outline-none placeholder:text-neutral-faded focus-visible:border-primary"
               />
             )
           }
@@ -206,9 +207,15 @@ const single = !multiple && chosen.length === 1 ? chosen[0] : undefined
             >
               {
                 multiple && (
-                  <span class="inline-flex size-3.5 shrink-0 items-center justify-center rounded-[0.25rem] border-[1.5px] border-neutral bg-page transition-colors group-aria-selected:border-primary group-aria-selected:bg-primary" aria-hidden="true">
-                    <Check class="hidden size-3 text-on-primary group-aria-selected:block" />
-                  </span>
+                  // The option carries the state (aria-selected); the box only shows it.
+                  <Checkbox
+                    size="small"
+                    class="pointer-events-none shrink-0 [&>input]:mt-0"
+                    tabindex="-1"
+                    aria-hidden="true"
+                    data-option-mark
+                    checked={values.includes(o.value)}
+                  />
                 )
               }
               {o.avatar && <Avatar src={o.avatar} name={o.avatarName ?? o.label} size="xsmall" class="shrink-0" />}
@@ -297,7 +304,11 @@ const single = !multiple && chosen.length === 1 ? chosen[0] : undefined
 
     const render = () => {
       const picked = options.filter((o) => optionFor(o)?.selected)
-      options.forEach((o) => o.setAttribute('aria-selected', String(picked.includes(o))))
+      options.forEach((o) => {
+        o.setAttribute('aria-selected', String(picked.includes(o)))
+        const mark = o.querySelector<HTMLInputElement>('[data-option-mark]')
+        if (mark) mark.checked = picked.includes(o)
+      })
       value.textContent =
         picked.length > 1
           ? (value.dataset.countLabel ?? '{count} selected').replace('{count}', String(picked.length))

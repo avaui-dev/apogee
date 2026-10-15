@@ -56,7 +56,9 @@ The group renders the hint and error with the ids `<id>-hint` and `<id>-error`; 
 A Field (label, hint, error) around a flex row. Each direct child of the row
 loses its inner corners and overlaps its neighbour by 1px; the child that holds
 focus lifts above the seam. The Input inside renders `grouped`, which drops its
-own label and wrapper so the group's label is the only one.
+own label and wrapper so the group's label is the only one. A static
+InputGroupAddon is a `<label>` that the group points at the field: a click on
+"https://" focuses the input, and screen readers hear it with the label.
 
 ## API
 

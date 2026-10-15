@@ -60,6 +60,7 @@ const r = 50 - stroke / 2
   aria-valuemin={min}
   aria-valuemax={max}
   aria-valuenow={Math.max(min, Math.min(max, value))}
+  data-shape={shape}
   class:list={['apogee-circular relative inline-grid place-items-center', sizes[size], half ? 'aspect-[2/1]' : 'aspect-square', className]}
   {...rest}
 >
@@ -82,7 +83,37 @@ const r = 50 - stroke / 2
       stroke-dashoffset={half ? -50 : 100 - pct}
     />
   </svg>
-  <span class:list={['[grid-area:1/1] font-medium text-neutral tabular-nums', labelSizes[size], half && 'self-end']}>
+  <span class:list={['apogee-circular-label [grid-area:1/1] font-medium text-neutral tabular-nums', labelSizes[size], half && 'self-end']}>
     <slot />
   </span>
 </div>
+
+<style>
+  /* The label fits the ring: its width stops inside the stroke and its size
+     follows the ring's width (container units), capped by the size step. */
+  .apogee-circular {
+    container-type: inline-size;
+  }
+  .apogee-circular-label {
+    max-inline-size: 60%;
+    font-size: min(1em, 22cqi);
+    line-height: 1.1;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  [data-shape='half'] .apogee-circular-label {
+    max-inline-size: 64%;
+    font-size: min(1em, 15cqi);
+    padding-block-end: 2cqi;
+  }
+  /* Size classes inside the slot are overridden so nothing outgrows the ring;
+     a <small> is the secondary part. */
+  .apogee-circular-label :global(*) {
+    font-size: 1em;
+  }
+  .apogee-circular-label :global(small) {
+    font-size: 0.6em;
+    font-weight: 400;
+    color: var(--foreground-neutral-faded);
+  }
+</style>

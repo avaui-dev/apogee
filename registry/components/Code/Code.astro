@@ -69,7 +69,7 @@ const panel = 'apogee-code-pre rounded-lg border border-neutral bg-page-faded p-
       {copy && (
         <button
           type="button"
-          class="apogee-code-copy absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          class="apogee-code-copy press absolute top-2 end-2 grid size-8 place-items-center rounded-md border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           aria-label="Copy code"
         >
           <Copy class="apogee-code-icon-copy size-4" aria-hidden="true" />
@@ -81,7 +81,7 @@ const panel = 'apogee-code-pre rounded-lg border border-neutral bg-page-faded p-
         <div class="mt-2 flex justify-center no-js:hidden">
           <button
             type="button"
-            class="apogee-code-more rounded-md border border-neutral bg-page px-3 py-1 text-xs font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            class="apogee-code-more press rounded-md border border-neutral bg-page px-3 py-1 text-xs font-medium text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
             aria-expanded="false"
           >Show more</button>
         </div>
@@ -109,6 +109,9 @@ const panel = 'apogee-code-pre rounded-lg border border-neutral bg-page-faded p-
   .apogee-code-pre :global(pre.astro-code) {
     margin: 0;
     padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
     overflow-x: auto;
     background-color: transparent !important;
   }
@@ -165,17 +168,14 @@ const panel = 'apogee-code-pre rounded-lg border border-neutral bg-page-faded p-
 
 <script>
   import { island } from '../utils/island.ts'
+  import { copyText } from '../utils/clipboard.ts'
 
   // Copy the block's source; flip to a checkmark + "Copied" label for 3s.
   const timers = new WeakMap<HTMLElement, number>()
   island('.apogee-code-copy', (btn) => {
     btn.addEventListener('click', async () => {
       const src = btn.closest('.apogee-code')?.querySelector('.apogee-code-src')?.textContent ?? ''
-      try {
-        await navigator.clipboard.writeText(src)
-      } catch {
-        return // clipboard blocked (insecure context / denied) — leave button as-is
-      }
+      if (!(await copyText(src))) return // clipboard refused: leave the button as it was
       btn.dataset.copied = 'true'
       const prev = timers.get(btn)
       if (prev) clearTimeout(prev)

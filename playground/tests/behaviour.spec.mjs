@@ -15,11 +15,12 @@ test('segmented control styles exactly one option as selected', async ({ page })
   await page.goto('/docs/segmented-control')
   const first = page.locator('[data-apogee-segmented]').first()
   const selectedCount = () =>
-    first.locator('label').evaluateAll((els) => els.filter((el) => getComputedStyle(el).boxShadow !== 'none').length)
+    // The selected option paints its own fill, or (with anchor positioning) is the slide's anchor.
+    first.locator('label').evaluateAll((els) => els.filter((el) => getComputedStyle(el).boxShadow !== 'none' || getComputedStyle(el).anchorName === '--apogee-selected').length)
   expect(await selectedCount()).toBe(1)
   await first.locator('label').nth(2).click()
   expect(await selectedCount()).toBe(1)
-  expect(await first.locator('label').nth(2).evaluate((el) => getComputedStyle(el).boxShadow)).not.toBe('none')
+  expect(await first.locator('label').nth(2).evaluate((el) => getComputedStyle(el).anchorName)).toBe('--apogee-selected')
 })
 
 test('tag input adds on Enter and removes on click', async ({ page }) => {
@@ -1170,7 +1171,7 @@ test('input group welds addons to the field', async ({ page }) => {
   expect(Math.abs(a - i)).toBeLessThan(2)
   await input.focus()
   expect(Number(await input.evaluate((e) => getComputedStyle(e.parentElement).zIndex))).toBeGreaterThan(0)
-  expect(await g.locator('label').count()).toBe(0)
+  expect(await g.locator('label:not([data-apogee-addon])').count()).toBe(0)
 })
 
 test('password reveal toggles the input type and its label', async ({ page }) => {
@@ -1834,4 +1835,212 @@ test('patterns filter bar submits its filters with GET', async ({ page }) => {
   await page.locator('#filters-form').getByText('Clear').click()
   await page.waitForURL((u) => !u.search.includes('status='))
   expect(page.url()).not.toContain('status=')
+})
+
+test('docs sidebar icons sit beside their labels', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/docs/patterns')
+  const link = page.locator('aside a[href="/docs/patterns"]').first()
+  const icon = await link.locator('svg').first().evaluate((e) => e.getBoundingClientRect())
+  const label = await link.locator('.apogee-navlink-label').evaluate((e) => e.getBoundingClientRect())
+  expect(icon.right).toBeLessThanOrEqual(label.left + 1)
+  expect(Math.abs(icon.top + icon.height / 2 - (label.top + label.height / 2))).toBeLessThan(4)
+})
+
+test('polish: pressed state differs from hover; skin reaches cards and checkable controls', async ({ page }) => {
+  await page.goto('/docs/button')
+  const btn = page.locator('main button').filter({ hasText: /^Get started$/ }).first()
+  await btn.hover()
+  const hover = await btn.evaluate((e) => getComputedStyle(e).backgroundImage)
+  await page.mouse.down()
+  const pressed = await btn.evaluate((e) => getComputedStyle(e).backgroundImage)
+  await page.mouse.up()
+  expect(pressed).not.toBe(hover)
+  expect(pressed).toContain('gradient')
+  await page.goto('/docs/card')
+  const card = page.locator('[data-apogee-card="regions"] .apogee-card').first()
+  const plain = await card.evaluate((e) => getComputedStyle(e).boxShadow)
+  await page.evaluate(() => (document.documentElement.dataset.skin = 'skeuomorphic'))
+  expect(await card.evaluate((e) => getComputedStyle(e).boxShadow)).not.toBe(plain)
+  await page.goto('/docs/checkbox')
+  await page.evaluate(() => (document.documentElement.dataset.skin = 'skeuomorphic'))
+  const box = page.locator('main input[type="checkbox"]').first()
+  expect(await box.evaluate((e) => getComputedStyle(e).boxShadow)).not.toBe('none')
+})
+
+test('polish: circular progress text fits inside the ring', async ({ page }) => {
+  await page.goto('/docs/circular-progress')
+  for (const sel of ['[data-apogee-circular="half-full"] .apogee-circular', '[data-apogee-circular="storage"] .apogee-circular']) {
+    const root = page.locator(sel).first()
+    const box = await root.evaluate((e) => e.getBoundingClientRect())
+    const label = await root.locator('.apogee-circular-label').evaluate((e) => e.getBoundingClientRect())
+    expect(label.left).toBeGreaterThanOrEqual(box.left + box.width * 0.1)
+    expect(label.right).toBeLessThanOrEqual(box.right - box.width * 0.1)
+  }
+})
+
+test('polish: carousel disabled arrow stays opaque, overlay dots read; code has one frame and one copy button', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 800 })
+  await page.goto('/docs/carousel')
+  const prev = page.locator('.apogee-carousel-prev').first()
+  await expect(prev).toBeDisabled()
+  expect(await prev.evaluate((e) => getComputedStyle(e).opacity)).toBe('1')
+  await page.goto('/docs/code')
+  const n = page.locator('[data-apogee-code="numbered"]')
+  expect(await n.locator('pre.astro-code').evaluate((e) => getComputedStyle(e).borderTopWidth)).toBe('0px')
+  expect(await n.locator('button').count()).toBe(1)
+})
+
+test('polish: code copy works where the Clipboard API is missing', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true })
+    document.execCommand = (cmd) => { window.__copied = cmd === 'copy' ? document.getSelection()?.toString() || document.activeElement?.value : null; return true }
+  })
+  await page.goto('/docs/code')
+  const btn = page.locator('.apogee-code-copy').first()
+  await btn.click()
+  await expect(btn).toHaveAttribute('data-copied', 'true')
+  expect(await page.evaluate(() => window.__copied)).toContain('npm')
+})
+
+test('polish: small text fields render at 16px on touch screens', async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 820, height: 1180 }, hasTouch: true, isMobile: true })
+  const page = await ctx.newPage()
+  await page.goto('/docs/input')
+  const sizes = await page.locator('main input.apogee-input, main input[type="text"], main input[type="email"]').evaluateAll((els) => els.map((e) => parseFloat(getComputedStyle(e).fontSize)))
+  expect(Math.min(...sizes)).toBeGreaterThanOrEqual(16)
+  await ctx.close()
+})
+
+test('polish: tree chevrons follow their own branch; checkboxes are Checkbox', async ({ page }) => {
+  await page.goto('/docs/tree-view')
+  const tree = page.locator('[data-apogee-tree-view="files"] [role="tree"]')
+  await tree.locator('summary').first().click()
+  const rot = (i) => tree.locator('.apogee-tree-chevron').nth(i).evaluate((e) => getComputedStyle(e).rotate)
+  await expect.poll(() => rot(0)).toBe('90deg')
+  expect(['none', '0deg']).toContain(await rot(1))
+  const box = page.locator('[data-apogee-tree-view="selectable"] input[type="checkbox"]').first()
+  await expect(box).toHaveClass(/apogee-checkbox/)
+})
+
+test('polish: select multiple marks are Checkbox and follow the selection', async ({ page }) => {
+  await page.goto('/docs/select')
+  const opt = page.locator('[role="listbox"][aria-multiselectable="true"] [role="option"]').first()
+  const box = opt.locator('input.apogee-checkbox')
+  await expect(box).toHaveCount(1)
+  expect(await box.evaluate((e) => e.checked)).toBe((await opt.getAttribute('aria-selected')) === 'true')
+})
+
+test('polish: steps and timeline centre the first line on the marker', async ({ page }) => {
+  const centre = (r) => r.top + r.height / 2
+  await page.setViewportSize({ width: 480, height: 900 })
+  await page.goto('/docs/steps')
+  const li = page.locator('[data-apogee-steps="responsive"] li').first()
+  const m = await li.locator('[data-state]').evaluate((e) => e.getBoundingClientRect())
+  const firstLine = await li.locator('p').first().evaluate((e) => { const r = document.createRange(); r.selectNodeContents(e); return r.getClientRects()[0] })
+  expect(Math.abs(centre(m) - centre(firstLine))).toBeLessThan(2)
+  await page.goto('/docs/timeline')
+  const t = page.locator('[data-apogee-timeline="activity"] li').first()
+  const av = await t.locator('.apogee-avatar').evaluate((e) => e.getBoundingClientRect())
+  const title = await t.locator('p').first().evaluate((e) => { const r = document.createRange(); r.selectNodeContents(e); return r.getClientRects()[0] })
+  expect(Math.abs(centre(av) - centre(title))).toBeLessThan(2)
+})
+
+test('polish: unselected selectable tag shows a plus, selected shows a check', async ({ page }) => {
+  await page.goto('/docs/tag')
+  const value = await page.locator('[data-apogee-tag="selectable"] label:has(input:not(:checked))').first().getAttribute('data-value')
+  const tag = page.locator(`[data-apogee-tag="selectable"] label[data-value="${value}"]`)
+  await expect(tag.locator('.apogee-tag-plus')).toBeVisible()
+  await expect(tag.locator('.apogee-tag-check')).toBeHidden()
+  await tag.click()
+  await expect(tag.locator('.apogee-tag-check')).toBeVisible()
+  await expect(tag.locator('.apogee-tag-plus')).toBeHidden()
+})
+
+test('polish: slim rail centres every item and slims the footer', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 800 })
+  await page.goto('/docs/sidebar')
+  const aside = page.locator('[data-apogee-sidebar="slim"] aside').first()
+  const a = await aside.evaluate((e) => { const r = e.getBoundingClientRect(); return r.left + r.width / 2 })
+  const centres = await aside.locator('nav a, nav button, .apogee-sidebar-footer a').evaluateAll((els) => els.filter((e) => e.getClientRects().length).map((e) => { const r = e.getBoundingClientRect(); return r.left + r.width / 2 }))
+  expect(centres.length).toBeGreaterThan(2)
+  for (const c of centres) expect(Math.abs(c - a)).toBeLessThan(2)
+  const label = aside.locator('.apogee-sidebar-footer .apogee-navlink-label').first()
+  expect(await label.evaluate((e) => getComputedStyle(e).position)).toBe('absolute')
+})
+
+test('polish: a tap shows the tooltip on touch screens and a tap elsewhere hides it', async ({ browser }) => {
+  const ctx = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 800 } })
+  const page = await ctx.newPage()
+  await page.goto('/docs/tooltip')
+  const root = page.locator('main .apogee-tooltip').first()
+  await root.locator('button, a').first().tap()
+  await expect(root.locator('[role="tooltip"]')).toBeVisible()
+  await page.locator('main h1').tap()
+  await expect(root.locator('[role="tooltip"]')).toBeHidden()
+  await ctx.close()
+})
+
+test('polish: keyboard focus leaving a tooltip trigger still closes it', async ({ page }) => {
+  await page.goto('/docs/tooltip')
+  const root = page.locator('main .apogee-tooltip').first()
+  await root.locator('button, a').first().focus()
+  await page.keyboard.press('Shift+Tab')
+  await page.keyboard.press('Tab')
+  await expect(root.locator('[role="tooltip"]')).toBeVisible()
+  await page.keyboard.press('Tab')
+  await expect(root.locator('[role="tooltip"]')).toBeHidden()
+})
+
+test('polish: clicking a static input-group addon focuses the input', async ({ page }) => {
+  await page.goto('/docs/input-group')
+  const g = page.locator('[data-apogee-input-group="addons"] .apogee-input-group').first()
+  await g.locator('.apogee-input-addon').first().click()
+  await expect(g.locator('input')).toBeFocused()
+})
+
+test('polish: date inputs follow the theme and accent', async ({ page }) => {
+  await page.goto('/docs/input')
+  const d = page.locator('#date-inputs ~ div input[type="date"]').first()
+  expect(await d.evaluate((e) => getComputedStyle(e).colorScheme)).toBe('light')
+  expect(await d.evaluate((e) => getComputedStyle(e).accentColor)).not.toBe('auto')
+  await page.evaluate(() => (document.documentElement.dataset.theme = 'dark'))
+  expect(await d.evaluate((e) => getComputedStyle(e).colorScheme)).toBe('dark')
+})
+
+test('polish: the active nav link shows a filled icon', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/docs/patterns')
+  const active = page.locator('aside a[aria-current="page"] svg').first()
+  expect(await active.evaluate((e) => getComputedStyle(e).fill)).not.toBe('none')
+  const idle = page.locator('aside a:not([aria-current]) svg').first()
+  expect(await idle.evaluate((e) => getComputedStyle(e).fill)).toBe('none')
+})
+
+test('polish: segmented control selection slides between options', async ({ page }) => {
+  await page.goto('/docs/segmented-control')
+  const root = page.locator('[data-apogee-segmented]').first()
+  const slide = root.locator('.apogee-slide')
+  await expect(slide).toBeVisible()
+  const target = root.locator('label').nth(2)
+  const t = await target.evaluate((e) => e.getBoundingClientRect().left)
+  const start = await slide.evaluate((e) => e.getBoundingClientRect().left)
+  await target.click()
+  await page.waitForTimeout(60)
+  const mid = await slide.evaluate((e) => e.getBoundingClientRect().left)
+  expect(mid).toBeGreaterThan(start + 1)
+  expect(mid).toBeLessThan(t - 1)
+  await expect.poll(() => slide.evaluate((e) => Math.round(e.getBoundingClientRect().left))).toBe(Math.round(t))
+})
+
+test('polish: tabs selection slides to the chosen tab', async ({ page }) => {
+  await page.goto('/docs/tabs')
+  const list = page.locator('[data-apogee-tabs="items"] [role="tablist"]')
+  const slide = list.locator('.apogee-slide')
+  await expect(slide).toBeVisible()
+  const first = list.locator('[role="tab"]').first()
+  await first.click()
+  const target = await first.evaluate((e) => Math.round(e.getBoundingClientRect().left))
+  await expect.poll(() => slide.evaluate((e) => Math.round(e.getBoundingClientRect().left))).toBe(target)
+  expect(await slide.evaluate((e) => e.getBoundingClientRect().height)).toBeLessThan(4)
 })

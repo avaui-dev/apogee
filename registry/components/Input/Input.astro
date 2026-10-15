@@ -25,7 +25,7 @@ interface Props extends Omit<HTMLAttributes<'input'>, 'size'> {
   error?: string
   /** Marks the field invalid without a message. */
   hasError?: boolean
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date'
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week'
   /** @category layout */
   size?: FieldSize
   /** @category layout */
@@ -134,6 +134,42 @@ const labelInset = { small: 'start-2', medium: 'start-3', large: 'start-4', xlar
 </Field>
 
 <style>
+  /* Date and time fields: the parts the browser exposes take the tokens. The
+     picker popup itself is browser UI; it follows color-scheme and, in
+     Chromium, accent-color. */
+  input:is([type='date'], [type='time'], [type='datetime-local'], [type='month'], [type='week']) {
+    accent-color: var(--background-primary);
+  }
+  input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+    border-radius: 0.25rem;
+    padding: 0.125rem;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+  input:hover::-webkit-calendar-picker-indicator,
+  input:focus-visible::-webkit-calendar-picker-indicator {
+    opacity: 1;
+  }
+  input::-webkit-datetime-edit-day-field:focus,
+  input::-webkit-datetime-edit-month-field:focus,
+  input::-webkit-datetime-edit-year-field:focus,
+  input::-webkit-datetime-edit-hour-field:focus,
+  input::-webkit-datetime-edit-minute-field:focus,
+  input::-webkit-datetime-edit-ampm-field:focus,
+  input::-webkit-datetime-edit-week-field:focus {
+    background-color: var(--background-primary-faded);
+    color: var(--foreground-primary);
+    border-radius: 0.2rem;
+  }
+  input::-webkit-datetime-edit-text {
+    color: var(--foreground-neutral-faded);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    input::-webkit-calendar-picker-indicator {
+      transition: none;
+    }
+  }
   /* The eye swaps with the pressed state. */
   .apogee-reveal-hide,
   .apogee-reveal[aria-pressed='true'] .apogee-reveal-show {

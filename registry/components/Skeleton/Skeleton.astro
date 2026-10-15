@@ -13,4 +13,24 @@ interface Props extends HTMLAttributes<'div'> {
 const { class: className, ...rest } = Astro.props
 ---
 
-<div class:list={['min-h-5 animate-pulse rounded-md bg-neutral-faded motion-reduce:animate-none', className]} aria-hidden="true" {...rest}></div>
+<div class:list={['apogee-skeleton min-h-5 rounded-md bg-neutral-faded', className]} aria-hidden="true" {...rest}></div>
+
+<style>
+  /* Fades between today's shade and a much lighter one; static under reduced motion. */
+  .apogee-skeleton {
+    animation: apogee-skeleton 1.4s var(--ease-standard) infinite alternate;
+  }
+  @keyframes apogee-skeleton {
+    from {
+      background-color: var(--background-neutral-faded);
+    }
+    to {
+      background-color: color-mix(in oklch, var(--background-neutral-faded) 30%, var(--background-page));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-skeleton {
+      animation: none;
+    }
+  }
+</style>

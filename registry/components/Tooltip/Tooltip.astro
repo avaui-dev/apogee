@@ -141,6 +141,14 @@ const anchor = `--${id}`
   import { island } from '../utils/island.ts'
 
   let lastClose = 0 // shared "warm" window: a neighbour opens instantly
+
+  // Touch has no hover: a tap anywhere outside closes any tooltip a tap opened.
+  document.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse') return
+    for (const panel of document.querySelectorAll<HTMLElement>('.apogee-tooltip [role="tooltip"]:popover-open')) {
+      if (!panel.closest('.apogee-tooltip')?.contains(e.target as Node)) panel.hidePopover()
+    }
+  })
   island('.apogee-tooltip', (root) => {
     const panel = root.querySelector<HTMLElement>('[role="tooltip"]')
     if (!panel) return
@@ -170,10 +178,21 @@ const anchor = `--${id}`
       if (e.pointerType === 'touch') return
       later(open, Date.now() - lastClose < 500 ? 0 : delay)
     })
-    root.addEventListener('pointerleave', () => later(close, closeDelay))
+    // Touch and pen: a tap shows the tooltip (the trigger still acts) and it stays
+    // until a tap elsewhere or a few seconds pass.
+    let byTouch = false
+    root.addEventListener('pointerdown', (e) => {
+      byTouch = e.pointerType !== 'mouse'
+      if (!byTouch) return
+      open()
+      later(close, 4000)
+    })
+    root.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && later(close, closeDelay))
     // Keyboard focus only: a tap or click focuses the button without :focus-visible.
     root.addEventListener('focusin', (e) => (e.target as Element).matches(':focus-visible') && later(open, 0))
-    root.addEventListener('focusout', () => later(close, 0))
+    // A tap moves focus around; a tooltip a tap opened stays until a tap elsewhere.
+    root.addEventListener('focusout', () => !byTouch && later(close, 0))
+    root.addEventListener('keydown', () => (byTouch = false))
     root.addEventListener('keydown', (e) => e.key === 'Escape' && close())
   })
 </script>

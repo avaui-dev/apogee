@@ -36,10 +36,11 @@ const {
 } = Astro.props
 const paddings = { none: 'p-0', small: 'p-3', medium: 'p-5', large: 'p-8' } as const
 // Header and footer rows use a shorter vertical step than the body.
-const regionPaddings = { none: 'p-0', small: 'px-3 py-2', medium: 'px-5 py-4', large: 'px-8 py-5' } as const
+// `none` removes the body padding (a flush table or image); regions still breathe.
+const regionPaddings = { none: 'px-5 py-3', small: 'px-3 py-2', medium: 'px-5 py-4', large: 'px-8 py-5' } as const
 const Tag = href ? 'a' : as
 const interactive = href || as === 'button'
-  ? 'transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
+  ? 'press transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
   : ''
 const hasMedia = Astro.slots.has('media')
 const hasHeader = Astro.slots.has('header')
@@ -55,7 +56,7 @@ const sideMedia = hasMedia && mediaPosition === 'start'
     sideMedia ? 'flex flex-col sm:flex-row' : 'block',
     Tag === 'button' && 'w-full',
     selected ? 'border-primary' : 'border-neutral',
-    raised && 'shadow-raised',
+    raised ? 'shadow-[var(--shadow-raised),var(--shadow-surface)]' : 'shadow-(--shadow-surface)',
     interactive,
     className,
   ]}

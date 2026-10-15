@@ -11,7 +11,7 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import CloseButton from '../CloseButton/CloseButton.astro'
-import { Check } from '@lucide/astro'
+import { Check, Plus } from '@lucide/astro'
 
 const styles = {
   solid: {
@@ -111,7 +111,7 @@ const Root = isSelectable ? 'label' : 'span'
     styles[variant][color],
     sizes[size],
     isSelectable &&
-      'cursor-pointer transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50',
+      'group/tag press cursor-pointer transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50',
     isSelectable && selectedStyles[color],
     className,
   ]}
@@ -121,7 +121,13 @@ const Root = isSelectable ? 'label' : 'span'
   {...rest}
 >
   {isSelectable && <input type="checkbox" class="peer sr-only" name={name} value={value} checked={checked || undefined} />}
-  {isSelectable && <span data-slot="start" class="invisible inline-flex peer-checked:visible"><Check aria-hidden="true" /></span>}
+  {/* A plus hints that the chip can be picked; it turns into a check once picked. */}
+  {isSelectable && (
+    <span data-slot="start" class="inline-grid [&>svg]:[grid-area:1/1]">
+      <Plus class="apogee-tag-plus opacity-60 group-has-[:checked]/tag:hidden" aria-hidden="true" />
+      <Check class="apogee-tag-check hidden group-has-[:checked]/tag:block" aria-hidden="true" />
+    </span>
+  )}
   {Astro.slots.has('start') && <span data-slot="start" class="inline-flex"><slot name="start" /></span>}
   <Label href={href} class="inline-flex items-center gap-[inherit] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
     <slot />

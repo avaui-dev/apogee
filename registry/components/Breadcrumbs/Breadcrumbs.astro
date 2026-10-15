@@ -29,7 +29,7 @@ const collapse = maxVisible !== undefined && maxVisible >= 3 && items.length > m
 const hiddenRange = collapse ? [1, items.length - (maxVisible - 2)] : null
 const sep = Astro.slots.has('separator') ? await Astro.slots.render('separator') : null
 const link = [
-  'inline-flex items-center gap-1.5 transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-4 [&>svg]:shrink-0',
+  'press inline-flex items-center gap-1.5 transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-4 [&>svg]:shrink-0',
   button ? 'rounded-md px-1.5 py-1 hover:bg-neutral-faded-highlighted' : 'rounded-sm',
 ].join(' ')
 ---

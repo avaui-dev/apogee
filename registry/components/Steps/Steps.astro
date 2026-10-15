@@ -80,7 +80,8 @@ const states: State[] = items.map((step, i) => step.status ?? (i + 1 < current ?
               n
             )}
           </span>
-          <div class="pt-1">
+          {/* Centres the title's first line (1.25rem) on the marker, however many lines follow. */}
+          <div class="pt-[calc((var(--steps-m)-1.25rem)/2)]">
             <p class:list={['font-medium', s.title, state === 'upcoming' ? 'text-neutral-faded' : 'text-neutral']}>
               {step.title}
               {state === 'done' && <span class="sr-only"> (done)</span>}

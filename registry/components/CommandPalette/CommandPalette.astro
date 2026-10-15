@@ -83,7 +83,7 @@ for (const c of commands) {
     <Search class="size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
     <input
       type="text"
-      class="apogee-command-input h-12 w-full bg-transparent text-sm text-neutral outline-none placeholder:text-neutral-faded"
+      class="apogee-command-input h-12 w-full bg-transparent text-sm text-neutral outline-none placeholder:text-neutral-faded max-md:text-base pointer-coarse:text-base"
       placeholder={placeholder}
       role="combobox"
       aria-expanded="true"
@@ -96,9 +96,9 @@ for (const c of commands) {
   <div id={`${id}-list`} role="listbox" class="apogee-command-list max-h-80 overflow-auto p-2">
     {
       groups.map((g) => (
-        <div class="apogee-command-section">
+        <div class="apogee-command-section [&~&]:mt-2 [&~&]:border-t [&~&]:border-neutral [&~&]:pt-2">
           {g.name && (
-            <p class="px-2 pt-3 pb-1 text-xs font-medium tracking-wide text-neutral-faded uppercase first:pt-1">
+            <p class="px-2 pt-1.5 pb-1.5 text-[0.6875rem] font-semibold tracking-wider text-neutral uppercase">
               {g.name}
             </p>
           )}

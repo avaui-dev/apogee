@@ -24,13 +24,14 @@ const themes = {
     positive: 'bg-positive text-on-positive',
     warning: 'bg-warning text-on-warning',
   },
-  // Two concentric rings drawn by the pseudo-elements; no fill.
+  // Two concentric rings drawn by the pseudo-elements on a raised surface, so
+  // the tile never blends into what it sits on.
   outline: {
-    neutral: 'text-neutral before:border-neutral-faded after:border-neutral-faded/60',
-    primary: 'text-primary before:border-primary-faded after:border-primary-faded/60',
-    critical: 'text-critical before:border-critical-faded after:border-critical-faded/60',
-    positive: 'text-positive before:border-positive-faded after:border-positive-faded/60',
-    warning: 'text-warning before:border-warning-faded after:border-warning-faded/60',
+    neutral: 'bg-elevation-raised text-neutral shadow-(--shadow-surface) before:border-neutral-faded after:border-neutral-faded/60',
+    primary: 'bg-elevation-raised text-primary shadow-(--shadow-surface) before:border-primary-faded after:border-primary-faded/60',
+    critical: 'bg-elevation-raised text-critical shadow-(--shadow-surface) before:border-critical-faded after:border-critical-faded/60',
+    positive: 'bg-elevation-raised text-positive shadow-(--shadow-surface) before:border-positive-faded after:border-positive-faded/60',
+    warning: 'bg-elevation-raised text-warning shadow-(--shadow-surface) before:border-warning-faded after:border-warning-faded/60',
   },
 } as const
 const outlineRings =

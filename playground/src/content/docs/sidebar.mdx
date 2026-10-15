@@ -173,18 +173,18 @@ accessibility tree). A Popover on a rail item is the flyout for a group:
   <Tooltip text="Dashboard" placement="end"><NavLink href="/dashboard"><Home slot="start" />Dashboard</NavLink></Tooltip>
   <Tooltip text="Inbox" placement="end"><NavLink href="/inbox"><Inbox slot="start" />Inbox</NavLink></Tooltip>
   <Popover id="rail-projects" placement="end">
-    <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects"><FolderKanban /></Button>
+    <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects" class="text-neutral-faded hover:text-neutral"><FolderKanban /></Button>
     <NavLink href="/projects/spring">Spring launch</NavLink>
     <NavLink href="/projects/site">Website</NavLink>
   </Popover>
 </Sidebar>`} block>
   <div data-apogee-sidebar="slim" class="flex">
-    <Sidebar variant="slim" class="rounded-lg border md:h-96">
+    <Sidebar variant="slim" class="rounded-lg border md:h-96!">
       <a slot="brand" href="/" class="grid size-9 place-items-center rounded-md bg-primary font-semibold text-on-primary" aria-label="Acme">A</a>
       <Tooltip text="Dashboard" placement="end"><NavLink href="#"><Home slot="start" />Dashboard</NavLink></Tooltip>
       <Tooltip text="Inbox" placement="end"><NavLink href="#"><Inbox slot="start" />Inbox</NavLink></Tooltip>
       <Popover id="rail-projects" placement="end">
-        <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects"><FolderKanban /></Button>
+        <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects" class="text-neutral-faded hover:text-neutral"><FolderKanban /></Button>
         <div class="flex w-48 flex-col gap-0.5">
           <NavLink href="#">Spring launch</NavLink>
           <NavLink href="#">Website</NavLink>

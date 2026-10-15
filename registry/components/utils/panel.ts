@@ -40,14 +40,17 @@ export function panelStyle({ anchor, placement = 'bottom', gap = 2, width, maxHe
 }
 
 export const panelClass = 'apogee-panel rounded-lg border border-neutral text-sm text-neutral'
-export const panelSurface = { raised: 'bg-elevation-raised shadow-md', overlay: 'bg-elevation-overlay shadow-lg' } as const
+export const panelSurface = {
+  raised: 'bg-elevation-raised shadow-[var(--shadow-raised),var(--shadow-surface)]',
+  overlay: 'bg-elevation-overlay shadow-[var(--shadow-overlay),var(--shadow-surface)]',
+} as const
 export const panelPadding = { 0: 'p-0', 1: 'p-1', 2: 'p-2', 3: 'p-3', 4: 'p-4', 5: 'p-5', 6: 'p-6' } as const
 // `display` only while open: a bare `flex` utility would beat the UA `display: none` of a closed popover.
 export const menuClass = 'min-w-44 flex-col gap-0.5 p-1 [&:popover-open]:flex'
 
 // Menu and listbox items (DropdownItem, Menubar, Select options, Combobox options).
 export const itemBase =
-  'flex w-full items-center rounded text-start transition-colors focus-visible:outline-none ' +
+  'press flex w-full items-center rounded text-start transition-colors focus-visible:outline-none ' +
   'disabled:cursor-not-allowed disabled:text-disabled aria-disabled:cursor-not-allowed aria-disabled:text-disabled [&_svg]:shrink-0'
 export const itemSizes = {
   small: 'gap-1.5 px-2 py-1 text-xs [&_svg]:size-3.5',

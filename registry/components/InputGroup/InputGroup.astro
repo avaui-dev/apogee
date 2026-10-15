@@ -27,6 +27,12 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
 }
 
 const { id, label, hint, error, required = false, size = 'medium', class: className, ...rest } = Astro.props
+// Point every static addon at the field, so a click on it focuses the field.
+const linkAddons = async (name: string) =>
+  Astro.slots.has(name) ? (await Astro.slots.render(name)).replaceAll('data-apogee-addon', `for="${id}" data-apogee-addon`) : ''
+const start = await linkAddons('start')
+const middle = await linkAddons('default')
+const end = await linkAddons('end')
 ---
 
 <Field id={id} label={label} hint={hint} error={error} required={required} size={size} class={className}>
@@ -42,8 +48,8 @@ const { id, label, hint, error, required = false, size = 'medium', class: classN
     data-size={size}
     {...rest}
   >
-    <slot name="start" />
-    <slot />
-    <slot name="end" />
+    <Fragment set:html={start} />
+    <Fragment set:html={middle} />
+    <Fragment set:html={end} />
   </div>
 </Field>

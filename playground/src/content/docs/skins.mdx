@@ -9,6 +9,9 @@ import Preview from '../../components/Preview.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
 import Input from '../../../../registry/components/Input/Input.astro'
 import SegmentedControl from '../../../../registry/components/SegmentedControl/SegmentedControl.astro'
+import Checkbox from '../../../../registry/components/Checkbox/Checkbox.astro'
+import Switch from '../../../../registry/components/Switch/Switch.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
 
 A skin changes how controls are drawn without touching a component. The base
 theme defines three inert variables; a skin file redefines them under
@@ -24,9 +27,10 @@ skin switch next to the theme switch, so you can preview every page both ways.
 
 ## Skeuomorphic
 
-The first skin: an inset hairline and a bottom shade on controls, a faint white
-highlight along the top of solid fills, a soft drop shadow under fields. Both
-themes are tuned separately.
+The first skin: a bevel and a top sheen on buttons and checked controls,
+inset wells for fields and unchecked boxes, and a lit edge with a soft shadow
+on surfaces (cards, choice cards, menus, popovers, dialogs, toasts, featured
+icons). Both themes are tuned separately.
 
 <Preview code={`<div data-skin="skeuomorphic">
   <Button>Save</Button>
@@ -39,6 +43,9 @@ themes are tuned separately.
     <Button variant="outline" color="neutral">Cancel</Button>
     <Input label="Email" placeholder="you@example.com" class="w-60" />
     <SegmentedControl name="skin-demo-view" options={[{ value: 'list', label: 'List' }, { value: 'grid', label: 'Grid' }]} value="list" />
+    <Checkbox label="Remember me" checked />
+    <Switch label="Alerts" checked />
+    <Card class="w-60"><p class="text-sm">A card picks up the lit edge.</p></Card>
   </div>
 </Preview>
 

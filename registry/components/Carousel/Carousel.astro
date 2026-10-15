@@ -84,7 +84,7 @@ const slideCount = dots
     })()
   : 0
 const arrow = [
-  'grid size-11 -translate-y-1/2 place-items-center rounded-full text-neutral no-js:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-50',
+  'press grid size-11 -translate-y-1/2 place-items-center rounded-full text-neutral no-js:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:[&>svg]:opacity-35',
   controlsVariant === 'overlay'
     ? 'border-0 bg-page/90 backdrop-blur-xs enabled:hover:bg-page'
     : 'border border-neutral bg-page shadow-md enabled:hover:bg-page-faded',
@@ -157,7 +157,13 @@ const arrow = [
             aria-label={`Go to slide ${i + 1}`}
             aria-current={i === 0 ? 'true' : 'false'}
           >
-            <span class="block size-2.5 rounded-full bg-neutral transition-colors group-aria-[current=true]/dot:bg-primary" />
+            <span
+              class:list={[
+                'block size-2.5 rounded-full transition-colors group-aria-[current=true]/dot:bg-primary',
+                // Over media the inactive dots need more weight to read on the pill.
+                dotsPosition === 'overlay' ? 'bg-(--foreground-neutral-faded)' : 'bg-neutral',
+              ]}
+            />
           </button>
         ))}
       </div>

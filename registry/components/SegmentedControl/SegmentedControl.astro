@@ -37,9 +37,12 @@ const sizeMap = {
 <div
   role="group"
   data-apogee-segmented
+  data-apogee-slide
   class:list={['inline-flex gap-0.5 rounded-md border border-neutral bg-neutral-faded p-0.5', className]}
   {...rest}
 >
+  {/* Follows the checked option and slides between options (tokens file). */}
+  <span class:list={['apogee-slide bg-page shadow-[var(--shadow-outline),var(--shadow-control)] dark:bg-neutral', innerRadius['md-0.5']]} aria-hidden="true"></span>
   {
     items.map((o) => {
       const oid = `${name}-${o.value}-${rid}`
@@ -56,7 +59,7 @@ const sizeMap = {
           <label
             for={oid}
             class:list={[
-              'flex cursor-pointer items-center justify-center font-medium text-neutral-faded transition-colors hover:text-neutral peer-checked:bg-page peer-checked:text-neutral peer-checked:shadow-[var(--shadow-outline),var(--shadow-control)] dark:peer-checked:bg-neutral peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus',
+              'press flex cursor-pointer items-center justify-center font-medium text-neutral-faded transition-colors hover:text-neutral peer-checked:bg-page peer-checked:text-neutral peer-checked:shadow-[var(--shadow-outline),var(--shadow-control)] dark:peer-checked:bg-neutral peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus',
               sizeMap[size],
               innerRadius['md-0.5'],
             ]}

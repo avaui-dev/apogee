@@ -88,7 +88,7 @@ const vars = [size && `--apogee-dialog-size: ${size}`, `--apogee-dialog-pad: ${p
   aria-labelledby={hasHeader || title ? `${id}-title` : undefined}
   aria-describedby={subtitle && !hasHeader ? `${id}-subtitle` : undefined}
   style={vars}
-  class:list={['apogee-dialog bg-elevation-raised p-0 text-neutral', responsive(position, tables.dialogPosition), className]}
+  class:list={['apogee-dialog bg-elevation-raised p-0 text-neutral shadow-[var(--shadow-overlay),var(--shadow-surface)]', responsive(position, tables.dialogPosition), className]}
   {...rest}
 >
   {

@@ -7,17 +7,41 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **Tokens** set `color-scheme` per theme, so native pickers, scrollbars and autofill follow dark mode.
+- **Text fields** reach 16px on touch screens and narrow viewports (no iOS zoom); large sizes no longer shrink on phones.
+- **Rating** fills stars with the vivid fill tokens instead of the darker text ones.
+- **Skeleton** fades between its shade and a much lighter one.
+- **LoaderText** shimmer has a dimmer base and a brighter band.
+- **CommandPalette** groups have a rule and more space between them, and bolder headings.
+- **FeaturedIcon** `outline` sits on a raised surface instead of no fill.
+- **CircularProgress** text fits inside the ring (sized to the ring, wraps); size classes inside are overridden, `<small>` is the secondary part.
+- **Carousel** disabled arrows keep their surface (the icon fades); overlay dots are darker when inactive.
+- **Code** highlighted blocks drop the highlighter's own frame; the docs site no longer adds a second copy button to them.
+- **Card** header and footer keep padding when the body has `padding="none"`.
+- **Steps, Timeline** centre the first text line on the marker.
+- **Sidebar** slim rail centres square items and slims the footer too.
+- **Select** multiple marks are the Checkbox component.
+- **TreeView** checkboxes are the Checkbox component; a nested branch's chevron turns only when that branch opens.
 - **Carousel** arrows at an edge are disabled instead of hidden, so the layout does not shift.
 - **Code** with `lang` keeps line breaks: highlighted code renders in its own block inside the panel (it used the inline mode, which joined lines).
 - **CommandPalette** "No results." now actually shows when nothing matches (it was stuck hidden).
 - **Table** header row has a faded fill by default, matching DataGrid (`headerFill={false}` restores the old look). DataGrid checkboxes use `data-row` / `data-all` instead of `data-datagrid-row` / `data-datagrid-all`.
-- **NavLink** wraps its label in a span that truncates with an ellipsis instead of wrapping to a second line.
+- **NavLink** wraps its label in a span that truncates with an ellipsis instead of wrapping to a second line. Put icons in the `start` slot: an icon left in the default slot now sits inside the label and drops onto its own line.
 - **SectionHeader** moves `max-w-prose` from the root to the text block, so the root spans its container (actions can sit beside the text).
 - **FileUpload** no longer accepts a dropped file that fails `accept`; before, native `accept` only filtered the picker dialog.
 - **Progress** root is now a wrapper around the `role="progressbar"` track (so value labels can sit beside or above it); `aria-labelledby` / `aria-describedby` still reach the track. **TagInput**, **PinInput** and **RichTextEditor** are now wrapped in Field, so `class` lands on the Field root and the control carries a generated `id`.
 
 ### Added
 
+- **Pressed state** — a `press` utility (tokens file) lays an ink layer over any fill while it is pressed, stronger than hover; buttons, links, nav links, tabs, menu items, pagination, breadcrumbs, close buttons, interactive cards, tree rows, segmented options and toggles use it. Add `document.addEventListener('touchstart', () => {}, { passive: true })` to the head script so iOS shows it (Progressive enhancement page). Tap highlight is off.
+- **Sliding selection** — Tabs and SegmentedControl move one indicator between items with CSS anchor positioning (`data-apogee-slide` + `.apogee-slide` in the tokens file); browsers without it keep the per-item fill.
+- **Skin** — skeuomorphic now also bevels checked checkboxes, radios and switches, adds a sheen to solid buttons, and lifts surfaces (cards, choice cards, panels, dialogs, toasts, outline featured icons) through two new hooks, `--gradient-control` and `--shadow-surface`.
+- **InputGroupAddon** is a `<label>` pointed at the field: a click focuses the input.
+- **Input** — `type` takes `time`, `datetime-local`, `month`, `week`; date and time fields style their segments and picker button.
+- **Tooltip** — a tap shows it on touch screens; a tap elsewhere hides it.
+- **Tag** — a selectable tag shows a plus until it is picked.
+- **NavLink** — the current page's start icon is filled with a tint.
+- **utils/clipboard.ts** (`copyText`) — copies on plain-HTTP pages too; Code uses it.
 - **Docs** — a Patterns page (recipe index, filter bar as a GET form, inline calls to action); recipes for date inputs, a notification count, an upload list and an account switcher; Tokens tables now name `--outline-color-focus` for focus rings and the `-highlighted` hover fills the components use.
 - **Message** (new) — a chat message: sender in `<cite>`, `<time datetime>`, own messages (`me`) at the end, `status` sent | read | failed, `typing` dots, slots for avatar, reply quote, link preview, attachment and reactions. Zero JS.
 - **Carousel** — `controlsVariant="overlay"` (translucent borderless arrows), `dotsPosition="overlay"`.

@@ -901,6 +901,7 @@
       ],
       "registryDependencies": [
         "Avatar",
+        "Checkbox",
         "Field",
         "utils"
       ],
@@ -1184,6 +1185,7 @@
         "TreeView/TreeView.astro"
       ],
       "registryDependencies": [
+        "Checkbox",
         "utils"
       ],
       "dependencies": [
@@ -1195,6 +1197,7 @@
       "name": "utils",
       "kind": "component",
       "files": [
+        "utils/clipboard.ts",
         "utils/fade.ts",
         "utils/field.ts",
         "utils/files.ts",

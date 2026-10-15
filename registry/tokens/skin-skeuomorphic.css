@@ -1,18 +1,23 @@
-/* Skin: skeuomorphic — an opt-in bevelled look for buttons, chips and fields.
+/* Skin: skeuomorphic — an opt-in bevelled look for buttons, chips, fields,
+   checkable controls and surfaces (cards, panels, dialogs, toasts).
    Enable with data-skin="skeuomorphic" on <html> or on any subtree; remove the
    attribute to disable. Only variables change: the components read
-   --shadow-control, --highlight-control and --shadow-field, which the base
-   theme defines as inert. The alphas below are ink over any fill, like the
+   --shadow-control, --highlight-control, --gradient-control, --shadow-field
+   and --shadow-surface, which the base theme defines as inert. The alphas below are ink over any fill, like the
    base theme's --overlay, not hue colours. */
 [data-skin='skeuomorphic'] {
-  --shadow-control: inset 0 0 0 1px rgb(0 0 0 / 0.18), inset 0 -2px 0 0 rgb(0 0 0 / 0.05), 0 1px 2px rgb(0 0 0 / 0.05);
-  --highlight-control: rgb(255 255 255 / 0.12);
-  --shadow-field: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-control: inset 0 0 0 1px rgb(0 0 0 / 0.2), inset 0 -2px 0 0 rgb(0 0 0 / 0.1), inset 0 1px 0 0 rgb(255 255 255 / 0.25), 0 1px 2px rgb(0 0 0 / 0.08);
+  --highlight-control: rgb(255 255 255 / 0.2);
+  --gradient-control: linear-gradient(to bottom, rgb(255 255 255 / 0.2), rgb(255 255 255 / 0) 60%);
+  --shadow-field: inset 0 1px 2px rgb(0 0 0 / 0.07), 0 1px 0 rgb(255 255 255 / 0.8);
+  --shadow-surface: inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 rgb(0 0 0 / 0.04), 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 6px -2px rgb(0 0 0 / 0.08);
 }
 [data-theme='dark'] [data-skin='skeuomorphic'],
 [data-theme='dark'][data-skin='skeuomorphic'],
 [data-skin='skeuomorphic'] [data-theme='dark'] {
-  --shadow-control: inset 0 0 0 1px rgb(255 255 255 / 0.1), inset 0 -2px 0 0 rgb(0 0 0 / 0.25), 0 1px 2px rgb(0 0 0 / 0.3);
-  --highlight-control: rgb(255 255 255 / 0.08);
-  --shadow-field: inset 0 1px 2px rgb(0 0 0 / 0.25);
+  --shadow-control: inset 0 0 0 1px rgb(255 255 255 / 0.1), inset 0 -2px 0 0 rgb(0 0 0 / 0.3), inset 0 1px 0 0 rgb(255 255 255 / 0.12), 0 1px 2px rgb(0 0 0 / 0.35);
+  --highlight-control: rgb(255 255 255 / 0.12);
+  --gradient-control: linear-gradient(to bottom, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 60%);
+  --shadow-field: inset 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-surface: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.4), 0 2px 6px -2px rgb(0 0 0 / 0.4);
 }

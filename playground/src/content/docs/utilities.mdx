@@ -90,6 +90,12 @@ Box, Stack, Grid, Text, Dialog and Carousel use it.
 `fieldSizes`, `fieldVariants`, `fieldBase` are the shared text-control tables;
 `innerRadius['md-1']` gives a chip inside a rounded tray a concentric corner.
 
+## clipboard
+
+`copyText(text)` copies and resolves `true` on success. It uses the Clipboard
+API where the page is a secure context and falls back to a selected hidden
+textarea elsewhere (plain-HTTP pages, some in-app browsers). Code uses it.
+
 ## files
 
 `acceptsFile(accept, file)` applies an `accept` list (`.pdf`, `image/*`,

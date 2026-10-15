@@ -1,7 +1,8 @@
 ---
 /**
  * InputGroupAddon — static text beside a field inside an InputGroup: a
- * protocol, a currency, a unit. Zero JS.
+ * protocol, a currency, a unit. It is a <label>: InputGroup points it at the
+ * field, so a click on the addon focuses the field. Zero JS.
  */
 import type { HTMLAttributes } from 'astro/types'
 const sizes = {
@@ -10,7 +11,7 @@ const sizes = {
   large: 'h-12 px-4 text-base',
   xlarge: 'h-14 px-5 text-lg',
 } as const
-interface Props extends HTMLAttributes<'span'> {
+interface Props extends HTMLAttributes<'label'> {
   /** @category layout */
   size?: keyof typeof sizes
   class?: string
@@ -18,9 +19,10 @@ interface Props extends HTMLAttributes<'span'> {
 const { size = 'medium', class: className, ...rest } = Astro.props
 ---
 
-<span
-  class:list={['apogee-input-addon inline-flex shrink-0 items-center rounded-md border border-neutral bg-neutral-faded whitespace-nowrap text-neutral-faded', sizes[size], className]}
+<label
+  class:list={['apogee-input-addon inline-flex shrink-0 cursor-text items-center rounded-md border border-neutral bg-neutral-faded whitespace-nowrap text-neutral-faded', sizes[size], className]}
+  data-apogee-addon
   {...rest}
 >
   <slot />
-</span>
+</label>

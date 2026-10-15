@@ -90,6 +90,15 @@ const id = idProp ?? uid(Astro.locals)
     opacity: 0;
     transition: opacity 0.15s;
   }
+  /* Skin hooks: inert unless a skin sets them. */
+  .apogee-checkbox {
+    box-shadow: var(--shadow-field);
+  }
+  .apogee-checkbox:checked,
+  .apogee-checkbox:indeterminate {
+    box-shadow: var(--shadow-control);
+    background-image: var(--gradient-control);
+  }
   .apogee-checkbox:checked,
   .apogee-checkbox:indeterminate {
     border-color: var(--background-primary);

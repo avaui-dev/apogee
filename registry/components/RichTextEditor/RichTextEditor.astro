@@ -105,7 +105,7 @@ const tools = [
 
   <div
     id={id}
-    class="apogee-rte-editor min-h-40 p-3 text-sm text-neutral outline-none no-js:hidden [&_a]:text-primary [&_a]:underline [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5 empty:before:text-neutral-faded empty:before:content-[attr(data-placeholder)] aria-disabled:cursor-not-allowed aria-disabled:text-disabled"
+    class="apogee-rte-editor min-h-40 p-3 text-sm max-md:text-base pointer-coarse:text-base text-neutral outline-none no-js:hidden [&_a]:text-primary [&_a]:underline [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5 empty:before:text-neutral-faded empty:before:content-[attr(data-placeholder)] aria-disabled:cursor-not-allowed aria-disabled:text-disabled"
     contenteditable={disabled ? 'false' : 'true'}
     role="textbox"
     aria-multiline="true"
@@ -123,7 +123,7 @@ const tools = [
     name={name}
     disabled={disabled}
     required={required}
-    class="apogee-rte-fallback hidden min-h-40 w-full resize-y bg-transparent p-3 text-sm text-neutral outline-none no-js:block placeholder:text-neutral-faded"
+    class="apogee-rte-fallback hidden min-h-40 w-full resize-y bg-transparent p-3 text-sm max-md:text-base pointer-coarse:text-base text-neutral outline-none no-js:block placeholder:text-neutral-faded"
     placeholder={placeholder}
     aria-label={label ? undefined : placeholder}
     aria-labelledby={label ? `${id}-label` : undefined}>{value}</textarea>

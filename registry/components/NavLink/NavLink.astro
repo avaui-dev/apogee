@@ -17,7 +17,7 @@ import { ExternalLink } from '@lucide/astro'
 
 /** Shared by NavGroup's summary so a group row looks like a link row. */
 export const navLinkClass =
-  'apogee-navlink flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
+  'apogee-navlink press flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
 export const navLinkIdle = 'text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral'
 export const navLinkActive = 'bg-neutral text-neutral'
 
@@ -52,7 +52,8 @@ const hasEnd = Astro.slots.has('end')
   class:list={[navLinkClass, active ? navLinkActive : navLinkIdle, className]}
   {...rest}
 >
-  {hasStart && <span class="flex shrink-0 items-center [&>svg]:size-4"><slot name="start" /></span>}
+  {/* The current page's icon is filled with a tint of its own colour and darkened. */}
+  {hasStart && <span class:list={['flex shrink-0 items-center [&>svg]:size-4', active && '[&>svg]:fill-current/20 [&>svg]:text-neutral']}><slot name="start" /></span>}
   <span class="apogee-navlink-label min-w-0 truncate"><slot /></span>
   {hasEnd && <span class="ms-auto flex shrink-0 items-center [&>svg]:size-4"><slot name="end" /></span>}
   {

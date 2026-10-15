@@ -100,12 +100,18 @@ Every `thickness` and every `color`:
 A storage gauge:
 
 <Preview code={`<CircularProgress value={8.2} max={10} shape="half" size="xlarge" color="warning" label="Storage used">
-  <span class="text-2xl">8.2</span><span class="text-xs text-neutral-faded"> / 10 GB</span>
+  8.2 <small>/ 10 GB</small>
 </CircularProgress>`}>
-  <CircularProgress value={8.2} max={10} shape="half" size="xlarge" color="warning" label="Storage used">
-    <span class="text-2xl">8.2</span><span class="text-xs text-neutral-faded"> / 10 GB</span>
-  </CircularProgress>
+  <div data-apogee-circular="storage" class="contents">
+    <CircularProgress value={8.2} max={10} shape="half" size="xlarge" color="warning" label="Storage used">
+      8.2 <small>/ 10 GB</small>
+    </CircularProgress>
+  </div>
 </Preview>
+
+The text inside is sized to the ring: it never grows past the inner edge and
+wraps when it must. Put a unit or a secondary part in `<small>`; any other
+size classes inside are overridden.
 
 ## Accessibility
 

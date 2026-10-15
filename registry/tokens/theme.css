@@ -18,6 +18,10 @@
 @custom-variant js (html.js &);
 
 @layer base {
+  html {
+    /* The `press` utility gives touch feedback; drop the grey tap flash. */
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -81,8 +85,12 @@
   --on-inverted: oklch(1 0 257.417);
   /* @generated colors light end */
 
+  /* Native widgets (date pickers, scrollbars, autofill) follow the theme. */
+  color-scheme: light;
   /* scrim behind dialogs / command palettes */
   --overlay: oklch(0 0 0 / 0.5);
+  /* ink laid over any fill while it is pressed (the `press` utility) */
+  --press-overlay: oklch(0 0 0 / 0.08);
   --shadow-outline: 0 1px 2px -0.5px rgb(0 0 0 / 0.06), 0 2px 3px -1px rgb(0 0 0 / 0.06);
   --shadow-raised: 0 8px 12px -4px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.1);
   --shadow-overlay: 0 16px 24px -4px rgb(0 0 0 / 0.12), 0 4px 8px -2px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.1);
@@ -144,7 +152,9 @@
   --on-inverted: oklch(0.16 0.0247 257.417);
   /* @generated colors dark end */
 
+  color-scheme: dark;
   --overlay: oklch(0 0 0 / 0.65);
+  --press-overlay: oklch(1 0 0 / 0.1);
   /* Dark surfaces are lit from above: a faint white top highlight, no drop shadow. */
   --shadow-outline: 0 -1px 2px -0.5px rgb(255 255 255 / 0.06), 0 -1px 3px -1px rgb(255 255 255 / 0.05);
   --shadow-raised: 0 -8px 12px -4px rgb(255 255 255 / 0.06), 0 -1px 2px rgb(255 255 255 / 0.08);
@@ -239,6 +249,8 @@
   --shadow-control: 0 0 #0000;
   --highlight-control: transparent;
   --shadow-field: 0 0 #0000;
+  --gradient-control: none;
+  --shadow-surface: 0 0 #0000;
   /* font families — explicit, overridable tokens (default to the platform system
      stacks Tailwind ships). `--font-sans` drives body text; `--font-mono` code. */
   --font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -294,6 +306,59 @@
 /* Anchored panels (Popover, Tooltip, menus, listboxes). The inline style from
    utils/panel.ts positions the panel next to its anchor; where anchor
    positioning is unsupported, the browser's centred popover position stays. */
+/* Pressed feedback: an ink layer over the fill while the pointer is down,
+   stronger than hover. Keeps a skin's sheen (--apogee-sheen) underneath.
+   iOS only fires :active when the page has a touchstart listener; the head
+   script in the Theme docs adds one. */
+@utility press {
+  &:active:not(:disabled, [aria-disabled='true']) {
+    background-image: linear-gradient(var(--press-overlay), var(--press-overlay)), var(--apogee-sheen, none);
+  }
+}
+
+/* Sliding selection: a row marked [data-apogee-slide] holds one
+   .apogee-slide element that follows the selected item (a checked radio's
+   label, or an aria-selected tab) by CSS anchor positioning and animates
+   between items. Without anchor support each item paints its own selected
+   background, as before. */
+.apogee-slide {
+  display: none;
+}
+@supports (anchor-name: --a) and (anchor-scope: all) {
+  [data-apogee-slide] {
+    position: relative;
+    anchor-scope: --apogee-selected;
+  }
+  [data-apogee-slide] :is(:checked + label, [aria-selected='true']) {
+    anchor-name: --apogee-selected;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+  [data-apogee-slide] :is(label, [role='tab']) {
+    position: relative;
+    z-index: 1;
+  }
+  .apogee-slide {
+    display: block;
+    position: absolute;
+    position-anchor: --apogee-selected;
+    inset-block: anchor(top) anchor(bottom);
+    inset-inline: anchor(start) anchor(end);
+    pointer-events: none;
+    transition: inset var(--duration-medium) var(--ease-standard);
+  }
+  /* An underline indicator: a 2px bar at the item's bottom edge. */
+  .apogee-slide[data-shape='line'] {
+    inset-block-start: calc(anchor(bottom) - 2px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-slide {
+      transition: none;
+    }
+  }
+}
+
 @layer components {
   /* Panels slide in from their anchor side (`data-placement` on the panel) and
      scale from that edge; without the attribute they scale from the centre. */

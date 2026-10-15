@@ -8,12 +8,13 @@ import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import { Star } from '@lucide/astro'
 
+// Stars are graphics: they take the vivid fill tokens, not the darker text ones.
 const colors = {
-  primary: 'var(--foreground-primary)',
-  neutral: 'var(--foreground-neutral)',
-  critical: 'var(--foreground-critical)',
-  positive: 'var(--foreground-positive)',
-  warning: 'var(--foreground-warning)',
+  primary: 'var(--background-primary)',
+  neutral: 'var(--background-neutral-highlighted)',
+  critical: 'var(--background-critical)',
+  positive: 'var(--background-positive)',
+  warning: 'var(--background-warning)',
 } as const
 
 /** @composable */

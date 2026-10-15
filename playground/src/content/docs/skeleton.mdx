@@ -104,8 +104,8 @@ go round, media keeps the card radius.
 - To announce a loading state to screen readers, wrap the group in your own
   `role="status"` region with a visually-hidden label (or use `Spinner` with a
   `label`, which does this for you) — Skeleton itself stays silent.
-- The pulse animation (Tailwind's `animate-pulse`) is paired with
-  `motion-reduce:animate-none`, so it stops under `prefers-reduced-motion`.
+- The block fades between `--background-neutral-faded` and a much lighter mix
+  of it with the page colour; it stops under `prefers-reduced-motion`.
 
 ## Tokens
 

@@ -58,7 +58,7 @@ const id = idProp ?? uid(Astro.locals)
   />
   <span
     class:list={[
-      "relative shrink-0 rounded-full transition-colors motion-reduce:transition-none motion-reduce:after:transition-none peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus peer-disabled:bg-disabled peer-aria-[invalid=true]:shadow-[0_0_0_1.5px_var(--border-critical)] after:absolute after:rounded-full after:transition-transform after:content-['']",
+      "relative shrink-0 rounded-full shadow-(--shadow-field) peer-checked:shadow-(--shadow-control) transition-colors motion-reduce:transition-none motion-reduce:after:transition-none peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus peer-disabled:bg-disabled peer-aria-[invalid=true]:shadow-[0_0_0_1.5px_var(--border-critical)] after:absolute after:rounded-full after:transition-transform after:content-['']",
       looks[variant],
       tracks[variant][size],
     ]}

@@ -31,6 +31,9 @@ const { variant = 'default', overlay = false, class: className, ...rest } = Astr
 const navId = uid(Astro.locals, 'apogee-sidebar')
 const dialogId = `${navId}-overlay`
 const slim = variant === 'slim'
+// The rail: square, centred items in the nav and the footer; labels stay for assistive tech.
+const rail =
+  'md:px-2 md:items-center md:[&_.apogee-navlink]:size-10 md:[&_.apogee-navlink]:justify-center md:[&_.apogee-navlink]:px-0 md:[&_.apogee-navlink-label]:sr-only md:[&_.apogee-navlink>.ms-auto]:hidden md:[&_.apogee-navgroup-chevron]:hidden md:[&_.apogee-navgroup-list]:ps-0'
 ---
 
 <aside
@@ -40,13 +43,14 @@ const slim = variant === 'slim'
     className,
   ]}
   data-overlay={overlay ? 'true' : undefined}
+  data-variant={variant}
   {...rest}
 >
   <div class:list={['flex items-center justify-between gap-4 border-b border-neutral p-4 md:border-0', slim && 'md:justify-center']}>
     <slot name="brand" />
     <button
       type="button"
-      class="apogee-sidebar-toggle grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden md:hidden"
+      class="apogee-sidebar-toggle press grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden md:hidden"
       aria-controls={overlay ? dialogId : navId}
       aria-haspopup={overlay ? 'dialog' : undefined}
       aria-expanded="false"
@@ -60,14 +64,13 @@ const slim = variant === 'slim'
     id={navId}
     class:list={[
       'apogee-sidebar-nav flex-col gap-0.5 p-4 pt-0 no-js:flex md:pt-4',
-      slim &&
-        'md:px-2 md:[&_.apogee-navlink]:justify-center md:[&_.apogee-navlink]:px-0 md:[&_.apogee-navlink-label]:sr-only md:[&_.apogee-navlink>.ms-auto]:hidden md:[&_.apogee-navgroup-chevron]:hidden md:[&_.apogee-navgroup-list]:ps-0',
+      slim && rail,
     ]}
   >
     <slot />
   </nav>
 
-  <div class:list={['apogee-sidebar-footer mt-auto border-t border-neutral p-4 no-js:block', slim && 'md:px-2']}>
+  <div class:list={['apogee-sidebar-footer mt-auto border-t border-neutral p-4 no-js:block', slim && rail]}>
     <slot name="footer" />
   </div>
 
@@ -115,6 +118,10 @@ const slim = variant === 'slim'
     }
     .apogee-sidebar-footer {
       display: block;
+    }
+    .apogee-sidebar[data-variant='slim'] .apogee-sidebar-footer {
+      display: flex;
+      flex-direction: column;
     }
   }
   .apogee-sidebar-overlay::backdrop {

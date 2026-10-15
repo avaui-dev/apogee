@@ -52,6 +52,10 @@ const { label, name, lines = true, class: className, ...rest } = Astro.props
   .apogee-tree .apogee-tree-chevron {
     transition: rotate var(--duration-fast) var(--ease-standard);
   }
+  /* Only the branch's own summary turns its chevron, not every open ancestor. */
+  .apogee-tree details[open] > summary > .apogee-tree-chevron {
+    rotate: 90deg;
+  }
   @media (prefers-reduced-motion: reduce) {
     .apogee-tree .apogee-tree-chevron {
       transition: none;
@@ -67,7 +71,7 @@ const { label, name, lines = true, class: className, ...rest } = Astro.props
     const items = () => [...tree.querySelectorAll<HTMLElement>('.apogee-tree-item')]
     const branchOf = (li: HTMLElement) => li.querySelector<HTMLDetailsElement>(':scope > details')
     const parentOf = (li: HTMLElement) => li.parentElement?.closest<HTMLElement>('.apogee-tree-item') ?? null
-    const checkOf = (li: HTMLElement) => li.querySelector<HTMLInputElement>(':scope > .apogee-tree-check')
+    const checkOf = (li: HTMLElement) => li.querySelector<HTMLInputElement>(':scope > .apogee-tree-check input')
     const childrenOf = (li: HTMLElement) => [
       ...(branchOf(li)?.querySelectorAll<HTMLElement>(':scope > .apogee-tree-group > .apogee-tree-item') ?? []),
     ]
@@ -81,7 +85,7 @@ const { label, name, lines = true, class: className, ...rest } = Astro.props
       li.setAttribute('aria-level', String(level))
       li.tabIndex = -1
       // Only the treeitem is a tab stop; its row, link and checkbox are reached through it.
-      for (const el of li.querySelectorAll<HTMLElement>(':scope > details > summary, :scope > .apogee-tree-row, :scope > .apogee-tree-check')) el.tabIndex = -1
+      for (const el of li.querySelectorAll<HTMLElement>(':scope > details > summary, :scope > .apogee-tree-row, :scope > .apogee-tree-check input')) el.tabIndex = -1
       const d = branchOf(li)
       if (d) {
         d.querySelector(':scope > .apogee-tree-group')?.setAttribute('role', 'group')
@@ -176,23 +180,23 @@ const { label, name, lines = true, class: className, ...rest } = Astro.props
     // Saved state: a checked parent checks its subtree, then parents follow children.
     for (const li of items()) {
       const c = checkOf(li)
-      if (c?.checked) for (const sub of li.querySelectorAll<HTMLInputElement>('.apogee-tree-group .apogee-tree-check')) if (!sub.disabled) sub.checked = true
+      if (c?.checked) for (const sub of li.querySelectorAll<HTMLInputElement>('.apogee-tree-group [data-tree-check]')) if (!sub.disabled) sub.checked = true
     }
     for (const li of items().reverse()) sync(li)
     announce()
     tree.addEventListener('change', (e) => {
       const box = e.target as HTMLInputElement
-      if (!box.matches('.apogee-tree-check')) return
+      if (!box.matches('[data-tree-check]')) return
       const li = box.closest<HTMLElement>('.apogee-tree-item')!
       box.indeterminate = false
-      for (const sub of li.querySelectorAll<HTMLInputElement>('.apogee-tree-group .apogee-tree-check')) {
+      for (const sub of li.querySelectorAll<HTMLInputElement>('.apogee-tree-group [data-tree-check]')) {
         if (sub.disabled) continue
         sub.checked = box.checked
         sub.indeterminate = false
       }
       for (let p = parentOf(li); p; p = parentOf(p)) sync(p)
       announce()
-      const values = [...tree.querySelectorAll<HTMLInputElement>('.apogee-tree-check:checked')].map((x) => x.value)
+      const values = [...tree.querySelectorAll<HTMLInputElement>('[data-tree-check]:checked')].map((x) => x.value)
       tree.dispatchEvent(new CustomEvent('apogee:tree-select', { bubbles: true, detail: { values } }))
     })
   })

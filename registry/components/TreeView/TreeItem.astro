@@ -9,6 +9,7 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronRight } from '@lucide/astro'
+import Checkbox from '../Checkbox/Checkbox.astro'
 
 interface Props extends HTMLAttributes<'li'> {
   /** @category content */
@@ -29,7 +30,7 @@ const branch = Astro.slots.has('default')
 const hasStart = Astro.slots.has('start')
 const hasEnd = Astro.slots.has('end')
 const row =
-  'apogee-tree-row flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 text-sm text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden'
+  'apogee-tree-row press flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 text-sm text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden'
 const Leaf = href && !disabled ? 'a' : 'div'
 // A disabled row takes no pointer input: it neither opens nor navigates.
 const rowClass = disabled ? `${row} pointer-events-none` : row
@@ -38,9 +39,9 @@ const rowClass = disabled ? `${row} pointer-events-none` : row
 <li class:list={['apogee-tree-item relative', disabled && 'opacity-50', className]} data-label={label} aria-disabled={disabled ? 'true' : undefined} {...rest}>
   {
     value !== undefined && (
-      <input
-        type="checkbox"
-        class="apogee-tree-check absolute top-2 start-8 z-10 size-4 accent-(--background-primary)"
+      <Checkbox
+        class="apogee-tree-check absolute top-1.5 start-8 z-10"
+        data-tree-check
         name={name}
         value={value}
         checked={checked}
@@ -53,7 +54,7 @@ const rowClass = disabled ? `${row} pointer-events-none` : row
     branch ? (
       <details class="apogee-tree-branch group/branch" open={open}>
         <summary class={rowClass}>
-          <ChevronRight class="apogee-tree-chevron size-4 shrink-0 text-neutral-faded group-open/branch:rotate-90 rtl:-scale-x-100" aria-hidden="true" />
+          <ChevronRight class="apogee-tree-chevron size-4 shrink-0 text-neutral-faded rtl:-scale-x-100" aria-hidden="true" />
           {value !== undefined && <span class="size-4 shrink-0" aria-hidden="true" />}
           {hasStart && <span class="flex shrink-0 text-neutral-faded [&>svg]:size-4"><slot name="start" /></span>}
           <span class="min-w-0 flex-1 truncate">{label}</span>

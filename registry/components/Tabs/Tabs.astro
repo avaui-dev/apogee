@@ -89,6 +89,16 @@ const {
 } = Astro.props
 const vertical = orientation === 'vertical'
 const underline = variant === 'bordered' || variant === 'borderless'
+// The selected fill slides between tabs (tokens file, CSS anchor positioning).
+// Vertical underline tabs keep their own start border.
+const slides = !(vertical && underline)
+const slideLooks = {
+  bordered: 'bg-primary',
+  borderless: 'bg-primary',
+  pills: 'rounded-md bg-neutral-faded',
+  'pills-raised': `${innerRadius['md-0.5']} bg-page shadow-outline dark:bg-neutral`,
+  primary: 'rounded-md bg-primary-faded',
+} as const
 const items = tabs.map((t, i) => {
   const o: TabItem = typeof t === 'string' ? { label: t } : t
   return { ...o, value: o.value ?? String(i) }
@@ -97,7 +107,7 @@ const found = items.findIndex((t) => t.value === value && !t.disabled && !t.href
 const initial = found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
 const id = uid(Astro.locals)
 const tabClass =
-  'inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:opacity-50'
+  'press inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:opacity-50'
 ---
 
 <div
@@ -108,6 +118,7 @@ const tabClass =
 >
   <div
     role="tablist"
+    data-apogee-slide={slides ? '' : undefined}
     aria-orientation={vertical ? 'vertical' : undefined}
     class:list={[
       'apogee-tabs-list flex [scrollbar-width:none]',
@@ -117,6 +128,7 @@ const tabClass =
       fullWidth && !vertical && 'w-full',
     ]}
   >
+    {slides && <span class:list={['apogee-slide', slideLooks[variant]]} data-shape={underline ? 'line' : undefined} aria-hidden="true" />}
     {
       items.map((t, i) => {
         const Tag = t.href ? 'a' : 'button'

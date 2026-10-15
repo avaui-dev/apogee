@@ -63,7 +63,7 @@ const id = idProp ?? uid(Astro.locals)
 const invalid = Boolean(error) || hasError
 const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
 // The steppers sit inside the box; the input keeps the size's height and text.
-const sizeClasses = fieldSizes[size].replace(/\bpx-\S+\s*/, '') + ' max-md:text-base'
+const sizeClasses = fieldSizes[size].replace(/\bpx-\S+\s*/, '')
 const vertical = orientation === 'vertical'
 const btn =
   'apogee-number-step grid place-items-center text-neutral-faded transition-colors no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus disabled:opacity-50 ' +

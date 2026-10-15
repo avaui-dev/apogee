@@ -140,7 +140,10 @@ A clear button in the `end` slot (the slot accepts buttons):
 
 Use the native pickers: `type="date"`, `type="time"` and
 `type="datetime-local"` give every platform its own accessible picker with
-zero JS. A range is two dates whose `min` and `max` point at each other on
+zero JS. The field takes the theme: its segments highlight in the primary
+tint while focused, and the calendar button fades in on hover. The popup
+calendar is browser UI and cannot be styled; it follows the theme's
+`color-scheme` (light or dark) and, in Chromium, the primary accent. A range is two dates whose `min` and `max` point at each other on
 the server.
 
 <Preview code={`<Input type="date" label="Start date" />

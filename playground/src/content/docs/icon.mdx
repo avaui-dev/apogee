@@ -7,7 +7,11 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Icon from '../../../../registry/components/Icon/Icon.astro'
-import { Camera, ChevronDown } from '@lucide/astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import FeaturedIcon from '../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
+import { Camera, ChevronDown, Heart, Star, Bell, Home, Settings, Search, Plus, Trash2, Download, ArrowRight, Check, Bookmark } from '@lucide/astro'
 
 <Preview code={`<Icon icon={Camera} label="Take photo" />
 <Icon icon={ChevronDown} />`}>
@@ -106,12 +110,73 @@ Inherits `currentColor`, so it picks up surrounding text colour:
   <span class="text-critical"><Icon icon={Camera} label="Camera" /> Camera off</span>
 </Preview>
 
-Sizing with a Tailwind class instead of the `size` prop, to stay in step with
-surrounding type:
+Sizes with Tailwind classes, in step with the type scale:
 
-```astro
-<Icon icon={Camera} class="size-4 text-neutral-faded" />
-```
+<Preview code={`<Icon icon={Star} class="size-3.5" />
+<Icon icon={Star} class="size-4" />
+<Icon icon={Star} class="size-5" />
+<Icon icon={Star} class="size-6" />
+<Icon icon={Star} class="size-8" />`}>
+  <div class="flex items-end gap-4">
+    {['size-3.5', 'size-4', 'size-5', 'size-6', 'size-8'].map((c) => <Icon icon={Star} class={c} label={c} />)}
+  </div>
+</Preview>
+
+Stroke width, and a constant stroke as the icon grows:
+
+<Preview code={`<Icon icon={Heart} strokeWidth={1} class="size-8" />
+<Icon icon={Heart} strokeWidth={1.5} class="size-8" />
+<Icon icon={Heart} strokeWidth={2} class="size-8" />
+<Icon icon={Heart} strokeWidth={2.5} class="size-8" />
+<Icon icon={Heart} absoluteStrokeWidth class="size-12" />`}>
+  <div class="flex items-center gap-4">
+    {[1, 1.5, 2, 2.5].map((w) => <Icon icon={Heart} strokeWidth={w} class="size-8" label={`Stroke ${w}`} />)}
+    <Icon icon={Heart} absoluteStrokeWidth class="size-12" label="Absolute stroke" />
+  </div>
+</Preview>
+
+Filled: `fill="currentColor"` for a solid glyph, or a tint of the colour for
+a selected state (the docs sidebar marks the current page this way):
+
+<Preview code={`<Icon icon={Bookmark} class="size-6" />
+<Icon icon={Bookmark} class="size-6 fill-current/20" />
+<Icon icon={Bookmark} class="size-6" fill="currentColor" />
+<Icon icon={Heart} color="critical" class="size-6" fill="currentColor" />`}>
+  <div class="flex items-center gap-4">
+    <Icon icon={Bookmark} class="size-6" label="Outline" />
+    <Icon icon={Bookmark} class="size-6 fill-current/20" label="Tinted" />
+    <Icon icon={Bookmark} class="size-6" fill="currentColor" label="Filled" />
+    <Icon icon={Heart} color="critical" class="size-6" fill="currentColor" label="Liked" />
+  </div>
+</Preview>
+
+In other components: buttons, a badge, a featured tile, a navigation link.
+
+<Preview code={`<Button><Plus slot="start" />New</Button>
+<Button variant="outline" color="neutral">Download<Download slot="end" /></Button>
+<Button iconOnly variant="ghost" color="critical" aria-label="Delete"><Trash2 /></Button>
+<Badge color="positive"><Check slot="start" />Paid</Badge>
+<FeaturedIcon color="primary"><Bell /></FeaturedIcon>
+<NavLink href="#" active><Home slot="start" />Home</NavLink>`}>
+  <div class="flex flex-wrap items-center gap-3">
+    <Button><Plus slot="start" />New</Button>
+    <Button variant="outline" color="neutral">Download<Download slot="end" /></Button>
+    <Button iconOnly variant="ghost" color="critical" aria-label="Delete"><Trash2 /></Button>
+    <Badge color="positive"><Check slot="start" />Paid</Badge>
+    <FeaturedIcon color="primary"><Bell /></FeaturedIcon>
+    <NavLink href="#" active><Home slot="start" />Home</NavLink>
+    <NavLink href="#"><Settings slot="start" />Settings</NavLink>
+  </div>
+</Preview>
+
+Directional icons mirror in right-to-left layouts with `rtl:-scale-x-100`:
+
+<Preview code={`<Button variant="link">Next<ArrowRight slot="end" class="rtl:-scale-x-100" /></Button>`}>
+  <div class="flex gap-6">
+    <Button variant="link">Next<ArrowRight slot="end" class="rtl:-scale-x-100" /></Button>
+    <div dir="rtl"><Button variant="link">التالي<ArrowRight slot="end" class="rtl:-scale-x-100" /></Button></div>
+  </div>
+</Preview>
 
 ## Accessibility
 

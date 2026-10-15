@@ -47,7 +47,7 @@ const lines = { solid: 'border-solid', dotted: 'border-s-2 border-dotted', none:
             <span
               class:list={[
                 'apogee-timeline-line absolute h-full w-0 -translate-x-1/2 border-s border-neutral rtl:translate-x-1/2',
-                avatar ? 'top-9 start-4' : 'top-3 start-1.5',
+                avatar ? 'top-9 start-4' : 'top-2.5 start-1.5',
                 lines[line],
               ]}
               aria-hidden="true"
@@ -56,9 +56,10 @@ const lines = { solid: 'border-solid', dotted: 'border-s-2 border-dotted', none:
           {avatar ? (
             <Avatar size="small" {...avatar} alt={avatar.alt ?? ''} class="relative z-10 shrink-0" />
           ) : (
-            <span class="relative z-10 mt-1.5 size-3 shrink-0 rounded-full border-2 border-primary bg-page" aria-hidden="true" />
+            <span class="relative z-10 mt-1 size-3 shrink-0 rounded-full border-2 border-primary bg-page" aria-hidden="true" />
           )}
-          <div class="min-w-0 flex-1">
+          {/* The first line (1.25rem) centres on the marker: 12px dot or 32px avatar. */}
+          <div class:list={['min-w-0 flex-1', avatar && 'pt-1.5']}>
             <div class="flex flex-wrap items-baseline gap-x-2">
               <p class="text-sm font-medium text-neutral">
                 {item.href ? (

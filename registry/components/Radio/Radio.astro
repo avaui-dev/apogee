@@ -65,6 +65,13 @@ const id = idProp ?? uid(Astro.locals)
   .apogee-radio:hover:not(:checked):not(:disabled) {
     border-color: var(--foreground-neutral-faded);
   }
+  .apogee-radio {
+    box-shadow: var(--shadow-field);
+  }
+  .apogee-radio:checked {
+    box-shadow: var(--shadow-control);
+    background-image: var(--gradient-control);
+  }
   .apogee-radio:checked {
     border-color: var(--background-primary);
     background-color: var(--background-primary);
