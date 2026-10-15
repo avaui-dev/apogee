@@ -1,0 +1,22 @@
+---
+/**
+ * Check email: Step 1. A verification link is on its way, with a way to type the code instead.
+ *
+ * @page verification
+ */
+import { Mail, ArrowLeft } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<AuthShell heading="Check your email" description="We sent a verification link to mara@example.com." pattern="grid">
+  <FeaturedIcon slot="brand" theme="outline" color="neutral" size="large"><Mail /></FeaturedIcon>
+
+  <Button href="#" size="large" fullWidth>Enter code manually</Button>
+
+  <Button slot="footer" href="#" variant="ghost" color="neutral">
+    <ArrowLeft slot="start" class="rtl:-scale-x-100" aria-hidden="true" />
+    Back to log in
+  </Button>
+</AuthShell>

@@ -1,0 +1,24 @@
+---
+title: "Check email"
+description: "Step 1. A verification link is on its way, with a way to type the code instead."
+group: Verification pages
+order: 1
+related: [sections/auth-shell, featured-icon]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="verification/check-email" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add verification/check-email
+```
+
+This copies the page to `src/components/apogee/pages/verification/` with everything it uses: AuthShell, Button, FeaturedIcon. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the "Back to log in" arrow flips under right-to-left text.
+- The address in the description tells the user where to look; swap in the real one from your session.

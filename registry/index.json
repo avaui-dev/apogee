@@ -2412,6 +2412,65 @@
         "@lucide/astro"
       ],
       "usesJs": false
+    },
+    "verification/check-email": {
+      "name": "verification/check-email",
+      "kind": "page",
+      "category": "verification",
+      "title": "Check email",
+      "description": "Step 1. A verification link is on its way, with a way to type the code instead.",
+      "files": [
+        "pages/verification/CheckEmail.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "verification/enter-code": {
+      "name": "verification/enter-code",
+      "kind": "page",
+      "category": "verification",
+      "title": "Enter code",
+      "description": "Step 2. A four-digit code, a verify button and a way to resend the email.",
+      "files": [
+        "pages/verification/EnterCode.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "PinInput"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "verification/success": {
+      "name": "verification/success",
+      "kind": "page",
+      "category": "verification",
+      "title": "Success",
+      "description": "Step 3. The email is verified; one button carries on.",
+      "files": [
+        "pages/verification/Success.astro"
+      ],
+      "registryDependencies": [
+        "AuthShell",
+        "Button",
+        "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
     }
   }
 }

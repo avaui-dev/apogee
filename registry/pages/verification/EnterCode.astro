@@ -1,0 +1,30 @@
+---
+/**
+ * Enter code: Step 2. A four-digit code, a verify button and a way to resend the email.
+ *
+ * @page verification
+ */
+import { Mail, ArrowLeft } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import PinInput from '../../components/PinInput/PinInput.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+---
+
+<AuthShell heading="Check your email" description="We sent a verification code to mara@example.com." pattern="grid">
+  <FeaturedIcon slot="brand" theme="outline" color="neutral" size="large"><Mail /></FeaturedIcon>
+
+  <form method="post" class="flex flex-col items-center gap-8">
+    <PinInput name="code" length={4} aria-label="Verification code" />
+    <Button type="submit" size="large" fullWidth>Verify email</Button>
+  </form>
+
+  <div slot="footer" class="flex flex-col items-center gap-8">
+    <p class="text-neutral-faded">Didn't receive the email? <Link href="#" underline="hover" class="font-semibold">Click to resend</Link></p>
+    <Button href="#" variant="ghost" color="neutral">
+      <ArrowLeft slot="start" class="rtl:-scale-x-100" aria-hidden="true" />
+      Back to log in
+    </Button>
+  </div>
+</AuthShell>

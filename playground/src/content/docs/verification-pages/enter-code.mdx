@@ -1,0 +1,25 @@
+---
+title: "Enter code"
+description: "Step 2. A four-digit code, a verify button and a way to resend the email."
+group: Verification pages
+order: 2
+related: [sections/auth-shell, pin-input, featured-icon]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="verification/enter-code" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add verification/enter-code
+```
+
+This copies the page to `src/components/apogee/pages/verification/` with everything it uses: AuthShell, Button, FeaturedIcon, Link, PinInput. Render it from one of your routes, or use **Copy code** above.
+
+## Accessibility
+
+- The page heading is the `h1`; the "Back to log in" arrow flips under right-to-left text.
+- The code boxes form one group named "Verification code"; arrows move between boxes and a pasted code fills them all. See [PinInput](/docs/pin-input).
+- "Click to resend" is a link: point it at your resend endpoint.

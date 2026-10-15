@@ -2301,3 +2301,14 @@ test('sign up password step will not submit until the rules and the match hold',
   await page.getByRole('textbox', { name: 'Confirm password' }).fill('longenough!')
   expect(await page.evaluate(() => document.querySelector('form').checkValidity())).toBe(true)
 })
+
+test('verification enter-code page: one h1, a named four-box code group, a way back', async ({ page }) => {
+  await page.goto('/examples/verification/enter-code')
+  await expect(page.locator('h1')).toHaveText('Check your email')
+  const group = page.getByRole('group', { name: 'Verification code' })
+  await expect(group.locator('input:not([type=hidden])')).toHaveCount(4)
+  await group.locator('input').first().focus()
+  await page.keyboard.type('4821')
+  expect(await page.locator('form input[type=hidden][name=code]').inputValue()).toBe('4821')
+  await expect(page.getByRole('link', { name: 'Back to log in' })).toBeVisible()
+})

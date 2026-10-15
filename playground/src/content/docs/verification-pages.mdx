@@ -1,0 +1,20 @@
+---
+title: Verification pages
+navTitle: Overview
+description: The three steps of email verification on the AuthShell section; check your email, enter the code, verified.
+group: Verification pages
+order: -1
+related: [sections/auth-shell, pin-input, sign-up-pages]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Three pages for one flow: the user signs up, you email a link and a code, and
+they either follow the link or type the code. Each page is a centred
+[AuthShell](/docs/sections/auth-shell) with one action and a way back.
+
+```sh
+npx @ava-ui/apogee add verification/check-email verification/enter-code verification/success
+```
+
+<DocsIndex group="Verification pages" self="verification-pages" />

@@ -1,0 +1,22 @@
+---
+/**
+ * Success: Step 3. The email is verified; one button carries on.
+ *
+ * @page verification
+ */
+import { CircleCheck, ArrowLeft } from '@lucide/astro'
+import AuthShell from '../../sections/AuthShell/AuthShell.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<AuthShell heading="Email verified" description="Your email is verified. Continue to set up your account." pattern="grid">
+  <FeaturedIcon slot="brand" theme="outline" color="positive" size="large"><CircleCheck /></FeaturedIcon>
+
+  <Button href="#" size="large" fullWidth>Continue</Button>
+
+  <Button slot="footer" href="#" variant="ghost" color="neutral">
+    <ArrowLeft slot="start" class="rtl:-scale-x-100" aria-hidden="true" />
+    Back to log in
+  </Button>
+</AuthShell>
