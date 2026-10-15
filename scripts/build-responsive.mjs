@@ -22,7 +22,6 @@ export const defs = {
   colSpan: { ...steps(COLS, 'col-span'), full: 'col-span-full' },
   rowSpan: steps([1, 2, 3, 4, 5, 6], 'row-span'),
   textSize: { small: 'text-sm', medium: 'text-base', large: 'text-lg' },
-  padding: steps(GAP, 'p'),
   // Hairline between children, by flex direction (two classes per cell).
   divided: {
     row: '[&>*+*]:border-s [&>*+*]:border-t-0',
@@ -36,9 +35,9 @@ export const defs = {
   // text and connector, so one render switches layout per breakpoint.
   stepsOrientation: {
     vertical:
-      'flex-col [--steps-li:row] [--steps-align:flex-start] [--steps-text:start] [--steps-flex:none] [--steps-gap:1rem] [--steps-cw:1px] [--steps-ch:100%] [--steps-ct:var(--steps-m)] [--steps-cs:calc(var(--steps-m)/2)]',
+      'flex-col [--steps-li:row] [--steps-align:flex-start] [--steps-text:start] [--steps-flex:none] [--steps-gap:1rem] [--steps-cw:1px] [--steps-ch:100%] [--steps-ct:var(--steps-m)] [--steps-cs:calc(var(--steps-m)/2)] [--steps-pb:var(--steps-gap-y)]',
     horizontal:
-      'flex-row [--steps-li:column] [--steps-align:center] [--steps-text:center] [--steps-flex:1_1_0%] [--steps-gap:0.5rem] [--steps-cw:100%] [--steps-ch:1px] [--steps-ct:calc(var(--steps-m)/2)] [--steps-cs:50%]',
+      'flex-row [--steps-li:column] [--steps-align:center] [--steps-text:center] [--steps-flex:1_1_0%] [--steps-gap:0.5rem] [--steps-cw:100%] [--steps-ch:1px] [--steps-ct:calc(var(--steps-m)/2)] [--steps-cs:50%] [--steps-pb:0px]',
   },
   // Dialog placement. Each cell sets every axis so a later breakpoint fully
   // overrides an earlier one; --apogee-dx/dy/scale feed the closed-state slide

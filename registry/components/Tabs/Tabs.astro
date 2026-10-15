@@ -19,6 +19,7 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import type { IconComponent } from '../utils/icon.ts'
 import { uid } from '../utils/uid.ts'
 import { innerRadius } from '../utils/radius.ts'
 import Badge from '../Badge/Badge.astro'
@@ -55,7 +56,7 @@ export interface TabItem {
   href?: string
   disabled?: boolean
   /** A Lucide (or any Astro) icon component, shown before the label. */
-  icon?: any
+  icon?: IconComponent
   /** A count or short text shown after the label, from `md`. */
   badge?: string | number
 }
@@ -107,7 +108,7 @@ const found = items.findIndex((t) => t.value === value && !t.disabled && !t.href
 const initial = found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
 const id = uid(Astro.locals)
 const tabClass =
-  'press inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:opacity-50'
+  'press inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:text-disabled'
 ---
 
 <div
@@ -242,6 +243,12 @@ const tabClass =
     }
 
     edgeFade(list)
+
+    // Manual mode: when focus leaves the tablist, the Tab stop returns to the selected tab.
+    if (manual) list.addEventListener('focusout', (e) => {
+      if (list.contains(e.relatedTarget as Node)) return
+      for (const t of tabs) t.tabIndex = t.getAttribute('aria-selected') === 'true' ? 0 : -1
+    })
 
     tabs.forEach((tab, i) => {
       if (!tab.hasAttribute('href')) tab.addEventListener('click', () => select(i))

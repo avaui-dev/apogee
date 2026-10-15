@@ -20,3 +20,9 @@ test('typing targets are ignored unless asked', () => {
   assert.equal(matchesHotkey(typing, 'mod+k', true), false)
   assert.equal(matchesHotkey(typing, 'mod+k', true, false), true)
 })
+
+test('alt combos match by physical key, since macOS Option types a symbol', () => {
+  const e = { key: 'π', code: 'KeyP', metaKey: false, ctrlKey: false, shiftKey: true, altKey: true, target: null }
+  assert.equal(matchesHotkey(e, 'alt+shift+p', true), true)
+  assert.equal(matchesHotkey({ ...e, key: '¡', code: 'Digit1', shiftKey: false }, 'alt+1', true), true)
+})

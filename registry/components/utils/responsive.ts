@@ -6,13 +6,17 @@ export type Table<T extends string | number> = Record<Bp, Record<T, string>>
 
 const ORDER = ['base', 'sm', 'md', 'lg', 'xl'] as const
 
-export function responsive<T extends string | number>(value: Responsive<T> | undefined, table: Table<T>): string[] {
+// Booleans read the table's 'true' / 'false' rows (wrap, for one).
+type Key<T> = T extends boolean ? `${T}` : T
+
+export function responsive<T extends string | number | boolean>(value: Responsive<T> | undefined, table: Table<Key<T> & (string | number)>): string[] {
   if (value === undefined) return []
-  if (typeof value !== 'object') return [table.base[value]]
+  const cell = (bp: Bp, v: T) => table[bp][(typeof v === 'boolean' ? String(v) : v) as Key<T> & (string | number)]
+  if (typeof value !== 'object') return [cell('base', value)]
   const out: string[] = []
   for (const bp of ORDER) {
     const v = value[bp]
-    if (v !== undefined) out.push(table[bp][v])
+    if (v !== undefined) out.push(cell(bp, v))
   }
   return out
 }

@@ -42,7 +42,7 @@
     "registry",
     "cli",
     "scripts",
-    "!scripts/*.test.mjs",
+    "!**/*.test.mjs",
     "CHANGELOG.md"
   ],
   "publishConfig": {

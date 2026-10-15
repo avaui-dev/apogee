@@ -17,6 +17,7 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import type { IconComponent as IconType } from '../utils/icon.ts'
 const tones = {
   primary: 'text-primary',
   neutral: 'text-neutral',
@@ -28,7 +29,7 @@ const tones = {
 } as const
 interface Props extends Omit<HTMLAttributes<'svg'>, 'size'> {
   /** A Lucide icon component. Omit to pass a raw <svg> as the slot. */
-  icon?: any
+  icon?: IconType
   /** Accessible label. Omit for decorative icons. */
   label?: string
   /** Lucide size (px). Prefer a Tailwind `size-*` class for consistency. */

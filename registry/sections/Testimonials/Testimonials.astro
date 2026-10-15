@@ -45,7 +45,7 @@ const shown = layout === 'single' ? items.slice(0, 1) : items
     shown.map((t) => (
       <figure class:list={['mx-auto flex max-w-3xl flex-col gap-6', align === 'center' && 'items-center text-center']}>
         <blockquote class="font-serif text-2xl leading-snug text-balance italic sm:text-3xl">
-          <p>“{t.quote}”</p>
+          <p><q>{t.quote}</q></p>
         </blockquote>
         <figcaption class="flex items-center gap-3 text-sm">
           <Avatar src={t.avatar} name={t.name} size="medium" />
@@ -61,7 +61,7 @@ const shown = layout === 'single' ? items.slice(0, 1) : items
       {shown.map((t) => (
         <figure class:list={['flex flex-col justify-between gap-6', card]}>
           <blockquote class="font-serif text-lg leading-relaxed">
-            <p>“{t.quote}”</p>
+            <p><q>{t.quote}</q></p>
           </blockquote>
           <figcaption class="flex items-center gap-3 text-sm">
             <Avatar src={t.avatar} name={t.name} size="small" />

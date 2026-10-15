@@ -36,7 +36,7 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
 const { eyebrow, heading, description, label, items, layout = 'accordion', align = 'start', background = 'page', spacing = 'large', headingLevel = 2, id: idProp, class: className, ...rest } = Astro.props
 const id = idProp ?? uid(Astro.locals, 'faq')
 const headingId = `${id}-heading`
-const itemAs = `h${Math.min(headingLevel + 1, 6)}` as 'h2' | 'h3' | 'h4' | 'h5'
+const itemAs = `h${heading ? Math.min(headingLevel + 1, 6) : headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 const solid = background === 'primary' || background === 'inverted'
 ---
 

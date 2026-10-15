@@ -66,7 +66,7 @@ const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolea
 const sizeClasses = fieldSizes[size].replace(/\bpx-\S+\s*/, '')
 const vertical = orientation === 'vertical'
 const btn =
-  'apogee-number-step grid place-items-center text-neutral-faded transition-colors no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus disabled:opacity-50 ' +
+  'apogee-number-step grid place-items-center text-neutral-faded transition-colors no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus disabled:text-disabled disabled:hover:bg-transparent ' +
   (vertical ? 'h-1/2 px-1.5' : 'aspect-square')
 ---
 

@@ -115,3 +115,10 @@ test('canonical finds a page by its category/slug key', () => {
   assert.equal(canonical(withPage, 'log-in/split-quote'), 'log-in/split-quote')
   assert.equal(canonical(withPage, 'login/SplitQuote'), 'log-in/split-quote')
 })
+
+test('list leaves out internal entries (names starting with _)', async () => {
+  const { execFileSync } = await import('node:child_process')
+  const out = execFileSync(process.execPath, [new URL('./index.mjs', import.meta.url).pathname, 'list'], { encoding: 'utf8' })
+  assert.match(out, /Hero/)
+  assert.doesNotMatch(out, /_shared/)
+})

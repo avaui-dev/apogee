@@ -13,7 +13,8 @@ import ColorPicker from '../../../../registry/components/ColorPicker/ColorPicker
 <JsNote fallback="The native colour input and the hex field each still work on their own, but don't stay in sync. Preset swatches and the eyedropper are hidden, since they only work through the script.">
   Keeps the native colour input and the hex field in sync both ways, applies
   a chosen preset swatch to both, and wires the eyedropper where the browser
-  has one.
+  has one. Every committed pick fires one `change` on the hex field, the input
+  that carries `name`.
 </JsNote>
 
 <Preview code={`<ColorPicker label="Accent color" name="accent" value="#3b82f6" />`}>

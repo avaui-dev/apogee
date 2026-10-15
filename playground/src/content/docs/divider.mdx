@@ -137,7 +137,9 @@ Between toolbar items:
   needed.
 - `vertical` is a `<div role="separator" aria-orientation="vertical">`, since
   `<hr>` only carries horizontal semantics.
-- A labelled divider is a `<div role="separator">` around the text. With
+- A labelled divider is a `<div role="separator">` around the text. A
+  separator hides its contents from screen readers, so the text also becomes
+  its `aria-label` (pass your own `aria-label` to override). With
   `interactive` the role is dropped: a separator must not contain a control,
   and the button keeps its own name and colour.
 
@@ -145,7 +147,7 @@ Between toolbar items:
 
 | Token | Used for |
 |---|---|
-| `--background-neutral` / `--background-neutral-faded` | Line colour per `color` |
+| `--border-neutral` / `--border-neutral-faded` | Line colour per `color` |
 | `--foreground-neutral-faded` | Label text |
 
 ## Do / Don't

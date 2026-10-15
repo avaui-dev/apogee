@@ -1,6 +1,6 @@
 ---
 title: ScrollArea
-description: A scroll container with a thin, token-coloured scrollbar. Zero JS.
+description: A scroll container with a thin, token-coloured scrollbar.
 group: Components
 order: 0
 related: [carousel, marquee, table]
@@ -32,8 +32,8 @@ No Apogee dependencies.
 ---
 import ScrollArea from '@/components/apogee/ScrollArea/ScrollArea.astro'
 
-<JsNote fallback="The box scrolls normally without the fade.">
-  With `fade`, sets `data-fade` on the box as it scrolls so the hidden edge fades.
+<JsNote fallback="The box scrolls normally, stays in the Tab order and shows no fade.">
+  Keeps the box in the Tab order only while its content overflows. With `fade`, sets `data-fade` on the box as it scrolls so the hidden edge fades.
 </JsNote>
 ---
 <ScrollArea height="20rem" aria-label="Members">
@@ -86,9 +86,18 @@ Every `scrollbar` value, and `fade`:
 
 `fade` with `direction="both"` fades the top and bottom edges only.
 
+## Short content
+
+When nothing overflows, the box leaves the Tab order (there is nothing to
+scroll); it rejoins as soon as its content grows past the height.
+
+<Preview code={`<ScrollArea maxHeight="8rem" aria-label="Two lines">…</ScrollArea>`}>
+  <div data-apogee-scroll-area="short"><ScrollArea maxHeight="8rem" aria-label="Two lines" class="rounded-md border border-neutral p-3 text-sm"><p>Line 1</p><p>Line 2</p></ScrollArea></div>
+</Preview>
+
 ## Accessibility
 
-- The container has `tabindex="0"` so keyboard users can focus it and scroll with the arrow keys; it shows the focus ring.
+- While its content overflows, the container has `tabindex="0"` so keyboard users can focus it and scroll with the arrow keys; it shows the focus ring. When nothing overflows it leaves the Tab order.
 - Give it an `aria-label` (or `aria-labelledby`) when nothing nearby names the region.
 
 ## Tokens

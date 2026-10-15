@@ -2,7 +2,8 @@
 /**
  * ScrollArea — a scroll container with a thin, token-coloured scrollbar. The
  * region is focusable so keyboard users can scroll it; give it an `aria-label`
- * when the surrounding context does not name it. Zero JS.
+ * when the surrounding context does not name it. A tiny script drops it from
+ * the Tab order while nothing overflows (without JS it always stays focusable).
 
  */
 import type { HTMLAttributes } from 'astro/types'
@@ -64,7 +65,16 @@ const limit = maxHeight ?? height
   import { island } from '../utils/island.ts'
   import { edgeFade } from '../utils/fade.ts'
 
-  island('.apogee-scroll-area[data-fade-axis]', (el) => {
-    edgeFade(el, el.dataset.fadeAxis === 'x' ? 'x' : 'y')
+  // Focusable only while it scrolls: no empty Tab stop on a short list.
+  island('.apogee-scroll-area', (el) => {
+    const sync = () => {
+      const scrolls = el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth
+      if (scrolls) el.setAttribute('tabindex', '0')
+      else el.removeAttribute('tabindex')
+    }
+    const watch = new ResizeObserver(sync)
+    for (const node of [el, ...el.children]) watch.observe(node)
+    // One island per element (island() runs once each), so the fade lives here too.
+    if (el.dataset.fadeAxis) edgeFade(el, el.dataset.fadeAxis === 'x' ? 'x' : 'y')
   })
 </script>

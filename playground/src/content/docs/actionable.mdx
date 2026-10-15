@@ -39,7 +39,7 @@ semantics, the focus ring and the disabled state.
 import Actionable from '@/components/apogee/Actionable/Actionable.astro'
 
 <JsNote fallback="The div is still focusable and clickable; only Enter and Space activation is missing. Prefer as='button' when you can.">
-  A div rendered as a button (`as="div"`) activates on Enter and Space through one document listener.
+  A div rendered as a button (`as="div"`) activates like a native button: Enter on key press, Space on key release.
 </JsNote>
 ---
 <Actionable href="/plans/pro" class="rounded-lg border border-neutral p-4">
@@ -86,8 +86,8 @@ import Actionable from '@/components/apogee/Actionable/Actionable.astro'
 
 ## States
 
-Focus shows the primary outline. Disabled halves the opacity and blocks the
-pointer. Hover and active are yours to add via `class`.
+Focus shows the primary outline. Disabled sets the disabled text colour and a
+not-allowed cursor. Hover and active are yours to add via `class`.
 
 ## Examples
 

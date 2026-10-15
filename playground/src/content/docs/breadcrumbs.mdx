@@ -13,6 +13,7 @@ import { Home, Folder } from '@lucide/astro'
 import Dropdown from '../../../../registry/components/Dropdown/Dropdown.astro'
 import DropdownItem from '../../../../registry/components/Dropdown/DropdownItem.astro'
 import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 import { ChevronsUpDown } from '@lucide/astro'
 
 <JsNote fallback="Every item renders and the … button is hidden, so nothing is unreachable.">
@@ -144,9 +145,9 @@ current account, with radio items.
 
 <Preview code={`<div class="flex items-center gap-2">
   <Dropdown id="acct" label="Switch workspace">
-    <button slot="anchor" popovertarget="acct" class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 text-sm">
-      <Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown class="size-3.5" />
-    </button>
+    <Button slot="anchor" popovertarget="acct" aria-haspopup="menu" variant="ghost" color="neutral" size="small">
+      <Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown slot="end" class="size-3.5" />
+    </Button>
     <DropdownItem indicator="radio" selected>Acme</DropdownItem>
     <DropdownItem indicator="radio">Globex</DropdownItem>
   </Dropdown>
@@ -155,7 +156,7 @@ current account, with radio items.
 </div>`}>
   <div class="flex flex-wrap items-center gap-2">
     <Dropdown id="bc-acct" label="Switch workspace">
-      <button slot="anchor" popovertarget="bc-acct" type="button" class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 text-sm font-medium whitespace-nowrap text-neutral hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown class="size-3.5 text-neutral-faded" aria-hidden="true" /></button>
+      <Button slot="anchor" popovertarget="bc-acct" aria-haspopup="menu" variant="ghost" color="neutral" size="small"><Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown slot="end" class="size-3.5 text-neutral-faded" aria-hidden="true" /></Button>
       <DropdownItem indicator="radio" selected>Acme</DropdownItem>
       <DropdownItem indicator="radio">Globex</DropdownItem>
     </Dropdown>

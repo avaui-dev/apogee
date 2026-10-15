@@ -24,10 +24,14 @@ interface Props extends HTMLAttributes<'div'> {
   variant?: 'default' | 'slim'
   /** On mobile, open the nav as a drawer over the page instead of inline. */
   overlay?: boolean
+  /** Name of the phone toggle button. @category content */
+  toggleLabel?: string
+  /** Name of the `overlay` drawer. @category content */
+  overlayLabel?: string
   class?: string
 }
 
-const { variant = 'default', overlay = false, class: className, ...rest } = Astro.props
+const { variant = 'default', overlay = false, toggleLabel = 'Toggle navigation', overlayLabel = 'Navigation', class: className, ...rest } = Astro.props
 const navId = uid(Astro.locals, 'apogee-sidebar')
 const dialogId = `${navId}-overlay`
 const slim = variant === 'slim'
@@ -54,7 +58,7 @@ const rail =
       aria-controls={overlay ? dialogId : navId}
       aria-haspopup={overlay ? 'dialog' : undefined}
       aria-expanded="false"
-      aria-label="Toggle navigation"
+      aria-label={toggleLabel}
     >
       <Menu class="size-5" aria-hidden="true" />
     </button>
@@ -80,7 +84,7 @@ const rail =
         id={dialogId}
         class:list={['apogee-sidebar-overlay bg-page p-0 text-neutral', tables.dialogPosition.base.start]}
         closedby="any"
-        aria-label="Navigation"
+        aria-label={overlayLabel}
       >
         <CloseButton size="large" command="close" commandfor={dialogId} class="absolute top-3 end-3" />
         <div class="apogee-sidebar-overlay-body flex h-full flex-col pt-14" />
@@ -135,6 +139,13 @@ const rail =
 <script>
   import { island } from '../utils/island.ts'
 
+  // One listener for the page: widening past the overlay breakpoint closes any open drawer.
+  const narrow = matchMedia('(max-width: 767px)')
+  narrow.addEventListener('change', () => {
+    if (narrow.matches) return
+    for (const d of document.querySelectorAll<HTMLDialogElement>('.apogee-sidebar-overlay[open]')) d.close()
+  })
+
   island('.apogee-sidebar-toggle', (toggle) => {
     const aside = toggle.closest<HTMLElement>('.apogee-sidebar')
     const nav = aside?.querySelector<HTMLElement>('.apogee-sidebar-nav')
@@ -142,7 +153,6 @@ const rail =
     const dialog = aside?.querySelector<HTMLDialogElement>('.apogee-sidebar-overlay')
     const body = dialog?.querySelector<HTMLElement>('.apogee-sidebar-overlay-body')
     if (!aside || !nav) return
-    const narrow = matchMedia('(max-width: 767px)')
     const set = (open: boolean) => {
       nav.dataset.open = String(open)
       toggle.setAttribute('aria-expanded', String(open))
@@ -161,9 +171,6 @@ const rail =
         const inside =
           event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom
         if (!inside) dialog.close()
-      })
-      narrow.addEventListener('change', () => {
-        if (!narrow.matches && dialog.open) dialog.close()
       })
       toggle.addEventListener('click', () => {
         if (dialog.open) return dialog.close()

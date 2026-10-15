@@ -34,7 +34,6 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
 const { as = 'div', direction = 'column', gap = 4, align, justify, wrap, class: className, ...rest } = Astro.props
 const Tag = as
 // Booleans are keyed 'true' / 'false' in the generated table.
-const wrapKey = wrap === undefined ? undefined : typeof wrap === 'object' ? Object.fromEntries(Object.entries(wrap).map(([k, v]) => [k, String(v)])) : String(wrap)
 ---
 
 <Tag
@@ -44,7 +43,7 @@ const wrapKey = wrap === undefined ? undefined : typeof wrap === 'object' ? Obje
     responsive(gap, tables.gap),
     responsive(align, tables.align),
     responsive(justify, tables.justify),
-    responsive(wrapKey as Responsive<'true' | 'false'> | undefined, tables.wrap),
+    responsive(wrap, tables.wrap),
     className,
   ]}
   {...rest}

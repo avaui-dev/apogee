@@ -49,7 +49,7 @@ the server just rendered. The badge on
 the trigger counts the applied filters.
 
 <Preview code={`<div class="flex flex-wrap items-end gap-3">
-  <div class="min-w-48 flex-1"><Input aria-label="Search" placeholder="Search"><Search slot="start" /></Input></div>
+  <div class="min-w-48 flex-1"><Input aria-label="Search projects" placeholder="Search"><Search slot="start" /></Input></div>
   <SegmentedControl aria-label="Period" options={['7d', '30d', '12m']} value="30d" />
   <Popover id="filters" width="20rem" placement="bottom-end">
     <Button slot="anchor" popovertarget="filters" variant="outline" color="neutral">
@@ -102,6 +102,23 @@ checklist.
     <Button variant="outline" color="neutral">Compare plans</Button>
     <Button>Upgrade</Button>
   </div>
+</Card>
+<Card mediaPosition="start">
+  <img slot="media" src="…" alt="" />
+  <Heading as="h3" size="h4">Invite your team</Heading>
+  <Text size="small" color="neutral-faded">Projects move faster with more hands.</Text>
+  <ul class="mt-3 flex flex-col gap-1.5 text-sm">
+    <li class="flex items-center gap-2"><CircleCheck class="size-4 text-positive" aria-hidden="true" />Shared boards</li>
+    …
+  </ul>
+  <Button class="mt-4" size="small">Send invites</Button>
+</Card>
+<Card>
+  <Heading as="h3" size="h4">Get the changelog</Heading>
+  <form class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end">
+    <div class="flex-1"><Input label="Email" type="email" placeholder="you@example.com" /></div>
+    <Button type="submit">Subscribe</Button>
+  </form>
 </Card>`} block>
   <Card>
     <Heading as="h3" size="h4">Upgrade to Pro</Heading>

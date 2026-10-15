@@ -1,7 +1,7 @@
 ---
 title: LogoCloud
 description: A row or grid of customer and partner logos.
-group: Sections
+group: Basic sections
 order: 2
 ---
 
@@ -24,7 +24,7 @@ npx @ava-ui/apogee add logo-cloud
 | Prop | Type | Default | Category | Description |
 |---|---|---|---|---|
 | `heading` | `string` | — | content | Short line above the logos. |
-| `items` | `{ src: string, alt: string, href?: string }[]` | — | content | Required. Logos, 32px tall. |
+| `items` | `{ src: string, alt: string, href?: string, width?: number }[]` | — | content | Required. Logos, 32px tall; `width` (at that height) reserves the space so the row does not shift as logos load. |
 | `label` | `string` | English | content | Landmark name when there is no heading. |
 | `layout` | `'row' \| 'grid'` | `'row'` | layout | Wrapping row or a 2/3/6-column grid. |
 | `background` | Section background | `'page'` | layout | On solid fills logos are inverted to white. |

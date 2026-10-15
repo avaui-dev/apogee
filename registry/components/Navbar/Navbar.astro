@@ -18,10 +18,14 @@ import { Menu } from '@lucide/astro'
 interface Props extends HTMLAttributes<'header'> {
   /** Links in the middle, brand and actions at the edges. @category layout */
   centered?: boolean
+  /** Name of the phone menu button. @category content */
+  menuLabel?: string
+  /** Name of the `secondary` nav row. @category content */
+  secondaryLabel?: string
   class?: string
 }
 
-const { centered = false, class: className, ...rest } = Astro.props
+const { centered = false, menuLabel = 'Toggle menu', secondaryLabel = 'Section', class: className, ...rest } = Astro.props
 const hasSecondary = Astro.slots.has('secondary')
 const menuId = uid(Astro.locals, 'apogee-nav')
 const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions') : ''
@@ -52,7 +56,7 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
         class="apogee-navbar-toggle press grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden md:hidden"
         aria-controls={menuId}
         aria-expanded="false"
-        aria-label="Toggle menu"
+        aria-label={menuLabel}
       >
         <Menu class="size-5" aria-hidden="true" />
       </button>
@@ -61,7 +65,7 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
   {
     hasSecondary && (
       <div class="apogee-navbar-secondary border-t border-neutral">
-        <nav class="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6" aria-label="Section">
+        <nav class="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6" aria-label={secondaryLabel}>
           <slot name="secondary" />
         </nav>
       </div>

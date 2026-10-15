@@ -12,11 +12,12 @@
  *
  * Commands take an `icon` (Lucide component) or `avatar`, a `description`
  * (inline, or on its own line with `stacked`) and a `shortcut` such as
- * `['mod', 'shift', 'p']`: it renders as key caps and runs the command from
+ * `['alt', 'shift', 'n']`: it renders as key caps and runs the command from
  * anywhere on the page. Slots: `empty` (no results), `footer` (key hints).
  * Search ignores accents ("resume" finds "Résumé").
  */
 import type { HTMLAttributes } from 'astro/types'
+import type { IconComponent } from '../utils/icon.ts'
 import { Search } from '@lucide/astro'
 import Avatar from '../Avatar/Avatar.astro'
 import Kbd from '../Kbd/Kbd.astro'
@@ -28,10 +29,10 @@ interface Command {
   keywords?: string
   id?: string
   /** A Lucide (or any Astro) icon component. */
-  icon?: any
+  icon?: IconComponent
   avatar?: { src?: string; name?: string }
   description?: string
-  /** Keys pressed together, e.g. ['mod', 'shift', 'p']: modifiers are `mod` (⌘ on macOS, Ctrl elsewhere), `shift` and `alt`. */
+  /** Keys pressed together, e.g. ['alt', 'shift', 'n']: modifiers are `mod` (⌘ on macOS, Ctrl elsewhere), `shift` and `alt`. */
   shortcut?: string[]
   /** Description on its own line under the label. */
   stacked?: boolean
@@ -122,7 +123,7 @@ for (const c of commands) {
                   {c.label}
                   {c.description && (
                     <span class:list={['text-neutral-faded', !c.stacked && 'ms-1.5']}>
-                      {!c.stacked && '· '}
+                      {!c.stacked && <span aria-hidden="true">· </span>}
                       {c.description}
                     </span>
                   )}
@@ -244,10 +245,18 @@ for (const c of commands) {
     }
 
     // Shortcut (mod + key) and any trigger with data-command-open.
-    const unbinds = [hotkey(`mod+${dialog.dataset.shortcut ?? 'k'}`, open, { ignoreInputs: false })]
+    const openCombo = `mod+${dialog.dataset.shortcut ?? 'k'}`
+    const unbinds = [hotkey(openCombo, open, { ignoreInputs: false })]
+    const aria: Record<string, string> = { mod: detectMac() ? 'Meta' : 'Control', shift: 'Shift', alt: 'Alt' }
     // Per-command shortcuts run from anywhere except while typing in a field.
     for (const it of items) {
       if (!it.dataset.shortcut) continue
+      // The key caps are hidden from assistive tech; the shortcut is announced from here instead.
+      it.setAttribute('aria-keyshortcuts', it.dataset.shortcut.split('+').map((k) => aria[k] ?? k.toUpperCase()).join('+'))
+      if (it.dataset.shortcut.toLowerCase() === openCombo) {
+        console.warn(`CommandPalette: "${it.dataset.label}" uses the palette's own shortcut (${openCombo}); not bound.`)
+        continue
+      }
       unbinds.push(
         hotkey(it.dataset.shortcut, () => {
           // Another open modal owns the keyboard; don't act behind it.

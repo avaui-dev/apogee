@@ -2,7 +2,7 @@
 /**
  * Meter — a native `<meter>` for a measurement in a known range (disk usage,
  * score, capacity). The value colours by the low/high thresholds
- * (accent → warning → danger). Zero JS. Use Progress for task progress; Meter
+ * (primary → warning → critical). Zero JS. Use Progress for task progress; Meter
  * for a static measurement.
  *
  * @composable
@@ -50,7 +50,7 @@ const { value, min = 0, max = 100, low, high, optimum, label, class: className, 
 
 <style>
   /* Styling a <meter> needs vendor pseudo-elements. Track = muted; the value
-     picks up accent / warning / danger from the threshold zones. */
+     picks up primary / warning / critical from the threshold zones. */
   .apogee-meter {
     -webkit-appearance: none;
     appearance: none;

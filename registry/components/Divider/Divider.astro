@@ -10,7 +10,8 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 
-const colors = { neutral: 'bg-neutral', 'neutral-faded': 'bg-neutral-faded' } as const
+// Lines read the border tokens, like every other rule and outline.
+const colors = { neutral: 'bg-(--border-neutral)', 'neutral-faded': 'bg-(--border-neutral-faded)' } as const
 const borders = { neutral: 'border-neutral', 'neutral-faded': 'border-neutral-faded' } as const
 const insetsH = { 0: 'my-0', 2: 'my-2', 4: 'my-4', 6: 'my-6', 8: 'my-8' } as const
 const insetsV = { 0: 'mx-0', 2: 'mx-2', 4: 'mx-4', 6: 'mx-6', 8: 'mx-8' } as const
@@ -49,6 +50,11 @@ const {
 } = Astro.props
 const labelled = Astro.slots.has('default')
 const line = colors[color]
+const content = labelled ? await Astro.slots.render('default') : ''
+// A separator's children are hidden from assistive tech, so its label text becomes its name.
+const name = labelled && !interactive && !rest['aria-label'] && !rest['aria-labelledby']
+  ? content.replace(/<[^>]*>/g, '').replace(/&(amp|lt|gt|quot|#39);/g, (_, e) => ({ amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'" })[e as 'amp']).replace(/\s+/g, ' ').trim() || undefined
+  : undefined
 ---
 
 {
@@ -57,6 +63,7 @@ const line = colors[color]
   ) : labelled ? (
     <div
       role={interactive ? undefined : 'separator'}
+      aria-label={name}
       class:list={[
         'apogee-divider flex items-center text-sm',
         interactive ? 'text-neutral' : 'text-neutral-faded',
@@ -68,7 +75,7 @@ const line = colors[color]
       {...rest}
     >
       {variant === 'line' && contentPosition !== 'start' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
-      <span class="shrink-0"><slot /></span>
+      <span class="shrink-0"><Fragment set:html={content} /></span>
       {variant === 'line' && contentPosition !== 'end' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
     </div>
   ) : (

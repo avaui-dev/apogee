@@ -43,7 +43,7 @@ const Tag = href ? 'a' : as
   class:list={[
     'inline-flex cursor-pointer appearance-none items-center bg-transparent text-start text-inherit focus-visible:outline-2 focus-visible:outline-focus',
     insetFocus ? 'focus-visible:-outline-offset-2' : 'focus-visible:outline-offset-2',
-    disabled && 'cursor-not-allowed opacity-50',
+    disabled && 'cursor-not-allowed text-disabled',
     fullWidth && 'flex w-full',
     className,
   ]}
@@ -53,12 +53,20 @@ const Tag = href ? 'a' : as
 </Tag>
 
 <script>
-  // A div acting as a button: Enter and Space activate it, like a native button.
+  // A div acting as a button, keyed like a native one: Enter fires on keydown,
+  // Space on keyup (keydown only stops the page from scrolling).
+  const target = (event: KeyboardEvent) => {
+    const el = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-apogee-actionable][role="button"]') : null
+    return el && el.getAttribute('aria-disabled') !== 'true' ? el : null
+  }
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Enter' && event.key !== ' ') return
-    const el = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-apogee-actionable][role="button"]') : null
-    if (!el || el.getAttribute('aria-disabled') === 'true') return
+    const el = target(event)
+    if (!el) return
     event.preventDefault()
-    el.click()
+    if (event.key === 'Enter') el.click()
+  })
+  document.addEventListener('keyup', (event) => {
+    if (event.key === ' ') target(event)?.click()
   })
 </script>

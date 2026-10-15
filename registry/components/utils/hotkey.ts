@@ -28,7 +28,10 @@ export function matchesHotkey(e: KeyboardEvent, combo: string, isMac = detectMac
   if (ignoreInputs && isTyping(e.target)) return false
   const mod = isMac ? e.metaKey : e.ctrlKey
   const other = isMac ? e.ctrlKey : e.metaKey
-  return e.key.toLowerCase() === h.key && mod === h.mod && !other && e.shiftKey === h.shift && e.altKey === h.alt
+  // Letters and digits also match by physical key: Option on macOS turns e.key into a symbol.
+  const physical = /^(?:Key|Digit)(.)$/.exec(e.code ?? '')?.[1]?.toLowerCase()
+  const key = e.key.toLowerCase() === h.key || (e.altKey && physical === h.key)
+  return key && mod === h.mod && !other && e.shiftKey === h.shift && e.altKey === h.alt
 }
 
 export function hotkey(

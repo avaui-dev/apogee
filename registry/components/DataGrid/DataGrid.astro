@@ -32,7 +32,8 @@ interface Props extends HTMLAttributes<'div'> {
 }
 
 const { headerStyle = 'normal', columns, rows, selectable = false, size = 'small', striped = false, class: className, ...rest } = Astro.props
-const pad = size === 'medium' ? 'px-4 py-3' : 'px-3 py-2'
+// Same cell padding as Table at each size.
+const pad = size === 'medium' ? 'px-4 py-3' : 'px-3 py-2.5'
 
 const alignMap = { start: 'text-start', end: 'text-end', center: 'text-center' }
 const cellAlign = (c: Column) => alignMap[c.align ?? 'start']

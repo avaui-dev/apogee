@@ -532,7 +532,9 @@
       "files": [
         "Icon/Icon.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -1216,6 +1218,7 @@
         "utils/field.ts",
         "utils/files.ts",
         "utils/hotkey.ts",
+        "utils/icon.ts",
         "utils/island.ts",
         "utils/menu.ts",
         "utils/panel.ts",

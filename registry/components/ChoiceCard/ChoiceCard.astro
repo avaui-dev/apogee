@@ -139,6 +139,13 @@ const showMark = indicator !== 'none'
     }
   }
   .apogee-choice:has(:disabled) .apogee-choice-mark {
-    opacity: 0.5;
+    border-color: var(--border-disabled);
+    background-color: var(--background-disabled);
+  }
+  .apogee-choice:has(:disabled) .apogee-choice-mark::before {
+    background-color: var(--foreground-disabled);
+  }
+  .apogee-choice:has(:disabled:checked) .apogee-choice-mark[data-indicator='radio'] {
+    background-image: radial-gradient(circle at center, var(--foreground-disabled) 0 32%, transparent 36%);
   }
 </style>

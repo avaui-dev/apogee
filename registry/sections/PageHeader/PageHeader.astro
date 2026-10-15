@@ -29,7 +29,8 @@ interface Props extends Omit<HTMLAttributes<'header'>, 'id'> {
 const { breadcrumbs, heading, description, tabs = [], tabsLabel = 'Page sections', layout = 'simple', spacing = 'small', headingLevel = 1, id: idProp, class: className, ...rest } = Astro.props
 const id = idProp ?? uid(Astro.locals, 'page-header')
 const headingId = `${id}-heading`
-const hasActions = layout === 'with-actions' && Astro.slots.has('actions')
+// The actions slot shows in every layout; `with-actions` names the common case.
+const hasActions = Astro.slots.has('actions')
 ---
 
 <Section as="header" id={id} aria-labelledby={headingId} spacing={spacing} class:list={['border-b border-neutral', className]} {...rest}>

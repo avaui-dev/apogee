@@ -62,7 +62,8 @@ import DropdownItem from '@/components/apogee/Dropdown/DropdownItem.astro'
 ## Anatomy
 
 - **Trigger** — a `<button popovertarget>` showing `label` and a chevron that
-  rotates while open. Or your own element in the `anchor` slot.
+  rotates while open. Or your own element in the `anchor` slot: give it
+  `popovertarget` (the menu `id`) and `aria-haspopup="menu"`.
 - **Menu** — the `role="menu"` popover, anchored to the trigger; default slot.
   Fill it with `DropdownItem`s (`role="menuitem"`), `DropdownSection`s
   (`role="group"`) and `DropdownSub`s (an item that opens a nested menu).
@@ -131,12 +132,12 @@ An item that opens a nested menu beside it. Slots: `start` (icon), default (item
 ## Custom trigger
 
 <Preview code={`<Dropdown id="dd-actions" label="Actions">
-  <Button slot="anchor" popovertarget="dd-actions" variant="outline" color="primary">Actions</Button>
+  <Button slot="anchor" popovertarget="dd-actions" aria-haspopup="menu" variant="outline" color="primary">Actions</Button>
   <DropdownItem href="#">Edit</DropdownItem>
   <DropdownItem href="#">Delete</DropdownItem>
 </Dropdown>`}>
   <Dropdown id="dd-actions" label="Actions">
-    <Button slot="anchor" popovertarget="dd-actions" variant="outline" color="primary">Actions</Button>
+    <Button slot="anchor" popovertarget="dd-actions" aria-haspopup="menu" variant="outline" color="primary">Actions</Button>
     <DropdownItem href="#">Edit</DropdownItem>
     <DropdownItem href="#">Delete</DropdownItem>
   </Dropdown>
@@ -294,7 +295,7 @@ item closes the menu, nested menus included.
 A user menu: a custom trigger, sections, a shortcut in the end slot and a critical last item:
 
 <Preview code={`<Dropdown id="dd-user" label="Account" placement="bottom-end">
-  <Button slot="anchor" popovertarget="dd-user" variant="ghost" color="neutral">Ada Lovelace</Button>
+  <Button slot="anchor" popovertarget="dd-user" aria-haspopup="menu" variant="ghost" color="neutral">Ada Lovelace</Button>
   <DropdownSection label="ada@example.com">
     <DropdownItem href="#"><User slot="start" /> Profile</DropdownItem>
     <DropdownItem href="#"><Settings slot="start" /> Settings <Kbd slot="end">⌘,</Kbd></DropdownItem>
@@ -304,7 +305,7 @@ A user menu: a custom trigger, sections, a shortcut in the end slot and a critic
   </DropdownSection>
 </Dropdown>`}>
   <Dropdown id="dd-user" label="Account" placement="bottom-end">
-    <Button slot="anchor" popovertarget="dd-user" variant="ghost" color="neutral">Ada Lovelace</Button>
+    <Button slot="anchor" popovertarget="dd-user" aria-haspopup="menu" variant="ghost" color="neutral">Ada Lovelace</Button>
     <DropdownSection label="ada@example.com">
       <DropdownItem href="#"><User slot="start" /> Profile</DropdownItem>
       <DropdownItem href="#"><Settings slot="start" /> Settings <Kbd slot="end">⌘,</Kbd></DropdownItem>

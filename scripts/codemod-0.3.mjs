@@ -54,6 +54,11 @@ export function rewrite(src) {
   return out
 }
 
+// Utilities still naming a 0.2 colour after the rewrite (`bg-accent/20`, `text-danger!`):
+// forms the tables above do not cover, for the person to fix by hand.
+const OLD = /(?<=^|[\s'"`\[:])(?:bg|text|border|outline|ring|divide|from|via|to|fill|stroke)-(?:accent|danger|success|muted|surface|foreground|background)(?:-[\w-]+)?(?:\/\d+)?!?(?=$|[\s'"`\]])/g
+export const leftovers = (src) => src.match(OLD) ?? []
+
 function walk(dir, exts, acc = []) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name)
@@ -77,6 +82,7 @@ if (process.argv[1] && realpathSync(resolve(process.argv[1])) === self) {
     : [join(process.cwd(), 'src')]
   const files = dirs.filter(existsSync).flatMap((d) => walk(d, exts))
   let changed = 0
+  let left = 0
   for (const f of files) {
     const before = readFileSync(f, 'utf8')
     const after = rewrite(before)
@@ -85,6 +91,11 @@ if (process.argv[1] && realpathSync(resolve(process.argv[1])) === self) {
       console.log(`${dry ? 'would change' : 'changed'} ${f}`)
       if (!dry) writeFileSync(f, after)
     }
+    const old = leftovers(after)
+    if (old.length) {
+      left += old.length
+      console.warn(`left for you in ${f}: ${[...new Set(old)].join(', ')}`)
+    }
   }
-  console.log(`${changed} file(s)`)
+  console.log(`${changed} file(s)${left ? `; ${left} old name(s) need a hand edit` : ''}`)
 }

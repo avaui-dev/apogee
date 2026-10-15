@@ -6,9 +6,9 @@ import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.as
 import Prose from '../../../registry/components/Prose/Prose.astro'
 import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
-import { Sun, Moon, Search, Menu, Box, Layers } from '@lucide/astro'
-import { docsIcons } from '../components/docs-icons'
+import { Sun, Moon, Search, Menu, Layers } from '@lucide/astro'
 import DocsCard from '../components/DocsCard.astro'
+import DocsNav from '../components/DocsNav.astro'
 
 interface NavGroup {
   group: string
@@ -107,35 +107,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
 
     <div class="mx-auto flex w-full max-w-7xl gap-8 px-4">
       <aside class="hidden w-64 shrink-0 md:block">
-        <nav class="sticky top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto py-8 pe-2" aria-label="Docs">
-          {
-            nav.map((g) => (
-              <div class="mb-8 last:mb-0">
-                <p class="px-2 pb-2 text-xs font-semibold tracking-wider text-neutral uppercase">{g.group}</p>
-                <div class="flex flex-col gap-0.5">
-                  {g.items.map((i) => {
-                    const Icon = docsIcons[i.id] ?? Box
-                    return (
-                    <NavLink href={i.href} class="px-2! py-1.5!">
-                      <Icon slot="start" class="size-4 text-neutral-faded" aria-hidden="true" />
-                      {i.title}
-                      {i.js && (
-                        <span
-                          slot="end"
-                          class="rounded bg-neutral-faded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-neutral"
-                          title="Uses JavaScript"
-                        >
-                          JS
-                        </span>
-                      )}
-                    </NavLink>
-                  )
-                  })}
-                </div>
-              </div>
-            ))
-          }
-        </nav>
+        <DocsNav nav={nav} class="sticky top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto py-8 pe-2" />
       </aside>
 
       <main class="min-w-0 flex-1 py-10">
@@ -218,35 +190,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
     </div>
 
     <Dialog id="docs-mobile-nav" position="start" title="Menu" class="md:hidden">
-      <nav aria-label="Docs">
-        {
-          nav.map((g) => (
-            <div class="mb-8 last:mb-0">
-              <p class="px-2 pb-2 text-xs font-semibold tracking-wider text-neutral uppercase">{g.group}</p>
-              <div class="flex flex-col gap-0.5">
-                {g.items.map((i) => {
-                  const Icon = docsIcons[i.id] ?? Box
-                  return (
-                  <NavLink href={i.href} class="px-2! py-1.5!">
-                    <Icon slot="start" class="size-4 text-neutral-faded" aria-hidden="true" />
-                    {i.title}
-                    {i.js && (
-                      <span
-                        slot="end"
-                        class="rounded bg-neutral-faded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-neutral"
-                        title="Uses JavaScript"
-                      >
-                        JS
-                      </span>
-                    )}
-                  </NavLink>
-                )
-                })}
-              </div>
-            </div>
-          ))
-        }
-      </nav>
+      <DocsNav nav={nav} />
     </Dialog>
 
     <CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
@@ -273,10 +217,49 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
       }
       for (const b of document.querySelectorAll('[data-skin-toggle]')) b.addEventListener('click', toggleSkin)
 
-      // Keep the current page's link in view inside the scrolling sidebar.
-      const sideNav = document.querySelector<HTMLElement>('aside nav[aria-label="Docs"]')
-      const current = sideNav?.querySelector<HTMLElement>('[aria-current="page"]')
-      if (sideNav && current) sideNav.scrollTop = Math.max(0, current.offsetTop - sideNav.clientHeight / 2)
+      // Sidebar groups: a click on a group header saves its new state for every copy of the nav.
+      document.addEventListener('click', (e) => {
+        const summary = (e.target as Element).closest('[data-docs-group] > summary')
+        const group = summary?.parentElement as HTMLDetailsElement | null | undefined
+        if (!group) return
+        const open = !group.open
+        let saved: Record<string, boolean> = {}
+        try { saved = JSON.parse(localStorage.getItem('apogee-docs-groups') || '{}') } catch {}
+        saved[group.dataset.docsGroup!] = open
+        try { localStorage.setItem('apogee-docs-groups', JSON.stringify(saved)) } catch {}
+        for (const twin of document.querySelectorAll<HTMLDetailsElement>(`[data-docs-group="${group.dataset.docsGroup}"]`)) {
+          if (twin !== group) twin.open = open
+        }
+      })
+
+      // Sidebar scroll: keep the reader's position across page loads (desktop aside and the
+      // mobile menu each keep their own). No saved position: only bring the current link into view.
+      const scrollers = [
+        { key: 'apogee-docs-scroll', el: document.querySelector<HTMLElement>('aside .docs-nav') },
+        { key: 'apogee-docs-scroll-mobile', el: document.querySelector<HTMLElement>('#docs-mobile-nav .docs-nav')?.closest<HTMLElement>('.apogee-dialog-body, dialog') ?? null },
+      ]
+      for (const { key, el } of scrollers) {
+        if (!el) continue
+        const restore = () => {
+          const saved = sessionStorage.getItem(key)
+          if (saved !== null) el.scrollTop = Number(saved)
+          else {
+            // Scroll only the sidebar (scrollIntoView would move the page too).
+            const link = el.querySelector('[aria-current="page"]')
+            if (!link) return
+            const l = link.getBoundingClientRect()
+            const box = el.getBoundingClientRect()
+            if (l.top < box.top) el.scrollTop += l.top - box.top
+            else if (l.bottom > box.bottom) el.scrollTop += l.bottom - box.bottom
+          }
+        }
+        if (el.matches('dialog, .apogee-dialog-body')) {
+          // The menu is closed on load: restore when it opens.
+          const dialog = el.closest('dialog')!
+          new MutationObserver(() => dialog.open && restore()).observe(dialog, { attributes: true, attributeFilter: ['open'] })
+        } else restore()
+        el.addEventListener('scroll', () => sessionStorage.setItem(key, String(el.scrollTop)), { passive: true })
+      }
 
       // Add a `#` anchor to each prose heading (progressive enhancement).
       for (const h of document.querySelectorAll<HTMLElement>(

@@ -152,13 +152,15 @@ calendar is browser UI and cannot be styled; it follows the theme's
 the server.
 
 <Preview code={`<Input type="date" label="Start date" />
+<Input type="time" label="Reminder" step="900" />
 <Input type="datetime-local" label="Meeting" />
 <div class="flex gap-3">
-  <Input type="date" label="From" max="2026-12-31" />
+  <Input type="date" label="From" value="2026-10-15" max="2026-12-31" />
   <Input type="date" label="To" min="2026-10-15" />
 </div>`}>
   <div class="grid gap-3 sm:grid-cols-2">
     <Input type="date" label="Start date" />
+    <Input type="time" label="Reminder" step="900" />
     <Input type="datetime-local" label="Meeting" />
     <Input type="date" label="From" value="2026-10-15" max="2026-12-31" />
     <Input type="date" label="To" min="2026-10-15" />
@@ -175,7 +177,7 @@ the server.
   (`<id>-hint` / `<id>-error`); error takes priority when both are set.
 - `error` sets `aria-invalid="true"` on the input and `role="alert"` on the
   message, so screen readers announce it immediately.
-- Focus shows a visible `focus-visible` ring (`--border-primary`).
+- Focus turns the border primary and thickens it inward (`--border-primary`); buttons in the `end` slot (clear, reveal) show the `--outline-color-focus` ring.
 - `variant="floating"` is pure CSS (`:placeholder-shown` + `peer`) — works
   identically with JS off.
 - No JS.
@@ -190,7 +192,7 @@ the server.
 | `--foreground-neutral-faded` | Placeholder, hint text, floating label (idle) |
 | `--foreground-critical` | Error border, error text, required `*` |
 | `--foreground-primary` | Floating label colour on focus |
-| `--border-primary` / `--outline-color-focus` | Focus border / focus ring |
+| `--border-primary` / `--outline-color-focus` | Field focus border / focus ring on `end`-slot buttons |
 
 ## Do / Don't
 

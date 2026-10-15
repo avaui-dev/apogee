@@ -25,8 +25,8 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** @category content */ description?: string
   /** Landmark name when there is no heading. @category content */ label?: string
   /** Name of the billing switch. @category content */ periodLabel?: string
-  /** Plans. @shape { name, price, annualPrice?, period?, description, features: string[], action: { label, href }, featured?: boolean, badge?: string } @category content */
-  items: { name: string; price: string; annualPrice?: string; period?: string; description: string; features: string[]; action: Action; featured?: boolean; badge?: string }[]
+  /** Plans. @shape { name, price, annualPrice?, period?, annualPeriod?, description, features: string[], action: { label, href }, featured?: boolean, badge?: string } @category content */
+  items: { name: string; price: string; annualPrice?: string; period?: string; annualPeriod?: string; description: string; features: string[]; action: Action; featured?: boolean; badge?: string }[]
   /** @category layout */ layout?: 'tiers' | 'tiers-toggle'
   /** Labels for the toggle. @category content */ periods?: { monthly: string; annual: string }
   /** @category layout */ align?: Align
@@ -74,7 +74,8 @@ const nameAs = `h${heading ? Math.min(headingLevel + 1, 6) : headingLevel}` as '
           <p class="flex items-baseline gap-1">
             <span class="text-4xl font-semibold tracking-tight tabular-nums" data-period="monthly">{plan.price}</span>
             {toggle && <span class="text-4xl font-semibold tracking-tight tabular-nums" data-period="annual" hidden>{plan.annualPrice ?? plan.price}</span>}
-            {plan.period && <span class:list={['text-sm', featured && solid ? 'text-neutral-faded' : faded]}>/ {plan.period}</span>}
+            {plan.period && <span class:list={['text-sm', featured && solid ? 'text-neutral-faded' : faded]} data-period={toggle && plan.annualPeriod ? 'monthly' : undefined}>/ {plan.period}</span>}
+            {toggle && plan.annualPeriod && <span class:list={['text-sm', featured && solid ? 'text-neutral-faded' : faded]} data-period="annual" hidden>/ {plan.annualPeriod}</span>}
           </p>
           <ul class="flex flex-col gap-2 text-sm">
             {plan.features.map((f) => (

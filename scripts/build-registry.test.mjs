@@ -4,8 +4,8 @@ import { readFileSync } from 'node:fs'
 
 const index = JSON.parse(readFileSync(new URL('../registry/index.json', import.meta.url), 'utf8'))
 
-test('utils pseudo-component ships its sixteen helpers and no tests', () => {
-  assert.deepEqual(index.components.utils.files, ['utils/clipboard.ts', 'utils/fade.ts', 'utils/field.ts', 'utils/files.ts', 'utils/hotkey.ts', 'utils/island.ts', 'utils/menu.ts', 'utils/panel.ts', 'utils/radius.ts', 'utils/responsive-tables.ts', 'utils/responsive.ts', 'utils/roving.ts', 'utils/scroll.ts', 'utils/table-enhance.ts', 'utils/theme.ts', 'utils/uid.ts'])
+test('utils pseudo-component ships its seventeen helpers and no tests', () => {
+  assert.deepEqual(index.components.utils.files, ['utils/clipboard.ts', 'utils/fade.ts', 'utils/field.ts', 'utils/files.ts', 'utils/hotkey.ts', 'utils/icon.ts', 'utils/island.ts', 'utils/menu.ts', 'utils/panel.ts', 'utils/radius.ts', 'utils/responsive-tables.ts', 'utils/responsive.ts', 'utils/roving.ts', 'utils/scroll.ts', 'utils/table-enhance.ts', 'utils/theme.ts', 'utils/uid.ts'])
 })
 
 test('components importing a helper depend on utils', () => {

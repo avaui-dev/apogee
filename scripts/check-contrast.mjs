@@ -2,7 +2,7 @@
 // AA contrast gate for Apogee's generated colour tokens.
 //
 // Reads both @generated blocks of registry/tokens/theme.css, composites alpha
-// surfaces over the page colour, derives every text/fill and focus pair for
+// surfaces over the page colour (and alpha foregrounds over that surface), derives every text/fill and focus pair for
 // every hue and mode, and exits non-zero on any AA miss.
 
 import { readFileSync } from 'node:fs'
@@ -40,7 +40,8 @@ for (const mode of ['light', 'dark']) {
   const over = (name) => composite(v[name], page)
   const check = (fg, bg, min, label) => {
     if (!v[fg] || !v[bg]) throw new Error(`missing token --${fg} or --${bg} in ${mode}`)
-    const ratio = contrast(v[fg], over(bg))
+    const back = over(bg)
+    const ratio = contrast(composite(v[fg], back), back)
     const pass = ratio >= min
     if (!pass) failed++
     rows.push({ mode, pair: `${fg} / ${bg}`, label, ratio: ratio.toFixed(2), min, status: pass ? 'PASS' : 'FAIL' })
@@ -51,6 +52,7 @@ for (const mode of ['light', 'dark']) {
     check(`foreground-${h}`, `background-${h}-faded`, 4.5, 'coloured text on its tint')
     check(`on-${h}`, `background-${h}`, 4.5, 'text on fill')
     check(`on-${h}`, `background-${h}-highlighted`, 4.5, 'text on hovered fill')
+    check('foreground-neutral-faded', `background-${h}-faded`, 4.5, 'secondary text on a tint (Alert body)')
   }
   check('foreground-neutral-faded', 'background-page', 4.5, 'secondary text')
   check('foreground-neutral-faded', 'background-neutral-faded', 4.5, 'secondary text on muted fill')

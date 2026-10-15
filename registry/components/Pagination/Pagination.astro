@@ -58,6 +58,7 @@ const numberCell = `${cell} max-md:hidden`
 ---
 
 <nav aria-label="Pagination" class:list={['flex items-center gap-1 tabular-nums', className]} {...rest}>
+  {/* On the first or last page the arrow stays for the layout but is hidden from assistive tech: nothing to do there. */}
   {
     currentPage > 1 ? (
       <a href={getHref(currentPage - 1)} rel="prev" aria-label={labels ? undefined : previousLabel} class:list={[cell, 'text-neutral hover:bg-neutral-faded-highlighted']}>
@@ -65,8 +66,9 @@ const numberCell = `${cell} max-md:hidden`
         {labels && <span class="max-md:sr-only">{previousLabel}</span>}
       </a>
     ) : (
-      <span aria-disabled="true" class:list={[cell, 'text-neutral-faded opacity-50']}>
-        <ChevronLeft class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+      <span aria-hidden="true" class:list={[cell, 'text-disabled']}>
+        <ChevronLeft class="size-4 rtl:-scale-x-100" />
+        {labels && <span class="max-md:sr-only">{previousLabel}</span>}
       </span>
     )
   }
@@ -95,8 +97,9 @@ const numberCell = `${cell} max-md:hidden`
         <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
       </a>
     ) : (
-      <span aria-disabled="true" class:list={[cell, 'text-neutral-faded opacity-50']}>
-        <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+      <span aria-hidden="true" class:list={[cell, 'text-disabled']}>
+        {labels && <span class="max-md:sr-only">{nextLabel}</span>}
+        <ChevronRight class="size-4 rtl:-scale-x-100" />
       </span>
     )
   }

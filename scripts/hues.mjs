@@ -11,5 +11,5 @@ export default {
   critical: 'red-600',
   warning: 'amber-400',
   positive: 'green-700',
-  neutral: 'slate',
+  neutral: 'mist',
 }

@@ -25,6 +25,8 @@ interface Props extends HTMLAttributes<'input'> {
   variant?: 'default' | 'headless'
   /** A single row (icon + text) instead of a stacked zone. @category layout */
   inline?: boolean
+  /** Refusal messages; `{name}` is the file, `{max}` the size limit. @category content */
+  messages?: { type?: string; size?: string; one?: string }
   class?: string
 }
 
@@ -35,19 +37,23 @@ const {
   preview = false,
   variant = 'default',
   inline = false,
+  messages = {},
   class: className,
   ...rest
 } = Astro.props
 const id = idProp ?? uid(Astro.locals, 'apogee-file')
 const hintId = `${id}-hint`
+const nameId = `${id}-name`
 // A refusal needs somewhere to be announced even when no hint is passed.
 const showHint = Boolean(hint) || Boolean(rest.accept) || maxSize !== undefined
+// The prompt alone names the input; the chosen file and the hint describe it.
+const describedby = showHint ? `${nameId} ${hintId}` : nameId
 ---
 
 <label
   for={id}
   class:list={[
-    'apogee-file flex cursor-pointer items-center justify-center gap-2 transition-colors data-[drag=true]:border-primary data-[drag=true]:bg-primary-faded-highlighted data-[invalid=true]:border-critical has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60 has-[:disabled]:hover:border-neutral',
+    'apogee-file flex cursor-pointer items-center justify-center gap-2 transition-colors data-[drag=true]:border-primary data-[drag=true]:bg-primary-faded-highlighted data-[invalid=true]:border-critical has-[:disabled]:cursor-not-allowed has-[:disabled]:border-disabled has-[:disabled]:bg-disabled has-[:disabled]:**:text-disabled has-[:disabled]:hover:border-disabled',
     inline ? 'flex-row p-3 text-start' : 'flex-col p-6 text-center',
     variant === 'default' && 'rounded-lg border border-dashed border-neutral bg-page hover:border-primary',
     className,
@@ -55,16 +61,21 @@ const showHint = Boolean(hint) || Boolean(rest.accept) || maxSize !== undefined
   data-hint={hint}
   data-max-size={maxSize}
   data-max-size-label={maxSize !== undefined ? readableSize(maxSize) : undefined}
+  data-msg-type={messages.type ?? '{name} is not an accepted file type'}
+  data-msg-size={messages.size ?? '{name} is larger than {max}'}
+  data-msg-one={messages.one ?? 'Drop one file'}
 >
-  <input id={id} type="file" class="apogee-file-input sr-only" aria-describedby={showHint ? hintId : undefined} {...rest} />
-  <slot>
-    <UploadCloud class="size-6 shrink-0 text-neutral-faded" aria-hidden="true" />
-    <span class="text-sm text-neutral">
-      <span class="font-medium text-primary">Browse</span> or drag a file here
-    </span>
-  </slot>
+  <input id={id} type="file" class="apogee-file-input sr-only" aria-labelledby={rest["aria-label"] ? undefined : `${id}-prompt`} aria-describedby={describedby} {...rest} />
+  <span id={`${id}-prompt`} class="contents">
+    <slot>
+      <UploadCloud class="size-6 shrink-0 text-neutral-faded" aria-hidden="true" />
+      <span class="text-sm text-neutral">
+        <span class="font-medium text-primary">Browse</span> or drag a file here
+      </span>
+    </slot>
+  </span>
   {preview && <img class="apogee-file-preview hidden size-16 rounded-md object-cover no-js:hidden" alt="" />}
-  <span class="apogee-file-name text-xs text-neutral-faded no-js:hidden"></span>
+  <span id={nameId} class="apogee-file-name text-xs text-neutral-faded no-js:hidden"></span>
   {
     showHint && (
       <span id={hintId} class="apogee-file-hint text-xs text-neutral-faded in-data-[invalid=true]:text-critical" aria-live="polite">
@@ -87,11 +98,12 @@ const showHint = Boolean(hint) || Boolean(rest.accept) || maxSize !== undefined
     const maxSize = Number(label.dataset.maxSize) || Infinity
     let url: string | null = null
 
+    const say = (template = '', name = '') => template.replace('{name}', name).replace('{max}', label.dataset.maxSizeLabel ?? '')
     // The first reason a file set is refused, or null when all pass.
     const reject = (files: File[]): string | null => {
       for (const f of files) {
-        if (!acceptsFile(input.accept, f)) return `${f.name} is not an accepted file type`
-        if (f.size > maxSize) return `${f.name} is larger than ${label.dataset.maxSizeLabel}`
+        if (!acceptsFile(input.accept, f)) return say(label.dataset.msgType, f.name)
+        if (f.size > maxSize) return say(label.dataset.msgSize, f.name)
       }
       return null
     }
@@ -135,7 +147,7 @@ const showHint = Boolean(hint) || Boolean(rest.accept) || maxSize !== undefined
       label.dataset.drag = 'false'
       const dropped = e.dataTransfer?.files
       if (!dropped?.length) return
-      const message = reject([...dropped])
+      const message = !input.multiple && dropped.length > 1 ? say(label.dataset.msgOne) : reject([...dropped])
       setInvalid(message)
       if (message) {
         // Never leave an earlier file in the input under a refusal message.

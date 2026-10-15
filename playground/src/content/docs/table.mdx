@@ -129,7 +129,7 @@ passes through to the `<table>` element (not the scroll wrapper `<div>`).
 | `size` | `'small' \| 'medium'` | `'small'` | Cell padding. |
 | `striped` | `boolean` | `false` | Alternate row fills. |
 | `headerFill` | `boolean` | `true` | A faded fill behind the header row, matching DataGrid. |
-| `sortable` | `boolean` | `false` | Every header with text becomes a sort button. A cell's `data-value` is its sort key (use it when the cell holds an avatar or badge); `data-sortable="false"` on a header skips it. |
+| `sortable` | `boolean` | `false` | Every header with text becomes a sort button. A cell's `data-value` is its sort key (use it when the cell holds an avatar or badge); `data-sortable="false"` on a header skips it, and a header holding a control (a checkbox, a link) is never wrapped. |
 | `selectable` | `boolean` | `false` | Wires `<Checkbox data-row>` cells and one `<Checkbox data-all>` (indeterminate when some rows are checked) and tints checked rows. |
 | `class` | `string` | — | Extra classes on the `<table>`, merged last. |
 

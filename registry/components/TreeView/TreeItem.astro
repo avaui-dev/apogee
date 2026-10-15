@@ -36,7 +36,7 @@ const Leaf = href && !disabled ? 'a' : 'div'
 const rowClass = disabled ? `${row} pointer-events-none` : row
 ---
 
-<li class:list={['apogee-tree-item relative', disabled && 'opacity-50', className]} data-label={label} aria-disabled={disabled ? 'true' : undefined} {...rest}>
+<li class:list={['apogee-tree-item relative', disabled && 'text-disabled', className]} data-label={label} aria-disabled={disabled ? 'true' : undefined} {...rest}>
   {
     value !== undefined && (
       <Checkbox

@@ -145,17 +145,25 @@ const same = (a: string, b: string) => a.toLowerCase() === b.toLowerCase()
     if (!swatch || !hex) return
     const radios = [...root.querySelectorAll<HTMLInputElement>('.apogee-color-swatches input')]
     // One path for every source: native picker, typed hex, swatch, eyedropper.
-    const set = (value: string, from?: HTMLInputElement) => {
+    // `change` fires on the hex field (the one with the name), once per committed pick.
+    const set = (value: string, from?: HTMLInputElement, commit = true) => {
       if (from !== swatch) swatch.value = value.toLowerCase()
       if (from !== hex) hex.value = value.toUpperCase()
       for (const r of radios) r.checked = r.value.toLowerCase() === value.toLowerCase()
-      if (from !== swatch) swatch.dispatchEvent(new Event('change', { bubbles: true }))
+      if (commit && from !== hex) hex.dispatchEvent(new Event('change', { bubbles: true }))
     }
-    swatch.addEventListener('input', () => set(swatch.value, swatch))
+    swatch.addEventListener('input', () => set(swatch.value, swatch, false))
+    swatch.addEventListener('change', (e) => {
+      e.stopPropagation()
+      set(swatch.value, swatch)
+    })
     hex.addEventListener('input', () => {
       if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) set(hex.value, hex)
     })
-    for (const r of radios) r.addEventListener('change', () => r.checked && set(r.value))
+    for (const r of radios) r.addEventListener('change', (e) => {
+      e.stopPropagation()
+      if (r.checked) set(r.value)
+    })
 
     const picker = root.querySelector<HTMLButtonElement>('.apogee-color-eyedropper')
     if (picker) {

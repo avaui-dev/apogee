@@ -9,8 +9,8 @@ project.
 
 ## Install (copy-in)
 
-Components are copied into your project — you own the source (shadcn / Starwind
-model). Requires Tailwind v4.
+Components are copied into your project and you own the source. Requires
+Tailwind v4.
 
 ```sh
 npx @ava-ui/apogee init                 # design tokens + config + setup steps

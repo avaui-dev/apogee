@@ -722,7 +722,7 @@ test('carousel visibleItems sizes slides per breakpoint', async ({ browser }) =>
 
 test('pagination keeps seven cells; file upload headless has no dashed box', async ({ page }) => {
   await page.goto('/docs/pagination')
-  for (const c of ['1', '5', '20']) await expect(page.locator(`[data-apogee-pagination="p${c}"] nav > :not([rel]):not([aria-label]):not([aria-disabled]):not(.apogee-pagination-summary)`)).toHaveCount(7)
+  for (const c of ['1', '5', '20']) await expect(page.locator(`[data-apogee-pagination="p${c}"] nav > :not([rel]):not([aria-label]):not([aria-hidden]):not(.apogee-pagination-summary)`)).toHaveCount(7)
   await page.goto('/docs/file-upload')
   await expect(page.locator('[data-apogee-file="headless"] .apogee-file')).not.toHaveClass(/border-dashed/)
 })
@@ -1674,7 +1674,8 @@ test('command palette rich items, accent folding, empty slot and item hotkey', a
   await expect(dlg.locator('.apogee-command-footer')).toBeVisible()
   await page.keyboard.press('Escape')
   await page.evaluate(() => document.addEventListener('apogee:command', (e) => (window.__cmd = e.detail.id)))
-  await page.keyboard.press('ControlOrMeta+Shift+KeyP')
+  await expect(dlg.locator('.apogee-command-item[data-id="new-project"]')).toHaveAttribute('aria-keyshortcuts', 'Alt+Shift+N')
+  await page.keyboard.press('Alt+Shift+KeyN')
   expect(await page.evaluate(() => window.__cmd)).toBe('new-project')
 })
 
@@ -1779,7 +1780,7 @@ test('review L: palette item hotkeys stay quiet behind another modal', async ({ 
     d.showModal()
     d.querySelector('input').blur()
   })
-  await page.keyboard.press('ControlOrMeta+Shift+KeyP')
+  await page.keyboard.press('Alt+Shift+KeyN')
   expect(await page.evaluate(() => window.__cmd)).toBeUndefined()
 })
 
@@ -2384,4 +2385,157 @@ test('404 search posts a query; the default NotFound still renders unchanged', a
   await page.goto('/showcase/404')
   await expect(page.locator('h1')).toHaveText('Page not found')
   await expect(page.getByText('404', { exact: true })).toBeVisible()
+})
+
+// ---- Minor sweep (2026-10-15) ----
+
+test('actionable div: Enter fires on keydown, Space only on keyup', async ({ page }) => {
+  await page.goto('/docs/actionable')
+  const div = page.locator('[data-apogee-actionable][role="button"]:not([aria-disabled])').first()
+  await div.evaluate((el) => { window.__clicks = 0; el.addEventListener('click', () => window.__clicks++) })
+  await div.focus()
+  await page.keyboard.down(' ')
+  expect(await page.evaluate(() => window.__clicks)).toBe(0)
+  await page.keyboard.up(' ')
+  expect(await page.evaluate(() => window.__clicks)).toBe(1)
+  await page.keyboard.press('Enter')
+  expect(await page.evaluate(() => window.__clicks)).toBe(2)
+})
+
+test('scroll area joins the Tab order only while it overflows', async ({ page }) => {
+  await page.goto('/docs/scroll-area')
+  await expect(page.locator('[data-apogee-scroll-area="short"] .apogee-scroll-area')).not.toHaveAttribute('tabindex')
+  await expect(page.locator('[data-apogee-scroll-area="fade"] .apogee-scroll-area')).toHaveAttribute('tabindex', '0')
+})
+
+test('labelled divider is named by its text', async ({ page }) => {
+  await page.goto('/docs/divider')
+  await expect(page.locator('[data-apogee-divider="dual"] [role="separator"]')).toHaveAttribute('aria-label', 'Today')
+  await expect(page.locator('[data-apogee-divider="interactive"] .apogee-divider')).not.toHaveAttribute('aria-label')
+})
+
+test('file upload: named by its prompt only; several files dropped on a single input are refused', async ({ page }) => {
+  await page.goto('/docs/file-upload')
+  const input = page.locator('[data-apogee-file="validated"] input[type="file"]')
+  await expect(input).toHaveAccessibleName(/browse/i)
+  const name = await input.evaluate((el) => document.getElementById(el.getAttribute('aria-labelledby')).textContent)
+  expect(name).not.toMatch(/PNG|JPG|MB/)
+  const label = page.locator('[data-apogee-file="no-hint"] label.apogee-file')
+  await label.evaluate((el) => {
+    const dt = new DataTransfer()
+    dt.items.add(new File(['a'], 'a.pdf', { type: 'application/pdf' }))
+    dt.items.add(new File(['b'], 'b.pdf', { type: 'application/pdf' }))
+    el.dispatchEvent(new DragEvent('drop', { dataTransfer: dt, bubbles: true, cancelable: true }))
+  })
+  await expect(label).toHaveAttribute('data-invalid', 'true')
+  expect(await label.locator('input').evaluate((el) => el.files.length)).toBe(0)
+})
+
+test('manual tabs: the Tab stop returns to the selected tab when focus leaves', async ({ page }) => {
+  await page.goto('/docs/tabs')
+  const tabs = page.locator('[data-apogee-tabs="manual"] [role="tab"]')
+  await tabs.first().focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(tabs.nth(1)).toBeFocused()
+  await page.keyboard.press('Tab')
+  expect(await tabs.evaluateAll((els) => els.map((e) => e.tabIndex))).toEqual([0, -1, -1])
+})
+
+test('toast: title added by update(); a NaN progress reads 0%', async ({ page }) => {
+  await page.goto('/docs/toast')
+  const id = await page.evaluate(() => window.apogeeToast('Uploading', { progress: Number.NaN }))
+  const toast = page.locator('[data-apogee-toaster] [role="status"]').last()
+  await expect(toast.locator('[role="progressbar"]')).toHaveAttribute('aria-valuenow', '0')
+  await expect(toast.locator('.apogee-toast-title')).toBeHidden()
+  await page.evaluate((i) => window.apogeeToast.update(i, { title: 'Upload' }), id)
+  await expect(toast.locator('.apogee-toast-title')).toHaveText('Upload')
+})
+
+test('color picker: a swatch fires one change, on the named hex field', async ({ page }) => {
+  await page.goto('/docs/color-picker')
+  const root = page.locator('[data-apogee-color-picker="swatches"]')
+  await root.evaluate((el) => { window.__changes = []; el.addEventListener('change', (e) => window.__changes.push(e.target.name || e.target.type)) })
+  await root.locator('.apogee-color-swatches label').nth(1).click()
+  expect(await page.evaluate(() => window.__changes)).toEqual(['label'])
+})
+
+test('pagination: a disabled edge is hidden from assistive tech', async ({ page }) => {
+  await page.goto('/docs/pagination')
+  await expect(page.locator('nav[aria-label="Pagination"] > span[aria-hidden="true"]').first()).toBeAttached()
+  await expect(page.locator('nav[aria-label="Pagination"] [aria-disabled]')).toHaveCount(0)
+})
+
+test('disabled checkbox uses the disabled tokens, not opacity', async ({ page }) => {
+  await page.goto('/docs/checkbox')
+  const box = page.locator('input.apogee-checkbox:disabled').first()
+  expect(await box.evaluate((el) => getComputedStyle(el).opacity)).toBe('1')
+  expect(await box.evaluate((el) => getComputedStyle(el).borderTopColor)).toBe(await page.evaluate(() => {
+    const p = document.createElement('p'); p.style.color = 'var(--border-disabled)'; document.body.append(p)
+    const c = getComputedStyle(p).color; p.remove(); return c
+  }))
+})
+
+test('button card holds no block elements; horizontal steps have no bottom padding', async ({ page }) => {
+  await page.goto('/docs/card')
+  await expect(page.locator('[data-apogee-card="button"] button div')).toHaveCount(0)
+  await page.setViewportSize({ width: 1024, height: 800 })
+  await page.goto('/docs/steps')
+  const li = page.locator('[data-apogee-steps="dot"] li').first()
+  expect(await li.evaluate((el) => getComputedStyle(el).paddingBottom)).toBe('0px')
+  const vertical = page.locator('[data-apogee-steps="status"] li').first()
+  expect(await vertical.evaluate((el) => getComputedStyle(el).paddingBottom)).not.toBe('0px')
+})
+
+test('timeline: free-text times without datetime are not <time> elements', async ({ page }) => {
+  await page.goto('/docs/timeline')
+  await expect(page.locator('.apogee-timeline time:not([datetime])')).toHaveCount(0)
+})
+
+test('docs sidebar: groups collapse with a count, all open by default, and remember the reader', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/docs/button')
+  const groups = page.locator('aside .docs-nav [data-docs-group]')
+  const components = page.locator('aside [data-docs-group="components"]')
+  expect(await groups.evaluateAll((els) => els.every((d) => d.open))).toBe(true)
+  // Close Foundations so the test can reopen it below.
+  await page.locator('aside [data-docs-group="foundations"] summary').click()
+  expect(await components.locator('summary [data-docs-count]').textContent()).toBe(String(await components.locator('a.apogee-navlink').count()))
+  await expect(page.locator('aside [data-docs-group="basic-sections"] summary')).toContainText('Basic sections')
+  // Collapse the current group, open another; both survive a reload and a page change.
+  await components.locator('summary').click()
+  await page.locator('aside [data-docs-group="foundations"] summary').click()
+  await page.reload()
+  await expect(components).not.toHaveAttribute('open', '')
+  await expect(page.locator('aside [data-docs-group="foundations"]')).toHaveAttribute('open', '')
+  await page.locator('aside [data-docs-group="foundations"] a').first().click()
+  await expect(page.locator('aside [data-docs-group="components"]')).not.toHaveAttribute('open', '')
+  expect(await groups.count()).toBeGreaterThan(5)
+})
+
+test('docs sidebar keeps its scroll position across link clicks, on desktop and in the mobile menu', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 700 })
+  await page.goto('/docs/accordion')
+  expect(await page.evaluate(() => scrollY)).toBe(0) // restoring the sidebar never scrolls the page
+  const nav = page.locator('aside .docs-nav')
+  await nav.evaluate((el) => (el.scrollTop = 400))
+  const top = await nav.evaluate((el) => el.scrollTop)
+  // A DOM click: Playwright's own click would first scroll the link into view.
+  await nav.locator('a[href="/docs/avatar"]').evaluate((a) => a.click())
+  await page.waitForURL('**/docs/avatar')
+  expect(await page.locator('aside .docs-nav').evaluate((el) => el.scrollTop)).toBe(top)
+
+  await page.setViewportSize({ width: 390, height: 700 })
+  // On a phone the docs menu button sits in the navbar's own menu.
+  const openMenu = async () => {
+    await page.locator('button[aria-label="Toggle menu"]').click()
+    await page.locator('[commandfor="docs-mobile-nav"]:visible').first().click()
+  }
+  await openMenu()
+  const body = page.locator('#docs-mobile-nav .apogee-dialog-body')
+  await body.evaluate((el) => (el.scrollTop = 300))
+  const mtop = await body.evaluate((el) => el.scrollTop)
+  await page.locator('#docs-mobile-nav a[href="/docs/badge"]').evaluate((a) => a.click())
+  await page.waitForURL('**/docs/badge')
+  await openMenu()
+  await expect.poll(() => page.locator('#docs-mobile-nav .apogee-dialog-body').evaluate((el) => el.scrollTop)).toBe(mtop)
 })

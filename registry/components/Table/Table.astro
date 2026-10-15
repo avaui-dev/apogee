@@ -6,7 +6,8 @@
  *
  * `sortable` turns every header with text into a sort button (the cell's
  * `data-value` is the sort key when the cell holds rich content; add
- * `data-sortable="false"` to a header to skip it). `selectable` wires
+ * `data-sortable="false"` to a header to skip it; headers holding a control are
+ * skipped too). `selectable` wires
  * author-placed `<Checkbox data-row>` cells and one `<Checkbox data-all>`.
  *
  * @composable
@@ -142,7 +143,9 @@ const sizes = {
     const tpl = wrap.querySelector<HTMLTemplateElement>('.apogee-table-sort-template')
     if (tpl) {
       for (const th of wrap.querySelectorAll<HTMLElement>('thead th')) {
+        // Skip opted-out and empty headers, and any holding a control (no button inside a button).
         if (th.dataset.sortable === 'false' || !th.textContent?.trim()) continue
+        if (th.querySelector('a, button, input, select, textarea, [tabindex]')) continue
         const btn = tpl.content.firstElementChild!.cloneNode(true) as HTMLElement
         btn.querySelector('.apogee-table-sort-label')!.append(...th.childNodes)
         th.append(btn)

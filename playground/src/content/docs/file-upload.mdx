@@ -56,6 +56,7 @@ Any other native `<input type="file">` attribute (e.g. `required`, `disabled`,
 | `preview` | `boolean` | `false` | Shows a thumbnail of a picked image (JS). |
 | `variant` | `'default' \| 'headless'` | `'default'` | `headless` drops the dashed box so the slot is the whole look. |
 | `inline` | `boolean` | `false` | A single row (icon + text) instead of a stacked zone. |
+| `messages` | `{ type?, size?, one? }` | English | Refusal messages: wrong type, too large, several files dropped on a single-file input. `{name}` is the file, `{max}` the limit. |
 | `class` | `string` | — | Extra classes on the label (dropzone), merged last. |
 
 ## States
@@ -170,6 +171,10 @@ a CloseButton to cancel, and a failed row with a retry. `readableSize` from
 - The visible control is a `<label>` wrapping a visually-hidden (`sr-only`)
   native `<input type="file">`.
 - The `UploadCloud` icon is `aria-hidden`.
+- The prompt (the default slot) names the input; the chosen file name and the
+  `hint` describe it, so they do not pile into the name. Pass `aria-label` to
+  name it yourself.
+- Without `multiple`, dropping several files is refused with a message.
 - A consumer-passed `id` is used for both the `<input>` and the `<label for>`,
   so the association stays correct; omit it and the component generates its
   own. It isn't designed to be wrapped in `Field`; add a visible label of your

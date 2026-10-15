@@ -29,7 +29,7 @@ const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } a
 const id = idProp ?? uid(Astro.locals)
 ---
 
-<label for={id} class:list={['flex items-start gap-2', className]}>
+<label for={id} class:list={['group flex items-start gap-2', className]}>
   <input
     id={id}
     type="radio"
@@ -41,8 +41,8 @@ const id = idProp ?? uid(Astro.locals)
   {
     hasLabel && (
       <span class="flex flex-col gap-0.5">
-        <span class:list={[labelSizes[size], 'text-neutral', hint && 'font-medium']}>{label ?? <slot />}</span>
-        {hint && <span id={`${id}-hint`} class:list={[labelSizes[size], 'text-neutral-faded']}>{hint}</span>}
+        <span class:list={[labelSizes[size], 'text-neutral group-has-[:disabled]:text-disabled', hint && 'font-medium']}>{label ?? <slot />}</span>
+        {hint && <span id={`${id}-hint`} class:list={[labelSizes[size], 'text-neutral-faded group-has-[:disabled]:text-disabled']}>{hint}</span>}
       </span>
     )
   }
@@ -59,8 +59,8 @@ const id = idProp ?? uid(Astro.locals)
     background-color: var(--background-page);
     cursor: pointer;
     transition:
-      background-color 0.15s,
-      border-color 0.15s;
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard);
   }
   .apogee-radio:hover:not(:checked):not(:disabled) {
     border-color: var(--foreground-neutral-faded);
@@ -84,8 +84,20 @@ const id = idProp ?? uid(Astro.locals)
     outline: 2px solid var(--outline-color-focus);
     outline-offset: 2px;
   }
-  .apogee-radio:disabled {
-    opacity: 0.5;
+  /* Disabled reads the disabled tokens (checked or not), never a faded opacity. */
+  .apogee-radio:disabled,
+  .apogee-radio:disabled:checked {
+    border-color: var(--border-disabled);
+    background-color: var(--background-disabled);
+    box-shadow: none;
     cursor: not-allowed;
+  }
+  .apogee-radio:checked:disabled {
+    background-image: radial-gradient(circle at center, var(--foreground-disabled) 0 32%, transparent 36%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-radio {
+      transition: none;
+    }
   }
 </style>

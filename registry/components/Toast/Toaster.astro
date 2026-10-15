@@ -239,25 +239,26 @@ const positions = {
 
     const titleEl = el.querySelector<HTMLElement>('.apogee-toast-title')
     const msgEl = el.querySelector<HTMLElement>('.apogee-toast-msg')
-    const heading = avatar?.name ?? title
-    if (titleEl) {
-      if (heading) {
-        titleEl.textContent = heading
-        if (time) {
-          const t = document.createElement('span')
-          t.className = 'ms-1.5 font-normal text-neutral-faded'
-          t.textContent = `· ${time}`
-          titleEl.append(t)
-        }
-      } else titleEl.remove()
+    // The title row stays in the toast (hidden while empty) so update() can fill it later.
+    const setTitle = (text: string | undefined) => {
+      if (!titleEl) return
+      titleEl.textContent = text ?? ''
+      titleEl.hidden = !text
+      if (text && time) {
+        const t = document.createElement('span')
+        t.className = 'ms-1.5 font-normal text-neutral-faded'
+        t.textContent = `· ${time}`
+        titleEl.append(t)
+      }
     }
+    setTitle(avatar?.name ?? title)
     if (msgEl) msgEl.textContent = message
 
     const bar = el.querySelector<HTMLElement>('[role="progressbar"]')
     const fill = el.querySelector<HTMLElement>('.apogee-toast-fill')
     const pct = el.querySelector<HTMLElement>('.apogee-toast-pct')
     const setProgress = (v: number) => {
-      const n = Math.max(0, Math.min(100, Math.round(v)))
+      const n = Number.isFinite(v) ? Math.max(0, Math.min(100, Math.round(v))) : 0
       bar?.setAttribute('aria-valuenow', String(n))
       // The fill slides in from the inline start, mirrored in RTL.
       const sign = getComputedStyle(region).direction === 'rtl' ? -1 : 1
@@ -327,6 +328,13 @@ const positions = {
       remaining = ms
       resume()
     }
+    // New text gets the full duration again.
+    const restart = () => {
+      if (!armed) return
+      pause()
+      remaining = opts.duration ?? 4000
+      resume()
+    }
     el.addEventListener('mouseenter', () => { hovered = true; pause() })
     el.addEventListener('mouseleave', () => { hovered = false; resume() })
     el.addEventListener('focusin', () => { focused = true; pause() })
@@ -335,7 +343,8 @@ const positions = {
 
     const update = (patch: Patch) => {
       if (patch.message !== undefined && msgEl) msgEl.textContent = patch.message
-      if (patch.title !== undefined && titleEl?.isConnected) titleEl.textContent = patch.title
+      if (patch.title !== undefined) setTitle(patch.title)
+      if (patch.message !== undefined || patch.title !== undefined) restart()
       if (patch.progress !== undefined) {
         setProgress(patch.progress)
         if (patch.progress >= 100) arm(opts.duration ?? 4000)

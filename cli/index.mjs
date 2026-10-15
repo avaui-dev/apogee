@@ -134,7 +134,8 @@ function cmdAdd(names, opts) {
 }
 
 function cmdList() {
-  const of = (kind) => Object.keys(index.components).filter((n) => index.components[n].kind === kind).sort()
+  // Names starting with _ are shared internals, pulled in as dependencies, never added on their own.
+  const of = (kind) => Object.keys(index.components).filter((n) => index.components[n].kind === kind && !n.startsWith('_')).sort()
   const [pages, sections, names] = [of('page'), of('section'), of('component')]
   if (pages.length) {
     say(bold(`${pages.length} pages:`))

@@ -25,12 +25,12 @@ interface Props extends HTMLAttributes<'input'> {
 const { id: idProp, label, hint, size = 'medium', hasError = false, indeterminate = false, class: className, ...rest } = Astro.props
 const hasLabel = Boolean(label) || Astro.slots.has('default')
 // Radius scales with the box.
-const sizes = { small: 'size-3.5 rounded-[0.2rem]', medium: 'size-4 rounded-[0.3rem]', large: 'size-5 rounded-[0.35rem]' } as const
+const sizes = { small: 'size-3.5 rounded-sm', medium: 'size-4 rounded-sm', large: 'size-5 rounded-md' } as const
 const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
 const id = idProp ?? uid(Astro.locals)
 ---
 
-<label for={id} class:list={['flex items-start gap-2', className]}>
+<label for={id} class:list={['group flex items-start gap-2', className]}>
   <input
     id={id}
     type="checkbox"
@@ -43,8 +43,8 @@ const id = idProp ?? uid(Astro.locals)
   {
     hasLabel && (
       <span class="flex flex-col gap-0.5">
-        <span class:list={[labelSizes[size], 'text-neutral', hint && 'font-medium']}>{label ?? <slot />}</span>
-        {hint && <span id={`${id}-hint`} class:list={[labelSizes[size], 'text-neutral-faded']}>{hint}</span>}
+        <span class:list={[labelSizes[size], 'text-neutral group-has-[:disabled]:text-disabled', hint && 'font-medium']}>{label ?? <slot />}</span>
+        {hint && <span id={`${id}-hint`} class:list={[labelSizes[size], 'text-neutral-faded group-has-[:disabled]:text-disabled']}>{hint}</span>}
       </span>
     )
   }
@@ -71,8 +71,8 @@ const id = idProp ?? uid(Astro.locals)
     background-color: var(--background-page);
     cursor: pointer;
     transition:
-      background-color 0.15s,
-      border-color 0.15s;
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard);
   }
   .apogee-checkbox:hover:not(:checked):not(:disabled) {
     border-color: var(--foreground-neutral-faded);
@@ -88,7 +88,7 @@ const id = idProp ?? uid(Astro.locals)
     mask: center / 0.72rem no-repeat
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
     opacity: 0;
-    transition: opacity 0.15s;
+    transition: opacity var(--duration-fast) var(--ease-standard);
   }
   /* Skin hooks: inert unless a skin sets them. */
   .apogee-checkbox {
@@ -119,8 +119,20 @@ const id = idProp ?? uid(Astro.locals)
     outline: 2px solid var(--outline-color-focus);
     outline-offset: 2px;
   }
-  .apogee-checkbox:disabled {
-    opacity: 0.5;
+  /* Disabled reads the disabled tokens (checked or not), never a faded opacity. */
+  .apogee-checkbox:disabled,
+  .apogee-checkbox:disabled:checked, .apogee-checkbox:disabled:indeterminate {
+    border-color: var(--border-disabled);
+    background-color: var(--background-disabled);
+    box-shadow: none;
     cursor: not-allowed;
+  }
+  .apogee-checkbox:disabled::before {
+    background-color: var(--foreground-disabled);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-checkbox, .apogee-checkbox::before {
+      transition: none;
+    }
   }
 </style>

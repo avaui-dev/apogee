@@ -82,7 +82,7 @@ dialog doesn't spread `...rest`.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `id` | `string` | `'apogee-command'` | Dialog id; also the target for `data-command-open="<id>"` triggers. |
-| `commands` | `{ label; href?; group?; keywords?; id?; icon?; avatar?; description?; shortcut?; stacked? }[]` | — | The command list. Required. `icon` is a Lucide component; `avatar` is `{ src?, name? }`; `description` shows after the label, or under it with `stacked`; `shortcut` (e.g. `['mod', 'shift', 'p']`) renders key caps and runs the command from anywhere on the page. |
+| `commands` | `{ label; href?; group?; keywords?; id?; icon?; avatar?; description?; shortcut?; stacked? }[]` | — | The command list. Required. `icon` is a Lucide component; `avatar` is `{ src?, name? }`; `description` shows after the label, or under it with `stacked`; `shortcut` (e.g. `['alt', 'shift', 'n']`) renders key caps and runs the command from anywhere on the page. |
 | `placeholder` | `string` | `'Type a command or search…'` | Search input placeholder. |
 | `shortcut` | `string` | `'k'` | Key pressed with ⌘ / Ctrl to open. |
 | `class` | `string` | — | Extra classes on the `<dialog>`. |
@@ -96,7 +96,7 @@ Icons, avatars, descriptions and shortcuts. Try typing "resume" (accents are
 ignored) or press ⌘⇧P / Ctrl+Shift+P anywhere on this page.
 
 <Preview code={`<CommandPalette id="rich-command" commands={[
-  { label: 'New project', id: 'new-project', group: 'Actions', icon: FolderPlus, shortcut: ['mod', 'shift', 'p'] },
+  { label: 'New project', id: 'new-project', group: 'Actions', icon: FolderPlus, shortcut: ['alt', 'shift', 'n'] },
   { label: 'Résumé', group: 'Files', icon: FileText, description: 'Updated yesterday' },
   { label: 'Ana Lima', group: 'People', avatar: { name: 'Ana Lima' }, description: 'Product designer', stacked: true },
 ]}>
@@ -105,8 +105,8 @@ ignored) or press ⌘⇧P / Ctrl+Shift+P anywhere on this page.
 </CommandPalette>`}>
   <button type="button" data-command-open="rich-command" class="rounded-md border border-neutral px-3 py-2 text-sm">Open rich palette</button>
   <CommandPalette id="rich-command" shortcut="j" commands={[
-    { label: 'New project', id: 'new-project', group: 'Actions', icon: FolderPlus, shortcut: ['mod', 'shift', 'p'] },
-    { label: 'Settings', href: '#', group: 'Actions', icon: Settings, shortcut: ['mod', ','] },
+    { label: 'New project', id: 'new-project', group: 'Actions', icon: FolderPlus, shortcut: ['alt', 'shift', 'n'] },
+    { label: 'Settings', href: '#', group: 'Actions', icon: Settings, shortcut: ['alt', 'shift', 's'] },
     { label: 'Résumé', group: 'Files', icon: FileText, description: 'Updated yesterday' },
     { label: 'Ana Lima', group: 'People', avatar: { name: 'Ana Lima' }, description: 'Product designer', stacked: true },
   ]}>

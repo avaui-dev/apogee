@@ -29,3 +29,8 @@ test('divided follows the direction at every breakpoint', () => {
     'md:[&>*+*]:border-s md:[&>*+*]:border-t-0',
   ])
 })
+
+test('boolean values read the "true" / "false" rows', () => {
+  assert.deepEqual(responsive(true, tables.wrap), ['flex-wrap'])
+  assert.deepEqual(responsive({ base: false, md: true }, tables.wrap), ['flex-nowrap', 'md:flex-wrap'])
+})

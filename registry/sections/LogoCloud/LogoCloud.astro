@@ -14,7 +14,7 @@ import type { Background, Spacing } from '../_shared/spine.ts'
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** @category content */ heading?: string
   /** Landmark name when there is no heading. @category content */ label?: string
-  /** Logos. @shape { src: string, alt: string, href?: string } @category content */ items: { src: string; alt: string; href?: string }[]
+  /** Logos. `width` is the logo's width at 32px tall; it reserves the space before the image loads. @shape { src: string, alt: string, href?: string, width?: number } @category content */ items: { src: string; alt: string; href?: string; width?: number | undefined }[]
   /** @category layout */ layout?: 'row' | 'grid'
   /** @category layout */ background?: Background
   /** @category layout */ spacing?: Spacing
@@ -39,10 +39,10 @@ const mono = background === 'primary' || background === 'inverted' ? 'brightness
       <li class="shrink-0">
         {logo.href ? (
           <a href={logo.href} class="block rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
-            <img src={logo.src} alt={logo.alt} height="32" class:list={['h-8 w-auto', mono]} loading="lazy" decoding="async" />
+            <img src={logo.src} alt={logo.alt} width={logo.width} height="32" class:list={['h-8 w-auto', mono]} loading="lazy" decoding="async" />
           </a>
         ) : (
-          <img src={logo.src} alt={logo.alt} height="32" class:list={['h-8 w-auto opacity-70', mono]} loading="lazy" decoding="async" />
+          <img src={logo.src} alt={logo.alt} width={logo.width} height="32" class:list={['h-8 w-auto opacity-70', mono]} loading="lazy" decoding="async" />
         )}
       </li>
     ))}

@@ -111,13 +111,14 @@ const has = (n: string) => Astro.slots.has(n)
 
 <style>
   .apogee-message-dot {
-    animation: apogee-typing 1.2s var(--ease-standard) infinite;
+    /* One cycle is three slow steps; the dots start a fast step apart. */
+    animation: apogee-typing calc(var(--duration-slow) * 3) var(--ease-standard) infinite;
   }
   .apogee-message-dot:nth-child(2) {
-    animation-delay: 150ms;
+    animation-delay: var(--duration-fast);
   }
   .apogee-message-dot:nth-child(3) {
-    animation-delay: 300ms;
+    animation-delay: calc(var(--duration-fast) * 2);
   }
   @keyframes apogee-typing {
     0%,

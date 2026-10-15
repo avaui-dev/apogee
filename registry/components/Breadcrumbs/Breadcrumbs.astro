@@ -8,11 +8,12 @@
  * `ariaLabel`).
  */
 import type { HTMLAttributes } from 'astro/types'
+import type { IconComponent } from '../utils/icon.ts'
 import { ChevronRight } from '@lucide/astro'
 
 /** @composable */
 interface Props extends HTMLAttributes<'nav'> {
-  items: { label: string; href?: string; disabled?: boolean; icon?: any; ariaLabel?: string }[]
+  items: { label: string; href?: string; disabled?: boolean; icon?: IconComponent; ariaLabel?: string }[]
   /** @category layout */
   variant?: 'text' | 'button' | 'line'
   /** Show at most this many (≥ 3): the first, an "…" button, and the last ones. Fewer than 3 shows everything. */
@@ -65,7 +66,7 @@ const link = [
                     button && 'rounded-md px-1.5 py-1',
                     last && 'font-medium text-neutral',
                     last && button && 'bg-neutral-faded',
-                    item.disabled && !last && 'opacity-50',
+                    item.disabled && !last && 'text-disabled',
                   ]}
                   aria-current={last ? 'page' : undefined}
                   aria-disabled={item.disabled && !last ? 'true' : undefined}

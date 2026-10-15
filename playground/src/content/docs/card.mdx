@@ -169,7 +169,7 @@ An article card and a button card:
 <Preview code={`<Card as="article"><h3>Post title</h3><p>Summary</p></Card>
 <Card as="button" selected>Pick this plan</Card>`}>
   <Card as="article" class="max-w-xs"><h3 class="font-semibold">Post title</h3><p class="text-sm text-neutral-faded">Summary</p></Card>
-  <Card as="button" selected class="max-w-xs">Pick this plan</Card>
+  <div data-apogee-card="button"><Card as="button" selected class="max-w-xs">Pick this plan</Card></div>
 </Preview>
 
 ## States
@@ -279,12 +279,13 @@ absolute on phones so the title keeps the first line):
 
 | Token | Used for |
 |---|---|
-| `--border-neutral` | Card outline |
+| `--border-neutral` / `--border-primary` | Card outline / `selected` outline |
 | `--background-elevation-raised` / `--foreground-neutral` | Card background / default text color |
 | `--background-neutral-faded-highlighted` | Hover background (linked cards only) |
 | `--outline-color-focus` | Focus ring (linked cards only) |
 | `--border-neutral` | Header and footer rules |
 | `--radius-lg` | Corner radius |
+| `--shadow-surface` / `--shadow-raised` | Resting edge (a skin hook) / `raised` lift |
 
 ## Do / Don't
 

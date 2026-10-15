@@ -1,7 +1,7 @@
 ---
 title: Pricing
 description: Plan tiers side by side, with an optional monthly / annual switch.
-group: Sections
+group: Basic sections
 order: 10
 ---
 
@@ -29,7 +29,7 @@ npx @ava-ui/apogee add pricing
 | Prop | Type | Default | Category | Description |
 |---|---|---|---|---|
 | `eyebrow`, `heading`, `description` | `string` | — | content | Optional header. |
-| `items` | `{ name, price, annualPrice?, period?, description, features: string[], action: { label, href }, featured?, badge? }[]` | — | content | Required. `featured` gets the primary border, button and a "Popular" badge (`badge` overrides the text). |
+| `items` | `{ name, price, annualPrice?, period?, annualPeriod?, description, features: string[], action: { label, href }, featured?, badge? }[]` | — | content | Required. `annualPeriod` replaces `period` while Annual is picked ("year" next to a yearly price). `featured` gets the primary border, button and a "Popular" badge (`badge` overrides the text). |
 | `periods` | `{ monthly, annual }` | `Monthly` / `Annual` | content | Labels on the switch. |
 | `label` | `string` | English | content | Landmark name when there is no heading. |
 | `periodLabel` | `string` | `'Billing period'` | content | Name of the billing switch. |

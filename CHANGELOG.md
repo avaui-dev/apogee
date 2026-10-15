@@ -8,6 +8,10 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 ### Changed
 
 - **Dark mode shadows** are black drop shadows, deeper than in light mode, instead of a faint white glow above each surface. Raised cards and menus now read as lifted on a dark page.
+- **Disabled controls** read the disabled tokens (fill, border, text) instead of fading to half opacity: Checkbox, Radio (labels too), Actionable, Tabs, Pagination, TreeView, ToggleButton, Slider, NumberInput, Breadcrumbs, Tag, ChoiceCard and FileUpload.
+- **Divider** lines use the border tokens, like every other rule.
+- **Steps** shows the check on a finished step with `marker="icon"` too, as the docs say.
+- **CommandPalette** demo shortcuts moved off combinations browsers keep for themselves.
 
 ### Fixed
 
@@ -15,6 +19,26 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **Steps** puts `aria-current="step"` on the current step's list item instead of its marker, which had no text with `marker="icon"` or `"dot"`.
 - **ProgressIndicator** remaining dots and segments use the solid neutral fill; the faded one nearly vanished in dark mode.
 - **Carousel** current dot takes the on-primary colour on a `bg-primary` fill, where the primary dot was invisible.
+- **Shortcuts** with `alt` work on macOS, where Option turns the key into a symbol.
+- **Actionable** `as="div"` fires on Space key release, like a native button.
+- **Tabs** with `activation="manual"`: Tab-ing back into the list lands on the selected tab.
+- **ScrollArea** is in the Tab order only while its content overflows.
+- **Divider** with a label is named by that label; a separator hides its contents from screen readers.
+- **FileUpload** is named by its prompt alone (the file name and hint describe it), and refuses several files dropped on a single-file input.
+- **Pagination** keeps the Previous / Next label in its disabled state (no layout jump) and hides that cell from assistive tech.
+- **Toast** `update()` can add a title to a toast created without one, a non-numeric progress reads 0%, and new text restarts the timer.
+- **CommandPalette** announces each command's shortcut (`aria-keyshortcuts`), keeps the "·" separator out of names, and refuses a command shortcut equal to its own opening one.
+- **ColorPicker** fires one `change`, on the named hex field, per committed pick.
+- **Table** `sortable` leaves headers that hold a control alone.
+- **Timeline** renders free-text times without `datetime` as text, not an invalid `<time>`.
+- **Card** `as="button"` holds only inline elements, as a button must.
+- **Steps** horizontal items lose the vertical gap below them.
+- **Code** line numbers stay put while wide lines scroll; the copy button follows the inner-radius rule.
+- **Sidebar** listens for the breakpoint once per page instead of once per setup.
+- **FAQ** questions take the section's heading level when there is no section heading, like Features.
+- **Testimonials** quote marks follow the page language (`<q>`).
+- **CLI** `apogee list` no longer shows the internal `_shared` entry.
+- **Package** ships no test files.
 
 ### Added
 
@@ -24,6 +48,14 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **PasswordChecklist**: the rules a new password must meet, ticked off as the user types; keeps the field invalid until they hold, and a `match` rule checks a confirm field.
 - **Carousel** `controlsPosition="below"`: arrows in a row under the track, with the dots between them, for slides the side arrows would cover.
 - **Docs**: a Log in pages group; each page shows the example in a desktop or mobile frame with a Copy code button.
+- **Docs sidebar**: each group collapses (all start open), shows its page count and remembers its state; the sidebar keeps its scroll position between pages instead of centring the current link. "Sections" is now "Basic sections".
+- **Label props** for the English defaults: Navbar `menuLabel` and `secondaryLabel`, Sidebar `toggleLabel` and `overlayLabel`, NavLink `externalLabel`, FileUpload `messages`.
+- **Pricing** `annualPeriod` replaces `period` while Annual is picked.
+- **PageHeader** shows the `actions` slot in every layout.
+- **LogoCloud** items take a `width` to reserve the logo's space.
+- **Box** `bleed` has every padding step; **Heading** `maxLines` goes to 6 like Text.
+- **Contrast gate** also checks secondary text on each tinted fill, and blends see-through text colours before measuring.
+- **Codemod 0.3** lists old names it could not rewrite.
 
 ## [0.4.0] — 2026-10-15
 
@@ -230,7 +262,6 @@ The 0.3 token model and prop vocabulary. See [Migrating to 0.3](https://apogee.a
 - The 0.2 tokens (`--accent`, `--muted`, `--surface`, `--border`, `--ring`, `--danger`, `--success` …).
 - Button `variant="link"` (use `Link`) and `size="icon"` (use `iconOnly`).
 - The `[key: string]: any` escape hatch in `Props`.
-- `docs/components/*.md`; the playground is the docs.
 
 ### Changed (earlier in this cycle)
 

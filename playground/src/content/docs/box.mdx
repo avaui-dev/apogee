@@ -57,7 +57,7 @@ Box a flex container (column by default). With none of them it is a plain block.
 | `divided` | `boolean` | `false` | Hairline between children, following the base direction. |
 | `padding` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 10 \| 12` | — | Padding on the spacing scale. |
 | `paddingInline` / `paddingBlock` | same steps | — | Padding on one axis. |
-| `bleed` | `2 \| 4 \| 6 \| 8` | — | Negative inline margin, so a child runs edge to edge inside a padded parent. |
+| `bleed` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 8 \| 10 \| 12` | — | Negative inline margin, so a child runs edge to edge inside a padded parent. |
 | `background` | `'page' \| 'page-faded' \| 'neutral' \| 'neutral-faded' \| 'primary' \| 'primary-faded' \| 'critical' \| 'critical-faded' \| 'positive' \| 'positive-faded' \| 'warning' \| 'warning-faded' \| 'elevation-base' \| 'elevation-raised' \| 'elevation-overlay' \| 'inverted'` | — | Surface token. Solid hues and `inverted` also set the on-colour text. |
 | `border` | `'neutral' \| 'neutral-faded' \| 'primary' \| 'critical' \| 'positive' \| 'warning' \| 'transparent'` | — | 1px border token. |
 | `radius` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | — | Corner radius token. |
@@ -177,9 +177,9 @@ outline (`section`, `article`, `nav`…).
 | Token | Used for |
 |---|---|
 | `--background-*` | `background` surfaces |
-| `--border-neutral`, `--border-neutral-faded`, `--border-primary` | `border` |
+| `--border-neutral`, `--border-neutral-faded`, `--border-{hue}` | `border` |
 | `--radius-sm` … `--radius-xl` | `radius` |
 | `--shadow-outline`, `--shadow-raised`, `--shadow-overlay` | `shadow` |
-| `--spacing` scale | `gap`, `padding` |
+| `--spacing` scale | `gap`, `padding`, `bleed` |
 
 Layout primitive, so no content rules.

@@ -111,7 +111,7 @@ const Root = isSelectable ? 'label' : 'span'
     styles[variant][color],
     sizes[size],
     isSelectable &&
-      'group/tag press cursor-pointer transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50',
+      'group/tag press cursor-pointer transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus has-[:disabled]:cursor-not-allowed has-[:disabled]:bg-disabled has-[:disabled]:text-disabled has-[:disabled]:border-disabled',
     isSelectable && selectedStyles[color],
     className,
   ]}

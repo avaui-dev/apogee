@@ -28,10 +28,12 @@ interface Props extends HTMLAttributes<'a'> {
   match?: 'exact' | 'prefix'
   /** Opens in a new tab with a trailing icon. Auto-detected from an `http` href; pass `false` to opt out. */
   external?: boolean
+  /** Screen-reader text after an external link. @category content */
+  externalLabel?: string
   class?: string
 }
 
-const { href, active: activeProp, match = 'exact', external: externalProp, class: className, ...rest } = Astro.props
+const { href, active: activeProp, match = 'exact', external: externalProp, externalLabel = '(opens in a new tab)', class: className, ...rest } = Astro.props
 // Normalize trailing slashes so `/x` and `/x/` match.
 const norm = (p: string) => p.replace(/\/+$/, '') || '/'
 const path = norm(Astro.url.pathname)
@@ -53,14 +55,14 @@ const hasEnd = Astro.slots.has('end')
   {...rest}
 >
   {/* The current page's icon is filled with a tint of its own colour and darkened. */}
-  {hasStart && <span class:list={['flex shrink-0 items-center [&>svg]:size-4', active && '[&>svg]:fill-current/20 [&>svg]:text-neutral']}><slot name="start" /></span>}
+  {hasStart && <span class:list={['flex shrink-0 items-center [&>svg]:size-4', active && '[&>svg]:fill-current/10 [&>svg]:text-neutral']}><slot name="start" /></span>}
   <span class="apogee-navlink-label min-w-0 truncate"><slot /></span>
   {hasEnd && <span class="ms-auto flex shrink-0 items-center [&>svg]:size-4"><slot name="end" /></span>}
   {
     external && !hasEnd && (
       <span class="ms-auto flex shrink-0 items-center text-neutral-faded [&>svg]:size-3.5">
         <ExternalLink aria-hidden="true" />
-        <span class="sr-only">(opens in a new tab)</span>
+        <span class="sr-only">{externalLabel}</span>
       </span>
     )
   }

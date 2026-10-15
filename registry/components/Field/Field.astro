@@ -16,7 +16,7 @@ import { Info } from '@lucide/astro'
 import Tooltip from '../Tooltip/Tooltip.astro'
 const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const
 const hintSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const
-interface Props extends Omit<HTMLAttributes<'label'>, 'size'> {
+interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   id: string
   /** Dims the label and marks the field. */
   disabled?: boolean | undefined

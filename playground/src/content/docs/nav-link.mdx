@@ -53,6 +53,7 @@ attribute passes through (`...rest`).
 | `active` | `boolean` | auto-detected | Forces the active state. Default compares the current URL's pathname to `href`. |
 | `match` | `'exact' \| 'prefix'` | `'exact'` | `prefix` also marks `/docs` active on `/docs/button`; `/` only ever matches itself. |
 | `external` | `boolean` | auto from `href` | Opens in a new tab (`target`, `rel`) with a trailing icon and a screen-reader note. Auto-detected for `http` hrefs; pass `false` to opt out. |
+| `externalLabel` | `string` | `'(opens in a new tab)'` | Screen-reader text after an external link. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## States

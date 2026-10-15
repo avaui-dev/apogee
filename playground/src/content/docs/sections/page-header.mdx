@@ -1,7 +1,7 @@
 ---
 title: Page header
 description: The top of an application page; breadcrumbs, title, description, actions, tab links.
-group: Sections
+group: Basic sections
 order: 16
 ---
 
@@ -36,7 +36,7 @@ npx @ava-ui/apogee add page-header
 | `heading` | `string` | — | content | Required. |
 | `description` | `string` | — | content | |
 | `tabs` | `{ label, href, active? }[]` | `[]` | content | Links under the title in `with-tabs`. |
-| `actions` slot | | | content | Buttons on the end side in `with-actions`. |
+| `actions` slot | | | content | Buttons on the end side, in any layout (`with-tabs` keeps them above the tabs). |
 | `tabsLabel` | `string` | `'Page sections'` | content | Name of the tabs nav. |
 | `layout` | `'simple' \| 'with-actions' \| 'with-tabs'` | `'simple'` | layout | |
 | `spacing`, `headingLevel`, `id` | | `spacing` is `small`, `headingLevel` is `1` | layout | |

@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { rewrite } from './codemod-0.3.mjs'
+import { rewrite, leftovers } from './codemod-0.3.mjs'
 
 test('utility renames, including variants and opacity forms', () => {
   assert.equal(rewrite('bg-accent hover:bg-accent-hover text-accent-foreground'), 'bg-primary hover:bg-primary-highlighted text-on-primary')
@@ -53,4 +53,10 @@ test('run from a consumer project rewrites ./src, not the installed package', as
   execFileSync(process.execPath, [join(pkg, 'scripts', 'codemod-0.3.mjs')], { cwd: root })
   assert.equal(readFileSync(join(root, 'src', 'Page.astro'), 'utf8'), '<div class="bg-primary" />')
   assert.equal(readFileSync(join(pkg, 'registry', 'components', 'X', 'X.astro'), 'utf8'), '<div class="bg-accent" />')
+})
+
+test('reports old names it could not rewrite', () => {
+  const out = rewrite(`<div class="bg-accent/20 text-danger! hover:bg-primary from-success/40" style="color: var(--muted-foreground)">`)
+  assert.deepEqual(leftovers(out), ['bg-accent/20', 'text-danger!', 'from-success/40'])
+  assert.deepEqual(leftovers('<p class="bg-primary text-neutral-faded">'), [])
 })

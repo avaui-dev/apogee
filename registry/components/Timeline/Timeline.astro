@@ -70,11 +70,12 @@ const lines = { solid: 'border-solid', dotted: 'border-s-2 border-dotted', none:
                   item.title
                 )}
               </p>
-              {item.time && (
-                <time datetime={item.datetime} class="text-xs text-neutral-faded tabular-nums">
-                  {item.time}
-                </time>
-              )}
+              {/* A <time> needs a machine-readable value; free text ("2h ago") without one is a plain span. */}
+              {item.time && (item.datetime ? (
+                <time datetime={item.datetime} class="text-xs text-neutral-faded tabular-nums">{item.time}</time>
+              ) : (
+                <span class="text-xs text-neutral-faded tabular-nums">{item.time}</span>
+              ))}
             </div>
             {rich ? (
               <div class="apogee-timeline-body mt-1.5 text-sm text-neutral-faded">
