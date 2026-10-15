@@ -13,7 +13,7 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   /** Show at most this many, then a +N chip. Omit to show all. */
   max?: number
   /** @category layout */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge'
   class?: string
 }
 
@@ -23,6 +23,8 @@ const shown = items ? (max ? items.slice(0, max) : items) : []
 const overflow = items && max ? Math.max(0, items.length - max) : 0
 
 const sizeMap = {
+  xsmall: 'size-6 text-[10px]',
+  xlarge: 'size-16 text-lg',
   small: 'size-8 text-xs',
   medium: 'size-10 text-sm',
   large: 'size-12 text-base',

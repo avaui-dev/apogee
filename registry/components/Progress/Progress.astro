@@ -1,45 +1,105 @@
 ---
 /**
- * Progress — a determinate or indeterminate progress bar. Zero JS.
+ * Progress — a determinate or indeterminate bar. The fill moves with a
+ * transform (no layout work), and an optional value label sits after the bar,
+ * under it, or floats above the fill. Zero JS.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 interface Props extends HTMLAttributes<'div'> {
   value?: number
+  min?: number
   max?: number
+  /** Accessible name (`aria-label`). @category content */
   label?: string
   indeterminate?: boolean
   /** Bar hue. @category layout */
   color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
   /** Bar thickness. @category layout */
   size?: 'small' | 'medium'
+  /** Where the value text shows. @category layout */
+  labelPosition?: 'none' | 'end' | 'bottom' | 'floating'
+  /** Value text template: `{value}`, `{percent}`, `{max}`. @category content */
+  format?: string
   class?: string
 }
 const heights = { small: 'h-1', medium: 'h-2' } as const
 const fills = { primary: 'bg-primary', neutral: 'bg-neutral', critical: 'bg-critical', positive: 'bg-positive', warning: 'bg-warning' } as const
 
-const { value = 0, max = 100, label, indeterminate = false, color = 'primary', size = 'medium', class: className, ...rest } = Astro.props
-const pct = Math.max(0, Math.min(100, (value / max) * 100))
+const {
+  value = 0,
+  min = 0,
+  max = 100,
+  label,
+  indeterminate = false,
+  color = 'primary',
+  size = 'medium',
+  labelPosition = 'none',
+  format = '{percent}%',
+  class: className,
+  'aria-labelledby': labelledby,
+  'aria-describedby': describedbyProp,
+  ...rest
+} = Astro.props
+const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100))
+const text = format.replace('{value}', String(value)).replace('{percent}', String(Math.round(pct))).replace('{max}', String(max))
+const floating = labelPosition === 'floating'
 ---
 
 <div
-  role="progressbar"
-  aria-label={label}
-  aria-valuemin={indeterminate ? undefined : 0}
-  aria-valuemax={indeterminate ? undefined : max}
-  aria-valuenow={indeterminate ? undefined : value}
-  class:list={['w-full overflow-hidden rounded-full bg-neutral-faded', heights[size], className]}
+  class:list={[
+    'apogee-progress w-full',
+    labelPosition === 'end' && 'flex items-center gap-3',
+    labelPosition === 'bottom' && 'flex flex-col gap-1',
+    floating && 'relative pt-7',
+    className,
+  ]}
   {...rest}
 >
   <div
-    class:list={['h-full rounded-full', fills[color], indeterminate ? 'apogee-progress-indeterminate' : 'transition-[width] duration-[var(--duration-slow)] ease-smooth']}
-    style={indeterminate ? undefined : `width: ${pct}%`}
+    role="progressbar"
+    aria-label={label}
+    aria-labelledby={labelledby}
+    aria-describedby={describedbyProp}
+    aria-valuemin={indeterminate ? undefined : min}
+    aria-valuemax={indeterminate ? undefined : max}
+    aria-valuenow={indeterminate ? undefined : value}
+    class:list={['w-full overflow-hidden rounded-full bg-neutral-faded', heights[size]]}
   >
+    <div
+      class:list={['h-full w-full rounded-full', fills[color], indeterminate ? 'apogee-progress-indeterminate' : 'apogee-progress-fill']}
+      style={indeterminate ? undefined : `--apogee-fill: ${100 - pct}%`}
+    >
+    </div>
   </div>
+  {
+    !indeterminate && labelPosition === 'end' && (
+      <span class="shrink-0 text-sm text-neutral-faded tabular-nums">{text}</span>
+    )
+  }
+  {!indeterminate && labelPosition === 'bottom' && <span class="self-end text-sm text-neutral-faded tabular-nums">{text}</span>}
+  {
+    !indeterminate && floating && (
+      <span
+        class="apogee-progress-floating absolute top-0 -translate-x-1/2 rounded bg-inverted px-1.5 py-0.5 text-xs font-medium text-on-inverted tabular-nums rtl:translate-x-1/2"
+        style={`inset-inline-start: ${pct}%`}
+      >
+        {text}
+      </span>
+    )
+  }
 </div>
 
 <style>
+  /* Fill as a transform: the bar is full width, shifted left by the missing part. */
+  .apogee-progress-fill {
+    transform: translateX(calc(var(--apogee-fill) * -1));
+    transition: transform var(--duration-slow) var(--ease-standard);
+  }
+  .apogee-progress-fill:dir(rtl) {
+    transform: translateX(var(--apogee-fill));
+  }
   .apogee-progress-indeterminate {
     width: 40%;
     animation: apogee-progress-slide 1.2s ease-in-out infinite;
@@ -53,6 +113,9 @@ const pct = Math.max(0, Math.min(100, (value / max) * 100))
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .apogee-progress-fill {
+      transition: none;
+    }
     .apogee-progress-indeterminate {
       animation-duration: 3s;
     }

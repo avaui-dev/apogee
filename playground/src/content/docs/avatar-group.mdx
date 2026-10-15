@@ -63,17 +63,21 @@ attribute passes through.
 |---|---|---|---|
 | `items` | `{ src?: string; name?: string; alt?: string }[]` | — | Renders one `Avatar` per entry. Omit to use the default slot instead. |
 | `max` | `number` | — | Show at most this many `items`, then a `+N` chip. Omit to show all. Ignored in manual (slot) mode. |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Size applied to each generated `Avatar` and to the overflow chip. Doesn't affect manually slotted avatars — set their own `size`. |
+| `size` | `'xsmall' \| 'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Size applied to each generated `Avatar` and to the overflow chip. Doesn't affect manually slotted avatars — set their own `size`. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
 
-<Preview code={`<AvatarGroup size="small" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+<Preview code={`<AvatarGroup size="xsmall" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+<AvatarGroup size="small" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
 <AvatarGroup items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
-<AvatarGroup size="large" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />`}>
+<AvatarGroup size="large" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+<AvatarGroup size="xlarge" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />`}>
+  <AvatarGroup size="xsmall" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
   <AvatarGroup size="small" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
   <AvatarGroup items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
   <AvatarGroup size="large" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
+  <AvatarGroup size="xlarge" items={[{ name: 'A B' }, { name: 'C D' }, { name: 'E F' }]} />
 </Preview>
 
 ## States

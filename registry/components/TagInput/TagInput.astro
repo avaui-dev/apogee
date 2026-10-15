@@ -7,32 +7,79 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import { X } from '@lucide/astro'
-import { fieldVariants, type FieldVariant } from '../utils/field.ts'
+import Field from '../Field/Field.astro'
+import { uid } from '../utils/uid.ts'
+import { fieldVariants, type FieldSize, type FieldVariant } from '../utils/field.ts'
+
+// The box wraps, so it has a minimum height instead of the fixed field height.
+const boxSizes = {
+  small: 'min-h-7 px-1.5 py-1 text-xs',
+  medium: 'min-h-9 px-2 py-1.5 text-sm',
+  large: 'min-h-12 px-3 py-2 text-base',
+  xlarge: 'min-h-14 px-4 py-2.5 text-lg',
+} as const
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'value'> {
+  id?: string
   name: string
   /** Initial tags. */
   value?: string[]
   placeholder?: string
+  /** @category content */
+  label?: string
+  /** @category content */
+  hint?: string
+  /** @category content */
+  error?: string
+  required?: boolean
+  /** @category layout */
+  size?: FieldSize
   /** @category layout */
   variant?: FieldVariant
   /** Marks the field invalid. */
   hasError?: boolean
+  /** Stops accepting tags at this count until one is removed. */
+  maxTags?: number
+  /** Accept a tag that already exists (the check is case-insensitive). */
+  allowDuplicates?: boolean
   class?: string
 }
 
-const { name, value = [], placeholder = 'Add tag…', variant = 'outline', hasError = false, class: className, ...rest } = Astro.props
+const {
+  id: idProp,
+  name,
+  value = [],
+  placeholder = 'Add tag…',
+  label,
+  hint,
+  error,
+  required = false,
+  size = 'medium',
+  variant = 'outline',
+  hasError = false,
+  maxTags,
+  allowDuplicates = false,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals)
+const invalid = Boolean(error) || hasError
+const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
 ---
 
+<Field id={id} label={label} size={size} hint={hint} error={error} required={required} class={className}>
 <div
   class:list={[
-    'apogee-taginput flex min-h-9 flex-wrap items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors focus-within:border-primary focus-within:shadow-[inset_0_0_0_1.5px_var(--border-primary)] aria-[invalid=true]:border-critical',
+    'apogee-taginput flex flex-wrap items-center gap-1.5 rounded-md transition-colors focus-within:border-primary focus-within:shadow-[inset_0_0_0_1.5px_var(--border-primary)] aria-[invalid=true]:border-critical',
     fieldVariants[variant],
-    className,
+    boxSizes[size],
   ]}
-  aria-invalid={hasError ? 'true' : undefined}
+  aria-invalid={invalid ? 'true' : undefined}
   data-name={name}
+  data-max={maxTags}
+  data-required={required ? '' : undefined}
+  data-allow-duplicates={allowDuplicates ? '' : undefined}
   {...rest}
 >
   {
@@ -51,10 +98,15 @@ const { name, value = [], placeholder = 'Add tag…', variant = 'outline', hasEr
     ))
   }
   <input
+    id={id}
     type="text"
     name={name}
-    class="apogee-taginput-field min-w-24 flex-1 bg-transparent text-sm max-md:text-base text-neutral outline-none placeholder:text-neutral-faded"
+    required={required && value.length === 0 ? true : undefined}
+    aria-describedby={describedby}
+    aria-invalid={invalid ? 'true' : undefined}
+    class="apogee-taginput-field min-w-24 flex-1 bg-transparent max-md:text-base text-neutral outline-none read-only:cursor-not-allowed placeholder:text-neutral-faded"
     placeholder={placeholder}
+    data-placeholder={placeholder}
     autocomplete="off"
   />
   <template class="apogee-tag-template">
@@ -67,6 +119,7 @@ const { name, value = [], placeholder = 'Add tag…', variant = 'outline', hasEr
   </span>
 </template>
 </div>
+</Field>
 
 <script>
   import { island } from '../utils/island.ts'
@@ -81,17 +134,32 @@ const { name, value = [], placeholder = 'Add tag…', variant = 'outline', hasEr
     // for typing, so drop its name (it carries the no-JS fallback value).
     field.removeAttribute('name')
 
+    const max = Number(root.dataset.max) || Infinity
+    const allowDuplicates = root.dataset.allowDuplicates !== undefined
     const values = () => [...root.querySelectorAll<HTMLInputElement>('input[type="hidden"]')].map((i) => i.value)
-    const changed = () => root.dispatchEvent(new CustomEvent('apogee:tag-input-change', { bubbles: true, detail: { values: values() } }))
+    // At the limit the field goes read-only until a tag is removed.
+    const required = root.dataset.required !== undefined
+    const limit = () => {
+      const full = values().length >= max
+      // Native required applies to the typing field only while there is no tag.
+      field.required = required && values().length === 0
+      field.readOnly = full
+      field.placeholder = full ? 'Limit reached' : (field.dataset.placeholder ?? '')
+    }
+    const changed = () => {
+      limit()
+      root.dispatchEvent(new CustomEvent('apogee:tag-input-change', { bubbles: true, detail: { values: values() } }))
+    }
     const removeTag = (tag: Element) => {
       tag.remove()
       changed()
     }
+    limit()
 
     const addTag = (raw: string) => {
       const label = raw.trim().replace(/,$/, '').trim()
-      if (!label) return
-      if (values().some((v) => v.toLowerCase() === label.toLowerCase())) {
+      if (!label || values().length >= max) return
+      if (!allowDuplicates && values().some((v) => v.toLowerCase() === label.toLowerCase())) {
         field.value = ''
         return
       }

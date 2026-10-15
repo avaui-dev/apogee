@@ -11,6 +11,7 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import CloseButton from '../CloseButton/CloseButton.astro'
+import { Check } from '@lucide/astro'
 
 const styles = {
   solid: {
@@ -42,6 +43,15 @@ const sizes = {
   large: 'h-8 px-2.5 text-sm gap-1.5 has-[>[data-slot=start]]:ps-2 has-[>[data-slot=end]]:pe-2',
 } as const
 
+// `selectable`: the chip is a label around a native checkbox; checked takes the hue's faded fill.
+const selectedStyles = {
+  primary: 'has-[:checked]:border-primary has-[:checked]:bg-primary-faded has-[:checked]:text-primary',
+  neutral: 'has-[:checked]:border-neutral has-[:checked]:bg-neutral-faded has-[:checked]:text-neutral',
+  critical: 'has-[:checked]:border-critical has-[:checked]:bg-critical-faded has-[:checked]:text-critical',
+  positive: 'has-[:checked]:border-positive has-[:checked]:bg-positive-faded has-[:checked]:text-positive',
+  warning: 'has-[:checked]:border-warning has-[:checked]:bg-warning-faded has-[:checked]:text-warning',
+} as const
+
 /** @composable */
 interface Props extends HTMLAttributes<'span'> {
   /** Hue. @category layout */
@@ -55,7 +65,15 @@ interface Props extends HTMLAttributes<'span'> {
   /** Makes the label a link. @category content */
   href?: string
   removable?: boolean
-  /** Identifies this tag in the remove event's `detail`. */
+  /** A count pill after the label. @category content */
+  count?: number
+  /** A native checkbox inside the chip: toggles with click or Space and posts `name=value`. Ignored with `href`. */
+  selectable?: boolean
+  /** Initial state of a selectable tag. */
+  checked?: boolean
+  /** Form field name of a selectable tag. */
+  name?: string
+  /** Identifies this tag in the remove event's `detail`, and is the posted value when selectable. */
   value?: string
   /** Also remove the element on click — cosmetic lists with no backing state. */
   dismissOnClick?: boolean
@@ -71,6 +89,10 @@ const {
   rounded = false,
   href,
   removable = false,
+  count,
+  selectable = false,
+  checked = false,
+  name,
   value,
   dismissOnClick = false,
   removeLabel = 'Remove',
@@ -78,14 +100,19 @@ const {
   ...rest
 } = Astro.props
 const Label = href ? 'a' : 'span'
+const isSelectable = selectable && !href
+const Root = isSelectable ? 'label' : 'span'
 ---
 
-<span
+<Root
   class:list={[
     'inline-flex items-center whitespace-nowrap [&_svg]:size-3.5',
     rounded ? 'rounded-full' : 'rounded-md',
     styles[variant][color],
     sizes[size],
+    isSelectable &&
+      'cursor-pointer transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50',
+    isSelectable && selectedStyles[color],
     className,
   ]}
   data-apogee-tag
@@ -93,16 +120,21 @@ const Label = href ? 'a' : 'span'
   data-dismiss-on-click={dismissOnClick ? '' : undefined}
   {...rest}
 >
+  {isSelectable && <input type="checkbox" class="peer sr-only" name={name} value={value} checked={checked || undefined} />}
+  {isSelectable && <span data-slot="start" class="invisible inline-flex peer-checked:visible"><Check aria-hidden="true" /></span>}
   {Astro.slots.has('start') && <span data-slot="start" class="inline-flex"><slot name="start" /></span>}
   <Label href={href} class="inline-flex items-center gap-[inherit] rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
     <slot />
   </Label>
+  {count !== undefined && (
+    <span data-slot="end" class:list={['rounded-sm px-1 text-[0.85em] font-medium tabular-nums', variant === 'solid' ? 'bg-page/25' : 'bg-neutral-faded']}>{count}</span>
+  )}
   {
-    removable && (
+    removable && !isSelectable && (
       <CloseButton size="xsmall" theme="inherit" label={removeLabel} data-tag-remove data-slot="end" class="no-js:hidden" />
     )
   }
-</span>
+</Root>
 
 <script>
   // Delegated once per page (Astro dedupes this module). The app owns removal:

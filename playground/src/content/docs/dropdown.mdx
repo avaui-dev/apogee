@@ -89,7 +89,8 @@ A link when `href` is set, otherwise a `<button>`. `@composable`. Slots:
 | `href` | `string` | — | Renders an `<a>` instead of a `<button>`. |
 | `color` | `'neutral' \| 'primary' \| 'critical'` | `'neutral'` | Text and hover tint. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Padding, text and icon size. |
-| `selected` | `boolean` | `false` | The chosen item: `aria-current="true"` and a faded fill. |
+| `selected` | `boolean` | `false` | The chosen item: `aria-current="true"` and a faded fill (`aria-checked` with a checkbox or radio indicator). |
+| `indicator` | `'none' \| 'check' \| 'checkbox' \| 'radio'` | `'none'` | A leading selection mark. The column stays reserved when unselected so labels align; `checkbox` / `radio` switch the role to `menuitemcheckbox` / `menuitemradio`. |
 | `disabled` | `boolean` | `false` | Native `disabled` on a button; `aria-disabled` + `tabindex="-1"` on a link. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -177,6 +178,40 @@ An item that opens a nested menu beside it. Slots: `start` (icon), default (item
     <DropdownItem href="#" disabled>Timeline (soon)</DropdownItem>
   </Dropdown>
 </Preview>
+
+## Indicators
+
+Every `indicator`:
+
+<Preview code={`<Dropdown label="View">
+  <DropdownItem indicator="check" selected>Comfortable</DropdownItem>
+  <DropdownItem indicator="check">Compact</DropdownItem>
+  <DropdownSection label="Show">
+    <DropdownItem indicator="checkbox" selected>Line numbers</DropdownItem>
+    <DropdownItem indicator="checkbox">Minimap</DropdownItem>
+  </DropdownSection>
+  <DropdownSection label="Wrap">
+    <DropdownItem indicator="radio" selected>Soft</DropdownItem>
+    <DropdownItem indicator="radio">Off</DropdownItem>
+  </DropdownSection>
+</Dropdown>`}>
+  <div data-apogee-dropdown="indicators">
+    <Dropdown label="View">
+      <DropdownItem indicator="check" selected>Comfortable</DropdownItem>
+      <DropdownItem indicator="check">Compact</DropdownItem>
+      <DropdownSection label="Show">
+        <DropdownItem indicator="checkbox" selected>Line numbers</DropdownItem>
+        <DropdownItem indicator="checkbox">Minimap</DropdownItem>
+      </DropdownSection>
+      <DropdownSection label="Wrap">
+        <DropdownItem indicator="radio" selected>Soft</DropdownItem>
+        <DropdownItem indicator="radio">Off</DropdownItem>
+      </DropdownSection>
+    </Dropdown>
+  </div>
+</Preview>
+
+The mark reflects the server-rendered `selected`; the item is a plain button or link, so your own click handler updates state and re-renders, as with any menu.
 
 ## Sections and end slot
 

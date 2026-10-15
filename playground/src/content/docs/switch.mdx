@@ -44,10 +44,25 @@ attribute not listed below (`checked`, `disabled`, `name`, `value`,
 | `label` | `string` | — | Visible label text, rendered after the track. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Track and label size. |
 | `reversed` | `boolean` | `false` | Label first, switch last. |
+| `variant` | `'default' \| 'slim'` | `'default'` | `slim`: a thin faded track with a bordered knob that overhangs it. |
 | `hasError` | `boolean` | `false` | Marks the switch invalid: `aria-invalid` on the input, a critical ring on the track. |
 | `hint` | `string` | — | Supporting text under the label; the input lists it in `aria-describedby`. The label turns medium weight to read as a heading. |
 | `class` | `string` | — | Extra classes on the root `<label>`, appended last. |
 | …rest | — | — | Any other attribute passes through to the `<input type="checkbox" role="switch">`. |
+
+## Variants
+
+Every `variant`:
+
+<Preview code={`<Switch label="Default" checked />
+<Switch variant="slim" label="Slim" checked />
+<Switch variant="slim" label="Slim, off" />`}>
+  <div data-apogee-switch="slim" class="contents">
+    <Switch variant="slim" label="Slim" checked />
+    <Switch variant="slim" label="Slim, off" />
+  </div>
+  <Switch label="Default" checked />
+</Preview>
 
 ## Sizes
 

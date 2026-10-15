@@ -10,16 +10,27 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import { fieldVariants, type FieldVariant } from '../utils/field.ts'
+import Field from '../Field/Field.astro'
+import { uid } from '../utils/uid.ts'
 
 const patterns = { numeric: '[0-9]', alphabetic: '[A-Za-z]', alphanumeric: '[A-Za-z0-9]' } as const
 
 interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
   /** @category layout */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | 'xlarge'
   /** @category layout */
   variant?: FieldVariant
+  id?: string
+  /** @category content */
+  label?: string
+  /** @category content */
+  hint?: string
+  /** @category content */
+  error?: string
   name?: string
   length?: number
+  /** Boxes per group; a separator sits between groups (6 boxes, `groups={3}` → 123 – 456). @category layout */
+  groups?: number
   /** Accepted characters; sets the keypad and the native `pattern`. */
   pattern?: keyof typeof patterns
   /** Older alias: `numeric` ⇒ `pattern="numeric"`, `text` ⇒ `alphanumeric`. */
@@ -34,6 +45,11 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
 }
 
 const {
+  id: idProp,
+  label,
+  hint,
+  error,
+  groups,
   name = 'code',
   length = 6,
   type,
@@ -47,40 +63,55 @@ const {
   class: className,
   ...rest
 } = Astro.props
-const cells = { small: 'size-9 text-base rounded-sm', medium: 'size-11 text-lg rounded-md', large: 'size-12 text-xl rounded-md' } as const
+const cells = { small: 'size-9 text-base rounded-sm', medium: 'size-11 text-lg rounded-md', large: 'size-12 text-xl rounded-md', xlarge: 'size-14 text-2xl rounded-md' } as const
+const id = idProp ?? uid(Astro.locals)
+const invalid = Boolean(error) || hasError
+const describedby = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
+const placeholder = pattern === 'numeric' ? '0' : '–'
 ---
 
+<Field id={id} label={label} hint={hint} error={error} class={className}>
 <div
-  class:list={['apogee-pin flex gap-2', className]}
+  class="apogee-pin flex items-center gap-2"
   role="group"
-  aria-label={ariaLabel ?? 'Verification code'}
+  aria-label={label ? undefined : (ariaLabel ?? 'Verification code')}
+  aria-labelledby={label ? `${id}-label` : undefined}
+  aria-describedby={describedby}
   data-pattern={pattern}
   data-name={name}
   {...rest}
 >
   {
     Array.from({ length }).map((_, i) => (
+      <>
+      {groups && i > 0 && i % groups === 0 && <span role="separator" aria-orientation="vertical" class="w-2 border-t border-neutral" />}
       <input
+        id={i === 0 ? id : undefined}
         type="text"
         name={name}
+        placeholder={placeholder}
         inputmode={pattern === 'numeric' ? 'numeric' : 'text'}
         pattern={patterns[pattern]}
         autocomplete={i === 0 ? 'one-time-code' : 'off'}
         maxlength="1"
         value={value[i] ?? undefined}
         disabled={disabled || undefined}
-        aria-invalid={hasError ? 'true' : undefined}
+        aria-invalid={invalid ? 'true' : undefined}
         class:list={[
           'apogee-pin-box text-center font-medium text-neutral tabular-nums max-md:text-base aria-[invalid=true]:border-critical disabled:bg-disabled disabled:text-disabled transition-colors focus-visible:border-primary focus-visible:outline-none focus-visible:shadow-[inset_0_0_0_1.5px_var(--border-primary)]',
+          // Filled boxes take the primary border; the placeholder marks an empty one.
+          'placeholder:text-neutral-faded/50 [&:not(:placeholder-shown)]:border-primary',
           fieldVariants[variant],
           cells[size],
         ]}
-        aria-label={`Character ${i + 1}`}
+        aria-label={`Character ${i + 1} of ${length}`}
       />
+      </>
     ))
   }
   <input type="hidden" class="apogee-pin-value" />
 </div>
+</Field>
 
 <script>
   import { island } from '../utils/island.ts'

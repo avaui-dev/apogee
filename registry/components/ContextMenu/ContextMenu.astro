@@ -57,7 +57,7 @@ const id = uid(Astro.locals, 'apogee-ctx')
     panel.addEventListener('keydown', (e) => menuKeydown(e, panel))
     // Activating an item closes the menu.
     panel.addEventListener('click', (e) => {
-      if ((e.target as Element).closest('[role="menuitem"]')) panel.hidePopover()
+      if ((e.target as Element).closest('[role^="menuitem"]')) panel.hidePopover()
     })
   })
 

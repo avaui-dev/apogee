@@ -7,33 +7,82 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import { itemBase, itemSizes, itemColors, itemSelected, type ItemSize, type ItemColor } from '../utils/panel.ts'
+import { Check } from '@lucide/astro'
 interface Props extends HTMLAttributes<'button'> {
   href?: string
   color?: ItemColor
   /** @category layout */
   size?: ItemSize
-  /** The chosen item (`aria-current`). */
+  /** The chosen item (`aria-current`, or `aria-checked` with a checkbox / radio indicator). */
   selected?: boolean
   disabled?: boolean
+  /** A leading selection mark. The column is reserved even when unselected so labels align. `checkbox` and `radio` switch the role to `menuitemcheckbox` / `menuitemradio`. @category layout */
+  indicator?: 'none' | 'check' | 'checkbox' | 'radio'
   class?: string
 }
 
-const { href, color = 'neutral', size = 'medium', selected = false, disabled = false, class: className, ...rest } = Astro.props
+const { href, color = 'neutral', size = 'medium', selected = false, disabled = false, indicator = 'none', class: className, ...rest } = Astro.props
 const Tag = href ? 'a' : 'button'
+const checkable = indicator === 'checkbox' || indicator === 'radio'
+const role = indicator === 'checkbox' ? 'menuitemcheckbox' : indicator === 'radio' ? 'menuitemradio' : 'menuitem'
 ---
 
 <Tag
   href={disabled ? undefined : href}
   type={href ? undefined : 'button'}
-  role="menuitem"
+  role={role}
   disabled={!href && disabled ? true : undefined}
   aria-disabled={href && disabled ? 'true' : undefined}
   tabindex={href && disabled ? -1 : undefined}
-  aria-current={selected ? 'true' : undefined}
+  aria-current={selected && !checkable ? 'true' : undefined}
+  aria-checked={checkable ? (selected ? 'true' : 'false') : undefined}
+  data-indicator={indicator !== 'none' ? indicator : undefined}
+  data-selected={selected ? '' : undefined}
   class:list={[itemBase, itemSizes[size], itemColors[color], selected && itemSelected[color], className]}
   {...rest}
 >
+  {
+    indicator === 'check' && (
+      <span class:list={['apogee-item-indicator inline-flex shrink-0 text-primary transition-opacity', selected ? 'opacity-100' : 'opacity-0']} aria-hidden="true">
+        <Check />
+      </span>
+    )
+  }
+  {
+    checkable && (
+      <span
+        class:list={[
+          'apogee-item-indicator relative inline-flex size-3.5 shrink-0 border-[1.5px] border-neutral bg-page transition-colors',
+          indicator === 'radio' ? 'rounded-full' : 'rounded-[0.25rem]',
+          selected && 'border-primary bg-primary',
+        ]}
+        data-kind={indicator}
+        aria-hidden="true"
+      />
+    )
+  }
   {Astro.slots.has('start') && <span class="inline-flex shrink-0 text-neutral-faded"><slot name="start" /></span>}
   <slot />
   {Astro.slots.has('end') && <span class="ms-auto inline-flex shrink-0 ps-4 text-xs text-neutral-faded"><slot name="end" /></span>}
 </Tag>
+
+<style>
+  /* The checkbox tick and the radio dot, drawn from --on-primary while selected. */
+  .apogee-item-indicator[data-kind='checkbox']::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--on-primary);
+    -webkit-mask: center / 0.6rem no-repeat
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+    mask: center / 0.6rem no-repeat
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+    opacity: 0;
+  }
+  [data-selected] .apogee-item-indicator[data-kind='checkbox']::before {
+    opacity: 1;
+  }
+  [data-selected] .apogee-item-indicator[data-kind='radio'] {
+    background-image: radial-gradient(circle at center, var(--on-primary) 0 32%, transparent 36%);
+  }
+</style>

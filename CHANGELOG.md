@@ -5,8 +5,25 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+### Changed
+
+- **Progress** root is now a wrapper around the `role="progressbar"` track (so value labels can sit beside or above it); `aria-labelledby` / `aria-describedby` still reach the track. **TagInput**, **PinInput** and **RichTextEditor** are now wrapped in Field, so `class` lands on the Field root and the control carries a generated `id`.
+
 ### Added
 
+- **FeaturedIcon** (new) — an icon in a tinted tile: `theme` light | solid | outline, every hue, four sizes, `rounded`, optional `label`.
+- **CircularProgress** (new) — a determinate ring or half ring drawn as an SVG stroke (`pathLength="100"`): `value` / `min` / `max`, four sizes, three thicknesses, every hue, `shape="half"`, value text in the slot.
+- **ChoiceCard** (new) — a card that is a native radio or checkbox: `type`, `name` / `value`, `title` / `description`, `indicator` radio | check | none, `indicatorPosition`, two sizes, slots for an icon, a price or a badge. Zero JS; arrows and Space work natively.
+- **Avatar** — `xsmall` (24px) and `xlarge` (64px), `status` online | offline dot, `border` ring; images get a hairline contrast rim. AvatarGroup takes the new sizes.
+- **Tag** — `count` pill; `selectable` (a native checkbox inside the chip, `name` / `value` / `checked`, zero JS).
+- **Progress** — `min`, `labelPosition` end | bottom | floating with a `format` template; the fill moves with a transform instead of `width`. The root is now a wrapper around the `role="progressbar"` track.
+- **Rating** — readonly fractional values (3.5 fills half a star, mirrored in RTL), `size`.
+- **Switch** — `variant="slim"` (thin faded track, bordered overhanging knob).
+- **NumberInput** — `orientation="vertical"` (stacked chevrons at the end).
+- **TagInput** — wired to Field (`label`, `hint`, `error`, `required`), `size`, `maxTags`, `allowDuplicates`.
+- **PinInput** — wired to Field (`label`, `hint`, `error`), `groups` with a separator, filled-box state, `xlarge`, per-box names say "N of M".
+- **RichTextEditor** — wired to Field (`label`, `hint`, `error`, `required`), `disabled`, `hasError`, `limit` with a live count, alignment buttons, a tooltip with the shortcut on every toolbar button.
+- **DropdownItem** — `indicator` check | checkbox | radio with a reserved column; checkbox and radio items get `menuitemcheckbox` / `menuitemradio` roles and `aria-checked`.
 - **Button** — `variant="link"`, `showTextWhileLoading`; loading keeps the width (content hidden, spinner centred); `data-icon-only` / `data-loading` on the root replace the class rewrite; critical buttons focus in the critical colour. Focus ring token `--outline-color-focus` (`outline-focus`) replaces every hard-coded primary outline. Icons in buttons are sized as direct children, so a nested Spinner or avatar keeps its own size.
 - **ButtonGroup, ToggleButtonGroup** — `disabled` (the root is now a `<fieldset role="group">`, so it is native); a focused item lifts above its neighbours so the outline is never clipped.
 - **CloseButton** (new) — one ✕ for Dialog, Dismissible, Toast and Tag; `size` (xsmall–large), `theme="dark"` over media, `label`.

@@ -63,8 +63,26 @@ passes through to the root wrapper `<div>`.
 |---|---|---|---|
 | `name` | `string` | `'content'` | `name` of the hidden field submitted with the form. |
 | `value` | `string` | `''` | Initial HTML, seeded into the editor and the hidden field. |
-| `placeholder` | `string` | `'Write something…'` | Shown when the editor is empty; also the editor's `aria-label`. |
-| `class` | `string` | — | Extra classes on the root wrapper. |
+| `placeholder` | `string` | `'Write something…'` | Shown when the editor is empty; the editor's `aria-label` when there is no `label`. |
+| `id` | `string` | generated | Id of the editor; the label points at it. |
+| `label` | `string` | — | Visible label through Field (`aria-labelledby`). |
+| `hint` | `string` | — | Helper text under the editor. |
+| `error` | `string` | — | Error message; marks the editor invalid. |
+| `hasError` | `boolean` | `false` | Marks the editor invalid without a message. |
+| `disabled` | `boolean` | `false` | Not editable; the toolbar, the fallback textarea and the hidden value are disabled. |
+| `required` | `boolean` | `false` | `aria-required` on the editor and `required` on the no-JS textarea. |
+| `limit` | `number` | — | Character limit: a live "N characters left" line under the editor turns critical past it and the editor becomes invalid. The value still submits; validate it on the server. |
+| `class` | `string` | — | Extra classes on the Field root. |
+
+## Label, limit, disabled and alignment
+
+Every toolbar button has a tooltip with its shortcut; the alignment group maps to the browser's justify commands.
+
+<Preview code={`<RichTextEditor name="bio" label="Bio" hint="Shown on your profile." limit={20} />
+<RichTextEditor name="locked" label="Locked" value="<p>Read only.</p>" disabled />`} block>
+  <div data-apogee-rte="limit"><RichTextEditor name="bio" label="Bio" hint="Shown on your profile." limit={20} /></div>
+  <div data-apogee-rte="disabled"><RichTextEditor name="locked" label="Locked" value="<p>Read only.</p>" disabled /></div>
+</Preview>
 
 ## States
 

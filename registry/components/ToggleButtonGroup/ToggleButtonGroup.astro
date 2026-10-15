@@ -26,7 +26,7 @@ const { type = 'multiple', disabled = false, class: className, ...rest } = Astro
   data-type={type}
   disabled={disabled || undefined}
   class:list={[
-    'apogee-toggle-group m-0 min-w-0 [&>.apogee-toggle]:relative [&>.apogee-toggle:focus-visible]:z-10 inline-flex flex-wrap items-center gap-0.5 rounded-md border border-neutral bg-page p-0.5 [&>.apogee-toggle]:rounded-[calc(var(--radius-md)-0.125rem)]',
+    'apogee-toggle-group m-0 min-w-0 [&_.apogee-toggle]:relative [&_.apogee-toggle:focus-visible]:z-10 inline-flex flex-wrap items-center gap-0.5 rounded-md border border-neutral bg-page p-0.5 [&_.apogee-toggle]:rounded-[calc(var(--radius-md)-0.125rem)]',
     className,
   ]}
   {...rest}

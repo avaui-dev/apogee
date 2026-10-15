@@ -1,0 +1,88 @@
+---
+/**
+ * CircularProgress — a determinate ring (or half ring) with the value drawn as
+ * an SVG stroke. `pathLength="100"` makes the percentage the dash offset, so
+ * there is no trigonometry and no JS. Put the value text in the default slot.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+const sizes = { small: 'w-8', medium: 'w-12', large: 'w-16', xlarge: 'w-24' } as const
+const labelSizes = { small: 'text-[10px]', medium: 'text-xs', large: 'text-sm', xlarge: 'text-lg' } as const
+const thicknesses = { thin: 6, regular: 8, thick: 10 } as const
+const strokes = {
+  primary: 'stroke-primary',
+  neutral: 'stroke-neutral',
+  critical: 'stroke-critical',
+  positive: 'stroke-positive',
+  warning: 'stroke-warning',
+} as const
+
+interface Props extends HTMLAttributes<'div'> {
+  value?: number
+  min?: number
+  max?: number
+  /** Accessible name. @category content */
+  label?: string
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** Ring stroke. @category layout */
+  thickness?: keyof typeof thicknesses
+  /** Ring hue. @category layout */
+  color?: keyof typeof strokes
+  /** A full ring or the top half. @category layout */
+  shape?: 'circle' | 'half'
+  class?: string
+}
+
+const {
+  value = 0,
+  min = 0,
+  max = 100,
+  label,
+  size = 'medium',
+  thickness = 'regular',
+  color = 'primary',
+  shape = 'circle',
+  class: className,
+  ...rest
+} = Astro.props
+const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100))
+const half = shape === 'half'
+const stroke = thicknesses[thickness]
+const r = 50 - stroke / 2
+---
+
+<div
+  role="progressbar"
+  aria-label={label}
+  aria-valuemin={min}
+  aria-valuemax={max}
+  aria-valuenow={Math.max(min, Math.min(max, value))}
+  class:list={['apogee-circular relative inline-grid place-items-center', sizes[size], half ? 'aspect-[2/1]' : 'aspect-square', className]}
+  {...rest}
+>
+  <svg
+    viewBox={half ? '0 0 100 50' : '0 0 100 100'}
+    class:list={['[grid-area:1/1] size-full', !half && '-rotate-90']}
+    fill="none"
+    stroke-width={stroke}
+    stroke-linecap="round"
+    aria-hidden="true"
+  >
+    <circle cx="50" cy="50" r={r} pathLength="100" class="stroke-(--background-neutral-faded)" stroke-dasharray={half ? '50 100' : undefined} stroke-dashoffset={half ? -50 : undefined} />
+    <circle
+      cx="50"
+      cy="50"
+      r={r}
+      pathLength="100"
+      class:list={[strokes[color], 'transition-[stroke-dasharray,stroke-dashoffset] duration-[var(--duration-slow)] ease-smooth']}
+      stroke-dasharray={half ? `${pct / 2} 100` : '100'}
+      stroke-dashoffset={half ? -50 : 100 - pct}
+    />
+  </svg>
+  <span class:list={['[grid-area:1/1] font-medium text-neutral tabular-nums', labelSizes[size], half && 'self-end']}>
+    <slot />
+  </span>
+</div>

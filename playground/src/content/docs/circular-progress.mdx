@@ -1,0 +1,135 @@
+---
+title: Circular progress
+description: A determinate ring or half ring drawn as an SVG stroke, with the value in the middle.
+group: Components
+order: 0
+related: [progress, meter, spinner, stat]
+---
+
+import Preview from '../../components/Preview.astro'
+import CircularProgress from '../../../../registry/components/CircularProgress/CircularProgress.astro'
+
+<Preview code={`<CircularProgress value={62} label="Upload">62%</CircularProgress>`}>
+  <CircularProgress value={62} label="Upload">62%</CircularProgress>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add circular-progress
+```
+
+No Apogee dependencies. Zero JS.
+
+## Usage
+
+```astro
+---
+import CircularProgress from '@/components/apogee/CircularProgress/CircularProgress.astro'
+---
+<CircularProgress value={62} label="Upload progress">62%</CircularProgress>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<div>`
+attribute passes through. The default slot sits in the centre (at the bottom
+edge for `shape="half"`).
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` | `0` | Current value. |
+| `min` | `number` | `0` | Lower bound. |
+| `max` | `number` | `100` | Upper bound. |
+| `label` | `string` | — | Accessible name (`aria-label`); say what is progressing. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Ring 32 / 48 / 64 / 96px wide. |
+| `thickness` | `'thin' \| 'regular' \| 'thick'` | `'regular'` | Stroke width, relative to the ring. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | Ring hue. |
+| `shape` | `'circle' \| 'half'` | `'circle'` | A full ring or the top half (a gauge). |
+| `class` | `string` | — | Extra classes, appended last. |
+
+## Variants
+
+Every `shape`:
+
+<Preview code={`<CircularProgress value={25} label="Quarter">25%</CircularProgress>
+<CircularProgress value={100} shape="half" label="Complete">100%</CircularProgress>`}>
+  <div data-apogee-circular="quarter" class="contents"><CircularProgress value={25} label="Quarter">25%</CircularProgress></div>
+  <div data-apogee-circular="half-full" class="contents"><CircularProgress value={100} shape="half" label="Complete">100%</CircularProgress></div>
+</Preview>
+
+Every `size`:
+
+<Preview code={`<CircularProgress value={40} size="small" />
+<CircularProgress value={40} size="medium">40%</CircularProgress>
+<CircularProgress value={40} size="large">40%</CircularProgress>
+<CircularProgress value={40} size="xlarge">40%</CircularProgress>`}>
+  <div class="flex items-center gap-6">
+    <CircularProgress value={40} size="small" label="Small" />
+    <CircularProgress value={40} size="medium" label="Medium">40%</CircularProgress>
+    <CircularProgress value={40} size="large" label="Large">40%</CircularProgress>
+    <CircularProgress value={40} size="xlarge" label="Extra large">40%</CircularProgress>
+  </div>
+</Preview>
+
+Every `thickness` and every `color`:
+
+<Preview code={`<CircularProgress value={70} thickness="thin" />
+<CircularProgress value={70} thickness="regular" />
+<CircularProgress value={70} thickness="thick" />
+<CircularProgress value={70} color="neutral" /> … critical, positive, warning`}>
+  <div class="flex flex-wrap items-center gap-6">
+    <CircularProgress value={70} thickness="thin" label="Thin" />
+    <CircularProgress value={70} thickness="regular" label="Regular" />
+    <CircularProgress value={70} thickness="thick" label="Thick" />
+    <CircularProgress value={70} color="primary" label="Primary" />
+    <CircularProgress value={70} color="neutral" label="Neutral" />
+    <CircularProgress value={70} color="critical" label="Critical" />
+    <CircularProgress value={70} color="positive" label="Positive" />
+    <CircularProgress value={70} color="warning" label="Warning" />
+  </div>
+</Preview>
+
+## States
+
+- **Determinate only** — the value is always known; for an unknown wait use [Spinner](/docs/spinner).
+- **Animated** — the arc tweens when `value` changes (`--duration-slow`), still under `prefers-reduced-motion` only through your own override; the stroke is a transition, not a loop.
+
+## Examples
+
+A storage gauge:
+
+<Preview code={`<CircularProgress value={8.2} max={10} shape="half" size="xlarge" color="warning" label="Storage used">
+  <span class="text-2xl">8.2</span><span class="text-xs text-neutral-faded"> / 10 GB</span>
+</CircularProgress>`}>
+  <CircularProgress value={8.2} max={10} shape="half" size="xlarge" color="warning" label="Storage used">
+    <span class="text-2xl">8.2</span><span class="text-xs text-neutral-faded"> / 10 GB</span>
+  </CircularProgress>
+</Preview>
+
+## Accessibility
+
+- `role="progressbar"` with `aria-valuemin`, `aria-valuemax` and `aria-valuenow`; give it a `label`.
+- The slot text is visible to everyone; keep it the same number the attributes carry.
+- Native semantics, no extra ARIA needed.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-neutral-faded` | Track |
+| `--background-{hue}` | Fill (through the `stroke-{hue}` utility) |
+| `--foreground-neutral` | Slot text |
+| `--duration-slow` | Arc transition |
+
+## Do / Don't
+
+- **Do** show the number in the slot; a ring alone is hard to read past "about half".
+- **Do** use `half` for a gauge (a quota, a score), `circle` for progress.
+- **Don't** use it for a step count; that is [Steps](/docs/steps) or [ProgressIndicator](/docs/progress-indicator).
+- **Don't** animate from 0 on every render; set the real value server-side.
+
+## Content
+
+- `label` names the thing measured ("Upload progress", "Storage used").
+- The slot shows the value in the user's unit (percent, GB, points), short.

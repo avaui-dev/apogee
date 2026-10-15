@@ -49,7 +49,9 @@ attribute passes through.
 | `src` | `string` | — | Image URL. Omit to always show the initials fallback. |
 | `alt` | `string` | `name ?? ''` | Alt text for the image. |
 | `name` | `string` | — | Used for the initials fallback (first letter of up to the first two words) and as the fallback's `aria-label`. |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Avatar diameter + text size. |
+| `size` | `'xsmall' \| 'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Diameter 24 / 32 / 40 / 48 / 64px and text size. |
+| `status` | `'online' \| 'offline'` | — | A presence dot at the bottom end corner, cut out from the page. Read with the name ("Ana Lima, online"). |
+| `border` | `boolean` | `false` | A neutral ring offset from the avatar. |
 | `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | Fallback (initials) hue. |
 | `variant` | `'solid' \| 'faded'` | `'faded'` | Fallback fill style. |
 | `squared` | `boolean` | `false` | Rounded square instead of a circle. |
@@ -57,12 +59,35 @@ attribute passes through.
 
 ## Sizes
 
-<Preview code={`<Avatar size="small" name="Sam Ito" />
+<Preview code={`<Avatar size="xsmall" name="Sam Ito" />
+<Avatar size="small" name="Sam Ito" />
 <Avatar name="Sam Ito" />
-<Avatar size="large" name="Sam Ito" />`}>
-  <Avatar size="small" name="Sam Ito" />
-  <Avatar name="Sam Ito" />
-  <Avatar size="large" name="Sam Ito" />
+<Avatar size="large" name="Sam Ito" />
+<Avatar size="xlarge" name="Sam Ito" />`}>
+  <div data-apogee-avatar="sizes" class="flex items-center gap-3">
+    <Avatar size="xsmall" name="Sam Ito" />
+    <Avatar size="small" name="Sam Ito" />
+    <Avatar name="Sam Ito" />
+    <Avatar size="large" name="Sam Ito" />
+    <Avatar size="xlarge" name="Sam Ito" />
+  </div>
+</Preview>
+
+## Status and border
+
+<Preview code={`<Avatar name="Ana Lima" status="online" />
+<Avatar name="Ana Lima" status="offline" />
+<Avatar name="Ana Lima" border />
+<Avatar name="Ana Lima" status="online" border size="large" />`}>
+  <div data-apogee-avatar="status" class="flex items-center gap-4">
+    <Avatar name="Ana Lima" status="online" />
+    <Avatar name="Ana Lima" status="offline" />
+    <Avatar name="Ana Lima" border />
+    <Avatar name="Ana Lima" status="online" border size="large" />
+  </div>
+  <div data-apogee-avatar="status-img" class="flex items-center gap-4">
+    <Avatar src="https://i.pravatar.cc/96?img=5" name="Ana Lima" status="online" />
+  </div>
 </Preview>
 
 ## Colours and variants

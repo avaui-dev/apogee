@@ -1,0 +1,77 @@
+---
+/**
+ * FeaturedIcon — an icon in a tinted tile: the glyph that leads an empty state,
+ * an alert, a stat or a feature card. `theme` is the tile style, `color` the
+ * hue, `size` the tile. Zero JS. Decorative by default; pass `label` when the
+ * icon carries meaning on its own.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+const themes = {
+  light: {
+    neutral: 'bg-neutral-faded text-neutral',
+    primary: 'bg-primary-faded text-primary',
+    critical: 'bg-critical-faded text-critical',
+    positive: 'bg-positive-faded text-positive',
+    warning: 'bg-warning-faded text-warning',
+  },
+  solid: {
+    neutral: 'bg-neutral text-on-neutral',
+    primary: 'bg-primary text-on-primary',
+    critical: 'bg-critical text-on-critical',
+    positive: 'bg-positive text-on-positive',
+    warning: 'bg-warning text-on-warning',
+  },
+  // Two concentric rings drawn by the pseudo-elements; no fill.
+  outline: {
+    neutral: 'text-neutral before:border-neutral-faded after:border-neutral-faded/60',
+    primary: 'text-primary before:border-primary-faded after:border-primary-faded/60',
+    critical: 'text-critical before:border-critical-faded after:border-critical-faded/60',
+    positive: 'text-positive before:border-positive-faded after:border-positive-faded/60',
+    warning: 'text-warning before:border-warning-faded after:border-warning-faded/60',
+  },
+} as const
+const outlineRings =
+  'before:absolute before:inset-0 before:rounded-[inherit] before:border-2 after:absolute after:-inset-1.5 after:rounded-[inherit] after:border'
+const sizes = {
+  small: 'size-8 [&>svg]:size-4',
+  medium: 'size-10 [&>svg]:size-5',
+  large: 'size-12 [&>svg]:size-6',
+  xlarge: 'size-14 [&>svg]:size-7',
+} as const
+
+interface Props extends HTMLAttributes<'span'> {
+  /** Tile style. @category layout */
+  theme?: keyof typeof themes
+  /** Hue. @category layout */
+  color?: keyof typeof themes.light
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** Circle instead of a rounded square. @category layout */
+  rounded?: boolean
+  /** Accessible name when the icon carries meaning; otherwise it is decorative. @category content */
+  label?: string
+  class?: string
+}
+
+const { theme = 'light', color = 'neutral', size = 'medium', rounded = false, label, class: className, ...rest } = Astro.props
+---
+
+<span
+  class:list={[
+    'apogee-featured-icon relative inline-grid shrink-0 place-items-center [&>svg]:shrink-0',
+    rounded ? 'rounded-full' : 'rounded-lg',
+    themes[theme][color],
+    theme === 'outline' && outlineRings,
+    sizes[size],
+    className,
+  ]}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  {...rest}
+>
+  <slot />
+</span>

@@ -1,8 +1,8 @@
 // Keyboard pattern for a `role="menu"` panel: arrows wrap, Home/End jump.
-// Items are the enabled `[role="menuitem"]`s that belong to this menu and not to
+// Items are the enabled `menuitem`, `menuitemcheckbox` and `menuitemradio` roles that belong to this menu and not to
 // a nested one. `menuKeydown` returns true when it handled the key.
 export function menuItems(menu: HTMLElement): HTMLElement[] {
-  return [...menu.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled]):not([aria-disabled="true"])')].filter(
+  return [...menu.querySelectorAll<HTMLElement>('[role^="menuitem"]:not([disabled]):not([aria-disabled="true"])')].filter(
     (i) => i.closest('[role="menu"]') === menu,
   )
 }

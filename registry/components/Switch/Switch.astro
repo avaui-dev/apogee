@@ -18,15 +18,29 @@ interface Props extends HTMLAttributes<'input'> {
   hasError?: boolean
   /** Label first, switch last. @category layout */
   reversed?: boolean
+  /** `slim`: a thin faded track with a bordered knob that overhangs it. @category layout */
+  variant?: 'default' | 'slim'
   class?: string
 }
 
-const { id: idProp, label, hint, size = 'medium', hasError = false, reversed = false, class: className, ...rest } = Astro.props
+const { id: idProp, label, hint, size = 'medium', hasError = false, reversed = false, variant = 'default', class: className, ...rest } = Astro.props
 const hasLabel = Boolean(label) || Astro.slots.has('default')
+// Track and knob per variant and size. Every string is a literal so Tailwind sees it.
+const looks = {
+  default: 'bg-neutral peer-checked:bg-primary after:start-0.5 after:top-0.5 after:bg-white after:shadow-outline',
+  slim: 'bg-neutral-faded peer-checked:bg-primary-faded after:start-0 after:-top-0.5 after:border after:border-neutral after:bg-page after:shadow-raised peer-checked:after:border-primary',
+} as const
 const tracks = {
-  small: 'h-4 w-7 after:size-3 peer-checked:after:translate-x-3 rtl:peer-checked:after:-translate-x-3',
-  medium: 'h-5 w-9 after:size-4 peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4',
-  large: 'h-6 w-11 after:size-5 peer-checked:after:translate-x-5 rtl:peer-checked:after:-translate-x-5',
+  default: {
+    small: 'h-4 w-7 after:size-3 peer-checked:after:translate-x-3 rtl:peer-checked:after:-translate-x-3',
+    medium: 'h-5 w-9 after:size-4 peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4',
+    large: 'h-6 w-11 after:size-5 peer-checked:after:translate-x-5 rtl:peer-checked:after:-translate-x-5',
+  },
+  slim: {
+    small: 'h-3 w-7 after:size-4 peer-checked:after:translate-x-3 rtl:peer-checked:after:-translate-x-3',
+    medium: 'h-4 w-9 after:size-5 peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4',
+    large: 'h-5 w-11 after:size-6 peer-checked:after:translate-x-5 rtl:peer-checked:after:-translate-x-5',
+  },
 } as const
 const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
 const id = idProp ?? uid(Astro.locals)
@@ -44,8 +58,9 @@ const id = idProp ?? uid(Astro.locals)
   />
   <span
     class:list={[
-      "relative shrink-0 rounded-full bg-neutral transition-colors motion-reduce:transition-none motion-reduce:after:transition-none peer-checked:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus peer-disabled:bg-disabled peer-aria-[invalid=true]:shadow-[0_0_0_1.5px_var(--border-critical)] after:absolute after:start-0.5 after:top-0.5 after:rounded-full after:bg-white after:shadow-outline after:transition-transform after:content-['']",
-      tracks[size],
+      "relative shrink-0 rounded-full transition-colors motion-reduce:transition-none motion-reduce:after:transition-none peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus peer-disabled:bg-disabled peer-aria-[invalid=true]:shadow-[0_0_0_1.5px_var(--border-critical)] after:absolute after:rounded-full after:transition-transform after:content-['']",
+      looks[variant],
+      tracks[variant][size],
     ]}
   ></span>
   {

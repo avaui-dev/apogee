@@ -40,7 +40,8 @@ display wrapper).
 | `name` | `string` | `'rating'` | Radio group name (interactive mode only). |
 | `max` | `number` | `5` | Number of stars. |
 | `value` | `number` | `0` | Selected (interactive) or displayed (`readonly`) rating. |
-| `readonly` | `boolean` | `false` | Renders a static display instead of radio inputs. |
+| `readonly` | `boolean` | `false` | Renders a static display instead of radio inputs. Fractional values (`3.5`) fill part of a star. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Star size: 16 / 20 / 24px readonly, 20 / 24 / 28px interactive. |
 | `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'warning'` | Hue of a filled star. |
 | `aria-label` | `string` | `'Rating'` (interactive) / `` `${value} out of ${max}` `` (readonly) | Accessible label for the group/display. |
 | `class` | `string` | — | Extra classes on the root. |
@@ -54,6 +55,36 @@ Interactive (a `radiogroup` of native radios) vs. read-only (a static
 <Rating readonly value={4} aria-label="4 out of 5" />`}>
   <Rating name="variant-interactive" value={3} />
   <Rating readonly value={4} aria-label="4 out of 5" />
+</Preview>
+
+## Fractional and sizes
+
+<Preview code={`<Rating readonly value={3.5} />
+<Rating readonly value={4.2} />`}>
+  <div data-apogee-rating="fractional" class="contents">
+    <Rating readonly value={3.5} />
+    <Rating readonly value={4.2} />
+  </div>
+</Preview>
+
+Every `size`, readonly and interactive:
+
+<Preview code={`<Rating readonly value={4} size="small" />
+<Rating readonly value={4} size="medium" />
+<Rating readonly value={4} size="large" />
+<Rating name="r-s" value={3} size="small" />
+<Rating name="r-m" value={3} size="medium" />
+<Rating name="r-l" value={3} size="large" />`} block>
+  <div data-apogee-rating="sizes" class="flex items-center gap-4">
+    <Rating readonly value={4} size="small" />
+    <Rating readonly value={4} size="medium" />
+    <Rating readonly value={4} size="large" />
+  </div>
+  <div class="flex items-center gap-4">
+    <Rating name="rating-size-s" value={3} size="small" />
+    <Rating name="rating-size-m" value={3} size="medium" />
+    <Rating name="rating-size-l" value={3} size="large" />
+  </div>
 </Preview>
 
 ## States

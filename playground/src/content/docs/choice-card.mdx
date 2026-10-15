@@ -1,0 +1,207 @@
+---
+title: Choice card
+description: A card that is a radio or a checkbox, so a plan picker, a payment method or an add-on list submits like a form control.
+group: Components
+order: 0
+related: [radio-group, checkbox-group, card, radio]
+---
+
+import Preview from '../../components/Preview.astro'
+import ChoiceCard from '../../../../registry/components/ChoiceCard/ChoiceCard.astro'
+import FeaturedIcon from '../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import { Zap, Building2, User } from '@lucide/astro'
+
+<Preview code={`<ChoiceCard name="plan" value="pro" checked title="Pro" description="Unlimited projects, priority support." />`}>
+  <ChoiceCard name="plan-hero" value="pro" checked title="Pro" description="Unlimited projects, priority support." class="w-80" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add choice-card
+```
+
+Depends on `utils` (`uid`). Zero JS.
+
+## Usage
+
+```astro
+---
+import ChoiceCard from '@/components/apogee/ChoiceCard/ChoiceCard.astro'
+---
+<form>
+  <ChoiceCard name="plan" value="free" title="Free" description="One project." />
+  <ChoiceCard name="plan" value="pro" title="Pro" description="Unlimited projects." checked />
+</form>
+```
+
+## Anatomy
+
+A `<label>` is the card. Inside, in order: the hidden native input (`sr-only`),
+the optional `start` slot, the title and description column, the optional
+`end` slot, and the selection mark (a radio dot or a check) at `indicatorPosition`.
+Because the control is native, arrows move between radios that share a `name`,
+Space toggles a checkbox, and the form posts `name=value`.
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<label>`
+attribute passes through.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `type` | `'radio' \| 'checkbox'` | `'radio'` | The native control. Radios that share `name` are one group. |
+| `name` | `string` | — | Required. Form field name. |
+| `value` | `string` | — | Required. Posted when selected. |
+| `checked` | `boolean` | `false` | Initial state. |
+| `disabled` | `boolean` | `false` | Disables the control and dims the card. |
+| `required` | `boolean` | `false` | Native `required` on the input. |
+| `title` | `string` | — | Title text; the default slot replaces it. |
+| `description` | `string` | — | Supporting text under the title, read as the control's description. The `description` slot replaces it. |
+| `indicator` | `'radio' \| 'check' \| 'none'` | matches `type` | The selection mark. |
+| `indicatorPosition` | `'start' \| 'end'` | `'end'` | Which side the mark sits on. |
+| `size` | `'small' \| 'medium'` | `'medium'` | Padding and gap. |
+| `id` | `string` | generated | Id of the input. |
+| `class` | `string` | — | Extra classes on the card, appended last. |
+
+Slots: `start` (icon, avatar, logo), default (title), `description`, `end` (price, badge).
+
+## Variants
+
+Every `type`, as a form:
+
+<Preview code={`<form class="grid gap-3 sm:grid-cols-3">
+  <ChoiceCard name="plan" value="free" title="Free" description="One project, community support." />
+  <ChoiceCard name="plan" value="pro" title="Pro" description="Unlimited projects, priority support." checked />
+  <ChoiceCard name="plan" value="team" title="Team" description="Everything in Pro, shared billing." />
+</form>
+<form class="grid gap-3">
+  <ChoiceCard type="checkbox" name="addon" value="backups" title="Daily backups" description="Kept for 30 days." />
+  <ChoiceCard type="checkbox" name="addon" value="sso" title="Single sign-on" description="SAML and OIDC." checked />
+</form>`} block>
+  <div data-apogee-choice="plans">
+    <form class="grid gap-3 sm:grid-cols-3">
+      <ChoiceCard name="plan" value="free" title="Free" description="One project, community support." />
+      <ChoiceCard name="plan" value="pro" title="Pro" description="Unlimited projects, priority support." />
+      <ChoiceCard name="plan" value="team" title="Team" description="Everything in Pro, shared billing." />
+    </form>
+  </div>
+  <div data-apogee-choice="addons">
+    <form class="grid gap-3 sm:grid-cols-2">
+      <ChoiceCard type="checkbox" name="addon" value="backups" title="Daily backups" description="Kept for 30 days." />
+      <ChoiceCard type="checkbox" name="addon" value="sso" title="Single sign-on" description="SAML and OIDC." checked />
+    </form>
+  </div>
+</Preview>
+
+Every `indicator` and `indicatorPosition`:
+
+<Preview code={`<ChoiceCard name="i" value="a" indicator="radio" indicatorPosition="start" title="Radio at the start" checked />
+<ChoiceCard name="i" value="b" indicator="check" title="Check at the end" />
+<ChoiceCard name="i" value="c" indicator="none" title="No mark; the ring is the state" />`} block>
+  <div class="grid gap-3 sm:grid-cols-3">
+    <ChoiceCard name="ind" value="a" indicator="radio" indicatorPosition="start" title="Radio at the start" checked />
+    <ChoiceCard name="ind" value="b" indicator="check" title="Check at the end" />
+    <ChoiceCard name="ind" value="c" indicator="none" title="No mark; the ring is the state" />
+  </div>
+</Preview>
+
+Every `size`:
+
+<Preview code={`<ChoiceCard name="s" value="a" size="small" title="Small" description="Tighter padding." checked />
+<ChoiceCard name="s" value="b" size="medium" title="Medium" description="The default." />`}>
+  <div class="grid gap-3 sm:grid-cols-2">
+    <ChoiceCard name="sz" value="a" size="small" title="Small" description="Tighter padding." checked />
+    <ChoiceCard name="sz" value="b" size="medium" title="Medium" description="The default." />
+  </div>
+</Preview>
+
+## States
+
+<Preview code={`<ChoiceCard name="st" value="a" title="Resting" />
+<ChoiceCard name="st" value="b" title="Selected" checked />
+<ChoiceCard name="st" value="c" title="Disabled" disabled />
+<ChoiceCard name="st" value="d" title="Disabled, selected" disabled checked />`} block>
+  <div class="grid gap-3 sm:grid-cols-4">
+    <ChoiceCard name="st" value="a" title="Resting" />
+    <ChoiceCard name="st" value="b" title="Selected" checked />
+    <ChoiceCard name="st2" value="c" title="Disabled" disabled />
+    <ChoiceCard name="st3" value="d" title="Disabled, selected" disabled checked />
+  </div>
+</Preview>
+
+- **Hover** — the neutral faded fill.
+- **Selected** — primary border plus a 1px inset ring; the mark fills.
+- **Focus** — the shared focus outline on the card when the hidden input has keyboard focus.
+- **Disabled** — disabled tokens, `cursor-not-allowed`, the mark dims.
+
+## Examples
+
+With an icon, a price and a badge:
+
+<Preview code={`<ChoiceCard name="tier" value="startup" checked>
+  <FeaturedIcon slot="start" color="primary" size="small"><Zap /></FeaturedIcon>
+  Startup
+  <span slot="description">Up to 10 seats</span>
+  <span slot="end" class="font-semibold text-neutral">$49<span class="text-xs text-neutral-faded">/mo</span></span>
+</ChoiceCard>`} block>
+  <div class="grid gap-3 sm:grid-cols-2">
+    <ChoiceCard name="tier" value="startup" checked>
+      <FeaturedIcon slot="start" color="primary" size="small"><Zap /></FeaturedIcon>
+      Startup
+      <span slot="description">Up to 10 seats</span>
+      <span slot="end" class="font-semibold text-neutral">$49<span class="text-xs text-neutral-faded">/mo</span></span>
+    </ChoiceCard>
+    <ChoiceCard name="tier" value="business">
+      <FeaturedIcon slot="start" color="neutral" size="small"><Building2 /></FeaturedIcon>
+      <span>Business <Badge color="positive" size="small" class="ms-1">Popular</Badge></span>
+      <span slot="description">Unlimited seats</span>
+      <span slot="end" class="font-semibold text-neutral">$199<span class="text-xs text-neutral-faded">/mo</span></span>
+    </ChoiceCard>
+  </div>
+</Preview>
+
+Picking a person:
+
+<Preview code={`<ChoiceCard name="assignee" value="ana" indicator="check">
+  <Avatar slot="start" name="Ana Lima" size="small" />
+  Ana Lima
+  <span slot="description">Design lead</span>
+</ChoiceCard>`}>
+  <ChoiceCard name="assignee" value="ana" indicator="check" class="w-72">
+    <Avatar slot="start" name="Ana Lima" size="small" />
+    Ana Lima
+    <span slot="description">Design lead</span>
+  </ChoiceCard>
+</Preview>
+
+## Accessibility
+
+- The card is a `<label>` for a real `<input>`; the name is the title text, and `description` is wired through `aria-describedby`.
+- Keyboard: Tab reaches the group (the checked radio, or the first), arrows move and select between radios with the same `name`, Space toggles a checkbox.
+- The focus ring draws on the card (`:has(:focus-visible)`), so it is visible although the input is visually hidden.
+- Group radios in a `<fieldset>` with a `<legend>` when the set needs a name of its own.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--border-neutral` / `--border-primary` | Card border, selected border and inset ring |
+| `--background-page` / `--background-neutral-faded-highlighted` | Card fill, hover |
+| `--background-primary` / `--on-primary` | The filled mark and its dot or check |
+| `--background-disabled` / `--foreground-disabled` / `--border-disabled` | Disabled |
+| `--outline-color-focus` | Focus ring |
+
+## Do / Don't
+
+- **Do** use it when each option needs more than a label: a description, a price, an icon.
+- **Do** keep every card in a group the same height; put them in a grid.
+- **Don't** mix radio and checkbox cards in one group.
+- **Don't** put links or buttons inside; a click anywhere selects the card.
+
+## Content
+
+- Title: two or three words, a noun ("Pro", "Daily backups").
+- Description: one short sentence or a fragment; no trailing period on fragments.

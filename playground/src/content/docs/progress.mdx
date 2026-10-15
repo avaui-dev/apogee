@@ -12,6 +12,8 @@ import Progress from '../../../../registry/components/Progress/Progress.astro'
   <Progress value={60} label="Upload progress" />
 </Preview>
 
+For a ring or a gauge see [Circular progress](/docs/circular-progress).
+
 ## Add
 
 ```sh
@@ -37,11 +39,28 @@ through to the root `<div role="progressbar">`.
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `value` | `number` | `0` | Current value, `0`–`max`. Ignored visually when `indeterminate`. |
+| `min` | `number` | `0` | Lower bound. |
 | `max` | `number` | `100` | Maximum value. |
 | `label` | `string` | — | Accessible label (`aria-label`) — there's no visible text otherwise. |
 | `indeterminate` | `boolean` | `false` | Shows a sliding animated fill instead of a value-based width; drops `aria-valuemin` / `aria-valuemax` / `aria-valuenow`. |
 | `size` | `'small' \| 'medium'` | `'medium'` | Bar thickness: 4 / 8px. |
-| `class` | `string` | — | Extra classes on the root track, merged last. |
+| `labelPosition` | `'none' \| 'end' \| 'bottom' \| 'floating'` | `'none'` | Where the value text shows: after the bar, under it, or in a chip that floats above the fill. |
+| `format` | `string` | `'{percent}%'` | Value text template; `{value}`, `{percent}` and `{max}` are replaced. |
+| `class` | `string` | — | Extra classes on the root wrapper, merged last. |
+
+## Value labels
+
+Every `labelPosition`, with a `format`:
+
+<Preview code={`<Progress value={60} label="Upload" labelPosition="end" />
+<Progress value={60} label="Upload" labelPosition="bottom" format="{value} of {max} files" />
+<Progress value={60} label="Upload" labelPosition="floating" />`} block>
+  <div data-apogee-progress="labels" class="flex flex-col gap-6">
+    <Progress value={60} label="Upload" labelPosition="end" />
+    <Progress value={60} label="Upload" labelPosition="bottom" format="{value} of {max} files" />
+    <Progress value={60} label="Upload" labelPosition="floating" />
+  </div>
+</Preview>
 
 ## Sizes
 
@@ -93,7 +112,8 @@ A step counter using a non-percentage `max`:
 |---|---|
 | `--background-neutral-faded` | Track background |
 | `--background-primary` | Fill |
-| `--duration-slow` | Determinate width transition duration |
+| `--background-inverted` / `--on-inverted` | Floating value chip |
+| `--duration-slow` | Determinate fill transition duration |
 | `--ease-standard` | Transition / animation easing |
 
 ## Do / Don't
@@ -101,8 +121,7 @@ A step counter using a non-percentage `max`:
 - **Do** always pass `label` — the bar has no visible text of its own.
 - **Do** use `indeterminate` only when a percentage genuinely can't be computed;
   switch to determinate the moment you can.
-- **Don't** put text inside or over the track — it's a pure visual indicator
-  with an accessible label, not a container.
+- **Don't** write the value into the track yourself; use `labelPosition`, which keeps the text out of the fill.
 - **Don't** animate `value` faster than users can perceive as real progress
   rather than decoration.
 

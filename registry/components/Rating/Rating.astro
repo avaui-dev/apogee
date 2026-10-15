@@ -23,6 +23,8 @@ interface Props extends HTMLAttributes<'div'> {
   /** Selected (or displayed, when readonly) rating. */
   value?: number
   readonly?: boolean
+  /** Star size. @category layout */
+  size?: 'small' | 'medium' | 'large'
   /** Hue of a filled star. @category layout */
   color?: keyof typeof colors
   'aria-label'?: string
@@ -34,12 +36,17 @@ const {
   max = 5,
   value = 0,
   readonly = false,
+  size = 'medium',
   color = 'warning',
   'aria-label': ariaLabel,
   class: className,
   ...rest
 } = Astro.props
 const rid = uid(Astro.locals)
+const readonlySizes = { small: 'size-4', medium: 'size-5', large: 'size-6' } as const
+const interactiveSizes = { small: 'size-5', medium: 'size-6', large: 'size-7' } as const
+// Fractional fill: the coloured star is clipped to the fraction of the value that falls in it.
+const fillOf = (i: number) => Math.max(0, Math.min(100, (value - i) * 100))
 ---
 
 {
@@ -52,10 +59,14 @@ const rid = uid(Astro.locals)
       {...rest}
     >
       {Array.from({ length: max }).map((_, i) => (
-        <Star
-          class:list={['size-5 fill-current', i < value ? 'text-(--apogee-color)' : 'text-(--foreground-disabled)']}
-          aria-hidden="true"
-        />
+        <span class="inline-grid">
+          <Star class:list={['[grid-area:1/1] fill-current text-(--foreground-disabled)', readonlySizes[size]]} aria-hidden="true" />
+          <Star
+            class:list={['apogee-rating-fill [grid-area:1/1] fill-current text-(--apogee-color)', readonlySizes[size]]}
+            style={`--apogee-cut: ${100 - fillOf(i)}%`}
+            aria-hidden="true"
+          />
+        </span>
       ))}
     </div>
   ) : (
@@ -67,7 +78,7 @@ const rid = uid(Astro.locals)
           <>
             <input type="radio" name={name} id={oid} value={v} checked={value === v} class="peer sr-only" />
             <label for={oid} class="apogee-rating-star cursor-pointer rounded-sm p-2.5">
-              <Star class="size-6 fill-current" aria-hidden="true" />
+              <Star class:list={['fill-current', interactiveSizes[size]]} aria-hidden="true" />
               <span class="sr-only">{`${v} star${v === 1 ? '' : 's'}`}</span>
             </label>
           </>
@@ -78,6 +89,13 @@ const rid = uid(Astro.locals)
 }
 
 <style is:global>
+  /* Readonly: clip the coloured star from the end so 3.5 shows a half star; mirrored in RTL. */
+  .apogee-rating-fill {
+    clip-path: inset(0 var(--apogee-cut) 0 0);
+  }
+  .apogee-rating-fill:dir(rtl) {
+    clip-path: inset(0 0 0 var(--apogee-cut));
+  }
   /* Reverse-order fill: a star and every lower one light up. Container hover
      clears the checked state so the hover preview wins. */
   .apogee-rating label {

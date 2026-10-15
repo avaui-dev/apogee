@@ -103,20 +103,20 @@ const anchor = `--${id}`
       } else if (e.key === 'ArrowLeft' && current !== menu) {
         e.preventDefault()
         current.hidePopover()
-        current.closest('.apogee-dropdown-sub')?.querySelector<HTMLElement>(':scope > [role="menuitem"]')?.focus()
+        current.closest('.apogee-dropdown-sub')?.querySelector<HTMLElement>(':scope > [role^="menuitem"]')?.focus()
       } else menuKeydown(e, current)
     })
 
     // Activating an item closes the whole chain (links navigate as well).
     root.addEventListener('click', (e) => {
-      const item = (e.target as Element).closest('[role="menuitem"]')
+      const item = (e.target as Element).closest('[role^="menuitem"]')
       if (item && !item.hasAttribute('popovertarget') && menu.matches(':popover-open')) menu.hidePopover()
     })
 
     // Submenus open on hover with a short delay; leaving trigger and panel closes them.
     for (const sub of root.querySelectorAll<HTMLElement>('.apogee-dropdown-sub')) {
       const panel = sub.querySelector<HTMLElement>(':scope > [role="menu"]')
-      const subTrigger = sub.querySelector<HTMLElement>(':scope > [role="menuitem"]')
+      const subTrigger = sub.querySelector<HTMLElement>(':scope > [role^="menuitem"]')
       if (!panel || !subTrigger) continue
       restoreFocus(panel, subTrigger)
       let t: ReturnType<typeof setTimeout> | undefined

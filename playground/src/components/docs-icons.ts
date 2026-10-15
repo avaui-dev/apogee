@@ -7,7 +7,7 @@ import {
   Gauge, ArrowRightLeft, Zap, Navigation, PanelTop, Hash, ChevronsRight, KeyRound, MessageSquare, CircleDot, Activity, Layers,
   BookOpen, Circle, Star, PenLine, Languages, ScrollText, LayoutTemplate, ToggleLeft, PanelLeft, Rows3, SkipForward,
   SlidersHorizontal, Ruler, LoaderCircle, TrendingUp, ListOrdered, ToggleRight, Table, PanelsTopLeft, Tags, Tag, Text, AlignLeft,
-  GitCommitHorizontal, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Compass,
+  GitCommitHorizontal, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Compass, Sparkles,
 } from '@lucide/astro'
 
 export const docsIcons: Record<string, typeof Box> = {
@@ -29,7 +29,7 @@ export const docsIcons: Record<string, typeof Box> = {
   textarea: AlignLeft, timeline: GitCommitHorizontal, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,
   tokens: Paintbrush, tooltip: MessageCircle, typography: ALargeSmall,
   utilities: Wrench, theme: SunMoon, 'loader-text': LoaderCircle, 'icon-toggle': ToggleLeft, 'content-toggle': ArrowRightLeft,
-  foundations: Compass, components: Shapes, sections: LayoutTemplate, 'close-button': X, skins: Layers,
+  foundations: Compass, components: Shapes, sections: LayoutTemplate, 'close-button': X, skins: Layers, 'featured-icon': Sparkles, 'circular-progress': LoaderCircle, 'choice-card': SquareCheck,
   'section-header': LayoutTemplate, 'sections/hero': LayoutTemplate, 'sections/logo-cloud': Shapes, 'sections/features': LayoutGrid, 'sections/stats': TrendingUp,
   'sections/testimonials': Quote, 'sections/cta': MousePointerClick, 'sections/faq': ChevronsDownUp, 'sections/content': FileText, 'sections/team': Users,
   'sections/pricing': CreditCard, 'sections/blog-list': List, 'sections/post-header': Heading, 'sections/contact': MessageSquare, 'sections/not-found': Search,

@@ -50,7 +50,27 @@ passes through to the root `<div>` (not the free-text `<input>`).
 | `placeholder` | `string` | `'Add tag…'` | Placeholder on the free-text field. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style, shared with every text field. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border). |
-| `class` | `string` | — | Extra classes on the root `<div>`, appended last. |
+| `id` | `string` | generated | Id of the typing field; the label points at it. |
+| `label` | `string` | — | Label, through Field. |
+| `hint` | `string` | — | Helper text under the box. |
+| `error` | `string` | — | Error message; marks the field invalid. |
+| `required` | `boolean` | `false` | Native `required` on the typing field while there are no tags. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Minimum height and text size, matching the other fields. |
+| `maxTags` | `number` | — | Stops accepting tags at this count; the field reads "Limit reached" until one is removed. |
+| `allowDuplicates` | `boolean` | `false` | Accept a tag that already exists (the check is case-insensitive). |
+| `class` | `string` | — | Extra classes on the Field root, appended last. |
+
+## Label, sizes and limits
+
+<Preview code={`<TagInput name="topics" label="Topics" hint="Up to two." maxTags={2} value={['design']} />
+<TagInput name="aliases" label="Aliases" allowDuplicates size="small" />
+<TagInput name="emails" label="Invite" size="large" placeholder="name@company.com" />`} block>
+  <div data-apogee-tag-input="limits"><TagInput name="topics" label="Topics" hint="Up to two." maxTags={2} value={['design']} /></div>
+  <TagInput name="aliases" label="Aliases" allowDuplicates size="small" />
+  <TagInput name="emails" label="Invite" size="large" placeholder="name@company.com" />
+  <TagInput name="xl" label="Extra large" size="xlarge" />
+  <div data-apogee-tag-input="required"><TagInput name="must" label="At least one" required hint="Required until a tag is added." /></div>
+</Preview>
 
 ## States
 

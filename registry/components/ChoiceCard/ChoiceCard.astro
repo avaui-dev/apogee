@@ -1,0 +1,144 @@
+---
+/**
+ * ChoiceCard — a card that is a form control: a `<label>` around a native
+ * radio or checkbox, so the whole card selects, arrows move between radios
+ * that share a `name`, and the form posts the value. Zero JS. Slots: `start`
+ * (icon or avatar), default (title), `description`, `end`.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { uid } from '../utils/uid.ts'
+
+const sizes = { small: 'gap-2.5 p-3 text-sm', medium: 'gap-3 p-4 text-sm' } as const
+const indicatorSizes = { small: 'size-4', medium: 'size-4' } as const
+
+interface Props extends Omit<HTMLAttributes<'label'>, 'title'> {
+  /** The native control inside. @category layout */
+  type?: 'radio' | 'checkbox'
+  name: string
+  value: string
+  checked?: boolean
+  disabled?: boolean
+  required?: boolean
+  /** Title text; the default slot replaces it. @category content */
+  title?: string
+  /** Supporting text under the title. @category content */
+  description?: string
+  /** The selection mark. Defaults to the control's own shape. @category layout */
+  indicator?: 'radio' | 'check' | 'none'
+  /** @category layout */
+  indicatorPosition?: 'start' | 'end'
+  /** @category layout */
+  size?: keyof typeof sizes
+  id?: string
+  class?: string
+}
+
+const {
+  type = 'radio',
+  name,
+  value,
+  checked = false,
+  disabled = false,
+  required = false,
+  title,
+  description,
+  indicator = type === 'radio' ? 'radio' : 'check',
+  indicatorPosition = 'end',
+  size = 'medium',
+  id: idProp,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals)
+const hasDescription = Boolean(description) || Astro.slots.has('description')
+const markClass = [
+  'apogee-choice-mark relative mt-0.5 shrink-0 border-[1.5px] border-neutral bg-page transition-colors',
+  indicator === 'radio' ? 'rounded-full' : 'rounded-[0.3rem]',
+  indicatorSizes[size],
+].join(' ')
+const showMark = indicator !== 'none'
+---
+
+<label
+  for={id}
+  class:list={[
+    'apogee-choice group relative flex cursor-pointer rounded-lg border border-neutral bg-page text-neutral transition-colors',
+    'hover:bg-neutral-faded-highlighted',
+    'has-[:checked]:border-primary has-[:checked]:shadow-[inset_0_0_0_1px_var(--border-primary)]',
+    'has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus',
+    'has-[:disabled]:cursor-not-allowed has-[:disabled]:border-disabled has-[:disabled]:bg-disabled has-[:disabled]:text-disabled has-[:disabled]:hover:bg-disabled',
+    sizes[size],
+    className,
+  ]}
+  data-apogee-choice
+  {...rest}
+>
+  <input
+    id={id}
+    type={type}
+    name={name}
+    value={value}
+    checked={checked || undefined}
+    disabled={disabled || undefined}
+    required={required || undefined}
+    aria-describedby={hasDescription ? `${id}-desc` : undefined}
+    class="peer sr-only"
+  />
+  {showMark && indicatorPosition === 'start' && <span class={markClass} data-indicator={indicator} aria-hidden="true" />}
+  {
+    Astro.slots.has('start') && (
+      <span class="inline-flex shrink-0 [&>svg]:size-5">
+        <slot name="start" />
+      </span>
+    )
+  }
+  <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+    <span class="font-medium"><slot>{title}</slot></span>
+    {hasDescription && <span id={`${id}-desc`} class="text-neutral-faded group-has-[:disabled]:text-disabled"><slot name="description">{description}</slot></span>}
+  </span>
+  {
+    Astro.slots.has('end') && (
+      <span class="inline-flex shrink-0 self-start text-neutral-faded">
+        <slot name="end" />
+      </span>
+    )
+  }
+  {showMark && indicatorPosition === 'end' && <span class={markClass} data-indicator={indicator} aria-hidden="true" />}
+</label>
+
+<style>
+  /* The mark follows the hidden input: filled primary when checked, a dot or a
+     check drawn from --on-primary. */
+  .apogee-choice:has(:checked) .apogee-choice-mark {
+    border-color: var(--background-primary);
+    background-color: var(--background-primary);
+  }
+  .apogee-choice:has(:checked) .apogee-choice-mark[data-indicator='radio'] {
+    background-image: radial-gradient(circle at center, var(--on-primary) 0 32%, transparent 36%);
+  }
+  .apogee-choice-mark[data-indicator='check']::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--on-primary);
+    -webkit-mask: center / 0.72rem no-repeat
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+    mask: center / 0.72rem no-repeat
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+  .apogee-choice:has(:checked) .apogee-choice-mark[data-indicator='check']::before {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-choice-mark[data-indicator='check']::before {
+      transition: none;
+    }
+  }
+  .apogee-choice:has(:disabled) .apogee-choice-mark {
+    opacity: 0.5;
+  }
+</style>

@@ -58,6 +58,10 @@ passes through to the root `<span data-apogee-tag>`.
 | `rounded` | `boolean` | `false` | Fully round ends. |
 | `href` | `string` | — | Renders the inner label as an `<a>` instead of a `<span>`. |
 | `removable` | `boolean` | `false` | Shows a remove button (hidden without JS). |
+| `count` | `number` | — | A count pill after the label (tabular numbers). |
+| `selectable` | `boolean` | `false` | A native checkbox inside the chip: click or Space toggles it, the form posts `name=value`. Ignored with `href`. |
+| `checked` | `boolean` | `false` | Initial state of a selectable tag. |
+| `name` | `string` | — | Form field name of a selectable tag. |
 | `value` | `string` | — | Identifies this tag in the `apogee:tag-remove` event's `detail`. |
 | `dismissOnClick` | `boolean` | `false` | Also removes the element from the DOM when the remove event isn't cancelled — for cosmetic lists with no backing state. |
 | `removeLabel` | `string` | `'Remove'` | Accessible label for the remove button. |
@@ -120,6 +124,32 @@ passes through to the root `<span data-apogee-tag>`.
       <Tag color="positive">Positive</Tag>
       <Tag color="warning">Warning</Tag>
     </div>
+  </div>
+</Preview>
+
+## Count and selectable
+
+<Preview code={`<Tag count={12}>Open</Tag>
+<Tag color="primary" variant="solid" count={3}>Drafts</Tag>`}>
+  <div data-apogee-tag="count" class="contents">
+    <Tag count={12}>Open</Tag>
+    <Tag color="primary" variant="solid" count={3}>Drafts</Tag>
+  </div>
+</Preview>
+
+Selectable tags are checkboxes; the chip takes the hue's faded fill while checked:
+
+<Preview code={`<form class="flex flex-wrap gap-2">
+  <Tag selectable name="topics" value="design">Design</Tag>
+  <Tag selectable name="topics" value="code" checked>Code</Tag>
+  <Tag selectable name="topics" value="ops" color="positive">Ops</Tag>
+</form>`}>
+  <div data-apogee-tag="selectable" class="contents">
+    <form class="flex flex-wrap gap-2">
+      <Tag selectable name="topics" value="design">Design</Tag>
+      <Tag selectable name="topics" value="code" checked>Code</Tag>
+      <Tag selectable name="topics" value="ops" color="positive">Ops</Tag>
+    </form>
   </div>
 </Preview>
 

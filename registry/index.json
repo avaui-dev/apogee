@@ -191,6 +191,28 @@
       "dependencies": [],
       "usesJs": false
     },
+    "ChoiceCard": {
+      "name": "ChoiceCard",
+      "kind": "component",
+      "files": [
+        "ChoiceCard/ChoiceCard.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "CircularProgress": {
+      "name": "CircularProgress",
+      "kind": "component",
+      "files": [
+        "CircularProgress/CircularProgress.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
     "CloseButton": {
       "name": "CloseButton",
       "kind": "component",
@@ -410,6 +432,16 @@
       "kind": "component",
       "files": [
         "Eyebrow/Eyebrow.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "FeaturedIcon": {
+      "name": "FeaturedIcon",
+      "kind": "component",
+      "files": [
+        "FeaturedIcon/FeaturedIcon.astro"
       ],
       "registryDependencies": [],
       "dependencies": [],
@@ -667,6 +699,7 @@
         "PinInput/PinInput.astro"
       ],
       "registryDependencies": [
+        "Field",
         "utils"
       ],
       "dependencies": [],
@@ -759,8 +792,11 @@
         "RichTextEditor/RichTextEditor.astro"
       ],
       "registryDependencies": [
+        "Field",
+        "Kbd",
         "ToggleButton",
         "ToggleButtonGroup",
+        "Tooltip",
         "utils"
       ],
       "dependencies": [
@@ -972,7 +1008,9 @@
       "registryDependencies": [
         "CloseButton"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": true
     },
     "TagInput": {
@@ -982,6 +1020,7 @@
         "TagInput/TagInput.astro"
       ],
       "registryDependencies": [
+        "Field",
         "utils"
       ],
       "dependencies": [

@@ -34,7 +34,11 @@ interface Props extends Omit<HTMLAttributes<'span'>, 'size'> {
   /** Name — used for the initials fallback and the label. */
   name?: string
   /** @category layout */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge'
+  /** Presence dot at the bottom end corner; read with the name ("Ana Lima, online"). @category layout */
+  status?: 'online' | 'offline'
+  /** A ring around the avatar, offset from it. @category layout */
+  border?: boolean
   /** Fallback hue. @category layout */
   color?: keyof typeof fills.faded
   /** Fallback fill style. @category layout */
@@ -44,13 +48,18 @@ interface Props extends Omit<HTMLAttributes<'span'>, 'size'> {
   class?: string
 }
 
-const { src, alt, name, size = 'medium', color = 'neutral', variant = 'faded', squared = false, class: className, ...rest } = Astro.props
+const { src, alt, name, size = 'medium', status, border = false, color = 'neutral', variant = 'faded', squared = false, class: className, ...rest } = Astro.props
 
 const sizeMap = {
+  xsmall: 'size-6 text-[10px]',
   small: 'size-8 text-xs',
   medium: 'size-10 text-sm',
   large: 'size-12 text-base',
+  xlarge: 'size-16 text-lg',
 }
+const dotSizes = { xsmall: 'size-2', small: 'size-2', medium: 'size-2.5', large: 'size-3', xlarge: 'size-4' } as const
+const dotColors = { online: 'bg-positive', offline: 'bg-neutral-faded' } as const
+const label = name ? (status ? `${name}, ${status}` : name) : undefined
 
 const initials = name
   ? name
@@ -64,21 +73,25 @@ const initials = name
 
 <span
   class:list={[
-    'apogee-avatar relative inline-flex items-center justify-center overflow-hidden bg-page font-medium select-none',
+    'apogee-avatar relative inline-flex items-center justify-center bg-page font-medium select-none',
+    // The status dot overhangs the edge, so clipping moves to the image and the fallback.
+    !status && 'overflow-hidden',
     squared ? 'rounded-md' : 'rounded-full',
+    border && 'ring-2 ring-(--border-neutral-faded) ring-offset-2 ring-offset-page',
     sizeMap[size],
     className,
   ]}
   {...rest}
 >
-  {src && <img src={src} alt={alt ?? name ?? ''} class="apogee-avatar-img size-full object-cover" />}
+  {src && <img src={src} alt={alt ?? label ?? ''} class="apogee-avatar-img size-full rounded-[inherit] object-cover ring-1 ring-(--border-neutral-faded) ring-inset" />}
   <span
-    class:list={['apogee-avatar-fallback inline-flex size-full items-center justify-center', fills[variant][color]]}
+    class:list={['apogee-avatar-fallback inline-flex size-full items-center justify-center rounded-[inherit]', fills[variant][color]]}
     role={name ? 'img' : undefined}
-    aria-label={name}
+    aria-label={label}
   >
     {initials || <User class="size-1/2" aria-hidden="true" />}
   </span>
+  {status && <span class:list={['apogee-avatar-status absolute end-0 bottom-0 rounded-full ring-2 ring-page', dotSizes[size], dotColors[status]]} aria-hidden="true" />}
 </span>
 
 <style>

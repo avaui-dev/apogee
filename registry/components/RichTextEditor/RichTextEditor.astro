@@ -9,58 +9,129 @@
  *
  * Uses `document.execCommand` — deprecated but universally supported and
  * dependency-free, which suits the copy-in model. For a heavy-duty editor bring
- * TipTap / ProseMirror instead; this is the lightweight default.
+ * a full editor library instead; this is the lightweight default.
  */
 import type { HTMLAttributes } from 'astro/types'
-import { Bold, Italic, Underline, Heading2, List, ListOrdered, Link as LinkIcon } from '@lucide/astro'
+import { Bold, Italic, Underline, Heading2, List, ListOrdered, Link as LinkIcon, AlignLeft, AlignCenter, AlignRight } from '@lucide/astro'
 import ToggleButton from '../ToggleButton/ToggleButton.astro'
 import ToggleButtonGroup from '../ToggleButtonGroup/ToggleButtonGroup.astro'
+import Tooltip from '../Tooltip/Tooltip.astro'
+import Kbd from '../Kbd/Kbd.astro'
+import Field from '../Field/Field.astro'
+import { uid } from '../utils/uid.ts'
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
+  id?: string
   name?: string
   /** Initial HTML. */
   value?: string
   placeholder?: string
+  /** @category content */
+  label?: string
+  /** @category content */
+  hint?: string
+  /** @category content */
+  error?: string
+  /** Marks the editor invalid without a message. */
+  hasError?: boolean
+  disabled?: boolean
+  required?: boolean
+  /** Character limit; a live "N characters left" hint flips to an error past it. */
+  limit?: number
   class?: string
 }
 
-const { name = 'content', value = '', placeholder = 'Write something…', class: className, ...rest } = Astro.props
+const {
+  id: idProp,
+  name = 'content',
+  value = '',
+  placeholder = 'Write something…',
+  label,
+  hint,
+  error,
+  hasError = false,
+  disabled = false,
+  required = false,
+  limit,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals)
+const invalid = Boolean(error) || hasError
+const describedby = [hint && `${id}-hint`, error && `${id}-error`, limit && `${id}-count`].filter(Boolean).join(' ') || undefined
+// Toolbar: command, icon, label, shortcut. Every button gets a tooltip with the shortcut.
+const tools = [
+  { group: 'Text style', items: [
+    { command: 'bold', label: 'Bold', key: '⌘B', Icon: Bold },
+    { command: 'italic', label: 'Italic', key: '⌘I', Icon: Italic },
+    { command: 'underline', label: 'Underline', key: '⌘U', Icon: Underline },
+  ] },
+  { group: 'Blocks', items: [
+    { command: 'formatBlock', value: 'h2', label: 'Heading', Icon: Heading2 },
+    { command: 'insertUnorderedList', label: 'Bulleted list', Icon: List },
+    { command: 'insertOrderedList', label: 'Numbered list', Icon: ListOrdered },
+    { command: 'createLink', label: 'Link', key: '⌘K', Icon: LinkIcon },
+  ] },
+  { group: 'Alignment', items: [
+    { command: 'justifyLeft', label: 'Align left', Icon: AlignLeft },
+    { command: 'justifyCenter', label: 'Align center', Icon: AlignCenter },
+    { command: 'justifyRight', label: 'Align right', Icon: AlignRight },
+  ] },
+] as const
 ---
 
-<div class:list={['apogee-rte rounded-md border border-neutral bg-page', className]} data-name={name} {...rest}>
+<Field id={id} label={label} hint={hint} error={error} required={required} disabled={disabled} class={className}>
+<div
+  class:list={['apogee-rte rounded-md border border-neutral bg-page', invalid && 'border-critical', disabled && 'border-disabled bg-disabled']}
+  data-name={name}
+  data-limit={limit}
+  {...rest}
+>
   <div class="apogee-rte-toolbar flex flex-wrap items-center gap-2 border-b border-neutral p-2 no-js:hidden">
-    <ToggleButtonGroup aria-label="Text style">
-      <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command="bold" aria-label="Bold"><Bold aria-hidden="true" /></ToggleButton>
-      <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command="italic" aria-label="Italic"><Italic aria-hidden="true" /></ToggleButton>
-      <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command="underline" aria-label="Underline"><Underline aria-hidden="true" /></ToggleButton>
-    </ToggleButtonGroup>
-    <ToggleButtonGroup aria-label="Blocks">
-      <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command="formatBlock" data-value="h2" aria-label="Heading"><Heading2 aria-hidden="true" /></ToggleButton>
-      <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command="insertUnorderedList" aria-label="Bulleted list"><List aria-hidden="true" /></ToggleButton>
-      <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command="insertOrderedList" aria-label="Numbered list"><ListOrdered aria-hidden="true" /></ToggleButton>
-      <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command="createLink" aria-label="Link"><LinkIcon aria-hidden="true" /></ToggleButton>
-    </ToggleButtonGroup>
+    {tools.map((g) => (
+      <ToggleButtonGroup aria-label={g.group} disabled={disabled}>
+        {g.items.map((t) => (
+          <Tooltip text={t.label}>
+            {'key' in t && <Kbd slot="shortcut">{t.key}</Kbd>}
+            <ToggleButton iconOnly manual size="small" class="apogee-rte-btn" data-command={t.command} data-value={'value' in t ? t.value : undefined} aria-label={t.label}>
+              <t.Icon aria-hidden="true" />
+            </ToggleButton>
+          </Tooltip>
+        ))}
+      </ToggleButtonGroup>
+    ))}
   </div>
 
   <div
-    class="apogee-rte-editor min-h-40 p-3 text-sm text-neutral outline-none no-js:hidden [&_a]:text-primary [&_a]:underline [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5 empty:before:text-neutral-faded empty:before:content-[attr(data-placeholder)]"
-    contenteditable="true"
+    id={id}
+    class="apogee-rte-editor min-h-40 p-3 text-sm text-neutral outline-none no-js:hidden [&_a]:text-primary [&_a]:underline [&_h2]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5 empty:before:text-neutral-faded empty:before:content-[attr(data-placeholder)] aria-disabled:cursor-not-allowed aria-disabled:text-disabled"
+    contenteditable={disabled ? 'false' : 'true'}
     role="textbox"
     aria-multiline="true"
-    aria-label={placeholder}
+    aria-label={label ? undefined : placeholder}
+    aria-labelledby={label ? `${id}-label` : undefined}
+    aria-describedby={describedby}
+    aria-invalid={invalid ? 'true' : undefined}
+    aria-disabled={disabled ? 'true' : undefined}
+    aria-required={required ? 'true' : undefined}
     data-placeholder={placeholder}
     set:html={value}
   ></div>
 
   <textarea
     name={name}
+    disabled={disabled}
+    required={required}
     class="apogee-rte-fallback hidden min-h-40 w-full resize-y bg-transparent p-3 text-sm text-neutral outline-none no-js:block placeholder:text-neutral-faded"
     placeholder={placeholder}
-    aria-label={placeholder}>{value}</textarea>
+    aria-label={label ? undefined : placeholder}
+    aria-labelledby={label ? `${id}-label` : undefined}>{value}</textarea>
 
-  <input type="hidden" class="apogee-rte-value" value={value} />
+  <input type="hidden" class="apogee-rte-value" value={value} disabled={disabled} />
 </div>
+{limit && <p id={`${id}-count`} class="apogee-rte-count text-sm text-neutral-faded tabular-nums no-js:hidden" aria-live="polite">{limit} characters left</p>}
+</Field>
 
 <script>
   import { island } from '../utils/island.ts'
@@ -75,11 +146,28 @@ const { name = 'content', value = '', placeholder = 'Write something…', class:
     if (hidden) hidden.name = rte.dataset.name || 'content'
     fallback?.removeAttribute('name')
 
-    const sync = () => hidden && (hidden.value = editor.innerHTML)
+    // Character limit: a live count under the editor; past it the editor is invalid.
+    const limit = Number(rte.dataset.limit)
+    const count = rte.parentElement?.querySelector<HTMLElement>('.apogee-rte-count')
+    const serverInvalid = editor.getAttribute('aria-invalid') === 'true'
+    const recount = () => {
+      if (!limit || !count) return
+      const left = limit - (editor.textContent ?? '').length
+      count.textContent = `${left} characters left`
+      count.classList.toggle('text-critical', left < 0)
+      count.classList.toggle('text-neutral-faded', left >= 0)
+      if (left < 0) editor.setAttribute('aria-invalid', 'true')
+      else if (!serverInvalid) editor.removeAttribute('aria-invalid')
+    }
+    recount()
+    const sync = () => {
+      if (hidden) hidden.value = editor.innerHTML
+      recount()
+    }
     editor.addEventListener('input', sync)
 
     const buttons = [...rte.querySelectorAll<HTMLButtonElement>('.apogee-rte-btn')]
-    const STATE_CMDS = ['bold', 'italic', 'underline', 'insertUnorderedList', 'insertOrderedList']
+    const STATE_CMDS = ['bold', 'italic', 'underline', 'insertUnorderedList', 'insertOrderedList', 'justifyLeft', 'justifyCenter', 'justifyRight']
 
     // Reflect the current selection's formatting on the toggle buttons.
     const updateStates = () => {
@@ -105,6 +193,7 @@ const { name = 'content', value = '', placeholder = 'Write something…', class:
       // Keep the selection in the editor when the toolbar is clicked.
       btn.addEventListener('mousedown', (e) => e.preventDefault())
       btn.addEventListener('click', () => {
+        if (editor.getAttribute('contenteditable') === 'false') return
         const cmd = btn.dataset.command!
         let value = btn.dataset.value
         editor.focus()

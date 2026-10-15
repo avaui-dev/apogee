@@ -1,0 +1,144 @@
+---
+title: Featured icon
+description: An icon in a tinted tile, the glyph that leads an empty state, an alert, a stat or a feature card.
+group: Components
+order: 0
+related: [icon, empty-state, alert, stat]
+---
+
+import Preview from '../../components/Preview.astro'
+import FeaturedIcon from '../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import { Zap, ShieldCheck, Inbox, TriangleAlert, Rocket } from '@lucide/astro'
+
+<Preview code={`<FeaturedIcon color="primary"><Zap /></FeaturedIcon>`}>
+  <FeaturedIcon color="primary"><Zap /></FeaturedIcon>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add featured-icon
+```
+
+No Apogee dependencies. Zero JS.
+
+## Usage
+
+```astro
+---
+import FeaturedIcon from '@/components/apogee/FeaturedIcon/FeaturedIcon.astro'
+import { Zap } from '@lucide/astro'
+---
+<FeaturedIcon theme="light" color="primary" size="large"><Zap /></FeaturedIcon>
+```
+
+## API
+
+`@composable` — exposed to Content Editors in AVA. Any other native `<span>`
+attribute passes through. The default slot takes one icon.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `theme` | `'light' \| 'solid' \| 'outline'` | `'light'` | Tinted tile, solid fill, or two concentric rings with no fill. |
+| `color` | `'neutral' \| 'primary' \| 'critical' \| 'positive' \| 'warning'` | `'neutral'` | The hue. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Tile 32 / 40 / 48 / 56px; the icon scales with it. |
+| `rounded` | `boolean` | `false` | A circle instead of a rounded square. |
+| `label` | `string` | — | Accessible name. Without it the tile is decorative (`aria-hidden`). |
+| `class` | `string` | — | Extra classes, appended last. |
+
+## Variants
+
+Every `theme`:
+
+<Preview code={`<FeaturedIcon theme="light" color="primary"><Zap /></FeaturedIcon>
+<FeaturedIcon theme="solid" color="primary"><Zap /></FeaturedIcon>
+<FeaturedIcon theme="outline" color="primary"><Zap /></FeaturedIcon>`}>
+  <div data-apogee-featured="themes" class="flex items-center gap-6">
+    <FeaturedIcon theme="light" color="primary"><Zap /></FeaturedIcon>
+    <FeaturedIcon theme="solid" color="primary"><Zap /></FeaturedIcon>
+    <FeaturedIcon theme="outline" color="primary"><Zap /></FeaturedIcon>
+  </div>
+</Preview>
+
+Every `color`, per theme:
+
+<Preview code={`<FeaturedIcon color="neutral"><Inbox /></FeaturedIcon>
+… primary, critical, positive, warning, for light, solid and outline …`} block>
+  {['light', 'solid', 'outline'].map((theme) => (
+    <div class="flex items-center gap-6">
+      {['neutral', 'primary', 'critical', 'positive', 'warning'].map((color) => (
+        <FeaturedIcon theme={theme} color={color}><Inbox /></FeaturedIcon>
+      ))}
+    </div>
+  ))}
+</Preview>
+
+Every `size`, and `rounded`:
+
+<Preview code={`<FeaturedIcon size="small"><Zap /></FeaturedIcon>
+<FeaturedIcon size="medium"><Zap /></FeaturedIcon>
+<FeaturedIcon size="large"><Zap /></FeaturedIcon>
+<FeaturedIcon size="xlarge"><Zap /></FeaturedIcon>
+<FeaturedIcon rounded color="positive"><ShieldCheck /></FeaturedIcon>`}>
+  <div data-apogee-featured="sizes" class="flex items-center gap-4">
+    <FeaturedIcon size="small" color="primary"><Zap /></FeaturedIcon>
+    <FeaturedIcon size="medium" color="primary"><Zap /></FeaturedIcon>
+    <FeaturedIcon size="large" color="primary"><Zap /></FeaturedIcon>
+    <FeaturedIcon size="xlarge" color="primary"><Zap /></FeaturedIcon>
+  </div>
+  <FeaturedIcon rounded color="positive"><ShieldCheck /></FeaturedIcon>
+</Preview>
+
+## States
+
+Static: no interactive states. It follows the theme (light and dark) through its tokens.
+
+## Examples
+
+A feature card:
+
+<Preview code={`<Card>
+  <FeaturedIcon color="primary" size="large"><Rocket /></FeaturedIcon>
+  <p class="mt-4 font-medium">Deploy in seconds</p>
+  <p class="text-sm text-neutral-faded">Push to main and the site is live.</p>
+</Card>`}>
+  <Card class="w-72">
+    <FeaturedIcon color="primary" size="large"><Rocket /></FeaturedIcon>
+    <p class="mt-4 font-medium">Deploy in seconds</p>
+    <p class="text-sm text-neutral-faded">Push to main and the site is live.</p>
+  </Card>
+</Preview>
+
+A warning with meaning of its own:
+
+<Preview code={`<FeaturedIcon theme="light" color="warning" rounded label="Warning"><TriangleAlert /></FeaturedIcon>`}>
+  <FeaturedIcon theme="light" color="warning" rounded label="Warning"><TriangleAlert /></FeaturedIcon>
+</Preview>
+
+## Accessibility
+
+- Decorative by default: `aria-hidden="true"`, and the icon inside should carry `aria-hidden` too (Lucide icons do when they have no title).
+- With `label`, the tile becomes `role="img"` with that name. Use it only when no adjacent text says the same thing.
+- Colour is never the only signal; the tile sits next to a heading or a message.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-{hue}-faded` / `--foreground-{hue}` | `light` tile and glyph |
+| `--background-{hue}` / `--on-{hue}` | `solid` tile and glyph |
+| `--border-{hue}-faded` | `outline` rings |
+| `--radius-lg` | Tile corners |
+
+## Do / Don't
+
+- **Do** use one size per surface: `large` for empty states and feature cards, `medium` beside a heading, `small` inline in a list.
+- **Do** match the hue to the message (critical for a failure, positive for a success).
+- **Don't** put a button inside; a featured icon is not interactive.
+- **Don't** use `solid` for every tile on a page; it is the loudest theme.
+
+## Content
+
+- The icon says what the text says; pick a literal glyph (an inbox for an empty inbox), not a mood.
+- `label` is a noun phrase ("Warning", "Verified"), used only when no text nearby carries it.

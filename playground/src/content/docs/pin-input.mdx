@@ -54,8 +54,13 @@ those below are **not** forwarded to the DOM.
 | `hasError` | `boolean` | `false` | Critical border on every box, `aria-invalid`. |
 | `disabled` | `boolean` | `false` | Disables every box. |
 | `value` | `string` | — | Initial code, one character per box. |
-| `aria-label` | `string` | `'Verification code'` | Label on the `role="group"` wrapper. |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Cell size: 36 / 44 / 48px. |
+| `aria-label` | `string` | `'Verification code'` | Label on the `role="group"` wrapper when there is no `label`. |
+| `id` | `string` | generated | Id of the first box; the label points at it. |
+| `label` | `string` | — | Visible label through Field; the group is `aria-labelledby` it. |
+| `hint` | `string` | — | Helper text under the boxes. |
+| `error` | `string` | — | Error message; marks every box invalid. |
+| `groups` | `number` | — | Boxes per group, with a separator between groups (`length={6} groups={3}` → 123 – 456). |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Cell size: 36 / 44 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The cell box style, shared with every text field. |
 | `class` | `string` | — | Extra classes on the root, appended last. |
 
@@ -65,6 +70,19 @@ those below are **not** forwarded to the DOM.
 <PinInput type="text" aria-label="Text code" />`}>
   <PinInput type="numeric" aria-label="Numeric code" />
   <PinInput type="text" aria-label="Text code" />
+</Preview>
+
+## Label, groups and the filled state
+
+A filled box takes the primary border; an empty one shows a faint placeholder.
+
+<Preview code={`<PinInput label="Code" hint="From the text message." length={6} groups={3} name="pin-grouped" />
+<PinInput size="xlarge" aria-label="Large code" length={4} name="pin-xl" />`} block>
+  <div data-apogee-pin="groups" class="flex flex-col gap-6">
+    <PinInput label="Code" hint="From the text message." length={6} groups={3} name="pin-grouped" />
+    <div data-apogee-pin-empty><PinInput aria-label="Empty code" length={4} name="pin-empty" /></div>
+  </div>
+  <PinInput size="xlarge" aria-label="Large code" length={4} name="pin-xl" />
 </Preview>
 
 ## Patterns
@@ -120,8 +138,7 @@ A shorter PIN with a custom field name:
 - **Do** keep `length` matched to the real code length the backend expects.
 - **Don't** forget the no-JS path submits separate characters, not a joined
   string — join `formData.getAll(name)` server-side to reconstruct the code.
-- **Don't** add a visible label or border around the group — the boxes are the
-  label.
+- **Don't** draw a border around the group; the boxes are the control. A visible `label` is fine and goes through Field.
 
 ## Content
 
