@@ -1,0 +1,80 @@
+---
+title: TableOfContents
+description: The sections of a long page as in-page links in a named nav; one level of nesting and a current marker.
+group: Components
+order: 0
+related: [share-links, nav-link, prose]
+---
+
+import Preview from '../../components/Preview.astro'
+import TableOfContents from '../../../../registry/components/TableOfContents/TableOfContents.astro'
+
+<Preview code={`<TableOfContents items={[
+  { label: 'Introduction', href: '#introduction' },
+  { label: 'Software and tools', href: '#software-and-tools', children: [{ label: 'Our stack', href: '#our-stack' }] },
+  { label: 'Conclusion', href: '#conclusion' },
+]} current="#introduction" />`}>
+  <div class="w-60" data-apogee-toc="default">
+    <TableOfContents items={[{ label: 'Introduction', href: '#introduction' }, { label: 'Software and tools', href: '#software-and-tools', children: [{ label: 'Our stack', href: '#our-stack' }] }, { label: 'Conclusion', href: '#conclusion' }]} current="#introduction" />
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add table-of-contents
+```
+
+No dependencies. Zero JS.
+
+## Usage
+
+Build the items from your headings (Astro's `render()` returns them):
+
+```astro
+---
+import TableOfContents from '@/components/apogee/TableOfContents/TableOfContents.astro'
+const { headings } = await render(entry)
+const items = headings.filter((h) => h.depth === 2).map((h) => ({ label: h.text, href: `#${h.slug}` }))
+---
+<TableOfContents items={items} />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `{ label, href, children? }[]` | — | Required. `children` nest one level. |
+| `label` | `string` | `'Table of contents'` | The visible heading and the nav's name. |
+| `current` | `string` | — | `href` of the section to mark as current (`aria-current="location"`). |
+| `class` | `string` | — | Extra classes on the `<nav>`, merged last. |
+
+## States
+
+- **Current** — the matching link turns primary and bold.
+- **Hover** — links darken.
+
+## Examples
+
+Beside an article: [Split image 01](/docs/content-sections/split-image-01).
+
+## Accessibility
+
+- A `<nav>` named by `label`; the visible heading repeats it for sighted readers (hidden from screen readers so it is not read twice).
+- The current section carries `aria-current="location"`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-primary` | Heading and the current link |
+| `--foreground-neutral-faded` / `--foreground-neutral` | Links / hover |
+
+## Do / Don't
+
+- **Do** use it on pages long enough to scroll several screens.
+- **Don't** list every heading; the second level is plenty.
+
+## Content
+
+- Use the headings' own words, so the link matches what the reader lands on.

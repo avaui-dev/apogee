@@ -1,0 +1,24 @@
+---
+/**
+ * Section simple 05: A centred quote with its author.
+ *
+ * @block content
+ * @order 20
+ */
+import Section from '../../components/Section/Section.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import Blockquote from '../../components/Blockquote/Blockquote.astro'
+---
+
+<Section spacing="large" containerWidth="medium">
+  <figure class="m-0 flex flex-col items-center gap-8 text-center">
+    <Blockquote class="border-0 p-0 text-2xl font-medium text-balance md:text-4xl">“We stopped arguing about buttons and started arguing about the product. That was the point.”</Blockquote>
+    <figcaption class="flex flex-col items-center gap-3">
+      <Avatar name="Ada Lovelace" size="xlarge" />
+      <div>
+        <p class="font-semibold">Ada Lovelace</p>
+        <p class="text-neutral-faded">Design Lead, Northwind</p>
+      </div>
+    </figcaption>
+  </figure>
+</Section>

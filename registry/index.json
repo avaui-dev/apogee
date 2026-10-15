@@ -1015,6 +1015,21 @@
       ],
       "usesJs": true
     },
+    "ShareLinks": {
+      "name": "ShareLinks",
+      "kind": "component",
+      "files": [
+        "ShareLinks/ShareLinks.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
+    },
     "Sidebar": {
       "name": "Sidebar",
       "kind": "component",
@@ -1137,6 +1152,16 @@
         "@lucide/astro"
       ],
       "usesJs": true
+    },
+    "TableOfContents": {
+      "name": "TableOfContents",
+      "kind": "component",
+      "files": [
+        "TableOfContents/TableOfContents.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
     },
     "Tabs": {
       "name": "Tabs",
@@ -4661,6 +4686,431 @@
       "dependencies": [
         "@lucide/astro"
       ],
+      "usesJs": false
+    },
+    "content/alternative-01": {
+      "name": "content/alternative-01",
+      "kind": "block",
+      "category": "content",
+      "title": "Alternative 01",
+      "description": "An article page: a photo beside the title block (from lg), the body, then topics.",
+      "files": [
+        "blocks/content/Alternative01.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Badge",
+        "Heading",
+        "Image",
+        "Prose",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/alternative-02": {
+      "name": "content/alternative-02",
+      "kind": "block",
+      "category": "content",
+      "title": "Alternative 02",
+      "description": "An article page: a heading block over a photo carousel, the body, then the author and topics.",
+      "files": [
+        "blocks/content/Alternative02.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Badge",
+        "Carousel",
+        "Heading",
+        "Image",
+        "Prose",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/alternative-03": {
+      "name": "content/alternative-03",
+      "kind": "block",
+      "category": "content",
+      "title": "Alternative 03",
+      "description": "An article page: a place title beside a tall photo, the body, then share links.",
+      "files": [
+        "blocks/content/Alternative03.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Image",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/large-image-01": {
+      "name": "content/large-image-01",
+      "kind": "block",
+      "category": "content",
+      "title": "Large image 01",
+      "description": "An article page: a centred title over a wide photo, the body, then the author and share links.",
+      "files": [
+        "blocks/content/LargeImage01.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Image",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/large-image-02": {
+      "name": "content/large-image-02",
+      "kind": "block",
+      "category": "content",
+      "title": "Large image 02",
+      "description": "An article page: a centred header with the author over a wide photo, the body, then topics and share links.",
+      "files": [
+        "blocks/content/LargeImage02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Image",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/large-image-03": {
+      "name": "content/large-image-03",
+      "kind": "block",
+      "category": "content",
+      "title": "Large image 03",
+      "description": "An article page: a header and wide photo, then the body beside a newsletter card (from lg).",
+      "files": [
+        "blocks/content/LargeImage03.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Button",
+        "Card",
+        "Image",
+        "Input",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/large-image-04": {
+      "name": "content/large-image-04",
+      "kind": "block",
+      "category": "content",
+      "title": "Large image 04",
+      "description": "An article page: a header on the brand colour, a wide photo overlapping it, the body, then topics and share links.",
+      "files": [
+        "blocks/content/LargeImage04.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Image",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/rich-text-01": {
+      "name": "content/rich-text-01",
+      "kind": "block",
+      "category": "content",
+      "title": "Rich text 01",
+      "description": "One centred column of article text, then the author and share links.",
+      "files": [
+        "blocks/content/RichText01.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Image",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/rich-text-02": {
+      "name": "content/rich-text-02",
+      "kind": "block",
+      "category": "content",
+      "title": "Rich text 02",
+      "description": "One column of policy text with section headings and a numbered list.",
+      "files": [
+        "blocks/content/RichText02.astro"
+      ],
+      "registryDependencies": [
+        "Prose",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/section-simple-01": {
+      "name": "content/section-simple-01",
+      "kind": "block",
+      "category": "content",
+      "title": "Section simple 01",
+      "description": "An icon, heading and intro beside body text.",
+      "files": [
+        "blocks/content/SectionSimple01.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Prose",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "content/section-simple-02": {
+      "name": "content/section-simple-02",
+      "kind": "block",
+      "category": "content",
+      "title": "Section simple 02",
+      "description": "A mission heading and intro beside body text with a list.",
+      "files": [
+        "blocks/content/SectionSimple02.astro"
+      ],
+      "registryDependencies": [
+        "Prose",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/section-simple-03": {
+      "name": "content/section-simple-03",
+      "kind": "block",
+      "category": "content",
+      "title": "Section simple 03",
+      "description": "A heading block over two columns of body text.",
+      "files": [
+        "blocks/content/SectionSimple03.astro"
+      ],
+      "registryDependencies": [
+        "Prose",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/section-simple-04": {
+      "name": "content/section-simple-04",
+      "kind": "block",
+      "category": "content",
+      "title": "Section simple 04",
+      "description": "Two columns of body text with no heading.",
+      "files": [
+        "blocks/content/SectionSimple04.astro"
+      ],
+      "registryDependencies": [
+        "Prose",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/section-simple-05": {
+      "name": "content/section-simple-05",
+      "kind": "block",
+      "category": "content",
+      "title": "Section simple 05",
+      "description": "A centred quote with its author.",
+      "files": [
+        "blocks/content/SectionSimple05.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Blockquote",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/section-split-image-01": {
+      "name": "content/section-split-image-01",
+      "kind": "block",
+      "category": "content",
+      "title": "Section split image 01",
+      "description": "A section heading with a button over body text beside an image.",
+      "files": [
+        "blocks/content/SectionSplitImage01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Prose",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/section-split-image-02": {
+      "name": "content/section-split-image-02",
+      "kind": "block",
+      "category": "content",
+      "title": "Section split image 02",
+      "description": "A case study: heading, body text and two buttons beside a portrait with a name, role and rating.",
+      "files": [
+        "blocks/content/SectionSplitImage02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Prose",
+        "Rating",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/section-split-image-03": {
+      "name": "content/section-split-image-03",
+      "kind": "block",
+      "category": "content",
+      "title": "Section split image 03",
+      "description": "A heading, body text and two buttons beside an abstract image.",
+      "files": [
+        "blocks/content/SectionSplitImage03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/simple": {
+      "name": "content/simple",
+      "kind": "block",
+      "category": "content",
+      "title": "Simple",
+      "description": "A policy page: a centred header with legal and plain-language tabs over the policy text.",
+      "files": [
+        "blocks/content/Simple.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Prose",
+        "Section",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/split-image-01": {
+      "name": "content/split-image-01",
+      "kind": "block",
+      "category": "content",
+      "title": "Split image 01",
+      "description": "An article page: a split header with a tall photo, then a table of contents and share links beside the body.",
+      "files": [
+        "blocks/content/SplitImage01.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks",
+        "TableOfContents"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/split-image-02": {
+      "name": "content/split-image-02",
+      "kind": "block",
+      "category": "content",
+      "title": "Split image 02",
+      "description": "An article page: a split header with a photo on a tinted panel, the body, then share links.",
+      "files": [
+        "blocks/content/SplitImage02.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Heading",
+        "Image",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/split-image-03": {
+      "name": "content/split-image-03",
+      "kind": "block",
+      "category": "content",
+      "title": "Split image 03",
+      "description": "An article page: a split header, then a sidebar with contents, contributors, a newsletter form and share links beside the body.",
+      "files": [
+        "blocks/content/SplitImage03.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Button",
+        "Card",
+        "Image",
+        "Input",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks",
+        "TableOfContents"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "content/split-image-04": {
+      "name": "content/split-image-04",
+      "kind": "block",
+      "category": "content",
+      "title": "Split image 04",
+      "description": "An article page: a split header beside a wide photo, the body, then share links.",
+      "files": [
+        "blocks/content/SplitImage04.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Image",
+        "PostHeader",
+        "Prose",
+        "Section",
+        "ShareLinks"
+      ],
+      "dependencies": [],
       "usesJs": false
     }
   }

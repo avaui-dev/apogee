@@ -2677,3 +2677,35 @@ test('map embed is a named frame with a link to the full map', async ({ page }) 
   await expect(map.locator('iframe')).toHaveAttribute('loading', 'lazy')
   await expect(map.getByRole('link', { name: /Open the full map/ })).toHaveAttribute('href', /mlat=-37\.8183/)
 })
+
+// ---- Content sections ----
+
+test('share links: copy announces, email works without JS', async ({ page, browser, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.goto('/docs/share-links')
+  const root = page.locator('[data-apogee-share-links="default"]')
+  await root.getByRole('button', { name: 'Copy link' }).click()
+  await expect(root.locator('[data-share-status]')).toHaveText('Copied')
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('/docs/share-links')
+  await expect(root.getByRole('link', { name: 'Email' })).toHaveAttribute('href', /^mailto:\?subject=What%20makes/)
+  const ctx = await browser.newContext({ javaScriptEnabled: false })
+  const p = await ctx.newPage()
+  await p.goto('/docs/share-links')
+  await expect(p.locator('[data-apogee-share-links="default"]').getByRole('button', { name: 'Copy link' })).toBeHidden()
+  await expect(p.locator('[data-apogee-share-links="default"]').getByRole('link', { name: 'Email' })).toBeVisible()
+  await ctx.close()
+})
+
+test('table of contents is a named nav with the current section marked', async ({ page }) => {
+  await page.goto('/docs/table-of-contents')
+  const nav = page.locator('[data-apogee-toc="default"] nav')
+  await expect(nav).toHaveAttribute('aria-label', 'Table of contents')
+  await expect(nav.locator('a[aria-current="location"]')).toHaveText('Introduction')
+  await expect(nav.locator('ul ul a')).toHaveText('Our stack')
+})
+
+test('prose leaves .not-prose blocks alone', async ({ page }) => {
+  await page.goto('/examples/content/rich-text-01')
+  const h2 = page.locator('.not-prose h2')
+  expect(await h2.evaluate((el) => getComputedStyle(el).marginTop)).toBe('0px')
+})

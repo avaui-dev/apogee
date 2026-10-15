@@ -1,0 +1,70 @@
+---
+/**
+ * Alternative 02: An article page: a heading block over a photo carousel, the body, then the author and topics.
+ *
+ * @block content
+ * @order 10
+ */
+import Section from '../../components/Section/Section.astro'
+import Prose from '../../components/Prose/Prose.astro'
+import Image from '../../components/Image/Image.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+---
+
+<article>
+  <Section spacing="large">
+    <header class="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-4 text-center">
+      <p class="text-sm font-semibold text-primary">Published <time datetime="2026-01-20">Jan 20, 2026</time></p>
+      <Heading as="h1" size="h1">A week on the road with our support team</Heading>
+      <p class="text-lg text-neutral-faded">Five cities, forty customers and one very tired van.</p>
+    </header>
+    <Carousel label="Photos from the trip" visibleItems={{ base: 1, md: 2 }} gap={6} controlsPosition="below">
+      {[30, 31, 32, 33, 34].map((n) => <Image src={`https://picsum.photos/seed/apogee-content-${n}/1200/800`} alt="" width={1200} height={800} fit="cover" radius="xl" class="aspect-[3/2] w-full" />)}
+    </Carousel>
+  </Section>
+  <Section spacing="none" containerWidth="small" class="pb-section">
+    <Prose>
+      <p class="lead">A design system is the shared language a team speaks when it builds a product: the parts, the rules for using them and the reasons behind the rules.</p>
+      <h2 >Introduction</h2>
+      <p>Most teams start one after the third button that looks almost, but not quite, like the other two. The cost is rarely the button; it is the conversation every time someone has to choose between them.</p>
+      <p>A system turns those conversations into decisions made once. It does not slow a team down; it removes the questions nobody needed to ask.</p>
+      <figure>
+        <Image src="https://picsum.photos/seed/apogee-content-35/1600/900" alt="" width={1600} height={900} fit="cover" class="aspect-video w-full" />
+        <figcaption>A team review of the component inventory.</figcaption>
+      </figure>
+      <h2 >Software and tools</h2>
+      <p>The tools matter less than the habits around them. Keep the source of truth in code, describe every part where people already work, and let the build check what people forget.</p>
+      <ol>
+        <li>Name the parts the way the team already talks about them.</li>
+        <li>Write down when to use each one, and when not to.</li>
+        <li>Fail the build when a colour pair misses contrast.</li>
+      </ol>
+      <blockquote>
+        <p>“We stopped arguing about buttons and started arguing about the product. That was the point.”</p>
+        <cite>Ada Lovelace, Design Lead</cite>
+      </blockquote>
+      <h2 >Other resources</h2>
+      <p>Read the parts' own documentation first: every variant, every state, and the keyboard behaviour you get for free.</p>
+      <Image src="https://picsum.photos/seed/apogee-content-36/1600/900" alt="" width={1600} height={900} fit="cover" class="aspect-video w-full" />
+      <div class="not-prose mt-10 rounded-2xl bg-neutral-faded p-6 md:p-8">
+        <h2 class="text-xl font-semibold">Conclusion</h2>
+        <p class="mt-4 text-neutral-faded">Start small: one page built entirely from shared parts teaches more than any audit. Grow the system where the product needs it, not ahead of it.</p>
+      </div>
+    </Prose>
+    <footer class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-3">
+      <Avatar name="Ada Lovelace" size="large" />
+      <div>
+        <p class="font-semibold">Ada Lovelace</p>
+        <p class="text-neutral-faded">Design Lead</p>
+      </div>
+    </div>
+    <ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Topics">
+      {['Design', 'Research', 'Process'].map((t) => <li><Badge color="neutral" rounded>{t}</Badge></li>)}
+    </ul>
+    </footer>
+  </Section>
+</article>

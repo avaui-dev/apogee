@@ -1,0 +1,77 @@
+---
+/**
+ * Large image 03: An article page: a header and wide photo, then the body beside a newsletter card (from lg).
+ *
+ * @block content
+ * @order 3
+ */
+import Section from '../../components/Section/Section.astro'
+import PostHeader from '../../sections/PostHeader/PostHeader.astro'
+import Prose from '../../components/Prose/Prose.astro'
+import Image from '../../components/Image/Image.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
+import Card from '../../components/Card/Card.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<article>
+  <PostHeader layout="centered" eyebrow="Leadership" heading="Leadership lessons from a year of remote teams" description="Rituals, writing and trust: what held a distributed team together." author={{ name: 'Alan Turing', role: 'Engineering Manager' }} date="2026-01-20" readingTime="9 min read" headingLevel={1} media={{ src: 'https://picsum.photos/seed/apogee-content-7/1600/900', alt: '', width: 1600, height: 900 }} />
+  <Section spacing="medium">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+      <div class="min-w-0">
+        <Prose>
+      <p class="lead">A design system is the shared language a team speaks when it builds a product: the parts, the rules for using them and the reasons behind the rules.</p>
+      <h2 >Introduction</h2>
+      <p>Most teams start one after the third button that looks almost, but not quite, like the other two. The cost is rarely the button; it is the conversation every time someone has to choose between them.</p>
+      <p>A system turns those conversations into decisions made once. It does not slow a team down; it removes the questions nobody needed to ask.</p>
+      <figure>
+        <Image src="https://picsum.photos/seed/apogee-content-8/1600/900" alt="" width={1600} height={900} fit="cover" class="aspect-video w-full" />
+        <figcaption>A team review of the component inventory.</figcaption>
+      </figure>
+      <h2 >Software and tools</h2>
+      <p>The tools matter less than the habits around them. Keep the source of truth in code, describe every part where people already work, and let the build check what people forget.</p>
+      <ol>
+        <li>Name the parts the way the team already talks about them.</li>
+        <li>Write down when to use each one, and when not to.</li>
+        <li>Fail the build when a colour pair misses contrast.</li>
+      </ol>
+      <blockquote>
+        <p>“We stopped arguing about buttons and started arguing about the product. That was the point.”</p>
+        <cite>Ada Lovelace, Design Lead</cite>
+      </blockquote>
+      <h2 >Other resources</h2>
+      <p>Read the parts' own documentation first: every variant, every state, and the keyboard behaviour you get for free.</p>
+      <Image src="https://picsum.photos/seed/apogee-content-9/1600/900" alt="" width={1600} height={900} fit="cover" class="aspect-video w-full" />
+      <div class="not-prose mt-10 rounded-2xl bg-neutral-faded p-6 md:p-8">
+        <h2 class="text-xl font-semibold">Conclusion</h2>
+        <p class="mt-4 text-neutral-faded">Start small: one page built entirely from shared parts teaches more than any audit. Grow the system where the product needs it, not ahead of it.</p>
+      </div>
+    </Prose>
+        <footer class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-3">
+      <Avatar name="Ada Lovelace" size="large" />
+      <div>
+        <p class="font-semibold">Ada Lovelace</p>
+        <p class="text-neutral-faded">Design Lead</p>
+      </div>
+    </div>
+    <ShareLinks title="What makes a design system work" />
+  </footer>
+      </div>
+      <aside class="max-lg:hidden" aria-label="Newsletter">
+        <div class="sticky top-8">
+      <Card padding="large" class="bg-neutral-faded">
+        <h2 class="text-lg font-semibold">Weekly newsletter</h2>
+        <p class="mt-2 text-sm text-neutral-faded">No spam. Just the latest releases and tips, articles and interviews, every week.</p>
+        <form method="post" class="mt-6 flex flex-col gap-3">
+          <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required />
+          <Button type="submit">Subscribe</Button>
+        </form>
+      </Card>
+        </div>
+      </aside>
+    </div>
+  </Section>
+</article>

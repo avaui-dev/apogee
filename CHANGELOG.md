@@ -43,6 +43,10 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Content sections**: 22 content blocks; 12 article pages (centred, split, brand and photo headers, contents and contributors sidebars, newsletter cards, a photo carousel, a policy page with legal and plain tabs) and 10 content sections (text columns, text beside images, a case study, a quote, policy text).
+- **ShareLinks**: Copy link (announced), the device's share sheet where there is one, and email; the email link works without JS.
+- **TableOfContents**: a page's sections as in-page links in a named nav, one level of nesting, the current one marked.
+- **Prose** leaves blocks inside `.not-prose` alone, for callouts and cards in an article.
 - **Contact sections**: 35 contact blocks; forms beside a map or a photo, ways to reach you as items or cards, store lists, store tabs with maps, a world map of offices, sidebars with links, and brand-colour versions.
 - **ContactForm**: names, email, a phone with a country code, the message, an optional services checklist and a privacy checkbox; posts without JS.
 - **ContactMethod**: one way to reach you (icon, title, line and link), plain or on a card, start or centred.

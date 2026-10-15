@@ -1,0 +1,23 @@
+---
+title: "Section simple 02"
+description: "A mission heading and intro beside body text with a list.."
+group: Content sections
+order: 17
+related: [prose, share-links, table-of-contents]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="content/section-simple-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add content/section-simple-02
+```
+
+This copies the block to `src/components/apogee/blocks/content/` with everything it uses: Prose, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.

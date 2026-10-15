@@ -1,0 +1,30 @@
+---
+/**
+ * Section simple 02: A mission heading and intro beside body text with a list.
+ *
+ * @block content
+ * @order 17
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Prose from '../../components/Prose/Prose.astro'
+---
+
+<Section spacing="large">
+  <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="flex flex-col gap-6">
+      <SectionHeader eyebrow="Our mission" heading="Transforming marketplaces" description="We build the tools small sellers need to compete with the biggest." />
+      <Prose class="max-md:hidden">
+        <p>Every feature starts with a seller who could not do something they needed to. We build it, they try it, we fix it.</p>
+      </Prose>
+    </div>
+    <Prose>
+      <p>We work in short cycles with the people who will use the result:</p>
+      <ul>
+        <li>Talk to sellers every week, not every quarter.</li>
+        <li>Ship the smallest thing that answers their question.</li>
+        <li>Measure what changed for them, not for us.</li>
+      </ul>
+    </Prose>
+  </div>
+</Section>

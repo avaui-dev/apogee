@@ -1,0 +1,24 @@
+---
+title: "Split image 01"
+description: "An article page: a split header with a tall photo, then a table of contents and share links beside the body.."
+group: Content sections
+order: 5
+related: [prose, share-links, table-of-contents]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="content/split-image-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add content/split-image-01
+```
+
+This copies the block to `src/components/apogee/blocks/content/` with everything it uses: Image, PostHeader, Prose, Section, ShareLinks, TableOfContents. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is the page's `h1`; the items below are one level down.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

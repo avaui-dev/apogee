@@ -1,0 +1,27 @@
+---
+/**
+ * Section simple 04: Two columns of body text with no heading.
+ *
+ * @block content
+ * @order 19
+ */
+import Section from '../../components/Section/Section.astro'
+import Prose from '../../components/Prose/Prose.astro'
+---
+
+<Section spacing="large" aria-label="About our process">
+  <div class="grid gap-8 md:grid-cols-2 md:gap-16">
+    <Prose>
+      <p>Most teams start a design system after the third button that looks almost, but not quite, like the other two. The cost is rarely the button; it is the conversation every time someone has to choose.</p>
+      <p>A system turns those conversations into decisions made once, written down where people work.</p>
+    </Prose>
+    <Prose>
+      <p>We work in short cycles with the people who will use the result:</p>
+      <ul>
+        <li>Name the parts the way the team already talks about them.</li>
+        <li>Write down when to use each one, and when not to.</li>
+        <li>Let the build check what people forget.</li>
+      </ul>
+    </Prose>
+  </div>
+</Section>

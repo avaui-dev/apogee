@@ -1,0 +1,43 @@
+---
+/**
+ * TableOfContents — the sections of a long page as in-page links, in a
+ * named `<nav>`. Nested items indent one level. Pass `current` to mark the
+ * section the reader is on (`aria-current="location"`). Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+type Item = { label: string; href: string; children?: { label: string; href: string }[] | undefined }
+
+/** @composable */
+interface Props extends HTMLAttributes<'nav'> {
+  /** @shape { label: string, href: string, children?: { label, href }[] }[] @category content */ items: Item[]
+  /** The visible heading and the nav's name. @category content */ label?: string
+  /** `href` of the section to mark as current. @category content */ current?: string
+  class?: string
+}
+
+const { items, label = 'Table of contents', current, class: className, ...rest } = Astro.props
+const link = 'block rounded-xs py-1 text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-[current=location]:font-semibold aria-[current=location]:text-primary'
+---
+
+<nav aria-label={label} class:list={['apogee-toc flex flex-col gap-3 text-sm', className]} {...rest}>
+  <p class="font-semibold text-primary" aria-hidden="true">{label}</p>
+  <ul class="m-0 flex list-none flex-col gap-1 p-0">
+    {
+      items.map((i) => (
+        <li>
+          <a href={i.href} class={link} aria-current={i.href === current ? 'location' : undefined}>{i.label}</a>
+          {i.children?.length ? (
+            <ul class="m-0 flex list-none flex-col gap-1 ps-4">
+              {i.children.map((c) => (
+                <li><a href={c.href} class={link} aria-current={c.href === current ? 'location' : undefined}>{c.label}</a></li>
+              ))}
+            </ul>
+          ) : null}
+        </li>
+      ))
+    }
+  </ul>
+</nav>

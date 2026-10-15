@@ -1,0 +1,26 @@
+---
+title: Content sections
+navTitle: Overview
+description: Article pages with headers, photos, contents and share links, and content sections with text, images and quotes.
+group: Content sections
+order: -1
+related: [prose, share-links, table-of-contents]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+The first twelve are whole article pages: a header (centred, split or on the
+brand colour) with a photo, the article in [Prose](/docs/prose), and a footer
+with the author, topics and [ShareLinks](/docs/share-links), some with a
+[TableOfContents](/docs/table-of-contents) and a newsletter card beside the
+body. The rest are content sections: text in columns, text beside an image,
+a quote, and long-form policy text.
+
+```sh
+npx @ava-ui/apogee add content/large-image-01
+```
+
+Put your article in place of the sample body; render Markdown into `Prose`
+with `<Prose><Content /></Prose>`.
+
+<DocsIndex group="Content sections" self="content-sections" />

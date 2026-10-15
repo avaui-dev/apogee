@@ -1,0 +1,28 @@
+---
+/**
+ * Rich text 02: One column of policy text with section headings and a numbered list.
+ *
+ * @block content
+ * @order 22
+ */
+import Section from '../../components/Section/Section.astro'
+import Prose from '../../components/Prose/Prose.astro'
+---
+
+<Section spacing="large" containerWidth="small" aria-label="Policy">
+  <Prose>
+    <p class="lead">These terms apply to everyone who uses the service. Read them once; we keep them short.</p>
+    <h2>What we provide</h2>
+    <p>Access to the service, updates and support by email. We may change features with notice.</p>
+    <h3>Your account</h3>
+    <ol>
+      <li>Keep your password to yourself.</li>
+      <li>Tell us within 48 hours if you think someone else used your account.</li>
+      <li>You own what you upload; we only store and show it to provide the service.</li>
+    </ol>
+    <h2>Payments and refunds</h2>
+    <p>Plans renew each month or year. Cancel any time; you keep access until the end of the period you paid for.</p>
+    <h3>Changes to these terms</h3>
+    <p>We email you 30 days before a change takes effect.</p>
+  </Prose>
+</Section>

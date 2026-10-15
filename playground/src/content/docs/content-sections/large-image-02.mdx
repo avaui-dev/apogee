@@ -1,0 +1,24 @@
+---
+title: "Large image 02"
+description: "An article page: a centred header with the author over a wide photo, the body, then topics and share links.."
+group: Content sections
+order: 2
+related: [prose, share-links, table-of-contents]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="content/large-image-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add content/large-image-02
+```
+
+This copies the block to `src/components/apogee/blocks/content/` with everything it uses: Badge, Image, PostHeader, Prose, Section, ShareLinks. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is the page's `h1`; the items below are one level down.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

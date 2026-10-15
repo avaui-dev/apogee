@@ -1,0 +1,26 @@
+---
+/**
+ * Section split image 01: A section heading with a button over body text beside an image.
+ *
+ * @block content
+ * @order 13
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Prose from '../../components/Prose/Prose.astro'
+import Image from '../../components/Image/Image.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Why we're different" heading="We help teams ship work they are proud of" description="Shared parts, written rules and a strict build: less arguing about buttons, more time on the product." class="mb-12">
+    <Button slot="actions" href="#" size="large">Get started</Button>
+  </SectionHeader>
+  <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+    <Prose>
+      <p>Most teams start a design system after the third button that looks almost, but not quite, like the other two. The cost is rarely the button; it is the conversation every time someone has to choose.</p>
+      <p>A system turns those conversations into decisions made once, written down where people work, and checked by the build.</p>
+    </Prose>
+    <Image src="https://picsum.photos/seed/apogee-content-40/1200/800" alt="" width={1200} height={800} fit="cover" radius="xl" class="aspect-[3/2] w-full" />
+  </div>
+</Section>

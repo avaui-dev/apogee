@@ -1,0 +1,91 @@
+---
+/**
+ * ShareLinks — ways to pass a page on: Copy link, the device's own share sheet
+ * (every app the reader has, where the browser offers one) and email. A small
+ * island copies the link and opens the share sheet; without JS both buttons
+ * hide and the email link stays.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Link2, Share2, Mail, Check } from '@lucide/astro'
+import Button from '../Button/Button.astro'
+
+/** @composable */
+interface Props extends HTMLAttributes<'div'> {
+  /** The address to share; defaults to the current page. @category content */ url?: string
+  /** The title passed to the share sheet and the email subject; defaults to the page title. @category content */ title?: string
+  /** @category content */ copyLabel?: string
+  /** @category content */ copiedLabel?: string
+  /** @category content */ shareLabel?: string
+  /** @category content */ emailLabel?: string
+  /** `iconOnly`: square icon buttons named by their labels. @category layout */ iconOnly?: boolean
+  /** @category layout */ size?: 'small' | 'medium'
+  class?: string
+}
+
+const {
+  url,
+  title,
+  copyLabel = 'Copy link',
+  copiedLabel = 'Copied',
+  shareLabel = 'Share',
+  emailLabel = 'Email',
+  iconOnly = false,
+  size = 'medium',
+  class: className,
+  ...rest
+} = Astro.props
+const href = url ?? Astro.url.href
+const subject = title ?? ''
+const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(href)}`
+---
+
+<div class:list={['apogee-share flex flex-wrap items-center gap-3', className]} data-url={url} data-title={title} data-copied={copiedLabel} {...rest}>
+  <Button type="button" variant="outline" color="neutral" size={size} iconOnly={iconOnly} aria-label={iconOnly ? copyLabel : undefined} class="apogee-share-copy no-js:hidden">
+    <Link2 slot="start" aria-hidden="true" class="apogee-share-icon" />
+    <Check slot="start" aria-hidden="true" class="apogee-share-done hidden" />
+    {!iconOnly && <span class="apogee-share-label">{copyLabel}</span>}
+  </Button>
+  <Button type="button" variant="outline" color="neutral" size={size} iconOnly={iconOnly} aria-label={iconOnly ? shareLabel : undefined} class="apogee-share-native" hidden>
+    <Share2 slot="start" aria-hidden="true" />
+    {!iconOnly && shareLabel}
+  </Button>
+  <Button href={mailto} variant="outline" color="neutral" size={size} iconOnly={iconOnly} aria-label={iconOnly ? emailLabel : undefined}>
+    <Mail slot="start" aria-hidden="true" />
+    {!iconOnly && emailLabel}
+  </Button>
+  <span class="sr-only" role="status" data-share-status></span>
+</div>
+
+<script>
+  import { island } from '../utils/island.ts'
+  import { copyText } from '../utils/clipboard.ts'
+
+  island('.apogee-share', (root) => {
+    const url = root.dataset.url || location.href
+    const title = root.dataset.title || document.title
+    const status = root.querySelector<HTMLElement>('[data-share-status]')
+    const copy = root.querySelector<HTMLButtonElement>('.apogee-share-copy')
+    let timer = 0
+    copy?.addEventListener('click', async () => {
+      if (!(await copyText(url))) return
+      // A tick for a moment, and the news for screen readers.
+      copy.querySelector('.apogee-share-icon')?.classList.add('hidden')
+      copy.querySelector('.apogee-share-done')?.classList.remove('hidden')
+      if (status) status.textContent = root.dataset.copied ?? 'Copied'
+      clearTimeout(timer)
+      timer = window.setTimeout(() => {
+        copy.querySelector('.apogee-share-icon')?.classList.remove('hidden')
+        copy.querySelector('.apogee-share-done')?.classList.add('hidden')
+        if (status) status.textContent = ''
+      }, 2000)
+    })
+    // The device share sheet, only where the browser has one.
+    const native = root.querySelector<HTMLButtonElement>('.apogee-share-native')
+    if (native && 'share' in navigator) {
+      native.hidden = false
+      native.addEventListener('click', () => navigator.share({ url, title }).catch(() => {}))
+    }
+  })
+</script>

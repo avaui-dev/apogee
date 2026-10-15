@@ -1,0 +1,50 @@
+---
+/**
+ * Simple: A policy page: a centred header with legal and plain-language tabs over the policy text.
+ *
+ * @block content
+ * @order 12
+ */
+import Section from '../../components/Section/Section.astro'
+import Prose from '../../components/Prose/Prose.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+---
+
+<article>
+  <Section spacing="large" containerWidth="small">
+    <header class="mb-12 flex flex-col items-center gap-4 text-center">
+      <p class="text-sm font-semibold text-primary">Current as of <time datetime="2026-01-20">20 Jan 2026</time></p>
+      <Heading as="h1" size="h1">Privacy policy</Heading>
+      <p class="text-lg text-neutral-faded">Your privacy is important to us. We respect it with regard to any information we may collect while you use our website.</p>
+    </header>
+    <Tabs tabs={[{ label: 'Legal version', value: 'legal' }, { label: 'Plain version', value: 'plain' }]} variant="pills-raised" class="[&_.apogee-tabs-list]:mx-auto [&_.apogee-tabs-list]:w-fit">
+      <div slot="panel-legal" class="mt-8">
+        <Prose>
+          <p>This policy explains what information we collect when you use our website and services, how we use it, and the choices you have.</p>
+          <h2>What information do we collect?</h2>
+          <p>We collect the information you give us (your name and email when you sign up) and the information your browser sends when you visit (pages viewed, approximate location and device type).</p>
+          <h2>How do we use your information?</h2>
+          <p>To provide the service, to answer your messages and, with your consent, to send you news. We never sell your information.</p>
+          <h3>Do we use cookies?</h3>
+          <p>Only those needed for the site to work, and, if you allow them, a privacy-friendly analytics cookie.</p>
+          <h2>How long do we keep your information?</h2>
+          <p>As long as your account is open, and for up to 30 days after you close it.</p>
+          <h2>How can you contact us?</h2>
+          <p>Write to privacy@example.com and we will answer within 30 days.</p>
+        </Prose>
+      </div>
+      <div slot="panel-plain" class="mt-8">
+        <Prose>
+          <p class="lead">The short version.</p>
+          <ul>
+            <li>We collect your name and email when you sign up, and basic visit data.</li>
+            <li>We use it to run the service and answer you. We never sell it.</li>
+            <li>We only set the cookies the site needs, unless you allow analytics.</li>
+            <li>Close your account and we delete your data within 30 days.</li>
+          </ul>
+        </Prose>
+      </div>
+    </Tabs>
+  </Section>
+</article>

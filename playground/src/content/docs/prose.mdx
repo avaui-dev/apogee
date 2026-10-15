@@ -141,6 +141,26 @@ The styled element catalogue — headings, links, emphasis, lists, quotes, code:
   </Prose>
 </Preview>
 
+### Opting a block out
+
+Wrap a callout or a card in `.not-prose` and Prose leaves it alone; style it with utilities:
+
+<Preview code={`<Prose>
+  <p>Body text.</p>
+  <div class="not-prose mt-8 rounded-2xl bg-neutral-faded p-6">
+    <h2 class="text-xl font-semibold">Conclusion</h2>
+    <p class="mt-2 text-neutral-faded">Kept out of the prose styles.</p>
+  </div>
+</Prose>`}>
+  <Prose>
+    <p>Body text.</p>
+    <div class="not-prose mt-8 rounded-2xl bg-neutral-faded p-6">
+      <h2 class="text-xl font-semibold">Conclusion</h2>
+      <p class="mt-2 text-neutral-faded">Kept out of the prose styles.</p>
+    </div>
+  </Prose>
+</Preview>
+
 ## Accessibility
 
 - Native semantics, no extra ARIA needed — Prose is a CSS layer over your own

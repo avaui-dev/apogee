@@ -1,0 +1,27 @@
+---
+/**
+ * Section simple 01: An icon, heading and intro beside body text.
+ *
+ * @block content
+ * @order 16
+ */
+import { Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Prose from '../../components/Prose/Prose.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+---
+
+<Section spacing="large">
+  <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="flex flex-col items-start gap-6">
+      <FeaturedIcon theme="outline" color="neutral" size="large"><Zap /></FeaturedIcon>
+      <SectionHeader heading="Beautiful analytics to grow smarter" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users." />
+    </div>
+    <Prose>
+      <h3>We share a single source of truth</h3>
+      <p>Every number on every dashboard comes from the same definitions, written down once and checked on every change.</p>
+      <p>Teams stop debating whose number is right and start asking what to do about it.</p>
+    </Prose>
+  </div>
+</Section>

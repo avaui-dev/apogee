@@ -1,0 +1,83 @@
+---
+title: ShareLinks
+description: Ways to pass a page on; Copy link, the device's share sheet and email.
+group: Components
+order: 0
+related: [button, table-of-contents]
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import ShareLinks from '../../../../registry/components/ShareLinks/ShareLinks.astro'
+
+<JsNote fallback="Copy link and Share hide; the email link still works.">
+  Copies the link (with a tick and a screen-reader message) and opens the device's share sheet where the browser has one.
+</JsNote>
+
+<Preview code={`<ShareLinks title="What makes a design system work" />`}>
+  <div data-apogee-share-links="default"><ShareLinks title="What makes a design system work" /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add share-links
+```
+
+Pulls in Button. The share sheet is the browser's own (every app the reader has), so there is no list of networks to keep up to date.
+
+## Usage
+
+```astro
+---
+import ShareLinks from '@/components/apogee/ShareLinks/ShareLinks.astro'
+---
+<ShareLinks title={post.title} />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `url` | `string` | the current page | The address to share. |
+| `title` | `string` | the page title | Passed to the share sheet and used as the email subject. |
+| `copyLabel` | `string` | `'Copy link'` | |
+| `copiedLabel` | `string` | `'Copied'` | Announced to screen readers after a copy. |
+| `shareLabel` | `string` | `'Share'` | |
+| `emailLabel` | `string` | `'Email'` | |
+| `iconOnly` | `boolean` | `false` | Square icon buttons, named by their labels. |
+| `size` | `'small' \| 'medium'` | `'medium'` | |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+<Preview code={`<ShareLinks iconOnly size="small" />`}>
+  <ShareLinks iconOnly size="small" />
+</Preview>
+
+## States
+
+- **Copied** — the link icon turns into a tick for two seconds and "Copied" is announced.
+- **No share sheet** — the Share button stays hidden where the browser has none (most desktops).
+
+## Examples
+
+Under an article: [Content sections](/docs/content-sections).
+
+## Accessibility
+
+- Every button has a name, including `iconOnly` ones.
+- The copy result is announced through a polite status region.
+
+## Tokens
+
+Reads the outline Button tokens.
+
+## Do / Don't
+
+- **Do** put it once, at the end of the article (or in a sticky sidebar).
+- **Don't** add a row of network logos the reader may not use; the share sheet already lists theirs.
+
+## Content
+
+- "Copy link" says what it does; avoid "Share URL".
