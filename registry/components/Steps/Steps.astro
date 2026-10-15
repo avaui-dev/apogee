@@ -1,59 +1,91 @@
 ---
 /**
- * Steps — a vertical progress list (onboarding, checkout, wizards). Zero JS.
- * `current` is the 1-based active step; earlier steps render as done.
+ * Steps — a progress list (onboarding, checkout, wizards). Zero JS.
+ * `current` is the 1-based active step; earlier steps render as done, and an
+ * item's `status` overrides that for out-of-order flows. `orientation` is
+ * responsive: `{ base: 'vertical', md: 'horizontal' }` stacks on phones and
+ * runs across from `md` in one render. `marker` picks numbers, dots or icons.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Check } from '@lucide/astro'
+import { responsive, type Responsive } from '../utils/responsive.ts'
+import { tables } from '../utils/responsive-tables.ts'
+
+type State = 'done' | 'current' | 'upcoming'
+const sizes = {
+  small: { m: '[--steps-m:1.5rem]', marker: 'size-6 text-xs [&>svg]:size-3.5', title: 'text-sm', desc: 'text-xs', pb: 'pb-6' },
+  medium: { m: '[--steps-m:2rem]', marker: 'size-8 text-sm [&>svg]:size-4', title: 'text-sm', desc: 'text-sm', pb: 'pb-8' },
+} as const
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
-  items: { title: string; description?: string }[]
+  items: { title: string; description?: string; status?: State; icon?: any }[]
   /** 1-based index of the active step. */
   current?: number
+  /** @category layout */
+  orientation?: Responsive<'vertical' | 'horizontal'>
+  /** Numbers, small dots, or each item's `icon`. @category layout */
+  marker?: 'number' | 'dot' | 'icon'
+  /** @category layout */
+  size?: keyof typeof sizes
   class?: string
 }
 
-const { items, current = 1, class: className, ...rest } = Astro.props
+const { items, current = 1, orientation = 'vertical', marker = 'number', size = 'medium', class: className, ...rest } = Astro.props
+const s = sizes[size]
+const states: State[] = items.map((step, i) => step.status ?? (i + 1 < current ? 'done' : i + 1 === current ? 'current' : 'upcoming'))
 ---
 
-<ol class:list={['flex flex-col', className]} {...rest}>
+<ol class:list={['apogee-steps flex', s.m, responsive(typeof orientation === 'string' ? orientation : { base: 'vertical', ...orientation }, tables.stepsOrientation), className]} {...rest}>
   {
     items.map((step, i) => {
       const n = i + 1
-      const state = n < current ? 'done' : n === current ? 'current' : 'upcoming'
+      const state = states[i]!
       const last = i === items.length - 1
+      const Icon = step.icon
       return (
-        <li class="relative flex gap-4 pb-8 last:pb-0">
+        <li
+          class:list={[
+            'relative flex gap-(--steps-gap) [flex-direction:var(--steps-li)] [align-items:var(--steps-align)] [text-align:var(--steps-text)] [flex:var(--steps-flex)] last:pb-0',
+            s.pb,
+          ]}
+        >
           {!last && (
             <span
-              class="absolute top-8 start-4 h-full w-px -translate-x-1/2 bg-neutral rtl:translate-x-1/2"
+              class:list={[
+                'absolute [inline-size:var(--steps-cw)] [block-size:var(--steps-ch)] [inset-block-start:var(--steps-ct)] [inset-inline-start:var(--steps-cs)]',
+                state === 'done' ? 'bg-primary' : 'bg-neutral',
+              ]}
               aria-hidden="true"
             />
           )}
           <span
+            data-state={state}
             class:list={[
-              'relative z-10 grid size-8 shrink-0 place-items-center rounded-full border text-sm font-medium tabular-nums',
+              'relative z-10 grid shrink-0 place-items-center rounded-full border font-medium tabular-nums',
+              s.marker,
               state === 'done' && 'border-primary bg-primary text-on-primary',
               state === 'current' && 'border-primary bg-page text-primary',
               state === 'upcoming' && 'border-neutral bg-page text-neutral-faded',
             ]}
             aria-current={state === 'current' ? 'step' : undefined}
           >
-            {state === 'done' ? <Check class="size-4" aria-hidden="true" /> : n}
+            {marker === 'icon' && Icon ? (
+              <Icon aria-hidden="true" />
+            ) : state === 'done' ? (
+              <Check aria-hidden="true" />
+            ) : marker === 'dot' ? (
+              <span class:list={['apogee-steps-dot size-2.5 rounded-full', state === 'current' ? 'bg-primary' : 'bg-neutral']} />
+            ) : (
+              n
+            )}
           </span>
           <div class="pt-1">
-            <p
-              class:list={[
-                'text-sm font-medium',
-                state === 'upcoming' ? 'text-neutral-faded' : 'text-neutral',
-              ]}
-            >
+            <p class:list={['font-medium', s.title, state === 'upcoming' ? 'text-neutral-faded' : 'text-neutral']}>
               {step.title}
+              {state === 'done' && <span class="sr-only"> (done)</span>}
             </p>
-            {step.description && (
-              <p class="mt-0.5 text-sm text-neutral-faded">{step.description}</p>
-            )}
+            {step.description && <p class:list={['mt-0.5 text-neutral-faded', s.desc]}>{step.description}</p>}
           </div>
         </li>
       )

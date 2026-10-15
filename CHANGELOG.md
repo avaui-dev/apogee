@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **Table** header row has a faded fill by default, matching DataGrid (`headerFill={false}` restores the old look). DataGrid checkboxes use `data-row` / `data-all` instead of `data-datagrid-row` / `data-datagrid-all`.
 - **NavLink** wraps its label in a span that truncates with an ellipsis instead of wrapping to a second line.
 - **SectionHeader** moves `max-w-prose` from the root to the text block, so the root spans its container (actions can sit beside the text).
 - **FileUpload** no longer accepts a dropped file that fails `accept`; before, native `accept` only filtered the picker dialog.
@@ -14,6 +15,12 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **TreeView** (new) with **TreeItem** — branches on native `<details>`, leaves as rows or links; the island adds `role="tree"`, one tab stop, arrow keys, Home / End, typeahead and cascading checkboxes (`apogee:tree-select`). Without JS it stays a nested list.
+- **Timeline** — items take `avatar` (as the marker), `datetime`, `href`; `line` solid | dotted | none; `size`; an `item-<index>` slot per item for rich bodies (activity feeds).
+- **Pagination** — below `md` the numbers give way to a "Page x of y" summary (zero JS); `labels` shows Previous / Next text; `rounded` cells.
+- **Steps** — responsive `orientation` (vertical | horizontal per breakpoint), `marker` number | dot | icon, `size`, per-item `status` and `icon`; the connector after a done step turns primary; done steps announce "(done)".
+- **Tabs** — items take `icon` and `badge`; `orientation="vertical"`, `fullWidth`, `variant="primary"`, `activation="manual"`. `stepIndex` (utils/roving) takes an orientation.
+- **Table** — `sortable` (header cells become sort buttons; `data-value` is the key for rich cells), `selectable` (wires `data-row` / `data-all` checkboxes), `size`, `striped`, `headerFill`. Sort and select live in the new `utils/table-enhance.ts`, shared with **DataGrid**, which gains `size` and `striped`.
 - **Dialog** — the body scrolls under a pinned header and footer (drawers keep their buttons on screen); `media` slot (cover image, dark close button over it), `icon` slot with `iconPosition`, `header` slot for custom header markup, `footerLayout="fill"`; drawers keep a 1.5rem backdrop strip on narrow screens.
 - **NavLink** — `match="prefix"` (a section link stays active on its child pages), `external` auto-detected from `http` hrefs (new tab, trailing icon). **NavGroup** (new, same folder) — a collapsible group of links on native `<details>` that opens when it contains the current page.
 - **FileUpload** — dropped and picked files are checked against `accept` and the new `maxSize`; a refused file never reaches the input and the new `hint` says why (`aria-live`). `preview` shows a picked image; a disabled input dims the zone. `utils/files.ts` (`acceptsFile`, `readableSize`) is new.

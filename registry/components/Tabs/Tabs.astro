@@ -12,25 +12,37 @@
  *
  * A tab's panel slot is `panel-<value>`; `value` defaults to the index. A tab
  * with `href` is a link (no panel). `disabled` tabs are skipped by the arrows.
+ * Items take an `icon` (Lucide component) and a `badge` (count or text).
+ * `orientation="vertical"` stacks the list beside the panels (Up/Down move);
+ * `activation="manual"` moves focus with the arrows and selects on Enter/Space.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import { innerRadius } from '../utils/radius.ts'
+import Badge from '../Badge/Badge.astro'
 
 const lists = {
   bordered: 'gap-1 border-b border-neutral',
   borderless: 'gap-1',
   pills: 'gap-1',
   'pills-raised': 'gap-0.5 rounded-md bg-neutral-faded p-0.5',
+  primary: 'gap-1',
 } as const
 const tabStyles = {
   bordered: 'border-b-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
   borderless: 'border-b-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
   pills: 'rounded-md aria-selected:bg-neutral-faded aria-selected:text-neutral',
   'pills-raised': `${innerRadius['md-0.5']} aria-selected:bg-page aria-selected:text-neutral aria-selected:shadow-outline dark:aria-selected:bg-neutral`,
+  primary: 'rounded-md aria-selected:bg-primary-faded aria-selected:text-primary',
 } as const
+// Vertical underline variants draw the line on the start edge.
+const verticalTabStyles = {
+  bordered: 'border-s-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
+  borderless: 'border-s-2 border-transparent aria-selected:border-primary aria-selected:text-neutral',
+} as const
+const verticalLists = { bordered: 'border-s border-neutral', borderless: '' } as const
 const sizes = {
   small: 'px-2.5 py-1.5 text-xs',
   medium: 'px-3 py-2 text-sm',
@@ -42,6 +54,10 @@ export interface TabItem {
   value?: string
   href?: string
   disabled?: boolean
+  /** A Lucide (or any Astro) icon component, shown before the label. */
+  icon?: any
+  /** A count or short text shown after the label, from `md`. */
+  badge?: string | number
 }
 interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   tabs: (string | TabItem)[]
@@ -51,10 +67,28 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   variant?: keyof typeof lists
   /** @category layout */
   size?: keyof typeof sizes
+  /** @category layout */
+  orientation?: 'horizontal' | 'vertical'
+  /** Tabs share the list width equally. @category layout */
+  fullWidth?: boolean
+  /** `manual`: arrows move focus, Enter or Space selects. */
+  activation?: 'automatic' | 'manual'
   class?: string
 }
 
-const { tabs, value, variant = 'bordered', size = 'medium', class: className, ...rest } = Astro.props
+const {
+  tabs,
+  value,
+  variant = 'bordered',
+  size = 'medium',
+  orientation = 'horizontal',
+  fullWidth = false,
+  activation = 'automatic',
+  class: className,
+  ...rest
+} = Astro.props
+const vertical = orientation === 'vertical'
+const underline = variant === 'bordered' || variant === 'borderless'
 const items = tabs.map((t, i) => {
   const o: TabItem = typeof t === 'string' ? { label: t } : t
   return { ...o, value: o.value ?? String(i) }
@@ -63,15 +97,24 @@ const found = items.findIndex((t) => t.value === value && !t.disabled && !t.href
 const initial = found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
 const id = uid(Astro.locals)
 const tabClass =
-  'shrink-0 cursor-pointer whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:opacity-50'
+  'inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:opacity-50'
 ---
 
-<div class:list={['apogee-tabs', className]} {...rest}>
+<div
+  class:list={['apogee-tabs', vertical && 'flex gap-6 no-js:flex-col', className]}
+  data-orientation={orientation}
+  data-activation={activation}
+  {...rest}
+>
   <div
     role="tablist"
+    aria-orientation={vertical ? 'vertical' : undefined}
     class:list={[
-      'apogee-tabs-list flex overflow-x-auto [scrollbar-width:none] data-[fade~=left]:mask-l-from-85% data-[fade~=right]:mask-r-from-85%',
-      lists[variant],
+      'apogee-tabs-list flex [scrollbar-width:none]',
+      vertical
+        ? ['shrink-0 flex-col items-stretch overflow-y-auto', underline ? `gap-1 ${verticalLists[variant]}` : lists[variant]]
+        : ['overflow-x-auto data-[fade~=left]:mask-l-from-85% data-[fade~=right]:mask-r-from-85%', lists[variant]],
+      fullWidth && !vertical && 'w-full',
     ]}
   >
     {
@@ -79,6 +122,7 @@ const tabClass =
         const Tag = t.href ? 'a' : 'button'
         const hasPanel = !t.href && Astro.slots.has(`panel-${t.value}`)
         const on = i === initial
+        const Icon = t.icon
         return (
           <Tag
             type={t.href ? undefined : 'button'}
@@ -90,9 +134,26 @@ const tabClass =
             aria-selected={on ? 'true' : 'false'}
             aria-disabled={t.disabled ? 'true' : undefined}
             tabindex={on ? 0 : -1}
-            class:list={[tabClass, tabStyles[variant], sizes[size]]}
+            class:list={[
+              tabClass,
+              vertical && underline ? [verticalTabStyles[variant], '-ms-px'] : tabStyles[variant],
+              sizes[size],
+              vertical && 'justify-start text-start',
+              fullWidth && !vertical && 'flex-1 justify-center',
+            ]}
           >
+            {Icon && <Icon class="size-4 shrink-0" aria-hidden="true" />}
             {t.label}
+            {t.badge !== undefined && (
+              <Badge
+                size="small"
+                variant="faded"
+                color="neutral"
+                class="apogee-tabs-badge tabular-nums max-md:hidden in-aria-selected:bg-primary-faded in-aria-selected:text-primary"
+              >
+                {t.badge}
+              </Badge>
+            )}
           </Tag>
         )
       })
@@ -110,7 +171,8 @@ const tabClass =
             hidden={i !== initial}
             tabindex="0"
             class:list={[
-              'pt-4 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
+              vertical ? 'min-w-0 flex-1 text-sm' : 'pt-4 text-sm',
+              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
               i !== initial && 'no-js:block',
             ]}
           >
@@ -151,6 +213,8 @@ const tabClass =
       return c ? root.querySelector<HTMLElement>('#' + c) : null
     }
     const enabled = () => tabs.filter((t) => t.getAttribute('aria-disabled') !== 'true')
+    const manual = root.dataset.activation === 'manual'
+    const orientation = root.dataset.orientation === 'vertical' ? 'vertical' : 'horizontal'
 
     const select = (index: number) => {
       tabs.forEach((t, i) => {
@@ -170,13 +234,20 @@ const tabClass =
     tabs.forEach((tab, i) => {
       if (!tab.hasAttribute('href')) tab.addEventListener('click', () => select(i))
       tab.addEventListener('keydown', (e) => {
+        if (manual && (e.key === 'Enter' || e.key === ' ') && !tab.hasAttribute('href')) {
+          e.preventDefault()
+          select(i)
+          return
+        }
         const row = enabled()
-        const n = stepIndex(e.key, row.indexOf(tab), row.length - 1, getComputedStyle(root).direction === 'rtl')
+        const n = stepIndex(e.key, row.indexOf(tab), row.length - 1, getComputedStyle(root).direction === 'rtl', orientation)
         if (n === null) return
         e.preventDefault()
         const next = row[n]!
         next.focus()
-        if (!next.hasAttribute('href')) select(tabs.indexOf(next))
+        if (manual) {
+          for (const t of tabs) t.tabIndex = t === next ? 0 : -1
+        } else if (!next.hasAttribute('href')) select(tabs.indexOf(next))
       })
     })
   })

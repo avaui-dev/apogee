@@ -1,0 +1,199 @@
+---
+/**
+ * TreeView — a hierarchy of TreeItems (file browser, settings tree, nested
+ * categories). Branches are native `<details>`, so open and close work with
+ * zero JS. The island adds the tree pattern: `role="tree"`, one tab stop,
+ * arrow keys (Up/Down move, Right opens or enters, Left closes or climbs),
+ * Home/End, typeahead, and cascading checkboxes (a parent checks its
+ * descendants; a partly checked parent shows as indeterminate). Without JS it
+ * stays an honest nested list with no tree role.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'ul'> {
+  /** Accessible name of the tree. @category content */
+  label: string
+  /** Form field name for every item checkbox. */
+  name?: string
+  /** A guide line down each nested group. @category layout */
+  lines?: boolean
+  class?: string
+}
+
+const { label, name, lines = true, class: className, ...rest } = Astro.props
+---
+
+<ul class:list={['apogee-tree flex flex-col gap-0.5', className]} aria-label={label} data-name={name} data-lines={lines ? 'true' : undefined} {...rest}>
+  <slot />
+</ul>
+
+<style is:global>
+  .apogee-tree .apogee-tree-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin-inline-start: 0.875rem;
+    padding-inline-start: 0.5rem;
+  }
+  .apogee-tree[data-lines] .apogee-tree-group {
+    border-inline-start: 1px solid var(--border-neutral);
+  }
+  /* The treeitem (li) holds focus; the ring sits on its own row. */
+  .apogee-tree [role='treeitem']:focus {
+    outline: none;
+  }
+  .apogee-tree [role='treeitem']:focus-visible > .apogee-tree-row,
+  .apogee-tree [role='treeitem']:focus-visible > details > .apogee-tree-row {
+    outline: 2px solid var(--outline-color-focus);
+    outline-offset: -2px;
+  }
+  .apogee-tree .apogee-tree-chevron {
+    transition: rotate var(--duration-fast) var(--ease-standard);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-tree .apogee-tree-chevron {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-tree', (tree) => {
+    tree.setAttribute('role', 'tree')
+    const items = () => [...tree.querySelectorAll<HTMLElement>('.apogee-tree-item')]
+    const branchOf = (li: HTMLElement) => li.querySelector<HTMLDetailsElement>(':scope > details')
+    const parentOf = (li: HTMLElement) => li.parentElement?.closest<HTMLElement>('.apogee-tree-item') ?? null
+    const checkOf = (li: HTMLElement) => li.querySelector<HTMLInputElement>(':scope > .apogee-tree-check')
+    const childrenOf = (li: HTMLElement) => [
+      ...(branchOf(li)?.querySelectorAll<HTMLElement>(':scope > .apogee-tree-group > .apogee-tree-item') ?? []),
+    ]
+    const visible = () => items().filter((li) => !li.parentElement?.closest('details:not([open])'))
+
+    for (const li of items()) {
+      li.setAttribute('role', 'treeitem')
+      li.setAttribute('aria-label', li.dataset.label ?? '')
+      let level = 1
+      for (let p = parentOf(li); p; p = parentOf(p)) level++
+      li.setAttribute('aria-level', String(level))
+      li.tabIndex = -1
+      // Only the treeitem is a tab stop; its row, link and checkbox are reached through it.
+      for (const el of li.querySelectorAll<HTMLElement>(':scope > details > summary, :scope > .apogee-tree-row, :scope > .apogee-tree-check')) el.tabIndex = -1
+      const d = branchOf(li)
+      if (d) {
+        d.querySelector(':scope > .apogee-tree-group')?.setAttribute('role', 'group')
+        li.setAttribute('aria-expanded', String(d.open))
+        d.addEventListener('toggle', () => li.setAttribute('aria-expanded', String(d.open)))
+      }
+      if (tree.dataset.name) {
+        const c = checkOf(li)
+        if (c && !c.name) c.name = tree.dataset.name
+      }
+    }
+    for (const g of tree.querySelectorAll('.apogee-tree-group')) g.setAttribute('role', 'group')
+    const first = visible()[0]
+    if (first) first.tabIndex = 0
+
+    // The toggle event is async; keep aria-expanded in step right away.
+    const setOpen = (li: HTMLElement, d: HTMLDetailsElement, open: boolean) => {
+      d.open = open
+      li.setAttribute('aria-expanded', String(open))
+    }
+    const focus = (li: HTMLElement | undefined) => {
+      if (!li) return
+      for (const it of items()) it.tabIndex = it === li ? 0 : -1
+      li.focus()
+    }
+    // A click focuses the row, link or checkbox; hand focus to the treeitem so
+    // the arrow keys keep working.
+    tree.addEventListener('focusin', (e) => {
+      const li = (e.target as HTMLElement).closest<HTMLElement>('.apogee-tree-item')
+      if (!li) return
+      for (const it of items()) it.tabIndex = it === li ? 0 : -1
+      if (e.target !== li) li.focus()
+    })
+
+    let buffer = ''
+    let bufferTimer: number | undefined
+    tree.addEventListener('keydown', (e) => {
+      const li = (e.target as HTMLElement).closest<HTMLElement>('.apogee-tree-item')
+      if (!li || e.target !== li) return
+      const rows = visible()
+      const i = rows.indexOf(li)
+      const d = branchOf(li)
+      const rtl = getComputedStyle(tree).direction === 'rtl'
+      const key = rtl && e.key === 'ArrowLeft' ? 'ArrowRight' : rtl && e.key === 'ArrowRight' ? 'ArrowLeft' : e.key
+      let handled = true
+      const off = li.getAttribute('aria-disabled') === 'true'
+      if (off && (key === 'Enter' || key === ' ')) handled = true
+      else if (key === 'ArrowDown') focus(rows[i + 1])
+      else if (key === 'ArrowUp') focus(rows[i - 1])
+      else if (key === 'Home') focus(rows[0])
+      else if (key === 'End') focus(rows[rows.length - 1])
+      else if (key === 'ArrowRight') {
+        if (d && !d.open) setOpen(li, d, true)
+        else if (d) focus(childrenOf(li)[0])
+      } else if (key === 'ArrowLeft') {
+        if (d?.open) setOpen(li, d, false)
+        else focus(parentOf(li) ?? undefined)
+      } else if (key === 'Enter') {
+        if (d) setOpen(li, d, !d.open)
+        else li.querySelector<HTMLAnchorElement>(':scope > a')?.click()
+      } else if (key === ' ') {
+        const c = checkOf(li)
+        if (c && !c.disabled) c.click()
+        else if (d) setOpen(li, d, !d.open)
+      } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        buffer += e.key.toLowerCase()
+        clearTimeout(bufferTimer)
+        bufferTimer = window.setTimeout(() => (buffer = ''), 700)
+        const order = [...rows.slice(i + 1), ...rows.slice(0, i + 1)]
+        focus(order.find((r) => (r.dataset.label ?? '').toLowerCase().startsWith(buffer)))
+      } else handled = false
+      if (handled) e.preventDefault()
+    })
+
+    // Cascading selection.
+    const sync = (li: HTMLElement) => {
+      const c = checkOf(li)
+      const kids = childrenOf(li).map(checkOf).filter((x): x is HTMLInputElement => Boolean(x))
+      if (!c || kids.length === 0) return
+      const on = kids.filter((k) => k.checked).length
+      const partial = kids.some((k) => k.indeterminate)
+      c.checked = on === kids.length
+      c.indeterminate = !c.checked && (on > 0 || partial)
+    }
+    // The treeitem holds focus, so it carries the checkbox state for AT.
+    const announce = () => {
+      for (const li of items()) {
+        const c = checkOf(li)
+        if (c) li.setAttribute('aria-checked', c.indeterminate ? 'mixed' : String(c.checked))
+      }
+    }
+    // Saved state: a checked parent checks its subtree, then parents follow children.
+    for (const li of items()) {
+      const c = checkOf(li)
+      if (c?.checked) for (const sub of li.querySelectorAll<HTMLInputElement>('.apogee-tree-group .apogee-tree-check')) if (!sub.disabled) sub.checked = true
+    }
+    for (const li of items().reverse()) sync(li)
+    announce()
+    tree.addEventListener('change', (e) => {
+      const box = e.target as HTMLInputElement
+      if (!box.matches('.apogee-tree-check')) return
+      const li = box.closest<HTMLElement>('.apogee-tree-item')!
+      box.indeterminate = false
+      for (const sub of li.querySelectorAll<HTMLInputElement>('.apogee-tree-group .apogee-tree-check')) {
+        if (sub.disabled) continue
+        sub.checked = box.checked
+        sub.indeterminate = false
+      }
+      for (let p = parentOf(li); p; p = parentOf(p)) sync(p)
+      announce()
+      const values = [...tree.querySelectorAll<HTMLInputElement>('.apogee-tree-check:checked')].map((x) => x.value)
+      tree.dispatchEvent(new CustomEvent('apogee:tree-select', { bubbles: true, detail: { values } }))
+    })
+  })
+</script>

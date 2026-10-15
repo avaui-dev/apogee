@@ -40,7 +40,10 @@ through to the root `<nav>`.
 | `currentPage` | `number` | — | Current page, 1-indexed. |
 | `totalPages` | `number` | — | Total number of pages. |
 | `getHref` | `(page: number) => string` | `` (p) => `?page=${p}` `` | Builds each page link's `href`. |
-| `previousLabel` / `nextLabel` | `string` | `'Previous page'` / `'Next page'` | Accessible names of the arrows (localise them). |
+| `previousLabel` / `nextLabel` | `string` | `'Previous page'` / `'Next page'` | Accessible names of the arrows, or their visible text with `labels` (localise them). |
+| `labels` | `boolean` | `false` | Shows the labels beside the arrows from `md`; below it they stay as screen-reader text. |
+| `rounded` | `boolean` | `false` | Round page cells. |
+| `summary` | `string` | `'Page {current} of {total}'` | The phone summary; `{current}` and `{total}` are replaced (localise it). |
 | `class` | `string` | — | Extra classes on the root `<nav>`, merged last. |
 
 Page list shown: always seven cells from seven pages up (first, last, a
@@ -56,6 +59,25 @@ as the user pages through.
 <Pagination currentPage={5} totalPages={20} />
 <Pagination currentPage={20} totalPages={20} />`} block>
   {[1, 5, 20].map((p) => <div data-apogee-pagination={`p${p}`}><Pagination currentPage={p} totalPages={20} /></div>)}
+</Preview>
+
+## Phones
+
+Below `md` the page numbers step aside and a "Page 5 of 20" summary sits
+between the arrows. Resize the window to see it.
+
+## Labels and rounded cells
+
+<Preview code={`<Pagination currentPage={3} totalPages={10} labels previousLabel="Previous" nextLabel="Next" />
+<Pagination currentPage={3} totalPages={10} rounded />`} block>
+  <div data-apogee-pagination="labels"><Pagination currentPage={3} totalPages={10} labels previousLabel="Previous" nextLabel="Next" /></div>
+  <div data-apogee-pagination="rounded"><Pagination currentPage={3} totalPages={10} rounded /></div>
+</Preview>
+
+Localised summary (`summary` takes `{current}` and `{total}`):
+
+<Preview code={`<Pagination currentPage={3} totalPages={10} summary="Pagina {current} din {total}" />`}>
+  <div data-apogee-pagination="summary"><Pagination currentPage={3} totalPages={10} summary="Pagina {current} din {total}" /></div>
 </Preview>
 
 ## States
@@ -85,6 +107,18 @@ Current page in the middle of a long range — ellipses on both sides:
 </Preview>
 
 ## Examples
+
+A table footer with a page-size select, all zero JS: the form submits with GET and the server renders the new page.
+
+```astro
+<form method="get" class="flex flex-wrap items-center justify-between gap-3 border-t border-neutral px-4 py-3">
+  <label class="flex items-center gap-2 text-sm text-neutral-faded">
+    Rows per page
+    <select name="per_page" onchange="this.form.requestSubmit()">…</select>
+  </label>
+  <Pagination currentPage={page} totalPages={pages} getHref={(p) => `?page=${p}&per_page=${perPage}`} />
+</form>
+```
 
 Route-based links instead of a query param:
 

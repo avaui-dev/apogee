@@ -7,6 +7,8 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Timeline from '../../../../registry/components/Timeline/Timeline.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import { FileText } from '@lucide/astro'
 
 <Preview code={`<Timeline items={[
   { title: 'Order placed', time: 'Jan 4', description: 'Order #1234 was created.' },
@@ -28,7 +30,7 @@ For a stepper with progress state (current / upcoming step), use `Steps` instead
 npx @ava-ui/apogee add timeline
 ```
 
-No Apogee dependencies.
+Depends on `Avatar`.
 
 ## Usage
 
@@ -44,17 +46,18 @@ import Timeline from '@/components/apogee/Timeline/Timeline.astro'
 
 ## Anatomy
 
-`Timeline` is data-driven (an `items` array), not slot-based — each entry
-renders the same fixed structure:
+`Timeline` is data-driven (an `items` array); a named slot per item replaces
+its description with rich content:
 
 - **List** — an `<ol>` of events.
-- **Connector** — a vertical line (`bg-neutral`) running between markers; omitted
-  after the last item.
-- **Marker** — a dot per item, outlined in `--background-primary`.
+- **Connector** — a vertical line (`--border-neutral`, solid or dotted) running
+  between markers; omitted after the last item.
+- **Marker** — a dot outlined in `--border-primary`, or the item's `avatar`.
 - **Title** — `item.title`, always shown.
 - **Time** — `item.time`, shown next to the title when present (`<time>`,
   tabular numerals).
-- **Description** — `item.description`, shown below the title when present.
+- **Description** — `item.description`, shown below the title when present, or
+  the `item-<index>` slot (quoted text, badges, an attachment).
 
 ## API
 
@@ -63,7 +66,9 @@ through to the root `<ol>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `items` | `{ title: string; time?: string; description?: string }[]` | — | Events, in display order. |
+| `items` | `{ title; time?; datetime?; description?; href?; avatar? }[]` | — | Events, in display order. `datetime` fills `<time datetime>`; `href` makes the title a link; `avatar` (`{ src?, alt?, name?, status? }`) replaces the dot marker. |
+| `line` | `'solid' \| 'dotted' \| 'none'` | `'solid'` | The connector between markers. |
+| `size` | `'small' \| 'medium'` | `'medium'` | Space between events. |
 | `class` | `string` | — | Extra classes on the root `<ol>`, merged last. |
 
 ## States
@@ -100,6 +105,39 @@ Mixed — some entries with a time and/or description, some without:
   ]} />
 </Preview>
 
+An activity feed: avatars as markers, a dotted line, links, and rich bodies
+through `item-<index>` slots.
+
+<Preview code={`<Timeline line="dotted" items={[
+  { title: 'Ana Lima', href: '#', time: '2 min ago', datetime: '2026-10-15T09:58', avatar: { name: 'Ana Lima', status: 'online' } },
+  { title: 'Marco Ricci', time: '1 h ago', avatar: { name: 'Marco Ricci' } },
+]}>
+  <blockquote slot="item-0">“Can we move the launch to Friday?”</blockquote>
+  <div slot="item-1" class="flex gap-1"><Badge size="small">Design</Badge></div>
+</Timeline>`}>
+  <div data-apogee-timeline="activity">
+    <Timeline line="dotted" items={[
+      { title: 'Ana Lima commented', href: '#', time: '2 min ago', datetime: '2026-10-15T09:58', avatar: { name: 'Ana Lima', status: 'online' } },
+      { title: 'Marco Ricci added labels', time: '1 h ago', datetime: '2026-10-15T09:00', avatar: { name: 'Marco Ricci' } },
+      { title: 'Lea Novak attached a file', time: 'Yesterday', datetime: '2026-10-14', avatar: { name: 'Lea Novak', status: 'offline' } },
+    ]}>
+      <div slot="item-0" class="not-prose rounded-lg rounded-ss-none border border-neutral px-3 py-2 text-neutral">“Can we move the launch to Friday? The copy is not final.”</div>
+      <div slot="item-1" class="apogee-timeline-tags flex flex-wrap gap-1"><Badge size="small" color="primary">Design</Badge><Badge size="small" color="warning">Blocked</Badge></div>
+      <figure slot="item-2" class="flex items-center gap-2 rounded-lg border border-neutral p-2"><FileText class="size-5 text-neutral-faded" aria-hidden="true" /><figcaption class="text-neutral">launch-brief.pdf <span class="text-neutral-faded">· 240 KB</span></figcaption></figure>
+    </Timeline>
+  </div>
+</Preview>
+
+Every `line`:
+
+<Preview code={`<Timeline line="solid" items={…} />
+<Timeline line="dotted" items={…} />
+<Timeline line="none" items={…} />`}>
+  {['solid', 'dotted', 'none'].map((line) => (
+    <Timeline line={line} size="small" items={[{ title: line }, { title: 'Second event' }, { title: 'Third event' }]} />
+  ))}
+</Preview>
+
 ## Accessibility
 
 Native semantics — an ordered list (`<ol>`/`<li>`) for the events and `<time>`
@@ -111,7 +149,7 @@ for the timestamp. Markers and the connecting line are `aria-hidden`
 | Token | Used for |
 |---|---|
 | `--border-neutral` | Connecting line between markers |
-| `--background-primary` | Marker outline |
+| `--border-primary` | Marker outline |
 | `--background-page` | Marker fill |
 | `--foreground-neutral` | Title text |
 | `--foreground-neutral-faded` | Time + description text |

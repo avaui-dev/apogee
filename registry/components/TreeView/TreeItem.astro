@@ -1,0 +1,76 @@
+---
+/**
+ * TreeItem — one row of a TreeView. With children (default slot) it is a
+ * branch on native `<details>`; without, a leaf (a link when `href` is set).
+ * `value` adds a checkbox for selectable trees. Slots: `start` (icon),
+ * `end` (an action or count), default (child TreeItems).
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { ChevronRight } from '@lucide/astro'
+
+interface Props extends HTMLAttributes<'li'> {
+  /** @category content */
+  label: string
+  href?: string
+  /** Checkbox value; a checkbox renders when set. */
+  value?: string
+  /** Form field name for the checkbox (the TreeView's `name` fills it in with JS). */
+  name?: string
+  checked?: boolean
+  open?: boolean
+  disabled?: boolean
+  class?: string
+}
+
+const { label, href, value, name, checked = false, open = false, disabled = false, class: className, ...rest } = Astro.props
+const branch = Astro.slots.has('default')
+const hasStart = Astro.slots.has('start')
+const hasEnd = Astro.slots.has('end')
+const row =
+  'apogee-tree-row flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 text-sm text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden'
+const Leaf = href && !disabled ? 'a' : 'div'
+// A disabled row takes no pointer input: it neither opens nor navigates.
+const rowClass = disabled ? `${row} pointer-events-none` : row
+---
+
+<li class:list={['apogee-tree-item relative', disabled && 'opacity-50', className]} data-label={label} aria-disabled={disabled ? 'true' : undefined} {...rest}>
+  {
+    value !== undefined && (
+      <input
+        type="checkbox"
+        class="apogee-tree-check absolute top-2 start-8 z-10 size-4 accent-(--background-primary)"
+        name={name}
+        value={value}
+        checked={checked}
+        disabled={disabled}
+        aria-label={label}
+      />
+    )
+  }
+  {
+    branch ? (
+      <details class="apogee-tree-branch group/branch" open={open}>
+        <summary class={rowClass}>
+          <ChevronRight class="apogee-tree-chevron size-4 shrink-0 text-neutral-faded group-open/branch:rotate-90 rtl:-scale-x-100" aria-hidden="true" />
+          {value !== undefined && <span class="size-4 shrink-0" aria-hidden="true" />}
+          {hasStart && <span class="flex shrink-0 text-neutral-faded [&>svg]:size-4"><slot name="start" /></span>}
+          <span class="min-w-0 flex-1 truncate">{label}</span>
+          {hasEnd && <span class="ms-auto flex shrink-0 items-center"><slot name="end" /></span>}
+        </summary>
+        <ul class="apogee-tree-group">
+          <slot />
+        </ul>
+      </details>
+    ) : (
+      <Leaf href={disabled ? undefined : href} class={rowClass}>
+        <span class="size-4 shrink-0" aria-hidden="true" />
+        {value !== undefined && <span class="size-4 shrink-0" aria-hidden="true" />}
+        {hasStart && <span class="flex shrink-0 text-neutral-faded [&>svg]:size-4"><slot name="start" /></span>}
+        <span class="min-w-0 flex-1 truncate">{label}</span>
+        {hasEnd && <span class="ms-auto flex shrink-0 items-center"><slot name="end" /></span>}
+      </Leaf>
+    )
+  }
+</li>

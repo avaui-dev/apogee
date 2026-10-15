@@ -3,37 +3,84 @@
  * Timeline — a vertical list of events with a connecting line (activity log,
  * history, changelog). Zero JS. For a stepper with progress state, use Steps.
  *
+ * Items can carry an `avatar` (shown as the marker), a `datetime` for the
+ * `<time>` element and an `href` that makes the title a link. A named slot
+ * `item-<index>` replaces an item's description with rich content (a quoted
+ * comment, a row of badges, an attachment).
+ *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import Avatar from '../Avatar/Avatar.astro'
+
+interface Item {
+  title: string
+  time?: string
+  /** Machine-readable value for `<time datetime>`. */
+  datetime?: string
+  description?: string
+  href?: string
+  avatar?: { src?: string; alt?: string; name?: string; status?: 'online' | 'offline' }
+}
 interface Props extends HTMLAttributes<'div'> {
-  items: { title: string; time?: string; description?: string }[]
+  items: Item[]
+  /** The connector between markers. @category layout */
+  line?: 'solid' | 'dotted' | 'none'
+  /** Space between events. @category layout */
+  size?: 'small' | 'medium'
   class?: string
 }
 
-const { items, class: className, ...rest } = Astro.props
+const { items, line = 'solid', size = 'medium', class: className, ...rest } = Astro.props
+const lines = { solid: 'border-solid', dotted: 'border-s-2 border-dotted', none: '' } as const
 ---
 
-<ol class:list={['flex flex-col', className]} {...rest}>
+<ol class:list={['apogee-timeline flex flex-col', className]} {...rest}>
   {
     items.map((item, i) => {
       const last = i === items.length - 1
+      const rich = Astro.slots.has(`item-${i}`)
+      const avatar = item.avatar
       return (
-        <li class="relative flex gap-4 pb-6 last:pb-0">
-          {!last && (
-            <span class="absolute top-3 start-1.5 h-full w-px -translate-x-1/2 bg-neutral rtl:translate-x-1/2" aria-hidden="true" />
+        <li class:list={['relative flex gap-4 last:pb-0', size === 'small' ? 'pb-4' : 'pb-6']}>
+          {!last && line !== 'none' && (
+            <span
+              class:list={[
+                'apogee-timeline-line absolute h-full w-0 -translate-x-1/2 border-s border-neutral rtl:translate-x-1/2',
+                avatar ? 'top-9 start-4' : 'top-3 start-1.5',
+                lines[line],
+              ]}
+              aria-hidden="true"
+            />
           )}
-          <span
-            class="relative z-10 mt-1.5 size-3 shrink-0 rounded-full border-2 border-primary bg-page"
-            aria-hidden="true"
-          />
-          <div>
+          {avatar ? (
+            <Avatar size="small" {...avatar} alt={avatar.alt ?? ''} class="relative z-10 shrink-0" />
+          ) : (
+            <span class="relative z-10 mt-1.5 size-3 shrink-0 rounded-full border-2 border-primary bg-page" aria-hidden="true" />
+          )}
+          <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-baseline gap-x-2">
-              <p class="text-sm font-medium text-neutral">{item.title}</p>
-              {item.time && <time class="text-xs text-neutral-faded tabular-nums">{item.time}</time>}
+              <p class="text-sm font-medium text-neutral">
+                {item.href ? (
+                  <a href={item.href} class="rounded-sm hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
+                    {item.title}
+                  </a>
+                ) : (
+                  item.title
+                )}
+              </p>
+              {item.time && (
+                <time datetime={item.datetime} class="text-xs text-neutral-faded tabular-nums">
+                  {item.time}
+                </time>
+              )}
             </div>
-            {item.description && (
-              <p class="mt-0.5 text-sm text-neutral-faded">{item.description}</p>
+            {rich ? (
+              <div class="apogee-timeline-body mt-1.5 text-sm text-neutral-faded">
+                <slot name={`item-${i}`} />
+              </div>
+            ) : (
+              item.description && <p class="mt-0.5 text-sm text-neutral-faded">{item.description}</p>
             )}
           </div>
         </li>

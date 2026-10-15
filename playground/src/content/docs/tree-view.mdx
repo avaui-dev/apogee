@@ -1,0 +1,249 @@
+---
+title: Tree view
+description: A hierarchy of expandable rows with arrow-key navigation, typeahead and cascading checkboxes.
+group: Components
+order: 0
+related: [nav-link, accordion, checkbox-group, collapsible]
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import TreeView from '../../../../registry/components/TreeView/TreeView.astro'
+import TreeItem from '../../../../registry/components/TreeView/TreeItem.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import { Folder, FileCode, FileText } from '@lucide/astro'
+
+<JsNote fallback="Branches still open and close (they are native details elements) and links still work. The list has no tree role and arrow keys do nothing; Tab moves through the rows, and checkboxes check one at a time without cascading.">
+  Adds the tree pattern: one tab stop, arrow keys, Home and End, typeahead,
+  and cascading checkboxes.
+</JsNote>
+
+<Preview code={`<TreeView label="Project files">
+  <TreeItem label="src">
+    <Folder slot="start" />
+    <TreeItem label="components"><Folder slot="start" /><TreeItem label="Button.astro"><FileCode slot="start" /></TreeItem></TreeItem>
+    <TreeItem label="index.ts"><FileCode slot="start" /></TreeItem>
+  </TreeItem>
+  <TreeItem label="README.md"><FileText slot="start" /></TreeItem>
+</TreeView>`}>
+  <div data-apogee-tree-view="files" class="w-72">
+    <TreeView label="Project files">
+      <TreeItem label="src">
+        <Folder slot="start" />
+        <TreeItem label="components">
+          <Folder slot="start" />
+          <TreeItem label="Button.astro"><FileCode slot="start" /></TreeItem>
+          <TreeItem label="Card.astro"><FileCode slot="start" /></TreeItem>
+        </TreeItem>
+        <TreeItem label="index.ts"><FileCode slot="start" /></TreeItem>
+      </TreeItem>
+      <TreeItem label="docs">
+        <Folder slot="start" />
+        <TreeItem label="intro.md"><FileText slot="start" /></TreeItem>
+      </TreeItem>
+      <TreeItem label="README.md"><FileText slot="start" /></TreeItem>
+    </TreeView>
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add tree-view
+```
+
+Depends on `utils` (`island.ts`). Uses `@lucide/astro` for the chevron.
+
+## Usage
+
+```astro
+---
+import TreeView from '@/components/apogee/TreeView/TreeView.astro'
+import TreeItem from '@/components/apogee/TreeView/TreeItem.astro'
+---
+<TreeView label="Categories">
+  <TreeItem label="Clothing" open>
+    <TreeItem label="Shirts" href="/c/shirts" />
+  </TreeItem>
+</TreeView>
+```
+
+## Anatomy
+
+- **TreeView** — a `<ul>` with the accessible name `label`. The island turns it
+  into `role="tree"`.
+- **TreeItem** — an `<li>`. With children it is a branch: a native
+  `<details>` whose `<summary>` is the row, and a nested list. Without
+  children it is a leaf row, a link when `href` is set.
+- **Row** — chevron (branches), checkbox (when `value` is set), `start` slot
+  (icon), label, `end` slot (an action, a count).
+
+## API
+
+TreeView:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Required. Accessible name of the tree. |
+| `name` | `string` | — | Form name given to every item checkbox (JS). Set `name` on each TreeItem for forms that must work without JS. |
+| `lines` | `boolean` | `true` | A guide line down each nested group. |
+| `class` | `string` | — | Extra classes on the `<ul>`. |
+
+TreeItem:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Required. Row text and the item's accessible name. |
+| `href` | `string` | — | Makes a leaf a link. |
+| `value` | `string` | — | Adds a checkbox with this value. |
+| `name` | `string` | — | Checkbox form name. |
+| `checked` | `boolean` | `false` | Initial checkbox state. |
+| `open` | `boolean` | `false` | A branch starts open. |
+| `disabled` | `boolean` | `false` | Dims the row; it cannot be checked, toggled with Enter or Space, clicked open, or followed as a link. |
+| `class` | `string` | — | Extra classes on the `<li>`. |
+
+## Variants
+
+Without guide lines, with counts in the `end` slot:
+
+<Preview code={`<TreeView label="Mail" lines={false}>
+  <TreeItem label="Inbox" open>
+    <Badge slot="end" size="small">12</Badge>
+    <TreeItem label="Team"><Badge slot="end" size="small">3</Badge></TreeItem>
+  </TreeItem>
+</TreeView>`}>
+  <div class="w-64">
+    <TreeView label="Mail" lines={false}>
+      <TreeItem label="Inbox" open>
+        <Badge slot="end" size="small">12</Badge>
+        <TreeItem label="Team"><Badge slot="end" size="small">3</Badge></TreeItem>
+        <TreeItem label="Receipts" />
+      </TreeItem>
+      <TreeItem label="Archive" />
+    </TreeView>
+  </div>
+</Preview>
+
+## Selection
+
+Items with a `value` get a checkbox. Checking a branch checks everything
+under it; a partly checked branch shows as indeterminate. The tree dispatches
+`apogee:tree-select` (`detail: { values }`).
+
+<Preview code={`<TreeView label="Permissions" name="perm">
+  <TreeItem label="Projects" value="projects" open>
+    <TreeItem label="Read" value="projects.read" />
+    <TreeItem label="Write" value="projects.write" />
+  </TreeItem>
+</TreeView>`}>
+  <div data-apogee-tree-view="selectable" class="w-72">
+    <TreeView label="Permissions" name="perm">
+      <TreeItem label="Projects" value="projects" open>
+        <TreeItem label="Read" value="projects.read" />
+        <TreeItem label="Write" value="projects.write" />
+        <TreeItem label="Delete" value="projects.delete" />
+      </TreeItem>
+      <TreeItem label="Billing" value="billing">
+        <TreeItem label="View invoices" value="billing.read" />
+      </TreeItem>
+    </TreeView>
+  </div>
+</Preview>
+
+Saved state renders correctly on load: a pre-checked child makes its parent
+mixed. A disabled item cannot be checked, opened or followed.
+
+<Preview code={`<TreeView label="Saved permissions">
+  <TreeItem label="Reports" value="reports" open>
+    <TreeItem label="View" value="reports.view" checked />
+    <TreeItem label="Export" value="reports.export" />
+    <TreeItem label="Admin console" href="#" disabled />
+  </TreeItem>
+</TreeView>`}>
+  <div data-apogee-tree-view="prechecked" class="w-72">
+    <TreeView label="Saved permissions">
+      <TreeItem label="Reports" value="reports" open>
+        <TreeItem label="View" value="reports.view" checked />
+        <TreeItem label="Export" value="reports.export" />
+        <TreeItem label="Admin console" href="#admin" disabled />
+      </TreeItem>
+    </TreeView>
+  </div>
+</Preview>
+
+## States
+
+- **Open / closed** — the native `open` attribute on the branch; the chevron
+  turns; `aria-expanded` follows it.
+- **Focused** — a ring on the row of the focused item.
+- **Checked / indeterminate** — native checkbox states, set by the cascade.
+- **Disabled** — dimmed; no pointer input, Enter and Space do nothing, its checkbox is skipped by the cascade.
+
+## Examples
+
+A navigation tree of links:
+
+<Preview code={`<TreeView label="Docs">
+  <TreeItem label="Guides" open>
+    <TreeItem label="Install" href="#" />
+    <TreeItem label="Theming" href="#" />
+  </TreeItem>
+</TreeView>`}>
+  <div class="w-64">
+    <TreeView label="Docs">
+      <TreeItem label="Guides" open>
+        <TreeItem label="Install" href="#" />
+        <TreeItem label="Theming" href="#" />
+      </TreeItem>
+      <TreeItem label="Reference">
+        <TreeItem label="Tokens" href="#" />
+      </TreeItem>
+    </TreeView>
+  </div>
+</Preview>
+
+## Keyboard
+
+| Key | Action |
+|---|---|
+| `Tab` | Moves into the tree (one stop) and out of it. |
+| `↓` / `↑` | Next / previous visible item. |
+| `→` | Opens a closed branch; on an open branch, moves to its first child. |
+| `←` | Closes an open branch; otherwise moves to the parent. |
+| `Home` / `End` | First / last visible item. |
+| `Enter` | Toggles a branch; follows a link. |
+| `Space` | Toggles the checkbox, or the branch when there is none. |
+| Letters | Typeahead: moves to the next item whose label starts with the typed text. |
+
+## Accessibility
+
+- With JS the list is `role="tree"`, items are `treeitem` with `aria-level`,
+  `aria-expanded` on branches, `aria-checked` (true, false or mixed) on items with a checkbox, and nested lists are `group`. A click on a row hands focus to its item, so the arrow keys keep working. Each item is
+  named by its `label`, so a branch is not read with its children's text.
+- Without JS there is no tree role: arrow keys would not work, so the
+  markup does not promise them.
+- In RTL, `→` and `←` swap.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--foreground-neutral` / `--foreground-neutral-faded` | Row text / icons and chevron |
+| `--background-neutral-faded-highlighted` | Row hover |
+| `--border-neutral` | Guide lines |
+| `--outline-color-focus` | Focus ring |
+| `--background-primary` | Checkbox accent |
+
+## Do / Don't
+
+- **Do** use a tree for real hierarchies a user navigates or selects in.
+- **Do** keep labels short and unique among siblings; typeahead matches them.
+- **Don't** use a tree for site navigation with two levels; NavGroup in a
+  Sidebar reads better.
+- **Don't** put more than one interactive control in a row's `end` slot.
+
+## Content
+
+- Labels are nouns: file names, category names, permission names.
+- Sort siblings in a stable order (alphabetical or by importance) so
+  typeahead and scanning work.

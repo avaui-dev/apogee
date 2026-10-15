@@ -8,6 +8,17 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Table from '../../../../registry/components/Table/Table.astro'
+import Checkbox from '../../../../registry/components/Checkbox/Checkbox.astro'
+import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import SectionHeader from '../../../../registry/components/SectionHeader/SectionHeader.astro'
+import Pagination from '../../../../registry/components/Pagination/Pagination.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+<JsNote fallback="The table still scrolls sideways and shows its rows in source order; sort buttons and select-all do not appear.">
+  Fades the hidden edge while the table scrolls sideways and makes the scrolling wrapper a tab stop only while it overflows. With `sortable` or `selectable` the same island adds sort buttons and wires the row checkboxes.
+</JsNote>
 
 <Preview block code={`<Table>
   <thead>
@@ -59,17 +70,13 @@ import Table from '../../../../registry/components/Table/Table.astro'
 npx @ava-ui/apogee add table
 ```
 
-No Apogee component dependencies. Zero JS.
+Depends on `utils` (`fade.ts`, `table-enhance.ts`). Uses `@lucide/astro` for the sort chevrons.
 
 ## Usage
 
 ```astro
 ---
 import Table from '@/components/apogee/Table/Table.astro'
-
-<JsNote fallback="The table still scrolls sideways; keyboard users reach it through its focusable content.">
-  Fades the hidden edge while the table scrolls sideways and makes the scrolling wrapper a tab stop only while it overflows.
-</JsNote>
 ---
 <Table>
   <thead>
@@ -118,6 +125,11 @@ passes through to the `<table>` element (not the scroll wrapper `<div>`).
 | `headerStyle` | `'normal' \| 'caps'` | `'normal'` | Header text: sentence case and semibold, or small caps. |
 | `border` | `boolean` | `false` | Outer border with rounded corners. |
 | `columnBorder` | `boolean` | `false` | Hairline between columns. |
+| `size` | `'small' \| 'medium'` | `'small'` | Cell padding. |
+| `striped` | `boolean` | `false` | Alternate row fills. |
+| `headerFill` | `boolean` | `true` | A faded fill behind the header row, matching DataGrid. |
+| `sortable` | `boolean` | `false` | Every header with text becomes a sort button. A cell's `data-value` is its sort key (use it when the cell holds an avatar or badge); `data-sortable="false"` on a header skips it. |
+| `selectable` | `boolean` | `false` | Wires `<Checkbox data-row>` cells and one `<Checkbox data-all>` (indeterminate when some rows are checked) and tints checked rows. |
 | `class` | `string` | — | Extra classes on the `<table>`, merged last. |
 
 ## Borders and overflow
@@ -136,6 +148,62 @@ The wrapper scrolls sideways and fades the hidden edge.
       <tbody><tr>{Array.from({ length: 12 }).map((_, i) => <td>Cell {i + 1}</td>)}</tr></tbody>
     </Table>
   </div>
+</Preview>
+
+## Sorting and selection
+
+Rich cells and sorting in one table. The name cell holds an avatar, so it
+carries `data-value` as its sort key; the checkbox header has no text and is
+skipped.
+
+<Preview block code={`<Table sortable selectable>
+  <thead><tr>
+    <th><Checkbox data-all aria-label="Select all" /></th>
+    <th>Name</th><th>Status</th><th class="text-end">Projects</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td><Checkbox data-row aria-label="Select Ana Lima" /></td>
+      <td data-value="Ana Lima"><Avatar name="Ana Lima" size="xsmall" /> Ana Lima</td>
+      <td><Badge size="small" color="positive">Active</Badge></td>
+      <td class="text-end">12</td>
+    </tr>
+    …
+  </tbody>
+</Table>`}>
+  <div data-apogee-table="enhanced">
+    <Table sortable selectable>
+      <thead><tr><th class="w-10"><Checkbox data-all aria-label="Select all" /></th><th>Name</th><th>Status</th><th class="text-end">Projects</th></tr></thead>
+      <tbody>
+        {[['Ana Lima','Active','positive',12],['Zoe Park','Invited','neutral',0],['Marco Ricci','Active','positive',7],['Lea Novak','Paused','warning',3]].map(([n,s,c,p]) => (
+          <tr>
+            <td><Checkbox data-row aria-label={`Select ${n}`} /></td>
+            <td data-value={n}><span class="inline-flex items-center gap-2"><Avatar name={String(n)} size="xsmall" />{n}</span></td>
+            <td data-value={s}><Badge size="small" color={c}>{s}</Badge></td>
+            <td class="text-end">{p}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  </div>
+</Preview>
+
+## Density and stripes
+
+Both `size` values, `striped`, and `headerFill={false}`:
+
+<Preview block code={`<Table size="small">…</Table>
+<Table size="medium">…</Table>
+<Table striped>…</Table>
+<Table headerFill={false}>…</Table>`}>
+  {['small','medium','striped','plain'].map((h) => (
+    <div data-apogee-table={h}>
+      <Table size={h === 'medium' ? 'medium' : 'small'} striped={h === 'striped'} headerFill={h !== 'plain'}>
+        <thead><tr><th>{h}</th><th>Role</th></tr></thead>
+        <tbody><tr><td>Ana Ruiz</td><td>Design</td></tr><tr><td>Tomás Ortiz</td><td>Engineering</td></tr><tr><td>Li Wei</td><td>Support</td></tr></tbody>
+      </Table>
+    </div>
+  ))}
 </Preview>
 
 ## States
@@ -194,6 +262,25 @@ End-align a numeric column:
   </Table>
 </Preview>
 
+A table card: Card regions hold the title row and the pagination footer.
+
+<Preview block code={`<Card padding="none">
+  <SectionHeader slot="header" size="small" heading="Members" description="Everyone with access." class="flex-1" />
+  <Button slot="header" size="small">Invite</Button>
+  <Table>…</Table>
+  <Pagination slot="footer" currentPage={1} totalPages={8} class="ms-auto" />
+</Card>`}>
+  <Card padding="none">
+    <SectionHeader slot="header" size="small" heading="Members" description="Everyone with access to this workspace." class="flex-1" />
+    <Button slot="header" size="small">Invite</Button>
+    <Table>
+      <thead><tr><th>Name</th><th>Role</th></tr></thead>
+      <tbody><tr><td>Ana Ruiz</td><td>Design</td></tr><tr><td>Tomás Ortiz</td><td>Engineering</td></tr></tbody>
+    </Table>
+    <Pagination slot="footer" currentPage={1} totalPages={8} class="ms-auto" />
+  </Card>
+</Preview>
+
 A captioned table (caption hidden visually, still announced):
 
 ```astro
@@ -227,7 +314,7 @@ A captioned table (caption hidden visually, still announced):
 |---|---|
 | `--foreground-neutral` | Header + cell text |
 | `--border-neutral` | Header bottom rule + row top rule |
-| `--background-neutral-faded` | Row hover fill (`bg-neutral-faded`) |
+| `--background-neutral-faded` | Row hover, header fill, stripes, checked rows |
 
 ## Do / Don't
 

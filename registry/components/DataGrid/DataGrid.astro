@@ -24,10 +24,15 @@ interface Props extends HTMLAttributes<'div'> {
   columns: Column[]
   rows: Record<string, any>[]
   selectable?: boolean
+  /** Cell padding. @category layout */
+  size?: 'small' | 'medium'
+  /** Alternate row fills. @category layout */
+  striped?: boolean
   class?: string
 }
 
-const { headerStyle = 'normal', columns, rows, selectable = false, class: className, ...rest } = Astro.props
+const { headerStyle = 'normal', columns, rows, selectable = false, size = 'small', striped = false, class: className, ...rest } = Astro.props
+const pad = size === 'medium' ? 'px-4 py-3' : 'px-3 py-2'
 
 const alignMap = { start: 'text-start', end: 'text-end', center: 'text-center' }
 const cellAlign = (c: Column) => alignMap[c.align ?? 'start']
@@ -38,14 +43,14 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'start']
     <thead class="border-b border-neutral bg-neutral-faded">
       <tr>
         {selectable && (
-          <th class="w-10 px-3 py-2">
-            <span class="no-js:hidden"><Checkbox data-datagrid-all aria-label="Select all" /></span>
+          <th class:list={['w-10', pad]}>
+            <span class="no-js:hidden"><Checkbox data-all aria-label="Select all" /></span>
           </th>
         )}
         {
           columns.map((col) => (
             <th
-              class:list={['px-3 py-2', headerStyle === 'caps' ? 'text-xs font-medium tracking-wide text-neutral-faded uppercase' : 'text-sm font-semibold text-neutral normal-case', cellAlign(col)]}
+              class:list={[pad, headerStyle === 'caps' ? 'text-xs font-medium tracking-wide text-neutral-faded uppercase' : 'text-sm font-semibold text-neutral normal-case', cellAlign(col)]}
               data-key={col.key}
               aria-sort="none"
             >
@@ -54,7 +59,6 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'start']
                   <button
                     type="button"
                     class="apogee-datagrid-sort inline-flex items-center gap-1 transition-colors no-js:hidden hover:text-neutral"
-                    data-key={col.key}
                     data-sort="none"
                   >
                     {col.label}
@@ -72,18 +76,18 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'start']
         }
       </tr>
     </thead>
-    <tbody class="divide-y divide-neutral">
+    <tbody class:list={['divide-y divide-neutral', striped && '[&>tr:nth-child(even)]:bg-neutral-faded']}>
       {
         rows.map((row) => (
           <tr class="[&:has(:checked)]:bg-neutral-faded">
             {selectable && (
-              <td class="px-3 py-2">
-                <Checkbox data-datagrid-row aria-label="Select row" />
+              <td class={pad}>
+                <Checkbox data-row aria-label="Select row" />
               </td>
             )}
             {columns.map((col) => (
               <td
-                class:list={['px-3 py-2 text-neutral', cellAlign(col), typeof row[col.key] === 'number' && 'tabular-nums']}
+                class:list={[pad, 'text-neutral', cellAlign(col), typeof row[col.key] === 'number' && 'tabular-nums']}
                 data-key={col.key}
                 data-value={String(row[col.key] ?? '')}
               >
@@ -115,53 +119,7 @@ const cellAlign = (c: Column) => alignMap[c.align ?? 'start']
 
 <script>
   import { island } from '../utils/island.ts'
+  import { enhanceTable } from '../utils/table-enhance.ts'
 
-  island('.apogee-datagrid', (grid) => {
-    const tbody = grid.querySelector<HTMLElement>('tbody')
-    if (!tbody) return
-
-    // Sorting.
-    for (const btn of grid.querySelectorAll<HTMLButtonElement>('.apogee-datagrid-sort')) {
-      btn.addEventListener('click', () => {
-        const key = btn.dataset.key!
-        const th = btn.closest('th')!
-        const dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending'
-
-        for (const h of grid.querySelectorAll('th')) h.setAttribute('aria-sort', 'none')
-        for (const b of grid.querySelectorAll<HTMLElement>('.apogee-datagrid-sort')) (b.dataset.sort = 'none')
-        th.setAttribute('aria-sort', dir)
-        btn.dataset.sort = dir
-
-        const rows = [...tbody.querySelectorAll('tr')]
-        rows.sort((a, b) => {
-          const av = a.querySelector<HTMLElement>(`td[data-key="${key}"]`)?.dataset.value ?? ''
-          const bv = b.querySelector<HTMLElement>(`td[data-key="${key}"]`)?.dataset.value ?? ''
-          // Numeric only when the whole cell is a number ("12abc" sorts as text).
-          const num = (v: string) => (v.trim() !== '' && Number.isFinite(Number(v)) ? Number(v) : NaN)
-          const na = num(av)
-          const nb = num(bv)
-          const cmp = !isNaN(na) && !isNaN(nb) ? na - nb : av.localeCompare(bv)
-          return dir === 'ascending' ? cmp : -cmp
-        })
-        for (const r of rows) tbody.appendChild(r)
-      })
-    }
-
-    // Row selection with an indeterminate select-all.
-    const all = grid.querySelector<HTMLInputElement>('[data-datagrid-all]')
-    const boxes = () => [...grid.querySelectorAll<HTMLInputElement>('[data-datagrid-row]')]
-    all?.addEventListener('change', () => {
-      for (const b of boxes()) b.checked = all.checked
-      all.indeterminate = false
-    })
-    grid.addEventListener('change', (e) => {
-      if (!(e.target as HTMLElement).matches('[data-datagrid-row]')) return
-      const bs = boxes()
-      const checked = bs.filter((b) => b.checked).length
-      if (all) {
-        all.checked = checked === bs.length
-        all.indeterminate = checked > 0 && checked < bs.length
-      }
-    })
-  })
+  island('.apogee-datagrid', enhanceTable)
 </script>

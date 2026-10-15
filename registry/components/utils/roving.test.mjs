@@ -18,3 +18,10 @@ import { rovingTabindex } from './roving.ts'
 test('rovingTabindex is exported for DOM consumers', () => {
   assert.equal(typeof rovingTabindex, 'function')
 })
+
+test('stepIndex in a vertical row maps Up/Down and ignores Left/Right', () => {
+  assert.equal(stepIndex('ArrowDown', 0, 2, false, 'vertical'), 1)
+  assert.equal(stepIndex('ArrowUp', 0, 2, false, 'vertical'), 2)
+  assert.equal(stepIndex('ArrowRight', 0, 2, false, 'vertical'), null)
+  assert.equal(stepIndex('ArrowDown', 0, 2), null)
+})

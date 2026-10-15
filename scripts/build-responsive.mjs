@@ -32,6 +32,14 @@ export const defs = {
   },
   // Carousel: slides per view, as a CSS variable the track's width rule reads.
   carouselItems: { 1: '[--apogee-items:1]', 2: '[--apogee-items:2]', 3: '[--apogee-items:3]', 4: '[--apogee-items:4]', 5: '[--apogee-items:5]', 6: '[--apogee-items:6]' },
+  // Steps: list direction plus the custom properties that place each item's
+  // text and connector, so one render switches layout per breakpoint.
+  stepsOrientation: {
+    vertical:
+      'flex-col [--steps-li:row] [--steps-align:flex-start] [--steps-text:start] [--steps-flex:none] [--steps-gap:1rem] [--steps-cw:1px] [--steps-ch:100%] [--steps-ct:var(--steps-m)] [--steps-cs:calc(var(--steps-m)/2)]',
+    horizontal:
+      'flex-row [--steps-li:column] [--steps-align:center] [--steps-text:center] [--steps-flex:1_1_0%] [--steps-gap:0.5rem] [--steps-cw:100%] [--steps-ch:1px] [--steps-ct:calc(var(--steps-m)/2)] [--steps-cs:50%]',
+  },
   // Dialog placement. Each cell sets every axis so a later breakpoint fully
   // overrides an earlier one; --apogee-dx/dy/scale feed the closed-state slide
   // in Dialog.astro (the component mirrors dx under :dir(rtl)).

@@ -26,3 +26,9 @@ test('carouselItems cells set the item count variable', () => {
   assert.deepEqual(Object.keys(defs.carouselItems), ['1', '2', '3', '4', '5', '6'])
   assert.equal(defs.carouselItems[3], '[--apogee-items:3]')
 })
+
+test('stepsOrientation cells set the direction and the connector geometry', () => {
+  assert.deepEqual(Object.keys(defs.stepsOrientation), ['vertical', 'horizontal'])
+  for (const cell of Object.values(defs.stepsOrientation))
+    for (const v of ['--steps-li', '--steps-cw', '--steps-ch', '--steps-ct', '--steps-cs']) assert.match(cell, new RegExp(`\\[${v}:`))
+})

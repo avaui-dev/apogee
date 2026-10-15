@@ -2,11 +2,18 @@
 /**
  * Table — a styled, horizontally-scrollable table. Write a plain
  * `<thead>`/`<tbody>` with `<tr>`/`<th>`/`<td>` inside; the styling is applied
- * via descendant selectors. Zero JS.
+ * via descendant selectors. A small island fades the overflowing edge.
+ *
+ * `sortable` turns every header with text into a sort button (the cell's
+ * `data-value` is the sort key when the cell holds rich content; add
+ * `data-sortable="false"` to a header to skip it). `selectable` wires
+ * author-placed `<Checkbox data-row>` cells and one `<Checkbox data-all>`.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import { ChevronsUpDown, ChevronUp, ChevronDown } from '@lucide/astro'
+
 interface Props extends Omit<HTMLAttributes<'table'>, 'border'> {
   /** Header text style. @category layout */
   headerStyle?: 'normal' | 'caps'
@@ -14,13 +21,38 @@ interface Props extends Omit<HTMLAttributes<'table'>, 'border'> {
   border?: boolean
   /** Hairline between columns. @category layout */
   columnBorder?: boolean
+  /** Cell padding. @category layout */
+  size?: 'small' | 'medium'
+  /** Alternate row fills. @category layout */
+  striped?: boolean
+  /** A faded fill behind the header row. @category layout */
+  headerFill?: boolean
+  /** Header cells become sort buttons (JS). */
+  sortable?: boolean
+  /** Wires `[data-row]` / `[data-all]` checkboxes and tints checked rows (JS). */
+  selectable?: boolean
   class?: string
 }
 
-const { headerStyle = 'normal', border = false, columnBorder = false, class: className, ...rest } = Astro.props
+const {
+  headerStyle = 'normal',
+  border = false,
+  columnBorder = false,
+  size = 'small',
+  striped = false,
+  headerFill = true,
+  sortable = false,
+  selectable = false,
+  class: className,
+  ...rest
+} = Astro.props
 const headers = {
   normal: '[&_th]:text-sm [&_th]:font-semibold [&_th]:text-neutral [&_th]:normal-case',
   caps: '[&_th]:text-xs [&_th]:font-medium [&_th]:tracking-wide [&_th]:text-neutral-faded [&_th]:uppercase',
+} as const
+const sizes = {
+  small: '[&_th]:px-3 [&_th]:py-2.5 [&_td]:px-3 [&_td]:py-2.5',
+  medium: '[&_th]:px-4 [&_th]:py-3 [&_td]:px-4 [&_td]:py-3',
 } as const
 ---
 
@@ -29,15 +61,20 @@ const headers = {
     'apogee-table-wrap w-full overflow-x-auto data-[fade~=left]:mask-l-from-90% data-[fade~=right]:mask-r-from-90% focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
     border && 'rounded-lg border border-neutral',
   ]}
+  data-sortable={sortable ? 'true' : undefined}
+  data-selectable={selectable ? 'true' : undefined}
 >
   <table
     class:list={[
       'apogee-table w-full border-collapse text-start text-sm tabular-nums',
-      '[&_th]:px-3 [&_th]:py-2.5',
+      sizes[size],
       headers[headerStyle],
-      '[&_td]:border-t [&_td]:border-neutral [&_td]:px-3 [&_td]:py-2.5 [&_td]:text-neutral',
+      '[&_td]:border-t [&_td]:border-neutral [&_td]:text-neutral',
       '[&_thead_th]:border-b [&_thead_th]:border-neutral',
       '[&_tbody_tr:hover]:bg-neutral-faded',
+      headerFill && '[&_thead]:bg-neutral-faded',
+      striped && '[&_tbody_tr:nth-child(even)]:bg-neutral-faded',
+      selectable && '[&_tbody_tr:has([data-row]:checked)]:bg-neutral-faded',
       columnBorder && '[&_td+td]:border-s [&_td+td]:border-neutral [&_th+th]:border-s [&_th+th]:border-neutral',
       className,
     ]}
@@ -45,6 +82,22 @@ const headers = {
   >
     <slot />
   </table>
+  {
+    sortable && (
+      <template class="apogee-table-sort-template">
+        <button
+          type="button"
+          data-sort="none"
+          class="apogee-table-sort -mx-1 inline-flex items-center gap-1 rounded-sm px-1 transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+        >
+          <span class="apogee-table-sort-label" />
+          <ChevronsUpDown class="apogee-sort-none size-3.5" aria-hidden="true" />
+          <ChevronUp class="apogee-sort-asc size-3.5" aria-hidden="true" />
+          <ChevronDown class="apogee-sort-desc size-3.5" aria-hidden="true" />
+        </button>
+      </template>
+    )
+  }
 </div>
 
 <style is:global>
@@ -56,11 +109,23 @@ const headers = {
       text-align: start;
     }
   }
+  /* Directional sort indicator, driven by the button's data-sort. */
+  .apogee-table-sort .apogee-sort-asc,
+  .apogee-table-sort .apogee-sort-desc,
+  .apogee-table-sort[data-sort='ascending'] .apogee-sort-none,
+  .apogee-table-sort[data-sort='descending'] .apogee-sort-none {
+    display: none;
+  }
+  .apogee-table-sort[data-sort='ascending'] .apogee-sort-asc,
+  .apogee-table-sort[data-sort='descending'] .apogee-sort-desc {
+    display: inline;
+  }
 </style>
 
 <script>
   import { island } from '../utils/island.ts'
   import { edgeFade } from '../utils/fade.ts'
+  import { enhanceTable } from '../utils/table-enhance.ts'
 
   // Fade the edge that hides columns while the table scrolls sideways, and
   // make the wrapper a tab stop only while it actually scrolls.
@@ -72,5 +137,18 @@ const headers = {
     }
     focusable()
     new ResizeObserver(focusable).observe(wrap)
+
+    // Sort buttons: move each header's content into a cloned button.
+    const tpl = wrap.querySelector<HTMLTemplateElement>('.apogee-table-sort-template')
+    if (tpl) {
+      for (const th of wrap.querySelectorAll<HTMLElement>('thead th')) {
+        if (th.dataset.sortable === 'false' || !th.textContent?.trim()) continue
+        const btn = tpl.content.firstElementChild!.cloneNode(true) as HTMLElement
+        btn.querySelector('.apogee-table-sort-label')!.append(...th.childNodes)
+        th.append(btn)
+        th.setAttribute('aria-sort', 'none')
+      }
+    }
+    if (tpl || wrap.dataset.selectable) enhanceTable(wrap)
   })
 </script>

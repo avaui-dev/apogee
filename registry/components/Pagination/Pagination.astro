@@ -1,7 +1,8 @@
 ---
 /**
  * Pagination — page links with prev/next and ellipses. Links only, zero JS.
- * `getHref` builds each page's URL (default `?page=<n>`).
+ * `getHref` builds each page's URL (default `?page=<n>`). Below `md` the page
+ * numbers give way to a "Page x of y" summary between the arrows.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronLeft, ChevronRight } from '@lucide/astro'
@@ -15,6 +16,12 @@ interface Props extends HTMLAttributes<'div'> {
   previousLabel?: string
   /** @category content */
   nextLabel?: string
+  /** Show the previous / next labels beside the arrows (from `md`; screen-reader text below). @category layout */
+  labels?: boolean
+  /** Phone summary between the arrows; `{current}` and `{total}` are replaced. @category content */
+  summary?: string
+  /** Round page cells. @category layout */
+  rounded?: boolean
   class?: string
 }
 
@@ -24,6 +31,9 @@ const {
   getHref = (p: number) => `?page=${p}`,
   previousLabel = 'Previous page',
   nextLabel = 'Next page',
+  labels = false,
+  rounded = false,
+  summary = 'Page {current} of {total}',
   class: className,
   ...rest
 } = Astro.props
@@ -39,15 +49,20 @@ const pages: (number | '…')[] = (() => {
   return [1, '…', currentPage - 1, currentPage, currentPage + 1, '…', n]
 })()
 
-const cell =
-  'inline-flex h-9 min-w-9 items-center justify-center rounded-md px-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
+const cell = [
+  'inline-flex h-9 min-w-9 items-center justify-center gap-1.5 px-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
+  rounded ? 'rounded-full' : 'rounded-md',
+].join(' ')
+// Page numbers and ellipses step aside on phones for the summary.
+const numberCell = `${cell} max-md:hidden`
 ---
 
 <nav aria-label="Pagination" class:list={['flex items-center gap-1 tabular-nums', className]} {...rest}>
   {
     currentPage > 1 ? (
-      <a href={getHref(currentPage - 1)} rel="prev" aria-label={previousLabel} class:list={[cell, 'text-neutral hover:bg-neutral-faded-highlighted']}>
+      <a href={getHref(currentPage - 1)} rel="prev" aria-label={labels ? undefined : previousLabel} class:list={[cell, 'text-neutral hover:bg-neutral-faded-highlighted']}>
         <ChevronLeft class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+        {labels && <span class="max-md:sr-only">{previousLabel}</span>}
       </a>
     ) : (
       <span aria-disabled="true" class:list={[cell, 'text-neutral-faded opacity-50']}>
@@ -58,21 +73,25 @@ const cell =
   {
     pages.map((p) =>
       p === '…' ? (
-        <span class:list={[cell, 'text-neutral-faded']}>…</span>
+        <span class:list={[numberCell, 'text-neutral-faded']}>…</span>
       ) : (
         <a
           href={getHref(p)}
           aria-current={p === currentPage ? 'page' : undefined}
-          class:list={[cell, p === currentPage ? 'bg-primary text-on-primary' : 'text-neutral hover:bg-neutral-faded-highlighted']}
+          class:list={[numberCell, p === currentPage ? 'bg-primary text-on-primary' : 'text-neutral hover:bg-neutral-faded-highlighted']}
         >
           {p}
         </a>
       ),
     )
   }
+  <span class="apogee-pagination-summary px-2 text-sm text-neutral-faded md:hidden">
+    {summary.replace('{current}', String(currentPage)).replace('{total}', String(totalPages))}
+  </span>
   {
     currentPage < totalPages ? (
-      <a href={getHref(currentPage + 1)} rel="next" aria-label={nextLabel} class:list={[cell, 'text-neutral hover:bg-neutral-faded-highlighted']}>
+      <a href={getHref(currentPage + 1)} rel="next" aria-label={labels ? undefined : nextLabel} class:list={[cell, 'text-neutral hover:bg-neutral-faded-highlighted']}>
+        {labels && <span class="max-md:sr-only">{nextLabel}</span>}
         <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
       </a>
     ) : (

@@ -980,7 +980,9 @@
       "files": [
         "Steps/Steps.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "dependencies": [
         "@lucide/astro"
       ],
@@ -1007,7 +1009,9 @@
       "registryDependencies": [
         "utils"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": true
     },
     "Tabs": {
@@ -1017,6 +1021,7 @@
         "Tabs/Tabs.astro"
       ],
       "registryDependencies": [
+        "Badge",
         "utils"
       ],
       "dependencies": [],
@@ -1094,7 +1099,9 @@
       "files": [
         "Timeline/Timeline.astro"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "Avatar"
+      ],
       "dependencies": [],
       "usesJs": false
     },
@@ -1150,6 +1157,21 @@
       "dependencies": [],
       "usesJs": true
     },
+    "TreeView": {
+      "name": "TreeView",
+      "kind": "component",
+      "files": [
+        "TreeView/TreeItem.astro",
+        "TreeView/TreeView.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
+    },
     "utils": {
       "name": "utils",
       "kind": "component",
@@ -1166,6 +1188,7 @@
         "utils/responsive.ts",
         "utils/roving.ts",
         "utils/scroll.ts",
+        "utils/table-enhance.ts",
         "utils/theme.ts",
         "utils/uid.ts"
       ],

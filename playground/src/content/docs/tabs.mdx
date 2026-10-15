@@ -8,6 +8,7 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
+import { User, CreditCard, Users, Bell } from '@lucide/astro'
 
 <JsNote fallback="Every panel renders stacked and reachable — no content is hidden, so nothing is lost.">
   Wires the WAI-ARIA tablist pattern: roving tabindex, arrow / Home / End keys,
@@ -57,9 +58,12 @@ through to the root `<div>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `tabs` | `(string \| { label, value?, href?, disabled? })[]` | — | Tabs in order. A string is a label; an object adds a `value` (panel slot name and event value, defaults to the index), an `href` (renders a link, no panel) or `disabled`. |
+| `tabs` | `(string \| { label, value?, href?, disabled?, icon?, badge? })[]` | — | Tabs in order. A string is a label; an object adds a `value` (panel slot name and event value, defaults to the index), an `href` (renders a link, no panel), `disabled`, an `icon` (Lucide component) or a `badge` (count or short text, shown from `md`). |
 | `value` | `string` | first enabled tab | Value of the tab shown first. |
-| `variant` | `'bordered' \| 'borderless' \| 'pills' \| 'pills-raised'` | `'bordered'` | Underline with a list border, underline alone, chip, or chip in a raised tray. |
+| `variant` | `'bordered' \| 'borderless' \| 'pills' \| 'pills-raised' \| 'primary'` | `'bordered'` | Underline with a list border, underline alone, chip, chip in a raised tray, or a primary-tinted chip. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | `vertical` stacks the list beside the panels; Up and Down move between tabs; underline variants draw on the start edge. |
+| `fullWidth` | `boolean` | `false` | Tabs share the list width equally (horizontal only). |
+| `activation` | `'automatic' \| 'manual'` | `'automatic'` | `manual`: arrows move focus, Enter or Space selects. Use it when a panel is expensive to show. |
 | `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Tab height and text size. |
 | `class` | `string` | — | Extra classes on the root, merged last. |
 
@@ -88,8 +92,9 @@ Every `variant`:
 <Preview code={`<Tabs variant="bordered" tabs={['Account', 'Password', 'Team']}>…</Tabs>
 <Tabs variant="borderless" tabs={['Account', 'Password', 'Team']}>…</Tabs>
 <Tabs variant="pills" tabs={['Account', 'Password', 'Team']}>…</Tabs>
-<Tabs variant="pills-raised" tabs={['Account', 'Password', 'Team']}>…</Tabs>`} block>
-  {['bordered', 'borderless', 'pills', 'pills-raised'].map((variant) => (
+<Tabs variant="pills-raised" tabs={['Account', 'Password', 'Team']}>…</Tabs>
+<Tabs variant="primary" tabs={['Account', 'Password', 'Team']}>…</Tabs>`} block>
+  {['bordered', 'borderless', 'pills', 'pills-raised', 'primary'].map((variant) => (
     <Tabs variant={variant} tabs={['Account', 'Password', 'Team']}>
       <div slot="panel-0">{variant}: account details.</div>
       <div slot="panel-1">{variant}: password.</div>
@@ -130,6 +135,59 @@ picks the tab shown first.
     >
       <div slot="panel-0">Overview of the account.</div>
       <div slot="panel-billing">Invoices and payment method.</div>
+    </Tabs>
+  </div>
+</Preview>
+
+Icons and badges:
+
+<Preview code={`<Tabs tabs={[{ label: 'Profile', icon: User }, { label: 'Billing', icon: CreditCard }, { label: 'Team', icon: Users, badge: 4 }, { label: 'Alerts', icon: Bell, badge: 12 }]}>…</Tabs>`} block>
+  <div data-apogee-tabs="badge">
+    <Tabs value="team" tabs={[{ label: 'Profile', icon: User }, { label: 'Billing', icon: CreditCard }, { label: 'Team', icon: Users, badge: 4, value: 'team' }, { label: 'Alerts', icon: Bell, badge: 12 }]}>
+      <div slot="panel-0">Profile.</div>
+      <div slot="panel-1">Billing.</div>
+      <div slot="panel-team">Four members.</div>
+      <div slot="panel-3">Twelve alerts.</div>
+    </Tabs>
+  </div>
+</Preview>
+
+## Orientation
+
+`vertical` puts the list beside the panels, for settings pages:
+
+<Preview code={`<Tabs orientation="vertical" tabs={['General', 'Security', 'Notifications']}>…</Tabs>`} block>
+  <div data-apogee-tabs="vertical">
+    <Tabs orientation="vertical" tabs={['General', 'Security', 'Notifications']}>
+      <div slot="panel-0">General settings.</div>
+      <div slot="panel-1">Password and two-factor sign-in.</div>
+      <div slot="panel-2">Email and push preferences.</div>
+    </Tabs>
+  </div>
+</Preview>
+
+## Full width
+
+<Preview code={`<Tabs fullWidth variant="pills-raised" tabs={['Monthly', 'Yearly']}>…</Tabs>`} block>
+  <div data-apogee-tabs="full-width">
+    <Tabs fullWidth variant="pills-raised" tabs={['Monthly', 'Yearly', 'Lifetime']}>
+      <div slot="panel-0">Billed every month.</div>
+      <div slot="panel-1">Two months free.</div>
+      <div slot="panel-2">Pay once.</div>
+    </Tabs>
+  </div>
+</Preview>
+
+## Activation
+
+`manual`: arrows move focus without switching panels; Enter or Space selects.
+
+<Preview code={`<Tabs activation="manual" tabs={['Summary', 'Report', 'Raw data']}>…</Tabs>`} block>
+  <div data-apogee-tabs="manual">
+    <Tabs activation="manual" tabs={['Summary', 'Report', 'Raw data']}>
+      <div slot="panel-0">Summary.</div>
+      <div slot="panel-1">A heavy report.</div>
+      <div slot="panel-2">Raw rows.</div>
     </Tabs>
   </div>
 </Preview>
@@ -195,9 +253,9 @@ The root dispatches `apogee:tabs-change` (`detail: { index, value }`, bubbling) 
 | Token | Used for |
 |---|---|
 | `--border-neutral` | Tablist bottom rule + inactive tab border |
-| `--background-primary` | Selected tab underline |
+| `--border-primary` | Selected tab underline |
 | `--foreground-neutral` / `--foreground-neutral-faded` | Active vs. inactive label colour |
-| `--border-primary` | Focus ring |
+| `--outline-color-focus` | Focus ring |
 | `--duration-medium` / `--ease-standard` | Panel enter animation |
 
 ## Do / Don't

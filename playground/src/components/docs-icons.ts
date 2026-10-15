@@ -7,7 +7,7 @@ import {
   Gauge, ArrowRightLeft, Zap, Navigation, PanelTop, Hash, ChevronsRight, KeyRound, MessageSquare, CircleDot, Activity, Layers,
   BookOpen, Circle, Star, PenLine, Languages, ScrollText, LayoutTemplate, ToggleLeft, PanelLeft, Rows3, SkipForward,
   SlidersHorizontal, Ruler, LoaderCircle, TrendingUp, ListOrdered, ToggleRight, Table, PanelsTopLeft, Tags, Tag, Text, AlignLeft,
-  GitCommitHorizontal, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Compass, Sparkles,
+  GitCommitHorizontal, ListTree, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Compass, Sparkles,
 } from '@lucide/astro'
 
 export const docsIcons: Record<string, typeof Box> = {
@@ -26,7 +26,7 @@ export const docsIcons: Record<string, typeof Box> = {
   section: LayoutTemplate, 'segmented-control': ToggleLeft, select: ChevronsUpDown, sidebar: PanelLeft, skeleton: Rows3,
   'skip-link': SkipForward, slider: SlidersHorizontal, spacing: Ruler, spinner: LoaderCircle, stack: Rows3, stat: TrendingUp,
   steps: ListOrdered, switch: ToggleRight, table: Table, tabs: PanelsTopLeft, 'tag-input': Tags, tag: Tag, text: Text,
-  textarea: AlignLeft, timeline: GitCommitHorizontal, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,
+  textarea: AlignLeft, timeline: GitCommitHorizontal, 'tree-view': ListTree, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,
   tokens: Paintbrush, tooltip: MessageCircle, typography: ALargeSmall,
   utilities: Wrench, theme: SunMoon, 'loader-text': LoaderCircle, 'icon-toggle': ToggleLeft, 'content-toggle': ArrowRightLeft,
   foundations: Compass, components: Shapes, sections: LayoutTemplate, 'close-button': X, skins: Layers, 'featured-icon': Sparkles, 'circular-progress': LoaderCircle, 'choice-card': SquareCheck, 'input-group': TextCursorInput,

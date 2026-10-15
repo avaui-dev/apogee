@@ -7,6 +7,7 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Steps from '../../../../registry/components/Steps/Steps.astro'
+import { User, Building2, CreditCard, PartyPopper } from '@lucide/astro'
 
 <Preview code={`<Steps
   items={[
@@ -60,8 +61,11 @@ through to the root `<ol>`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `items` | `{ title: string; description?: string }[]` | — | Steps in order. Each renders an indicator and title, with an optional description. |
+| `items` | `{ title: string; description?: string; status?: 'done' \| 'current' \| 'upcoming'; icon? }[]` | — | Steps in order. `status` overrides the state derived from `current` for that item; `icon` is used with `marker="icon"`. |
 | `current` | `number` | `1` | 1-based index of the active step. Earlier steps render as done. |
+| `orientation` | `Responsive<'vertical' \| 'horizontal'>` | `'vertical'` | Stacked or across; `{ base: 'vertical', md: 'horizontal' }` switches per breakpoint in one render. |
+| `marker` | `'number' \| 'dot' \| 'icon'` | `'number'` | What the circle shows before a step is done. |
+| `size` | `'small' \| 'medium'` | `'medium'` | Marker size (24 / 32px) and text size. |
 | `class` | `string` | — | Extra classes on the root `<ol>`, merged last. |
 
 ## States
@@ -85,6 +89,42 @@ A step's visual state is derived from its position relative to `current`:
 <Preview code={`<Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={4} />`}>
   <Steps items={[{ title: 'One' }, { title: 'Two' }, { title: 'Three' }]} current={4} />
 </Preview>
+
+## Orientation
+
+One render, stacked on phones and across from `md`. The connector after a
+done step turns primary.
+
+<Preview block code={`<Steps orientation={{ base: 'vertical', md: 'horizontal' }} current={2} items={[…]} />`}>
+  <div data-apogee-steps="responsive">
+    <Steps orientation={{ base: 'vertical', md: 'horizontal' }} current={2} items={[{ title: 'Account', description: 'Name and email' }, { title: 'Company', description: 'Team size' }, { title: 'Billing', description: 'Plan and card' }, { title: 'Done', description: 'Start using it' }]} />
+  </div>
+</Preview>
+
+Only `md` given: below it the default `vertical` applies.
+
+<Preview block code={`<Steps orientation={{ md: 'horizontal' }} current={2} items={[…]} />`}>
+  <div data-apogee-steps="md-only"><Steps orientation={{ md: 'horizontal' }} current={2} items={[{ title: 'Cart' }, { title: 'Shipping' }, { title: 'Payment' }]} /></div>
+</Preview>
+
+## Markers and size
+
+<Preview block code={`<Steps marker="dot" size="small" orientation="horizontal" current={2} items={[…]} />
+<Steps marker="icon" orientation="horizontal" current={3} items={[{ title: 'Account', icon: User }, …]} />`}>
+  <div data-apogee-steps="dot"><Steps marker="dot" size="small" orientation="horizontal" current={2} items={[{ title: 'Cart' }, { title: 'Shipping' }, { title: 'Payment' }]} /></div>
+  <div data-apogee-steps="icon"><Steps marker="icon" orientation="horizontal" current={3} items={[{ title: 'Account', icon: User }, { title: 'Company', icon: Building2 }, { title: 'Billing', icon: CreditCard }, { title: 'Done', icon: PartyPopper }]} /></div>
+</Preview>
+
+## Status
+
+`items[].status` marks a step done out of order (a wizard where steps can be
+filled in any order):
+
+<Preview block code={`<Steps current={2} items={[{ title: 'Profile' }, { title: 'Address' }, { title: 'Documents' }, { title: 'Photo', status: 'done' }]} />`}>
+  <div data-apogee-steps="status"><Steps current={2} items={[{ title: 'Profile' }, { title: 'Address' }, { title: 'Documents' }, { title: 'Photo', status: 'done' }]} /></div>
+</Preview>
+
+For a bar or dots with no labels, use ProgressIndicator.
 
 ## Examples
 

@@ -83,6 +83,8 @@ through to the root wrapper `<div>`.
 | `columns` | `Column[]` | — | Column definitions, in order. |
 | `rows` | `Record<string, any>[]` | — | Row data; each row's keys match `columns[].key`. |
 | `selectable` | `boolean` | `false` | Adds a checkbox column with an indeterminate select-all. |
+| `size` | `'small' \| 'medium'` | `'small'` | Cell padding, matching Table. |
+| `striped` | `boolean` | `false` | Alternate row fills. |
 | `headerStyle` | `'normal' \| 'caps'` | `'normal'` | Header text: sentence case and semibold, or small caps. |
 | `class` | `string` | — | Extra classes on the wrapper, merged last. |
 
@@ -123,7 +125,7 @@ Sortable columns (click a header to cycle unsorted → ascending → descending)
   />
 </Preview>
 
-Column alignment — `left`, `right`, `center`:
+Column alignment — `start`, `end`, `center`:
 
 <Preview block code={`<DataGrid
   columns={[
@@ -142,6 +144,14 @@ Column alignment — `left`, `right`, `center`:
     rows={[{ a: 'aligned', b: 'aligned', c: 42 }]}
   />
 </Preview>
+
+Medium density with stripes:
+
+<Preview block code={`<DataGrid size="medium" striped columns={…} rows={…} />`}>
+  <DataGrid size="medium" striped columns={[{ key: 'name', label: 'Name', sortable: true }, { key: 'seats', label: 'Seats', align: 'end' }]} rows={[{ name: 'Acme', seats: 12 }, { name: 'Globex', seats: 4 }, { name: 'Initech', seats: 30 }]} />
+</Preview>
+
+For rich cells (avatars, badges) with sorting, use Table with `sortable`.
 
 ## States
 
