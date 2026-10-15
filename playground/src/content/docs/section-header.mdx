@@ -3,6 +3,7 @@ title: SectionHeader
 description: Eyebrow, heading and description at the top of a section or an app page, with actions, a divider and the level, alignment and colours every section shares.
 group: Components
 order: 0
+related: [heading, eyebrow, section]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -112,6 +113,10 @@ On each section background:
   <Section background="inverted" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Inverted" heading="On the inverted surface" description="Everything inherits the on-colour." background="inverted" /></Section>
 </Preview>
 
+## States
+
+Static: no interactive states. Buttons in `actions` keep their own states.
+
 ## Examples
 
 A page header: breadcrumbs on desktop, a back link on phones, the title with
@@ -163,4 +168,14 @@ Inside a card, the small size is the card title row:
 | `--on-primary`, `--on-inverted` | Everything on the solid fills (inherited) |
 | `--border-neutral` | The `divider` rule |
 
-Layout primitive, so no content rules.
+## Do / Don't
+
+- **Do** use one per section, at the top, with the heading level that fits the page outline.
+- **Do** keep `actions` to one or two buttons.
+- **Don't** stack two SectionHeaders with nothing between them; merge them or add the content.
+
+## Content
+
+- Eyebrow: one or two words naming the area ("Pricing", "Changelog").
+- Title: what the section gives the reader, in sentence case.
+- Description: one sentence. Cut it if it repeats the title.

@@ -3,6 +3,7 @@ title: CheckboxGroup
 description: A fieldset of Checkbox controls with one legend, hint and error.
 group: Components
 order: 0
+related: [checkbox, radio-group, field]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -104,6 +105,28 @@ The group's `error` tints every control inside it; the children need no
 </CheckboxGroup>`}>
   <div data-apogee-checkbox-group="error"><CheckboxGroup legend="Channels" error="Pick at least one"><Checkbox label="Email" /><Checkbox label="SMS" /></CheckboxGroup></div>
   <div data-apogee-checkbox-group="plain"><CheckboxGroup legend="Channels"><Checkbox label="Email" /><Checkbox label="SMS" /></CheckboxGroup></div>
+</Preview>
+
+## Examples
+
+A parent checkbox in the mixed state over its children. Wire the parent to the children yourself; `indeterminate` only sets the first paint:
+
+<Preview code={`<CheckboxGroup legend="Notifications">
+  <Checkbox indeterminate label="All channels" />
+  <div class="ms-6 flex flex-col gap-2">
+    <Checkbox label="Email" checked />
+    <Checkbox label="Push" />
+    <Checkbox label="SMS" />
+  </div>
+</CheckboxGroup>`}>
+  <CheckboxGroup legend="Notifications">
+    <Checkbox indeterminate label="All channels" />
+    <div class="ms-6 flex flex-col gap-2">
+      <Checkbox label="Email" checked />
+      <Checkbox label="Push" />
+      <Checkbox label="SMS" />
+    </div>
+  </CheckboxGroup>
 </Preview>
 
 ## Accessibility

@@ -163,3 +163,9 @@ test('propsOf handles type Props = … & { … }', () => {
   const src = `---\ntype Props = Base & {\n  gap?: 1 | 2\n  align?: 'start' | 'end'\n}\n---`
   assert.deepEqual(propsOf(src, () => null), [{ name: 'gap', values: [] }, { name: 'align', values: ['start', 'end'] }])
 })
+
+test('a combined row covers each prop it names', () => {
+  const doc = full().replace("| `size` |", "| `size` / `tone` |")
+  const page = thing(doc, { files: [{ sub: 'Thing', props: [{ name: 'size', values: [] }, { name: 'tone', values: [] }] }] })
+  assert.deepEqual(checkPage(page), [])
+})

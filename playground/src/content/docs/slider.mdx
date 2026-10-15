@@ -3,6 +3,7 @@ title: Slider
 description: A styled native range input with a live percentage badge.
 group: Components
 order: 0
+related: [number-input, rating, progress]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -106,6 +107,20 @@ when each thumb should be named on its own ("Budget minimum" / "Budget maximum")
   <Slider aria-label="Bottom badge" labelPosition="bottom" value={70} />
 </Preview>
 
+Every `color`:
+
+<Preview code={`<Slider aria-label="Primary" color="primary" value={60} />
+<Slider aria-label="Neutral" color="neutral" value={60} />
+<Slider aria-label="Critical" color="critical" value={60} />
+<Slider aria-label="Positive" color="positive" value={60} />
+<Slider aria-label="Warning" color="warning" value={60} />`} block>
+  <Slider aria-label="Primary" color="primary" value={60} />
+  <Slider aria-label="Neutral" color="neutral" value={60} />
+  <Slider aria-label="Critical" color="critical" value={60} />
+  <Slider aria-label="Positive" color="positive" value={60} />
+  <Slider aria-label="Warning" color="warning" value={60} />
+</Preview>
+
 ## States
 
 - **Default** — track fill matches `value` (or the midpoint if `value` is unset),
@@ -137,8 +152,14 @@ Controlled range with a fractional step:
 
 ## Accessibility
 
-- Native `<input type="range">` — full keyboard support for free: `←`/`→`
-  (or `↓`/`↑`) step by `step`, `Home`/`End` jump to `min`/`max`.
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus to the thumb; a range slider has one stop per thumb. |
+| `←` `→` | Step down / up by `step`; swapped under `dir="rtl"`. |
+| `↓` `↑` | Step down / up by `step`. |
+| `PageDown` `PageUp` | Step down / up by a tenth of the range, or by `step` if that is larger. |
+| `Home` `End` | Jump to `min` / `max`. |
+
 - No visible `<label>` is rendered — always pass `aria-label`, or associate an
   external `<label for>` with `id`.
 - The badge is `aria-hidden` — it echoes the input's value visually; screen

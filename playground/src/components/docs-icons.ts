@@ -7,7 +7,7 @@ import {
   Gauge, ArrowRightLeft, Zap, Navigation, PanelTop, Hash, ChevronsRight, KeyRound, MessageSquare, CircleDot, Activity, Layers,
   BookOpen, Circle, Star, PenLine, Languages, ScrollText, LayoutTemplate, ToggleLeft, PanelLeft, Rows3, SkipForward,
   SlidersHorizontal, Ruler, LoaderCircle, TrendingUp, ListOrdered, ToggleRight, Table, PanelsTopLeft, Tags, Tag, Text, AlignLeft,
-  GitCommitHorizontal, ListTree, MessageSquareText, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Compass, Sparkles,
+  GitCommitHorizontal, ListTree, MessageSquareText, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Moon, Compass, Sparkles,
 } from '@lucide/astro'
 
 export const docsIcons: Record<string, typeof Box> = {
@@ -19,7 +19,7 @@ export const docsIcons: Record<string, typeof Box> = {
   'data-grid': Table2, dialog: AppWindow, dismissible: X, divider: Minus, dropdown: ChevronDown, 'empty-state': Inbox,
   expandable: ChevronsUpDown, eyebrow: Type, field: TextCursorInput, 'file-upload': Upload, footer: PanelBottom, grid: LayoutGrid,
   heading: Heading, hidden: EyeOff, icon: Shapes, image: Image, index: BookOpen, input: TextCursorInput, kbd: Keyboard, link: Link,
-  list: List, marquee: MoveHorizontal, menubar: Menu, meter: Gauge, 'migrating-to-0-3': ArrowRightLeft, motion: Zap,
+  list: List, marquee: MoveHorizontal, menubar: Menu, meter: Gauge, 'migrating-to-0-3': ArrowRightLeft, 'migrating-to-0-4': ArrowRightLeft, 'dark-mode': Moon, motion: Zap,
   'nav-link': Navigation, navbar: PanelTop, 'number-input': Hash, pagination: ChevronsRight, 'pin-input': KeyRound,
   popover: MessageSquare, 'progress-indicator': CircleDot, progress: Activity, 'progressive-enhancement': Layers, prose: BookOpen,
   'radio-group': Circle, radio: CircleDot, rating: Star, 'rich-text-editor': PenLine, rtl: Languages, 'scroll-area': ScrollText,

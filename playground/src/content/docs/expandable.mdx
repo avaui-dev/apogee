@@ -3,6 +3,7 @@ title: Expandable
 description: Long content clamped to a preview height with a fade and a "Show more" toggle. Zero JS.
 group: Components
 order: 0
+related: [collapsible, accordion, prose]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -65,6 +66,28 @@ toggle. Open state is read with `:has()` and applies the clamp to the sibling.
   <Expandable maxHeight="4rem" class="max-w-prose text-sm"><p>{lorem}{lorem}</p></Expandable>
   <Expandable maxHeight="4rem" open class="max-w-prose text-sm"><p>{lorem}{lorem}</p></Expandable>
   <Expandable maxHeight="4rem" moreLabel="Read on" lessLabel="Enough" class="max-w-prose text-sm"><p>{lorem}{lorem}</p></Expandable>
+</Preview>
+
+## States
+
+- **Collapsed** — the content clamps to `maxHeight` with a fade; the toggle shows `moreLabel`.
+- **Expanded** — the full content shows and the toggle shows `lessLabel`.
+- **Reduced motion** — the toggle chevron flips without rotating.
+
+## Examples
+
+Long terms text with custom labels:
+
+<Preview code={`<Expandable maxHeight="5rem" moreLabel="Read all terms" lessLabel="Hide terms" class="max-w-prose text-sm text-neutral">
+  <p>You can cancel at any time from Settings. We stop billing at the end of the current period and keep your data for 30 days, so you can come back without losing anything.</p>
+  <p class="mt-2">Refunds cover the unused part of an annual plan. Monthly plans are not refunded. Prices include VAT where it applies.</p>
+  <p class="mt-2">We may change these terms with 30 days' notice by email.</p>
+</Expandable>`}>
+  <Expandable maxHeight="5rem" moreLabel="Read all terms" lessLabel="Hide terms" class="max-w-prose text-sm text-neutral">
+    <p>You can cancel at any time from Settings. We stop billing at the end of the current period and keep your data for 30 days, so you can come back without losing anything.</p>
+    <p class="mt-2">Refunds cover the unused part of an annual plan. Monthly plans are not refunded. Prices include VAT where it applies.</p>
+    <p class="mt-2">We may change these terms with 30 days' notice by email.</p>
+  </Expandable>
 </Preview>
 
 ## Accessibility

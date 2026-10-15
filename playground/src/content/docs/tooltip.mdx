@@ -3,9 +3,11 @@ title: Tooltip
 description: A short hint shown on hover and keyboard focus, anchored to its trigger in the top layer with hover intent.
 group: Components
 order: 0
+related: [popover, kbd, dropdown]
 ---
 
 import Preview from '../../components/Preview.astro'
+import Select from '../../../../registry/components/Select/Select.astro'
 import JsNote from '../../components/JsNote.astro'
 import Tooltip from '../../../../registry/components/Tooltip/Tooltip.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
@@ -75,11 +77,13 @@ Slots: the default slot is the trigger; `shortcut` renders inline after the text
 
 <Preview code={`<Tooltip text="Edit"><Button variant="ghost" color="neutral" iconOnly aria-label="Edit">✎</Button></Tooltip>
 <Tooltip text="Delete"><Button color="critical">Delete</Button></Tooltip>
-<Tooltip text="Opens in a new tab"><a href="#" class="text-primary underline">Docs</a></Tooltip>`}>
+<Tooltip text="Opens in a new tab"><a href="#" class="text-primary underline">Docs</a></Tooltip>
+<Tooltip text="Newest first by default"><Select aria-label="Sort"><option>Newest</option><option>Oldest</option></Select></Tooltip>`}>
   <div class="flex items-center gap-4">
     <Tooltip text="Edit"><Button variant="ghost" color="neutral" iconOnly aria-label="Edit">✎</Button></Tooltip>
     <Tooltip text="Delete"><Button color="critical">Delete</Button></Tooltip>
     <Tooltip text="Opens in a new tab"><a href="#" class="text-primary underline">Docs</a></Tooltip>
+    <span data-apogee-tooltip="select"><Tooltip text="Newest first by default"><Select aria-label="Sort"><option>Newest</option><option>Oldest</option></Select></Tooltip></span>
   </div>
 </Preview>
 
@@ -174,15 +178,19 @@ the accessible name is `aria-label`.
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Focusing the trigger shows the tooltip; moving focus away hides it. |
+| `Esc` | Hides the tooltip without moving focus (WCAG 1.4.13). |
+
 - The bubble has `role="tooltip"`; the focusable trigger points at it with
   `aria-describedby`, so screen readers read the hint after the trigger's
   name (hidden popover content still counts as a description).
 - Appears on keyboard focus, not only hover. Put a focusable element in the
   slot or keyboard users never see it.
-- `Esc` dismisses it (WCAG 1.4.13).
 - The hint is supplementary. Never put the only label of a control in a
   tooltip; give the control an accessible name of its own.
-- Touch pointers never open it: a tap goes to the control, not the hint.
+- On touch, a tap shows it; it closes after 4 seconds or on a tap elsewhere.
 - The fade respects `prefers-reduced-motion`.
 
 ## Tokens

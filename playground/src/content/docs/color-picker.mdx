@@ -3,6 +3,7 @@ title: ColorPicker
 description: A native colour swatch with a synced hex field, preset swatches and an optional eyedropper.
 group: Components
 order: 0
+related: [input, field, slider]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -102,9 +103,13 @@ Required field, wired into a form:
 
 ## Accessibility
 
-- **Keyboard** — `Tab` moves from the swatch to the hex field. The native
-  color input opens the system picker on `Enter` / `Space` in most browsers;
-  the hex field is a plain text input.
+| Key | Action |
+|---|---|
+| `Tab` | Moves from the swatch to the hex field, the eyedropper, then the presets. |
+| `Enter` `Space` | Open the system color picker from the swatch, or start the eyedropper. |
+| `Esc` | Cancels the eyedropper and keeps the current color. |
+| `←` `→` `↑` `↓` | Move between presets and select one. |
+
 - The swatch has `aria-label="Color picker"` by default — override it via a
   passthrough `aria-label` when the field's `label` alone doesn't say enough
   (e.g. multiple swatches on one page).

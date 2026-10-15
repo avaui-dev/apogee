@@ -49,6 +49,10 @@ const nav = [...byGroup.entries()]
         js: jsSlugs.has(d.id),
       })),
   }))
+const related = (entry.data.related ?? []).flatMap((id) => {
+  const d = all.find((x) => x.id === id)
+  return d ? [{ id, title: d.data.title, description: d.data.description, href: `/docs/${id}` }] : []
+})
 ---
 
 <DocsLayout
@@ -57,6 +61,7 @@ const nav = [...byGroup.entries()]
   headings={headings}
   nav={nav}
   group={entry.data.group}
+  related={related}
 >
   <Content components={{ table: Table }} />
 </DocsLayout>

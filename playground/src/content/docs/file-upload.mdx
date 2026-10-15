@@ -3,6 +3,7 @@ title: FileUpload
 description: A styled file input / dropzone for selecting a file to upload.
 group: Components
 order: 0
+related: [input, field, progress]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -57,6 +58,16 @@ Any other native `<input type="file">` attribute (e.g. `required`, `disabled`,
 | `inline` | `boolean` | `false` | A single row (icon + text) instead of a stacked zone. |
 | `class` | `string` | — | Extra classes on the label (dropzone), merged last. |
 
+## States
+
+- **Hover** — dropzone border shifts to `--border-primary`.
+- **Drag-over** (JS) — border and a faint accent background via `data-drag="true"`.
+- **Invalid** (JS) — a refused file sets `data-invalid="true"`: critical border, the
+  hint shows the reason. Clears on the next accepted file.
+- **Disabled** — `disabled` on the input dims the zone and blocks the pointer.
+- **No JS** — filename text is hidden (`no-js:hidden`); the native picker and
+  form submission still work.
+
 ## Examples
 
 Multiple files:
@@ -105,16 +116,6 @@ The default slot replaces the built-in copy; `headless` leaves styling to you;
   <FileUpload name="attachment" inline />
 </Preview>
 
-## States
-
-- **Hover** — dropzone border shifts to `--border-primary`.
-- **Drag-over** (JS) — border and a faint accent background via `data-drag="true"`.
-- **Invalid** (JS) — a refused file sets `data-invalid="true"`: critical border, the
-  hint shows the reason. Clears on the next accepted file.
-- **Disabled** — `disabled` on the input dims the zone and blocks the pointer.
-- **No JS** — filename text is hidden (`no-js:hidden`); the native picker and
-  form submission still work.
-
 ## Events
 
 A dropped file that passes `accept` and `maxSize` assigns `input.files` and
@@ -161,9 +162,13 @@ a CloseButton to cancel, and a failed row with a retry. `readableSize` from
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus to the file input. |
+| `Enter` `Space` | Opens the system file picker. |
+
 - The visible control is a `<label>` wrapping a visually-hidden (`sr-only`)
-  native `<input type="file">` — full keyboard support: `Tab` to focus,
-  `Enter`/`Space` opens the OS file picker.
+  native `<input type="file">`.
 - The `UploadCloud` icon is `aria-hidden`.
 - A consumer-passed `id` is used for both the `<input>` and the `<label for>`,
   so the association stays correct; omit it and the component generates its

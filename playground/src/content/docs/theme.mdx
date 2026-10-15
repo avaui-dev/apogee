@@ -3,6 +3,7 @@ title: Theme
 description: A subtree in light, dark, or the opposite of its surroundings, plus the helpers that switch the page mode.
 group: Components
 order: 0
+related: [hidden, section, container]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -11,6 +12,7 @@ import ThemeToggleDemo from '../../components/ThemeToggleDemo.astro'
 import Theme from '../../../../registry/components/Theme/Theme.astro'
 import Card from '../../../../registry/components/Card/Card.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+import Heading from '../../../../registry/components/Heading/Heading.astro'
 
 <JsNote fallback="light and dark are pure CSS and keep working. An inverted region renders in its parent's mode until the script runs.">
   Resolves `mode="inverted"`: a ten-line script reads the nearest light or dark
@@ -107,7 +109,7 @@ flips both ways.
 
 The page mode lives on `<html data-theme>`. Set it before paint with a head
 script (stored choice, else the system setting), then switch it with the
-helpers in `utils/theme.ts`.
+helpers in `utils/theme.ts`. [Dark mode](/docs/dark-mode) covers the script and the helpers in full.
 
 ```html
 <script is:inline>
@@ -139,6 +141,22 @@ does not tween every colour, re-resolves inverted regions, and dispatches
 - **Inverted** — resolved to one of the two by the island; until then the
   element carries `data-theme="inverted"` and inherits its parent.
 
+## Examples
+
+A dark hero band on a light page. Everything inside, Button included, reads the dark tokens:
+
+<Preview code={`<Theme mode="dark" as="section" class="rounded-lg p-8">
+  <Heading as="h3" size="h3">Ship your docs today</Heading>
+  <p class="mt-2 text-neutral-faded">Copy the components in, keep the code.</p>
+  <Button class="mt-4">Get started</Button>
+</Theme>`}>
+  <Theme mode="dark" as="section" class="rounded-lg p-8">
+    <Heading as="h3" size="h3">Ship your docs today</Heading>
+    <p class="mt-2 text-neutral-faded">Copy the components in, keep the code.</p>
+    <Button class="mt-4">Get started</Button>
+  </Theme>
+</Preview>
+
 ## Accessibility
 
 - A themed region keeps every contrast pair of its mode (the tokens are the
@@ -165,3 +183,7 @@ does not tween every colour, re-resolves inverted regions, and dispatches
   region nested in a dark one: the variant is ancestor-based, so it still
   applies there. Tokens (`bg-page`, `text-neutral`) follow the region; the
   variant does not.
+
+## Content
+
+- No wording rules of its own. Text inside a themed region follows the rules of the components it holds.

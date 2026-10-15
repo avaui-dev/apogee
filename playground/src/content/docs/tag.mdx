@@ -3,6 +3,7 @@ title: Tag
 description: A chip for labels and categories. Optionally a link, optionally removable.
 group: Components
 order: 0
+related: [badge, tag-input, dismissible]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -208,13 +209,17 @@ letting the DOM change on its own:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves to the link (with `href`), the checkbox (with `selectable`) and the remove button, in source order. |
+| `Enter` | Follows the link or presses the remove button. |
+| `Space` | Toggles a selectable tag or presses the remove button. |
+
 - The label renders a real `<a>` (when `href` is set) or a plain `<span>` —
   links get full keyboard and AT navigation.
 - The remove button is a real `<button type="button">` with an `aria-label`
   (`removeLabel`, default `"Remove"`) — pass a specific one (e.g. `"Remove
   Engineering"`) when several tags are on the page.
-- **Keyboard** — `Tab` moves through the label (if a link) and the remove
-  button in source order; `Enter` / `Space` activates either.
 - **No JS** — the remove button is hidden entirely rather than shown
   non-functional; a link tag (`href`) still works with JS off.
 

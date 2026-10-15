@@ -3,6 +3,7 @@ title: Section
 description: A full-width band with vertical rhythm and an optional Container, used to lay out page content.
 group: Components
 order: 0
+related: [container, section-header, footer]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -70,9 +71,23 @@ every variant:
   <Section theme="dark" spacing="small"><p>theme="dark"</p></Section>
 </Preview>
 
+Every `background`:
+
+<Preview code={`<Section background="page" spacing="none"><p class="px-4 py-3">background="page"</p></Section>
+<Section background="neutral-faded" spacing="none"><p class="px-4 py-3">background="neutral-faded"</p></Section>
+<Section background="primary-faded" spacing="none"><p class="px-4 py-3">background="primary-faded"</p></Section>
+<Section background="primary" spacing="none"><p class="px-4 py-3">background="primary"</p></Section>
+<Section background="inverted" spacing="none"><p class="px-4 py-3">background="inverted"</p></Section>`} block>
+  <Section background="page" spacing="none"><p class="px-4 py-3">background="page"</p></Section>
+  <Section background="neutral-faded" spacing="none"><p class="px-4 py-3">background="neutral-faded"</p></Section>
+  <Section background="primary-faded" spacing="none"><p class="px-4 py-3">background="primary-faded"</p></Section>
+  <Section background="primary" spacing="none"><p class="px-4 py-3">background="primary"</p></Section>
+  <Section background="inverted" spacing="none"><p class="px-4 py-3">background="inverted"</p></Section>
+</Preview>
+
 ## Sizes
 
-Every `space` value:
+Every `spacing` value:
 
 <Preview code={`<Section spacing="none"><p class="border border-dashed border-neutral p-2 text-sm">spacing="none"</p></Section>
 <Section spacing="small"><p class="border border-dashed border-neutral p-2 text-sm">spacing="small"</p></Section>
@@ -86,18 +101,18 @@ Every `space` value:
   <Section spacing="xlarge"><p class="border border-dashed border-neutral p-2 text-sm">spacing="xlarge"</p></Section>
 </Preview>
 
-Every `containerSize` value:
+Every `containerWidth` value:
 
-<Preview code={`<Section containerWidth="small" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="sm"</div></Section>
-<Section containerWidth="medium" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="md"</div></Section>
-<Section containerWidth="large" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="lg"</div></Section>
-<Section containerWidth="xlarge" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="xl"</div></Section>
-<Section containerWidth="full" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="full"</div></Section>`}>
-  <Section containerWidth="small" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="sm"</div></Section>
-  <Section containerWidth="medium" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="md"</div></Section>
-  <Section containerWidth="large" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="lg"</div></Section>
-  <Section containerWidth="xlarge" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="xl"</div></Section>
-  <Section containerWidth="full" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerSize="full"</div></Section>
+<Preview code={`<Section containerWidth="small" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="small"</div></Section>
+<Section containerWidth="medium" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="medium"</div></Section>
+<Section containerWidth="large" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="large"</div></Section>
+<Section containerWidth="xlarge" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="xlarge"</div></Section>
+<Section containerWidth="full" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="full"</div></Section>`}>
+  <Section containerWidth="small" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="small"</div></Section>
+  <Section containerWidth="medium" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="medium"</div></Section>
+  <Section containerWidth="large" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="large"</div></Section>
+  <Section containerWidth="xlarge" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="xlarge"</div></Section>
+  <Section containerWidth="full" spacing="small"><div class="border border-dashed border-neutral p-2 text-sm">containerWidth="full"</div></Section>
 </Preview>
 
 ## States

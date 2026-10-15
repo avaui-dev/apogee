@@ -3,6 +3,7 @@ title: Dialog
 description: A native <dialog> opened and closed with invoker commands — modal, edge panel, or fullscreen.
 group: Components
 order: 0
+related: [toast, command-palette, popover]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -238,6 +239,8 @@ Sheet on phones, centred dialog from `md`. Resize the window and reopen.
   </Dialog>
 </Preview>
 
+A `position` object needs a `base` key. Without one, the dialog falls back to the browser's centred layout below the first breakpoint you set.
+
 ## Size and padding
 
 `size` is a width for a centred dialog or drawer and a max height for a sheet.
@@ -362,6 +365,12 @@ A destructive confirm, with a `critical` footer button:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves between controls inside the open dialog. |
+| `Enter` `Space` | Activate the focused close or footer button. |
+| `Esc` | Closes the dialog. |
+
 - Native `<dialog>` opened via `showModal()` (through `command="show-modal"`) —
   the browser traps focus inside it and returns focus to the invoking button on
   close, for free.
@@ -373,11 +382,11 @@ A destructive confirm, with a `critical` footer button:
 - The close button has `aria-label="Close"`. With the `header` slot the dialog
   is labelled by the slot's content; pass `aria-labelledby` to point at one
   heading inside it instead.
-- **Keyboard** — `Escape` closes it (native `showModal()` behavior); the close
-  and footer buttons are reachable with `Tab`.
 - **No JS** — opening, closing via the buttons, and `Escape` all still work
   (native). Only the backdrop-click-to-close fallback is unavailable, and only
   in browsers without native `closedby` support.
+
+- `subtitle` sets `aria-describedby`. When you render your own description in the `header` slot, pass `aria-describedby` yourself and leave `subtitle` empty.
 
 ## Tokens
 

@@ -3,6 +3,7 @@ title: Skeleton
 description: A pulsing placeholder shown in place of content while it loads. Zero JS.
 group: Components
 order: 0
+related: [spinner, loader-text, empty-state]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -47,6 +48,11 @@ passes through (spread after `aria-hidden="true"`, so it can be overridden if ne
 | `class` | `string` | — | Sizes and shapes the placeholder (`h-4 w-48`, `size-12 rounded-full`, …). Merged last. |
 
 Skeleton has no `variant` or `size` prop — every shape comes from `class`.
+
+## States
+
+- **Animated** — fades between its shade and a lighter one while content loads.
+- **Reduced motion** — under `prefers-reduced-motion: reduce` the shimmer stops and the block stays still.
 
 ## Examples
 

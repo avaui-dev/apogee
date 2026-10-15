@@ -3,6 +3,7 @@ title: Radio
 description: A single option in a mutually exclusive set — pair radios sharing the same name into a group.
 group: Components
 order: 0
+related: [radio-group, checkbox, switch]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -61,6 +62,16 @@ attribute (e.g. `checked`, `disabled`, `required`) passes through.
 <Preview code={`<Radio name="plan" value="pro"><span><strong>Pro</strong> — €12 / month</span></Radio>`}>
   <Radio name="plan-slot" value="pro"><span><strong>Pro</strong> — €12 / month</span></Radio>
   <Radio name="plan-slot" value="team"><span><strong>Team</strong> — €40 / month</span></Radio>
+</Preview>
+
+## Sizes
+
+<Preview code={`<Radio name="radio-sizes" value="small" label="Small" size="small" />
+<Radio name="radio-sizes" value="medium" label="Medium" size="medium" />
+<Radio name="radio-sizes" value="large" label="Large" size="large" />`} block>
+  <Radio name="radio-sizes" value="small" label="Small" size="small" />
+  <Radio name="radio-sizes" value="medium" label="Medium" size="medium" />
+  <Radio name="radio-sizes" value="large" label="Large" size="large" />
 </Preview>
 
 ## States

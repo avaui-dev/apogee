@@ -3,6 +3,7 @@ title: Text
 description: Body copy with a size scale and semantic colours. Renders p, span, or div.
 group: Components
 order: 0
+related: [heading, prose, eyebrow]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -49,12 +50,20 @@ for the rendered tag (e.g. `id`, `aria-label`) passes through.
 
 ## Variants
 
-Default and faded colour:
+Every `color`. Without one, text inherits the surrounding colour.
 
-<Preview block code={`<Text>Foreground text.</Text>
-<Text color="neutral-faded">Muted text.</Text>`}>
-  <Text>Foreground text.</Text>
-  <Text color="neutral-faded">Muted text.</Text>
+<Preview block code={`<Text color="neutral">Neutral text.</Text>
+<Text color="neutral-faded">Neutral faded text.</Text>
+<Text color="primary">Primary text.</Text>
+<Text color="critical">Critical text.</Text>
+<Text color="positive">Positive text.</Text>
+<Text color="warning">Warning text.</Text>`}>
+  <Text color="neutral">Neutral text.</Text>
+  <Text color="neutral-faded">Neutral faded text.</Text>
+  <Text color="primary">Primary text.</Text>
+  <Text color="critical">Critical text.</Text>
+  <Text color="positive">Positive text.</Text>
+  <Text color="warning">Warning text.</Text>
 </Preview>
 
 ## Sizes
@@ -71,18 +80,32 @@ Every size:
 
 ## Weight, clamping, numbers
 
-<Preview block code={`<Text weight="medium">Medium weight</Text>
+<Preview block code={`<Text weight="regular">Regular</Text>
+<Text weight="medium">Medium</Text>
+<Text weight="semibold">Semibold</Text>
 <Text weight="bold">Bold</Text>
 <Text maxLines={2}>A long paragraph …</Text>
 <Text numeric>1,024 · 2,048 · 4,096</Text>
-<Text align="center">Centred</Text>
 <Text size={{ base: 'small', md: 'large' }}>Small on phones, large from md</Text>`}>
-  <Text weight="medium">Medium weight</Text>
+  <Text weight="regular">Regular</Text>
+  <Text weight="medium">Medium</Text>
+  <Text weight="semibold">Semibold</Text>
   <Text weight="bold">Bold</Text>
   <Text maxLines={2} class="max-w-xs">A long paragraph that keeps going past the second line and therefore gets clamped with an ellipsis at the end of line two, however long it is.</Text>
   <Text numeric>1,024 · 2,048 · 4,096</Text>
-  <Text align="center">Centred</Text>
   <Text size={{ base: 'small', md: 'large' }}>Small on phones, large from md</Text>
+</Preview>
+
+## Alignment
+
+<Preview block code={`<Text align="start">Start</Text>
+<Text align="center">Centre</Text>
+<Text align="end">End</Text>`}>
+  <div class="w-full">
+    <Text align="start">Start</Text>
+    <Text align="center">Centre</Text>
+    <Text align="end">End</Text>
+  </div>
 </Preview>
 
 ## States

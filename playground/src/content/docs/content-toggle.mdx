@@ -3,12 +3,14 @@ title: ContentToggle
 description: Shows one keyed child at a time and slides between them, for pagers and step content.
 group: Components
 order: 0
+related: [tabs, segmented-control, collapsible]
 ---
 
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import ContentToggle from '../../../../registry/components/ContentToggle/ContentToggle.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+import SegmentedControl from '../../../../registry/components/SegmentedControl/SegmentedControl.astro'
 
 <JsNote fallback="The child matching the initial active key shows (marked server-side); changing data-active has no effect.">
   A small island watches `data-active` on the root: the outgoing child slides
@@ -99,6 +101,26 @@ bubbling) after every swap.
   (`apogee-ct-out`), then hides.
 - **Reduced motion** — no slide; the swap is instant.
 
+## Examples
+
+Log in and sign up behind a SegmentedControl. The control sets `data-active` on change:
+
+<Preview code={`<div onchange="this.querySelector('.apogee-content-toggle').dataset.active = event.target.value">
+  <SegmentedControl name="auth" options={[{ label: 'Log in', value: 'login' }, { label: 'Sign up', value: 'signup' }]} value="login" aria-label="Account" />
+  <ContentToggle active="login" class="mt-4 text-sm">
+    <p data-key="login">Welcome back. Log in with your work email.</p>
+    <p data-key="signup">New here? Create an account in under a minute.</p>
+  </ContentToggle>
+</div>`}>
+  <div onchange="this.querySelector('.apogee-content-toggle').dataset.active = event.target.value">
+    <SegmentedControl name="auth" options={[{ label: 'Log in', value: 'login' }, { label: 'Sign up', value: 'signup' }]} value="login" aria-label="Account" />
+    <ContentToggle active="login" class="mt-4 text-sm">
+      <p data-key="login">Welcome back. Log in with your work email.</p>
+      <p data-key="signup">New here? Create an account in under a minute.</p>
+    </ContentToggle>
+  </div>
+</Preview>
+
 ## Accessibility
 
 - Only the active child is in the accessibility tree (the rest are
@@ -118,3 +140,8 @@ bubbling) after every swap.
   it takes the tallest one.
 - **Don't** use it for tab panels; use [Tabs](/docs/tabs), which carries the
   ARIA pattern.
+
+## Content
+
+- Each child should make sense alone; the reader never sees two at once.
+- Name the control that switches them for what the user picks ("Log in", "Sign up"), not "Option 1".

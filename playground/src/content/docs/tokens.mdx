@@ -6,6 +6,7 @@ order: 1
 ---
 
 import Swatches from '../../components/Swatches.astro'
+import TokenTable from '../../components/TokenTable.astro'
 
 Every design decision in Apogee is a CSS variable. Components read tokens;
 they never own a colour or a size. Theming is an override in one place, not a
@@ -92,7 +93,7 @@ variable in your own CSS after the theme import and re-run the gate.
 
 `[data-theme="dark"]` on any ancestor flips the generated block. `Section`'s
 `theme` prop uses it to recolour a band of the page. Surfaces step up in
-lightness with elevation in dark mode; shadows become a faint top highlight.
+lightness with elevation in dark mode; shadows become a faint top highlight. See [Dark mode](/docs/dark-mode).
 
 ## Skins
 
@@ -146,3 +147,9 @@ Headings use fluid `clamp()` tokens (`--text-display`, `--text-h1` … `--text-h
 Page rhythm uses `--spacing-gutter` and `--spacing-section-*`. Component
 internals keep Tailwind's fixed numeric scale. See [Typography](/docs/typography)
 and [Spacing](/docs/spacing).
+
+## Reference
+
+Every variable the tokens file defines, read from the file at build time.
+
+<TokenTable />

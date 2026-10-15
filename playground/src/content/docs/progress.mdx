@@ -3,6 +3,7 @@ title: Progress
 description: A determinate or indeterminate progress bar.
 group: Components
 order: 0
+related: [progress-indicator, meter, spinner, loader-text]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -44,6 +45,7 @@ through to the root `<div role="progressbar">`.
 | `label` | `string` | — | Accessible label (`aria-label`) — there's no visible text otherwise. |
 | `indeterminate` | `boolean` | `false` | Shows a sliding animated fill instead of a value-based width; drops `aria-valuemin` / `aria-valuemax` / `aria-valuenow`. |
 | `size` | `'small' \| 'medium'` | `'medium'` | Bar thickness: 4 / 8px. |
+| `color` | `'primary' \| 'neutral' \| 'critical' \| 'positive' \| 'warning'` | `'primary'` | Hue of the fill. |
 | `labelPosition` | `'none' \| 'end' \| 'bottom' \| 'floating'` | `'none'` | Where the value text shows: after the bar, under it, or in a chip that floats above the fill. |
 | `format` | `string` | `'{percent}%'` | Value text template; `{value}`, `{percent}` and `{max}` are replaced. |
 | `class` | `string` | — | Extra classes on the root wrapper, merged last. |
@@ -68,6 +70,20 @@ Every `labelPosition`, with a `format`:
 <Progress value={40} size="medium" label="Medium" />`} block>
   <Progress value={40} size="small" label="Small" />
   <Progress value={40} size="medium" label="Medium" />
+</Preview>
+
+## Colours
+
+<Preview code={`<Progress value={60} color="primary" label="Primary" />
+<Progress value={60} color="neutral" label="Neutral" />
+<Progress value={60} color="critical" label="Critical" />
+<Progress value={60} color="positive" label="Positive" />
+<Progress value={60} color="warning" label="Warning" />`} block>
+  <Progress value={60} color="primary" label="Primary" />
+  <Progress value={60} color="neutral" label="Neutral" />
+  <Progress value={60} color="critical" label="Critical" />
+  <Progress value={60} color="positive" label="Positive" />
+  <Progress value={60} color="warning" label="Warning" />
 </Preview>
 
 ## States

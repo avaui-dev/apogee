@@ -3,6 +3,7 @@ title: Icon
 description: A library-agnostic icon wrapper — forwards a Lucide icon's props, or accepts a raw SVG slot, with built-in accessibility.
 group: Components
 order: 0
+related: [icon-toggle, button, avatar]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -101,6 +102,10 @@ Every token `color`:
   <Icon icon={Camera} color="warning" class="size-6" label="warning" />
   <Icon icon={Camera} color="inherit" class="size-6" label="inherit" />
 </Preview>
+
+## States
+
+Static: no interactive states. It takes `currentColor`, so it follows the hover or disabled colour of the control around it.
 
 ## Examples
 

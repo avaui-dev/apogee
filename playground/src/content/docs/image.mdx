@@ -3,6 +3,7 @@ title: Image
 description: A responsive, lazy-loaded image — wraps astro:assets Image with sensible defaults.
 group: Components
 order: 0
+related: [aspect-ratio, avatar, icon]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -49,12 +50,46 @@ import hero from '../assets/hero.jpg'
 | `alt` | `string` | — | Required. Alt text (`""` for decorative images). |
 | `loading` | `'lazy' \| 'eager'` | `'lazy'` | Native lazy-loading. Use `eager` for the page's LCP image. |
 | `decoding` | `'async' \| 'sync' \| 'auto'` | `'async'` | Native image decoding hint. |
+| `width` / `height` | `number` | — | Intrinsic size; sets the aspect ratio and the largest generated width. |
+| `widths` | `number[]` | — | Responsive candidates for `srcset`, e.g. `[480, 800, 1200]`. |
+| `sizes` | `string` | — | The `sizes` attribute that picks a candidate; pair it with `widths`. |
+| `quality` | `'low' \| 'mid' \| 'high' \| 'max' \| number` | — | Compression of optimised local images. |
+| `format` | `'avif' \| 'webp' \| 'png' \| 'jpeg' \| 'svg'` | — | Output format of optimised local images (Astro defaults to `webp`). |
 | `fit` | `'cover' \| 'contain'` | — | How the image fills a box sized by `width`/`height` or a class. |
 | `radius` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | — | Corner radius token. |
 | `outline` | `boolean` | `false` | Inset hairline for images that blend into the page. |
-| `class` | `string` | — | Extra classes, merged last (`h-auto max-w-full` is always applied). |
+| `class` | `string` | — | Extra classes, merged last (`max-w-full` always, plus `h-auto` unless `fit` is set). |
 
 Slot `fallback`: shown in the image's box when it fails to load (a small island swaps them; without JS the broken image shows its alt text).
+
+## Fit and radius
+
+`fit` decides what happens when the box and the image disagree: `cover` crops, `contain` letterboxes. Both boxes below are square; the image is 16:9.
+
+<Preview code={`<Image src={placeholder} alt="Cover" width={320} height={180} fit="cover" class="size-40" />
+<Image src={placeholder} alt="Contain" width={320} height={180} fit="contain" class="size-40 bg-neutral-faded" />`}>
+  <Image src={placeholder} alt="Cover" width={320} height={180} fit="cover" class="size-40" />
+  <Image src={placeholder} alt="Contain" width={320} height={180} fit="contain" class="size-40 bg-neutral-faded" />
+</Preview>
+
+Every `radius`:
+
+<Preview code={`<Image src={placeholder} alt="Radius sm" width={96} height={96} fit="cover" radius="sm" class="size-24" />
+<Image src={placeholder} alt="Radius md" width={96} height={96} fit="cover" radius="md" class="size-24" />
+<Image src={placeholder} alt="Radius lg" width={96} height={96} fit="cover" radius="lg" class="size-24" />
+<Image src={placeholder} alt="Radius xl" width={96} height={96} fit="cover" radius="xl" class="size-24" />
+<Image src={placeholder} alt="Radius full" width={96} height={96} fit="cover" radius="full" class="size-24" />`}>
+  <Image src={placeholder} alt="Radius sm" width={96} height={96} fit="cover" radius="sm" class="size-24" />
+  <Image src={placeholder} alt="Radius md" width={96} height={96} fit="cover" radius="md" class="size-24" />
+  <Image src={placeholder} alt="Radius lg" width={96} height={96} fit="cover" radius="lg" class="size-24" />
+  <Image src={placeholder} alt="Radius xl" width={96} height={96} fit="cover" radius="xl" class="size-24" />
+  <Image src={placeholder} alt="Radius full" width={96} height={96} fit="cover" radius="full" class="size-24" />
+</Preview>
+
+## States
+
+- **Loading** — `loading="lazy"` by default; set `eager` on the page's main image.
+- **Broken** — with a `fallback` slot, a failed load swaps in the fallback in the same box. Without JS, or without the slot, the browser shows the alt text.
 
 ## Examples
 

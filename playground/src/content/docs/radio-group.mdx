@@ -3,6 +3,7 @@ title: RadioGroup
 description: A fieldset of Radio controls with one legend, hint and error.
 group: Components
 order: 0
+related: [radio, checkbox-group, segmented-control]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -104,6 +105,22 @@ The group's `error` tints every control inside it; the children need no
 </RadioGroup>`}>
   <div data-apogee-radio-group="error"><RadioGroup legend="Channels" error="Pick at least one"><Radio label="Email" name="tint" value="a" /><Radio label="SMS" name="tint" value="b" /></RadioGroup></div>
   <div data-apogee-radio-group="plain"><RadioGroup legend="Channels"><Radio label="Email" name="plain" value="a" /><Radio label="SMS" name="plain" value="b" /></RadioGroup></div>
+</Preview>
+
+## Examples
+
+A plan picker with a hint under each option:
+
+<Preview code={`<RadioGroup legend="Plan">
+  <Radio name="plan" value="free" label="Free" hint="One project, community support." checked />
+  <Radio name="plan" value="pro" label="Pro · €12/mo" hint="Unlimited projects, email support." />
+  <Radio name="plan" value="team" label="Team · €30/mo" hint="Shared billing and roles." />
+</RadioGroup>`}>
+  <RadioGroup legend="Plan">
+    <Radio name="plan" value="free" label="Free" hint="One project, community support." checked />
+    <Radio name="plan" value="pro" label="Pro · €12/mo" hint="Unlimited projects, email support." />
+    <Radio name="plan" value="team" label="Team · €30/mo" hint="Shared billing and roles." />
+  </RadioGroup>
 </Preview>
 
 ## Accessibility

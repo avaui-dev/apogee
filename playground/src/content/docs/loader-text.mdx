@@ -3,12 +3,14 @@ title: LoaderText
 description: Text with a moving shimmer while something loads, crossfading to a done label when it finishes.
 group: Components
 order: 0
+related: [spinner, skeleton, progress]
 ---
 
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import LoaderText from '../../../../registry/components/LoaderText/LoaderText.astro'
 import { Sparkles } from '@lucide/astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 
 <JsNote fallback="Nothing changes: the shimmer is CSS, and the done label shows as soon as you render completed.">
   None. Flip `data-completed` on the root (or re-render with `completed`) to
@@ -92,6 +94,20 @@ Slots: default (the loading text), `icon` (leading icon, fades out when complete
   `completedText` fades in (`--duration-medium`).
 - **Reduced motion** — no shimmer; the loading text is the faded neutral.
 
+## Examples
+
+An assistant reply that finishes. Flip `data-completed` when the work is done:
+
+<Preview code={`<div class="flex items-center gap-3">
+  <LoaderText completedText="Summary ready"><Sparkles slot="icon" /> Generating a summary…</LoaderText>
+  <Button size="small" variant="outline" color="neutral" onclick="this.previousElementSibling.dataset.completed = 'true'">Finish</Button>
+</div>`}>
+  <div class="flex items-center gap-3">
+    <LoaderText completedText="Summary ready"><Sparkles slot="icon" /> Generating a summary…</LoaderText>
+    <Button size="small" variant="outline" color="neutral" onclick="this.previousElementSibling.dataset.completed = 'true'">Finish</Button>
+  </div>
+</Preview>
+
 ## Accessibility
 
 - The root is `aria-live="polite"`, so a screen reader hears the done label
@@ -112,3 +128,8 @@ Slots: default (the loading text), `icon` (leading icon, fades out when complete
   little.
 - **Don't** leave it shimmering without an end: pair it with `completed` or
   remove it when the work fails.
+
+## Content
+
+- Loading text: a present-tense verb and an ellipsis ("Generating a summary…").
+- `completedText`: past tense or a result ("Summary ready"), two or three words.

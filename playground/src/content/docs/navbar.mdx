@@ -3,6 +3,7 @@ title: Navbar
 description: A responsive site header that collapses its links into a mobile panel below the md breakpoint.
 group: Components
 order: 0
+related: [sidebar, nav-link, footer]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -141,12 +142,16 @@ A second row for the active section, and a centred layout:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves through the links, actions and menu toggle in DOM order. |
+| `Enter` `Space` | On the toggle, open / close the mobile menu. |
+| `Enter` | On a link, follows it. |
+
 - `<header>` / `<nav>` landmarks wrap the content.
 - The toggle is a real `<button>` with `aria-controls` pointing at the
   panel's id and `aria-expanded` synced by JS; `aria-label="Toggle menu"`
   since it's icon-only.
-- **Keyboard** — the toggle is a native button (`Enter` / `Space`
-  activates); links are native `<a>` elements in DOM order.
 - **No JS** — the toggle carries `no-js:hidden` and the links panel
   carries `no-js:flex`, so on mobile the toggle disappears and the
   links render expanded — never a dead control, and the nav stays fully

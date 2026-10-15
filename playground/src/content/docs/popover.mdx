@@ -3,6 +3,7 @@ title: Popover
 description: Rich content on click, built on the native Popover API — top layer and light dismiss for free, anchored with CSS anchor positioning.
 group: Components
 order: 0
+related: [tooltip, dropdown, dialog]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -200,11 +201,15 @@ A short list inside the panel:
 
 ## Accessibility
 
-- The trigger is a real `<button popovertarget>` — fully keyboard-operable
-  (`Enter` / `Space` toggles it); the browser sets `aria-expanded` on it.
-- `Esc` closes the panel and clicking outside closes it — both are the
-  browser's native light-dismiss behaviour (`popover="auto"`, the implicit
-  default), no JS involved.
+| Key | Action |
+|---|---|
+| `Enter` `Space` | On the trigger, toggle the panel. |
+| `Esc` | Closes the panel and returns focus to the trigger (native). |
+
+- The trigger is a real `<button popovertarget>`; the browser sets
+  `aria-expanded` on it.
+- Clicking outside closes the panel — the browser's native light-dismiss
+  behaviour (`popover="auto"`, the implicit default), no JS involved.
 - The panel paints in the native top layer, above everything else, with no
   `z-index` needed.
 - The panel has no implicit ARIA role — if its content behaves like a dialog or

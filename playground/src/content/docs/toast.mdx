@@ -3,6 +3,7 @@ title: Toast
 description: A transient notification, fired imperatively from anywhere on the page.
 group: Components
 order: 0
+related: [alert, dialog, dismissible]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -187,6 +188,11 @@ apogeeToast('Link copied to clipboard.')
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Reaches the action buttons and the close button; focus pauses the timer. |
+| `Enter` `Space` | Press the focused button. |
+
 - The auto-dismiss timer pauses while the pointer or keyboard focus is on a toast and resumes when it leaves.
 - `apogeeToast()` returns an id; `apogeeToast.dismiss(id)` closes that toast early.
 
@@ -194,8 +200,7 @@ apogeeToast('Link copied to clipboard.')
 - Each toast is `role="alert"` (`warning` / `danger` — assertive) or
   `role="status"` (`info` / `success` — polite), so it's announced without any
   extra `aria-live` wiring.
-- **Keyboard** — the close button is a real `<button>`, reachable with `Tab`
-  and activated with `Enter` / `Space`; it has a visible `focus-visible` ring
+- The close button is a real `<button>` with a visible `focus-visible` ring
   and an `aria-label="Dismiss"` (icon-only).
 - **No JS** — `apogeeToast` is never defined, so nothing renders. Never make a
   toast the only feedback for an action a no-JS user can take.

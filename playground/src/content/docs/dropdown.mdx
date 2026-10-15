@@ -3,6 +3,7 @@ title: Dropdown
 description: A menu on the native Popover API — the trigger opens a list of DropdownItems in the top layer, with sections and submenus.
 group: Components
 order: 0
+related: [context-menu, menubar, popover, select]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -14,6 +15,7 @@ import DropdownSub from '../../../../registry/components/Dropdown/DropdownSub.as
 import Button from '../../../../registry/components/Button/Button.astro'
 import Kbd from '../../../../registry/components/Kbd/Kbd.astro'
 import { Pencil, Copy, Trash2, Share2, Mail, Link } from '@lucide/astro'
+import { User, Settings, LogOut } from '@lucide/astro'
 
 <JsNote fallback="The menu opens and closes natively (popovertarget), including Escape and outside click. Without JS there is no arrow-key navigation, items don't close the menu on activation, and submenus open on click only.">
   Adds the menu keyboard pattern (ArrowDown on the trigger opens and focuses
@@ -287,17 +289,48 @@ The root `<div>` dispatches `apogee:dropdown-open` and `apogee:dropdown-close`
 (bubbling) alongside the native `toggle` event on the menu. Activating an
 item closes the menu, nested menus included.
 
+## Examples
+
+A user menu: a custom trigger, sections, a shortcut in the end slot and a critical last item:
+
+<Preview code={`<Dropdown id="dd-user" label="Account" placement="bottom-end">
+  <Button slot="anchor" popovertarget="dd-user" variant="ghost" color="neutral">Ada Lovelace</Button>
+  <DropdownSection label="ada@example.com">
+    <DropdownItem href="#"><User slot="start" /> Profile</DropdownItem>
+    <DropdownItem href="#"><Settings slot="start" /> Settings <Kbd slot="end">⌘,</Kbd></DropdownItem>
+  </DropdownSection>
+  <DropdownSection>
+    <DropdownItem color="critical"><LogOut slot="start" /> Sign out</DropdownItem>
+  </DropdownSection>
+</Dropdown>`}>
+  <Dropdown id="dd-user" label="Account" placement="bottom-end">
+    <Button slot="anchor" popovertarget="dd-user" variant="ghost" color="neutral">Ada Lovelace</Button>
+    <DropdownSection label="ada@example.com">
+      <DropdownItem href="#"><User slot="start" /> Profile</DropdownItem>
+      <DropdownItem href="#"><Settings slot="start" /> Settings <Kbd slot="end">⌘,</Kbd></DropdownItem>
+    </DropdownSection>
+    <DropdownSection>
+      <DropdownItem color="critical"><LogOut slot="start" /> Sign out</DropdownItem>
+    </DropdownSection>
+  </Dropdown>
+</Preview>
+
 ## Accessibility
+
+| Key | Action |
+|---|---|
+| `Enter` `Space` | On the trigger, toggle the menu; on an item, activate it and close the menu. |
+| `↓` | On the closed trigger, opens the menu and focuses the first item. |
+| `↓` `↑` | Move between items, wrapping at the ends. |
+| `Home` `End` | First / last item. |
+| `→` | On a submenu item, opens the submenu and focuses its first item (`←` under `dir="rtl"`). |
+| `←` | Inside a submenu, closes it and returns focus to its item (`→` under `dir="rtl"`). |
+| `Esc` | Closes the open menu or submenu and returns focus to its trigger. |
 
 - The menu has `role="menu"` and takes `label` as its accessible name;
   `DropdownItem`s carry `role="menuitem"`; sections are `role="group"`.
 - The trigger is a `<button popovertarget>` with `aria-haspopup="menu"`;
-  the browser sets `aria-expanded`. `Enter` / `Space` toggle it, `Escape`
-  and clicking outside close it — all native.
-- With JS: `ArrowDown` on the closed trigger opens the menu and focuses the
-  first item; `ArrowDown` / `ArrowUp` wrap through the items; `Home` / `End`
-  jump; `ArrowRight` opens a submenu and `ArrowLeft` closes it; closing a
-  menu returns focus to its trigger.
+  the browser sets `aria-expanded`. Clicking outside closes the menu (native).
 - A disabled link item keeps its text but is `aria-disabled` and out of the
   tab order.
 - **No JS** — the menu still opens, closes and light-dismisses; items are

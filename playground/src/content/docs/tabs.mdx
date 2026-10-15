@@ -3,6 +3,7 @@ title: Tabs
 description: Switch between panels of related content in the same space.
 group: Components
 order: 0
+related: [segmented-control, content-toggle, toggle-button-group]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -51,6 +52,12 @@ import Tabs from '@/components/apogee/Tabs/Tabs.astro'
 Labels come from the `tabs` array; each panel goes in a matching `panel-<i>` slot
 (0-indexed, same order as the labels).
 
+## Anatomy
+
+- **Tablist** — the row of `role="tab"` buttons (the labels).
+- **Tabpanel** — one `role="tabpanel"` per tab; the first is shown, the rest are
+  `hidden` until selected.
+
 ## API
 
 `@composable` — exposed to Content Editors in AVA. Any other attribute passes
@@ -69,21 +76,6 @@ through to the root `<div>`.
 
 Panels are slots named `panel-<value>`: `panel-0`, `panel-1`, … for string
 tabs, `panel-billing` for `{ value: 'billing' }`.
-
-## Anatomy
-
-- **Tablist** — the row of `role="tab"` buttons (the labels).
-- **Tabpanel** — one `role="tabpanel"` per tab; the first is shown, the rest are
-  `hidden` until selected.
-
-## States
-
-- **Selected** — the active tab has an accent underline and `aria-selected="true"`;
-  its panel is visible.
-- **Hover / focus** — inactive tabs lighten on hover; keyboard focus shows a visible
-  ring (`focus-visible:outline-focus`).
-- **Disabled** — dimmed, not clickable, skipped by the arrows.
-- **No JS** — every panel is shown (the `no-js:block` fallback).
 
 ## Variants
 
@@ -210,6 +202,17 @@ view.
   </div>
 </Preview>
 
+The tab that starts active is not scrolled into view on load. Put it among the first visible tabs, or call `scrollIntoView` on it.
+
+## States
+
+- **Selected** — the active tab has an accent underline and `aria-selected="true"`;
+  its panel is visible.
+- **Hover / focus** — inactive tabs lighten on hover; keyboard focus shows a visible
+  ring (`focus-visible:outline-focus`).
+- **Disabled** — dimmed, not clickable, skipped by the arrows.
+- **No JS** — every panel is shown (the `no-js:block` fallback).
+
 ## Examples
 
 More than a handful of tabs — they wrap; the pattern is unchanged:
@@ -234,13 +237,17 @@ The root dispatches `apogee:tabs-change` (`detail: { index, value }`, bubbling) 
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus into the tablist (one stop), then to the active panel. |
+| `←` `→` | Move between tabs and select, wrapping at the ends; swapped under `dir="rtl"`. |
+| `↑` `↓` | With `orientation="vertical"`, move between tabs instead of `←` `→`. |
+| `Home` `End` | First / last tab. |
+| `Enter` `Space` | With `activation="manual"`, select the focused tab (arrows then only move focus). |
+
 - Full **WAI-ARIA tabs pattern**: `role="tablist"` / `role="tab"` /
   `role="tabpanel"`, wired with `aria-selected`, `aria-controls`, and
   `aria-labelledby`.
-- **Keyboard** — `Tab` moves into the tablist (roving tabindex, so only the active
-  tab is in the tab order); `←` / `→` move between tabs and select; `Home` / `End`
-  jump to first / last. Under `dir="rtl"` the arrows swap to match the mirrored
-  order.
 - Each panel is focusable (`tabindex="0"`), so `Tab` from the active tab lands
   on its panel before moving on.
 - **Focus** — a visible `focus-visible` ring on each tab.

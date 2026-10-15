@@ -3,6 +3,7 @@ title: PinInput
 description: A row of single-character boxes for short codes (OTP, 2FA).
 group: Components
 order: 0
+related: [input, field, number-input]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -72,6 +73,18 @@ those below are **not** forwarded to the DOM.
   <PinInput type="text" aria-label="Text code" />
 </Preview>
 
+Every `size`:
+
+<Preview code={`<PinInput size="small" aria-label="Small code" />
+<PinInput size="medium" aria-label="Medium code" />
+<PinInput size="large" aria-label="Large code" />
+<PinInput size="xlarge" aria-label="Extra large code" />`} block>
+  <PinInput size="small" aria-label="Small code" />
+  <PinInput size="medium" aria-label="Medium code" />
+  <PinInput size="large" aria-label="Large code" />
+<PinInput size="xlarge" aria-label="Extra large code" />
+</Preview>
+
 ## Label, groups and the filled state
 
 A filled box takes the primary border; an empty one shows a faint placeholder.
@@ -97,6 +110,12 @@ Every `pattern`:
   <PinInput pattern="alphanumeric" aria-label="Mixed" name="pin-mixed" />
 </Preview>
 
+## States
+
+- **Focus** — typing moves focus to the next box; Backspace on an empty box moves back.
+- **Error** — `hasError` sets `aria-invalid` and a critical border on every box.
+- **Disabled** — every box is disabled and dimmed.
+
 ## Examples
 
 A shorter PIN with a custom field name:
@@ -107,13 +126,18 @@ A shorter PIN with a custom field name:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` `Shift` `Tab` | Move between boxes. |
+| `←` `→` | Move to the previous / next box without changing values. |
+| `Backspace` | In an empty box, moves focus to the previous box. |
+| `⌘`/`Ctrl` `V` | Pastes a code, filling forward from the focused box. |
+
 - `role="group"` with `aria-label` (defaults to "Verification code") groups the
   boxes for assistive tech.
 - Each box carries `aria-label="Character N"` (1-indexed) — there's no visible
   per-box label.
-- **Keyboard** — typing auto-advances to the next box; `Backspace` on an empty
-  box moves focus back; `←` / `→` move between boxes without changing values;
-  pasting a full code fills forward from the focused box.
+- Typing a character moves focus to the next box.
 - The first box gets `autocomplete="one-time-code"`, so browsers/OS can offer
   SMS-code autofill.
 - **No JS:** every box renders, is labeled, and accepts a character; each box

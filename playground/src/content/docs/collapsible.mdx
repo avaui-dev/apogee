@@ -3,6 +3,7 @@ title: Collapsible
 description: A single show/hide region, built on native <details>. Zero JS.
 group: Components
 order: 0
+related: [accordion, expandable, content-toggle]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -109,11 +110,14 @@ Default trigger text (no `trigger` slot):
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus to the summary. |
+| `Enter` `Space` | Opens or closes the region. |
+
 - Native `<details>` / `<summary>` — keyboard support, expanded/collapsed
   state, and disclosure semantics come from the browser for free. No ARIA
   needed.
-- **Keyboard** — the summary is natively focusable; `Enter` / `Space` toggles
-  it.
 - **Focus** — a visible `focus-visible` ring on the summary.
 - The chevron icon is `aria-hidden`; the browser's own details marker is
   hidden via CSS so it isn't announced twice.

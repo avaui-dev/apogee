@@ -3,6 +3,7 @@ title: DataGrid
 description: A data table with client-side column sorting and optional row selection.
 group: Components
 order: 0
+related: [table, list, pagination]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -151,6 +152,12 @@ Medium density with stripes:
   <DataGrid size="medium" striped columns={[{ key: 'name', label: 'Name', sortable: true }, { key: 'seats', label: 'Seats', align: 'end' }]} rows={[{ name: 'Acme', seats: 12 }, { name: 'Globex', seats: 4 }, { name: 'Initech', seats: 30 }]} />
 </Preview>
 
+Small caps headers, for dense dashboards:
+
+<Preview block code={`<DataGrid headerStyle="caps" columns={…} rows={…} />`}>
+  <DataGrid headerStyle="caps" columns={[{ key: 'name', label: 'Name', sortable: true }, { key: 'seats', label: 'Seats', align: 'end' }]} rows={[{ name: 'Acme', seats: 12 }, { name: 'Globex', seats: 4 }]} />
+</Preview>
+
 For rich cells (avatars, badges) with sorting, use Table with `sortable`.
 
 ## States
@@ -191,11 +198,15 @@ Selectable rows, numeric column right-aligned with `tabular-nums`:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves through the select-all checkbox, sort buttons and row checkboxes. |
+| `Enter` `Space` | Sorts by the focused column. |
+| `Space` | Toggles the focused checkbox. |
+
 - Semantic `<table>` / `<thead>` / `<tbody>`.
 - Each sortable header keeps `aria-sort` (`none` / `ascending` / `descending`) in
   sync with the active sort.
-- The sort trigger is a real `<button>` — reachable with `Tab`, activated with
-  `Enter` / `Space`.
 - The select-all `Checkbox` sets the native `indeterminate` property when some
   but not all rows are checked.
 - Checkboxes carry `aria-label="Select all"` / `"Select row"`.

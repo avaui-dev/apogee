@@ -3,6 +3,7 @@ title: Breadcrumbs
 description: A path trail showing where the current page sits in the site hierarchy.
 group: Components
 order: 0
+related: [pagination, nav-link, steps]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -165,6 +166,12 @@ current account, with radio items.
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves through the linked crumbs and the "…" button in order. |
+| `Enter` | Follows the focused link, or expands the "…" button. |
+| `Space` | Expands the hidden crumbs when the "…" button has focus. |
+
 - Wrapped in `<nav aria-label="Breadcrumb">` so assistive tech can jump to it
   as a landmark.
 - The trail is a real `<ol>` — order is conveyed to screen readers, not just
@@ -172,8 +179,6 @@ current account, with radio items.
 - The current page uses `aria-current="page"`, not a visual cue alone.
 - The separator chevron is `aria-hidden="true"` (decorative) and flips
   (`rtl:-scale-x-100`) under `dir="rtl"`.
-- **Keyboard** — native link semantics; `Tab` moves through linked crumbs in
-  order, `Enter` navigates.
 
 ## Tokens
 

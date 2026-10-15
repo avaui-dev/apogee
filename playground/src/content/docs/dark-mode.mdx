@@ -1,0 +1,76 @@
+---
+title: Dark mode
+description: How the page and any subtree pick light or dark, the before-paint script, the toggle helper, and what to watch in dark.
+group: Foundations
+order: 3
+---
+
+import Preview from '../../components/Preview.astro'
+import ThemeToggleDemo from '../../components/ThemeToggleDemo.astro'
+
+Dark mode is a token override. `data-theme="dark"` on `<html>`, or on any
+element, swaps every colour token for that subtree. Components never check the
+mode; they read tokens.
+
+## How it works
+
+- `registry/tokens/theme.css` holds two generated blocks, `:root, [data-theme="light"]` and `[data-theme="dark"]`, both built from the same hue inputs. A brand change updates both.
+- The attribute works on any element, so one band of a light page can be dark. [Section](/docs/section)'s `theme` prop and the [Theme](/docs/theme) component set it for you.
+- Without the attribute the page renders light. The stylesheet has no `prefers-color-scheme` block; the script below picks the mode.
+
+## Set it before paint
+
+Put this inline in `<head>`, before any stylesheet paints, so the page never
+flashes the wrong mode. It uses the stored choice, else the system setting:
+
+```html
+<script is:inline>
+  const t = localStorage.getItem('apogee-theme')
+  document.documentElement.dataset.theme =
+    t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+</script>
+```
+
+## Toggle
+
+`utils/theme.ts` exports `getTheme()`, `setTheme(mode, { persist })` and
+`toggleTheme()`. `setTheme` stores the choice under `apogee-theme`, turns
+transitions off for two frames so nothing animates the swap, re-resolves
+inverted regions, and dispatches `apogee:theme-change` (`detail: { mode }`) on
+`document`.
+
+<Preview code={`<Button data-apogee-theme="toggle">Toggle theme</Button>
+<script>
+  import { toggleTheme } from '@/components/apogee/utils/theme.ts'
+  document.querySelector('[data-apogee-theme="toggle"]').addEventListener('click', () => toggleTheme())
+</script>`}>
+  <ThemeToggleDemo />
+</Preview>
+
+## System preference
+
+With no stored choice, the before-paint script follows the operating system
+once per load. To follow it live, listen for changes and call
+`setTheme(mode, { persist: false })` so the system setting is not saved as a
+choice.
+
+## Inverted regions
+
+`<Theme mode="inverted">` takes the opposite of its nearest themed ancestor,
+and `setTheme` keeps it opposite after every toggle. See [Theme](/docs/theme).
+
+## What changes in dark
+
+- Elevation steps up in lightness: base, raised and overlay surfaces get lighter instead of casting darker shadows.
+- `--shadow-overlay` becomes a faint top highlight.
+- The dialog backdrop (`--overlay`) darkens from 50% to 65%.
+- `bg-inverted` flips: dark on a light page, light on a dark one.
+- Images that blend into the page need `outline` on [Image](/docs/image) to keep an edge.
+- The `dark:` variant matches any `[data-theme="dark"]` ancestor. Inside a light region nested in a dark one it still applies, so prefer tokens (`bg-page`, `text-neutral`), which follow the nearest region.
+
+## Do / Don't
+
+- **Do** check both themes; `npm run check:contrast` tests every text and focus pair in each.
+- **Do** use tokens for every colour, so the dark block reaches it.
+- **Don't** hard-code `white` or `black`; use `--on-{hue}` or `bg-page`.
+- **Don't** put the page toggle inside an inverted region, where its own colours flip against the rest of the page.

@@ -3,6 +3,7 @@ title: Eyebrow
 description: A small label above a heading, for section tags and category kickers.
 group: Components
 order: 0
+related: [heading, text, section-header]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -76,11 +77,15 @@ Colours:
   <Eyebrow color="warning">Warning</Eyebrow>
 </Preview>
 
-<Preview code={`<Eyebrow>Primary</Eyebrow>
-<Eyebrow color="neutral-faded">Neutral faded</Eyebrow>`}>
-  <Eyebrow>Primary</Eyebrow>
-  <Eyebrow color="neutral-faded">Neutral faded</Eyebrow>
+`inherit` takes the colour of the text around it:
+
+<Preview code={`<p class="text-critical"><Eyebrow color="inherit">Inherits critical</Eyebrow></p>`}>
+  <p class="text-critical"><Eyebrow color="inherit">Inherits critical</Eyebrow></p>
 </Preview>
+
+## States
+
+Static: no interactive states.
 
 ## Examples
 

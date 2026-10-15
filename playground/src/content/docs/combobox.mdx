@@ -3,6 +3,7 @@ title: Combobox
 description: A text input with a styled, filterable dropdown of suggestions, anchored under the input in the top layer.
 group: Components
 order: 0
+related: [select, tag-input, command-palette]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -200,15 +201,20 @@ the two differ.
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `↓` | Opens the list if closed, then moves the highlight down; wraps. |
+| `↑` | Moves the highlight up; wraps. |
+| `Enter` | Commits the highlighted option. |
+| `Esc` | Closes the list. |
+| `Backspace` | Removes the last chip when the input is empty (`multiple` only). |
+| `Tab` | Moves focus out and closes the list. |
+
 - Full ARIA combobox pattern: `role="combobox"` on the input, wired with
   `aria-expanded`, `aria-controls`, `aria-autocomplete="list"`, and
   `aria-activedescendant` on the highlighted option; `role="listbox"` /
   `role="option"` with `aria-selected` on the dropdown; disabled options
   carry `aria-disabled`.
-- **Keyboard** — focus opens the list and shows every option; typing filters
-  and highlights the closest prefix match; `↓` / `↑` move the highlight and
-  wrap (opening the list first if closed); `Enter` commits the highlighted
-  option; `Escape` closes the list.
 - Clicking an option commits it without losing input focus.
 - Focus leaving the whole widget (tab away, click elsewhere) closes the list.
 - **No JS:** the listbox is a closed popover and never opens — the input

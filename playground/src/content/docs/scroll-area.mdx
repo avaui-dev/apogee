@@ -3,6 +3,7 @@ title: ScrollArea
 description: A scroll container with a thin, token-coloured scrollbar. Zero JS.
 group: Components
 order: 0
+related: [carousel, marquee, table]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -82,6 +83,8 @@ Every `scrollbar` value, and `fade`:
     {['thin', 'hidden', 'hover'].map((s) => <ScrollArea maxHeight="8rem" scrollbar={s} aria-label={`Scrollbar ${s}`} class="rounded-md border border-neutral p-3 text-sm"><p class="font-medium">scrollbar="{s}"</p>{Array.from({ length: 10 }).map((_, i) => <p>Line {i + 1}</p>)}</ScrollArea>)}
   </div>
 </Preview>
+
+`fade` with `direction="both"` fades the top and bottom edges only.
 
 ## Accessibility
 

@@ -3,6 +3,7 @@ title: RichTextEditor
 description: A small WYSIWYG editor — a formatting toolbar over a contenteditable region, synced to a hidden field for form submission.
 group: Components
 order: 0
+related: [textarea, prose, toggle-button-group]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -105,13 +106,20 @@ Prefilled with initial HTML:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves between toolbar groups and the editor (one stop per group). |
+| `←` `→` | Move between buttons in a toolbar group; swapped under `dir="rtl"`. |
+| `Home` `End` | First / last button in a toolbar group. |
+| `Enter` `Space` | Toggle the focused toolbar button. |
+| `Esc` | Hides the toolbar tooltip. |
+| `⌘`/`Ctrl` `B` `I` `U` | In the editor, bold / italic / underline (native). |
+| `⌘`/`Ctrl` `K` | In the editor, opens the link prompt (same as the Link button). |
+
 - The editor region is `role="textbox"` with `aria-multiline="true"` and an
   `aria-label` (the `placeholder`).
 - Toolbar buttons report their state via `aria-pressed`, kept live as the
   selection changes.
-- **Keyboard** — the editor is a native `contenteditable` region (standard
-  text-editing keys apply); toolbar buttons are ordinary `<button>`s in DOM
-  tab order (no roving tabindex).
 - The "Link" button uses the browser's native `prompt()` for the URL — no
   custom dialog to manage focus for.
 - **No JS:** the toolbar and `contenteditable` region are both

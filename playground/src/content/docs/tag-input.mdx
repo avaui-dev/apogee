@@ -3,6 +3,7 @@ title: TagInput
 description: Type and press Enter to add removable tags. Submits as repeated hidden inputs.
 group: Components
 order: 0
+related: [tag, combobox, input]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -125,12 +126,16 @@ The root dispatches `apogee:tag-input-change` (`detail: { values: string[] }`, b
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Enter` `,` | Add the typed text as a tag. |
+| `Backspace` | In an empty field, removes the last tag. |
+| `Tab` | Moves between the text field and each remove button. |
+| `Enter` `Space` | On a remove button, remove that tag; focus moves to the next remove button, or the text field. |
+
 - The free-text field is a real `<input type="text">`; each tag's remove
   control is a real `<button type="button" aria-label="Remove {tag}">` —
   both keyboard-reachable via `Tab` in source order.
-- **Keyboard** — type then `Enter` or `,` adds a tag; `Backspace` on an
-  empty field removes the last tag; `Tab` to any remove button then
-  `Enter` / `Space` removes that specific tag (not only the last one).
 - The focus-within ring shows the whole control is active, not just the
   text field.
 - **No JS** — initial tags still submit (hidden inputs), and the free-text

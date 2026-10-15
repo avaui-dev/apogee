@@ -3,6 +3,7 @@ title: SegmentedControl
 description: A row of connected, mutually exclusive options backed by native radios — pick one from a small, always-visible set.
 group: Components
 order: 0
+related: [tabs, toggle-button-group, radio-group]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -87,8 +88,12 @@ differ:
 
 ## Accessibility
 
-- Built on native radio inputs inside a `role="group"` — arrow keys move
-  and select between options, `Tab` enters/exits the group.
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus into the group (one stop, on the checked option). |
+| `←` `→` `↑` `↓` | Move between options and select (native radio behaviour). |
+
+- Built on native radio inputs inside a `role="group"`.
 - Each option's visible label is a real `<label for>`, not decorative text.
 - Give the group an `aria-label` when no visible heading identifies what it
   controls.

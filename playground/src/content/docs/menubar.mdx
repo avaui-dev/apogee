@@ -3,6 +3,7 @@ title: Menubar
 description: A desktop-style app menubar (File, Edit, View…) with keyboard navigation between menus.
 group: Components
 order: 0
+related: [dropdown, navbar, context-menu]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -157,12 +158,19 @@ Listening for item activation:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves between menu triggers (each is a tab stop). |
+| `Enter` `Space` | Toggle the focused menu; on an item, activate it and close the menu. |
+| `←` `→` | Move to the previous / next trigger, wrapping; if a menu is open, open that one instead. Swapped under `dir="rtl"`. |
+| `↓` | On a trigger, opens its menu and focuses the first item. |
+| `↓` `↑` | Inside a menu, move between items, wrapping at the ends. |
+| `Home` `End` | Inside a menu, first / last item. |
+| `Esc` | Closes the menu and returns focus to its trigger. |
+
 - `role="menubar"` root; each trigger `role="menuitem"` with
   `aria-haspopup="menu"` (the browser sets `aria-expanded`); panel
   `role="menu"` named by its label; items `role="menuitem"`.
-- **Keyboard** — `Enter` / `Space` toggle a menu and `Escape` closes it
-  (native); JS adds `←` / `→` between triggers (switching the open menu),
-  `↓` to open on the first item, and arrows / `Home` / `End` inside a menu.
 - Focus-visible ring on triggers and items.
 - **No JS** — every menu still opens, closes, light-dismisses and closes
   its siblings (native popovers); the keyboard and hover behaviour is a

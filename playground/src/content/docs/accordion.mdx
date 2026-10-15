@@ -3,6 +3,7 @@ title: Accordion
 description: A stack of collapsible disclosure panels; expand one to read it, collapse it to reclaim space.
 group: Components
 order: 0
+related: [collapsible, expandable, content-toggle]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -141,8 +142,12 @@ A single-panel FAQ, exclusive within itself, pre-opening the first item:
 
 ## Accessibility
 
-- Native `<details>`/`<summary>` — full keyboard support for free: <kbd>Tab</kbd> to
-  the summary, <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle.
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus to the next item header. |
+| `Shift` `Tab` | Moves focus to the previous item header. |
+| `Enter` `Space` | Opens or closes the focused item. |
+
 - The chevron is `aria-hidden`; the visible label is the accessible name.
 - Exclusive grouping uses the native `<details name>` attribute — no JS, no ARIA
   wiring needed.

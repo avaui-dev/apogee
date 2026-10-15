@@ -3,6 +3,7 @@ title: Input
 description: A labeled text field with hint/error messaging, wired for accessibility — plus a pure-CSS floating label.
 group: Components
 order: 0
+related: [field, textarea, number-input, pin-input]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -178,6 +179,8 @@ the server.
 - `variant="floating"` is pure CSS (`:placeholder-shown` + `peer`) — works
   identically with JS off.
 - No JS.
+
+- `prefix` and `suffix` text is visual only; a screen reader does not read it with the field. Put units in the label or in `aria-describedby`.
 
 ## Tokens
 

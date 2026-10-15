@@ -3,6 +3,7 @@ title: ToggleButton
 description: A two-state button (aria-pressed) — icon and/or text, on or off.
 group: Components
 order: 0
+related: [button, toggle-button-group, icon-toggle, switch]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -216,10 +217,13 @@ Each button dispatches `apogee:toggle-change` (`detail: { pressed, value }`, bub
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus to the button. |
+| `Enter` `Space` | Toggle the pressed state. |
+
 - Real `<button type="button">` with `aria-pressed` — the native two-state
   pattern, full keyboard support for free.
-- **Keyboard** — `Tab` to focus, `Enter` / `Space` to toggle (native button
-  behavior).
 - **Focus** — a visible `focus-visible` ring.
 - Icon-only usage (no visible text) always needs `aria-label`.
 - **No JS** — the button is present and focusable but inert; `aria-pressed`

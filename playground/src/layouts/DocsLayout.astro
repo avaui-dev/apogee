@@ -8,6 +8,7 @@ import CommandPalette from '../../../registry/components/CommandPalette/CommandP
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import { Sun, Moon, Search, Menu, Box, Layers } from '@lucide/astro'
 import { docsIcons } from '../components/docs-icons'
+import DocsCard from '../components/DocsCard.astro'
 
 interface NavGroup {
   group: string
@@ -19,9 +20,10 @@ interface Props {
   headings?: { depth: number; slug: string; text: string }[] | undefined
   nav?: NavGroup[] | undefined
   group?: string | undefined
+  related?: { id: string; title: string; description?: string | undefined; href: string }[] | undefined
 }
 
-const { title, description, headings = [], nav = [], group } = Astro.props
+const { title, description, headings = [], nav = [], group, related = [] } = Astro.props
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3)
 const commands = nav.flatMap((g) => g.items.map((i) => ({ label: i.title, href: i.href, group: g.group })))
 
@@ -145,6 +147,17 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
         <Prose class="mt-8">
           <slot />
         </Prose>
+
+        {
+          related.length > 0 && (
+            <section class="mt-12" aria-labelledby="related-heading">
+              <h2 id="related-heading" class="mb-4 text-lg font-semibold text-neutral">Related</h2>
+              <div class="grid gap-4 sm:grid-cols-2">
+                {related.map((r) => <DocsCard {...r} />)}
+              </div>
+            </section>
+          )
+        }
 
         {
           (prev || next) && (

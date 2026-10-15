@@ -3,6 +3,7 @@ title: Carousel
 description: A horizontal scroll-snap track for browsing slides. Native scroll and swipe work with zero JS; arrows, dots, and autoplay are progressive enhancement.
 group: Components
 order: 0
+related: [progress-indicator, scroll-area, marquee]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -206,14 +207,16 @@ Self-sized slides (no `itemWidth` — each slide sets its own width):
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus to the track, then to Previous / Next and each dot. |
+| `←` `→` | Scroll the focused track. |
+| `Enter` `Space` | Activate the focused Previous / Next button or dot. |
+
 - The track is a `region` with `aria-roledescription="carousel"`; each slide gets `aria-roledescription="slide"` and an `n of N` label.
-- Arrows are 44px targets and hide at the first and last slide; the track scrolls by touch and, once focused, by arrow keys.
+- Arrows are 44px targets. At the first and last slide the arrow disables in place and focus moves to the other arrow; the track scrolls by touch and, once focused, by arrow keys.
 - The root dispatches `apogee:carousel-change` (`detail: { index }`) when the visible slide changes.
 
-- **Keyboard** — the track has `tabindex="0"`: once focused, arrow keys scroll
-  it natively (browser default for a scrollable region) — works with or
-  without JS. `Tab` also reaches the Prev/Next buttons and each dot when
-  present.
 - Prev/Next buttons carry `aria-label="Previous"` / `aria-label="Next"`.
 - Dots sit in a `role="group"` (`aria-label="Slides"`); each dot button has
   `aria-label="Go to slide N"` and `aria-current` reflecting the in-view slide.

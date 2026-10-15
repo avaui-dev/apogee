@@ -3,6 +3,7 @@ title: ToggleButtonGroup
 description: Connects ToggleButtons into a segmented bar — single-select or multi-select.
 group: Components
 order: 0
+related: [toggle-button, segmented-control, button-group]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -159,8 +160,13 @@ The group dispatches `apogee:toggle-group-change` (`detail: { value: string[] }`
 
 ## Accessibility
 
-- One tab stop: `Tab` lands on the pressed button (or the first); `←` `→`
-  `Home` `End` move focus; `Space` or `Enter` toggles.
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus into the group (one stop), on the pressed button or the first. |
+| `←` `→` | Move focus between buttons, wrapping at the ends; swapped under `dir="rtl"`. |
+| `Home` `End` | First / last button. |
+| `Enter` `Space` | Toggle the focused button. |
+
 - In `single` mode clicking the pressed button clears the group (a toggle, not
   a radio). Use [SegmentedControl](/segmented-control) for exactly-one.
 - `role="group"` with `aria-label` names the whole bar for AT users; each

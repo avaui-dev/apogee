@@ -1,0 +1,74 @@
+---
+title: Migrating to 0.4
+description: Refresh the tokens file, apply four renames, re-add the components you copied, then check the behaviour changes.
+group: Getting started
+order: 4
+---
+
+0.4 keeps the 0.3 token model and prop vocabulary. Most of the work is
+refreshing the tokens file, because several components now lean on rules that
+live there. There is no codemod: the renames below are few enough for `sed`.
+
+## 1. Update the tokens file
+
+Re-run `npx @ava-ui/apogee init`, or copy the new `registry/tokens/theme.css`
+over yours. Keep your hue inputs; the generated blocks come out of them. The
+file now carries rules that components depend on:
+
+- `.apogee-panel` rules for Tooltip, Dropdown, ContextMenu, Menubar and Combobox panels. Without them closed panels show and anchoring breaks.
+- The page scroll lock (`body:has(dialog:modal)`) used by Dialog and CommandPalette.
+- The `press` utility and `--press-overlay`, for touch feedback on every pressable control.
+- The sliding selection rules (`[data-apogee-slide]`) used by Tabs and SegmentedControl.
+- The skin hooks `--gradient-control` and `--shadow-surface`.
+
+## 2. Renames
+
+| Component | 0.3 | 0.4 |
+|---|---|---|
+| Dropdown | `align="start"` / `align="end"` | `placement="bottom-start"` / `placement="bottom-end"` |
+| Stack | `direction="col"` | `direction="column"` |
+| ToggleButtonGroup | `apogee:toggle-group-change` with `detail.pressed` | `detail.value` (a `string[]`) |
+| DataGrid | `data-datagrid-row` / `data-datagrid-all` | `data-row` / `data-all` |
+
+The two attribute renames, from your project root:
+
+```sh
+grep -rl 'align="start"\|align="end"' src | xargs sed -i '' -e 's/<Dropdown\([^>]*\) align="start"/<Dropdown\1 placement="bottom-start"/' -e 's/<Dropdown\([^>]*\) align="end"/<Dropdown\1 placement="bottom-end"/'
+grep -rl 'direction="col"' src | xargs sed -i '' 's/direction="col"/direction="column"/g'
+```
+
+On Linux, drop the `''` after `-i`. Check the diff: the Dropdown line only
+matches when `align` sits on the same line as `<Dropdown`.
+
+## 3. Re-add components
+
+Re-add each component you copied to pick up its 0.4 version, then diff
+against your local edits:
+
+```sh
+npx @ava-ui/apogee add dropdown dialog tabs …
+```
+
+The [CHANGELOG](https://github.com/avaui-dev/apogee/blob/main/CHANGELOG.md) lists
+what changed per component.
+
+## 4. Behaviour changes to check
+
+- Every modal dialog locks page scroll, not only Dialog.
+- Dialog drawers, sheets and full-screen dialogs lose their border; only the centred modal keeps one.
+- Floating panels render in the top layer, so `overflow: hidden` on an ancestor no longer clips them.
+- Tooltip renders nothing when `text` is empty.
+- Table has a faded header fill by default; `headerFill={false}` restores the old look.
+- NavLink truncates its label. Put icons in the `start` slot; an icon in the default slot now sits inside the label.
+- Progress wraps its `role="progressbar"` track in a root element; `class` lands on the wrapper.
+- TagInput, PinInput and RichTextEditor are wrapped in Field, so `class` lands on the Field root.
+- FileUpload rejects a dropped file that fails `accept`.
+
+## 5. Check
+
+```sh
+npx astro check
+npm run build
+```
+
+Then open your pages in both themes; see [Dark mode](/docs/dark-mode).

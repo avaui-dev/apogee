@@ -1,0 +1,30 @@
+---
+/**
+ * DocsCard — one docs page as a card: sidebar icon, title, two-line
+ * description. Used by the overview grids and the Related row.
+ */
+import Card from '../../../registry/components/Card/Card.astro'
+import { Box } from '@lucide/astro'
+import { docsIcons } from './docs-icons'
+
+interface Props {
+  id: string
+  title: string
+  description?: string | undefined
+  href: string
+}
+const { id, title, description, href } = Astro.props
+const Icon = docsIcons[id] ?? Box
+---
+
+<Card href={href} padding="small">
+  <span class="flex items-start gap-3">
+    <span class="grid size-8 shrink-0 place-items-center rounded-md bg-neutral-faded text-neutral">
+      <Icon class="size-4" aria-hidden="true" />
+    </span>
+    <span class="flex min-w-0 flex-col gap-0.5">
+      <span class="text-sm font-medium text-neutral">{title}</span>
+      {description && <span class="line-clamp-2 text-xs leading-5 text-neutral-faded">{description}</span>}
+    </span>
+  </span>
+</Card>

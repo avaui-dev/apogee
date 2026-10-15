@@ -3,12 +3,15 @@ title: Dismissible
 description: Wrap anything with a close button, with an optional auto-dismiss timeout.
 group: Components
 order: 0
+related: [alert, toast, empty-state]
 ---
 
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Dismissible from '../../../../registry/components/Dismissible/Dismissible.astro'
 import Alert from '../../../../registry/components/Alert/Alert.astro'
+import Image from '../../../../registry/components/Image/Image.astro'
+import placeholder from '../../assets/placeholder.png'
 
 <JsNote fallback="The close button is hidden and the content stays put; a timeout never fires.">
   A document-level click listener handles every close button: it dispatches a
@@ -87,6 +90,23 @@ Leave room for the button at the end edge of your content (`pe-10`).
   <div data-apogee-dismissible="no-close"><Dismissible hideClose><Alert color="neutral" title="No close button">Dismissed by a timeout or your own event.</Alert></Dismissible></div>
 </Preview>
 
+## States
+
+- **Open** — the content shows with a close button (hidden without JS).
+- **Dismissed** — the close button, a `timeout`, or your own `apogee:dismiss` event removes the element. Call `preventDefault()` on the event to keep it.
+
+## Examples
+
+A promo image the user can close. `variant="media"` gives the button an opaque pill so it reads on any photo:
+
+<Preview code={`<Dismissible variant="media" closeLabel="Hide promotion" class="max-w-sm overflow-hidden rounded-lg">
+  <Image src={placeholder} alt="Autumn sale, 20% off" width={384} height={216} />
+</Dismissible>`}>
+  <Dismissible variant="media" closeLabel="Hide promotion" class="max-w-sm overflow-hidden rounded-lg">
+    <Image src={placeholder} alt="Autumn sale, 20% off" width={384} height={216} />
+  </Dismissible>
+</Preview>
+
 ## Accessibility
 
 - The close button is a real `<button>` with an `aria-label`; set `closeLabel` to name what is being closed.
@@ -105,3 +125,8 @@ Leave room for the button at the end edge of your content (`pe-10`).
 
 - **Do** persist the dismissal when the content is a banner the user should not see again.
 - **Don't** put a form inside a timed Dismissible.
+
+## Content
+
+- Set `closeLabel` to say what closes ("Close cookie notice") when there are several on a page.
+- Keep timed content short enough to read before it leaves: about one sentence per five seconds.

@@ -10,6 +10,8 @@ const docs = defineCollection({
     order: z.number().default(0),
     /** Sidebar label when it should differ from the title (overview pages). */
     navTitle: z.string().optional(),
+    /** Component page ids shown as cards above prev/next. */
+    related: z.array(z.string()).optional(),
   }),
 })
 

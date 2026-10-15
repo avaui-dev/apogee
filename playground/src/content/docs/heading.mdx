@@ -3,6 +3,7 @@ title: Heading
 description: A semantic, fluid-sized heading — pick the tag with `as`, the visual size with `size`.
 group: Components
 order: 0
+related: [text, eyebrow, prose]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -67,19 +68,51 @@ pages, prefer picking the right `as` first.
   <Heading as="div" size="h6">Heading 6</Heading>
 </Preview>
 
-## Weight and colour
+## Weight
 
 <Preview block code={`<Heading as="h3" weight="regular">Regular</Heading>
+<Heading as="h3" weight="medium">Medium</Heading>
 <Heading as="h3" weight="bold">Bold</Heading>
-<Heading as="h3" color="primary">Primary</Heading>
-<Heading as="h3" color="neutral-faded">Faded</Heading>
 <Heading as="h3" maxLines={1}>A very long heading that is clamped to one line with an ellipsis</Heading>`}>
   <Heading as="h3" weight="regular">Regular</Heading>
+  <Heading as="h3" weight="medium">Medium</Heading>
   <Heading as="h3" weight="bold">Bold</Heading>
-  <Heading as="h3" color="primary">Primary</Heading>
-  <Heading as="h3" color="neutral-faded">Faded</Heading>
   <Heading as="h3" maxLines={1} class="max-w-sm">A very long heading that is clamped to one line with an ellipsis</Heading>
 </Preview>
+
+## Colours
+
+Every `color`. Without one, a heading inherits the surrounding text colour.
+
+<Preview block code={`<Heading as="div" size="h4" color="neutral">Neutral</Heading>
+<Heading as="div" size="h4" color="neutral-faded">Neutral faded</Heading>
+<Heading as="div" size="h4" color="primary">Primary</Heading>
+<Heading as="div" size="h4" color="critical">Critical</Heading>
+<Heading as="div" size="h4" color="positive">Positive</Heading>
+<Heading as="div" size="h4" color="warning">Warning</Heading>`}>
+  <Heading as="div" size="h4" color="neutral">Neutral</Heading>
+  <Heading as="div" size="h4" color="neutral-faded">Neutral faded</Heading>
+  <Heading as="div" size="h4" color="primary">Primary</Heading>
+  <Heading as="div" size="h4" color="critical">Critical</Heading>
+  <Heading as="div" size="h4" color="positive">Positive</Heading>
+  <Heading as="div" size="h4" color="warning">Warning</Heading>
+</Preview>
+
+## Alignment
+
+<Preview block code={`<Heading as="div" size="h4" align="start">Start</Heading>
+<Heading as="div" size="h4" align="center">Center</Heading>
+<Heading as="div" size="h4" align="end">End</Heading>`}>
+  <div class="w-full">
+    <Heading as="div" size="h4" align="start">Start</Heading>
+    <Heading as="div" size="h4" align="center">Center</Heading>
+    <Heading as="div" size="h4" align="end">End</Heading>
+  </div>
+</Preview>
+
+## States
+
+Static: no interactive states. `color` and `maxLines` are the only visual variations.
 
 ## Examples
 

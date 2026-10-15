@@ -5,9 +5,7 @@
  * two-line description. Four per row on wide screens.
  */
 import { getCollection } from 'astro:content'
-import Card from '../../../registry/components/Card/Card.astro'
-import { Box } from '@lucide/astro'
-import { docsIcons } from './docs-icons'
+import DocsCard from './DocsCard.astro'
 
 interface Props {
   group: string
@@ -21,22 +19,5 @@ const pages = (await getCollection('docs'))
 ---
 
 <div class="not-content mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-  {
-    pages.map((d) => {
-      const Icon = docsIcons[d.id] ?? Box
-      return (
-        <Card href={d.id === 'index' ? '/docs' : `/docs/${d.id}`} padding="small">
-          <span class="flex items-start gap-3">
-            <span class="grid size-8 shrink-0 place-items-center rounded-md bg-neutral-faded text-neutral">
-              <Icon class="size-4" aria-hidden="true" />
-            </span>
-            <span class="flex min-w-0 flex-col gap-0.5">
-              <span class="text-sm font-medium text-neutral">{d.data.title}</span>
-              {d.data.description && <span class="line-clamp-2 text-xs leading-5 text-neutral-faded">{d.data.description}</span>}
-            </span>
-          </span>
-        </Card>
-      )
-    })
-  }
+  {pages.map((d) => <DocsCard id={d.id} title={d.data.title} description={d.data.description} href={d.id === 'index' ? '/docs' : `/docs/${d.id}`} />)}
 </div>

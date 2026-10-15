@@ -3,6 +3,7 @@ title: Select
 description: A labeled, native <select> — full keyboard and mobile picker support for free — or a custom listbox with rich options over the same form control.
 group: Components
 order: 0
+related: [combobox, dropdown, field]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -317,13 +318,23 @@ Listening for a choice (both modes fire `change` on the `<select>`):
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus to the trigger. In the open list, moves from the search field to the options to the footer buttons, then closes the list. |
+| `Shift` `Tab` | Moves back the same way; before the first stop, closes the list. |
+| `↑` `↓` | On the trigger, open the list. In the list, move between options; `↑` on the first option returns to the search field. |
+| `Home` `End` | First / last option. |
+| `Enter` `Space` | On the trigger, open the list. On an option, choose it; a single select then closes. |
+| `Enter` | In the search field, chooses the first match. |
+| `Esc` | Closes the list and returns focus to the trigger. |
+| Letters | Jump to the option whose label starts with the typed text. |
+
 - Native mode: a real `<select>` — full native keyboard (type-ahead, arrow
   keys) and mobile picker support for free.
 - Custom mode: a `<button aria-haspopup="listbox">` labelled by the field
   label and the shown value, and a `role="listbox"` of `role="option"`s with
   `aria-selected` (and `aria-multiselectable` when `multiple`). Opening
-  focuses the chosen option; arrows and `Home` / `End` move, typing jumps,
-  `Enter` / `Space` choose, `Escape` and outside click close (native light
+  focuses the chosen option. An outside click closes the list (native light
   dismiss) and focus returns to the trigger. Clicking the label focuses the
   trigger. A `required` field that submits empty focuses the trigger, marks
   it `aria-invalid` and shows the browser's message as a `role="alert"`.

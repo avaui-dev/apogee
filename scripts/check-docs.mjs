@@ -68,7 +68,7 @@ export function checkPage({ name, doc, usesJs, files, ids }) {
     if (!heads.some((h) => h.startsWith(s))) f.push(`missing section ${s}`)
   }
   for (let i = 1; i < std.length; i++) if (std[i] < std[i - 1]) { f.push(`sections out of order: ${SECTIONS[std[i - 1]]} before ${SECTIONS[std[i]]}`); break }
-  const rows = new Set([...doc.matchAll(/^\| `(\w+)`/gm)].map((m) => m[1]))
+  const rows = new Set([...doc.matchAll(/^\| (`\w+`(?: \/ `\w+`)*)/gm)].flatMap((m) => m[1].match(/\w+/g)))
   const previews = [...doc.matchAll(/<Preview\b[\s\S]*?<\/Preview>/g)].map((m) => m[0]).join(' ')
   for (const { sub, props } of files) {
     for (const { name: p, values, default: def } of props) {

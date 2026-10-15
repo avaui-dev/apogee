@@ -3,6 +3,7 @@ title: ContextMenu
 description: A styleable right-click menu — a native popover at the cursor over a target; closes on outside click, Escape, or scroll.
 group: Components
 order: 0
+related: [dropdown, menubar, popover]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -115,14 +116,16 @@ position) and `apogee:contextmenu-close`, both bubbling, alongside the native
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| Context-menu key, `Shift` `F10` | Opens the menu and focuses the first item. |
+| `↓` `↑` | Move between items; wraps. |
+| `Home` `End` | First / last item. |
+| `Enter` `Space` | Activate the focused item and close the menu. |
+| `Esc` | Closes the menu and returns focus. |
+
 - The panel has `role="menu"`; give items `role="menuitem"` (what `DropdownItem`
   renders).
-- **Keyboard** — the native context-menu key / Shift+F10 fires the same
-  `contextmenu` event as a right-click, so keyboard-only users can still open it.
-  On open, focus moves to the first menu item. `ArrowDown` / `ArrowUp` navigate
-  between items, wrapping from last to first and back; `Home` / `End` jump to
-  the first / last item. Escape and clicking outside close it (native light
-  dismiss) and focus returns to where it was.
 - **No JS** — the panel never opens; the browser's native
   context menu opens instead, so the actions remain reachable through it.
 

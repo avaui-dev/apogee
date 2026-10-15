@@ -3,10 +3,13 @@ title: ProgressIndicator
 description: Step N of M as a row of segments, for onboarding flows, wizards and carousels. Zero JS.
 group: Components
 order: 0
+related: [progress, carousel, steps]
 ---
 
 import Preview from '../../components/Preview.astro'
 import ProgressIndicator from '../../../../registry/components/ProgressIndicator/ProgressIndicator.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 
 <Preview code={`<ProgressIndicator total={5} current={2} aria-label="Onboarding" />`}>
   <ProgressIndicator total={5} current={2} aria-label="Onboarding" class="max-w-sm" />
@@ -76,6 +79,30 @@ Use Progress for a continuous percentage; ProgressIndicator for discrete steps.
   <ProgressIndicator total={4} current={4} class="max-w-sm" />
 </Preview>
 
+## Examples
+
+An onboarding step with the indicator above its actions:
+
+<Preview code={`<Card class="max-w-sm">
+  <ProgressIndicator total={4} current={2} aria-label="Setup progress" />
+  <p class="mt-4 font-semibold">Invite your team</p>
+  <p class="text-sm text-neutral-faded">Step 2 of 4. You can skip this and do it later.</p>
+  <div class="mt-4 flex justify-end gap-2">
+    <Button variant="ghost" color="neutral">Skip</Button>
+    <Button>Continue</Button>
+  </div>
+</Card>`}>
+  <Card class="max-w-sm">
+    <ProgressIndicator total={4} current={2} aria-label="Setup progress" />
+    <p class="mt-4 font-semibold">Invite your team</p>
+    <p class="text-sm text-neutral-faded">Step 2 of 4. You can skip this and do it later.</p>
+    <div class="mt-4 flex justify-end gap-2">
+      <Button variant="ghost" color="neutral">Skip</Button>
+      <Button>Continue</Button>
+    </div>
+  </Card>
+</Preview>
+
 ## Accessibility
 
 - One `role="progressbar"` with `aria-valuemin`/`max`/`now` and `aria-valuetext="Step 2 of 5"`.
@@ -92,3 +119,7 @@ Use Progress for a continuous percentage; ProgressIndicator for discrete steps.
 
 - **Do** pair it with visible "Step 2 of 5" text when the step count matters.
 - **Don't** use it for more than about eight steps. The segments get too thin to read.
+
+## Content
+
+- Set `aria-label` to name the flow ("Setup progress"); the step count is announced for you.

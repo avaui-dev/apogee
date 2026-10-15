@@ -3,6 +3,7 @@ title: Button
 description: Triggers an action. Renders a <button>, or an <a> when href is set. Hue, fill and height are three separate props.
 group: Components
 order: 0
+related: [toggle-button, button-group, actionable, link]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -58,6 +59,8 @@ through to the root `<button>` or `<a>`.
 | `showTextWhileLoading` | `boolean` | `false` | Keeps the label visible next to the spinner while loading. |
 | `disabled` | `boolean` | `false` | Disables the control (`aria-disabled` on links). |
 | `highlighted` | `boolean` | `false` | Keeps the hover fill on: an active filter, an open menu's trigger. |
+| `command` | `'show-modal' \| 'close' \| 'request-close' \| 'show-popover' \| 'hide-popover' \| 'toggle-popover'` | — | Invoker command sent to the `commandfor` target; works with no JS. |
+| `commandfor` | `string` | — | `id` of the dialog or popover the command targets. |
 | `class` | `string` | — | Extra classes, appended last. |
 
 Slots: `start` and `end` for icons; the default slot is the label.

@@ -3,6 +3,7 @@ title: Grid
 description: A responsive grid — autofit by default, or a fixed column count.
 group: Components
 order: 0
+related: [stack, box, container]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -173,6 +174,52 @@ Every `gap` value (two columns, so the gap is easy to compare):
       <div class="rounded-md border border-neutral p-3 text-xs">gap=10</div>
       <div class="rounded-md border border-neutral p-3 text-xs">gap=10</div>
     </Grid>
+  </div>
+</Preview>
+
+## Alignment
+
+`align` places items vertically in their cells; `stretch` fills the cell height.
+
+<Preview code={`<p class="text-sm text-neutral-faded">align="start"</p>
+<Grid cols={3} gap={2} align="start" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+<p class="text-sm text-neutral-faded">align="center"</p>
+<Grid cols={3} gap={2} align="center" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+<p class="text-sm text-neutral-faded">align="end"</p>
+<Grid cols={3} gap={2} align="end" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+<p class="text-sm text-neutral-faded">align="stretch"</p>
+<Grid cols={3} gap={2} align="stretch" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>`} block>
+  <div class="flex w-full flex-col gap-2">
+    <p class="text-sm text-neutral-faded">align="start"</p>
+    <Grid cols={3} gap={2} align="start" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+    <p class="text-sm text-neutral-faded">align="center"</p>
+    <Grid cols={3} gap={2} align="center" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+    <p class="text-sm text-neutral-faded">align="end"</p>
+    <Grid cols={3} gap={2} align="end" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+    <p class="text-sm text-neutral-faded">align="stretch"</p>
+    <Grid cols={3} gap={2} align="stretch" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+  </div>
+</Preview>
+
+`justify` places items horizontally in their cells; `stretch` fills the cell width.
+
+<Preview code={`<p class="text-sm text-neutral-faded">justify="start"</p>
+<Grid cols={3} gap={2} justify="start" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+<p class="text-sm text-neutral-faded">justify="center"</p>
+<Grid cols={3} gap={2} justify="center" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+<p class="text-sm text-neutral-faded">justify="end"</p>
+<Grid cols={3} gap={2} justify="end" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+<p class="text-sm text-neutral-faded">justify="stretch"</p>
+<Grid cols={3} gap={2} justify="stretch" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>`} block>
+  <div class="flex w-full flex-col gap-2">
+    <p class="text-sm text-neutral-faded">justify="start"</p>
+    <Grid cols={3} gap={2} justify="start" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+    <p class="text-sm text-neutral-faded">justify="center"</p>
+    <Grid cols={3} gap={2} justify="center" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+    <p class="text-sm text-neutral-faded">justify="end"</p>
+    <Grid cols={3} gap={2} justify="end" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
+    <p class="text-sm text-neutral-faded">justify="stretch"</p>
+    <Grid cols={3} gap={2} justify="stretch" class="h-20 rounded-md border border-dashed border-neutral p-2"><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">A</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">B</div><div class="rounded-sm bg-primary-faded px-2 py-1 text-sm text-primary">C</div></Grid>
   </div>
 </Preview>
 

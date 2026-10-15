@@ -3,6 +3,7 @@ title: Field
 description: The labeled-field scaffold — label, control, and hint/error — wired for accessibility.
 group: Components
 order: 0
+related: [input, textarea, select, checkbox-group]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -66,6 +67,12 @@ through to the root `<div>`.
 | `bare` | `boolean` | `false` | Renders only the slot, no wrapper; the parent owns label, hint and error. InputGroup uses it. |
 | `hideRequiredIndicator` | `boolean` | `false` | Hides the `*` while you keep `required` on the control (a form where every field is required). |
 | `class` | `string` | — | Extra classes on the root, merged last. |
+
+## States
+
+- **Error** — `error` shows the message under the control in critical text; Input, Select and Textarea also set `aria-invalid`. Hint and error render together when both are set.
+- **Disabled** — the label switches to the disabled colour and the root gets `aria-disabled`. A `tooltip` help icon stays focusable.
+- **Required** — an asterisk after the label; `hideRequiredIndicator` keeps the semantics without it.
 
 ## Examples
 

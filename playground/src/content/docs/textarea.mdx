@@ -3,6 +3,7 @@ title: Textarea
 description: A labeled multiline input, wired the same way as Input — label, hint, and error.
 group: Components
 order: 0
+related: [input, field, rich-text-editor]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -34,6 +35,14 @@ import Textarea from '@/components/apogee/Textarea/Textarea.astro'
 <Textarea label="Message" />
 ```
 
+## Anatomy
+
+`Textarea` renders a `Field` (label + hint/error scaffold) around a native
+`<textarea>`:
+
+- **Field** — label (with required asterisk), the control, then hint or error.
+- **Textarea** — the native `<textarea>`, sized by `size` and `rows`.
+
 ## API
 
 `@composable` — exposed to Content Editors in AVA. Any other native `<textarea>`
@@ -46,20 +55,13 @@ attribute (e.g. `placeholder`, `disabled`, `maxlength`, `name`) passes through.
 | `hint` | `string` | — | Helper text below the field (hidden when `error` is set). |
 | `error` | `string` | — | Error text; sets `aria-invalid` and swaps in for `hint`. |
 | `rows` | `number` | `4` | Visible row count. |
+| `value` | `string` | — | Initial text; the default slot works too. |
 | `resize` | `'none' \| 'vertical' \| 'auto'` | `'vertical'` | Resize handle, or `auto` to grow with the content (`field-sizing: content`; a small island elsewhere). |
 | `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Padding and text size from the shared scale, 28 / 36 / 48 / 56px. |
 | `variant` | `'outline' \| 'faded' \| 'ghost' \| 'headless'` | `'outline'` | The box style: bordered, tinted, bare, or no box at all. |
 | `hasError` | `boolean` | `false` | Marks the field invalid (`aria-invalid`, critical border) without an `error` message. |
 | `required` | `boolean` | `false` | Marks the field required (native `required` + label asterisk). |
 | `class` | `string` | — | Extra classes on the `Field` wrapper, merged last. |
-
-## Anatomy
-
-`Textarea` renders a `Field` (label + hint/error scaffold) around a native
-`<textarea>`:
-
-- **Field** — label (with required asterisk), the control, then hint or error.
-- **Textarea** — the native `<textarea>`, sized by `size` and `rows`.
 
 ## Sizes
 

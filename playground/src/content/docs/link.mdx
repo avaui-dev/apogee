@@ -3,6 +3,7 @@ title: Link
 description: An inline text link — for a link that should look like a button, use Button with href instead.
 group: Components
 order: 0
+related: [actionable, button, nav-link]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -56,6 +57,24 @@ Every `underline` value:
   <Link href="#" underline="always">Always underlined</Link>
   <Link href="#" underline="hover">Underline on hover</Link>
   <Link href="#" underline="none">Never underlined</Link>
+</Preview>
+
+## Colours
+
+Every `color`; `inherit` takes the colour of the text around it.
+
+<Preview code={`<Link href="#" color="primary">Primary</Link>
+<Link href="#" color="neutral">Neutral</Link>
+<Link href="#" color="critical">Critical</Link>
+<Link href="#" color="positive">Positive</Link>
+<Link href="#" color="warning">Warning</Link>
+<span class="text-critical">Inside critical text, <Link href="#" color="inherit">inherit</Link> matches it.</span>`}>
+  <Link href="#" color="primary">Primary</Link>
+  <Link href="#" color="neutral">Neutral</Link>
+  <Link href="#" color="critical">Critical</Link>
+  <Link href="#" color="positive">Positive</Link>
+  <Link href="#" color="warning">Warning</Link>
+  <span class="text-critical">Inside critical text, <Link href="#" color="inherit">inherit</Link> matches it.</span>
 </Preview>
 
 ## States

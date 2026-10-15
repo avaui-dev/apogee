@@ -3,6 +3,7 @@ title: EmptyState
 description: A centered placeholder for empty views — no results, first run, a cleared list.
 group: Components
 order: 0
+related: [alert, skeleton, dismissible]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -135,6 +136,11 @@ A full page with a heading as the title:
     <Inbox slot="icon" />
   </EmptyState>
 </Preview>
+
+## States
+
+- Static: no interactive states of its own. Buttons in `actions` keep their own hover, focus and disabled states.
+- With or without `actions`: leave the slot empty when the user has nothing to do next.
 
 ## Examples
 

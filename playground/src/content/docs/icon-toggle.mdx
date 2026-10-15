@@ -3,6 +3,7 @@ title: IconToggle
 description: Two icons in one box that swap with a scale and fade, driven by a ToggleButton or your own state.
 group: Components
 order: 0
+related: [toggle-button, icon, switch]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -10,6 +11,7 @@ import JsNote from '../../components/JsNote.astro'
 import IconToggle from '../../../../registry/components/IconToggle/IconToggle.astro'
 import ToggleButton from '../../../../registry/components/ToggleButton/ToggleButton.astro'
 import { Heart, Star, Play, Pause, Volume2, VolumeX } from '@lucide/astro'
+import { Bookmark } from '@lucide/astro'
 
 <JsNote fallback="The icon for the initial on value shows and stays; nothing swaps.">
   None of its own. ToggleButton's island flips `data-on` on every IconToggle
@@ -94,6 +96,24 @@ Both `on` values, standalone:
   takes `--duration-fast`.
 - **Reduced motion** — the swap is instant.
 
+## Examples
+
+A bookmark button. ToggleButton flips the icon and `aria-pressed` together:
+
+<Preview code={`<ToggleButton iconOnly aria-label="Bookmark" selectedColor="primary">
+  <IconToggle>
+    <Bookmark slot="off" />
+    <Bookmark slot="on" class="fill-current" />
+  </IconToggle>
+</ToggleButton>`}>
+  <ToggleButton iconOnly aria-label="Bookmark" selectedColor="primary">
+    <IconToggle>
+      <Bookmark slot="off" />
+      <Bookmark slot="on" class="fill-current" />
+    </IconToggle>
+  </ToggleButton>
+</Preview>
+
 ## Accessibility
 
 - Inside a ToggleButton the state is the button's `aria-pressed`; the toggle
@@ -112,3 +132,7 @@ Both `on` values, standalone:
 - **Do** pair outline and filled versions of the same glyph (heart, star,
   bookmark) so the swap reads as one control changing state.
 - **Don't** use two unrelated icons for an on/off pair; use two buttons.
+
+## Content
+
+- The button's `aria-label` names the action, and stays the same in both states ("Bookmark"); `aria-pressed` carries the on/off state.

@@ -1,0 +1,57 @@
+---
+/**
+ * TokenTable — every variable in the tokens file with its light and dark value,
+ * parsed at build time so the reference cannot drift from the file.
+ */
+import { parseTokens } from '../../../scripts/tokens-table.mjs'
+import Table from '../../../registry/components/Table/Table.astro'
+import css from '../../../registry/tokens/theme.css?raw'
+
+const rows = parseTokens(css)
+
+const groups: [string, RegExp][] = [
+  ['Backgrounds', /^--background-/],
+  ['Foregrounds', /^--foreground-/],
+  ['Borders and outlines', /^--(border|outline)-/],
+  ['On-colours', /^--on-/],
+  ['Tailwind colour bridge', /^--color-/],
+  ['Shadows and gradients', /^--(shadow|gradient|press)-/],
+  ['Radius', /^--radius/],
+  ['Motion', /^--(duration|ease|animate)-/],
+  ['Type', /^--(font|text|leading|tracking)/],
+  ['Spacing and layout', /^--(spacing|container|breakpoint)/],
+]
+const grouped = groups.map(([title, re]) => ({ title, rows: rows.filter((r) => re.test(r.name)) }))
+const other = rows.filter((r) => !groups.some(([, re]) => re.test(r.name)))
+if (other.length) grouped.push({ title: 'Other', rows: other })
+
+const isColour = (v: string) => /^(oklch\(|#|rgb|hsl|color-mix\()/.test(v)
+---
+
+<div class="not-content my-6 flex flex-col gap-8 text-sm">
+  {grouped.filter((g) => g.rows.length).map((g) => (
+    <section>
+      <h3 class="mb-2 font-semibold text-neutral">{g.title} <span class="font-normal text-neutral-faded tabular-nums">({g.rows.length})</span></h3>
+      <div class="overflow-x-auto">
+        <Table size="small" border>
+          <thead><tr><th>Token</th><th>Light</th><th>Dark</th></tr></thead>
+          <tbody>
+            {g.rows.map((r) => (
+              <tr>
+                <td><code class="whitespace-nowrap">{r.name}</code></td>
+                {[r.light, r.dark].map((v) => (
+                  <td>
+                    <span class="flex items-center gap-2">
+                      {isColour(v) && <span class="size-4 shrink-0 rounded-sm border border-neutral-faded" style={`background: ${v}`} aria-hidden="true" />}
+                      <code class="text-xs whitespace-nowrap text-neutral-faded">{v}</code>
+                    </span>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </section>
+  ))}
+</div>

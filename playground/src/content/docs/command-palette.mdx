@@ -3,6 +3,7 @@ title: CommandPalette
 description: A ⌘K / Ctrl+K searchable command menu in a native dialog.
 group: Components
 order: 0
+related: [dialog, combobox, kbd]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -158,14 +159,19 @@ Custom shortcut key:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `⌘`/`Ctrl` + `shortcut` | Opens the palette (default `K`). |
+| `↓` `↑` | Move the highlight; stops at the first and last result. |
+| `Enter` | Runs the highlighted command. |
+| `Esc` | Closes the palette. |
+| Command `shortcut` | Runs that command from anywhere on the page, except while typing in a field. |
+
 - Native `<dialog>` gives a focus trap, `Esc`-to-close, and
   `closedby="any"` backdrop-click-to-close for free.
 - `role="combobox"` input wired with `aria-expanded`, `aria-controls`,
   `aria-autocomplete="list"`; results are `role="option"` with
   `aria-selected`.
-- **Keyboard** — `⌘`/`Ctrl` + `shortcut` opens it; `↓` / `↑` move the
-  highlighted option; `Enter` activates it; `Esc` closes it (native dialog
-  behaviour).
 - **No JS:** there is no fallback — the dialog, shortcut, and filtering are
   entirely JS-driven with no `no-js:` variant. Always give commands a real,
   independently reachable trigger (a visible link or menu item) alongside the

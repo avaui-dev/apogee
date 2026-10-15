@@ -3,6 +3,7 @@ title: Rating
 description: A star rating on native radios — pick a value on a scale, or display one read-only.
 group: Components
 order: 0
+related: [radio-group, slider, icon]
 ---
 
 import Preview from '../../components/Preview.astro'
@@ -57,6 +58,20 @@ Interactive (a `radiogroup` of native radios) vs. read-only (a static
   <Rating readonly value={4} aria-label="4 out of 5" />
 </Preview>
 
+Every `color`:
+
+<Preview code={`<Rating readonly value={4} color="primary" aria-label="Primary: 4 out of 5" />
+<Rating readonly value={4} color="neutral" aria-label="Neutral: 4 out of 5" />
+<Rating readonly value={4} color="critical" aria-label="Critical: 4 out of 5" />
+<Rating readonly value={4} color="positive" aria-label="Positive: 4 out of 5" />
+<Rating readonly value={4} color="warning" aria-label="Warning: 4 out of 5" />`} block>
+  <Rating readonly value={4} color="primary" aria-label="Primary: 4 out of 5" />
+  <Rating readonly value={4} color="neutral" aria-label="Neutral: 4 out of 5" />
+  <Rating readonly value={4} color="critical" aria-label="Critical: 4 out of 5" />
+  <Rating readonly value={4} color="positive" aria-label="Positive: 4 out of 5" />
+  <Rating readonly value={4} color="warning" aria-label="Warning: 4 out of 5" />
+</Preview>
+
 ## Fractional and sizes
 
 <Preview code={`<Rating readonly value={3.5} />
@@ -89,8 +104,8 @@ Every `size`, readonly and interactive:
 
 ## States
 
-- **Hover preview** — hovering a star fills it and every star before it (the
-  reverse-order CSS trick); moving off clears the preview back to the
+- **Hover preview** — hovering a star fills it and every star before it (CSS
+  `:has()`, no JS); moving off clears the preview back to the
   checked value.
 - **Checked** — the selected star and every star before it fill with the `color` hue (amber by default).
 - **Focus** — a visible outline on the focused star's `label`.
@@ -120,10 +135,15 @@ A read-only aggregate score:
 
 ## Accessibility
 
+| Key | Action |
+|---|---|
+| `Tab` | Moves focus into the group (one stop, on the checked star). |
+| `→` `↓` | Select one star higher; `←` instead of `→` under `dir="rtl"`. |
+| `←` `↑` | Select one star lower; `→` instead of `←` under `dir="rtl"`. |
+
 - Each star is a 44px target on touch devices; the hover preview only runs on devices that hover.
 
-- Interactive mode is a native `role="radiogroup"` of radio inputs — arrow
-  keys move and select, `Tab` enters/exits the group, all for free.
+- Interactive mode is a native `role="radiogroup"` of radio inputs.
 - Each star's `<label>` carries `aria-label="N star(s)"`; the group itself
   takes `aria-label` (default `'Rating'`).
 - Read-only mode uses `role="img"` with an `aria-label` describing the value
