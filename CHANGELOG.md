@@ -7,10 +7,22 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **NavLink** wraps its label in a span that truncates with an ellipsis instead of wrapping to a second line.
+- **SectionHeader** moves `max-w-prose` from the root to the text block, so the root spans its container (actions can sit beside the text).
+- **FileUpload** no longer accepts a dropped file that fails `accept`; before, native `accept` only filtered the picker dialog.
 - **Progress** root is now a wrapper around the `role="progressbar"` track (so value labels can sit beside or above it); `aria-labelledby` / `aria-describedby` still reach the track. **TagInput**, **PinInput** and **RichTextEditor** are now wrapped in Field, so `class` lands on the Field root and the control carries a generated `id`.
 
 ### Added
 
+- **Dialog** — the body scrolls under a pinned header and footer (drawers keep their buttons on screen); `media` slot (cover image, dark close button over it), `icon` slot with `iconPosition`, `header` slot for custom header markup, `footerLayout="fill"`; drawers keep a 1.5rem backdrop strip on narrow screens.
+- **NavLink** — `match="prefix"` (a section link stays active on its child pages), `external` auto-detected from `http` hrefs (new tab, trailing icon). **NavGroup** (new, same folder) — a collapsible group of links on native `<details>` that opens when it contains the current page.
+- **FileUpload** — dropped and picked files are checked against `accept` and the new `maxSize`; a refused file never reaches the input and the new `hint` says why (`aria-live`). `preview` shows a picked image; a disabled input dims the zone. `utils/files.ts` (`acceptsFile`, `readableSize`) is new.
+- **Sidebar** — `variant="slim"` icon rail (labels screen-reader only from `md`), `overlay` mobile drawer on a native `<dialog>` (the nav is moved in and back, never duplicated).
+- **Navbar** — `secondary` slot for a second row (tabs or pills), `centered` layout.
+- **Divider** — `variant` line | dual | fill for labelled content; `interactive` for a button in the slot (no separator role, own colour).
+- **EmptyState** — `variant="plain"` (no dashed box), three sizes, `pattern` rings | grid behind the icon (CSS only), `as` for a heading title; a FeaturedIcon in the slot keeps its own size.
+- **SectionHeader** — `size="small"` for app pages and card tops, `actions` slot (beside the text from `md`, under it on phones), `divider`.
+- **Card** — `header` and `footer` slots (bordered regions above and below the body, padded by `padding`), `mediaPosition="start"` for a media column beside the body.
 - **Select, Combobox** — options take `icon` (a Lucide component) or `avatar` + `avatarName`; the Select trigger repeats the chosen option's media; listbox height follows `size`. **Select** `multiple`: checkbox marks, `search`, `selectAll` footer, `countLabel` ("2 selected"), `emptyText`. **Combobox** `multiple`: picks become chips in the field (`name`, `value`, `maxItems`, `apogee:combobox-change`).
 - **InputGroup** (new) with **InputGroupAddon** — welds static text, a Button or a native select to an Input (1px seam, square inner corners, the group owns label / hint / error). Input `grouped`; Field `bare`.
 - **Input** — `revealable` on a password field: an eye button shows or hides the value (small island).

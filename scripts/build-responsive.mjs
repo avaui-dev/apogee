@@ -39,9 +39,9 @@ export const defs = {
     center:
       'm-auto inset-0 w-full h-fit [max-width:var(--apogee-dialog-size,32rem)] max-h-[85dvh] rounded-lg border border-neutral [--apogee-dx:0px] [--apogee-dy:6px] [--apogee-scale:0.97]',
     start:
-      'm-0 inset-y-0 start-0 end-auto h-dvh [width:var(--apogee-dialog-size,24rem)] max-w-full max-h-dvh rounded-e-lg rounded-s-none border-0 [--apogee-dx:-100%] [--apogee-dy:0px] [--apogee-scale:1]',
+      'm-0 inset-y-0 start-0 end-auto h-dvh [width:min(var(--apogee-dialog-size,24rem),calc(100%-1.5rem))] max-w-full max-h-dvh rounded-e-lg rounded-s-none border-0 [--apogee-dx:-100%] [--apogee-dy:0px] [--apogee-scale:1]',
     end:
-      'm-0 inset-y-0 start-auto end-0 h-dvh [width:var(--apogee-dialog-size,24rem)] max-w-full max-h-dvh rounded-s-lg rounded-e-none border-0 [--apogee-dx:100%] [--apogee-dy:0px] [--apogee-scale:1]',
+      'm-0 inset-y-0 start-auto end-0 h-dvh [width:min(var(--apogee-dialog-size,24rem),calc(100%-1.5rem))] max-w-full max-h-dvh rounded-s-lg rounded-e-none border-0 [--apogee-dx:100%] [--apogee-dy:0px] [--apogee-scale:1]',
     top:
       'm-0 inset-x-0 top-0 bottom-auto w-full h-fit max-w-full [max-height:var(--apogee-dialog-size,85dvh)] rounded-b-lg rounded-t-none border-0 [--apogee-dx:0px] [--apogee-dy:-100%] [--apogee-scale:1]',
     bottom:

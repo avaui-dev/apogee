@@ -663,10 +663,13 @@
       "name": "NavLink",
       "kind": "component",
       "files": [
+        "NavLink/NavGroup.astro",
         "NavLink/NavLink.astro"
       ],
       "registryDependencies": [],
-      "dependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     },
     "Navbar": {
@@ -895,6 +898,7 @@
         "Sidebar/Sidebar.astro"
       ],
       "registryDependencies": [
+        "CloseButton",
         "utils"
       ],
       "dependencies": [
@@ -1152,6 +1156,7 @@
       "files": [
         "utils/fade.ts",
         "utils/field.ts",
+        "utils/files.ts",
         "utils/hotkey.ts",
         "utils/island.ts",
         "utils/menu.ts",

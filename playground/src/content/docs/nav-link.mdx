@@ -1,6 +1,6 @@
 ---
 title: NavLink
-description: A navigation link that auto-detects and styles the current route.
+description: A navigation link that auto-detects and styles the current route, with prefix matching, external links and a collapsible NavGroup.
 group: Components
 order: 0
 ---
@@ -8,7 +8,8 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
 import Badge from '../../../../registry/components/Badge/Badge.astro'
-import { Inbox } from '@lucide/astro'
+import NavGroup from '../../../../registry/components/NavLink/NavGroup.astro'
+import { Inbox, FolderKanban, BookOpen } from '@lucide/astro'
 
 <Preview code={`<NavLink href="/docs">Docs</NavLink>
 <NavLink href="/pricing">Pricing</NavLink>
@@ -24,7 +25,7 @@ import { Inbox } from '@lucide/astro'
 npx @ava-ui/apogee add nav-link
 ```
 
-No Apogee dependencies.
+Uses `@lucide/astro`. `NavGroup` lives in the same folder and is copied with it.
 
 ## Usage
 
@@ -37,7 +38,8 @@ import NavLink from '@/components/apogee/NavLink/NavLink.astro'
 
 The active state is automatic: it compares `Astro.url.pathname` to `href`
 (trailing slashes normalized), so the current page's link lights up with no
-extra markup. Pass `active` to override.
+extra markup. `match="prefix"` also lights a section link on its child pages.
+Pass `active` to override.
 
 ## API
 
@@ -48,6 +50,8 @@ attribute passes through (`...rest`).
 |---|---|---|---|
 | `href` | `string` | — | Link target. |
 | `active` | `boolean` | auto-detected | Forces the active state. Default compares the current URL's pathname to `href`. |
+| `match` | `'exact' \| 'prefix'` | `'exact'` | `prefix` also marks `/docs` active on `/docs/button`; `/` only ever matches itself. |
+| `external` | `boolean` | auto from `href` | Opens in a new tab (`target`, `rel`) with a trailing icon and a screen-reader note. Auto-detected for `http` hrefs; pass `false` to opt out. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## States
@@ -62,6 +66,64 @@ attribute passes through (`...rest`).
 - **Active** — `aria-current="page"` and full-contrast text; auto-detected
   from the URL, or forced via `active`.
 - **Focus** — a visible `focus-visible` ring.
+
+## Matching
+
+`match="prefix"` on a section link. This page is `/docs/nav-link`, so the
+`/docs` link is active and the `/` link is not:
+
+<Preview code={`<NavLink href="/docs" match="prefix">Docs</NavLink>
+<NavLink href="/" match="prefix">Home</NavLink>`}>
+  <div data-apogee-nav-link="prefix" class="flex gap-1">
+    <NavLink href="/docs" match="prefix">Docs</NavLink>
+    <NavLink href="/" match="prefix">Home</NavLink>
+  </div>
+</Preview>
+
+## External links
+
+An `http` href opens in a new tab with a trailing icon:
+
+<Preview code={`<NavLink href="https://astro.build">Astro</NavLink>`}>
+  <div data-apogee-nav-link="external" class="w-56">
+    <NavLink href="https://astro.build">Astro</NavLink>
+  </div>
+</Preview>
+
+## NavGroup
+
+A collapsible group on native `<details>`. It opens on load when a child is
+the current page:
+
+<Preview code={`<NavGroup label="Docs">
+  <BookOpen slot="start" />
+  <NavLink href="/docs/nav-link">NavLink</NavLink>
+  <NavLink href="/docs/navbar">Navbar</NavLink>
+</NavGroup>
+<NavGroup label="Projects">
+  <FolderKanban slot="start" />
+  <NavLink href="#">Spring launch</NavLink>
+</NavGroup>`}>
+  <div data-apogee-nav-link="group" class="flex w-64 flex-col gap-0.5">
+    <NavGroup label="Docs">
+      <BookOpen slot="start" />
+      <NavLink href="/docs/nav-link">NavLink</NavLink>
+      <NavLink href="/docs/navbar">Navbar</NavLink>
+    </NavGroup>
+    <NavGroup label="Projects">
+      <FolderKanban slot="start" />
+      <Badge slot="end" size="small">3</Badge>
+      <NavLink href="#">Spring launch</NavLink>
+      <NavLink href="#">Website</NavLink>
+    </NavGroup>
+  </div>
+</Preview>
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | The summary row's text. |
+| `open` | `boolean` | auto | Force open or closed; by default the group opens when it contains the current page. |
+| `class` | `string` | — | Extra classes on the `<details>`. |
 
 ## Slots
 
@@ -94,7 +156,7 @@ A link row, built for use inside `Navbar`'s default slot:
 |---|---|
 | `--foreground-neutral` | Active link text |
 | `--foreground-neutral-faded` | Inactive link text |
-| `--border-primary` | Focus ring |
+| `--outline-color-focus` | Focus ring |
 
 ## Do / Don't
 

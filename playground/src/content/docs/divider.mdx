@@ -7,6 +7,9 @@ order: 0
 
 import Preview from '../../components/Preview.astro'
 import Divider from '../../../../registry/components/Divider/Divider.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import ButtonGroup from '../../../../registry/components/ButtonGroup/ButtonGroup.astro'
+import { Plus } from '@lucide/astro'
 
 <Preview code={`<p>Section one</p>
 <Divider />
@@ -42,9 +45,11 @@ through to the root element.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | `horizontal` renders an `<hr>`; `vertical` renders a `<div>` sized to stretch its flex/grid container. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | `horizontal` renders an `<hr>` (a `<div role="separator">` when labelled); `vertical` renders a `<div>` sized to stretch its flex/grid container. |
 | `color` | `'neutral' \| 'neutral-faded'` | `'neutral'` | Line colour. |
-| `contentPosition` | `'start' \| 'center' \| 'end'` | `'center'` | Where a label sits on a horizontal divider. |
+| `contentPosition` | `'start' \| 'center' \| 'end'` | `'center'` | Where a label sits on a horizontal `line` divider. |
+| `variant` | `'line' \| 'dual' \| 'fill'` | `'line'` | How labelled content is framed: between the halves of one rule, centred between two rules, or on a filled band. |
+| `interactive` | `boolean` | `false` | The slot holds a button or group: drops the separator role and the faded text colour. |
 | `inset` | `0 \| 2 \| 4 \| 6 \| 8` | — | Margin along the main axis. |
 | `class` | `string` | — | Extra classes, merged last. |
 
@@ -82,6 +87,33 @@ Text in the default slot renders between the lines; `contentPosition` moves it. 
   <Divider inset={6} />
 </Preview>
 
+Every `variant`, and a button as the content (`interactive`):
+
+<Preview block code={`<Divider variant="line">Today</Divider>
+<Divider variant="dual">Today</Divider>
+<Divider variant="fill">Today</Divider>
+<Divider interactive><Button size="small" variant="outline" color="neutral"><Plus slot="start" />Add step</Button></Divider>`}>
+  <Divider variant="line">Today</Divider>
+  <div data-apogee-divider="dual"><Divider variant="dual">Today</Divider></div>
+  <div data-apogee-divider="fill"><Divider variant="fill">Today</Divider></div>
+  <div data-apogee-divider="interactive"><Divider interactive><Button size="small" variant="outline" color="neutral"><Plus slot="start" />Add step</Button></Divider></div>
+  <div data-apogee-divider="reference-button" class="flex justify-center"><Button size="small" variant="outline" color="neutral"><Plus slot="start" />Add step</Button></div>
+</Preview>
+
+A button group between two rules:
+
+<Preview block code={`<Divider variant="dual" interactive>
+  <ButtonGroup>…</ButtonGroup>
+</Divider>`}>
+  <Divider variant="dual" interactive>
+    <ButtonGroup label="View">
+      <Button size="small" variant="outline" color="neutral">Day</Button>
+      <Button size="small" variant="outline" color="neutral">Week</Button>
+      <Button size="small" variant="outline" color="neutral">Month</Button>
+    </ButtonGroup>
+  </Divider>
+</Preview>
+
 ## States
 
 No interactive states — a static separator.
@@ -104,6 +136,9 @@ Between toolbar items:
   needed.
 - `vertical` is a `<div role="separator" aria-orientation="vertical">`, since
   `<hr>` only carries horizontal semantics.
+- A labelled divider is a `<div role="separator">` around the text. With
+  `interactive` the role is dropped: a separator must not contain a control,
+  and the button keeps its own name and colour.
 
 ## Tokens
 

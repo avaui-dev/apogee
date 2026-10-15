@@ -17,6 +17,8 @@ test('dialogPosition cells set every layout axis and the slide variables', () =>
       assert.match(cell, re)
   }
   assert.match(defs.dialogPosition.end, /\[--apogee-dx:100%\]/)
+  // Drawers keep a backdrop strip on narrow screens.
+  for (const side of ['start', 'end']) assert.match(defs.dialogPosition[side], /calc\(100%-1\.5rem\)/)
   assert.match(defs.dialogPosition.bottom, /\[--apogee-dy:100%\]/)
 })
 

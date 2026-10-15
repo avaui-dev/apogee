@@ -5,33 +5,50 @@
  * Without JS the toggle is hidden and the nav + footer stay expanded (`no-js:`),
  * so nothing is unreachable. On mobile with JS, opening the nav also reveals the
  * footer. Slots: `brand` (top), default (nav links — use NavLink or <a>), `footer`.
+ *
+ * `variant="slim"` is a 4rem icon rail from `md` (NavLink labels go
+ * screen-reader only; wrap links in Tooltip for a visible name). `overlay`
+ * opens the mobile nav as a start-edge drawer over the page instead of
+ * pushing content down: the island moves the nav into a `<dialog>` and back
+ * on close, so there is one nav in the document at all times.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
+import { tables } from '../utils/responsive-tables.ts'
+import CloseButton from '../CloseButton/CloseButton.astro'
 import { Menu } from '@lucide/astro'
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
+  /** `slim` is an icon-only rail from `md`. @category layout */
+  variant?: 'default' | 'slim'
+  /** On mobile, open the nav as a drawer over the page instead of inline. */
+  overlay?: boolean
   class?: string
 }
 
-const { class: className, ...rest } = Astro.props
+const { variant = 'default', overlay = false, class: className, ...rest } = Astro.props
 const navId = uid(Astro.locals, 'apogee-sidebar')
+const dialogId = `${navId}-overlay`
+const slim = variant === 'slim'
 ---
 
 <aside
   class:list={[
-    'apogee-sidebar w-full border-neutral bg-page md:sticky md:top-0 md:h-dvh md:w-64 md:shrink-0 md:border-e',
+    'apogee-sidebar w-full border-neutral bg-page md:sticky md:top-0 md:h-dvh md:shrink-0 md:border-e',
+    slim ? 'md:w-16' : 'md:w-64',
     className,
   ]}
+  data-overlay={overlay ? 'true' : undefined}
   {...rest}
 >
-  <div class="flex items-center justify-between gap-4 border-b border-neutral p-4 md:border-0">
+  <div class:list={['flex items-center justify-between gap-4 border-b border-neutral p-4 md:border-0', slim && 'md:justify-center']}>
     <slot name="brand" />
     <button
       type="button"
       class="apogee-sidebar-toggle grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden md:hidden"
-      aria-controls={navId}
+      aria-controls={overlay ? dialogId : navId}
+      aria-haspopup={overlay ? 'dialog' : undefined}
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
@@ -39,13 +56,34 @@ const navId = uid(Astro.locals, 'apogee-sidebar')
     </button>
   </div>
 
-  <nav id={navId} class="apogee-sidebar-nav flex-col gap-0.5 p-4 pt-0 no-js:flex md:pt-4">
+  <nav
+    id={navId}
+    class:list={[
+      'apogee-sidebar-nav flex-col gap-0.5 p-4 pt-0 no-js:flex md:pt-4',
+      slim &&
+        'md:px-2 md:[&_.apogee-navlink]:justify-center md:[&_.apogee-navlink]:px-0 md:[&_.apogee-navlink-label]:sr-only md:[&_.apogee-navlink>.ms-auto]:hidden md:[&_.apogee-navgroup-chevron]:hidden md:[&_.apogee-navgroup-list]:ps-0',
+    ]}
+  >
     <slot />
   </nav>
 
-  <div class="apogee-sidebar-footer mt-auto border-t border-neutral p-4 no-js:block">
+  <div class:list={['apogee-sidebar-footer mt-auto border-t border-neutral p-4 no-js:block', slim && 'md:px-2']}>
     <slot name="footer" />
   </div>
+
+  {
+    overlay && (
+      <dialog
+        id={dialogId}
+        class:list={['apogee-sidebar-overlay bg-page p-0 text-neutral', tables.dialogPosition.base.start]}
+        closedby="any"
+        aria-label="Navigation"
+      >
+        <CloseButton size="large" command="close" commandfor={dialogId} class="absolute top-3 end-3" />
+        <div class="apogee-sidebar-overlay-body flex h-full flex-col pt-14" />
+      </dialog>
+    )
+  }
 </aside>
 
 <style>
@@ -79,19 +117,56 @@ const navId = uid(Astro.locals, 'apogee-sidebar')
       display: block;
     }
   }
+  .apogee-sidebar-overlay::backdrop {
+    background-color: var(--overlay);
+  }
+  .apogee-sidebar-overlay .apogee-sidebar-nav {
+    overflow-y: auto;
+  }
 </style>
 
 <script>
   import { island } from '../utils/island.ts'
 
   island('.apogee-sidebar-toggle', (toggle) => {
-    const id = toggle.getAttribute('aria-controls')
-    const nav = id ? document.getElementById(id) : null
-    if (!nav) return
-    toggle.addEventListener('click', () => {
-      const open = nav.dataset.open !== 'true'
+    const aside = toggle.closest<HTMLElement>('.apogee-sidebar')
+    const nav = aside?.querySelector<HTMLElement>('.apogee-sidebar-nav')
+    const footer = aside?.querySelector<HTMLElement>('.apogee-sidebar-footer')
+    const dialog = aside?.querySelector<HTMLDialogElement>('.apogee-sidebar-overlay')
+    const body = dialog?.querySelector<HTMLElement>('.apogee-sidebar-overlay-body')
+    if (!aside || !nav) return
+    const narrow = matchMedia('(max-width: 767px)')
+    const set = (open: boolean) => {
       nav.dataset.open = String(open)
       toggle.setAttribute('aria-expanded', String(open))
-    })
+    }
+
+    if (dialog && body && footer) {
+      // Overlay: move the nav (and footer) into the drawer while it is open,
+      // so the document keeps exactly one nav landmark.
+      dialog.addEventListener('close', () => {
+        dialog.before(nav, footer)
+        set(false)
+      })
+      dialog.addEventListener('click', (event) => {
+        if (event.target !== dialog) return
+        const r = dialog.getBoundingClientRect()
+        const inside =
+          event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom
+        if (!inside) dialog.close()
+      })
+      narrow.addEventListener('change', () => {
+        if (!narrow.matches && dialog.open) dialog.close()
+      })
+      toggle.addEventListener('click', () => {
+        if (dialog.open) return dialog.close()
+        body.append(nav, footer)
+        set(true)
+        dialog.showModal()
+      })
+      return
+    }
+
+    toggle.addEventListener('click', () => set(nav.dataset.open !== 'true'))
   })
 </script>

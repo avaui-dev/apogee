@@ -1,45 +1,103 @@
 ---
 /**
  * EmptyState — a centered placeholder for empty views (no results, first run,
- * cleared list). Zero JS. Slots: `icon` (leading glyph), `actions` (buttons).
+ * cleared list). Zero JS. Slots: `icon` (leading glyph or FeaturedIcon),
+ * `actions` (buttons). `variant="plain"` drops the dashed box for use inside a
+ * card or table; `pattern` draws faint rings or a grid behind the icon.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+
+const sizes = {
+  small: { root: 'gap-2 p-6', icon: '[&>svg]:size-6', title: 'text-sm', desc: 'text-xs' },
+  medium: { root: 'gap-3 p-10', icon: '[&>svg]:size-8', title: 'text-sm', desc: 'text-sm' },
+  large: { root: 'gap-4 p-12', icon: '[&>svg]:size-10', title: 'text-lg', desc: 'text-base' },
+} as const
+
 interface Props extends HTMLAttributes<'div'> {
   title: string
   description?: string
+  /** Element for the title; use a heading when the empty state is the page's only content. @category layout */
+  as?: 'p' | 'h2' | 'h3'
+  /** `plain` drops the dashed box. @category layout */
+  variant?: 'bordered' | 'plain'
+  /** @category layout */
+  size?: keyof typeof sizes
+  /** A faint decoration behind the icon. @category layout */
+  pattern?: 'none' | 'rings' | 'grid'
   class?: string
 }
 
-const { title, description, class: className, ...rest } = Astro.props
+const {
+  title,
+  description,
+  as: Title = 'p',
+  variant = 'bordered',
+  size = 'medium',
+  pattern = 'none',
+  class: className,
+  ...rest
+} = Astro.props
 const hasIcon = Astro.slots.has('icon')
 const hasActions = Astro.slots.has('actions')
+const s = sizes[size]
 ---
 
 <div
   class:list={[
-    'flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-neutral p-10 text-center',
+    'apogee-empty-state relative isolate flex flex-col items-center justify-center text-center',
+    s.root,
+    variant === 'bordered' && 'rounded-lg border border-dashed border-neutral',
+    pattern !== 'none' && 'overflow-hidden',
     className,
   ]}
   {...rest}
 >
   {
     hasIcon && (
-      <div class="text-neutral-faded [&_svg]:size-8">
+      <div class:list={['relative flex items-center justify-center text-neutral-faded', s.icon]}>
+        {pattern !== 'none' && (
+          <span
+            class:list={['apogee-empty-state-pattern pointer-events-none absolute -z-10 size-60', pattern === 'rings' ? 'apogee-empty-state-rings' : 'apogee-empty-state-grid']}
+            aria-hidden="true"
+          />
+        )}
         <slot name="icon" />
       </div>
     )
   }
-  <div>
-    <p class="text-sm font-medium text-neutral">{title}</p>
-    {description && <p class="mx-auto mt-1 max-w-sm text-sm text-neutral-faded">{description}</p>}
+  <div class="relative">
+    <Title class:list={['font-medium text-neutral', s.title]}>{title}</Title>
+    {description && <p class:list={['mx-auto mt-1 max-w-sm text-neutral-faded', s.desc]}>{description}</p>}
   </div>
   {
     hasActions && (
-      <div class="mt-2 flex flex-wrap justify-center gap-2">
+      <div class="relative mt-2 flex flex-wrap justify-center gap-2">
         <slot name="actions" />
       </div>
     )
   }
 </div>
+
+<style>
+  /* Decorations are gradients in the border token under a radial mask, so
+     they follow the theme and never add an asset. */
+  .apogee-empty-state-pattern {
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    translate: -50% -50%;
+    mask-image: radial-gradient(circle at center, black 0, transparent 70%);
+  }
+  .apogee-empty-state-pattern:dir(rtl) {
+    translate: 50% -50%;
+  }
+  .apogee-empty-state-rings {
+    background-image: repeating-radial-gradient(circle at center, transparent 0 23px, var(--border-neutral) 23px 24px);
+  }
+  .apogee-empty-state-grid {
+    background-image:
+      repeating-linear-gradient(to right, var(--border-neutral) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(to bottom, var(--border-neutral) 0 1px, transparent 1px 24px);
+  }
+</style>

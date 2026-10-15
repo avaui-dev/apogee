@@ -8,12 +8,23 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Sidebar from '../../../../registry/components/Sidebar/Sidebar.astro'
-import { Settings } from '@lucide/astro'
+import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
+import NavGroup from '../../../../registry/components/NavLink/NavGroup.astro'
+import Divider from '../../../../registry/components/Divider/Divider.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import Progress from '../../../../registry/components/Progress/Progress.astro'
+import Dismissible from '../../../../registry/components/Dismissible/Dismissible.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Tooltip from '../../../../registry/components/Tooltip/Tooltip.astro'
+import Popover from '../../../../registry/components/Popover/Popover.astro'
+import { Settings, Home, FolderKanban, Users, LifeBuoy, Inbox } from '@lucide/astro'
 
 <JsNote fallback="The toggle is hidden (`no-js:hidden`) and the nav stays expanded (`no-js:flex`), and the footer stays expanded too (`no-js:block`) — so below the `md:` breakpoint everything is reachable without a working control to click. Desktop is unaffected: the nav is always visible above the `md:` breakpoint, shown by CSS alone.">
   A small island toggles `data-open` on the nav and `aria-expanded` on the button
   when the mobile toggle is clicked, showing or hiding the nav below the header row;
-  a sibling CSS rule also reveals the footer once the nav is open.
+  a sibling CSS rule also reveals the footer once the nav is open. With `overlay`
+  the same island moves the nav into a `<dialog>` drawer and back on close.
 </JsNote>
 
 <Preview code={`<Sidebar>
@@ -76,6 +87,8 @@ passes through.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
+| `variant` | `'default' \| 'slim'` | `'default'` | `slim` is a 4rem icon rail from `md`: NavLink labels become screen-reader only, links centre. Below `md` it behaves like the default. |
+| `overlay` | `boolean` | `false` | On mobile, the nav opens as a start-edge drawer over the page (a native `<dialog>`) instead of pushing content down. Without JS the inline panel remains. |
 | `class` | `string` | — | Extra classes on the root `<aside>`, merged last. |
 
 ## States
@@ -84,6 +97,9 @@ passes through.
 - **Mobile, open** — clicking the toggle sets the nav's `data-open="true"` and the
   toggle's `aria-expanded="true"`; the nav becomes a flex column below the header.
 - **Desktop (`md:` and up)** — nav always visible (`md:flex`); toggle hidden.
+- **Overlay open** (mobile, `overlay`) — the nav and footer live inside an open
+  `<dialog>`; Escape, the close button or the backdrop close it and move them
+  back. Resizing to desktop while open closes it.
 
 ## Examples
 
@@ -103,6 +119,103 @@ Nav links with an icon, and a footer used for a persistent action:
   </Sidebar>
 </Preview>
 
+Groups, section headings and a featured card in the footer. `NavGroup` is a
+native `<details>` that opens when it contains the current page; headings are
+plain text; a Divider separates sections.
+
+<Preview code={`<Sidebar>
+  <a slot="brand" href="/">Acme</a>
+  <NavLink href="/dashboard" match="prefix"><Home slot="start" />Dashboard</NavLink>
+  <NavGroup label="Projects">
+    <FolderKanban slot="start" />
+    <NavLink href="/projects/spring">Spring launch</NavLink>
+    <NavLink href="/projects/site">Website</NavLink>
+  </NavGroup>
+  <Divider inset={2} />
+  <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-faded">Team</p>
+  <NavLink href="/members"><Users slot="start" />Members <Badge slot="end" size="small">4</Badge></NavLink>
+  <NavLink href="https://help.example.com"><LifeBuoy slot="start" />Help centre</NavLink>
+  <Dismissible slot="footer" label="Dismiss">
+    <Card padding="small">…<Progress value={60} label="Storage" />…</Card>
+  </Dismissible>
+</Sidebar>`} block>
+  <Sidebar class="rounded-lg border">
+    <a slot="brand" href="/" class="font-semibold">Acme</a>
+    <NavLink href="/dashboard" match="prefix"><Home slot="start" />Dashboard</NavLink>
+    <NavGroup label="Projects" open>
+      <FolderKanban slot="start" />
+      <NavLink href="#">Spring launch</NavLink>
+      <NavLink href="#">Website</NavLink>
+    </NavGroup>
+    <Divider inset={2} />
+    <p class="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-faded">Team</p>
+    <NavLink href="#"><Users slot="start" />Members <Badge slot="end" size="small">4</Badge></NavLink>
+    <NavLink href="https://help.example.com"><LifeBuoy slot="start" />Help centre</NavLink>
+    <Dismissible slot="footer" label="Dismiss">
+      <Card padding="small">
+        <p class="text-sm font-medium text-neutral">Storage almost full</p>
+        <p class="mb-3 text-xs text-neutral-faded">You have used 60% of your plan.</p>
+        <Progress value={60} label="Storage used" />
+        <Button variant="link" size="small" class="mt-3">Upgrade plan</Button>
+      </Card>
+    </Dismissible>
+  </Sidebar>
+</Preview>
+
+## Slim rail
+
+An icon-only rail from `md`. Give every link a `start` icon; wrap it in a
+Tooltip for a visible name on hover and focus (the label stays in the
+accessibility tree). A Popover on a rail item is the flyout for a group:
+
+<Preview code={`<Sidebar variant="slim">
+  <a slot="brand" href="/" aria-label="Acme">A</a>
+  <Tooltip text="Dashboard" placement="end"><NavLink href="/dashboard"><Home slot="start" />Dashboard</NavLink></Tooltip>
+  <Tooltip text="Inbox" placement="end"><NavLink href="/inbox"><Inbox slot="start" />Inbox</NavLink></Tooltip>
+  <Popover id="rail-projects" placement="end">
+    <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects"><FolderKanban /></Button>
+    <NavLink href="/projects/spring">Spring launch</NavLink>
+    <NavLink href="/projects/site">Website</NavLink>
+  </Popover>
+</Sidebar>`} block>
+  <div data-apogee-sidebar="slim" class="flex">
+    <Sidebar variant="slim" class="rounded-lg border md:h-96">
+      <a slot="brand" href="/" class="grid size-9 place-items-center rounded-md bg-primary font-semibold text-on-primary" aria-label="Acme">A</a>
+      <Tooltip text="Dashboard" placement="end"><NavLink href="#"><Home slot="start" />Dashboard</NavLink></Tooltip>
+      <Tooltip text="Inbox" placement="end"><NavLink href="#"><Inbox slot="start" />Inbox</NavLink></Tooltip>
+      <Popover id="rail-projects" placement="end">
+        <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects"><FolderKanban /></Button>
+        <div class="flex w-48 flex-col gap-0.5">
+          <NavLink href="#">Spring launch</NavLink>
+          <NavLink href="#">Website</NavLink>
+        </div>
+      </Popover>
+      <Tooltip slot="footer" text="Settings" placement="end"><NavLink href="#"><Settings slot="start" />Settings</NavLink></Tooltip>
+    </Sidebar>
+  </div>
+</Preview>
+
+## Overlay
+
+On a phone the nav opens as a drawer over the page. Resize below `md` and
+press the toggle:
+
+<Preview code={`<Sidebar overlay>
+  <a slot="brand" href="/">Acme</a>
+  <NavLink href="/dashboard"><Home slot="start" />Dashboard</NavLink>
+  …
+</Sidebar>`} block>
+  <div data-apogee-sidebar="overlay">
+    <Sidebar overlay class="rounded-lg border">
+      <a slot="brand" href="/" class="font-semibold">Acme</a>
+      <NavLink href="#"><Home slot="start" />Dashboard</NavLink>
+      <NavLink href="#"><Users slot="start" />Members</NavLink>
+      <NavLink href="#"><Settings slot="start" />Settings</NavLink>
+      <div slot="footer" class="text-sm text-neutral-faded">Signed in as jane@acme.com</div>
+    </Sidebar>
+  </div>
+</Preview>
+
 ## Accessibility
 
 - Toggle is a real `<button>` — full keyboard support (`Tab`, `Enter`/`Space`) for
@@ -115,6 +228,9 @@ Nav links with an icon, and a footer used for a persistent action:
   JavaScript, the nav and every link in it, plus the footer, are reachable
   without a working control. Desktop viewports are unaffected, since the nav
   is always shown there by CSS alone.
+- With `overlay`, the drawer is a native modal `<dialog>` (focus trapped,
+  Escape closes, focus returns to the toggle) labelled "Navigation". The nav
+  is moved, not copied, so there is never a duplicate landmark.
 
 ## Tokens
 

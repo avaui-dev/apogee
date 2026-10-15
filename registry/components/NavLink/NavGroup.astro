@@ -1,0 +1,52 @@
+---
+/**
+ * NavGroup — a collapsible group of NavLinks on native `<details>`. The
+ * summary row looks like a NavLink (icon in `start`, badge in `end`, a
+ * chevron that flips open). Opens on load when a child link is the current
+ * page (`aria-current="page"` in the rendered children), or with `open`.
+ * Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { ChevronDown } from '@lucide/astro'
+import { navLinkClass, navLinkIdle } from './NavLink.astro'
+
+interface Props extends HTMLAttributes<'details'> {
+  /** @category content */
+  label: string
+  /** Force open or closed; by default the group opens when it contains the current page. */
+  open?: boolean
+  class?: string
+}
+
+const { label, open: openProp, class: className, ...rest } = Astro.props
+const inner = await Astro.slots.render('default')
+const open = openProp ?? /aria-current="page"/.test(inner)
+const hasStart = Astro.slots.has('start')
+const hasEnd = Astro.slots.has('end')
+---
+
+<details class:list={['apogee-navgroup group', className]} open={open} {...rest}>
+  <summary class:list={[navLinkClass, navLinkIdle, 'cursor-pointer list-none [&::-webkit-details-marker]:hidden']}>
+    {hasStart && <span class="flex shrink-0 items-center [&>svg]:size-4"><slot name="start" /></span>}
+    <span class="apogee-navlink-label min-w-0 truncate">{label}</span>
+    {hasEnd && <span class="ms-auto flex shrink-0 items-center [&>svg]:size-4"><slot name="end" /></span>}
+    <ChevronDown
+      class:list={['apogee-navgroup-chevron size-4 shrink-0 text-neutral-faded group-open:rotate-180', !hasEnd && 'ms-auto']}
+      aria-hidden="true"
+    />
+  </summary>
+  <div class="apogee-navgroup-list flex flex-col gap-0.5 ps-9 pt-0.5" set:html={inner} />
+</details>
+
+<style>
+  .apogee-navgroup-chevron {
+    transition: rotate var(--duration-medium) var(--ease-standard);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-navgroup-chevron {
+      transition: none;
+    }
+  }
+</style>

@@ -89,3 +89,10 @@ Box, Stack, Grid, Text, Dialog and Carousel use it.
 
 `fieldSizes`, `fieldVariants`, `fieldBase` are the shared text-control tables;
 `innerRadius['md-1']` gives a chip inside a rounded tray a concentric corner.
+
+## files
+
+`acceptsFile(accept, file)` applies an `accept` list (`.pdf`, `image/*`,
+`image/png`) to a `{ name, type }`, the rule the native picker uses, so
+dropped files get the same check. `readableSize(bytes)` gives `1.5 KB`.
+FileUpload uses both.

@@ -9,6 +9,11 @@ import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Dialog from '../../../../registry/components/Dialog/Dialog.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+import FeaturedIcon from '../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../../../registry/components/Input/Input.astro'
+import Textarea from '../../../../registry/components/Textarea/Textarea.astro'
+import Avatar from '../../../../registry/components/Avatar/Avatar.astro'
+import { TriangleAlert, UserPlus, CircleCheck } from '@lucide/astro'
 
 <JsNote fallback="Opening, closing via the ✕ button, and Escape all still work — they're native dialog + Invoker Commands behaviour, not authored JS. Only the backdrop-click-to-close fallback is lost, and only in browsers that don't yet support the native closedby attribute.">
   A small script closes the dialog on backdrop click, as a fallback for browsers
@@ -35,8 +40,8 @@ import Button from '../../../../registry/components/Button/Button.astro'
 npx @ava-ui/apogee add dialog
 ```
 
-No Apogee dependencies. Uses `@lucide/astro` (`X` close icon). Pair with
-`Button` (`command` / `commandfor`) to open and close it.
+Depends on `CloseButton` and `utils` (`responsive.ts`). Pair with `Button`
+(`command` / `commandfor`) to open and close it.
 
 ## Usage
 
@@ -53,11 +58,18 @@ import Button from '@/components/apogee/Button/Button.astro'
 
 ## Anatomy
 
-- **Header** — auto-generated from `title`; always includes a close button
-  (`✕`, `command="close"`).
-- **Body** — default slot; the dialog's main content.
-- `footer` slot — optional; renders as a bottom action row, only when content
-  is passed to it.
+The dialog is a flex column: the media, header and footer keep their place
+and only the body scrolls, so a tall drawer never scrolls its buttons away.
+
+- `media` slot — optional; a cover image flush to the top edge. The close
+  button floats over it in its dark theme.
+- **Header** — `title` and `subtitle`, or the `header` slot for your own
+  markup (a heading plus supporting text, or a FeaturedIcon row). The
+  `icon` slot sits above the title block, or beside it with
+  `iconPosition="start"`. Always includes a close button (`command="close"`).
+- **Body** — default slot; the only region that scrolls.
+- `footer` slot — optional; a bottom action row, buttons at the end, or two
+  equal columns with `footerLayout="fill"`.
 
 ## API
 
@@ -74,6 +86,8 @@ import Button from '@/components/apogee/Button/Button.astro'
 | `padding` | `0 \| 2 \| 3 \| 4 \| 5 \| 6` | `5` | Inner padding in spacing steps. `0` for edge-to-edge media. |
 | `overlay` | `'dim' \| 'blurred' \| 'transparent'` | `'dim'` | Backdrop treatment. `transparent` leaves page scrolling alone; the page is still inert while the dialog is open. |
 | `dismissOnBackdrop` | `boolean` | `true` | Clicking the backdrop closes the dialog. Set `false` for a decision the user must answer. |
+| `iconPosition` | `'top' \| 'start'` | `'top'` | Where the `icon` slot sits: above the title block, or beside it. |
+| `footerLayout` | `'end' \| 'fill'` | `'end'` | Footer buttons at the end, or stacked on phones and two equal columns from `sm`. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
@@ -114,6 +128,100 @@ Every `position`:
 
   <Button command="show-modal" commandfor="v-full">Fullscreen</Button>
   <Dialog id="v-full" position="full-screen" title="Fullscreen">Fills the viewport.</Dialog>
+</Preview>
+
+## Icon, header and media
+
+An icon above or beside the title, and a `fill` footer:
+
+<Preview code={`<Dialog id="d" title="Delete project?" subtitle="This cannot be undone." footerLayout="fill">
+  <FeaturedIcon slot="icon" theme="outline" color="critical"><TriangleAlert /></FeaturedIcon>
+  …
+  <Button slot="footer" variant="outline" color="neutral" command="close" commandfor="d">Cancel</Button>
+  <Button slot="footer" color="critical" command="close" commandfor="d">Delete</Button>
+</Dialog>
+<Dialog id="d2" title="Invite teammates" subtitle="Send invites by email." iconPosition="start">
+  <FeaturedIcon slot="icon" color="primary"><UserPlus /></FeaturedIcon>
+  …
+</Dialog>`}>
+  <div data-apogee-dialog="icon-fill" class="flex flex-wrap gap-2">
+    <Button color="critical" variant="outline" command="show-modal" commandfor="d-icon-top">Icon above</Button>
+    <Dialog id="d-icon-top" title="Delete project?" subtitle="All files and settings will be removed. This cannot be undone." footerLayout="fill" size="25rem">
+      <FeaturedIcon slot="icon" theme="outline" color="critical"><TriangleAlert /></FeaturedIcon>
+      <Button slot="footer" variant="outline" color="neutral" command="close" commandfor="d-icon-top">Cancel</Button>
+      <Button slot="footer" color="critical" command="close" commandfor="d-icon-top">Delete</Button>
+    </Dialog>
+    <Button command="show-modal" commandfor="d-icon-start">Icon beside</Button>
+    <Dialog id="d-icon-start" title="Invite teammates" subtitle="They get an email with a link that works for seven days." iconPosition="start" size="28rem">
+      <FeaturedIcon slot="icon" color="primary"><UserPlus /></FeaturedIcon>
+      <Input label="Email addresses" placeholder="ana@example.com, li@example.com" />
+      <Button slot="footer" variant="ghost" color="neutral" command="close" commandfor="d-icon-start">Cancel</Button>
+      <Button slot="footer" command="close" commandfor="d-icon-start">Send invites</Button>
+    </Dialog>
+  </div>
+</Preview>
+
+Your own header, and a cover image with the dark close button over it:
+
+<Preview code={`<Dialog id="d" aria-labelledby="d-h">
+  <div slot="header" class="flex items-center gap-3">
+    <Avatar name="Ana Lima" size="large" status="online" />
+    <div><h2 id="d-h" class="font-semibold">Ana Lima</h2><p class="text-sm text-neutral-faded">Product designer</p></div>
+  </div>
+  …
+</Dialog>
+<Dialog id="d2" title="Mountain trail" padding={4}>
+  <img slot="media" src="…" alt="" class="h-40" />
+  …
+</Dialog>`}>
+  <div class="flex flex-wrap gap-2">
+    <Button variant="outline" color="neutral" command="show-modal" commandfor="d-header">Header slot</Button>
+    <Dialog id="d-header" aria-labelledby="d-header-h">
+      <div slot="header" class="flex items-center gap-3">
+        <Avatar name="Ana Lima" size="large" status="online" />
+        <div><h2 id="d-header-h" class="font-semibold text-neutral">Ana Lima</h2><p class="text-sm text-neutral-faded">Product designer · Lisbon</p></div>
+      </div>
+      <p>Joined in March. Owns the onboarding flow and the design tokens.</p>
+      <Button slot="footer" variant="ghost" color="neutral" command="close" commandfor="d-header">Close</Button>
+      <Button slot="footer" command="close" commandfor="d-header">Message</Button>
+    </Dialog>
+    <Button variant="outline" color="neutral" command="show-modal" commandfor="d-media">Media</Button>
+    <Dialog id="d-media" title="Mountain trail" subtitle="12 km · 640 m elevation" padding={4}>
+      <img slot="media" src="https://picsum.photos/seed/apogee-trail/800/400" alt="" class="h-40" />
+      <p>A loop above the tree line with two water stops. Start before nine to beat the heat.</p>
+      <Button slot="footer" command="close" commandfor="d-media">Save route</Button>
+    </Dialog>
+  </div>
+</Preview>
+
+With both `title` and a `header` slot, the slot wins and labels the dialog:
+
+<Preview code={`<Dialog id="d" title="Fallback" aria-labelledby="d-h">
+  <h2 slot="header" id="d-h">Custom heading</h2>
+</Dialog>`}>
+  <div data-apogee-dialog="header-title">
+    <Button variant="outline" color="neutral" command="show-modal" commandfor="d-ht">Header and title</Button>
+    <Dialog id="d-ht" title="Fallback title">
+      <h2 slot="header" id="d-ht-h" class="font-semibold text-neutral">Custom heading</h2>
+      <p>The slot replaces the title block.</p>
+    </Dialog>
+  </div>
+</Preview>
+
+A long drawer: the header and footer stay pinned, the body scrolls.
+
+<Preview code={`<Dialog id="d" position="end" title="Activity">
+  …forty paragraphs…
+  <Button slot="footer" command="close" commandfor="d">Done</Button>
+</Dialog>`}>
+  <div data-apogee-dialog="drawer-long">
+    <Button variant="outline" color="neutral" command="show-modal" commandfor="d-long">Open long drawer</Button>
+    <Dialog id="d-long" position="end" title="Activity" subtitle="Last 30 days">
+      {Array.from({ length: 40 }, (_, i) => <p class="mb-3">Entry {i + 1}: a change was made to the project settings and saved.</p>)}
+      <Button slot="footer" variant="ghost" color="neutral" command="close" commandfor="d-long">Mark all read</Button>
+      <Button slot="footer" command="close" commandfor="d-long">Done</Button>
+    </Dialog>
+  </div>
 </Preview>
 
 ## Responsive position
@@ -206,12 +314,47 @@ Try each state via the triggers in the Variants preview above.
 
 ## Examples
 
-A destructive confirm, with a `danger` footer button:
+Five bodies cover most dialogs. A stacked confirm (icon above, `25rem`, fill
+footer), a horizontal one (icon beside, buttons at the end), a destructive
+confirm, a media dialog and a form.
+
+<Preview code={`<Dialog id="confirm" title="Publish changes?" footerLayout="fill" size="25rem">
+  <FeaturedIcon slot="icon" color="positive"><CircleCheck /></FeaturedIcon>
+  <p>Visitors see the new version right away.</p>
+  <Button slot="footer" variant="outline" color="neutral" command="close" commandfor="confirm">Cancel</Button>
+  <Button slot="footer" command="close" commandfor="confirm">Publish</Button>
+</Dialog>
+<Dialog id="form" title="New project" subtitle="You can change these later.">
+  <form class="flex flex-col gap-4"><Input label="Name" /><Textarea label="Description" rows={3} /></form>
+  <Button slot="footer" variant="ghost" color="neutral" command="close" commandfor="form">Cancel</Button>
+  <Button slot="footer" type="submit" command="close" commandfor="form">Create</Button>
+</Dialog>`}>
+  <div class="flex flex-wrap gap-2">
+    <Button command="show-modal" commandfor="r-confirm">Stacked confirm</Button>
+    <Dialog id="r-confirm" title="Publish changes?" footerLayout="fill" size="25rem">
+      <FeaturedIcon slot="icon" color="positive"><CircleCheck /></FeaturedIcon>
+      <p>Visitors see the new version right away. You can roll back from the history page.</p>
+      <Button slot="footer" variant="outline" color="neutral" command="close" commandfor="r-confirm">Cancel</Button>
+      <Button slot="footer" command="close" commandfor="r-confirm">Publish</Button>
+    </Dialog>
+    <Button variant="outline" color="neutral" command="show-modal" commandfor="r-form">Form</Button>
+    <Dialog id="r-form" title="New project" subtitle="You can change these later.">
+      <form class="flex flex-col gap-4">
+        <Input label="Name" placeholder="Spring launch" />
+        <Textarea label="Description" rows={3} />
+      </form>
+      <Button slot="footer" variant="ghost" color="neutral" command="close" commandfor="r-form">Cancel</Button>
+      <Button slot="footer" command="close" commandfor="r-form">Create</Button>
+    </Dialog>
+  </div>
+</Preview>
+
+A destructive confirm, with a `critical` footer button:
 
 ```astro
 <Button color="critical" command="show-modal" commandfor="confirm-delete">Delete account</Button>
-<Dialog id="confirm-delete" title="Delete account">
-  <p>This can't be undone.</p>
+<Dialog id="confirm-delete" title="Delete account" subtitle="This can't be undone." dismissOnBackdrop={false}>
+  <FeaturedIcon slot="icon" theme="outline" color="critical"><TriangleAlert /></FeaturedIcon>
   <Button variant="ghost" color="neutral" command="close" commandfor="confirm-delete" slot="footer">Cancel</Button>
   <Button color="critical" command="close" commandfor="confirm-delete" slot="footer">Delete</Button>
 </Dialog>
@@ -227,7 +370,9 @@ A destructive confirm, with a `danger` footer button:
   accessible name on open.
 - `subtitle` renders as a paragraph wired to `aria-describedby`, so it is read
   as the dialog's description.
-- The close button has `aria-label="Close"`.
+- The close button has `aria-label="Close"`. With the `header` slot the dialog
+  is labelled by the slot's content; pass `aria-labelledby` to point at one
+  heading inside it instead.
 - **Keyboard** — `Escape` closes it (native `showModal()` behavior); the close
   and footer buttons are reachable with `Tab`.
 - **No JS** — opening, closing via the buttons, and `Escape` all still work
@@ -238,7 +383,7 @@ A destructive confirm, with a `danger` footer button:
 
 | Token | Used for |
 |---|---|
-| `--border-neutral` | Dialog border |
+| `--border-neutral` | Dialog border (centred position) and the footer rule |
 | `--overlay` | Backdrop scrim |
 | `--background-elevation-raised` / `--foreground-neutral` | Background / default text color |
 | `--foreground-neutral` | Title text |

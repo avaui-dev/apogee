@@ -2,10 +2,12 @@
 /**
  * FileUpload — a styled file input / dropzone. The native input works with zero
  * JS (opens the picker, submits the file); a small island adds the selected file
- * name(s) and drag-and-drop (progressive enhancement).
+ * name(s), drag-and-drop, `accept` / `maxSize` checks on dropped and picked
+ * files, and an image `preview` (progressive enhancement).
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
+import { readableSize } from '../utils/files.ts'
 import { UploadCloud } from '@lucide/astro'
 
 /** @composable */
@@ -13,6 +15,12 @@ interface Props extends HTMLAttributes<'input'> {
   name?: string
   accept?: string
   multiple?: boolean
+  /** Largest file allowed, in bytes; larger drops are rejected with a message in the hint. */
+  maxSize?: number
+  /** A line under the control ("PNG or JPG, up to 1 MB"); shows the rejection reason when a file is refused. @category content */
+  hint?: string
+  /** Show a thumbnail of a picked image. @category layout */
+  preview?: boolean
   /** `headless` drops the dashed box so the slot is the whole look. @category layout */
   variant?: 'default' | 'headless'
   /** A single row (icon + text) instead of a stacked zone. @category layout */
@@ -20,42 +28,97 @@ interface Props extends HTMLAttributes<'input'> {
   class?: string
 }
 
-const { id: idProp, variant = 'default', inline = false, class: className, ...rest } = Astro.props
+const {
+  id: idProp,
+  maxSize,
+  hint,
+  preview = false,
+  variant = 'default',
+  inline = false,
+  class: className,
+  ...rest
+} = Astro.props
 const id = idProp ?? uid(Astro.locals, 'apogee-file')
+const hintId = `${id}-hint`
+// A refusal needs somewhere to be announced even when no hint is passed.
+const showHint = Boolean(hint) || Boolean(rest.accept) || maxSize !== undefined
 ---
 
 <label
   for={id}
   class:list={[
-    'apogee-file flex cursor-pointer items-center justify-center gap-2 transition-colors data-[drag=true]:border-primary data-[drag=true]:bg-primary-faded-highlighted',
+    'apogee-file flex cursor-pointer items-center justify-center gap-2 transition-colors data-[drag=true]:border-primary data-[drag=true]:bg-primary-faded-highlighted data-[invalid=true]:border-critical has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60 has-[:disabled]:hover:border-neutral',
     inline ? 'flex-row p-3 text-start' : 'flex-col p-6 text-center',
     variant === 'default' && 'rounded-lg border border-dashed border-neutral bg-page hover:border-primary',
     className,
   ]}
+  data-hint={hint}
+  data-max-size={maxSize}
+  data-max-size-label={maxSize !== undefined ? readableSize(maxSize) : undefined}
 >
-  <input id={id} type="file" class="apogee-file-input sr-only" {...rest} />
+  <input id={id} type="file" class="apogee-file-input sr-only" aria-describedby={showHint ? hintId : undefined} {...rest} />
   <slot>
     <UploadCloud class="size-6 shrink-0 text-neutral-faded" aria-hidden="true" />
     <span class="text-sm text-neutral">
       <span class="font-medium text-primary">Browse</span> or drag a file here
     </span>
   </slot>
+  {preview && <img class="apogee-file-preview hidden size-16 rounded-md object-cover no-js:hidden" alt="" />}
   <span class="apogee-file-name text-xs text-neutral-faded no-js:hidden"></span>
+  {
+    showHint && (
+      <span id={hintId} class="apogee-file-hint text-xs text-neutral-faded in-data-[invalid=true]:text-critical" aria-live="polite">
+        {hint}
+      </span>
+    )
+  }
 </label>
 
 <script>
   import { island } from '../utils/island.ts'
+  import { acceptsFile } from '../utils/files.ts'
 
   island('.apogee-file', (label) => {
     const input = label.querySelector<HTMLInputElement>('.apogee-file-input')
     const nameEl = label.querySelector<HTMLElement>('.apogee-file-name')
+    const hintEl = label.querySelector<HTMLElement>('.apogee-file-hint')
+    const img = label.querySelector<HTMLImageElement>('.apogee-file-preview')
     if (!input) return
+    const maxSize = Number(label.dataset.maxSize) || Infinity
+    let url: string | null = null
 
+    // The first reason a file set is refused, or null when all pass.
+    const reject = (files: File[]): string | null => {
+      for (const f of files) {
+        if (!acceptsFile(input.accept, f)) return `${f.name} is not an accepted file type`
+        if (f.size > maxSize) return `${f.name} is larger than ${label.dataset.maxSizeLabel}`
+      }
+      return null
+    }
+    const setInvalid = (message: string | null) => {
+      label.dataset.invalid = String(Boolean(message))
+      if (message) input.setAttribute('aria-invalid', 'true')
+      else input.removeAttribute('aria-invalid')
+      if (hintEl) hintEl.textContent = message ?? label.dataset.hint ?? ''
+    }
     const show = () => {
       const files = [...(input.files ?? [])]
       if (nameEl) nameEl.textContent = files.map((f) => f.name).join(', ')
+      if (img) {
+        if (url) URL.revokeObjectURL(url)
+        const image = files.find((f) => f.type.startsWith('image/'))
+        url = image ? URL.createObjectURL(image) : null
+        img.src = url ?? ''
+        img.classList.toggle('hidden', !url)
+      }
     }
-    input.addEventListener('change', show)
+
+    input.addEventListener('change', () => {
+      const message = reject([...(input.files ?? [])])
+      if (message) input.value = ''
+      setInvalid(message)
+      show()
+    })
 
     for (const ev of ['dragenter', 'dragover']) {
       label.addEventListener(ev, (e) => {
@@ -70,10 +133,19 @@ const id = idProp ?? uid(Astro.locals, 'apogee-file')
     label.addEventListener('drop', (e: DragEvent) => {
       e.preventDefault()
       label.dataset.drag = 'false'
-      if (e.dataTransfer?.files?.length) {
-        input.files = e.dataTransfer.files
-        input.dispatchEvent(new Event('change', { bubbles: true }))
+      const dropped = e.dataTransfer?.files
+      if (!dropped?.length) return
+      const message = reject([...dropped])
+      setInvalid(message)
+      if (message) {
+        // Never leave an earlier file in the input under a refusal message.
+        input.value = ''
+        show()
+        return
       }
+      input.files = dropped
+      show()
+      input.dispatchEvent(new Event('change', { bubbles: true }))
     })
   })
 </script>

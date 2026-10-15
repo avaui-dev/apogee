@@ -1,6 +1,6 @@
 ---
 title: SectionHeader
-description: Eyebrow, heading and description at the top of a section, with the level, alignment and colours every section shares.
+description: Eyebrow, heading and description at the top of a section or an app page, with actions, a divider and the level, alignment and colours every section shares.
 group: Components
 order: 0
 ---
@@ -8,9 +8,17 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import SectionHeader from '../../../../registry/components/SectionHeader/SectionHeader.astro'
 import Section from '../../../../registry/components/Section/Section.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+import Breadcrumbs from '../../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
+import Input from '../../../../registry/components/Input/Input.astro'
+import Kbd from '../../../../registry/components/Kbd/Kbd.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import { ArrowLeft, Search, Plus } from '@lucide/astro'
 
 <Preview block code={`<SectionHeader eyebrow="Features" heading="Everything a page needs" description="Composable sections built from the same tokens as every component." />`}>
-  <SectionHeader eyebrow="Features" heading="Everything a page needs" description="Composable sections built from the same tokens as every component." />
+  <div data-apogee-section-header="default">
+    <SectionHeader eyebrow="Features" heading="Everything a page needs" description="Composable sections built from the same tokens as every component." />
+  </div>
 </Preview>
 
 ## Add
@@ -19,7 +27,7 @@ import Section from '../../../../registry/components/Section/Section.astro'
 npx @ava-ui/apogee add section-header
 ```
 
-Depends on `Eyebrow`, `Heading`, `Text`.
+Depends on `Eyebrow`, `Heading`, `Text`. Slot `actions` takes buttons.
 
 ## Usage
 
@@ -44,7 +52,8 @@ import SectionHeader from '@/components/apogee/SectionHeader/SectionHeader.astro
 | `headingLevel` | `1 \| 2 \| 3 \| 4` | `2` | Semantic level of the heading element. |
 | `align` | `'start' \| 'center'` | `'start'` | Alignment; `center` also centres the block. |
 | `background` | `'page' \| 'neutral-faded' \| 'primary-faded' \| 'primary' \| 'inverted'` | `'page'` | The surrounding section's background, so eyebrow and description colours stay readable. |
-| `size` | `'medium' \| 'large'` | `'medium'` | `large` uses the display size (Hero). |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | `small` is the in-app size (h4 visual, small text, tight gap); `large` uses the display size (Hero). |
+| `divider` | `boolean` | `false` | A rule under the header. |
 | `id` | `string` | — | Id on the heading for `aria-labelledby`. |
 | `class` | `string` | — | Extra classes on the wrapper. |
 
@@ -58,6 +67,42 @@ import SectionHeader from '@/components/apogee/SectionHeader/SectionHeader.astro
   <SectionHeader eyebrow="Eyebrow" heading="Large, level one" size="large" headingLevel={1} description="Hero size." />
 </Preview>
 
+The in-app size, with actions and a divider. Actions sit beside the text from
+`md` and under it on phones:
+
+<Preview block code={`<SectionHeader size="small" heading="Team members" description="Manage who has access." divider>
+  <Button slot="actions" size="small" variant="outline" color="neutral">Export</Button>
+  <Button slot="actions" size="small">Invite</Button>
+</SectionHeader>`}>
+  <div data-apogee-section-header="actions">
+    <SectionHeader size="small" heading="Team members" description="Manage who has access to this project and what they can do." divider>
+      <Button slot="actions" size="small" variant="outline" color="neutral">Export</Button>
+      <Button slot="actions" size="small"><Plus slot="start" />Invite</Button>
+    </SectionHeader>
+  </div>
+</Preview>
+
+Every `size`:
+
+<Preview block code={`<SectionHeader size="small" heading="Small" description="…" />
+<SectionHeader size="medium" heading="Medium" description="…" />
+<SectionHeader size="large" heading="Large" description="…" />`}>
+  <div data-apogee-section-header="small"><SectionHeader size="small" heading="Small, for app pages and card tops" description="An h4 visual with small text." /></div>
+  <SectionHeader size="medium" heading="Medium, the default" description="Medium text at a prose measure." />
+  <SectionHeader size="large" heading="Large, for heroes" description="Display heading and large text." />
+</Preview>
+
+Centred with actions:
+
+<Preview block code={`<SectionHeader align="center" heading="Ready to start?" description="…">
+  <Button slot="actions">Get started</Button>
+</SectionHeader>`}>
+  <SectionHeader align="center" heading="Ready to start?" description="Create a project in under a minute.">
+    <Button slot="actions" variant="outline" color="neutral">Read the docs</Button>
+    <Button slot="actions">Get started</Button>
+  </SectionHeader>
+</Preview>
+
 On each section background:
 
 <Preview block code={`<Section background="primary"><SectionHeader background="primary" … /></Section>`}>
@@ -65,6 +110,43 @@ On each section background:
   <Section background="primary-faded" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Primary faded" heading="Readable on the brand tint" description="Eyebrow stays primary." background="primary-faded" /></Section>
   <Section background="primary" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Primary" heading="On the brand fill" description="Everything inherits the on-colour." background="primary" /></Section>
   <Section background="inverted" spacing="small" class="rounded-lg"><SectionHeader eyebrow="Inverted" heading="On the inverted surface" description="Everything inherits the on-colour." background="inverted" /></Section>
+</Preview>
+
+## Examples
+
+A page header: breadcrumbs on desktop, a back link on phones, the title with
+actions, and a search box with a shortcut hint.
+
+<Preview block code={`<div class="flex flex-col gap-5">
+  <Breadcrumbs class="max-lg:hidden" items={[{ label: 'Projects', href: '#' }, { label: 'Spring launch' }]} />
+  <Button variant="link" color="neutral" size="small" href="#" class="lg:hidden"><ArrowLeft slot="start" />Back</Button>
+  <SectionHeader headingLevel={1} size="small" heading="Spring launch" description="Updated two hours ago by Ana." divider>
+    <Input slot="actions" size="small" placeholder="Search" aria-label="Search"><Search slot="start" /><Kbd slot="end">⌘K</Kbd></Input>
+    <Button slot="actions" size="small">New task</Button>
+  </SectionHeader>
+</div>`}>
+  <div class="flex flex-col gap-5">
+    <Breadcrumbs class="max-lg:hidden" items={[{ label: 'Projects', href: '#' }, { label: 'Spring launch' }]} />
+    <Button variant="link" color="neutral" size="small" href="#" class="self-start lg:hidden"><ArrowLeft slot="start" />Back</Button>
+    <SectionHeader headingLevel={1} size="small" heading="Spring launch" description="Updated two hours ago by Ana." divider>
+      <Input slot="actions" size="small" placeholder="Search" aria-label="Search tasks"><Search slot="start" /><Kbd slot="end">⌘K</Kbd></Input>
+      <Button slot="actions" size="small">New task</Button>
+    </SectionHeader>
+  </div>
+</Preview>
+
+Inside a card, the small size is the card title row:
+
+<Preview block code={`<Card>
+  <SectionHeader slot="header" size="small" heading="Recent activity" description="The last seven days." class="flex-1" />
+  <Button slot="header" size="small" variant="link">View all</Button>
+  …
+</Card>`}>
+  <Card>
+    <SectionHeader slot="header" size="small" heading="Recent activity" description="The last seven days." class="flex-1" />
+    <Button slot="header" size="small" variant="link">View all</Button>
+    <p class="text-sm text-neutral-faded">List goes here.</p>
+  </Card>
 </Preview>
 
 ## Accessibility
@@ -79,5 +161,6 @@ On each section background:
 | `--foreground-primary` | Eyebrow on page and tinted backgrounds |
 | `--foreground-neutral-faded` | Description on page and tinted backgrounds |
 | `--on-primary`, `--on-inverted` | Everything on the solid fills (inherited) |
+| `--border-neutral` | The `divider` rule |
 
 Layout primitive, so no content rules.

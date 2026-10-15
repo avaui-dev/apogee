@@ -6,7 +6,9 @@
  * nav is never a dead control. Slots: `brand` (logo), default (nav links),
  * `actions` (buttons at the end). The actions render inline on desktop and
  * again inside the mobile panel, so they stay reachable at every width — don't
- * put elements with ids in that slot, or they'd be duplicated.
+ * put elements with ids in that slot, or they'd be duplicated. `secondary`
+ * is a second row under the header (tabs or pills for the active section);
+ * `centered` puts the links in the middle with brand and actions either side.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
@@ -14,10 +16,13 @@ import { Menu } from '@lucide/astro'
 
 /** @composable */
 interface Props extends HTMLAttributes<'header'> {
+  /** Links in the middle, brand and actions at the edges. @category layout */
+  centered?: boolean
   class?: string
 }
 
-const { class: className, ...rest } = Astro.props
+const { centered = false, class: className, ...rest } = Astro.props
+const hasSecondary = Astro.slots.has('secondary')
 const menuId = uid(Astro.locals, 'apogee-nav')
 const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions') : ''
 ---
@@ -26,18 +31,21 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
   class:list={['sticky top-0 z-30 border-b border-neutral bg-page/85 backdrop-blur', className]}
   {...rest}
 >
-  <nav class="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-    <div class="flex items-center gap-6">
+  <nav class="relative mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
+    <div class:list={['flex items-center', centered ? 'flex-1' : 'md:me-2']}>
       <slot name="brand" />
-      <div
-        id={menuId}
-        class="apogee-navbar-menu absolute inset-x-0 top-full hidden flex-col gap-0.5 border-b border-neutral bg-page p-4 no-js:flex data-[open=true]:flex md:static md:flex md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0"
-      >
-        <slot />
-        {actions && <div class="mt-2 flex items-center gap-2 border-t border-neutral pt-3 md:hidden" set:html={actions} />}
-      </div>
     </div>
-    <div class="flex items-center gap-2">
+    <div
+      id={menuId}
+      class:list={[
+        'apogee-navbar-menu absolute inset-x-0 top-full hidden flex-col gap-0.5 border-b border-neutral bg-page p-4 no-js:flex data-[open=true]:flex md:static md:flex md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0',
+        centered ? 'md:justify-center' : 'md:me-auto',
+      ]}
+    >
+      <slot />
+      {actions && <div class="mt-2 flex items-center gap-2 border-t border-neutral pt-3 md:hidden" set:html={actions} />}
+    </div>
+    <div class:list={['flex items-center justify-end gap-2', centered ? 'flex-1' : 'ms-auto']}>
       {actions && <div class="hidden items-center gap-2 md:flex" set:html={actions} />}
       <button
         type="button"
@@ -50,6 +58,15 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
       </button>
     </div>
   </nav>
+  {
+    hasSecondary && (
+      <div class="apogee-navbar-secondary border-t border-neutral">
+        <nav class="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6" aria-label="Section">
+          <slot name="secondary" />
+        </nav>
+      </div>
+    )
+  }
 </header>
 
 <script>

@@ -15,6 +15,11 @@
  * `size` is the width (centre, drawers) or the max height (sheets). The page
  * behind a dim or blurred overlay cannot scroll; a transparent overlay leaves
  * scrolling alone but the dialog is still modal, so the page stays inert.
+ *
+ * The dialog is a flex column: header and footer stay put, only the body
+ * scrolls. Slots: `media` (flush cover above the header, the close button
+ * floats over it), `icon` (a FeaturedIcon above or beside the title),
+ * `header` (replaces the title block), default (body), `footer`.
  */
 import type { HTMLAttributes } from 'astro/types'
 import CloseButton from '../CloseButton/CloseButton.astro'
@@ -47,6 +52,10 @@ interface Props extends HTMLAttributes<'dialog'> {
   overlay?: 'dim' | 'blurred' | 'transparent'
   /** Click on the backdrop closes it. Set false for a confirm the user must answer. */
   dismissOnBackdrop?: boolean
+  /** Where the `icon` slot sits: above the title block or beside it. @category layout */
+  iconPosition?: 'top' | 'start'
+  /** `fill` stacks the footer buttons on phones and splits them in two equal columns from `sm`. @category layout */
+  footerLayout?: 'end' | 'fill'
   class?: string
 }
 
@@ -59,9 +68,15 @@ const {
   padding = 5,
   overlay = 'dim',
   dismissOnBackdrop = true,
+  iconPosition = 'top',
+  footerLayout = 'end',
   class: className,
   ...rest
 } = Astro.props
+const hasMedia = Astro.slots.has('media')
+const hasIcon = Astro.slots.has('icon')
+const hasHeader = Astro.slots.has('header')
+const hasTitle = hasHeader || Boolean(title || subtitle)
 const vars = [size && `--apogee-dialog-size: ${size}`, `--apogee-dialog-pad: ${paddings[padding]}`].filter(Boolean).join('; ')
 ---
 
@@ -70,37 +85,71 @@ const vars = [size && `--apogee-dialog-size: ${size}`, `--apogee-dialog-pad: ${p
   closedby={dismissOnBackdrop ? 'any' : 'closerequest'}
   data-dismiss-on-backdrop={String(dismissOnBackdrop)}
   data-overlay={overlay}
-  aria-labelledby={title ? `${id}-title` : undefined}
-  aria-describedby={subtitle ? `${id}-subtitle` : undefined}
+  aria-labelledby={hasHeader || title ? `${id}-title` : undefined}
+  aria-describedby={subtitle && !hasHeader ? `${id}-subtitle` : undefined}
   style={vars}
   class:list={['apogee-dialog bg-elevation-raised p-0 text-neutral', responsive(position, tables.dialogPosition), className]}
   {...rest}
 >
-  <div class="flex items-start justify-between gap-4 p-(--apogee-dialog-pad) pb-2">
-    {
-      (title || subtitle) && (
-        <div class="min-w-0">
-          {title && (
-            <h2 id={`${id}-title`} class="text-lg font-semibold text-neutral">
-              {title}
-            </h2>
-          )}
-          {subtitle && (
-            <p id={`${id}-subtitle`} class="mt-0.5 text-sm text-neutral-faded">
-              {subtitle}
-            </p>
-          )}
-        </div>
-      )
-    }
-    <CloseButton size="large" command="close" commandfor={id} class:list={['ms-auto', padding > 0 && '-me-1 -mt-1']} />
+  {
+    hasMedia && (
+      <div class="apogee-dialog-media relative shrink-0 overflow-hidden [&>img]:w-full [&>img]:object-cover">
+        <slot name="media" />
+        <CloseButton size="large" theme="dark" command="close" commandfor={id} class="absolute top-3 end-3 z-10" />
+      </div>
+    )
+  }
+  <div
+    class:list={[
+      'apogee-dialog-header flex shrink-0 items-start justify-between gap-4 p-(--apogee-dialog-pad)',
+      hasTitle ? 'pb-2' : 'pb-0',
+      hasMedia && 'pt-4',
+    ]}
+  >
+    <div class:list={['flex min-w-0 flex-1', iconPosition === 'start' ? 'flex-row items-start gap-4' : 'flex-col gap-4']}>
+      {
+        hasIcon && (
+          <div class="apogee-dialog-icon shrink-0">
+            <slot name="icon" />
+          </div>
+        )
+      }
+      {
+        hasHeader ? (
+          <div id={`${id}-title`} class="min-w-0 flex-1">
+            <slot name="header" />
+          </div>
+        ) : (
+          (title || subtitle) && (
+            <div class="min-w-0 flex-1">
+              {title && (
+                <h2 id={`${id}-title`} class="text-lg font-semibold text-neutral">
+                  {title}
+                </h2>
+              )}
+              {subtitle && (
+                <p id={`${id}-subtitle`} class="mt-0.5 text-sm text-neutral-faded">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+          )
+        )
+      }
+    </div>
+    {!hasMedia && <CloseButton size="large" command="close" commandfor={id} class:list={['ms-auto', padding > 0 && '-me-1 -mt-1']} />}
   </div>
-  <div class="px-(--apogee-dialog-pad) pb-(--apogee-dialog-pad) text-sm text-neutral-faded">
+  <div class="apogee-dialog-body min-h-0 flex-1 overflow-y-auto px-(--apogee-dialog-pad) pb-(--apogee-dialog-pad) text-sm text-neutral-faded">
     <slot />
   </div>
   {
     Astro.slots.has('footer') && (
-      <div class="flex justify-end gap-2 border-t border-neutral px-(--apogee-dialog-pad) py-4">
+      <div
+        class:list={[
+          'apogee-dialog-footer shrink-0 border-t border-neutral px-(--apogee-dialog-pad) py-4',
+          footerLayout === 'fill' ? 'grid grid-cols-1 gap-3 sm:grid-cols-2 [&>*]:w-full' : 'flex justify-end gap-2',
+        ]}
+      >
         <slot name="footer" />
       </div>
     )
@@ -111,7 +160,7 @@ const vars = [size && `--apogee-dialog-size: ${size}`, `--apogee-dialog-pad: ${p
   /* Layout per position comes from the responsive table (utilities on the
      element). This block owns the enter/exit motion and the backdrop. */
   .apogee-dialog {
-    overflow-y: auto;
+    flex-direction: column;
     opacity: 0;
     transition:
       opacity var(--duration-slow) var(--ease-standard),
@@ -128,6 +177,7 @@ const vars = [size && `--apogee-dialog-size: ${size}`, `--apogee-dialog-pad: ${p
     translate: calc(-1 * var(--apogee-dx)) var(--apogee-dy);
   }
   .apogee-dialog[open] {
+    display: flex;
     opacity: 1;
     translate: 0 0;
     scale: 1;

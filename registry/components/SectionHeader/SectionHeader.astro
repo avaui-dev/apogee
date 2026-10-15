@@ -3,6 +3,10 @@
  * SectionHeader — eyebrow, heading and description at the top of a section,
  * with the heading level, alignment and colours every section shares.
  * Pass the `id` the section's `aria-labelledby` points at.
+ *
+ * `size="small"` is the in-app form (a card top, a settings page); the
+ * `actions` slot puts buttons beside the text (under it on phones);
+ * `divider` closes the header with a rule.
  */
 import type { HTMLAttributes } from 'astro/types'
 import Eyebrow from '../Eyebrow/Eyebrow.astro'
@@ -27,20 +31,64 @@ interface Props extends HTMLAttributes<'div'> {
   align?: 'start' | 'center'
   /** The section background, to pick readable colours. @category layout */
   background?: keyof typeof eyebrows
-  /** `large` uses the display size (Hero). @category layout */
-  size?: 'medium' | 'large'
+  /** `small` is the in-app size; `large` uses the display size (Hero). @category layout */
+  size?: 'small' | 'medium' | 'large'
+  /** A rule under the header. @category layout */
+  divider?: boolean
   /** Id for the heading, for `aria-labelledby`. */
   id?: string
   class?: string
 }
 
-const { eyebrow, heading, description, headingLevel = 2, align = 'start', background = 'page', size = 'medium', id, class: className, ...rest } = Astro.props
+const {
+  eyebrow,
+  heading,
+  description,
+  headingLevel = 2,
+  align = 'start',
+  background = 'page',
+  size = 'medium',
+  divider = false,
+  id,
+  class: className,
+  ...rest
+} = Astro.props
 const as = levels[headingLevel]
-const visual = size === 'large' ? (headingLevel === 1 ? 'display' : 'h1') : headingLevel === 1 ? 'h1' : 'h2'
+const visual =
+  size === 'small' ? 'h4' : size === 'large' ? (headingLevel === 1 ? 'display' : 'h1') : headingLevel === 1 ? 'h1' : 'h2'
+const textSize = size === 'large' ? 'large' : size === 'small' ? 'small' : 'medium'
+const hasActions = Astro.slots.has('actions')
+const centered = align === 'center'
 ---
 
-<div class:list={['flex max-w-prose flex-col gap-3', align === 'center' && 'mx-auto items-center text-center', className]} {...rest}>
-  {eyebrow && <Eyebrow as="p" color={eyebrows[background]}>{eyebrow}</Eyebrow>}
-  <Heading as={as} size={visual} id={id}>{heading}</Heading>
-  {description && <Text size={size === 'large' ? 'large' : 'medium'} class={descriptions[background]}>{description}</Text>}
+<div
+  class:list={[
+    'apogee-section-header flex flex-col',
+    hasActions ? 'gap-4 md:flex-row md:items-start md:justify-between' : '',
+    centered && 'items-center text-center',
+    hasActions && centered && 'md:flex-col md:items-center',
+    divider && 'border-b border-neutral pb-5',
+    className,
+  ]}
+  {...rest}
+>
+  <div
+    class:list={[
+      'flex min-w-0 max-w-prose flex-col',
+      size === 'small' ? 'gap-1' : 'gap-3',
+      hasActions && !centered && 'flex-1',
+      centered && 'mx-auto items-center',
+    ]}
+  >
+    {eyebrow && <Eyebrow as="p" color={eyebrows[background]}>{eyebrow}</Eyebrow>}
+    <Heading as={as} size={visual} id={id}>{heading}</Heading>
+    {description && <Text size={textSize} class={descriptions[background]}>{description}</Text>}
+  </div>
+  {
+    hasActions && (
+      <div class:list={['apogee-section-header-actions flex shrink-0 flex-wrap items-center gap-3', centered && 'justify-center']}>
+        <slot name="actions" />
+      </div>
+    )
+  }
 </div>

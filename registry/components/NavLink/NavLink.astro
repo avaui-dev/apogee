@@ -1,7 +1,9 @@
 ---
 /**
  * NavLink — a navigation link with an active state. Auto-detects the current
- * route (`Astro.url.pathname === href`); pass `active` to override. Zero JS.
+ * route (`Astro.url.pathname === href`, or a prefix with `match="prefix"`);
+ * pass `active` to override. External links (`http…`) open in a new tab with a
+ * trailing icon. Zero JS.
  *
  * Hover shows a subtle fill; the active link a stronger one. Optional `start`
  * and `end` slots take an icon, badge, or count — `end` is pushed to
@@ -11,16 +13,32 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import { ExternalLink } from '@lucide/astro'
+
+/** Shared by NavGroup's summary so a group row looks like a link row. */
+export const navLinkClass =
+  'apogee-navlink flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
+export const navLinkIdle = 'text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral'
+export const navLinkActive = 'bg-neutral text-neutral'
+
 interface Props extends HTMLAttributes<'a'> {
   href: string
   active?: boolean
+  /** `prefix` also marks `/docs` active on `/docs/button`; `/` only matches itself. */
+  match?: 'exact' | 'prefix'
+  /** Opens in a new tab with a trailing icon. Auto-detected from an `http` href; pass `false` to opt out. */
+  external?: boolean
   class?: string
 }
 
-const { href, active: activeProp, class: className, ...rest } = Astro.props
+const { href, active: activeProp, match = 'exact', external: externalProp, class: className, ...rest } = Astro.props
 // Normalize trailing slashes so `/x` and `/x/` match.
 const norm = (p: string) => p.replace(/\/+$/, '') || '/'
-const active = activeProp ?? norm(Astro.url.pathname) === norm(href)
+const path = norm(Astro.url.pathname)
+const target = norm(href)
+const active =
+  activeProp ?? (path === target || (match === 'prefix' && target !== '/' && path.startsWith(target + '/')))
+const external = externalProp ?? /^https?:\/\//.test(href)
 
 const hasStart = Astro.slots.has('start')
 const hasEnd = Astro.slots.has('end')
@@ -29,16 +47,20 @@ const hasEnd = Astro.slots.has('end')
 <a
   href={href}
   aria-current={active ? 'page' : undefined}
-  class:list={[
-    'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
-    active
-      ? 'bg-neutral text-neutral'
-      : 'text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral',
-    className,
-  ]}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  class:list={[navLinkClass, active ? navLinkActive : navLinkIdle, className]}
   {...rest}
 >
   {hasStart && <span class="flex shrink-0 items-center [&>svg]:size-4"><slot name="start" /></span>}
-  <slot />
+  <span class="apogee-navlink-label min-w-0 truncate"><slot /></span>
   {hasEnd && <span class="ms-auto flex shrink-0 items-center [&>svg]:size-4"><slot name="end" /></span>}
+  {
+    external && !hasEnd && (
+      <span class="ms-auto flex shrink-0 items-center text-neutral-faded [&>svg]:size-3.5">
+        <ExternalLink aria-hidden="true" />
+        <span class="sr-only">(opens in a new tab)</span>
+      </span>
+    )
+  }
 </a>

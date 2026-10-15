@@ -10,6 +10,10 @@ import Card from '../../../../registry/components/Card/Card.astro'
 import Heading from '../../../../registry/components/Heading/Heading.astro'
 import Text from '../../../../registry/components/Text/Text.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+import Badge from '../../../../registry/components/Badge/Badge.astro'
+import Dropdown from '../../../../registry/components/Dropdown/Dropdown.astro'
+import DropdownItem from '../../../../registry/components/Dropdown/DropdownItem.astro'
+import { EllipsisVertical } from '@lucide/astro'
 
 <Preview code={`<Card>
   <Heading as="h3">Card title</Heading>
@@ -44,15 +48,20 @@ import Heading from '@/components/apogee/Heading/Heading.astro'
 
 ## Anatomy
 
-Card is a single component with one optional named slot, not a
+Card is a single component with named slots for its regions, not a
 Card.Header/Card.Body family:
 
 - **Root** — the `<a>` (when `href` is set) or `<div>` surface: border, radius,
-  background. Any content you pass goes directly inside its `p-5` padded body,
-  in the default slot.
-- **`slot="media"`** (optional) — renders flush at the top, above the padded
-  body, clipped to a 16:9 (`aspect-video`) box. Meant for an `<img>` — the slot
-  content is sized to fill it (`size-full object-cover`).
+  background. Any content you pass goes directly inside its padded body, in
+  the default slot.
+- **`slot="media"`** (optional) — renders flush at the top, above the body,
+  clipped to a 16:9 (`aspect-video`) box; with `mediaPosition="start"` it
+  becomes a fixed-width column beside the body from `sm`. Meant for an
+  `<img>` — the slot content is sized to fill it (`size-full object-cover`).
+- **`slot="header"`** (optional) — a bordered row above the body, stacked on
+  phones and a row from `md`, for a title, a badge, actions.
+- **`slot="footer"`** (optional) — a bordered row below the body for links or
+  buttons; put `class="ms-auto"` on the group that should sit at the end.
 
 ## API
 
@@ -63,6 +72,10 @@ Card.Header/Card.Body family:
 |---|---|---|---|
 | `href` | `string` | — | Renders the card as an `<a>` and makes the whole surface a link (hover/focus states apply). Omit for a static `<div>`. |
 | `as` | `'div' \| 'article' \| 'section' \| 'li' \| 'button'` | `'div'` | Tag to render; `button` makes the whole card a button (ignored when `href` is set). |
+| `raised` | `boolean` | `false` | Adds the raised shadow. |
+| `selected` | `boolean` | `false` | Primary border, for a chosen card in a set. |
+| `padding` | `'none' \| 'small' \| 'medium' \| 'large'` | `'medium'` | Body padding; header and footer rows use the same horizontal step with a shorter vertical one. |
+| `mediaPosition` | `'top' \| 'start'` | `'top'` | Where the `media` slot sits: above the body, or a 15rem column beside it from `sm`. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Variants
@@ -89,6 +102,67 @@ The only structural variant is presence of the `media` slot:
   </Card>
 </Preview>
 
+Header and footer regions:
+
+<Preview code={`<Card>
+  <div slot="header">
+    <Heading as="h3">Team members</Heading>
+    <Text color="neutral-faded" size="small">Manage who has access.</Text>
+  </div>
+  <Button slot="header" size="small" variant="outline" color="neutral">Invite</Button>
+  <Text size="small">Body…</Text>
+  <Button slot="footer" variant="link" class="ms-auto">View all</Button>
+</Card>`} block>
+  <div data-apogee-card="regions">
+    <Card>
+      <div slot="header">
+        <Heading as="h3">Team members</Heading>
+        <Text color="neutral-faded" size="small">Manage who has access to this project.</Text>
+      </div>
+      <Button slot="header" size="small" variant="outline" color="neutral">Invite</Button>
+      <Text size="small">Four people can edit; two can only view.</Text>
+      <Button slot="footer" variant="link" class="ms-auto">View all</Button>
+    </Card>
+  </div>
+</Preview>
+
+Media beside the body (`mediaPosition="start"`), stacked on phones:
+
+<Preview code={`<Card mediaPosition="start">
+  <img slot="media" src="…" alt="" />
+  <Heading as="h3">Side media</Heading>
+  <Text color="neutral-faded" size="small">A fixed-width image column from sm.</Text>
+</Card>`} block>
+  <div data-apogee-card="media-start">
+    <Card mediaPosition="start">
+      <img slot="media" src="https://picsum.photos/seed/apogee3/480/480" alt="" />
+      <Heading as="h3">Side media</Heading>
+      <Text color="neutral-faded" size="small">A fixed-width image column beside the body from the sm breakpoint; above it on phones.</Text>
+      <Button class="mt-4" size="small">Read more</Button>
+    </Card>
+  </div>
+</Preview>
+
+Every `padding`:
+
+<Preview code={`<Card padding="none">…</Card>
+<Card padding="small">…</Card>
+<Card padding="medium">…</Card>
+<Card padding="large">…</Card>`}>
+  <Card padding="none" class="max-w-40"><Text size="small">none</Text></Card>
+  <Card padding="small" class="max-w-40"><Text size="small">small</Text></Card>
+  <Card padding="medium" class="max-w-40"><Text size="small">medium</Text></Card>
+  <Card padding="large" class="max-w-40"><Text size="small">large</Text></Card>
+</Preview>
+
+A raised card and a selected card:
+
+<Preview code={`<Card raised>…</Card>
+<Card selected>…</Card>`}>
+  <Card raised class="max-w-xs"><Text size="small">Raised</Text></Card>
+  <Card selected class="max-w-xs"><Text size="small">Selected</Text></Card>
+</Preview>
+
 An article card and a button card:
 
 <Preview code={`<Card as="article"><h3>Post title</h3><p>Summary</p></Card>
@@ -101,8 +175,8 @@ An article card and a button card:
 
 Interactive states only apply when `href` is set (the whole card is a link):
 
-- **Hover** — background shifts to `--background-neutral-faded`.
-- **Focus** — a visible `focus-visible` ring (`--border-primary`).
+- **Hover** — background shifts to `--background-neutral-faded-highlighted`.
+- **Focus** — a visible `focus-visible` ring (`--outline-color-focus`).
 - **Static** (no `href`) — no hover/focus treatment; it's a plain container.
 
 <Preview code={`<Card href="#">
@@ -145,6 +219,48 @@ Composed with a Button (card itself is static — the button is the click target
   </Card>
 </Preview>
 
+A card header with a title, a count, actions and a kebab menu (the kebab is
+absolute on phones so the title keeps the first line):
+
+<Preview code={`<Card>
+  <div slot="header" class="relative flex min-w-0 flex-1 flex-col gap-1 md:pe-0 pe-10">
+    <div class="flex items-center gap-2">
+      <Heading as="h3">Invoices</Heading>
+      <Badge size="small" variant="outline" color="neutral">24</Badge>
+    </div>
+    <Text color="neutral-faded" size="small">Everything billed this quarter.</Text>
+  </div>
+  <div slot="header" class="flex items-center gap-2">
+    <Button size="small" variant="outline" color="neutral">Export</Button>
+    <Button size="small">New invoice</Button>
+    <Dropdown id="card-kebab" label="More actions" placement="bottom-end">
+      <Button slot="anchor" popovertarget="card-kebab" size="small" variant="ghost" color="neutral" iconOnly aria-label="More"><EllipsisVertical /></Button>
+      <DropdownItem>Archive all</DropdownItem>
+    </Dropdown>
+  </div>
+  …
+</Card>`} block>
+  <Card>
+    <div slot="header" class="flex min-w-0 flex-1 flex-col gap-1">
+      <div class="flex items-center gap-2">
+        <Heading as="h3">Invoices</Heading>
+        <Badge size="small" variant="outline" color="neutral">24</Badge>
+      </div>
+      <Text color="neutral-faded" size="small">Everything billed this quarter.</Text>
+    </div>
+    <div slot="header" class="flex items-center gap-2">
+      <Button size="small" variant="outline" color="neutral">Export</Button>
+      <Button size="small">New invoice</Button>
+      <Dropdown placement="bottom-end">
+        <Button slot="anchor" size="small" variant="ghost" color="neutral" iconOnly aria-label="More actions"><EllipsisVertical /></Button>
+        <DropdownItem>Archive all</DropdownItem>
+        <DropdownItem>Download CSV</DropdownItem>
+      </Dropdown>
+    </div>
+    <Text size="small">Table or list goes here.</Text>
+  </Card>
+</Preview>
+
 ## Accessibility
 
 - With `href`, the whole surface is a real `<a>` — keyboard-focusable,
@@ -165,7 +281,8 @@ Composed with a Button (card itself is static — the button is the click target
 | `--border-neutral` | Card outline |
 | `--background-elevation-raised` / `--foreground-neutral` | Card background / default text color |
 | `--background-neutral-faded-highlighted` | Hover background (linked cards only) |
-| `--border-primary` | Focus ring (linked cards only) |
+| `--outline-color-focus` | Focus ring (linked cards only) |
+| `--border-neutral` | Header and footer rules |
 | `--radius-lg` | Corner radius |
 
 ## Do / Don't

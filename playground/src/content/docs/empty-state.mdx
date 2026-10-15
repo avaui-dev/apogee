@@ -8,7 +8,9 @@ order: 0
 import Preview from '../../components/Preview.astro'
 import EmptyState from '../../../../registry/components/EmptyState/EmptyState.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
-import { Inbox, SearchX } from '@lucide/astro'
+import FeaturedIcon from '../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import Card from '../../../../registry/components/Card/Card.astro'
+import { Inbox, SearchX, FolderOpen, Users } from '@lucide/astro'
 
 <Preview code={`<EmptyState title="No messages yet" description="When someone sends you a message, it'll show up here.">
   <Inbox slot="icon" />
@@ -40,8 +42,9 @@ import EmptyState from '@/components/apogee/EmptyState/EmptyState.astro'
 
 ## Anatomy
 
-- **`icon`** slot (optional) — a leading glyph above the title. Sized via
-  `[&_svg]:size-8`; pass any SVG (Lucide recommended).
+- **`icon`** slot (optional) — a leading glyph above the title. A bare SVG is
+  sized by `size` (`[&>svg]`); a FeaturedIcon keeps its own size. The
+  `pattern` decoration is drawn behind this slot.
 - **Title** — required, always rendered.
 - **Description** — optional, rendered under the title when passed.
 - **`actions`** slot (optional) — buttons or links, wrapped and centered below the text.
@@ -63,7 +66,75 @@ through to the root `<div>`.
 |---|---|---|---|
 | `title` | `string` | — | Required. The primary message. |
 | `description` | `string` | — | Optional supporting line, shown under the title. |
+| `as` | `'p' \| 'h2' \| 'h3'` | `'p'` | Element for the title; use a heading when the empty state is the page's only content. |
+| `variant` | `'bordered' \| 'plain'` | `'bordered'` | `plain` drops the dashed box, for use inside a card, a table body or a full page. |
+| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Scales the icon, text and padding. |
+| `pattern` | `'none' \| 'rings' \| 'grid'` | `'none'` | A faint decoration behind the icon, drawn with the border token under a radial fade. |
 | `class` | `string` | — | Extra classes on the root, merged last. |
+
+## Variants
+
+Every `size`:
+
+<Preview code={`<EmptyState size="small" title="No results" description="…"><SearchX slot="icon" /></EmptyState>
+<EmptyState size="medium" title="No results" description="…"><SearchX slot="icon" /></EmptyState>
+<EmptyState size="large" title="No results" description="…"><SearchX slot="icon" /></EmptyState>`} block>
+  <div data-apogee-empty-state="sizes" class="grid gap-4 md:grid-cols-3">
+    <EmptyState size="small" title="No results" description="Try other filters."><SearchX slot="icon" /></EmptyState>
+    <EmptyState size="medium" title="No results" description="Try other filters."><SearchX slot="icon" /></EmptyState>
+    <EmptyState size="large" title="No results" description="Try other filters."><SearchX slot="icon" /></EmptyState>
+  </div>
+</Preview>
+
+`plain` inside a card, where the dashed box would be a second frame:
+
+<Preview code={`<Card padding="none">
+  <EmptyState variant="plain" title="No members yet" description="Invite someone to get started.">
+    <Users slot="icon" />
+    <Button slot="actions" size="small">Invite</Button>
+  </EmptyState>
+</Card>`} block>
+  <div data-apogee-empty-state="plain">
+    <Card padding="none">
+      <EmptyState variant="plain" title="No members yet" description="Invite someone to get started.">
+        <Users slot="icon" />
+        <Button slot="actions" size="small">Invite</Button>
+      </EmptyState>
+    </Card>
+  </div>
+</Preview>
+
+Every `pattern`, with a FeaturedIcon in the slot:
+
+<Preview code={`<EmptyState pattern="rings" title="No projects" description="…">
+  <FeaturedIcon slot="icon" theme="outline" color="neutral"><FolderOpen /></FeaturedIcon>
+</EmptyState>
+<EmptyState pattern="grid" title="No projects" description="…">
+  <FeaturedIcon slot="icon" color="primary"><FolderOpen /></FeaturedIcon>
+</EmptyState>`} block>
+  <div class="grid gap-4 md:grid-cols-2">
+    <div data-apogee-empty-state="pattern">
+      <EmptyState pattern="rings" title="No projects" description="Create your first project to get started.">
+        <FeaturedIcon slot="icon" theme="outline" color="neutral"><FolderOpen /></FeaturedIcon>
+        <Button slot="actions" size="small">New project</Button>
+      </EmptyState>
+    </div>
+    <div data-apogee-empty-state="featured">
+      <EmptyState pattern="grid" title="No projects" description="Create your first project to get started.">
+        <FeaturedIcon slot="icon" color="primary"><FolderOpen /></FeaturedIcon>
+        <Button slot="actions" size="small">New project</Button>
+      </EmptyState>
+    </div>
+  </div>
+</Preview>
+
+A full page with a heading as the title:
+
+<Preview code={`<EmptyState as="h2" variant="plain" size="large" title="Your inbox is empty" description="…" />`}>
+  <EmptyState as="h2" variant="plain" size="large" title="Your inbox is empty" description="New messages land here. Nothing needs your attention right now.">
+    <Inbox slot="icon" />
+  </EmptyState>
+</Preview>
 
 ## Examples
 
@@ -94,7 +165,7 @@ it). Any `Button`/link placed in `actions` keeps its own keyboard behaviour.
 
 | Token | Used for |
 |---|---|
-| `--border-neutral` | Dashed border around the block |
+| `--border-neutral` | Dashed border around the block, and the `pattern` lines |
 | `--foreground-neutral` | Title text |
 | `--foreground-neutral-faded` | Icon colour and description text |
 | `--radius-lg` | Corner radius |

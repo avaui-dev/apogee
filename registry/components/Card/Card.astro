@@ -1,8 +1,9 @@
 ---
 /**
  * Card — a surface container. Compose freely inside (Heading, Text, Button…).
- * Optional `media` slot renders flush at the top (for a card image). Set `href`
- * to make the whole card an interactive link.
+ * Optional `media` slot renders flush at the top (or at the start with
+ * `mediaPosition="start"`); `header` and `footer` slots are bordered regions
+ * above and below the padded body. Set `href` to make the whole card a link.
  *
  * @composable
  */
@@ -18,23 +19,40 @@ interface Props extends HTMLAttributes<'div'> {
   selected?: boolean
   /** Inner padding. @category layout */
   padding?: 'none' | 'small' | 'medium' | 'large'
+  /** Where the `media` slot sits: above the body, or beside it from `sm`. @category layout */
+  mediaPosition?: 'top' | 'start'
   class?: string
 }
 
-const { href, as = 'div', raised = false, selected = false, padding = 'medium', class: className, ...rest } = Astro.props
+const {
+  href,
+  as = 'div',
+  raised = false,
+  selected = false,
+  padding = 'medium',
+  mediaPosition = 'top',
+  class: className,
+  ...rest
+} = Astro.props
 const paddings = { none: 'p-0', small: 'p-3', medium: 'p-5', large: 'p-8' } as const
+// Header and footer rows use a shorter vertical step than the body.
+const regionPaddings = { none: 'p-0', small: 'px-3 py-2', medium: 'px-5 py-4', large: 'px-8 py-5' } as const
 const Tag = href ? 'a' : as
 const interactive = href || as === 'button'
   ? 'transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus'
   : ''
 const hasMedia = Astro.slots.has('media')
+const hasHeader = Astro.slots.has('header')
+const hasFooter = Astro.slots.has('footer')
+const sideMedia = hasMedia && mediaPosition === 'start'
 ---
 
 <Tag
   href={href}
   type={Tag === 'button' ? 'button' : undefined}
   class:list={[
-    'block overflow-hidden rounded-lg border bg-elevation-raised text-start text-neutral',
+    'apogee-card overflow-hidden rounded-lg border bg-elevation-raised text-start text-neutral',
+    sideMedia ? 'flex flex-col sm:flex-row' : 'block',
     Tag === 'button' && 'w-full',
     selected ? 'border-primary' : 'border-neutral',
     raised && 'shadow-raised',
@@ -45,12 +63,38 @@ const hasMedia = Astro.slots.has('media')
 >
   {
     hasMedia && (
-      <div class="aspect-video overflow-hidden [&>img]:size-full [&>img]:object-cover">
+      <div
+        class:list={[
+          'apogee-card-media overflow-hidden [&>img]:size-full [&>img]:object-cover',
+          sideMedia ? 'aspect-video sm:aspect-auto sm:w-60 sm:shrink-0' : 'aspect-video',
+        ]}
+      >
         <slot name="media" />
       </div>
     )
   }
-  <div class={paddings[padding]}>
-    <slot />
+  <div class:list={['min-w-0', sideMedia && 'flex flex-1 flex-col']}>
+    {
+      hasHeader && (
+        <div
+          class:list={[
+            'apogee-card-header flex flex-col gap-4 border-b border-neutral md:flex-row md:items-start md:justify-between',
+            regionPaddings[padding],
+          ]}
+        >
+          <slot name="header" />
+        </div>
+      )
+    }
+    <div class:list={['apogee-card-body', paddings[padding], sideMedia && 'flex-1']}>
+      <slot />
+    </div>
+    {
+      hasFooter && (
+        <div class:list={['apogee-card-footer flex items-center gap-3 border-t border-neutral', regionPaddings[padding]]}>
+          <slot name="footer" />
+        </div>
+      )
+    }
   </div>
 </Tag>

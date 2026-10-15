@@ -40,13 +40,16 @@ import FileUpload from '@/components/apogee/FileUpload/FileUpload.astro'
 ## API
 
 Any other native `<input type="file">` attribute (e.g. `required`, `disabled`,
-`capture`) passes through via the catch-all `[key: string]: any`.
+`capture`) passes through to the input.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `name` | `string` | — | Form field name, forwarded to the native input. |
 | `accept` | `string` | — | Accepted file types, forwarded to the native input (e.g. `"image/*"`). |
 | `multiple` | `boolean` | `false` | Allow selecting more than one file, forwarded to the native input. |
+| `maxSize` | `number` | — | Largest file allowed, in bytes. Larger files are refused (dropped or picked) and the hint says why. |
+| `hint` | `string` | — | A line under the control; it turns critical and shows the reason when a file is refused. |
+| `preview` | `boolean` | `false` | Shows a thumbnail of a picked image (JS). |
 | `variant` | `'default' \| 'headless'` | `'default'` | `headless` drops the dashed box so the slot is the whole look. |
 | `inline` | `boolean` | `false` | A single row (icon + text) instead of a stacked zone. |
 | `class` | `string` | — | Extra classes on the label (dropzone), merged last. |
@@ -59,11 +62,32 @@ Multiple files:
   <FileUpload name="attachments" multiple />
 </Preview>
 
-Restricted to a type, marked required:
+Restricted to a type and size, with a hint and an image preview. Drop a text
+file or a large image to see the refusal:
+
+<Preview code={`<FileUpload name="photo" accept="image/*" maxSize={1024 * 1024} hint="PNG or JPG, up to 1 MB" preview />`}>
+  <div data-apogee-file="validated">
+    <FileUpload name="photo" accept="image/*" maxSize={1024 * 1024} hint="PNG or JPG, up to 1 MB" preview />
+  </div>
+</Preview>
+
+Without a hint, a refused file still says why:
+
+<Preview code={`<FileUpload name="doc" accept=".pdf" />`}>
+  <div data-apogee-file="no-hint"><FileUpload name="doc" accept=".pdf" /></div>
+</Preview>
+
+Marked required:
 
 ```astro
 <FileUpload name="resume" accept=".pdf,.doc,.docx" required />
 ```
+
+Disabled:
+
+<Preview code={`<FileUpload name="locked" disabled hint="Uploads are closed" />`}>
+  <FileUpload name="locked" disabled hint="Uploads are closed" />
+</Preview>
 
 ## Slot, headless and inline
 
@@ -80,14 +104,21 @@ The default slot replaces the built-in copy; `headless` leaves styling to you;
 
 ## States
 
-- **Hover** — dropzone border shifts to `--background-primary`.
+- **Hover** — dropzone border shifts to `--border-primary`.
 - **Drag-over** (JS) — border and a faint accent background via `data-drag="true"`.
+- **Invalid** (JS) — a refused file sets `data-invalid="true"`: critical border, the
+  hint shows the reason. Clears on the next accepted file.
+- **Disabled** — `disabled` on the input dims the zone and blocks the pointer.
 - **No JS** — filename text is hidden (`no-js:hidden`); the native picker and
   form submission still work.
 
 ## Events
 
-A dropped file assigns `input.files` and dispatches a native `change` event, the same as picking a file.
+A dropped file that passes `accept` and `maxSize` assigns `input.files` and
+dispatches a native `change` event, the same as picking a file. A refused file
+leaves `input.files` empty; a picked file that fails the same checks is
+cleared. Native `accept` only filters the picker dialog, so the island
+applies the same rule to drops.
 
 ## Accessibility
 
@@ -98,7 +129,8 @@ A dropped file assigns `input.files` and dispatches a native `change` event, the
 - A consumer-passed `id` is used for both the `<input>` and the `<label for>`,
   so the association stays correct; omit it and the component generates its
   own. It isn't designed to be wrapped in `Field`; add a visible label of your
-  own above it if you need one.
+  own above it if you need one. `hint` is wired with `aria-describedby` and
+  announced when it changes (`aria-live="polite"`).
 - **No JS:** the picker and form submission are unaffected — only the
   filename echo and drag-and-drop are lost. See the `JsNote` above.
 
@@ -106,17 +138,18 @@ A dropped file assigns `input.files` and dispatches a native `change` event, the
 
 | Token | Used for |
 |---|---|
-| `--border-neutral` / `--background-primary` | Dropzone border (default / hover / drag-over) |
+| `--border-neutral` / `--border-primary` / `--border-critical` | Dropzone border (default / hover and drag-over / invalid) |
 | `--background-page` | Dropzone fill |
-| `--background-primary` (at 5% opacity) | Drag-over background tint |
+| `--background-primary-faded-highlighted` | Drag-over background tint |
+| `--foreground-critical` | Hint while a file is refused |
 | `--foreground-neutral-faded` | Helper text and filename echo |
 | `--foreground-neutral` | "or drag a file here" text |
 | `--radius-lg` | Corner radius |
 
 ## Do / Don't
 
-- **Do** set `accept` to steer file type even though it isn't enforced server-side.
-- **Do** add a heading or text above it when a hint or error message is needed — it doesn't wire into `Field`.
+- **Do** set `accept` and `maxSize`; they are checked on the client for drops and picks, and still need a server-side check.
+- **Do** use `hint` for the accepted types and size; add a heading above it when it needs a label, since it doesn't wire into `Field`.
 - **Don't** rely on drag-and-drop as the only way in — the label/click path (and no-JS path) must always work.
 - **Don't** remove the visible "Browse" text — it's the only affordance once drag-and-drop is unavailable.
 

@@ -10,6 +10,7 @@ import JsNote from '../../components/JsNote.astro'
 import Navbar from '../../../../registry/components/Navbar/Navbar.astro'
 import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
+import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
 
 <JsNote fallback="The toggle is hidden (`no-js:hidden`) and the links panel stays expanded (`no-js:flex`), so below the md breakpoint the nav is fully reachable without a working control to click. Desktop viewports (md and up) are unaffected: links show inline via CSS regardless of JS.">
   Wires the mobile menu toggle: clicking it flips `data-open` on the
@@ -60,6 +61,8 @@ import NavLink from '@/components/apogee/NavLink/NavLink.astro'
 - **`actions` slot** — end-aligned buttons/controls. Rendered inline on
   desktop and again at the bottom of the mobile panel, so they stay reachable
   at every width. Don't put elements with ids in it; they would be duplicated.
+- **`secondary` slot** — a second row under the header, full width, for
+  the active section's tabs or pills. Scrolls sideways when it overflows.
 - **mobile toggle** — a hamburger button (`md:hidden`), controls the links
   panel via `aria-controls` / `aria-expanded`.
 
@@ -70,6 +73,7 @@ passes through to the root `<header>` (`...rest`).
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
+| `centered` | `boolean` | `false` | Links in the middle, brand and actions at the edges. |
 | `class` | `string` | — | Extra classes on the root `<header>`, merged last. |
 
 ## States
@@ -103,6 +107,36 @@ With brand, links, and actions:
     <Button slot="actions" variant="ghost" color="neutral" href="/login">Log in</Button>
     <Button slot="actions" href="/signup">Sign up</Button>
   </Navbar>
+</Preview>
+
+A second row for the active section, and a centred layout:
+
+<Preview code={`<Navbar>
+  <a slot="brand" href="/">Acme</a>
+  <NavLink href="/docs" match="prefix">Docs</NavLink>
+  <NavLink href="/pricing">Pricing</NavLink>
+  <Tabs slot="secondary" variant="underline" tabs={[{ label: 'Overview' }, { label: 'Members' }, { label: 'Billing' }]} />
+</Navbar>
+<Navbar centered>…</Navbar>`} block>
+  <div data-apogee-navbar="secondary">
+    <Navbar class="static">
+      <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+      <NavLink href="/docs" match="prefix">Docs</NavLink>
+      <NavLink href="/pricing">Pricing</NavLink>
+      <Button slot="actions" size="small">Sign up</Button>
+      <Tabs slot="secondary" variant="underline" tabs={[{ label: 'Overview', value: 'o' }, { label: 'Members', value: 'm' }, { label: 'Billing', value: 'b' }]} />
+    </Navbar>
+  </div>
+  <div data-apogee-navbar="centered">
+    <Navbar centered class="static">
+      <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+      <NavLink href="/docs">Docs</NavLink>
+      <NavLink href="/pricing">Pricing</NavLink>
+      <NavLink href="/blog">Blog</NavLink>
+      <Button slot="actions" variant="ghost" color="neutral" href="/login">Log in</Button>
+      <Button slot="actions" href="/signup">Sign up</Button>
+    </Navbar>
+  </div>
 </Preview>
 
 ## Accessibility

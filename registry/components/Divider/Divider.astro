@@ -1,15 +1,24 @@
 ---
 /**
  * Divider — a separator between content. Put text in the default slot for a
- * labelled rule ("or", "Today"); `contentPosition` places it.
+ * labelled rule ("or", "Today"); `contentPosition` places it; `variant`
+ * draws the content between two rules (`dual`) or on a filled band (`fill`).
+ * Set `interactive` when the slot holds a button so it keeps its own colour
+ * and no separator role wraps it.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
 const colors = { neutral: 'bg-neutral', 'neutral-faded': 'bg-neutral-faded' } as const
+const borders = { neutral: 'border-neutral', 'neutral-faded': 'border-neutral-faded' } as const
 const insetsH = { 0: 'my-0', 2: 'my-2', 4: 'my-4', 6: 'my-6', 8: 'my-8' } as const
 const insetsV = { 0: 'mx-0', 2: 'mx-2', 4: 'mx-4', 6: 'mx-6', 8: 'mx-8' } as const
+const variants = {
+  line: 'gap-3',
+  dual: 'justify-center border-y py-3',
+  fill: 'justify-center rounded-lg bg-neutral-faded py-2',
+} as const
 
 /** @composable */
 interface Props extends HTMLAttributes<'hr'> {
@@ -17,28 +26,52 @@ interface Props extends HTMLAttributes<'hr'> {
   orientation?: 'horizontal' | 'vertical'
   /** @category layout */
   color?: keyof typeof colors
-  /** Where the label sits on a horizontal divider. @category layout */
+  /** Where the label sits on a horizontal divider (`line` only). @category layout */
   contentPosition?: 'start' | 'center' | 'end'
+  /** How labelled content is framed. @category layout */
+  variant?: keyof typeof variants
+  /** The slot holds a control: no separator role, no faded text colour. */
+  interactive?: boolean
   /** Margin along the main axis. @category layout */
   inset?: keyof typeof insetsH
   class?: string
 }
 
-const { orientation = 'horizontal', color = 'neutral', contentPosition = 'center', inset, class: className, ...rest } = Astro.props
+const {
+  orientation = 'horizontal',
+  color = 'neutral',
+  contentPosition = 'center',
+  variant = 'line',
+  interactive = false,
+  inset,
+  class: className,
+  ...rest
+} = Astro.props
 const labelled = Astro.slots.has('default')
 const line = colors[color]
 ---
 
 {
   orientation === 'vertical' ? (
-    <div role="separator" aria-orientation="vertical" class:list={['w-px self-stretch', line, inset !== undefined && insetsV[inset], className]} {...rest} />
+    <div role="separator" aria-orientation="vertical" class:list={['apogee-divider w-px self-stretch', line, inset !== undefined && insetsV[inset], className]} {...rest} />
   ) : labelled ? (
-    <div role="separator" class:list={['flex items-center gap-3 text-sm text-neutral-faded', inset !== undefined && insetsH[inset], className]} {...rest}>
-      {contentPosition !== 'start' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
+    <div
+      role={interactive ? undefined : 'separator'}
+      class:list={[
+        'apogee-divider flex items-center text-sm',
+        interactive ? 'text-neutral' : 'text-neutral-faded',
+        variants[variant],
+        variant === 'dual' && borders[color],
+        inset !== undefined && insetsH[inset],
+        className,
+      ]}
+      {...rest}
+    >
+      {variant === 'line' && contentPosition !== 'start' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
       <span class="shrink-0"><slot /></span>
-      {contentPosition !== 'end' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
+      {variant === 'line' && contentPosition !== 'end' && <span class:list={['h-px flex-1', line]} aria-hidden="true" />}
     </div>
   ) : (
-    <hr class:list={['h-px w-full border-0', line, inset !== undefined && insetsH[inset], className]} {...rest} />
+    <hr class:list={['apogee-divider h-px w-full border-0', line, inset !== undefined && insetsH[inset], className]} {...rest} />
   )
 }
