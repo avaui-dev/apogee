@@ -14,7 +14,7 @@ interface Props {
   href: string
 }
 const { id, title, description, href } = Astro.props
-const Icon = docsIcons[id] ?? Box
+const Icon = docsIcons[id] ?? docsIcons[id.split('/')[0]!] ?? Box
 ---
 
 <Card href={href} padding="small">

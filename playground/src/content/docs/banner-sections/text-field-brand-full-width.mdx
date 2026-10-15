@@ -1,0 +1,25 @@
+---
+title: "Text field brand, full width"
+description: "An email field and a Subscribe button beside the message, as a bar across the page on the brand colour."
+group: Banner sections
+order: 10
+related: [sections/banner]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="banner/text-field-brand-full-width" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add banner/text-field-brand-full-width
+```
+
+This copies the block to `src/components/apogee/blocks/banner/` with everything it uses: Banner, Button, FeaturedIcon, Input. Place it at the top of a page, or pass `fixed` to a floating banner to pin it to the bottom of the viewport. Use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The banner is a region named by its message, so it shows up in a screen reader's landmark list.
+- The close button removes the banner; it needs JS, so it hides without it and the banner stays.
+- The email field is named by `aria-label="Email"` (the placeholder is not a label); the form submits without JS.

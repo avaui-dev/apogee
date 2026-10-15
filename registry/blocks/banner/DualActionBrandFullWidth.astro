@@ -1,0 +1,21 @@
+---
+/**
+ * Dual action brand, full width: A cookie notice with Decline and Allow buttons, as a bar across the page on the brand colour.
+ *
+ * @block banner
+ * @order 14
+ */
+import { BadgeCheck } from '@lucide/astro'
+import Banner from '../../sections/Banner/Banner.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+---
+
+<Banner layout="full-width" background="primary" inline heading="We use cookies to improve your experience">
+  <BadgeCheck slot="icon" class="size-5" aria-hidden="true" />
+  Read our <Link href="#" color="inherit">cookie policy</Link>.
+  <div slot="actions" class="flex flex-col-reverse gap-2 sm:flex-row">
+    <Button size="small" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!">Decline</Button>
+    <Button size="small" color="neutral">Allow</Button>
+  </div>
+</Banner>

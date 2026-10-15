@@ -2,7 +2,8 @@
 // Generates registry/index.json — the manifest the CLI's `add` reads.
 // Scans each component dir, parses imports to find sibling-component deps
 // (`../Name/Name.astro`) and npm deps (bare, non-Astro specifiers). Pages
-// (registry/pages/<category>/<Name>.astro) are one entry per file, keyed
+// (registry/pages/<category>/<Name>.astro) and blocks (registry/blocks/…, one
+// part of a page such as a banner) are one entry per file, keyed
 // `<category>/<slug>`, with the title and description from their doc comment.
 
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs'
@@ -12,7 +13,6 @@ import { dirname, resolve, join } from 'node:path'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const componentsRoot = join(root, 'registry', 'components')
 const sectionsRoot = join(root, 'registry', 'sections')
-const pagesRoot = join(root, 'registry', 'pages')
 
 const IMPORT_RE = /(?:import|export)[^'"]*?from\s*['"]([^'"]+)['"]|import\s*['"]([^'"]+)['"]/g
 
@@ -66,25 +66,29 @@ for (const { dir, kind, dirPath, prefix } of entries) {
   }
 }
 
-for (const category of listDirs(pagesRoot)) {
-  for (const file of readdirSync(join(pagesRoot, category)).filter((f) => f.endsWith('.astro')).sort()) {
-    const src = readFileSync(join(pagesRoot, category, file), 'utf8')
-    const name = `${category}/${file.replace(/\.astro$/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`
-    // First doc-comment line: "Title: description."
-    const line = src.match(/\/\*\*\s*\n\s*\*\s*(.+)/)?.[1] ?? ''
-    const [title, ...rest] = line.split(': ')
-    if (!title || !rest.length) throw new Error(`${name}: doc comment must open with "Title: description."`)
-    const { registryDeps, npmDeps } = depsOf(src, null)
-    components[name] = {
-      name,
-      kind: 'page',
-      category,
-      title,
-      description: rest.join(': '),
-      files: [`pages/${category}/${file}`],
-      registryDependencies: [...registryDeps].sort(),
-      dependencies: [...npmDeps].sort(),
-      usesJs: src.includes('<script'),
+for (const [folder, kind] of [['pages', 'page'], ['blocks', 'block']]) {
+  const kindRoot = join(root, 'registry', folder)
+  for (const category of listDirs(kindRoot)) {
+    for (const file of readdirSync(join(kindRoot, category)).filter((f) => f.endsWith('.astro')).sort()) {
+      const src = readFileSync(join(kindRoot, category, file), 'utf8')
+      const name = `${category}/${file.replace(/\.astro$/, '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`
+      if (components[name]) throw new Error(`${name}: a page and a block share this name`)
+      // First doc-comment line: "Title: description."
+      const line = src.match(/\/\*\*\s*\n\s*\*\s*(.+)/)?.[1] ?? ''
+      const [title, ...rest] = line.split(': ')
+      if (!title || !rest.length) throw new Error(`${name}: doc comment must open with "Title: description."`)
+      const { registryDeps, npmDeps } = depsOf(src, null)
+      components[name] = {
+        name,
+        kind,
+        category,
+        title,
+        description: rest.join(': '),
+        files: [`${folder}/${category}/${file}`],
+        registryDependencies: [...registryDeps].sort(),
+        dependencies: [...npmDeps].sort(),
+        usesJs: src.includes('<script'),
+      }
     }
   }
 }
@@ -98,4 +102,4 @@ const index = {
 const out = join(root, 'registry', 'index.json')
 writeFileSync(out, JSON.stringify(index, null, 2) + '\n')
 const counts = Object.values(components).reduce((n, c) => ((n[c.kind] = (n[c.kind] ?? 0) + 1), n), {})
-console.log(`Wrote ${out} — ${counts.component ?? 0} components, ${counts.section ?? 0} sections, ${counts.page ?? 0} pages.`)
+console.log(`Wrote ${out} — ${counts.component ?? 0} components, ${counts.section ?? 0} sections, ${counts.page ?? 0} pages, ${counts.block ?? 0} blocks.`)

@@ -5,6 +5,7 @@
  * it in a frame (PagePreview).
  */
 import '../styles/global.css'
+import BrandHead from '../components/BrandHead.astro'
 
 interface Props {
   title: string
@@ -17,6 +18,7 @@ const { title } = Astro.props
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <BrandHead />
     <title>{title} — Apogee examples</title>
     <script is:inline>
       document.documentElement.classList.replace('no-js', 'js')

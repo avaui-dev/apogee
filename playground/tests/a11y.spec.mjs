@@ -1,4 +1,4 @@
-// Axe smoke: every docs page, the showcase pages, the page examples and the RTL page, in both
+// Axe smoke: every docs page, the showcase pages, the page and block examples and the RTL page, in both
 // themes. Run on demand (`npm run test:a11y`) and in CI; not part of
 // prepublishOnly because it downloads a browser.
 import { test, expect } from '@playwright/test'
@@ -11,7 +11,7 @@ const pages = readdirSync('src/content/docs', { recursive: true })
 const showcase = readdirSync('src/pages/showcase', { recursive: true })
   .filter((f) => f.endsWith('.astro'))
   .map((f) => `/showcase/${f.replace('.astro', '')}`)
-const examples = readdirSync('../registry/pages', { recursive: true })
+const examples = ['pages', 'blocks'].flatMap((d) => readdirSync(`../registry/${d}`, { recursive: true }))
   .filter((f) => f.endsWith('.astro'))
   .map((f) => `/examples/${f.replace('.astro', '').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}`)
 

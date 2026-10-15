@@ -1,0 +1,14 @@
+---
+/**
+ * Slim brand: One centred line with a link, nothing else, as a floating card on the brand colour.
+ *
+ * @block banner
+ * @order 8
+ */
+import Banner from '../../sections/Banner/Banner.astro'
+import Link from '../../components/Link/Link.astro'
+---
+
+<Banner background="primary" align="center" inline heading="We've just launched a new feature">
+  Check out the <Link href="#" color="inherit">new dashboard</Link>.
+</Banner>

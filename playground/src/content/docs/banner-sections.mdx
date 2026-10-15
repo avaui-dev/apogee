@@ -1,0 +1,29 @@
+---
+title: Banner sections
+navTitle: Overview
+description: One-line announcements above or below the page, from a slim notice to an email signup, a cookie prompt and a countdown.
+group: Banner sections
+order: -1
+related: [sections/banner, countdown, dismissible]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a block built on the [Banner](/docs/sections/banner) section: a
+floating card or a full-width bar, on a neutral fill or the brand colour, with
+an icon, actions or a [Countdown](/docs/countdown). The close button removes
+the banner.
+
+```sh
+npx @ava-ui/apogee add banner/slim
+```
+
+```astro
+---
+import Slim from '../components/apogee/blocks/banner/Slim.astro'
+---
+
+<Slim />
+```
+
+<DocsIndex group="Banner sections" self="banner-sections" />

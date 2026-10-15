@@ -1,0 +1,142 @@
+---
+title: Banner
+description: A one-line announcement as a floating card or a full-width bar, with an icon, actions and a close button.
+group: Basic sections
+order: 21
+related: [dismissible, countdown, close-button]
+---
+
+import Preview from '../../../components/Preview.astro'
+import JsNote from '../../../components/JsNote.astro'
+import Banner from '../../../../../registry/sections/Banner/Banner.astro'
+import FeaturedIcon from '../../../../../registry/components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../../../../registry/components/Button/Button.astro'
+import Link from '../../../../../registry/components/Link/Link.astro'
+import Countdown from '../../../../../registry/components/Countdown/Countdown.astro'
+import { Sparkles } from '@lucide/astro'
+
+<JsNote fallback="The close button is hidden and the banner stays.">
+  The close button removes the banner through [Dismissible](/docs/dismissible).
+</JsNote>
+
+<Preview block code={`<Banner heading="We've just raised our Series A" description="Read the note from our founders." inline>
+  <FeaturedIcon slot="icon" theme="outline" color="neutral" size="small"><Sparkles /></FeaturedIcon>
+  <Button slot="actions" href="#" size="small" variant="outline" color="neutral">Read update</Button>
+</Banner>`}>
+  <Banner heading="We've just raised our Series A" description="Read the note from our founders." inline>
+    <FeaturedIcon slot="icon" theme="outline" color="neutral" size="small"><Sparkles /></FeaturedIcon>
+    <Button slot="actions" href="#" size="small" variant="outline" color="neutral">Read update</Button>
+  </Banner>
+</Preview>
+
+Ready-made blocks built on it: [Banner sections](/docs/banner-sections).
+
+## Add
+
+```sh
+npx @ava-ui/apogee add banner
+```
+
+Pulls in Dismissible, CloseButton, Container and the shared section helpers.
+
+## API
+
+| Prop | Type | Default | Category | Description |
+|---|---|---|---|---|
+| `heading` | `string` | — | content | Required. The one-line message; it also names the banner region. |
+| `description` | `string` | — | content | A quieter second line. Put it in the default slot instead when it holds a link. |
+| `layout` | `'floating' \| 'full-width'` | `'floating'` | layout | A card inset from the edges, or a bar with the content in the page container. |
+| `background` | `'page' \| 'neutral-faded' \| 'primary-faded' \| 'primary' \| 'inverted'` | `'neutral-faded'` | layout | The fill. On `primary` and `inverted` the text and close button take the on-colour. |
+| `align` | `'start' \| 'center'` | `'start'` | layout | `center` centres the text and actions from `md`. |
+| `inline` | `boolean` | `false` | layout | Heading and description on one line from `lg`. |
+| `fixed` | `boolean` | `false` | layout | `floating` only: pinned to the bottom of the viewport. |
+| `dismissible` | `boolean` | `true` | | Show the close button. |
+| `closeLabel` | `string` | `'Dismiss'` | content | The close button's name. |
+| `id` | `string` | auto | | Root id; the heading gets `{id}-heading`. |
+
+## Slots
+
+| Slot | What goes in it |
+|---|---|
+| `icon` | A FeaturedIcon or a bare Lucide icon, before the text. |
+| default | The description when it holds a link. |
+| `actions` | Buttons, an email form, a Countdown. |
+
+## Variants
+
+`layout` × `background`:
+
+<Preview block code={`<Banner heading="…" description="…" />
+<Banner background="primary" heading="…" description="…" />
+<Banner layout="full-width" heading="…" description="…" />
+<Banner layout="full-width" background="primary" heading="…" description="…" />`}>
+  <Banner heading="Floating on the neutral fill" description="The default." />
+  <Banner background="primary" heading="Floating on the brand colour" description="The text and close button take the on-colour." />
+  <Banner layout="full-width" heading="Full width on the neutral fill" description="The content sits in the page container." />
+  <Banner layout="full-width" background="primary" heading="Full width on the brand colour" description="A bar across the page." />
+</Preview>
+
+Every other `background`:
+
+<Preview block code={`<Banner background="page" … />
+<Banner background="primary-faded" … />
+<Banner background="inverted" … />`}>
+  <Banner background="page" heading="On the page colour" />
+  <Banner background="primary-faded" heading="On the primary tint" />
+  <Banner background="inverted" heading="On the inverted surface" />
+</Preview>
+
+`align="center"` with `inline`, a link in the line, and a Countdown:
+
+<Preview block code={`<Banner align="center" inline heading="We've just launched a new feature">
+  Check out the <Link href="#" color="neutral">new dashboard</Link>.
+</Banner>
+<Banner align="center" inline heading="30% off annual plans ends soon" description="Lock in your price today.">
+  <Countdown slot="actions" to="2026-12-31T23:59:59Z" />
+</Banner>`}>
+  <Banner align="center" inline heading="We've just launched a new feature">
+    Check out the <Link href="#" color="neutral">new dashboard</Link>.
+  </Banner>
+  <Banner align="center" inline heading="30% off annual plans ends soon" description="Lock in your price today.">
+    <Countdown slot="actions" to="2026-12-31T23:59:59Z" />
+  </Banner>
+</Preview>
+
+## States
+
+- **Dismissed** — the close button removes the banner from the page (the `apogee:dismiss` event fires first and can be cancelled).
+- **Not dismissible** — `dismissible={false}` drops the button, for a notice that must stay.
+
+<Preview block code={`<Banner dismissible={false} heading="Scheduled maintenance on Sunday, 02:00–04:00 UTC" />`}>
+  <Banner dismissible={false} heading="Scheduled maintenance on Sunday, 02:00–04:00 UTC" />
+</Preview>
+
+## Examples
+
+Pinned to the bottom of the viewport (shown here in flow):
+
+```astro
+<Banner fixed heading="We use cookies" description="Read our cookie policy.">…</Banner>
+```
+
+More in [Banner sections](/docs/banner-sections).
+
+## Accessibility
+
+- The banner is a `region` named by its heading, so it appears in a screen reader's landmark list.
+- The close button is a real `<button>` named "Dismiss" (`closeLabel`); it hides without JS.
+- On phones the close button sits in the top corner and the text keeps clear of it.
+
+## Tokens
+
+Reads the Section background tokens and on-colours (see [SectionHeader](/docs/section-header)), `--border-neutral` for the edge and `--shadow-raised` for the floating card.
+
+## Do / Don't
+
+- **Do** keep it to one line and one or two actions.
+- **Don't** stack several banners; show the most important one.
+
+## Content
+
+- Lead with the news, not the brand: "We've just launched a new feature".
+- Put the link on the words that say where it goes.

@@ -1,0 +1,113 @@
+---
+/**
+ * Banner — a one-line announcement with an optional icon, actions and a close
+ * button. `floating` is a card inset from the edges (set `fixed` to pin it to
+ * the bottom of the viewport); `full-width` is a bar with the content in the
+ * page container. `align="center"` centres the text and actions (slim and
+ * countdown banners).
+ *
+ * Slots: `icon` (a FeaturedIcon or a bare icon), default (the description,
+ * when it holds a link; or use `description`), `actions` (buttons, an email
+ * form, a Countdown).
+ *
+ * The close button removes the banner (Dismissible, a small island); without
+ * JS it is hidden and the banner stays.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Dismissible from '../../components/Dismissible/Dismissible.astro'
+import CloseButton from '../../components/CloseButton/CloseButton.astro'
+import Container from '../../components/Container/Container.astro'
+import { uid } from '../../components/utils/uid.ts'
+import { onBackground, type Align, type Background } from '../_shared/spine.ts'
+
+/** @composable */
+interface Props extends Omit<HTMLAttributes<'div'>, 'id'> {
+  /** The one-line message. @category content */ heading: string
+  /** A second, quieter line. Use the default slot instead when it holds a link. @category content */ description?: string | undefined
+  /** @category layout */ layout?: 'floating' | 'full-width'
+  /** @category layout */ background?: Background
+  /** `center` centres the text and actions from `md`. @category layout */ align?: Align
+  /** Heading and description on one line from `lg`. @category layout */ inline?: boolean
+  /** `floating` only: pinned to the bottom of the viewport. @category layout */ fixed?: boolean
+  /** Show the close button. */ dismissible?: boolean
+  /** @category content */ closeLabel?: string
+  id?: string
+  class?: string
+}
+
+const {
+  heading,
+  description,
+  layout = 'floating',
+  background = 'neutral-faded',
+  align = 'start',
+  inline = false,
+  fixed = false,
+  dismissible = true,
+  closeLabel = 'Dismiss',
+  id: idProp,
+  class: className,
+  ...rest
+} = Astro.props
+const id = idProp ?? uid(Astro.locals, 'banner')
+const headingId = `${id}-heading`
+const floating = layout === 'floating'
+const centred = align === 'center'
+const solid = background === 'primary' || background === 'inverted'
+const muted = onBackground[background].muted
+const hasIcon = Astro.slots.has('icon')
+const hasActions = Astro.slots.has('actions')
+const hasDescription = Boolean(description) || Astro.slots.has('default')
+
+// The fill. Faded tints are see-through, so a floating card lays them over the page colour.
+const fills = {
+  page: 'bg-page text-neutral',
+  'neutral-faded': '[background:linear-gradient(var(--background-neutral-faded),var(--background-neutral-faded)),var(--background-page)] text-neutral',
+  'primary-faded': '[background:linear-gradient(var(--background-primary-faded),var(--background-primary-faded)),var(--background-page)] text-neutral',
+  primary: 'bg-primary text-on-primary',
+  inverted: 'bg-inverted text-on-inverted',
+} as const
+const edges = solid ? 'border-transparent' : 'border-neutral'
+---
+
+<Dismissible
+  hideClose
+  role="region"
+  aria-labelledby={headingId}
+  id={id}
+  class:list={['apogee-banner', floating && 'p-3 md:p-4', floating && fixed && 'fixed inset-x-0 bottom-0 z-40', !floating && ['border-b', fills[background], edges], className]}
+  {...rest}
+>
+  <Container
+    width={floating ? 'full' : 'large'}
+    padding={floating ? 'none' : 'gutter'}
+    class:list={[
+      'relative flex flex-col gap-3 md:flex-row md:items-center',
+      centred && 'md:justify-center',
+      floating && ['rounded-xl border shadow-raised', fills[background], edges],
+      // Centred: room for the close button on both sides from md (on phones the text keeps clear of it).
+      floating && (centred ? 'p-4 md:px-12 md:py-3' : 'p-4 md:py-3 md:pe-3'),
+      !floating && 'py-4 md:py-3',
+    ]}
+  >
+    {hasIcon && <div class="flex shrink-0"><slot name="icon" /></div>}
+    <div class:list={['flex min-w-0 flex-col gap-0.5 text-sm', !centred && 'md:flex-1', centred && 'md:text-center', dismissible && 'pe-8 md:pe-0', inline && 'lg:flex-row lg:gap-1.5']}>
+      <p id={headingId} class="font-semibold">{heading}</p>
+      {hasDescription && <p class={muted}>{description}<slot /></p>}
+    </div>
+    {hasActions && <div class="flex flex-col gap-2 sm:flex-row sm:items-center"><slot name="actions" /></div>}
+    {
+      dismissible && (
+        <CloseButton
+          label={closeLabel}
+          size="small"
+          theme={solid ? 'inherit' : 'light'}
+          data-dismiss
+          class:list={['absolute end-2 top-2 no-js:hidden', centred ? 'md:top-1/2 md:-translate-y-1/2' : 'md:static']}
+        />
+      )
+    }
+  </Container>
+</Dismissible>

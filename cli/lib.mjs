@@ -24,8 +24,8 @@ export const resolveDeps = (index, names) => {
 // Copy one registry file into the project. Returns 'ok' | 'skip'. Refuses a
 // destination outside destRoot so a bad registry entry can never escape.
 export const copyInto = (registryDir, relFile, destRoot, overwrite) => {
-  // Sections and pages live in registry/sections and registry/pages and keep that prefix in the project.
-  const nested = relFile.startsWith('sections/') || relFile.startsWith('pages/')
+  // Sections, pages and blocks live in registry/sections|pages|blocks and keep that prefix in the project.
+  const nested = relFile.startsWith('sections/') || relFile.startsWith('pages/') || relFile.startsWith('blocks/')
   const src = nested ? join(registryDir, relFile) : join(registryDir, 'components', relFile)
   const dest = resolve(destRoot, relFile)
   if (!dest.startsWith(resolve(destRoot) + sep)) {
@@ -33,7 +33,7 @@ export const copyInto = (registryDir, relFile, destRoot, overwrite) => {
   }
   if (existsSync(dest) && !overwrite) return 'skip'
   mkdirSync(dirname(dest), { recursive: true })
-  // In the registry, sections and pages reach components through ../../components/;
+  // In the registry, sections, pages and blocks reach components through ../../components/;
   // in a project everything lives under the same components dir, so that hop goes away.
   const body = readFileSync(src, 'utf8')
   writeFileSync(dest, nested ? body.replaceAll('../../components/', '../../') : body)

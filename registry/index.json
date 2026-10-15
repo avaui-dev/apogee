@@ -345,6 +345,18 @@
       "dependencies": [],
       "usesJs": true
     },
+    "Countdown": {
+      "name": "Countdown",
+      "kind": "component",
+      "files": [
+        "Countdown/Countdown.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": true
+    },
     "DataGrid": {
       "name": "DataGrid",
       "kind": "component",
@@ -1245,6 +1257,22 @@
         "Card",
         "Heading",
         "Text",
+        "_shared",
+        "utils"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "Banner": {
+      "name": "Banner",
+      "kind": "section",
+      "files": [
+        "sections/Banner/Banner.astro"
+      ],
+      "registryDependencies": [
+        "CloseButton",
+        "Container",
+        "Dismissible",
         "_shared",
         "utils"
       ],
@@ -2832,6 +2860,366 @@
         "AuthShell",
         "Button",
         "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/countdown": {
+      "name": "banner/countdown",
+      "kind": "block",
+      "category": "banner",
+      "title": "Countdown",
+      "description": "A centred offer with the time left until it ends, as a floating card on a neutral fill.",
+      "files": [
+        "blocks/banner/Countdown.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Countdown"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/countdown-brand": {
+      "name": "banner/countdown-brand",
+      "kind": "block",
+      "category": "banner",
+      "title": "Countdown brand",
+      "description": "A centred offer with the time left until it ends, as a floating card on the brand colour.",
+      "files": [
+        "blocks/banner/CountdownBrand.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Countdown"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/countdown-brand-full-width": {
+      "name": "banner/countdown-brand-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Countdown brand, full width",
+      "description": "A centred offer with the time left until it ends, as a bar across the page on the brand colour.",
+      "files": [
+        "blocks/banner/CountdownBrandFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Countdown"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/countdown-full-width": {
+      "name": "banner/countdown-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Countdown, full width",
+      "description": "A centred offer with the time left until it ends, as a bar across the page on a neutral fill.",
+      "files": [
+        "blocks/banner/CountdownFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Countdown"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/dual-action": {
+      "name": "banner/dual-action",
+      "kind": "block",
+      "category": "banner",
+      "title": "Dual action",
+      "description": "A cookie notice with Decline and Allow buttons, as a floating card on a neutral fill.",
+      "files": [
+        "blocks/banner/DualAction.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/dual-action-brand": {
+      "name": "banner/dual-action-brand",
+      "kind": "block",
+      "category": "banner",
+      "title": "Dual action brand",
+      "description": "A cookie notice with Decline and Allow buttons, as a floating card on the brand colour.",
+      "files": [
+        "blocks/banner/DualActionBrand.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/dual-action-brand-full-width": {
+      "name": "banner/dual-action-brand-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Dual action brand, full width",
+      "description": "A cookie notice with Decline and Allow buttons, as a bar across the page on the brand colour.",
+      "files": [
+        "blocks/banner/DualActionBrandFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/dual-action-full-width": {
+      "name": "banner/dual-action-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Dual action, full width",
+      "description": "A cookie notice with Decline and Allow buttons, as a bar across the page on a neutral fill.",
+      "files": [
+        "blocks/banner/DualActionFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "Link"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/single-action": {
+      "name": "banner/single-action",
+      "kind": "block",
+      "category": "banner",
+      "title": "Single action",
+      "description": "An icon, a one-line announcement and one link button, as a floating card on a neutral fill.",
+      "files": [
+        "blocks/banner/SingleAction.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/single-action-brand": {
+      "name": "banner/single-action-brand",
+      "kind": "block",
+      "category": "banner",
+      "title": "Single action brand",
+      "description": "An icon, a one-line announcement and one link button, as a floating card on the brand colour.",
+      "files": [
+        "blocks/banner/SingleActionBrand.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/single-action-brand-full-width": {
+      "name": "banner/single-action-brand-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Single action brand, full width",
+      "description": "An icon, a one-line announcement and one link button, as a bar across the page on the brand colour.",
+      "files": [
+        "blocks/banner/SingleActionBrandFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/single-action-full-width": {
+      "name": "banner/single-action-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Single action, full width",
+      "description": "An icon, a one-line announcement and one link button, as a bar across the page on a neutral fill.",
+      "files": [
+        "blocks/banner/SingleActionFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/slim": {
+      "name": "banner/slim",
+      "kind": "block",
+      "category": "banner",
+      "title": "Slim",
+      "description": "One centred line with a link, nothing else, as a floating card on a neutral fill.",
+      "files": [
+        "blocks/banner/Slim.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Link"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/slim-brand": {
+      "name": "banner/slim-brand",
+      "kind": "block",
+      "category": "banner",
+      "title": "Slim brand",
+      "description": "One centred line with a link, nothing else, as a floating card on the brand colour.",
+      "files": [
+        "blocks/banner/SlimBrand.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Link"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/slim-brand-full-width": {
+      "name": "banner/slim-brand-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Slim brand, full width",
+      "description": "One centred line with a link, nothing else, as a bar across the page on the brand colour.",
+      "files": [
+        "blocks/banner/SlimBrandFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Link"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/slim-full-width": {
+      "name": "banner/slim-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Slim, full width",
+      "description": "One centred line with a link, nothing else, as a bar across the page on a neutral fill.",
+      "files": [
+        "blocks/banner/SlimFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Link"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "banner/text-field": {
+      "name": "banner/text-field",
+      "kind": "block",
+      "category": "banner",
+      "title": "Text field",
+      "description": "An email field and a Subscribe button beside the message, as a floating card on a neutral fill.",
+      "files": [
+        "blocks/banner/TextField.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon",
+        "Input"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/text-field-brand": {
+      "name": "banner/text-field-brand",
+      "kind": "block",
+      "category": "banner",
+      "title": "Text field brand",
+      "description": "An email field and a Subscribe button beside the message, as a floating card on the brand colour.",
+      "files": [
+        "blocks/banner/TextFieldBrand.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon",
+        "Input"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/text-field-brand-full-width": {
+      "name": "banner/text-field-brand-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Text field brand, full width",
+      "description": "An email field and a Subscribe button beside the message, as a bar across the page on the brand colour.",
+      "files": [
+        "blocks/banner/TextFieldBrandFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon",
+        "Input"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "banner/text-field-full-width": {
+      "name": "banner/text-field-full-width",
+      "kind": "block",
+      "category": "banner",
+      "title": "Text field, full width",
+      "description": "An email field and a Subscribe button beside the message, as a bar across the page on a neutral fill.",
+      "files": [
+        "blocks/banner/TextFieldFullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Banner",
+        "Button",
+        "FeaturedIcon",
+        "Input"
       ],
       "dependencies": [
         "@lucide/astro"

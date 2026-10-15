@@ -1,0 +1,17 @@
+---
+/**
+ * Single action, full width: An icon, a one-line announcement and one link button, as a bar across the page on a neutral fill.
+ *
+ * @block banner
+ * @order 11
+ */
+import { Sparkles } from '@lucide/astro'
+import Banner from '../../sections/Banner/Banner.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<Banner layout="full-width" inline heading="We've just raised our Series A" description="Read the note from our founders.">
+  <FeaturedIcon slot="icon" theme="outline" color="neutral" size="small"><Sparkles /></FeaturedIcon>
+  <Button slot="actions" href="#" size="small" variant="outline" color="neutral">Read update</Button>
+</Banner>

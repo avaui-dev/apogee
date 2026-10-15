@@ -9,6 +9,8 @@ import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import { Sun, Moon, Search, Menu, Layers } from '@lucide/astro'
 import DocsCard from '../components/DocsCard.astro'
 import DocsNav from '../components/DocsNav.astro'
+import BrandHead from '../components/BrandHead.astro'
+import Logo from '../components/Logo.astro'
 
 interface NavGroup {
   group: string
@@ -40,6 +42,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <BrandHead />
     <title>{title} — Apogee</title>
     {description && <meta name="description" content={description} />}
     <script is:inline>
@@ -54,7 +57,7 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
   </head>
   <body class="min-h-dvh bg-page text-neutral">
     <Navbar>
-      <a slot="brand" href="/docs" class="text-base font-semibold tracking-tight">Apogee</a>
+      <a slot="brand" href="/docs" class="inline-flex rounded-sm text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><Logo /></a>
       <NavLink href="/docs">Docs</NavLink>
       <div slot="actions" class="flex items-center gap-1">
         <button

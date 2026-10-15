@@ -15,9 +15,10 @@ test('components importing a helper depend on utils', () => {
 
 test('every entry carries its kind', () => {
   for (const [name, c] of Object.entries(index.components)) {
-    assert.ok(['component', 'section', 'page'].includes(c.kind), `${name} has kind ${c.kind}`)
+    assert.ok(['component', 'section', 'page', 'block'].includes(c.kind), `${name} has kind ${c.kind}`)
     if (c.kind === 'section') assert.ok(c.files.every((f) => f.startsWith('sections/')), `${name} files under sections/`)
     if (c.kind === 'page') assert.ok(c.files.every((f) => f.startsWith('pages/')), `${name} files under pages/`)
+    if (c.kind === 'block') assert.ok(c.files.every((f) => f.startsWith('blocks/')), `${name} files under blocks/`)
   }
 })
 
@@ -30,4 +31,13 @@ test('pages are keyed by category/slug, carry a title and description, and depen
   assert.ok(page.description.length > 10)
   for (const dep of ['AuthShell', 'Avatar', 'Rating', 'Input', 'Button']) assert.ok(page.registryDependencies.includes(dep), `depends on ${dep}`)
   for (const p of Object.values(index.components).filter((c) => c.kind === 'page')) assert.ok(p.title && p.description, `${p.name} has a title and description`)
+})
+
+test('blocks are keyed by category/slug like pages, with their own kind', () => {
+  const block = index.components['banner/text-field']
+  assert.equal(block?.kind, 'block')
+  assert.equal(block.category, 'banner')
+  assert.deepEqual(block.files, ['blocks/banner/TextField.astro'])
+  assert.ok(block.title && block.description.length > 10)
+  for (const dep of ['Banner', 'Input', 'Button']) assert.ok(block.registryDependencies.includes(dep), `depends on ${dep}`)
 })

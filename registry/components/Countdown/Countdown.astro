@@ -1,0 +1,97 @@
+---
+/**
+ * Countdown — the time left until `to`, as boxed numbers with unit labels.
+ * A small island ticks it every second and fires `apogee:countdown-end` (on the
+ * root, bubbling) when it reaches zero. Screen readers and no-JS visitors get
+ * the end date as text instead ("Ends Dec 31, 2026, 11:59 PM UTC"), so nothing
+ * announces every second.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+type Unit = 'days' | 'hours' | 'minutes' | 'seconds'
+const SECONDS: Record<Unit, number> = { days: 86400, hours: 3600, minutes: 60, seconds: 1 }
+
+interface Props extends HTMLAttributes<'span'> {
+  /** The end, as an ISO date-time ("2026-12-31T23:59:59Z"). */
+  to: string
+  /** Which units to show, largest first; the largest absorbs the rest (no `days` → 50 hrs). @category layout */
+  units?: Unit[]
+  /** Unit labels. @category content */
+  labels?: Partial<Record<Unit, string>>
+  /** Text before the end date, for screen readers and no-JS. @category content */
+  endsLabel?: string
+  /** Locale for the end date text. @category content */
+  locale?: string
+  class?: string
+}
+
+const {
+  to,
+  units = ['days', 'hours', 'minutes', 'seconds'],
+  labels = {},
+  endsLabel = 'Ends',
+  locale = 'en',
+  class: className,
+  ...rest
+} = Astro.props
+const names: Record<Unit, string> = { days: 'days', hours: 'hrs', minutes: 'mins', seconds: 'secs', ...labels }
+const end = new Date(to)
+if (Number.isNaN(end.getTime())) throw new Error(`Countdown: "${to}" is not a date`)
+const endText = `${end.toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' })} UTC`
+// The numbers at build time; the island replaces them before anyone reads them.
+let left = Math.max(0, Math.floor((end.getTime() - Date.now()) / 1000))
+const start = units.map((u) => {
+  const n = Math.floor(left / SECONDS[u])
+  left -= n * SECONDS[u]
+  return n
+})
+---
+
+<span class:list={['apogee-countdown inline-flex flex-wrap items-center gap-2', className]} data-to={end.toISOString()} data-units={units.join(' ')} {...rest}>
+  <span class="sr-only no-js:not-sr-only">{endsLabel} <time datetime={end.toISOString()}>{endText}</time></span>
+  <span class="flex flex-wrap items-center gap-x-2 gap-y-1 no-js:hidden" aria-hidden="true">
+    {
+      units.map((u, i) => (
+        <span class="flex items-center gap-1.5">
+          <span class="min-w-7 rounded-md bg-page px-1 py-1 text-center text-xs font-medium tabular-nums text-neutral shadow-outline ring-1 ring-neutral ring-inset" data-unit={u}>
+            {start[i]}
+          </span>
+          <span class="text-sm">{names[u]}</span>
+        </span>
+      ))
+    }
+  </span>
+</span>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  const SECONDS = { days: 86400, hours: 3600, minutes: 60, seconds: 1 } as const
+  type Unit = keyof typeof SECONDS
+
+  island('.apogee-countdown', (root) => {
+    const end = new Date(root.dataset.to ?? '').getTime()
+    const units = (root.dataset.units ?? '').split(' ') as Unit[]
+    const cells = units.map((u) => root.querySelector<HTMLElement>(`[data-unit="${u}"]`))
+    let timer = 0
+    const tick = () => {
+      let left = Math.max(0, Math.floor((end - Date.now()) / 1000))
+      units.forEach((u, i) => {
+        const n = Math.floor(left / SECONDS[u])
+        left -= n * SECONDS[u]
+        const cell = cells[i]
+        if (cell) cell.textContent = String(n)
+      })
+      if (end - Date.now() <= 0) {
+        root.dispatchEvent(new CustomEvent('apogee:countdown-end', { bubbles: true }))
+        return
+      }
+      // Wake just after the next whole second so the digits change together.
+      timer = window.setTimeout(tick, 1000 - (Date.now() % 1000) + 10)
+    }
+    tick()
+    document.addEventListener('astro:before-swap', () => clearTimeout(timer), { once: true })
+  })
+</script>

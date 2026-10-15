@@ -1,0 +1,90 @@
+---
+title: Countdown
+description: The time left until a date, as boxed numbers with unit labels, ticking every second.
+group: Components
+order: 0
+related: [badge, kbd, dismissible]
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import Countdown from '../../../../registry/components/Countdown/Countdown.astro'
+
+<JsNote fallback="The numbers are hidden and the end date shows as text: “Ends Dec 31, 2026, 11:59 PM UTC”.">
+  Ticks the numbers every second and fires `apogee:countdown-end` when it reaches zero.
+</JsNote>
+
+<Preview code={`<Countdown to="2026-12-31T23:59:59Z" />`}>
+  <div data-apogee-countdown="default"><Countdown to="2026-12-31T23:59:59Z" /></div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add countdown
+```
+
+No Apogee dependencies.
+
+## Usage
+
+```astro
+---
+import Countdown from '@/components/apogee/Countdown/Countdown.astro'
+---
+<Countdown to="2026-12-31T23:59:59Z" units={['hours', 'minutes', 'seconds']} />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `to` | `string` | — | Required. The end, as an ISO date-time. A date it cannot read stops the build. |
+| `units` | `('days' \| 'hours' \| 'minutes' \| 'seconds')[]` | all four | Which units to show, largest first. The largest absorbs the rest: without `days`, 50 hours read as 50. |
+| `labels` | `{ days?, hours?, minutes?, seconds? }` | `days`, `hrs`, `mins`, `secs` | The unit labels. |
+| `endsLabel` | `string` | `'Ends'` | Text before the end date, for screen readers and no-JS. |
+| `locale` | `string` | `'en'` | Locale of the end date text. |
+| `class` | `string` | — | Extra classes on the root, merged last. |
+
+## States
+
+- **Counting** — the numbers change together on each whole second.
+- **Ended** — every number reads 0 and `apogee:countdown-end` fires once, bubbling from the root.
+
+<Preview code={`<Countdown to="2020-01-01T00:00:00Z" />`}>
+  <Countdown to="2020-01-01T00:00:00Z" />
+</Preview>
+
+## Examples
+
+Hours, minutes and seconds only, with your own labels:
+
+<Preview code={`<Countdown to="2026-12-31T23:59:59Z" units={['hours', 'minutes', 'seconds']} labels={{ hours: 'h', minutes: 'm', seconds: 's' }} />`}>
+  <Countdown to="2026-12-31T23:59:59Z" units={['hours', 'minutes', 'seconds']} labels={{ hours: 'h', minutes: 'm', seconds: 's' }} />
+</Preview>
+
+In a banner: [Countdown banner](/docs/banner-sections/countdown).
+
+## Accessibility
+
+- The ticking numbers are `aria-hidden`: a screen reader that announced every second would drown the page. It reads "Ends Dec 31, 2026, 11:59 PM UTC" instead, from a `<time datetime>`.
+- Without JS that same line is visible text.
+- The numbers use tabular figures so they do not jump as they change.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-page` / `--foreground-neutral` | Number box fill and text |
+| `--border-neutral` / `--shadow-outline` | Number box edge |
+
+The labels take the surrounding text colour, so the Countdown reads on any fill.
+
+## Do / Don't
+
+- **Do** say what ends next to it ("30% off ends soon").
+- **Don't** count down to something that does not end; it erodes trust.
+
+## Content
+
+- Short labels (`hrs`, `mins`) keep the row on one line on phones.

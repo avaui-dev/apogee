@@ -1,6 +1,8 @@
 // One small icon per docs page, keyed by the page id. Unknown ids fall back to Box.
 import {
   Puzzle,
+  Megaphone,
+  Timer,
   Accessibility, ChevronsDownUp, MousePointerClick, TriangleAlert, Ratio, Users, User, BadgeCheck, Quote, Box, ChevronRight,
   Globe, SquareStack, RectangleHorizontal, CreditCard, GalleryHorizontal, ListChecks, SquareCheck, Code, ChevronDown, Palette,
   Search, Command, Frame, AlignCenter, FileText, MousePointer2, Table2, AppWindow, X, Minus, Inbox, ChevronsUpDown, Type,
@@ -24,7 +26,7 @@ export const docsIcons: Record<string, typeof Box> = {
   'nav-link': Navigation, navbar: PanelTop, 'number-input': Hash, pagination: ChevronsRight, 'pin-input': KeyRound,
   popover: MessageSquare, 'progress-indicator': CircleDot, progress: Activity, 'progressive-enhancement': Layers, prose: BookOpen,
   'radio-group': Circle, radio: CircleDot, rating: Star, 'rich-text-editor': PenLine, rtl: Languages, 'scroll-area': ScrollText,
-  section: LayoutTemplate, patterns: Puzzle, 'segmented-control': ToggleLeft, select: ChevronsUpDown, sidebar: PanelLeft, skeleton: Rows3,
+  section: LayoutTemplate, patterns: Puzzle, 'banner-sections': Megaphone, 'sections/banner': Megaphone, countdown: Timer, 'segmented-control': ToggleLeft, select: ChevronsUpDown, sidebar: PanelLeft, skeleton: Rows3,
   'skip-link': SkipForward, slider: SlidersHorizontal, spacing: Ruler, spinner: LoaderCircle, stack: Rows3, stat: TrendingUp,
   steps: ListOrdered, switch: ToggleRight, table: Table, tabs: PanelsTopLeft, 'tag-input': Tags, tag: Tag, text: Text,
   textarea: AlignLeft, timeline: GitCommitHorizontal, 'tree-view': ListTree, message: MessageSquareText, toast: Bell, 'toggle-button-group': Grid2x2, 'toggle-button': ToggleLeft,

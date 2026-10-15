@@ -29,7 +29,8 @@ const key = (group: string) => group.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       <NavGroup label={g.group} open data-docs-group={key(g.group)} class="[&>.apogee-navgroup-list]:ps-0 [&>.apogee-navgroup-list]:pb-3 [&>summary]:px-2! [&>summary]:text-base! [&>summary]:font-semibold [&>summary]:text-neutral!">
         <Badge slot="end" size="small" color="neutral" data-docs-count>{g.items.length}</Badge>
         {g.items.map((i) => {
-          const Icon = docsIcons[i.id] ?? Box
+          // A category's items share its icon unless they have their own.
+          const Icon = docsIcons[i.id] ?? docsIcons[i.id.split('/')[0]] ?? Box
           return (
             <NavLink href={i.href} class="px-2! py-1.5!">
               <Icon slot="start" class="size-4 text-neutral-faded" aria-hidden="true" />

@@ -12,6 +12,7 @@ import Dismissible from '../../../../registry/components/Dismissible/Dismissible
 import Alert from '../../../../registry/components/Alert/Alert.astro'
 import Image from '../../../../registry/components/Image/Image.astro'
 import placeholder from '../../assets/placeholder.png'
+import CloseButton from '../../../../registry/components/CloseButton/CloseButton.astro'
 
 <JsNote fallback="The close button is hidden and the content stays put; a timeout never fires.">
   A document-level click listener handles every close button: it dispatches a
@@ -96,6 +97,21 @@ Leave room for the button at the end edge of your content (`pe-10`).
 - **Dismissed** — the close button, a `timeout`, or your own `apogee:dismiss` event removes the element. Call `preventDefault()` on the event to keep it.
 
 ## Examples
+
+Your own close button: `hideClose`, then any element with `data-dismiss` inside closes it (hide it without JS with `no-js:hidden`). [Banner](/docs/sections/banner) does this to place the button in its layout:
+
+<Preview code={`<Dismissible hideClose class="flex items-center justify-between gap-3 rounded-lg border border-neutral p-3">
+  <span class="text-sm">Close me from my own button.</span>
+  <CloseButton data-dismiss label="Dismiss" size="small" class="no-js:hidden" />
+</Dismissible>`}>
+  <div data-apogee-dismissible-demo="own-button" class="w-full max-w-sm">
+    <Dismissible hideClose class="flex items-center justify-between gap-3 rounded-lg border border-neutral p-3">
+      <span class="text-sm">Close me from my own button.</span>
+      <CloseButton data-dismiss label="Dismiss" size="small" class="no-js:hidden" />
+    </Dismissible>
+  </div>
+</Preview>
+
 
 A promo image the user can close. `variant="media"` gives the button an opaque pill so it reads on any photo:
 

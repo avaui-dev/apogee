@@ -1,0 +1,21 @@
+---
+/**
+ * Text field, full width: An email field and a Subscribe button beside the message, as a bar across the page on a neutral fill.
+ *
+ * @block banner
+ * @order 9
+ */
+import { Mail } from '@lucide/astro'
+import Banner from '../../sections/Banner/Banner.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Input from '../../components/Input/Input.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<Banner layout="full-width" heading="Stay up to date with the latest news" description="New components, guides and releases, once a month.">
+  <FeaturedIcon slot="icon" theme="outline" color="neutral" class="max-md:hidden"><Mail /></FeaturedIcon>
+  <form slot="actions" method="post" class="flex flex-col gap-3 sm:flex-row md:w-96">
+    <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
+    <Button type="submit" variant="outline" color="neutral">Subscribe</Button>
+  </form>
+</Banner>

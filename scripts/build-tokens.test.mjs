@@ -2,7 +2,9 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { generateHue, renderBlocks } from './build-tokens.mjs'
 import { contrast, composite, oklchToLinear } from './color.mjs'
-import hues from './hues.mjs'
+// Fixed inputs, so these tests pin the generator's behaviour whatever scripts/hues.mjs is set to
+// (check:contrast measures the configured theme).
+const hues = { primary: 'blue-700', critical: 'red-600', warning: 'amber-400', positive: 'green-700', neutral: 'slate' }
 import { resolveHue } from './build-tokens.mjs'
 
 test('dark primary keeps its hue, lowers chroma by 20%, never below L 0.32', () => {

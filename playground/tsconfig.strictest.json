@@ -2,6 +2,6 @@
   "extends": "astro/tsconfigs/strictest",
   "include": [".astro/types.d.ts", "../registry/components/**/*",
     "../registry/sections/**/*",
-    "../registry/pages/**/*", "src/pages/**/*.astro", "src/layouts/**/*.astro"],
+    "../registry/pages/**/*", "../registry/blocks/**/*", "src/pages/**/*.astro", "src/layouts/**/*.astro"],
   "exclude": ["dist"]
 }

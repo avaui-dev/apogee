@@ -4,6 +4,7 @@
  * loads the example's own route (/examples/<slug>), so breakpoints answer to the
  * frame, not the docs column: Desktop renders 1280px wide and scales down to
  * fit, Mobile renders 390px wide at full size. The frame follows the docs theme.
+ * A block (one part of a page) gets a frame as tall as its content.
  * Without JS the frame shows the page at the column width.
  */
 import { Code } from 'astro:components'
@@ -14,16 +15,16 @@ import Button from '../../../registry/components/Button/Button.astro'
 import { examples } from './examples'
 
 interface Props {
-  /** Example slug, e.g. "log-in/simple". */
+  /** Example slug, e.g. "log-in/simple" or "banner/slim". */
   slug: string
 }
 const { slug } = Astro.props
 const example = examples[slug]
-if (!example) throw new Error(`PagePreview: no page "${slug}" in registry/pages`)
+if (!example) throw new Error(`PagePreview: no page or block "${slug}" in registry/pages|blocks`)
 const href = `/examples/${slug}`
 ---
 
-<div class="not-content my-6 rounded-lg border border-neutral" data-page-preview>
+<div class="not-content my-6 rounded-lg border border-neutral" data-page-preview data-kind={example.kind}>
   <div class="flex flex-wrap items-center justify-between gap-3 border-b border-neutral px-3 py-2">
     <SegmentedControl size="small" options={['Desktop', 'Mobile']} value="Desktop" aria-label="Frame width" class="no-js:hidden" data-page-preview-width />
     <div class="flex items-center gap-4">
@@ -32,12 +33,12 @@ const href = `/examples/${slug}`
         <span data-page-preview-copy-label>Copy code</span>
       </Button>
       <Link href={href} external class="inline-flex items-center gap-1.5 text-sm">
-        Open page <ExternalLink class="size-3.5" aria-hidden="true" />
+        Open {example.kind} <ExternalLink class="size-3.5" aria-hidden="true" />
       </Link>
     </div>
   </div>
   <div class="overflow-hidden bg-neutral-faded" data-page-preview-stage>
-    <iframe src={href} title={`${example.title} example`} loading="lazy" class="block h-[50rem] w-full border-0 bg-page" data-page-preview-frame></iframe>
+    <iframe src={href} title={`${example.title} example`} loading="lazy" class:list={['block w-full border-0 bg-page', example.kind === 'block' ? 'h-48' : 'h-[50rem]']} data-page-preview-frame></iframe>
   </div>
   <template data-page-preview-source>{example.source}</template>
   <details class="group border-t border-neutral">
@@ -61,20 +62,31 @@ const href = `/examples/${slug}`
   const HEIGHT = 800
   const MOBILE = 390
 
+  // A page frame is a fixed 800px tall; a block frame is as tall as the block at that width.
+  const heightOf = (root: HTMLElement, frame: HTMLIFrameElement) => {
+    if (root.dataset.kind !== 'block') return HEIGHT
+    const main = frame.contentDocument?.querySelector('main')
+    return main ? Math.ceil(main.getBoundingClientRect().height) : 192
+  }
+
   // Desktop: render at 1280px and scale to the stage. Mobile: 390px, unscaled, centred.
   const fit = (root: HTMLElement) => {
     const stage = root.querySelector<HTMLElement>('[data-page-preview-stage]')!
     const frame = root.querySelector<HTMLIFrameElement>('[data-page-preview-frame]')!
     const mobile = root.querySelector<HTMLInputElement>('[data-page-preview-width] input:checked')?.value === 'Mobile'
     if (mobile) {
-      Object.assign(frame.style, { width: `${MOBILE}px`, height: `${HEIGHT}px`, transform: '', marginInline: 'auto' })
+      frame.style.width = `${MOBILE}px`
+      const h = heightOf(root, frame)
+      Object.assign(frame.style, { height: `${h}px`, transform: '', marginInline: 'auto' })
       stage.style.height = ''
       stage.style.paddingBlock = '1.5rem'
       return
     }
     const scale = Math.min(1, stage.clientWidth / DESKTOP)
-    Object.assign(frame.style, { width: `${DESKTOP}px`, height: `${HEIGHT}px`, transform: `scale(${scale})`, transformOrigin: '0 0', marginInline: '0' })
-    stage.style.height = `${HEIGHT * scale}px`
+    frame.style.width = `${DESKTOP}px`
+    const h = heightOf(root, frame)
+    Object.assign(frame.style, { height: `${h}px`, transform: `scale(${scale})`, transformOrigin: '0 0', marginInline: '0' })
+    stage.style.height = `${h * scale}px`
     stage.style.paddingBlock = '0'
   }
 
@@ -96,7 +108,13 @@ const href = `/examples/${slug}`
     const frame = root.querySelector<HTMLIFrameElement>('[data-page-preview-frame]')!
     ro.observe(root.querySelector('[data-page-preview-stage]')!)
     root.querySelector('[data-page-preview-width]')?.addEventListener('change', () => fit(root))
-    frame.addEventListener('load', () => sync(frame))
+    frame.addEventListener('load', () => {
+      sync(frame)
+      // A block's height follows its content (fonts, images, a dismissed banner).
+      const main = frame.contentDocument?.querySelector('main')
+      if (root.dataset.kind === 'block' && main) new ResizeObserver(() => fit(root)).observe(main)
+      fit(root)
+    })
     fit(root)
     const copy = root.querySelector<HTMLButtonElement>('[data-page-preview-copy]')
     const label = copy?.querySelector('[data-page-preview-copy-label]')

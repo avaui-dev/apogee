@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Apogee CLI — copy components into your project (copy-in model).
 //   apogee init            scaffold tokens + config
-//   apogee add <names...>  copy components, sections or pages (+ their deps)
+//   apogee add <names...>  copy components, sections, pages or blocks (+ their deps)
 //   apogee list            list available components
 // Dependency-free: Node built-ins only.
 
@@ -136,10 +136,11 @@ function cmdAdd(names, opts) {
 function cmdList() {
   // Names starting with _ are shared internals, pulled in as dependencies, never added on their own.
   const of = (kind) => Object.keys(index.components).filter((n) => index.components[n].kind === kind && !n.startsWith('_')).sort()
-  const [pages, sections, names] = [of('page'), of('section'), of('component')]
-  if (pages.length) {
-    say(bold(`${pages.length} pages:`))
-    for (const p of pages) say(`  ${p.padEnd(32)}${dim(index.components[p].description)}`)
+  const [pages, blocks, sections, names] = [of('page'), of('block'), of('section'), of('component')]
+  for (const [label, list] of [['pages', pages], ['blocks', blocks]]) {
+    if (!list.length) continue
+    say(bold(`${list.length} ${label}:`))
+    for (const p of list) say(`  ${p.padEnd(32)}${dim(index.components[p].description)}`)
     say('')
   }
   if (sections.length) say(bold(`${sections.length} sections:`) + '\n  ' + sections.join('  ') + '\n')
@@ -169,7 +170,8 @@ ${bold('Examples')}
   apogee init
   apogee add button dialog data-grid
   apogee add combobox --overwrite
-  apogee add log-in/split-quote   ${dim('# a whole page, into <dir>/pages/log-in/')}`)
+  apogee add log-in/split-quote   ${dim('# a whole page, into <dir>/pages/log-in/')}
+  apogee add banner/slim          ${dim('# a block (part of a page), into <dir>/blocks/banner/')}`)
 }
 
 // --- entry ---

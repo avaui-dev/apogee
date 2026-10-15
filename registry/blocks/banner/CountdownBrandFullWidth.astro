@@ -1,0 +1,14 @@
+---
+/**
+ * Countdown brand, full width: A centred offer with the time left until it ends, as a bar across the page on the brand colour.
+ *
+ * @block banner
+ * @order 20
+ */
+import Banner from '../../sections/Banner/Banner.astro'
+import Countdown from '../../components/Countdown/Countdown.astro'
+---
+
+<Banner layout="full-width" background="primary" align="center" inline heading="30% off annual plans ends soon" description="Lock in your price today.">
+  <Countdown slot="actions" to="2026-12-31T23:59:59Z" />
+</Banner>

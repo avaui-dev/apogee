@@ -2539,3 +2539,60 @@ test('docs sidebar keeps its scroll position across link clicks, on desktop and 
   await openMenu()
   await expect.poll(() => page.locator('#docs-mobile-nav .apogee-dialog-body').evaluate((el) => el.scrollTop)).toBe(mtop)
 })
+
+// ---- Banner sections ----
+
+test('banner: a region named by its heading; the close button removes it', async ({ page }) => {
+  await page.goto('/docs/sections/banner')
+  const banner = page.getByRole('region', { name: 'Floating on the neutral fill' })
+  await expect(banner).toBeVisible()
+  await banner.getByRole('button', { name: 'Dismiss' }).click()
+  await expect(banner).toHaveCount(0)
+  await expect(page.getByRole('region', { name: 'Scheduled maintenance on Sunday, 02:00–04:00 UTC' }).getByRole('button')).toHaveCount(0)
+})
+
+test('dismissible: an own button with data-dismiss closes it', async ({ page }) => {
+  await page.goto('/docs/dismissible')
+  const demo = page.locator('[data-apogee-dismissible-demo="own-button"]')
+  await demo.getByRole('button', { name: 'Dismiss' }).click()
+  await expect(demo.locator('[data-apogee-dismissible]')).toHaveCount(0)
+})
+
+test('countdown ticks every second; a past date reads 0 and fires the end event', async ({ page }) => {
+  await page.goto('/docs/countdown')
+  const secs = page.locator('[data-apogee-countdown="default"] [data-unit="seconds"]')
+  const first = await secs.textContent()
+  await expect.poll(() => secs.textContent(), { timeout: 3000 }).not.toBe(first)
+  const ended = page.locator('.apogee-countdown').nth(1)
+  expect(await ended.locator('[data-unit]').allTextContents()).toEqual(['0', '0', '0', '0'])
+  const fired = await page.evaluate(() => new Promise((resolve) => {
+    const el = document.createElement('span')
+    el.className = 'apogee-countdown'
+    el.dataset.to = new Date(Date.now() - 1000).toISOString()
+    el.dataset.units = 'seconds'
+    el.innerHTML = '<span data-unit="seconds"></span>'
+    document.addEventListener('apogee:countdown-end', () => resolve(true), { once: true })
+    document.body.append(el)
+    document.dispatchEvent(new Event('astro:page-load'))
+    setTimeout(() => resolve(false), 1500)
+  }))
+  expect(fired).toBe(true)
+})
+
+test('countdown without JS shows the end date and hides the numbers', async ({ browser }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false })
+  const p = await ctx.newPage()
+  await p.goto('/docs/countdown')
+  const root = p.locator('[data-apogee-countdown="default"]')
+  await expect(root.locator('time')).toBeVisible()
+  await expect(root.locator('time')).toHaveText(/Dec 31, 2026/)
+  await expect(root.locator('[data-unit]').first()).toBeHidden()
+  await ctx.close()
+})
+
+test('block previews fit their frame to the block', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/docs/banner-sections/slim')
+  const frame = page.locator('[data-page-preview-frame]')
+  await expect.poll(async () => (await frame.boundingBox()).height, { timeout: 5000 }).toBeLessThan(120)
+})

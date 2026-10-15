@@ -122,3 +122,15 @@ test('list leaves out internal entries (names starting with _)', async () => {
   assert.match(out, /Hero/)
   assert.doesNotMatch(out, /_shared/)
 })
+
+test('copyInto keeps blocks under blocks/ and rewrites the components hop', () => {
+  const root = mkdtempSync(join(tmpdir(), 'apogee-'))
+  const registry = join(root, 'registry')
+  mkdirSync(join(registry, 'blocks', 'banner'), { recursive: true })
+  writeFileSync(join(registry, 'blocks', 'banner', 'Slim.astro'), "import Banner from '../../sections/Banner/Banner.astro'\nimport Link from '../../components/Link/Link.astro'\n")
+  const dest = join(root, 'out')
+  assert.equal(copyInto(registry, 'blocks/banner/Slim.astro', dest, false), 'ok')
+  const body = readFileSync(join(dest, 'blocks', 'banner', 'Slim.astro'), 'utf8')
+  assert.match(body, /'\.\.\/\.\.\/sections\/Banner\/Banner\.astro'/)
+  assert.match(body, /'\.\.\/\.\.\/Link\/Link\.astro'/)
+})

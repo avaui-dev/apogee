@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **Neutral grey** is `mist` (a cool blue-green grey) instead of `slate`; every grey and neutral fill takes its tint.
 - **Dark mode shadows** are black drop shadows, deeper than in light mode, instead of a faint white glow above each surface. Raised cards and menus now read as lifted on a dark page.
 - **Disabled controls** read the disabled tokens (fill, border, text) instead of fading to half opacity: Checkbox, Radio (labels too), Actionable, Tabs, Pagination, TreeView, ToggleButton, Slider, NumberInput, Breadcrumbs, Tag, ChoiceCard and FileUpload.
 - **Divider** lines use the border tokens, like every other rule.
@@ -42,6 +43,11 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Blocks**: parts of a page in the registry, keyed `<category>/<name>` like pages. `apogee add banner/slim` copies one into `<dir>/blocks/banner/` with what it uses; `apogee list` shows them. The first set is 20 banner blocks (Banner sections in the docs).
+- **Banner** section: a one-line announcement as a floating card (optionally `fixed` to the bottom of the viewport) or a full-width bar, on any section background, with `icon`, description and `actions` slots and a close button.
+- **Countdown**: the time left until a date, ticking every second, with the end date as text for screen readers and without JS; fires `apogee:countdown-end`.
+- **Dismissible** documents closing from your own `data-dismiss` button.
+- **Docs**: the Apogee logo in the navbar; a favicon that follows light and dark mode, with `.ico`, Apple touch and manifest icons. Block previews fit their frame to the block.
 - **Pages**: whole pages in the registry, keyed `<category>/<name>`. `apogee add log-in/split-quote` copies the page to `<dir>/pages/log-in/` with every section and component it uses; `apogee list` shows each page with its description. The first sets are 14 log in pages, 20 sign up pages, 3 verification pages, 5 forgot password pages and 14 404 pages.
 - **AuthShell** section: the frame of a log in, sign up or recovery page, `centered`, `card`, `split` (a panel on either side) or `sidebar` (a narrow step column), with an optional pattern behind the brand mark and a `below` slot for a step list.
 - **NotFound** takes `layout="start"` and `"split"` (with a `media` slot), `codeStyle="badge"`, a `back` button, `watermark`, `fullHeight`, and `icon`, default and `below` slots for search forms, help links and cards.
