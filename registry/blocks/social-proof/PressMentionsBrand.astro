@@ -1,0 +1,23 @@
+---
+/**
+ * Press mentions brand: One line over five press names on the brand colour.
+ *
+ * @block social-proof
+ * @order 12
+ */
+import Section from '../../components/Section/Section.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="flex flex-col gap-8">
+    <p class="text-center font-medium opacity-85">We've been mentioned in the press</p>
+    <ul aria-label="Press mentions" class="flex flex-col items-center gap-x-8 gap-y-4 md:flex-row md:flex-wrap md:justify-center xl:gap-x-12">
+      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl opacity-85">The Morning Ledger</li>
+      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl opacity-85">Northline Times</li>
+      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl opacity-85">Signal Weekly</li>
+      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl opacity-85">The Field Report</li>
+      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl opacity-85">Metro Wire</li>
+    </ul>
+  </div>
+</Section>

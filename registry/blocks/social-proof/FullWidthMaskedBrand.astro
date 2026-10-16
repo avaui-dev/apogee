@@ -1,0 +1,30 @@
+---
+/**
+ * Full width masked brand: One line over a scrolling strip of logos on the brand colour.
+ *
+ * @block social-proof
+ * @order 9
+ */
+import { Atom, Circle, Droplet, Hexagon, Mountain, Sprout, Square, Sun, Waves, Wind } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Marquee from '../../components/Marquee/Marquee.astro'
+
+---
+
+<Section spacing="large" background="primary" class="overflow-hidden">
+  <div class="flex flex-col gap-8">
+    <p class="text-center font-medium opacity-85">Trusted by 4,000+ companies</p>
+    <Marquee label="Customers" class="opacity-85">
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Hexagon class="size-7 md:size-8" aria-hidden="true" />Lumen</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Atom class="size-7 md:size-8" aria-hidden="true" />Quanta</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Sprout class="size-7 md:size-8" aria-hidden="true" />Fieldwork</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Mountain class="size-7 md:size-8" aria-hidden="true" />Northpeak</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Waves class="size-7 md:size-8" aria-hidden="true" />Arcwave</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Wind class="size-7 md:size-8" aria-hidden="true" />Kitestring</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Circle class="size-7 md:size-8" aria-hidden="true" />Ovalis</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Sun class="size-7 md:size-8" aria-hidden="true" />Brightline</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Square class="size-7 md:size-8" aria-hidden="true" />Corner</span>
+      <span class="flex items-center gap-2 text-lg font-semibold md:text-xl "><Droplet class="size-7 md:size-8" aria-hidden="true" />Tidewater</span>
+    </Marquee>
+  </div>
+</Section>

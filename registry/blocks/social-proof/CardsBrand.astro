@@ -1,0 +1,27 @@
+---
+/**
+ * Cards brand: One line over eight logos, each on its own tile on the brand colour.
+ *
+ * @block social-proof
+ * @order 11
+ */
+import { Atom, Circle, Hexagon, Mountain, Sprout, Sun, Waves, Wind } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="flex flex-col gap-8 lg:gap-10">
+    <p class="text-center font-medium opacity-85">Trusted by 4,000+ companies</p>
+    <ul aria-label="Customers" class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Hexagon class="size-7 md:size-8" aria-hidden="true" />Lumen</span></li>
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Atom class="size-7 md:size-8" aria-hidden="true" />Quanta</span></li>
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Sprout class="size-7 md:size-8" aria-hidden="true" />Fieldwork</span></li>
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Mountain class="size-7 md:size-8" aria-hidden="true" />Northpeak</span></li>
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Waves class="size-7 md:size-8" aria-hidden="true" />Arcwave</span></li>
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Wind class="size-7 md:size-8" aria-hidden="true" />Kitestring</span></li>
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Circle class="size-7 md:size-8" aria-hidden="true" />Ovalis</span></li>
+      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-page/10"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Sun class="size-7 md:size-8" aria-hidden="true" />Brightline</span></li>
+    </ul>
+  </div>
+</Section>

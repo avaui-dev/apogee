@@ -1,0 +1,25 @@
+---
+/**
+ * Full width brand: One line over a row of six logos on the brand colour.
+ *
+ * @block social-proof
+ * @order 7
+ */
+import { Atom, Hexagon, Mountain, Sprout, Waves, Wind } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="flex flex-col gap-8">
+    <p class="text-center font-medium opacity-85">Join 4,000+ companies already growing</p>
+    <ul aria-label="Customers" class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:gap-y-6 xl:gap-x-12">
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Hexagon class="size-7 md:size-8" aria-hidden="true" />Lumen</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Atom class="size-7 md:size-8" aria-hidden="true" />Quanta</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Sprout class="size-7 md:size-8" aria-hidden="true" />Fieldwork</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Mountain class="size-7 md:size-8" aria-hidden="true" />Northpeak</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Waves class="size-7 md:size-8" aria-hidden="true" />Arcwave</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Wind class="size-7 md:size-8" aria-hidden="true" />Kitestring</li>
+    </ul>
+  </div>
+</Section>

@@ -1,0 +1,29 @@
+---
+/**
+ * Full width dual brand: One line over two rows of logos on the brand colour.
+ *
+ * @block social-proof
+ * @order 8
+ */
+import { Atom, Circle, Droplet, Hexagon, Mountain, Sprout, Square, Sun, Waves, Wind } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="flex flex-col gap-8">
+    <p class="text-center font-medium opacity-85">Join 4,000+ companies already growing</p>
+    <ul aria-label="Customers" class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:gap-y-6 xl:gap-x-12 mx-auto max-w-4xl">
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Hexagon class="size-7 md:size-8" aria-hidden="true" />Lumen</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Atom class="size-7 md:size-8" aria-hidden="true" />Quanta</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Sprout class="size-7 md:size-8" aria-hidden="true" />Fieldwork</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Mountain class="size-7 md:size-8" aria-hidden="true" />Northpeak</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Waves class="size-7 md:size-8" aria-hidden="true" />Arcwave</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Wind class="size-7 md:size-8" aria-hidden="true" />Kitestring</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Circle class="size-7 md:size-8" aria-hidden="true" />Ovalis</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85"><Sun class="size-7 md:size-8" aria-hidden="true" />Brightline</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85 max-md:hidden"><Square class="size-7 md:size-8" aria-hidden="true" />Corner</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl opacity-85 max-md:hidden"><Droplet class="size-7 md:size-8" aria-hidden="true" />Tidewater</li>
+    </ul>
+  </div>
+</Section>

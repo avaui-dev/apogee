@@ -1,0 +1,29 @@
+---
+/**
+ * Full width dual: One line over two rows of logos.
+ *
+ * @block social-proof
+ * @order 2
+ */
+import { Atom, Circle, Droplet, Hexagon, Mountain, Sprout, Square, Sun, Waves, Wind } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-8">
+    <p class="text-center font-medium text-neutral-faded">Join 4,000+ companies already growing</p>
+    <ul aria-label="Customers" class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:gap-y-6 xl:gap-x-12 mx-auto max-w-4xl">
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Hexagon class="size-7 md:size-8" aria-hidden="true" />Lumen</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Atom class="size-7 md:size-8" aria-hidden="true" />Quanta</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Sprout class="size-7 md:size-8" aria-hidden="true" />Fieldwork</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Mountain class="size-7 md:size-8" aria-hidden="true" />Northpeak</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Waves class="size-7 md:size-8" aria-hidden="true" />Arcwave</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Wind class="size-7 md:size-8" aria-hidden="true" />Kitestring</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Circle class="size-7 md:size-8" aria-hidden="true" />Ovalis</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Sun class="size-7 md:size-8" aria-hidden="true" />Brightline</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral max-md:hidden"><Square class="size-7 md:size-8" aria-hidden="true" />Corner</li>
+      <li class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral max-md:hidden"><Droplet class="size-7 md:size-8" aria-hidden="true" />Tidewater</li>
+    </ul>
+  </div>
+</Section>

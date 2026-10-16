@@ -10851,6 +10851,499 @@
         "@lucide/astro"
       ],
       "usesJs": false
+    },
+    "social-proof/card": {
+      "name": "social-proof/card",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Card",
+      "description": "One line and five logos in a grey card.",
+      "files": [
+        "blocks/social-proof/Card.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/card-brand": {
+      "name": "social-proof/card-brand",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Card brand",
+      "description": "One line and five logos in a brand-colour card.",
+      "files": [
+        "blocks/social-proof/CardBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/cards": {
+      "name": "social-proof/cards",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Cards",
+      "description": "One line over eight logos, each on its own tile.",
+      "files": [
+        "blocks/social-proof/Cards.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/cards-brand": {
+      "name": "social-proof/cards-brand",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Cards brand",
+      "description": "One line over eight logos, each on its own tile on the brand colour.",
+      "files": [
+        "blocks/social-proof/CardsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/full-width": {
+      "name": "social-proof/full-width",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Full width",
+      "description": "One line over a row of six logos.",
+      "files": [
+        "blocks/social-proof/FullWidth.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/full-width-brand": {
+      "name": "social-proof/full-width-brand",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Full width brand",
+      "description": "One line over a row of six logos on the brand colour.",
+      "files": [
+        "blocks/social-proof/FullWidthBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/full-width-dual": {
+      "name": "social-proof/full-width-dual",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Full width dual",
+      "description": "One line over two rows of logos.",
+      "files": [
+        "blocks/social-proof/FullWidthDual.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/full-width-dual-brand": {
+      "name": "social-proof/full-width-dual-brand",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Full width dual brand",
+      "description": "One line over two rows of logos on the brand colour.",
+      "files": [
+        "blocks/social-proof/FullWidthDualBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/full-width-masked": {
+      "name": "social-proof/full-width-masked",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Full width masked",
+      "description": "One line over a scrolling strip of logos.",
+      "files": [
+        "blocks/social-proof/FullWidthMasked.astro"
+      ],
+      "registryDependencies": [
+        "Marquee",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/full-width-masked-brand": {
+      "name": "social-proof/full-width-masked-brand",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Full width masked brand",
+      "description": "One line over a scrolling strip of logos on the brand colour.",
+      "files": [
+        "blocks/social-proof/FullWidthMaskedBrand.astro"
+      ],
+      "registryDependencies": [
+        "Marquee",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "social-proof/press-mentions": {
+      "name": "social-proof/press-mentions",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Press mentions",
+      "description": "One line over five press names.",
+      "files": [
+        "blocks/social-proof/PressMentions.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "social-proof/press-mentions-brand": {
+      "name": "social-proof/press-mentions-brand",
+      "kind": "block",
+      "category": "social-proof",
+      "title": "Press mentions brand",
+      "description": "One line over five press names on the brand colour.",
+      "files": [
+        "blocks/social-proof/PressMentionsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/image-card-01": {
+      "name": "team/image-card-01",
+      "kind": "block",
+      "category": "team",
+      "title": "Image card 01",
+      "description": "A centred heading and actions over eight people with square photos and bios.",
+      "files": [
+        "blocks/team/ImageCard01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/image-card-02": {
+      "name": "team/image-card-02",
+      "kind": "block",
+      "category": "team",
+      "title": "Image card 02",
+      "description": "A heading with actions beside it, over eight people with square photos.",
+      "files": [
+        "blocks/team/ImageCard02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/image-card-03": {
+      "name": "team/image-card-03",
+      "kind": "block",
+      "category": "team",
+      "title": "Image card 03",
+      "description": "A heading over eight people in two columns, each photo beside a bio and links.",
+      "files": [
+        "blocks/team/ImageCard03.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/image-card-04": {
+      "name": "team/image-card-04",
+      "kind": "block",
+      "category": "team",
+      "title": "Image card 04",
+      "description": "A heading with actions over a scrolling row of people with square photos and bios.",
+      "files": [
+        "blocks/team/ImageCard04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/image-collage-01": {
+      "name": "team/image-collage-01",
+      "kind": "block",
+      "category": "team",
+      "title": "Image collage 01",
+      "description": "A centred heading and actions over a mosaic of eight people with details on glass panels.",
+      "files": [
+        "blocks/team/ImageCollage01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/image-collage-02": {
+      "name": "team/image-collage-02",
+      "kind": "block",
+      "category": "team",
+      "title": "Image collage 02",
+      "description": "A heading and actions beside a collage of five team photos.",
+      "files": [
+        "blocks/team/ImageCollage02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/image-glass-01": {
+      "name": "team/image-glass-01",
+      "kind": "block",
+      "category": "team",
+      "title": "Image glass 01",
+      "description": "A centred heading and actions over six portraits with details on inset glass panels.",
+      "files": [
+        "blocks/team/ImageGlass01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/image-glass-02": {
+      "name": "team/image-glass-02",
+      "kind": "block",
+      "category": "team",
+      "title": "Image glass 02",
+      "description": "A heading with actions beside it, over six portraits with details on flush glass panels.",
+      "files": [
+        "blocks/team/ImageGlass02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/image-glass-03": {
+      "name": "team/image-glass-03",
+      "kind": "block",
+      "category": "team",
+      "title": "Image glass 03",
+      "description": "A heading and actions beside four portraits with details on glass panels.",
+      "files": [
+        "blocks/team/ImageGlass03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/image-glass-04": {
+      "name": "team/image-glass-04",
+      "kind": "block",
+      "category": "team",
+      "title": "Image glass 04",
+      "description": "A heading with actions over a scrolling row of portraits with glass panels.",
+      "files": [
+        "blocks/team/ImageGlass04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Carousel",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/simple-01": {
+      "name": "team/simple-01",
+      "kind": "block",
+      "category": "team",
+      "title": "Simple 01",
+      "description": "A centred heading over eight people with round photos, names and roles.",
+      "files": [
+        "blocks/team/Simple01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/simple-02": {
+      "name": "team/simple-02",
+      "kind": "block",
+      "category": "team",
+      "title": "Simple 02",
+      "description": "A heading over eight people with round photos, bios and links.",
+      "files": [
+        "blocks/team/Simple02.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/simple-03": {
+      "name": "team/simple-03",
+      "kind": "block",
+      "category": "team",
+      "title": "Simple 03",
+      "description": "A heading and actions beside six people with round photos, bios and links.",
+      "files": [
+        "blocks/team/Simple03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "team/simple-04": {
+      "name": "team/simple-04",
+      "kind": "block",
+      "category": "team",
+      "title": "Simple 04",
+      "description": "A centred heading and actions over eight people in grey cards.",
+      "files": [
+        "blocks/team/Simple04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
     }
   }
 }
