@@ -1,0 +1,22 @@
+---
+/**
+ * Legal page 05: A centred eyebrow, heading and line on the brand colour. Then a content section, a call to action card on the brand colour and a footer.
+ *
+ * @page legal
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Header from '../../blocks/header/CenteredBrand.astro'
+import Article from '../../blocks/content/RichText02.astro'
+import CallToAction from '../../blocks/cta/CardHorizontalBrand.astro'
+import Footer from '../../blocks/footers/Large07.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Header eyebrow="Current as of 16 Oct 2026" heading="Terms of service" description="The rules for using the service, written to be read." />
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+</main>
+<Footer />

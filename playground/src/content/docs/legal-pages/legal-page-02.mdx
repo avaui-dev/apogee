@@ -1,0 +1,25 @@
+---
+title: "Legal page 02"
+description: "A policy page: a centred header with legal and plain-language tabs over the policy text. Then a call to action on grey and a footer on dark."
+group: Legal pages
+order: 2
+related: [sections/content, prose, tabs]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="legal/legal-page-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add legal/legal-page-02
+```
+
+This copies the page to `src/components/apogee/pages/legal/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple-with-footer](/docs/header-navigation-sections/dropdown-simple-with-footer), [content/simple](/docs/content-sections/simple), [cta/simple-centered](/docs/cta-sections/simple-centered), [footers/large-02](/docs/footers-sections/large-02). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (content/simple) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

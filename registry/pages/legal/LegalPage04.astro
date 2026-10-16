@@ -1,0 +1,22 @@
+---
+/**
+ * Legal page 04: A centred heading, line and email signup on dark. Then a content section, a call to action with a photo, a call to action with a photo and a footer.
+ *
+ * @page legal
+ */
+import Navigation from '../../blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro'
+import Header from '../../blocks/header/CenteredEmail.astro'
+import Article from '../../blocks/content/RichText02.astro'
+import CallToAction from '../../blocks/cta/SplitImage03.astro'
+import CallToAction2 from '../../blocks/cta/SplitImage01.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Navigation theme="dark" />
+<main>
+  <div data-theme="dark" class="bg-page text-neutral"><Header eyebrow="Current as of 16 Oct 2026" heading="Terms of service" description="The rules for using the service, written to be read." /></div>
+  <Article />
+  <CallToAction />
+  <CallToAction2 />
+</main>
+<Footer />

@@ -1,0 +1,30 @@
+---
+title: Legal pages
+navTitle: Overview
+description: "Whole policy pages: a page header and the policy text, between a header and a footer."
+group: Legal pages
+order: -1
+related: [sections/content, prose, tabs]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole policy page stacked from blocks: a header navigation, a page header from [Header sections](/docs/header-sections) that holds the page's `h1` (some with tabs between the legal and plain-language versions, a search field or an email signup), the policy text from [Content sections](/docs/content-sections), and a call to action before the footer. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add legal/legal-page-01
+```
+
+```astro
+---
+// src/pages/legal.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/legal/LegalPage01.astro'
+---
+
+<Layout title="Legal">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="Legal pages" self="legal-pages" />

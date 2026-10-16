@@ -1,0 +1,18 @@
+---
+/**
+ * Legal page 02: A policy page: a centred header with legal and plain-language tabs over the policy text. Then a call to action on grey and a footer on dark.
+ *
+ * @page legal
+ */
+import Navigation from '../../blocks/header-navigation/DropdownSimpleWithFooter.astro'
+import Article from '../../blocks/content/Simple.astro'
+import CallToAction from '../../blocks/cta/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large02.astro'
+---
+
+<Navigation />
+<main>
+  <Article />
+  <div class="bg-neutral-faded"><CallToAction /></div>
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

@@ -1,0 +1,25 @@
+---
+/**
+ * Legal page 03: A banner on the brand colour and a split heading, line and search field. Then a content section, a call to action with customer logos and a footer.
+ *
+ * @page legal
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Banner from '../../blocks/banner/SlimBrandFullWidth.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Header from '../../blocks/header/SpaceBetweenSearch.astro'
+import Article from '../../blocks/content/RichText02.astro'
+import CallToAction from '../../blocks/cta/SimpleLogos02.astro'
+import Footer from '../../blocks/footers/Large06.astro'
+---
+
+<Banner />
+<Navigation />
+<main>
+  <Header eyebrow="Current as of 16 Oct 2026" heading="Terms of service" description="The rules for using the service, written to be read." />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+</main>
+<Footer />
