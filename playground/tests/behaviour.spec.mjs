@@ -323,9 +323,12 @@ test('dropdown submenu: ArrowLeft and Escape return focus to the triggers; hover
   await expect(trigger).toBeFocused()
   // Mouse: hover opens the submenu; the click that follows must not toggle it closed.
   // Scroll first: a scroll during hover moves the anchored panel from under the pointer.
+  // Move the mouse instead of hover(): its scroll-into-view step scrolls the page for an item
+  // inside an anchored (fixed) popover even when it is in view, so the pointer lands elsewhere.
   await root.scrollIntoViewIfNeeded()
   await trigger.click()
-  await subTrigger.hover()
+  const box = await subTrigger.boundingBox()
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
   await expect(sub).toBeVisible()
   await subTrigger.click()
   await page.waitForTimeout(300)
