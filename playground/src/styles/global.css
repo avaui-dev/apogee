@@ -134,3 +134,45 @@ html {
 .apogee-no-transitions * {
   transition: none !important;
 }
+
+/* Phones: the docs navbar and menu bar slide out of view while scrolling down (DocsLayout's script
+   sets the attribute); they slide back on the first scroll up. */
+@media (max-width: 767.98px) {
+  .docs-chrome-nav,
+  .docs-chrome-bar {
+    transition: translate var(--duration-medium) var(--ease-standard);
+  }
+  html[data-docs-chrome-hidden] .docs-chrome-nav {
+    translate: 0 -100%;
+  }
+  html[data-docs-chrome-hidden] .docs-chrome-bar {
+    translate: 0 calc(-100% - 65px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .docs-chrome-nav,
+  .docs-chrome-bar {
+    transition: none;
+  }
+}
+
+/* Docs: the floating previous/next pill fades in once the reader scrolls (DocsLayout's script). */
+.docs-pager {
+  opacity: 0;
+  translate: 0 0.5rem;
+  pointer-events: none;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    translate var(--duration-fast) var(--ease-standard);
+}
+.docs-pager[data-visible] {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .docs-pager {
+    translate: none;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+}

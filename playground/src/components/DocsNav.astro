@@ -22,8 +22,8 @@ const { nav, class: className } = Astro.props
 const key = (group: string) => group.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 ---
 
-<nav aria-label="Docs" class:list={['docs-nav flex flex-col gap-1 [--docs-nav-bg:var(--background-page)]', className]}>
-  <div class="sticky top-0 z-[2] bg-(--docs-nav-bg) pb-3 in-[aside]:pt-8">
+<nav aria-label="Docs" class:list={['docs-nav flex flex-col gap-1', className]}>
+  <div class="sticky top-0 z-[2] bg-[var(--docs-nav-bg,var(--background-page))] pb-3 in-[aside]:pt-8">
     <button
       type="button"
       data-command-open="docsearch"
@@ -38,7 +38,7 @@ const key = (group: string) => group.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     nav.map((g, gi) => (
       <>
       {gi > 0 && <Divider color="neutral-faded" inset={2} class="shrink-0" />}
-      <NavGroup label={g.group} data-docs-group={key(g.group)} class="[&>.apogee-navgroup-list]:ps-0 [&>.apogee-navgroup-list]:pb-3 [&>summary]:sticky [&>summary]:top-12 in-[aside]:[&>summary]:top-20 [&>summary]:z-[1] [&>summary]:bg-(--docs-nav-bg)! [&>summary]:px-2! [&>summary]:text-base! [&>summary]:font-semibold [&>summary]:text-neutral!">
+      <NavGroup label={g.group} data-docs-group={key(g.group)} class="[&>.apogee-navgroup-list]:ps-0 [&>.apogee-navgroup-list]:pb-3 [&>summary]:sticky [&>summary]:top-12 in-[aside]:[&>summary]:top-20 [&>summary]:z-[1] [&>summary]:rounded-none! [&>summary]:bg-[var(--docs-nav-bg,var(--background-page))]! [&>summary]:px-2! [&>summary]:text-base! [&>summary]:font-semibold [&>summary]:text-neutral!">
         <Badge slot="end" size="small" color="neutral" data-docs-count>{g.items.length}</Badge>
         {g.items.map((i) => {
           // A category's items share its icon unless they have their own.

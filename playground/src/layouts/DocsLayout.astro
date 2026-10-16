@@ -8,7 +8,7 @@ import CommandPalette from '../../../registry/components/CommandPalette/CommandP
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import Button from '../../../registry/components/Button/Button.astro'
 import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
-import { Sun, Moon, Menu, Layers } from '@lucide/astro'
+import { Sun, Moon, Layers, BookOpenText, ChevronLeft, ChevronRight } from '@lucide/astro'
 import DocsCard from '../components/DocsCard.astro'
 import DocsNav from '../components/DocsNav.astro'
 import BrandHead from '../components/BrandHead.astro'
@@ -60,7 +60,7 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
     </script>
   </head>
   <body class="min-h-dvh bg-page text-neutral">
-    <Navbar class="md:[&_.apogee-navbar-menu]:flex-1 md:[&_.apogee-navbar-menu]:justify-end">
+    <Navbar class="docs-chrome-nav md:[&_.apogee-navbar-menu]:flex-1 md:[&_.apogee-navbar-menu]:justify-end">
       <a slot="brand" href="/docs" class="inline-flex rounded-sm text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><Logo /></a>
       <NavLink href="/docs">Docs</NavLink>
       <div slot="tools" class="flex items-center gap-1">
@@ -82,6 +82,10 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
         </Tooltip>
       </div>
     </Navbar>
+    {/* Phones: the docs menu button, in a bar that sticks under the navbar. */}
+    <div class="docs-chrome-bar sticky top-[65px] z-20 border-b border-neutral bg-page px-4 py-2 md:hidden">
+      <Button command="show-modal" commandfor="docs-mobile-nav" variant="outline" color="neutral" fullWidth><BookOpenText slot="start" />Docs menu</Button>
+    </div>
 
     <div class="mx-auto flex w-full max-w-7xl gap-8 px-4">
       <aside class="hidden w-64 shrink-0 md:block">
@@ -111,7 +115,7 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
 
         {
           (prev || next) && (
-            <nav class="mt-12 flex items-stretch justify-between gap-4 border-t border-neutral pt-6" aria-label="Pagination">
+            <nav data-docs-pagination class="mt-12 flex items-stretch justify-between gap-4 border-t border-neutral pt-6" aria-label="Pagination">
               {prev ? (
                 <a
                   href={prev.href}
@@ -170,9 +174,26 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
     <Dialog id="docs-mobile-nav" position="start" title="Docs menu" class="md:hidden">
       <DocsNav nav={nav} class="[--docs-nav-bg:var(--background-elevation-raised)]" />
     </Dialog>
-    <div class="fixed end-4 bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] z-30 md:hidden">
-      <Button command="show-modal" commandfor="docs-mobile-nav" class="shadow-raised"><Menu slot="start" />Docs menu</Button>
-    </div>
+
+    {/* A small previous/next pill that floats at the bottom once the reader has scrolled, until
+        the full pagination at the end of the page comes into view. Hidden without JS. */}
+    {
+      (prev || next) && (
+        <nav data-docs-pager inert aria-label="Previous and next page" class="docs-pager fixed inset-x-0 bottom-6 z-20 mx-auto flex w-fit max-w-[calc(100%-2rem)] items-center gap-0.5 rounded-full bg-page/85 p-1 text-xs text-neutral-faded shadow-raised ring-1 ring-neutral backdrop-blur no-js:hidden">
+          {prev && (
+            <a href={prev.href} rel="prev" class="flex min-w-0 items-center gap-1 rounded-full py-1.5 ps-2 pe-3 transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
+              <ChevronLeft class="size-3.5 shrink-0 rtl:-scale-x-100" aria-hidden="true" /><span class="sr-only">Previous: </span><span class="max-w-40 truncate">{prev.title}</span>
+            </a>
+          )}
+          {prev && next && <span class="h-4 w-px shrink-0 bg-(--border-neutral)" aria-hidden="true" />}
+          {next && (
+            <a href={next.href} rel="next" class="flex min-w-0 items-center gap-1 rounded-full py-1.5 ps-3 pe-2 transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
+              <span class="sr-only">Next: </span><span class="max-w-40 truncate">{next.title}</span><ChevronRight class="size-3.5 shrink-0 rtl:-scale-x-100" aria-hidden="true" />
+            </a>
+          )}
+        </nav>
+      )
+    }
 
     <CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
 
@@ -197,6 +218,45 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
         else localStorage.removeItem('apogee-skin')
       }
       for (const b of document.querySelectorAll('[data-skin-toggle]')) b.addEventListener('click', toggleSkin)
+
+      // Phones: the navbar and the docs menu bar slide away while the reader scrolls down and come
+      // back on the first scroll up (CSS in global.css applies it below md). They stay while the
+      // navbar's menu is open or focus is inside them. Without JS both simply stay sticky.
+      {
+        const root = document.documentElement
+        const chrome = document.querySelectorAll<HTMLElement>('.docs-chrome-nav, .docs-chrome-bar')
+        let last = scrollY
+        let ticking = false
+        const update = () => {
+          ticking = false
+          const y = scrollY
+          const held = document.querySelector('.docs-chrome-nav [data-open="true"]') || [...chrome].some((el) => el.contains(document.activeElement))
+          if (y < 80 || held) root.removeAttribute('data-docs-chrome-hidden')
+          else if (y > last + 6) root.setAttribute('data-docs-chrome-hidden', '')
+          else if (y < last - 6) root.removeAttribute('data-docs-chrome-hidden')
+          if (Math.abs(y - last) > 6) last = y
+        }
+        addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update) } }, { passive: true })
+        for (const el of chrome) el.addEventListener('focusin', () => root.removeAttribute('data-docs-chrome-hidden'))
+      }
+
+      // Floating previous/next pill: shown after 400px of scroll, hidden while the page's own
+      // pagination is in view. `inert` keeps it out of the tab order while hidden.
+      {
+        const pager = document.querySelector<HTMLElement>('[data-docs-pager]')
+        const end = document.querySelector('[data-docs-pagination]')
+        if (pager) {
+          let endInView = false
+          const sync = () => {
+            const show = scrollY > 400 && !endInView
+            pager.toggleAttribute('data-visible', show)
+            pager.inert = !show
+          }
+          if (end) new IntersectionObserver(([e]) => { endInView = e!.isIntersecting; sync() }).observe(end)
+          addEventListener('scroll', sync, { passive: true })
+          sync()
+        }
+      }
 
       // Sidebar groups: a click on a group header saves its new state for every copy of the nav.
       document.addEventListener('click', (e) => {
