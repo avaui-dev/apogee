@@ -1,0 +1,28 @@
+---
+/**
+ * Small 04 brand: The logo beside an email signup, with the copyright under them, on the brand colour.
+ *
+ * @block footers
+ * @order 40
+ */
+import { Orbit } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+
+---
+
+<Section as="footer" spacing="small" background="primary">
+  <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="neutral" size="small"><Orbit /></FeaturedIcon>Example</Link>
+    <div class="flex flex-col gap-4 ">
+      <form method="post" class="flex flex-col gap-3 sm:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="sm:w-64" />
+        <Button type="submit" color="neutral">Subscribe</Button>
+      </form>
+    </div>
+  </div>
+  <p class="opacity-85 mt-8 md:text-end">© 2026 Example. All rights reserved.</p>
+</Section>

@@ -1,0 +1,23 @@
+---
+title: "Small 01 brand"
+description: "One row: the logo, a row of links and the copyright, on the brand colour."
+group: Footer sections
+order: 37
+related: [footer, link, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="footers/small-01-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footers/small-01-brand
+```
+
+This copies the block to `src/components/apogee/blocks/footers/` with everything it uses: FeaturedIcon, Link, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The block is the page's `<footer>` landmark; each link column is a `<nav>` named after its heading.

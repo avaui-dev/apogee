@@ -6955,6 +6955,849 @@
       ],
       "dependencies": [],
       "usesJs": false
+    },
+    "footers/large-01": {
+      "name": "footers/large-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 01",
+      "description": "Six link columns, then the logo and copyright.",
+      "files": [
+        "blocks/footers/Large01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-01-brand": {
+      "name": "footers/large-01-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 01 brand",
+      "description": "Six link columns, then the logo and copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Large01Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-02": {
+      "name": "footers/large-02",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 02",
+      "description": "The logo, a line and a rating beside five columns, over a tinted band with copyright and social links.",
+      "files": [
+        "blocks/footers/Large02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "FeaturedIcon",
+        "Link",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-02-brand": {
+      "name": "footers/large-02-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 02 brand",
+      "description": "The logo, a line and a rating beside five columns, over a tinted band with copyright and social links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large02Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "FeaturedIcon",
+        "Link",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-03": {
+      "name": "footers/large-03",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 03",
+      "description": "Five link columns and app buttons, then the logo and copyright.",
+      "files": [
+        "blocks/footers/Large03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-03-brand": {
+      "name": "footers/large-03-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 03 brand",
+      "description": "Five link columns and app buttons, then the logo and copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Large03Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-04": {
+      "name": "footers/large-04",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 04",
+      "description": "The logo, a line and a join link beside two columns and an email signup, then copyright and legal links.",
+      "files": [
+        "blocks/footers/Large04.astro"
+      ],
+      "registryDependencies": [
+        "AvatarGroup",
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-04-brand": {
+      "name": "footers/large-04-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 04 brand",
+      "description": "The logo, a line and a join link beside two columns and an email signup, then copyright and legal links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large04Brand.astro"
+      ],
+      "registryDependencies": [
+        "AvatarGroup",
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-05": {
+      "name": "footers/large-05",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 05",
+      "description": "A newsletter signup with a join link, six link columns, then the logo and copyright.",
+      "files": [
+        "blocks/footers/Large05.astro"
+      ],
+      "registryDependencies": [
+        "AvatarGroup",
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-05-brand": {
+      "name": "footers/large-05-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 05 brand",
+      "description": "A newsletter signup with a join link, six link columns, then the logo and copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Large05Brand.astro"
+      ],
+      "registryDependencies": [
+        "AvatarGroup",
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-06": {
+      "name": "footers/large-06",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 06",
+      "description": "A newsletter signup on a tinted band, then the logo and a rating beside five columns, copyright and social links.",
+      "files": [
+        "blocks/footers/Large06.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Input",
+        "Link",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-06-brand": {
+      "name": "footers/large-06-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 06 brand",
+      "description": "A newsletter signup on a tinted band, then the logo and a rating beside five columns, copyright and social links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large06Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Input",
+        "Link",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-07": {
+      "name": "footers/large-07",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 07",
+      "description": "The logo, a line and a row of links beside app buttons, then copyright and social links.",
+      "files": [
+        "blocks/footers/Large07.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-07-brand": {
+      "name": "footers/large-07-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 07 brand",
+      "description": "The logo, a line and a row of links beside app buttons, then copyright and social links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large07Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-08": {
+      "name": "footers/large-08",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 08",
+      "description": "The logo and a row of links beside an email signup, then copyright and legal links.",
+      "files": [
+        "blocks/footers/Large08.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-08-brand": {
+      "name": "footers/large-08-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 08 brand",
+      "description": "The logo and a row of links beside an email signup, then copyright and legal links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large08Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-09": {
+      "name": "footers/large-09",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 09",
+      "description": "A centred call to action, six link columns, then the logo and copyright.",
+      "files": [
+        "blocks/footers/Large09.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-09-brand": {
+      "name": "footers/large-09-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 09 brand",
+      "description": "A centred call to action, six link columns, then the logo and copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Large09Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-10": {
+      "name": "footers/large-10",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 10",
+      "description": "A call to action with buttons, the logo and a line beside five columns, then copyright and social links.",
+      "files": [
+        "blocks/footers/Large10.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-10-brand": {
+      "name": "footers/large-10-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 10 brand",
+      "description": "A call to action with buttons, the logo and a line beside five columns, then copyright and social links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large10Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-11": {
+      "name": "footers/large-11",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 11",
+      "description": "A centred call to action, the logo and a row of links beside app buttons, then copyright and social links.",
+      "files": [
+        "blocks/footers/Large11.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-11-brand": {
+      "name": "footers/large-11-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 11 brand",
+      "description": "A centred call to action, the logo and a row of links beside app buttons, then copyright and social links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large11Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-12": {
+      "name": "footers/large-12",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 12",
+      "description": "A launch signup on a tinted band, then the logo and a join link beside five columns, copyright and social links.",
+      "files": [
+        "blocks/footers/Large12.astro"
+      ],
+      "registryDependencies": [
+        "AvatarGroup",
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-12-brand": {
+      "name": "footers/large-12-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 12 brand",
+      "description": "A launch signup on a tinted band, then the logo and a join link beside five columns, copyright and social links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large12Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-13": {
+      "name": "footers/large-13",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 13",
+      "description": "A centred mark, heading and two buttons, then copyright and legal links.",
+      "files": [
+        "blocks/footers/Large13.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-13-brand": {
+      "name": "footers/large-13-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 13 brand",
+      "description": "A centred mark, heading and two buttons, then copyright and legal links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large13Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-14": {
+      "name": "footers/large-14",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 14",
+      "description": "The logo beside three link columns, then a short call to action beside the copyright.",
+      "files": [
+        "blocks/footers/Large14.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-14-brand": {
+      "name": "footers/large-14-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 14 brand",
+      "description": "The logo beside three link columns, then a short call to action beside the copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Large14Brand.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-15": {
+      "name": "footers/large-15",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 15",
+      "description": "A centred logo and row of links, then copyright and legal links.",
+      "files": [
+        "blocks/footers/Large15.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-15-brand": {
+      "name": "footers/large-15-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 15 brand",
+      "description": "A centred logo and row of links, then copyright and legal links, on the brand colour.",
+      "files": [
+        "blocks/footers/Large15Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-16": {
+      "name": "footers/large-16",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 16",
+      "description": "A centred logo and row of links, then an email signup beside the copyright.",
+      "files": [
+        "blocks/footers/Large16.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/large-16-brand": {
+      "name": "footers/large-16-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Large 16 brand",
+      "description": "A centred logo and row of links, then an email signup beside the copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Large16Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-01": {
+      "name": "footers/small-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 01",
+      "description": "One row: the logo, a row of links and the copyright.",
+      "files": [
+        "blocks/footers/Small01.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-01-brand": {
+      "name": "footers/small-01-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 01 brand",
+      "description": "One row: the logo, a row of links and the copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Small01Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-02": {
+      "name": "footers/small-02",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 02",
+      "description": "The logo and copyright, centred on phones and split on wide screens.",
+      "files": [
+        "blocks/footers/Small02.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-02-brand": {
+      "name": "footers/small-02-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 02 brand",
+      "description": "The logo and copyright, centred on phones and split on wide screens, on the brand colour.",
+      "files": [
+        "blocks/footers/Small02Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-03": {
+      "name": "footers/small-03",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 03",
+      "description": "Social links, the logo in the middle and the copyright.",
+      "files": [
+        "blocks/footers/Small03.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-03-brand": {
+      "name": "footers/small-03-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 03 brand",
+      "description": "Social links, the logo in the middle and the copyright, on the brand colour.",
+      "files": [
+        "blocks/footers/Small03Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-04": {
+      "name": "footers/small-04",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 04",
+      "description": "The logo beside an email signup, with the copyright under them.",
+      "files": [
+        "blocks/footers/Small04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/small-04-brand": {
+      "name": "footers/small-04-brand",
+      "kind": "block",
+      "category": "footers",
+      "title": "Small 04 brand",
+      "description": "The logo beside an email signup, with the copyright under them, on the brand colour.",
+      "files": [
+        "blocks/footers/Small04Brand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
     }
   }
 }

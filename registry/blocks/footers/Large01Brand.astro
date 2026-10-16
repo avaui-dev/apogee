@@ -1,0 +1,44 @@
+---
+/**
+ * Large 01 brand: Six link columns, then the logo and copyright, on the brand colour.
+ *
+ * @block footers
+ * @order 21
+ */
+import { Orbit } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+const columns = [
+  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
+  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
+  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
+  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
+  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
+  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
+]
+---
+
+<Section as="footer" spacing="medium" background="primary">
+  <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-6">
+      {columns.map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-sm font-semibold opacity-85">{c.heading}</p>
+          <ul class="mt-4 flex list-none flex-col gap-3 p-0">
+            {c.links.map((l) => (
+              <li class="flex items-center gap-2">
+                <Link href="#" color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
+                {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! text-inherit!">{l.badge}</Badge>}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+  <div class="mt-12 md:mt-16 flex flex-col gap-6 border-t border-current/25 pt-8 md:flex-row md:items-center md:justify-between">
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="neutral" size="small"><Orbit /></FeaturedIcon>Example</Link>
+    <p class="opacity-85 ">© 2026 Example. All rights reserved.</p>
+  </div>
+</Section>

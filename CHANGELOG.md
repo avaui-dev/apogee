@@ -45,6 +45,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Footer sections**: 40 footers; link columns or a row of links with a newsletter or launch signup, a call to action, app buttons, a rating or social links over a copyright line, large and small, and brand-colour versions.
 - **Features sections**: 46 feature blocks; alternating rows, icon grids, icons beside a photo, phone or screenshot, icon cards, large screenshots, payment card stacks, feature tabs that switch screenshots, integration icons, and brand-colour versions.
 - **VideoPlayer**: a native video behind a poster and one large play button; the browser's own controls take over once it plays. Captions track, no download until play.
 - **PaymentCard**: a payment card drawn in CSS, solid or frosted glass, read as one image named by its last four digits.

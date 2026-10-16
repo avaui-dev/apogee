@@ -1,0 +1,85 @@
+---
+/**
+ * Large 06: A newsletter signup on a tinted band, then the logo and a rating beside five columns, copyright and social links.
+ *
+ * @block footers
+ * @order 6
+ */
+import { AtSign, Globe, Mail, MessageCircle, Orbit, Rss } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Rating from '../../components/Rating/Rating.astro'
+
+const columns = [
+  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
+  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
+  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
+  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
+  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
+  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
+]
+const social = [
+  { label: 'Email', icon: Mail },
+  { label: 'Blog feed', icon: Rss },
+  { label: 'Community', icon: MessageCircle },
+  { label: 'Website', icon: Globe },
+  { label: 'Contact', icon: AtSign },
+]
+---
+
+<footer>
+  <Section as="div" spacing="medium" background="neutral-faded">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-col gap-3 items-start">
+      <Heading as="h2" size="h5">Join our newsletter</Heading>
+      <p class="text-lg text-neutral-faded">We'll send you one short letter a week. No spam.</p>
+    </div>
+      <div class="flex flex-col gap-4 ">
+      <form method="post" class="flex flex-col gap-3 sm:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="sm:w-64" />
+        <Button type="submit">Subscribe</Button>
+      </form>
+    </div>
+    </div>
+  </Section>
+  <Section as="div" spacing="small">
+    <div class="grid gap-12 lg:gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+    <div class="flex flex-col gap-6">
+      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+      <p class="max-w-xs text-neutral-faded">Design calm, accessible websites your whole team can edit.</p>
+      <div class="flex items-center gap-3">
+        <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+        <span class="text-sm text-neutral-faded">5.0 from 2,000+ reviews</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-8 md:grid-cols-5">
+      {columns.filter((c) => c.heading !== 'Use cases').map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-sm font-semibold text-neutral-faded">{c.heading}</p>
+          <ul class="mt-4 flex list-none flex-col gap-3 p-0">
+            {c.links.map((l) => (
+              <li class="flex items-center gap-2">
+                <Link href="#" color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
+                {l.badge && <Badge size="small" variant="faded" color="primary">{l.badge}</Badge>}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+  </div>
+    <div class="mt-12 md:mt-16 flex flex-col-reverse gap-6 border-t border-neutral pt-8 md:flex-row md:items-center md:justify-between">
+    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
+    <ul class="flex list-none flex-wrap gap-6 p-0 text-neutral-faded">
+        {social.map((s) => (
+          <li><Link href="#" color="inherit" underline="none" aria-label={s.label} class="flex"><s.icon class="size-6" aria-hidden="true" /></Link></li>
+        ))}
+      </ul>
+  </div>
+  </Section>
+</footer>

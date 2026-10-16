@@ -1,0 +1,32 @@
+---
+/**
+ * Small 03: Social links, the logo in the middle and the copyright.
+ *
+ * @block footers
+ * @order 19
+ */
+import { AtSign, Globe, Mail, MessageCircle, Orbit, Rss } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Link from '../../components/Link/Link.astro'
+
+const social = [
+  { label: 'Email', icon: Mail },
+  { label: 'Blog feed', icon: Rss },
+  { label: 'Community', icon: MessageCircle },
+  { label: 'Website', icon: Globe },
+  { label: 'Contact', icon: AtSign },
+]
+---
+
+<Section as="footer" spacing="small">
+  <div class="grid items-center justify-items-center gap-6 lg:grid-cols-3">
+    <div class="lg:order-2"><Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link></div>
+    <div class="lg:order-1 lg:justify-self-start"><ul class="flex list-none flex-wrap gap-6 p-0 text-neutral-faded">
+        {social.map((s) => (
+          <li><Link href="#" color="inherit" underline="none" aria-label={s.label} class="flex"><s.icon class="size-6" aria-hidden="true" /></Link></li>
+        ))}
+      </ul></div>
+    <p class="text-neutral-faded lg:order-3 lg:justify-self-end">© 2026 Example. All rights reserved.</p>
+  </div>
+</Section>

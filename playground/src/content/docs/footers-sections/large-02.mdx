@@ -1,0 +1,25 @@
+---
+title: "Large 02"
+description: "The logo, a line and a rating beside five columns, over a tinted band with copyright and social links."
+group: Footer sections
+order: 2
+related: [footer, link, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="footers/large-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footers/large-02
+```
+
+This copies the block to `src/components/apogee/blocks/footers/` with everything it uses: Badge, FeaturedIcon, Link, Rating, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The icon links are named (Email, Blog feed, Community…); the icons themselves are hidden.
+- The stars are read as one rating ("Rated 5 out of 5").
+- The block is the page's `<footer>` landmark; each link column is a `<nav>` named after its heading.

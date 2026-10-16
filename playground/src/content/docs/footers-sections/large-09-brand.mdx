@@ -1,0 +1,24 @@
+---
+title: "Large 09 brand"
+description: "A centred call to action, six link columns, then the logo and copyright, on the brand colour."
+group: Footer sections
+order: 29
+related: [footer, link, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="footers/large-09-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footers/large-09-brand
+```
+
+This copies the block to `src/components/apogee/blocks/footers/` with everything it uses: Badge, Button, FeaturedIcon, Heading, Link, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- The block is the page's `<footer>` landmark; each link column is a `<nav>` named after its heading.

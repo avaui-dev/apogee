@@ -1,0 +1,24 @@
+---
+title: "Large 04"
+description: "The logo, a line and a join link beside two columns and an email signup, then copyright and legal links."
+group: Footer sections
+order: 4
+related: [footer, link, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="footers/large-04" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footers/large-04
+```
+
+This copies the block to `src/components/apogee/blocks/footers/` with everything it uses: AvatarGroup, Badge, Button, FeaturedIcon, Input, Link, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The email field is named "Email" (the placeholder is not a label); the form submits without JS.
+- The block is the page's `<footer>` landmark; each link column is a `<nav>` named after its heading.

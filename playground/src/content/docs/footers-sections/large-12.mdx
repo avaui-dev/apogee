@@ -1,0 +1,26 @@
+---
+title: "Large 12"
+description: "A launch signup on a tinted band, then the logo and a join link beside five columns, copyright and social links."
+group: Footer sections
+order: 12
+related: [footer, link, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="footers/large-12" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footers/large-12
+```
+
+This copies the block to `src/components/apogee/blocks/footers/` with everything it uses: AvatarGroup, Badge, Button, FeaturedIcon, Heading, Input, Link, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- The email field is named "Email" (the placeholder is not a label); the form submits without JS.
+- The icon links are named (Email, Blog feed, Community…); the icons themselves are hidden.
+- The block is the page's `<footer>` landmark; each link column is a `<nav>` named after its heading.

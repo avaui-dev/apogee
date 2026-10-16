@@ -1,0 +1,56 @@
+---
+/**
+ * Large 09 brand: A centred call to action, six link columns, then the logo and copyright, on the brand colour.
+ *
+ * @block footers
+ * @order 29
+ */
+import { Orbit } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+const columns = [
+  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
+  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
+  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
+  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
+  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
+  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
+]
+---
+
+<Section as="footer" spacing="medium" background="primary">
+  <div class="flex flex-col items-center gap-8 border-b border-current/25 pb-12 md:pb-16">
+    <div class="flex flex-col gap-3 items-center text-center">
+      <Heading as="h2" size="h3">Let's get started on something great</Heading>
+      <p class="text-lg opacity-85">Join over 4,000 startups already growing with us.</p>
+    </div>
+    <div class="flex flex-col-reverse gap-3 sm:flex-row">
+      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!">Chat to us</Button>
+      <Button href="#" size="large" color="neutral">Get started</Button>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-8 mt-12 md:mt-16 md:grid-cols-3 lg:grid-cols-6">
+      {columns.map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-sm font-semibold opacity-85">{c.heading}</p>
+          <ul class="mt-4 flex list-none flex-col gap-3 p-0">
+            {c.links.map((l) => (
+              <li class="flex items-center gap-2">
+                <Link href="#" color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
+                {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! text-inherit!">{l.badge}</Badge>}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+  <div class="mt-12 md:mt-16 flex flex-col gap-6 border-t border-current/25 pt-8 md:flex-row md:items-center md:justify-between">
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="neutral" size="small"><Orbit /></FeaturedIcon>Example</Link>
+    <p class="opacity-85 ">© 2026 Example. All rights reserved.</p>
+  </div>
+</Section>

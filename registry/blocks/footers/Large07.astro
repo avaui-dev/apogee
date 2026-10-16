@@ -1,0 +1,46 @@
+---
+/**
+ * Large 07: The logo, a line and a row of links beside app buttons, then copyright and social links.
+ *
+ * @block footers
+ * @order 7
+ */
+import { AtSign, Download, Globe, Mail, MessageCircle, Orbit, Rss, Smartphone } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const social = [
+  { label: 'Email', icon: Mail },
+  { label: 'Blog feed', icon: Rss },
+  { label: 'Community', icon: MessageCircle },
+  { label: 'Website', icon: Globe },
+  { label: 'Contact', icon: AtSign },
+]
+---
+
+<Section as="footer" spacing="medium">
+  <div class="flex flex-col gap-12 md:flex-row md:justify-between">
+    <div class="flex flex-col gap-6">
+      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+      <p class="max-w-xs text-neutral-faded">Design calm, accessible websites your whole team can edit.</p>
+      <nav aria-label="Footer" class="mt-2"><ul class="grid list-none grid-cols-2 gap-x-8 gap-y-3 p-0 sm:flex sm:flex-wrap"><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Overview</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Features</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Pricing</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Careers</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Help</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Privacy</Link></li></ul></nav>
+    </div>
+    <div class="flex flex-col gap-4">
+      <p class="text-sm font-semibold text-neutral-faded">Get the app</p>
+      <div class="flex flex-col gap-3">
+        <Button href="#" variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />Download for iOS</Button>
+        <Button href="#" variant="outline" color="neutral"><Download slot="start" aria-hidden="true" />Get it on Android</Button>
+      </div>
+    </div>
+  </div>
+  <div class="mt-12 md:mt-16 flex flex-col-reverse gap-6 border-t border-neutral pt-8 md:flex-row md:items-center md:justify-between">
+    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
+    <ul class="flex list-none flex-wrap gap-6 p-0 text-neutral-faded">
+        {social.map((s) => (
+          <li><Link href="#" color="inherit" underline="none" aria-label={s.label} class="flex"><s.icon class="size-6" aria-hidden="true" /></Link></li>
+        ))}
+      </ul>
+  </div>
+</Section>

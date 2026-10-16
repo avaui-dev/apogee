@@ -1,0 +1,50 @@
+---
+/**
+ * Large 14: The logo beside three link columns, then a short call to action beside the copyright.
+ *
+ * @block footers
+ * @order 14
+ */
+import { Orbit } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+const columns = [
+  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
+  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
+  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
+  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
+  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
+  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
+]
+---
+
+<Section as="footer" spacing="medium">
+  <div class="grid gap-12 lg:gap-16 lg:grid-cols-2">
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold self-start"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+    <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+      {columns.slice(0, 3).map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-sm font-semibold text-neutral-faded">{c.heading}</p>
+          <ul class="mt-4 flex list-none flex-col gap-3 p-0">
+            {c.links.map((l) => (
+              <li class="flex items-center gap-2">
+                <Link href="#" color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
+                {l.badge && <Badge size="small" variant="faded" color="primary">{l.badge}</Badge>}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+  </div>
+  <div class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 md:mt-16 md:flex-row md:items-end md:justify-between">
+    <div class="flex max-w-md flex-col gap-1">
+      <p class="font-semibold">Move faster with Example</p>
+      <p class="text-neutral-faded">Save hours on every page and ship a site that looks right on day one.</p>
+    </div>
+    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
+  </div>
+</Section>

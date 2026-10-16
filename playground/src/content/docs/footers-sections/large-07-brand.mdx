@@ -1,0 +1,24 @@
+---
+title: "Large 07 brand"
+description: "The logo, a line and a row of links beside app buttons, then copyright and social links, on the brand colour."
+group: Footer sections
+order: 27
+related: [footer, link, input]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="footers/large-07-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add footers/large-07-brand
+```
+
+This copies the block to `src/components/apogee/blocks/footers/` with everything it uses: Button, FeaturedIcon, Link, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The icon links are named (Email, Blog feed, Community…); the icons themselves are hidden.
+- The block is the page's `<footer>` landmark; each link column is a `<nav>` named after its heading.
