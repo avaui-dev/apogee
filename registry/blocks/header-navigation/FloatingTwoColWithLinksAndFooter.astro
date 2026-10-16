@@ -28,9 +28,17 @@ const resources: Item[] = [
   { icon: Layers, title: 'Changelog', text: 'The latest updates and releases from our team.' },
 ]
 const getStarted = ['Getting started', 'Setup 101', 'Community', 'Changelog', 'Tutorials', 'Status']
+
+interface Props {
+  /** The bar's fill: the page, a grey band or the brand colour. */
+  background?: 'page' | 'neutral-faded' | 'primary' | undefined
+  /** `dark` sets the bar in the dark theme on a light page. */
+  theme?: 'dark' | undefined
+}
+const { background, theme } = Astro.props
 ---
 
-<Navbar floating>
+<Navbar floating background={background} data-theme={theme}>
   <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
   <NavDropdown label="Products" width="52rem">
     <div class="grid gap-6 p-4 md:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)]">

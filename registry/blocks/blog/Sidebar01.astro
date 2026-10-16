@@ -96,7 +96,7 @@ const categories = [
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Our blog" heading="Our blog" description="Interviews, tips, guides, industry best practices, and news." headingLevel={1} class="mb-16">
+  <SectionHeader eyebrow="Our blog" heading="Stories and interviews" description="Interviews, tips, guides, industry best practices, and news." headingLevel={1} class="mb-16">
     <div slot="actions" class="w-full sm:w-auto">
       <form method="post" class="flex w-full flex-col gap-2 sm:max-w-md">
       <div class="flex flex-col gap-3 sm:flex-row">
@@ -108,7 +108,7 @@ const categories = [
     </div>
   </SectionHeader>
   <div class="grid gap-12 lg:grid-cols-[16rem_minmax(0,1fr)]">
-    <aside class="flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
+    <aside class="flex flex-col gap-6 lg:sticky lg:top-[calc(var(--navbar-height)+2rem)] lg:self-start">
       <Input type="search" name="q" placeholder="Search" aria-label="Search posts"><SearchIcon slot="start" /></Input>
       <Tabs label="Categories" value="all" orientation="vertical" variant="borderless" tabs={categories} />
     </aside>

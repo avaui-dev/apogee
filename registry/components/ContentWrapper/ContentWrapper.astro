@@ -33,7 +33,7 @@ const gapMap = { 4: 'gap-4', 6: 'gap-6', 8: 'gap-8', 10: 'gap-10', 12: 'gap-12' 
       <div class:list={[reverse && 'md:order-2']}>
         <slot />
       </div>
-      <div class:list={[reverse && 'md:order-1', variant === 'sticky' && 'md:sticky md:top-8']}>
+      <div class:list={[reverse && 'md:order-1', variant === 'sticky' && 'md:sticky md:top-[calc(var(--navbar-height)+2rem)]']}>
         <slot name="secondary" />
       </div>
     </div>

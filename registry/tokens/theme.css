@@ -173,6 +173,73 @@
   --shadow-overlay: 0 20px 32px -8px rgb(0 0 0 / 0.6), 0 8px 12px -4px rgb(0 0 0 / 0.45), 0 1px 3px rgb(0 0 0 / 0.4);
 }
 
+/*
+ * Height of the page's sticky Navbar (0 without one). Sticky sidebars add it to
+ * their top offset so they sit below the bar. Navbar's script replaces these
+ * defaults with the measured height.
+ */
+:root {
+  --navbar-height: 0px;
+}
+:root:has(.apogee-navbar:not(main *)) {
+  --navbar-height: calc(4rem + 1px);
+}
+:root:has(.apogee-navbar[data-floating]:not(main *)) {
+  --navbar-height: 4.75rem;
+}
+
+/*
+ * Brand surface: `data-surface="primary"` turns a subtree into a brand-colour band
+ * (a navigation bar, a header). The page becomes the primary fill, neutral text and
+ * lines take the on-primary ink, and primary controls invert to an on-primary fill,
+ * so components inside need no colour props. Popover panels opened from the band
+ * (dropdown menus) get the page tokens back. The --apogee-base-* copies resolve on
+ * every themed element, so a band inside a dark section takes the dark values.
+ */
+:root,
+[data-theme] {
+  --apogee-base-page: var(--background-page);
+  --apogee-base-neutral: var(--foreground-neutral);
+  --apogee-base-neutral-text-faded: var(--foreground-neutral-faded);
+  --apogee-base-border: var(--border-neutral);
+  --apogee-base-border-faded: var(--border-neutral-faded);
+  --apogee-base-neutral-faded: var(--background-neutral-faded);
+  --apogee-base-neutral-faded-highlighted: var(--background-neutral-faded-highlighted);
+  --apogee-base-primary: var(--background-primary);
+  --apogee-base-primary-highlighted: var(--background-primary-highlighted);
+  --apogee-base-on-primary: var(--on-primary);
+  --apogee-base-primary-text: var(--foreground-primary);
+  --apogee-base-primary-border: var(--border-primary);
+}
+[data-surface="primary"] {
+  --background-page: var(--apogee-base-primary);
+  --foreground-neutral: var(--apogee-base-on-primary);
+  --foreground-neutral-faded: color-mix(in oklab, var(--apogee-base-on-primary) 85%, transparent);
+  --border-neutral: color-mix(in oklab, var(--apogee-base-on-primary) 30%, transparent);
+  --border-neutral-faded: color-mix(in oklab, var(--apogee-base-on-primary) 18%, transparent);
+  --background-neutral-faded: color-mix(in oklab, var(--apogee-base-on-primary) 10%, transparent);
+  --background-neutral-faded-highlighted: color-mix(in oklab, var(--apogee-base-on-primary) 16%, transparent);
+  --background-primary: var(--apogee-base-on-primary);
+  --background-primary-highlighted: color-mix(in oklab, var(--apogee-base-on-primary) 88%, var(--apogee-base-primary));
+  --on-primary: var(--apogee-base-primary);
+  --foreground-primary: var(--apogee-base-on-primary);
+  --border-primary: var(--apogee-base-on-primary);
+}
+[data-surface="primary"] [popover] {
+  --background-page: var(--apogee-base-page);
+  --foreground-neutral: var(--apogee-base-neutral);
+  --foreground-neutral-faded: var(--apogee-base-neutral-text-faded);
+  --border-neutral: var(--apogee-base-border);
+  --border-neutral-faded: var(--apogee-base-border-faded);
+  --background-neutral-faded: var(--apogee-base-neutral-faded);
+  --background-neutral-faded-highlighted: var(--apogee-base-neutral-faded-highlighted);
+  --background-primary: var(--apogee-base-primary);
+  --background-primary-highlighted: var(--apogee-base-primary-highlighted);
+  --on-primary: var(--apogee-base-on-primary);
+  --foreground-primary: var(--apogee-base-primary-text);
+  --border-primary: var(--apogee-base-primary-border);
+}
+
 /* Runtime vars → utilities. Namespaced keys keep roles unambiguous. */
 @theme inline {
   --background-color-primary: var(--background-primary);
@@ -311,7 +378,7 @@
   --spacing-gutter: clamp(1rem, 0.55rem + 2.25vw, 2rem);
   --spacing-section-sm: clamp(2rem, 1.4rem + 3vw, 3.5rem);
   --spacing-section: clamp(3rem, 2rem + 5vw, 6rem);
-  --spacing-section-lg: clamp(4rem, 2.5rem + 7.5vw, 9rem);
+  --spacing-section-lg: clamp(4rem, 2.57rem + 4.76vw, 6rem);
   --spacing-section-xl: clamp(5rem, 3rem + 10vw, 12rem);
 }
 

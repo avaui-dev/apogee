@@ -5,8 +5,16 @@ import { buttonStyles, buttonSizes, pressedStyles } from './button.ts'
 test('every variant covers every color with a hover state', () => {
   for (const [variant, colors] of Object.entries(buttonStyles)) {
     assert.deepEqual(Object.keys(colors), ['primary', 'neutral', 'critical', 'positive', 'warning'], variant)
-    // Boxed variants hover their fill; `link` hovers its underline.
-    for (const cls of Object.values(colors)) assert.match(cls, variant === 'link' ? /hover:underline/ : /hover:bg-/, `${variant} hover`)
+    // Boxed variants hover their fill (outline tints its solid fill); `link` hovers its underline.
+    const hover = variant === 'link' ? /hover:underline/ : variant === 'outline' ? /hover:\[--apogee-tint:var\(--background-\w+-faded-highlighted\)\]/ : /hover:bg-/
+    for (const cls of Object.values(colors)) assert.match(cls, hover, `${variant} hover`)
+  }
+})
+
+test('outline buttons sit on a solid page fill', () => {
+  for (const cls of Object.values(buttonStyles.outline)) {
+    assert.match(cls, /\bbg-page\b/)
+    assert.doesNotMatch(cls, /hover:bg-/)
   }
 })
 

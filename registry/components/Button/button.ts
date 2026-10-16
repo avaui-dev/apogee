@@ -32,12 +32,14 @@ export const buttonStyles = {
     positive: 'bg-positive-faded text-positive hover:bg-positive-faded-highlighted',
     warning: 'bg-warning-faded text-warning hover:bg-warning-faded-highlighted',
   },
+  // Outline sits on a solid page fill so it reads on any surface (a grey band, a
+  // blurred bar, a photo); hover lays its tint over that fill as an image layer.
   outline: {
-    primary: 'border border-primary text-primary shadow-(--shadow-control) hover:bg-primary-faded-highlighted',
-    neutral: 'border border-neutral text-neutral shadow-[var(--shadow-outline),var(--shadow-control)] hover:bg-neutral-faded-highlighted',
-    critical: 'border border-critical text-critical shadow-(--shadow-control) hover:bg-critical-faded-highlighted',
-    positive: 'border border-positive text-positive shadow-(--shadow-control) hover:bg-positive-faded-highlighted',
-    warning: 'border border-warning text-warning shadow-(--shadow-control) hover:bg-warning-faded-highlighted',
+    primary: 'border border-primary bg-page bg-[image:linear-gradient(var(--apogee-tint,transparent),var(--apogee-tint,transparent))] text-primary shadow-(--shadow-control) hover:[--apogee-tint:var(--background-primary-faded-highlighted)]',
+    neutral: 'border border-neutral bg-page bg-[image:linear-gradient(var(--apogee-tint,transparent),var(--apogee-tint,transparent))] text-neutral shadow-[var(--shadow-outline),var(--shadow-control)] hover:[--apogee-tint:var(--background-neutral-faded-highlighted)]',
+    critical: 'border border-critical bg-page bg-[image:linear-gradient(var(--apogee-tint,transparent),var(--apogee-tint,transparent))] text-critical shadow-(--shadow-control) hover:[--apogee-tint:var(--background-critical-faded-highlighted)]',
+    positive: 'border border-positive bg-page bg-[image:linear-gradient(var(--apogee-tint,transparent),var(--apogee-tint,transparent))] text-positive shadow-(--shadow-control) hover:[--apogee-tint:var(--background-positive-faded-highlighted)]',
+    warning: 'border border-warning bg-page bg-[image:linear-gradient(var(--apogee-tint,transparent),var(--apogee-tint,transparent))] text-warning shadow-(--shadow-control) hover:[--apogee-tint:var(--background-warning-faded-highlighted)]',
   },
   ghost: {
     primary: 'text-primary hover:bg-primary-faded-highlighted',
@@ -71,11 +73,11 @@ export const highlightedStyles = {
     warning: 'bg-warning-faded-highlighted',
   },
   outline: {
-    primary: 'bg-primary-faded-highlighted',
-    neutral: 'bg-neutral-faded-highlighted',
-    critical: 'bg-critical-faded-highlighted',
-    positive: 'bg-positive-faded-highlighted',
-    warning: 'bg-warning-faded-highlighted',
+    primary: '[--apogee-tint:var(--background-primary-faded-highlighted)]',
+    neutral: '[--apogee-tint:var(--background-neutral-faded-highlighted)]',
+    critical: '[--apogee-tint:var(--background-critical-faded-highlighted)]',
+    positive: '[--apogee-tint:var(--background-positive-faded-highlighted)]',
+    warning: '[--apogee-tint:var(--background-warning-faded-highlighted)]',
   },
   ghost: {
     primary: 'bg-primary-faded-highlighted',

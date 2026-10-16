@@ -75,7 +75,7 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
 <article
   class:list={[
     // Fills its grid cell, so cards in a row match the tallest; the footer sits at the bottom.
-    'apogee-post group/post @container relative flex h-full flex-col',
+    'apogee-post group/post @container relative flex flex-col',
     frame === 'card' && 'overflow-hidden rounded-2xl border border-neutral bg-elevation-raised',
     className,
   ]}
@@ -84,14 +84,15 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
   <div class:list={['flex flex-1 flex-col', frame === 'card' ? 'gap-0' : 'gap-4', horizontal && '@xl:flex-row @xl:items-stretch', horizontal && frame !== 'card' && '@xl:gap-6']}>
     {
       post.image && (
-        <div class:list={['relative shrink-0 overflow-hidden', imageCorners, horizontal && (large ? '@xl:w-1/2' : '@xl:w-2/5')]}>
+        <div class:list={['relative shrink-0 overflow-hidden', imageCorners, horizontal && 'aspect-[3/2]', horizontal && (large ? '@xl:w-1/2' : '@xl:w-2/5')]}>
+          {/* Horizontal: the frame keeps 3:2 as its least height and grows with the text; the image covers it. */}
           <Image
             src={post.image.src}
             alt={post.image.alt}
             width={post.image.width ?? 960}
             height={post.image.height ?? 640}
             fit="cover"
-            class:list={['apogee-post-image aspect-[3/2] w-full', horizontal && frame === 'card' && '@xl:h-full']}
+            class:list={['apogee-post-image', horizontal ? 'absolute inset-0 size-full' : 'aspect-[3/2] w-full']}
           />
           {
             frame === 'overlay' && (

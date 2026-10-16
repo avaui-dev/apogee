@@ -40,9 +40,17 @@ const useCases: Item[] = [
   { icon: TrendingUp, title: 'Grow', text: 'Grow your user base faster.', badge: 'New' },
 ]
 const getStarted = ['Getting started', 'Setup 101', 'Community', 'Changelog', 'Tutorials', 'Status']
+
+interface Props {
+  /** The bar's fill: the page, a grey band or the brand colour. */
+  background?: 'page' | 'neutral-faded' | 'primary' | undefined
+  /** `dark` sets the bar in the dark theme on a light page. */
+  theme?: 'dark' | undefined
+}
+const { background, theme } = Astro.props
 ---
 
-<Navbar>
+<Navbar background={background} data-theme={theme}>
   <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
   <NavDropdown label="Products" fullWidth>
     <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">

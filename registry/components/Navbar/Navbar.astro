@@ -13,6 +13,8 @@
  * `centered` puts the links in the middle with brand and actions either side.
  * `floating` sets the bar on a rounded, raised pill with space around it.
  * The header is the anchor (`--apogee-navbar`) for full-width NavDropdown panels.
+ * Outside <main> it sets `--navbar-height` on the page, so sticky elements can
+ * use `top-[calc(var(--navbar-height)+2rem)]` and sit below it.
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
@@ -24,6 +26,8 @@ interface Props extends HTMLAttributes<'header'> {
   centered?: boolean
   /** A rounded, raised bar with space around it. @category layout */
   floating?: boolean
+  /** The bar's fill, always solid enough to scroll content under: the page (85% with blur), a grey band, or the brand colour (links and buttons take the on-brand colours). @category layout */
+  background?: 'page' | 'neutral-faded' | 'primary' | undefined
   /** Name of the phone menu button. @category content */
   menuLabel?: string
   /** Name of the `secondary` nav row. @category content */
@@ -31,14 +35,16 @@ interface Props extends HTMLAttributes<'header'> {
   class?: string
 }
 
-const { centered = false, floating = false, menuLabel = 'Toggle menu', secondaryLabel = 'Section', class: className, ...rest } = Astro.props
+const { centered = false, floating = false, background = 'page', menuLabel = 'Toggle menu', secondaryLabel = 'Section', class: className, ...rest } = Astro.props
 const hasSecondary = Astro.slots.has('secondary')
 const menuId = uid(Astro.locals, 'apogee-nav')
 const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions') : ''
 ---
 
 <header
-  class:list={['sticky top-0 z-30', floating ? 'px-4 pt-3 sm:px-6' : 'border-b border-neutral bg-page/85 backdrop-blur', className]}
+  class:list={['apogee-navbar sticky top-0 z-30', floating ? 'px-4 pt-3 sm:px-6' : ['border-b', background === 'page' ? 'border-neutral bg-page/85 backdrop-blur' : 'border-transparent', background === 'neutral-faded' && 'bg-page bg-[linear-gradient(var(--background-neutral-faded),var(--background-neutral-faded))]', background === 'primary' && 'bg-page text-neutral'], className]}
+  data-surface={background === 'primary' ? 'primary' : undefined}
+  data-floating={floating ? '' : undefined}
   style="anchor-name: --apogee-navbar; anchor-scope: --apogee-navbar"
   {...rest}
 >
@@ -100,5 +106,15 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
       menu.dataset.open = String(open)
       toggle.setAttribute('aria-expanded', String(open))
     })
+  })
+
+  // The page's own bar (not a preview inside <main>) publishes its height as
+  // --navbar-height, so sticky sidebars can sit below it. CSS sets a default
+  // per style without JS; this keeps it exact (a secondary row, font size).
+  island('.apogee-navbar', (bar) => {
+    if (bar.closest('main')) return
+    const set = () => document.documentElement.style.setProperty('--navbar-height', `${bar.offsetHeight}px`)
+    new ResizeObserver(set).observe(bar)
+    set()
   })
 </script>

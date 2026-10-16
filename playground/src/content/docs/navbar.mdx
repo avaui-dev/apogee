@@ -44,6 +44,26 @@ import { Moon } from '@lucide/astro'
   </div>
 </Preview>
 
+`background` sets the bar's fill. `page` (the default) is the page colour, slightly
+see-through over what scrolls under it. `neutral-faded` is a grey band. `primary`
+is the brand colour: links, the menu button and the buttons in `actions` switch to
+the on-brand colours on their own, and dropdown panels keep the page colours.
+
+<Preview code={`<Navbar background="primary">…</Navbar>`} block>
+  <div class="flex w-full flex-col gap-4">
+    {['page', 'neutral-faded', 'primary'].map((background) => (
+      <Navbar background={background}>
+        <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
+        <NavLink href="/docs">Docs</NavLink>
+        <NavLink href="/pricing">Pricing</NavLink>
+        <Button slot="actions" href="/signup" size="small">Sign up</Button>
+      </Navbar>
+    ))}
+  </div>
+</Preview>
+
+For a dark bar on a light page, give it `data-theme="dark"`.
+
 ## Add
 
 ```sh
@@ -92,6 +112,7 @@ passes through to the root `<header>` (`...rest`).
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `floating` | `boolean` | `false` | The bar on a rounded, raised pill with space around it. |
+| `background` | `'page' \| 'neutral-faded' \| 'primary'` | `'page'` | The bar's fill. `primary` is the brand colour; everything in the bar takes the on-brand colours. |
 | `centered` | `boolean` | `false` | Links in the middle, brand and actions at the edges. |
 | `menuLabel` | `string` | `'Toggle menu'` | Name of the phone menu button. |
 | `secondaryLabel` | `string` | `'Section'` | Name of the `secondary` nav row. |
