@@ -1,0 +1,30 @@
+---
+title: FAQ pages
+navTitle: Overview
+description: "Whole help pages: a header with search or buttons, questions in a grid or an accordion, then more ways to get help, between a header and a footer."
+group: FAQ pages
+order: -1
+related: [sections/faq, accordion]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole help page stacked from blocks: a header navigation, a page header from [Header sections](/docs/header-sections) (often with a search field) that holds the page's `h1`, questions from [FAQ sections](/docs/faq-sections), then a call to action, the team or a newsletter signup before the footer. Accordion questions are native disclosures and work without JS. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add faq/faq-page-01
+```
+
+```astro
+---
+// src/pages/faq.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/faq/FaqPage01.astro'
+---
+
+<Layout title="Faq">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="FAQ pages" self="faq-pages" />

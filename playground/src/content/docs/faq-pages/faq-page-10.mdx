@@ -1,0 +1,25 @@
+---
+title: "FAQ page 10"
+description: "A centred heading, line and search field. Then questions in an accordion, a content section, a call to action with a photo and a footer on grey."
+group: FAQ pages
+order: 10
+related: [sections/faq, accordion]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="faq/faq-page-10" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add faq/faq-page-10
+```
+
+This copies the page to `src/components/apogee/pages/faq/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple](/docs/header-navigation-sections/dropdown-simple), [header/centered-search](/docs/header-sections/centered-search), [faq/accordion-02](/docs/faq-sections/accordion-02), [content/section-split-image-02](/docs/content-sections/section-split-image-02), [cta/split-image-03](/docs/cta-sections/split-image-03), [footers/large-09](/docs/footers-sections/large-09). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/centered-search) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

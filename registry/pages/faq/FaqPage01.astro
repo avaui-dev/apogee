@@ -1,0 +1,20 @@
+---
+/**
+ * FAQ page 01: A centred heading, line and search field. Then questions in a grid, a call to action with a screenshot and a footer.
+ *
+ * @page faq
+ */
+import Navigation from '../../blocks/header-navigation/DropdownFeatureCard.astro'
+import Header from '../../blocks/header/CenteredSearch.astro'
+import Questions from '../../blocks/faq/Simple01.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup03.astro'
+import Footer from '../../blocks/footers/Large02.astro'
+---
+
+<Navigation />
+<main>
+  <Header eyebrow="Support" heading="How can we help?" description="Search the help centre or browse the questions below." />
+  <Questions />
+  <CallToAction />
+</main>
+<Footer />

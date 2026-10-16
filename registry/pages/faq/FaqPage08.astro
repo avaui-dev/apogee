@@ -1,0 +1,22 @@
+---
+/**
+ * FAQ page 08: A split heading, line and search field on the brand colour. Then questions in an accordion, a call to action card on the brand colour, features beside a photo and a footer on the brand colour.
+ *
+ * @page faq
+ */
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Header from '../../blocks/header/SpaceBetweenSearchBrand.astro'
+import Questions from '../../blocks/faq/Accordion04.astro'
+import CallToAction from '../../blocks/cta/CardVerticalBrand.astro'
+import Features from '../../blocks/features/IconsAndImage01.astro'
+import Footer from '../../blocks/footers/Large10Brand.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Header eyebrow="Support" heading="How can we help?" description="Search the help centre or browse the questions below." />
+  <Questions />
+  <CallToAction />
+  <Features />
+</main>
+<Footer />

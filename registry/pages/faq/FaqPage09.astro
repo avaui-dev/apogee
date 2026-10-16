@@ -1,0 +1,22 @@
+---
+/**
+ * FAQ page 09: A centred heading, line and search field on grey. Then questions in a grid, a call to action with a screenshot and a footer on grey.
+ *
+ * @page faq
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithSidebar.astro'
+import Header from '../../blocks/header/CenteredSearch.astro'
+import Questions from '../../blocks/faq/Simple01.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup01.astro'
+import Footer from '../../blocks/footers/Large16.astro'
+---
+
+<Navigation background="neutral-faded" />
+<main>
+  <div class="bg-neutral-faded"><Header eyebrow="Support" heading="How can we help?" description="Search the help centre or browse the questions below." /></div>
+  <Questions />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+</main>
+<div class="bg-neutral-faded"><Footer /></div>

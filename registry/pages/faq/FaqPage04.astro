@@ -1,0 +1,24 @@
+---
+/**
+ * FAQ page 04: A centred eyebrow, heading and line. Then questions in a grid, a content section, customer quotes and a footer.
+ *
+ * @page faq
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro'
+import Header from '../../blocks/header/Centered.astro'
+import Questions from '../../blocks/faq/Simple04.astro'
+import Article from '../../blocks/content/SectionSplitImage03.astro'
+import Testimonials from '../../blocks/testimonials/SimpleCentered03.astro'
+import Footer from '../../blocks/footers/Large04.astro'
+---
+
+<Navigation />
+<main>
+  <Header eyebrow="Support" heading="How can we help?" description="Search the help centre or browse the questions below." />
+  <Questions />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Article />
+  <Testimonials />
+</main>
+<Footer />

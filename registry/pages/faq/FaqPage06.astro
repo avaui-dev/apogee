@@ -1,0 +1,24 @@
+---
+/**
+ * FAQ page 06: A centred heading, line and search field on dark. Then questions in an accordion, a call to action card, a call to action with images, a newsletter signup and a footer.
+ *
+ * @page faq
+ */
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Header from '../../blocks/header/CenteredSearch.astro'
+import Questions from '../../blocks/faq/Accordion02.astro'
+import CallToAction from '../../blocks/cta/CardVertical.astro'
+import CallToAction2 from '../../blocks/cta/AbstractImages.astro'
+import Newsletter from '../../blocks/newsletter/CardVertical.astro'
+import Footer from '../../blocks/footers/Large08.astro'
+---
+
+<Navigation theme="dark" />
+<main>
+  <div data-theme="dark" class="bg-page text-neutral"><Header eyebrow="Support" heading="How can we help?" description="Search the help centre or browse the questions below." /></div>
+  <Questions />
+  <CallToAction />
+  <CallToAction2 />
+  <Newsletter />
+</main>
+<Footer />

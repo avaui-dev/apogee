@@ -1,0 +1,25 @@
+---
+title: "FAQ page 02"
+description: "A centred heading, line and search field. Then questions in a grid on grey, the team, a newsletter signup on grey, customer quotes and a footer on dark."
+group: FAQ pages
+order: 2
+related: [sections/faq, accordion]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="faq/faq-page-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add faq/faq-page-02
+```
+
+This copies the page to `src/components/apogee/pages/faq/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple-with-footer](/docs/header-navigation-sections/dropdown-simple-with-footer), [header/centered-search](/docs/header-sections/centered-search), [faq/simple-02](/docs/faq-sections/simple-02), [team/image-collage-02](/docs/team-sections/image-collage-02), [newsletter/simple-centered](/docs/newsletter-sections/simple-centered), [testimonials/social-cards-02](/docs/testimonials-sections/social-cards-02), [footers/large-05](/docs/footers-sections/large-05). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/centered-search) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

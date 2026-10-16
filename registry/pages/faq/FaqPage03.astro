@@ -1,0 +1,22 @@
+---
+/**
+ * FAQ page 03: A split heading, line and two buttons on grey. Then questions in a grid, features beside a photo, a call to action on grey and a footer.
+ *
+ * @page faq
+ */
+import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Header from '../../blocks/header/SpaceBetweenButtons.astro'
+import Questions from '../../blocks/faq/Simple03.astro'
+import Features from '../../blocks/features/IconsAndImage04.astro'
+import CallToAction from '../../blocks/cta/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large03.astro'
+---
+
+<Navigation background="neutral-faded" />
+<main>
+  <div class="bg-neutral-faded"><Header eyebrow="Support" heading="How can we help?" description="Search the help centre or browse the questions below." /></div>
+  <Questions />
+  <Features />
+  <div class="bg-neutral-faded"><CallToAction /></div>
+</main>
+<Footer />

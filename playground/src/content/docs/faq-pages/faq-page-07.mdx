@@ -1,0 +1,25 @@
+---
+title: "FAQ page 07"
+description: "A left-aligned eyebrow, heading and line. Then questions in an accordion, a newsletter signup on the brand colour, a content section and a footer."
+group: FAQ pages
+order: 7
+related: [sections/faq, accordion]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="faq/faq-page-07" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add faq/faq-page-07
+```
+
+This copies the page to `src/components/apogee/pages/faq/` with the blocks it stacks and everything they use: [header-navigation/four-col-with-footer](/docs/header-navigation-sections/four-col-with-footer), [header/left](/docs/header-sections/left), [faq/accordion-03](/docs/faq-sections/accordion-03), [newsletter/card-horizontal-brand](/docs/newsletter-sections/card-horizontal-brand), [content/section-split-image-01](/docs/content-sections/section-split-image-01), [footers/large-09](/docs/footers-sections/large-09). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/left) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.
