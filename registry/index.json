@@ -7813,6 +7813,554 @@
       ],
       "usesJs": false
     },
+    "header/centered": {
+      "name": "header/centered",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered",
+      "description": "A centred eyebrow, heading and line.",
+      "files": [
+        "blocks/header/Centered.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/centered-brand": {
+      "name": "header/centered-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered brand",
+      "description": "A centred eyebrow, heading and line on the brand colour.",
+      "files": [
+        "blocks/header/CenteredBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/centered-buttons": {
+      "name": "header/centered-buttons",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered buttons",
+      "description": "A centred heading, line and two buttons.",
+      "files": [
+        "blocks/header/CenteredButtons.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/centered-buttons-brand": {
+      "name": "header/centered-buttons-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered buttons brand",
+      "description": "A centred heading, line and two buttons on the brand colour.",
+      "files": [
+        "blocks/header/CenteredButtonsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/centered-email": {
+      "name": "header/centered-email",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered email",
+      "description": "A centred heading, line and email signup.",
+      "files": [
+        "blocks/header/CenteredEmail.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/centered-email-brand": {
+      "name": "header/centered-email-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered email brand",
+      "description": "A centred heading, line and email signup on the brand colour.",
+      "files": [
+        "blocks/header/CenteredEmailBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/centered-search": {
+      "name": "header/centered-search",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered search",
+      "description": "A centred heading, line and search field.",
+      "files": [
+        "blocks/header/CenteredSearch.astro"
+      ],
+      "registryDependencies": [
+        "Input",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header/centered-search-brand": {
+      "name": "header/centered-search-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered search brand",
+      "description": "A centred heading, line and search field on the brand colour.",
+      "files": [
+        "blocks/header/CenteredSearchBrand.astro"
+      ],
+      "registryDependencies": [
+        "Input",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header/centered-tabs": {
+      "name": "header/centered-tabs",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered tabs",
+      "description": "A centred heading, line and a billing switch.",
+      "files": [
+        "blocks/header/CenteredTabs.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/centered-tabs-brand": {
+      "name": "header/centered-tabs-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Centered tabs brand",
+      "description": "A centred heading, line and a billing switch on the brand colour.",
+      "files": [
+        "blocks/header/CenteredTabsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left": {
+      "name": "header/left",
+      "kind": "block",
+      "category": "header",
+      "title": "Left",
+      "description": "A left-aligned eyebrow, heading and line.",
+      "files": [
+        "blocks/header/Left.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left-brand": {
+      "name": "header/left-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Left brand",
+      "description": "A left-aligned eyebrow, heading and line on the brand colour.",
+      "files": [
+        "blocks/header/LeftBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left-buttons": {
+      "name": "header/left-buttons",
+      "kind": "block",
+      "category": "header",
+      "title": "Left buttons",
+      "description": "A left-aligned heading, line and two buttons.",
+      "files": [
+        "blocks/header/LeftButtons.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left-buttons-brand": {
+      "name": "header/left-buttons-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Left buttons brand",
+      "description": "A left-aligned heading, line and two buttons on the brand colour.",
+      "files": [
+        "blocks/header/LeftButtonsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left-email": {
+      "name": "header/left-email",
+      "kind": "block",
+      "category": "header",
+      "title": "Left email",
+      "description": "A left-aligned heading, line and email signup.",
+      "files": [
+        "blocks/header/LeftEmail.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left-email-brand": {
+      "name": "header/left-email-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Left email brand",
+      "description": "A left-aligned heading, line and email signup on the brand colour.",
+      "files": [
+        "blocks/header/LeftEmailBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left-search": {
+      "name": "header/left-search",
+      "kind": "block",
+      "category": "header",
+      "title": "Left search",
+      "description": "A left-aligned heading, line and search field.",
+      "files": [
+        "blocks/header/LeftSearch.astro"
+      ],
+      "registryDependencies": [
+        "Input",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header/left-search-brand": {
+      "name": "header/left-search-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Left search brand",
+      "description": "A left-aligned heading, line and search field on the brand colour.",
+      "files": [
+        "blocks/header/LeftSearchBrand.astro"
+      ],
+      "registryDependencies": [
+        "Input",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header/left-tabs": {
+      "name": "header/left-tabs",
+      "kind": "block",
+      "category": "header",
+      "title": "Left tabs",
+      "description": "A left-aligned heading, line and a billing switch.",
+      "files": [
+        "blocks/header/LeftTabs.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/left-tabs-brand": {
+      "name": "header/left-tabs-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Left tabs brand",
+      "description": "A left-aligned heading, line and a billing switch on the brand colour.",
+      "files": [
+        "blocks/header/LeftTabsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between": {
+      "name": "header/space-between",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between",
+      "description": "A split eyebrow, heading and line.",
+      "files": [
+        "blocks/header/SpaceBetween.astro"
+      ],
+      "registryDependencies": [
+        "Eyebrow",
+        "Heading",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between-brand": {
+      "name": "header/space-between-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between brand",
+      "description": "A split eyebrow, heading and line on the brand colour.",
+      "files": [
+        "blocks/header/SpaceBetweenBrand.astro"
+      ],
+      "registryDependencies": [
+        "Eyebrow",
+        "Heading",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between-buttons": {
+      "name": "header/space-between-buttons",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between buttons",
+      "description": "A split heading, line and two buttons.",
+      "files": [
+        "blocks/header/SpaceBetweenButtons.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between-buttons-brand": {
+      "name": "header/space-between-buttons-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between buttons brand",
+      "description": "A split heading, line and two buttons on the brand colour.",
+      "files": [
+        "blocks/header/SpaceBetweenButtonsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between-email": {
+      "name": "header/space-between-email",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between email",
+      "description": "A split heading, line and email signup.",
+      "files": [
+        "blocks/header/SpaceBetweenEmail.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Input",
+        "Link",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between-email-brand": {
+      "name": "header/space-between-email-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between email brand",
+      "description": "A split heading, line and email signup on the brand colour.",
+      "files": [
+        "blocks/header/SpaceBetweenEmailBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Input",
+        "Link",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between-search": {
+      "name": "header/space-between-search",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between search",
+      "description": "A split heading, line and search field.",
+      "files": [
+        "blocks/header/SpaceBetweenSearch.astro"
+      ],
+      "registryDependencies": [
+        "Eyebrow",
+        "Heading",
+        "Input",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header/space-between-search-brand": {
+      "name": "header/space-between-search-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between search brand",
+      "description": "A split heading, line and search field on the brand colour.",
+      "files": [
+        "blocks/header/SpaceBetweenSearchBrand.astro"
+      ],
+      "registryDependencies": [
+        "Eyebrow",
+        "Heading",
+        "Input",
+        "Section",
+        "Text"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header/space-between-tabs": {
+      "name": "header/space-between-tabs",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between tabs",
+      "description": "A split heading, line and a billing switch.",
+      "files": [
+        "blocks/header/SpaceBetweenTabs.astro"
+      ],
+      "registryDependencies": [
+        "Eyebrow",
+        "Heading",
+        "Section",
+        "SegmentedControl",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "header/space-between-tabs-brand": {
+      "name": "header/space-between-tabs-brand",
+      "kind": "block",
+      "category": "header",
+      "title": "Space between tabs brand",
+      "description": "A split heading, line and a billing switch on the brand colour.",
+      "files": [
+        "blocks/header/SpaceBetweenTabsBrand.astro"
+      ],
+      "registryDependencies": [
+        "Eyebrow",
+        "Heading",
+        "Section",
+        "SegmentedControl",
+        "Text"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "header-navigation/blog-posts-with-footer": {
       "name": "header-navigation/blog-posts-with-footer",
       "kind": "block",

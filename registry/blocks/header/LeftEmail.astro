@@ -1,0 +1,27 @@
+---
+/**
+ * Left email: A left-aligned heading, line and email signup.
+ *
+ * @block header
+ * @order 15
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-8 md:gap-12 items-start">
+    <SectionHeader eyebrow="Resources" heading="The Larkspur blog" description="The latest industry news, technologies and resources from our team." headingLevel={1} size="large" />
+    <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
+        <Button type="submit" size="large">Get started</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+  </div>
+</Section>

@@ -1,0 +1,28 @@
+---
+/**
+ * Space between search: A split heading, line and search field.
+ *
+ * @block header
+ * @order 27
+ */
+import { Search as SearchIcon } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Text from '../../components/Text/Text.astro'
+import Input from '../../components/Input/Input.astro'
+
+---
+
+<Section spacing="large">
+  <Eyebrow as="p" color="primary">Resources</Eyebrow>
+  <div class="mt-3 grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-x-16">
+    <Heading as="h1" size="display" class="text-balance">Support centre</Heading>
+    <Text size="large" class="text-neutral-faded lg:mt-3">Get help and support or learn how to use the newest features.</Text>
+  </div>
+  <div class="mt-8">
+    <form method="get" role="search" class="w-full sm:w-80">
+      <Input type="search" name="q" placeholder="Search" aria-label="Search the help centre" size="large"><SearchIcon slot="start" /></Input>
+    </form>
+  </div>
+</Section>

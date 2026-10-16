@@ -1,0 +1,33 @@
+---
+/**
+ * Space between email brand: A split heading, line and email signup on the brand colour.
+ *
+ * @block header
+ * @order 26
+ */
+import Section from '../../components/Section/Section.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Text from '../../components/Text/Text.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <Eyebrow as="p" color="inherit">Resources</Eyebrow>
+  <div class="mt-3 grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-x-16">
+    <Heading as="h1" size="display" class="text-balance">The Larkspur blog</Heading>
+    <Text size="large" class="opacity-85 lg:mt-3">The latest industry news, technologies and resources from our team.</Text>
+  </div>
+  <div class="mt-8">
+    <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
+        <Button type="submit" size="large" color="neutral">Get started</Button>
+      </div>
+      <p class="text-sm opacity-85">We care about your data in our <Link href="#" color="inherit">privacy policy</Link>.</p>
+    </form>
+  </div>
+</Section>

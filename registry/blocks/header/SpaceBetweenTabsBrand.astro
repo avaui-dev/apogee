@@ -1,0 +1,25 @@
+---
+/**
+ * Space between tabs brand: A split heading, line and a billing switch on the brand colour.
+ *
+ * @block header
+ * @order 30
+ */
+import Section from '../../components/Section/Section.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Text from '../../components/Text/Text.astro'
+import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <Eyebrow as="p" color="inherit">Pricing</Eyebrow>
+  <div class="mt-3 grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-x-16">
+    <Heading as="h1" size="display" class="text-balance">Simple, transparent pricing</Heading>
+    <Text size="large" class="opacity-85 lg:mt-3">Simple, transparent pricing that grows with you. Try any plan free for 30 days.</Text>
+  </div>
+  <div class="mt-8">
+    <SegmentedControl name="billing" options={[{ label: 'Monthly billing', value: 'monthly' }, { label: 'Annual billing', value: 'annual' }]} value="monthly" aria-label="Billing period" size="large" class="bg-page" />
+  </div>
+</Section>

@@ -1,0 +1,24 @@
+---
+title: "Left email brand"
+description: "A left-aligned heading, line and email signup on the brand colour."
+group: Header sections
+order: 16
+related: [section-header, eyebrow, segmented-control]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="header/left-email-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add header/left-email-brand
+```
+
+This copies the block to `src/components/apogee/blocks/header/` with everything it uses: Button, Input, Link, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is the page's `h1`; the items below are one level down.
+- The email field is named "Email" (the placeholder is not a label); the form submits without JS.

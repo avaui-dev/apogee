@@ -1,0 +1,21 @@
+---
+/**
+ * Space between: A split eyebrow, heading and line.
+ *
+ * @block header
+ * @order 21
+ */
+import Section from '../../components/Section/Section.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Text from '../../components/Text/Text.astro'
+
+---
+
+<Section spacing="large">
+  <Eyebrow as="p" color="primary">About us</Eyebrow>
+  <div class="mt-3 grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-x-16">
+    <Heading as="h1" size="display" class="text-balance">About the company</Heading>
+    <Text size="large" class="text-neutral-faded lg:mt-3">Learn more about the company and the team behind it.</Text>
+  </div>
+</Section>

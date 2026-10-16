@@ -1,0 +1,24 @@
+---
+title: "Centered email"
+description: "A centred heading, line and email signup."
+group: Header sections
+order: 5
+related: [section-header, eyebrow, segmented-control]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="header/centered-email" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add header/centered-email
+```
+
+This copies the block to `src/components/apogee/blocks/header/` with everything it uses: Button, Input, Link, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is the page's `h1`; the items below are one level down.
+- The email field is named "Email" (the placeholder is not a label); the form submits without JS.

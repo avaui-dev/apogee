@@ -1,0 +1,19 @@
+---
+/**
+ * Centered tabs: A centred heading, line and a billing switch.
+ *
+ * @block header
+ * @order 9
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-8 md:gap-12 items-stretch sm:items-center">
+    <SectionHeader eyebrow="Pricing" heading="Simple, transparent pricing" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." headingLevel={1} size="large" align="center" />
+    <SegmentedControl name="billing" options={[{ label: 'Monthly billing', value: 'monthly' }, { label: 'Annual billing', value: 'annual' }]} value="monthly" aria-label="Billing period" size="large" />
+  </div>
+</Section>

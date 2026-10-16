@@ -45,6 +45,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Header sections:** 30 inner-page headers, centred, left-aligned or split, on the page or the brand colour, with buttons, an email signup, a search field or a billing switch.
 - **Hero sections:** 44 hero blocks: split image, sign-up form, angled and geometric patterns, screen and phone mockups, colour cards, card mockups and plain text, each with the page's `h1`.
 
 - **Header navigation sections**: 20 headers whose menus open lists, columns, feature cards, blog posts or video tutorials, under the button or across the page, in a plain or floating bar.
