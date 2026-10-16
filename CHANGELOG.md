@@ -5,6 +5,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-10-16
+
 ### Changed
 
 - **DeviceFrame** is redrawn: every part is sized in container units of the frame's width, so a frame keeps its proportions at any size and shrinks as a whole. The phone has a status bar (time, camera cut-out, status icons) so content starts below the corners; the browser is a quieter window with a small address pill and the page rounded and inset; no drop shadows. Width classes now apply (the built-in width used to override them). Content areas have fixed shapes (phone 393:798, tablet 1180:796, browser 16:10), and the playground screenshots are captured to match.
@@ -68,6 +70,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 ### Added
 
 - **DeviceFrame** `device="tablet"`: an iPad-like landscape frame.
+- **Docs**: the sidebar has a search box, keeps only the current group open and scrolls it into view; on phones a sticky docs menu bar opens it, the bars hide while you scroll down, and a floating previous / next pill follows you down the page.
 - **WorldMap** `region`: one continent (North America, South America, Europe, Africa, Asia, Oceania) from the same dots, in that region's shape.
 - **VideoPlayer** `radius`: `none`, `small`, `medium`, `large` (default) or `full`.
 - **Navbar** `tools` slot: icon buttons that stay in the bar at every width, before the phone menu toggle.
@@ -122,7 +125,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **Docs**: a Log in pages group; each page shows the example in a desktop or mobile frame with a Copy code button.
 - **Docs sidebar**: each group collapses (all start open), shows its page count and remembers its state; the sidebar keeps its scroll position between pages instead of centring the current link. "Sections" is now "Basic sections".
 - **Label props** for the English defaults: Navbar `menuLabel` and `secondaryLabel`, Sidebar `toggleLabel` and `overlayLabel`, NavLink `externalLabel`, FileUpload `messages`.
-- **Pricing** `annualPeriod` replaces `period` while Annual is picked.
+- **Pricing** items take an `annualPeriod`, shown in place of `period` while Annual is picked.
 - **PageHeader** shows the `actions` slot in every layout.
 - **LogoCloud** items take a `width` to reserve the logo's space.
 - **Box** `bleed` has every padding step; **Heading** `maxLines` goes to 6 like Text.
@@ -418,6 +421,7 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.5.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.5.0
 [0.4.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.4.0
 [0.3.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.3.0
 [0.2.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.2.0

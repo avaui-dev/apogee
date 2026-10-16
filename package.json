@@ -1,6 +1,6 @@
 {
   "name": "@ava-ui/apogee",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Apogee — the AVA design system for Astro. Atomic components, sections, and patterns, native to Astro: minimal JS, accessible, ready to compose.",
   "type": "module",
   "bin": {
