@@ -1,0 +1,22 @@
+---
+/**
+ * Contact page 05: A centred heading, a world map with office pins (from lg) and three contact cards. Then office addresses on the brand colour, a contact form, a newsletter signup and a footer.
+ *
+ * @page contact
+ */
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Contact from '../../blocks/contact/Map02.astro'
+import Contact2 from '../../blocks/contact/SimpleIcons04Brand.astro'
+import Contact3 from '../../blocks/contact/SimpleForm03.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large01.astro'
+---
+
+<Navigation />
+<main>
+  <Contact headingLevel={1} />
+  <Contact2 />
+  <Contact3 />
+  <Newsletter />
+</main>
+<Footer />

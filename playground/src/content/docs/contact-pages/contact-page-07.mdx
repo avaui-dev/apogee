@@ -1,0 +1,25 @@
+---
+title: "Contact page 07"
+description: "A heading over four contact cards, a map of offices, a contact form and a footer."
+group: Contact pages
+order: 7
+related: [contact-form, contact-method, sections/contact]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="contact/contact-page-07" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact/contact-page-07
+```
+
+This copies the page to `src/components/apogee/pages/contact/` with the blocks it stacks and everything they use: [header-navigation/four-col-with-footer](/docs/header-navigation-sections/four-col-with-footer), [contact/simple-links-02](/docs/contact-sections/simple-links-02), [contact/icons-and-map-02](/docs/contact-sections/icons-and-map-02), [contact/simple-form-01](/docs/contact-sections/simple-form-01), [footers/large-09](/docs/footers-sections/large-09). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (contact/simple-links-02) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

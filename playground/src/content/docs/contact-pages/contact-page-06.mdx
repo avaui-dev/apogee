@@ -1,0 +1,25 @@
+---
+title: "Contact page 06"
+description: "A centred heading over three contact methods with icons and links. Then a contact form, a newsletter signup and a footer on dark."
+group: Contact pages
+order: 6
+related: [contact-form, contact-method, sections/contact]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="contact/contact-page-06" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact/contact-page-06
+```
+
+This copies the page to `src/components/apogee/pages/contact/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-links](/docs/header-navigation-sections/two-col-with-links), [contact/simple-links-01](/docs/contact-sections/simple-links-01), [contact/simple-form-01](/docs/contact-sections/simple-form-01), [newsletter/card-horizontal](/docs/newsletter-sections/card-horizontal), [footers/large-07](/docs/footers-sections/large-07). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (contact/simple-links-01) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

@@ -1,0 +1,20 @@
+---
+/**
+ * Contact page 06: A centred heading over three contact methods with icons and links. Then a contact form, a newsletter signup and a footer on dark.
+ *
+ * @page contact
+ */
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Contact from '../../blocks/contact/SimpleLinks01.astro'
+import Contact2 from '../../blocks/contact/SimpleForm01.astro'
+import Newsletter from '../../blocks/newsletter/CardHorizontal.astro'
+import Footer from '../../blocks/footers/Large07.astro'
+---
+
+<Navigation />
+<main>
+  <Contact headingLevel={1} />
+  <Contact2 />
+  <Newsletter />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

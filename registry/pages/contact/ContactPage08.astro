@@ -1,0 +1,20 @@
+---
+/**
+ * Contact page 08: A centred heading over a contact form, ways to get in touch, a call to action card and a footer on the brand colour.
+ *
+ * @page contact
+ */
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Contact from '../../blocks/contact/SimpleForm.astro'
+import Contact2 from '../../blocks/contact/IconsAndImage.astro'
+import CallToAction from '../../blocks/cta/CardVertical.astro'
+import Footer from '../../blocks/footers/Large11Brand.astro'
+---
+
+<Navigation />
+<main>
+  <Contact headingLevel={1} />
+  <Contact2 />
+  <CallToAction />
+</main>
+<Footer />

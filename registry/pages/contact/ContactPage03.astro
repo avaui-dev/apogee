@@ -1,0 +1,22 @@
+---
+/**
+ * Contact page 03: A heading and contact form beside a map (the map shows from lg). Then office addresses, contact cards, a call to action card and a footer on dark.
+ *
+ * @page contact
+ */
+import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Contact from '../../blocks/contact/FormAndMap.astro'
+import Contact2 from '../../blocks/contact/SimpleIcons04.astro'
+import Contact3 from '../../blocks/contact/IconCards03.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Footer from '../../blocks/footers/Large03.astro'
+---
+
+<Navigation />
+<main>
+  <Contact headingLevel={1} />
+  <Contact2 />
+  <Contact3 />
+  <CallToAction />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

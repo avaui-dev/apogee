@@ -1,0 +1,30 @@
+---
+title: Contact pages
+navTitle: Overview
+description: "Whole contact pages: a contact form, offices on a map, ways to reach the team and store addresses, between a header and a footer."
+group: Contact pages
+order: -1
+related: [contact-form, contact-method, sections/contact]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole contact page stacked from blocks: a header navigation, an opening block from [Contact sections](/docs/contact-sections) that holds the page's `h1`, then more ways to get in touch, a call to action or a newsletter signup before the footer. Two pages are a form on its own, for a focused contact screen. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add contact/contact-page-01
+```
+
+```astro
+---
+// src/pages/contact.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/contact/ContactPage01.astro'
+---
+
+<Layout title="Contact">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="Contact pages" self="contact-pages" />

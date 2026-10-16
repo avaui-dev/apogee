@@ -1,0 +1,25 @@
+---
+title: "Contact page 09"
+description: "A heading, an email link and a contact form with a services checklist beside a photo."
+group: Contact pages
+order: 9
+related: [contact-form, contact-method, sections/contact]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="contact/contact-page-09" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add contact/contact-page-09
+```
+
+This copies the page to `src/components/apogee/pages/contact/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-sidebar](/docs/header-navigation-sections/two-col-with-sidebar), [contact/simple-form-03](/docs/contact-sections/simple-form-03). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (contact/simple-form-03) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.
