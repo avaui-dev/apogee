@@ -1,0 +1,25 @@
+---
+title: "Pricing page 05"
+description: "A centred heading over a plan comparison table with grouped features and tooltips. Then questions in an accordion, customer logos, a call to action card and a footer on the brand colour."
+group: Pricing pages
+order: 5
+related: [sections/pricing, table, tooltip]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="pricing/pricing-page-05" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pricing/pricing-page-05
+```
+
+This copies the page to `src/components/apogee/pages/pricing/` with the blocks it stacks and everything they use: [header-navigation/dropdown-featured-posts](/docs/header-navigation-sections/dropdown-featured-posts), [pricing/large-table-01](/docs/pricing-sections/large-table-01), [faq/accordion-01](/docs/faq-sections/accordion-01), [social-proof/full-width](/docs/social-proof-sections/full-width), [cta/card-vertical](/docs/cta-sections/card-vertical), [footers/large-01-brand](/docs/footers-sections/large-01-brand). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (pricing/large-table-01) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

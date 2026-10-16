@@ -1,0 +1,22 @@
+---
+/**
+ * Pricing page 05: A centred heading over a plan comparison table with grouped features and tooltips. Then questions in an accordion, customer logos, a call to action card and a footer on the brand colour.
+ *
+ * @page pricing
+ */
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Pricing from '../../blocks/pricing/LargeTable01.astro'
+import Questions from '../../blocks/faq/Accordion01.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import CallToAction from '../../blocks/cta/CardVertical.astro'
+import Footer from '../../blocks/footers/Large01Brand.astro'
+---
+
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <Questions />
+  <Logos />
+  <CallToAction />
+</main>
+<Footer />

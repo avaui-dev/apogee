@@ -1,0 +1,30 @@
+---
+title: Pricing pages
+navTitle: Overview
+description: "Whole pricing pages: plans or a comparison table, features, questions and customer logos, between a header and a footer."
+group: Pricing pages
+order: -1
+related: [sections/pricing, table, tooltip]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole pricing page stacked from blocks: a header navigation, plans or a comparison table from [Pricing sections](/docs/pricing-sections) whose heading is the page's `h1`, then features, questions, customer quotes or logos and a call to action before the footer. The billing switches work without JS. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add pricing/pricing-page-01
+```
+
+```astro
+---
+// src/pages/pricing.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/pricing/PricingPage01.astro'
+---
+
+<Layout title="Pricing">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="Pricing pages" self="pricing-pages" />

@@ -1,0 +1,22 @@
+---
+/**
+ * Pricing page 04: A centred heading and billing switch over three plan cards with two actions and a features panel. Then questions in an accordion, customer quotes, a call to action card and a footer on dark.
+ *
+ * @page pricing
+ */
+import Navigation from '../../blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro'
+import Pricing from '../../blocks/pricing/DualAction.astro'
+import Questions from '../../blocks/faq/Accordion01.astro'
+import Testimonials from '../../blocks/testimonials/SocialCards02.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Footer from '../../blocks/footers/Large04.astro'
+---
+
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <Questions />
+  <Testimonials />
+  <CallToAction />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

@@ -1,0 +1,22 @@
+---
+/**
+ * Pricing page 03: A heading and billing switch on a brand band, with three plan cards overlapping it. Then features with icons on grey, questions in an accordion, a call to action with customer logos on grey and a footer.
+ *
+ * @page pricing
+ */
+import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Pricing from '../../blocks/pricing/PrimaryDarkBadge.astro'
+import Features from '../../blocks/features/SimpleIcons01.astro'
+import Questions from '../../blocks/faq/Accordion04.astro'
+import CallToAction from '../../blocks/cta/SimpleLogos01.astro'
+import Footer from '../../blocks/footers/Large05.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Pricing headingLevel={1} />
+  <div class="bg-neutral-faded"><Features /></div>
+  <Questions />
+  <div class="bg-neutral-faded"><CallToAction /></div>
+</main>
+<Footer />

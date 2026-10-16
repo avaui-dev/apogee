@@ -1,0 +1,24 @@
+---
+/**
+ * Pricing page 09: A banner on grey, a heading over three tinted plan panels with filled checks, questions in an accordion, a call to action with images, a call to action card and a footer on dark.
+ *
+ * @page pricing
+ */
+import Banner from '../../blocks/banner/SlimFullWidth.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithSidebar.astro'
+import Pricing from '../../blocks/pricing/PrimaryCardSimple.astro'
+import Questions from '../../blocks/faq/Accordion03.astro'
+import CallToAction from '../../blocks/cta/AbstractImages.astro'
+import CallToAction2 from '../../blocks/cta/CardHorizontal.astro'
+import Footer from '../../blocks/footers/Large05.astro'
+---
+
+<div class="bg-neutral-faded"><Banner /></div>
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <Questions />
+  <CallToAction />
+  <CallToAction2 />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

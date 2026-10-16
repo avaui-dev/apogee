@@ -1,0 +1,26 @@
+---
+/**
+ * Pricing page 02: A heading and annual switch on a tinted band over three plan cards on a striped ground. Then a call to action card, features with icons, customer logos, questions in a grid, a call to action on grey and a footer.
+ *
+ * @page pricing
+ */
+import Navigation from '../../blocks/header-navigation/DropdownSimpleWithFooter.astro'
+import Pricing from '../../blocks/pricing/AbstractAngles.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Features from '../../blocks/features/SimpleIcons03.astro'
+import Logos from '../../blocks/social-proof/Card.astro'
+import Questions from '../../blocks/faq/Simple03.astro'
+import CallToAction2 from '../../blocks/cta/SimpleLeft.astro'
+import Footer from '../../blocks/footers/Large05.astro'
+---
+
+<Navigation background="neutral-faded" />
+<main>
+  <Pricing headingLevel={1} />
+  <CallToAction />
+  <Features />
+  <Logos />
+  <Questions />
+  <div class="bg-neutral-faded"><CallToAction2 /></div>
+</main>
+<Footer />

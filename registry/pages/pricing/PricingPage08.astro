@@ -1,0 +1,27 @@
+---
+/**
+ * Pricing page 08: A centred heading and billing switch over three plan cards, the middle one with a banner. Then features under a screenshot, features beside a photo, questions in a grid, a call to action card on the brand colour and a footer.
+ *
+ * @page pricing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Pricing from '../../blocks/pricing/SimpleBanner.astro'
+import Features from '../../blocks/features/CenterMockup01.astro'
+import Features2 from '../../blocks/features/IconsAndImage03.astro'
+import Questions from '../../blocks/faq/Simple01.astro'
+import CallToAction from '../../blocks/cta/CardHorizontalBrand.astro'
+import Footer from '../../blocks/footers/Large02.astro'
+---
+
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <Features2 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Questions />
+  <CallToAction />
+</main>
+<Footer />

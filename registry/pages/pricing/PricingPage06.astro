@@ -1,0 +1,24 @@
+---
+/**
+ * Pricing page 06: A banner on the brand colour, a heading over a plan comparison table with plan icons and the middle plan highlighted, a call to action with a screenshot, a call to action on grey and a footer on dark.
+ *
+ * @page pricing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Banner from '../../blocks/banner/SlimBrandFullWidth.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Pricing from '../../blocks/pricing/LargeTable02.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup02.astro'
+import CallToAction2 from '../../blocks/cta/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Banner />
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+  <div class="bg-neutral-faded"><CallToAction2 /></div>
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

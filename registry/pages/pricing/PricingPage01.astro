@@ -1,0 +1,22 @@
+---
+/**
+ * Pricing page 01: A large heading over three plan cards with two actions each, the first marked most popular. Then features with icons on grey, questions in a grid, a call to action with customer logos on the brand colour and a footer.
+ *
+ * @page pricing
+ */
+import Navigation from '../../blocks/header-navigation/DropdownFeatureCard.astro'
+import Pricing from '../../blocks/pricing/SimpleCallOut.astro'
+import Features from '../../blocks/features/SimpleIcons03.astro'
+import Questions from '../../blocks/faq/Simple04.astro'
+import CallToAction from '../../blocks/cta/SimpleLogos01Brand.astro'
+import Footer from '../../blocks/footers/Large01.astro'
+---
+
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <div class="bg-neutral-faded"><Features /></div>
+  <Questions />
+  <CallToAction />
+</main>
+<Footer />

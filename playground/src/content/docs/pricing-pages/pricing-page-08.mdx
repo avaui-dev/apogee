@@ -1,0 +1,25 @@
+---
+title: "Pricing page 08"
+description: "A centred heading and billing switch over three plan cards, the middle one with a banner. Then features under a screenshot, features beside a photo, questions in a grid, a call to action card on the brand colour and a footer."
+group: Pricing pages
+order: 8
+related: [sections/pricing, table, tooltip]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="pricing/pricing-page-08" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pricing/pricing-page-08
+```
+
+This copies the page to `src/components/apogee/pages/pricing/` with the blocks it stacks and everything they use: [header-navigation/three-col-with-sidebar](/docs/header-navigation-sections/three-col-with-sidebar), [pricing/simple-banner](/docs/pricing-sections/simple-banner), [features/center-mockup-01](/docs/features-sections/center-mockup-01), [features/icons-and-image-03](/docs/features-sections/icons-and-image-03), [faq/simple-01](/docs/faq-sections/simple-01), [cta/card-horizontal-brand](/docs/cta-sections/card-horizontal-brand), [footers/large-02](/docs/footers-sections/large-02). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (pricing/simple-banner) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

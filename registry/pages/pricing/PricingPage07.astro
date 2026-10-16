@@ -1,0 +1,25 @@
+---
+/**
+ * Pricing page 07: A centred heading and billing switch over two wide plan cards with features in two columns. Then questions in an accordion, customer quotes, a call to action on the brand colour and a footer on dark.
+ *
+ * @page pricing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Pricing from '../../blocks/pricing/SimpleDualCheckItem.astro'
+import Questions from '../../blocks/faq/Accordion03.astro'
+import Testimonials from '../../blocks/testimonials/SocialCards01.astro'
+import CallToAction from '../../blocks/cta/SimpleCenteredBrand.astro'
+import Footer from '../../blocks/footers/Large05.astro'
+---
+
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Questions />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <CallToAction />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

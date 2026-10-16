@@ -1,0 +1,22 @@
+---
+/**
+ * Pricing page 10: A centred heading with actions over three grey plan cards with icons on their top edge. Then questions in a grid, a call to action with a screenshot and a footer.
+ *
+ * @page pricing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
+import Pricing from '../../blocks/pricing/SimpleIconOffset.astro'
+import Questions from '../../blocks/faq/Simple02.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup04.astro'
+import Footer from '../../blocks/footers/Large03.astro'
+---
+
+<Navigation />
+<main>
+  <Pricing headingLevel={1} />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Questions />
+  <CallToAction />
+</main>
+<Footer />

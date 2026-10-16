@@ -1,0 +1,25 @@
+---
+title: "Pricing page 03"
+description: "A heading and billing switch on a brand band, with three plan cards overlapping it. Then features with icons on grey, questions in an accordion, a call to action with customer logos on grey and a footer."
+group: Pricing pages
+order: 3
+related: [sections/pricing, table, tooltip]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="pricing/pricing-page-03" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pricing/pricing-page-03
+```
+
+This copies the page to `src/components/apogee/pages/pricing/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple-two-columns](/docs/header-navigation-sections/dropdown-simple-two-columns), [pricing/primary-dark-badge](/docs/pricing-sections/primary-dark-badge), [features/simple-icons-01](/docs/features-sections/simple-icons-01), [faq/accordion-04](/docs/faq-sections/accordion-04), [cta/simple-logos-01](/docs/cta-sections/simple-logos-01), [footers/large-05](/docs/footers-sections/large-05). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (pricing/primary-dark-badge) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.
