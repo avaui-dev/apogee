@@ -1,0 +1,32 @@
+---
+/**
+ * Team page 06: A centred heading, line and two buttons on dark. Then the team, features with icons, open positions, a call to action card, customer quotes, a newsletter signup and a footer.
+ *
+ * @page team
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Header from '../../blocks/header/CenteredButtons.astro'
+import Team from '../../blocks/team/ImageGlass03.astro'
+import Features from '../../blocks/features/SimpleIcons04.astro'
+import Careers from '../../blocks/careers/Card02.astro'
+import CallToAction from '../../blocks/cta/CardVertical.astro'
+import Testimonials from '../../blocks/testimonials/SimpleLeftAligned.astro'
+import Newsletter from '../../blocks/newsletter/CardVertical.astro'
+import Footer from '../../blocks/footers/Large07.astro'
+---
+
+<Navigation theme="dark" />
+<main>
+  <div data-theme="dark" class="bg-page text-neutral"><Header eyebrow="Our team" heading="The people behind the product" description="A small team of designers, engineers and support staff who care about the details." /></div>
+  <Team />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Careers />
+  <CallToAction />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <Newsletter />
+</main>
+<Footer />

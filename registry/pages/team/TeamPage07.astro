@@ -1,0 +1,30 @@
+---
+/**
+ * Team page 07: A left-aligned eyebrow, heading and line. Then the team, open positions, a map of offices, customer quotes, a newsletter signup on the brand colour and a footer on grey.
+ *
+ * @page team
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Header from '../../blocks/header/Left.astro'
+import Team from '../../blocks/team/ImageCard02.astro'
+import Careers from '../../blocks/careers/Simple04.astro'
+import Contact from '../../blocks/contact/VectorMap03.astro'
+import Testimonials from '../../blocks/testimonials/Card.astro'
+import Newsletter from '../../blocks/newsletter/CardHorizontalBrand.astro'
+import Footer from '../../blocks/footers/Large08.astro'
+---
+
+<Navigation />
+<main>
+  <Header eyebrow="Our team" heading="The people behind the product" description="A small team of designers, engineers and support staff who care about the details." />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Team />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Careers />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Contact />
+  <Testimonials />
+  <Newsletter />
+</main>
+<div class="bg-neutral-faded"><Footer /></div>

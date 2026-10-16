@@ -1,0 +1,25 @@
+---
+title: "Team page 06"
+description: "A centred heading, line and two buttons on dark. Then the team, features with icons, open positions, a call to action card, customer quotes, a newsletter signup and a footer."
+group: Team pages
+order: 6
+related: [sections/team, avatar, job-card]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="team/team-page-06" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add team/team-page-06
+```
+
+This copies the page to `src/components/apogee/pages/team/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-links](/docs/header-navigation-sections/two-col-with-links), [header/centered-buttons](/docs/header-sections/centered-buttons), [team/image-glass-03](/docs/team-sections/image-glass-03), [features/simple-icons-04](/docs/features-sections/simple-icons-04), [careers/card-02](/docs/careers-sections/card-02), [cta/card-vertical](/docs/cta-sections/card-vertical), [testimonials/simple-left-aligned](/docs/testimonials-sections/simple-left-aligned), [newsletter/card-vertical](/docs/newsletter-sections/card-vertical), [footers/large-07](/docs/footers-sections/large-07). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/centered-buttons) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

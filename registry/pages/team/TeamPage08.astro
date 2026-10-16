@@ -1,0 +1,25 @@
+---
+/**
+ * Team page 08: A split eyebrow, heading and line on the brand colour. Then the team, features with icons, open positions and a footer.
+ *
+ * @page team
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Header from '../../blocks/header/SpaceBetweenBrand.astro'
+import Team from '../../blocks/team/ImageGlass04.astro'
+import Features from '../../blocks/features/SimpleIcons03.astro'
+import Careers from '../../blocks/careers/Simple03.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Header eyebrow="Our team" heading="The people behind the product" description="A small team of designers, engineers and support staff who care about the details." />
+  <Team />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Careers />
+</main>
+<Footer />

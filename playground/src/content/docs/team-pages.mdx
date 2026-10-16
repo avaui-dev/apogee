@@ -1,0 +1,30 @@
+---
+title: Team pages
+navTitle: Overview
+description: "Whole team pages: the people, board members, values, open positions and quotes, between a header and a footer."
+group: Team pages
+order: -1
+related: [sections/team, avatar, job-card]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole team page stacked from blocks: a header navigation, a page header that holds the page's `h1`, the people from [Team sections](/docs/team-sections), then values, open positions from [Careers sections](/docs/careers-sections), quotes and a newsletter signup before the footer. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add team/team-page-01
+```
+
+```astro
+---
+// src/pages/team.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/team/TeamPage01.astro'
+---
+
+<Layout title="Team">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="Team pages" self="team-pages" />

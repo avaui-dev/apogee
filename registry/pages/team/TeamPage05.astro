@@ -1,0 +1,29 @@
+---
+/**
+ * Team page 05: A centred heading, line and two buttons. Then the team, features with icons, open positions, customer quotes, a newsletter signup on grey and a footer on the brand colour.
+ *
+ * @page team
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Header from '../../blocks/header/CenteredButtons.astro'
+import Team from '../../blocks/team/ImageGlass02.astro'
+import Features from '../../blocks/features/SimpleIcons02.astro'
+import Careers from '../../blocks/careers/Simple01.astro'
+import Testimonials from '../../blocks/testimonials/AbstractImage.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large05Brand.astro'
+---
+
+<Navigation />
+<main>
+  <Header eyebrow="Our team" heading="The people behind the product" description="A small team of designers, engineers and support staff who care about the details." />
+  <Team />
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Careers />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<Footer />

@@ -1,0 +1,31 @@
+---
+/**
+ * Team page 02: A centred eyebrow, heading and line. Then the team, the team, open positions, the team, customer quotes, a newsletter signup on grey and a footer.
+ *
+ * @page team
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleWithFooter.astro'
+import Header from '../../blocks/header/Centered.astro'
+import Team from '../../blocks/team/Simple01.astro'
+import Team2 from '../../blocks/team/BoardMembers.astro'
+import Careers from '../../blocks/careers/Card01.astro'
+import Team3 from '../../blocks/team/ImageCollage02.astro'
+import Testimonials from '../../blocks/testimonials/SocialCards01.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large04.astro'
+---
+
+<Navigation />
+<main>
+  <Header eyebrow="Our team" heading="The people behind the product" description="A small team of designers, engineers and support staff who care about the details." />
+  <Team />
+  <Team2 />
+  <Careers />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Team3 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<Footer />

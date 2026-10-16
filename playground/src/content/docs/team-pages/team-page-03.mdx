@@ -1,0 +1,25 @@
+---
+title: "Team page 03"
+description: "A left-aligned eyebrow, heading and line on grey. Then the team, open positions, a newsletter signup on dark and a footer on dark."
+group: Team pages
+order: 3
+related: [sections/team, avatar, job-card]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="team/team-page-03" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add team/team-page-03
+```
+
+This copies the page to `src/components/apogee/pages/team/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple-two-columns](/docs/header-navigation-sections/dropdown-simple-two-columns), [header/left](/docs/header-sections/left), [team/simple-03](/docs/team-sections/simple-03), [careers/card-04](/docs/careers-sections/card-04), [newsletter/simple-centered](/docs/newsletter-sections/simple-centered), [footers/large-02](/docs/footers-sections/large-02). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/left) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

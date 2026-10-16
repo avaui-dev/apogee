@@ -1,0 +1,26 @@
+---
+/**
+ * Team page 04: A centred eyebrow, heading and line. Then the team, open positions, a call to action card, customer quotes and a footer on dark.
+ *
+ * @page team
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro'
+import Header from '../../blocks/header/Centered.astro'
+import Team from '../../blocks/team/ImageGlass01.astro'
+import Careers from '../../blocks/careers/Card01.astro'
+import CallToAction from '../../blocks/cta/CardVertical.astro'
+import Testimonials from '../../blocks/testimonials/SimpleCentered03.astro'
+import Footer from '../../blocks/footers/Large03.astro'
+---
+
+<Navigation />
+<main>
+  <Header eyebrow="Our team" heading="The people behind the product" description="A small team of designers, engineers and support staff who care about the details." />
+  <Team />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Careers />
+  <CallToAction />
+  <Testimonials />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

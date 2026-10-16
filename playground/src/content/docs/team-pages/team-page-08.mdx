@@ -1,0 +1,25 @@
+---
+title: "Team page 08"
+description: "A split eyebrow, heading and line on the brand colour. Then the team, features with icons, open positions and a footer."
+group: Team pages
+order: 8
+related: [sections/team, avatar, job-card]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="team/team-page-08" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add team/team-page-08
+```
+
+This copies the page to `src/components/apogee/pages/team/` with the blocks it stacks and everything they use: [header-navigation/three-col-with-sidebar](/docs/header-navigation-sections/three-col-with-sidebar), [header/space-between-brand](/docs/header-sections/space-between-brand), [team/image-glass-04](/docs/team-sections/image-glass-04), [features/simple-icons-03](/docs/features-sections/simple-icons-03), [careers/simple-03](/docs/careers-sections/simple-03), [footers/large-09](/docs/footers-sections/large-09). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/space-between-brand) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

@@ -1,0 +1,27 @@
+---
+/**
+ * Team page 10: A centred eyebrow, heading and line. Then the team, figures, a content section, open positions and a footer on grey.
+ *
+ * @page team
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
+import Header from '../../blocks/header/Centered.astro'
+import Team from '../../blocks/team/Simple04.astro'
+import Metrics from '../../blocks/metrics/CardGrayLight.astro'
+import Article from '../../blocks/content/SectionSplitImage03.astro'
+import Careers from '../../blocks/careers/Simple03.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Navigation />
+<main>
+  <Header eyebrow="Our team" heading="The people behind the product" description="A small team of designers, engineers and support staff who care about the details." />
+  <Team />
+  <Metrics />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Careers />
+</main>
+<div class="bg-neutral-faded"><Footer /></div>
