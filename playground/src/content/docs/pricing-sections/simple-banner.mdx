@@ -1,0 +1,23 @@
+---
+title: "Simple banner"
+description: "A centred heading and billing switch over three plan cards, the middle one with a banner."
+group: Pricing sections
+order: 12
+related: [sections/pricing, segmented-control, table]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="pricing/simple-banner" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pricing/simple-banner
+```
+
+This copies the block to `src/components/apogee/blocks/pricing/` with everything it uses: Button, Heading, Section, SectionHeader, SegmentedControl. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.

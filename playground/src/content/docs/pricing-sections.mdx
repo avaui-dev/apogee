@@ -1,0 +1,28 @@
+---
+title: Pricing sections
+navTitle: Overview
+description: Plan cards in many styles, billing switches and full comparison tables with grouped features and tooltips.
+group: Pricing sections
+order: -1
+related: [sections/pricing, segmented-control, table]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a block: a [Section](/docs/section) with a
+[SectionHeader](/docs/section-header) and plan cards built from Heading,
+Button, Badge and FeaturedIcon, or a comparison [Table](/docs/table).
+
+- **Billing switch.** Both prices are in the page. The switch is a
+  [SegmentedControl](/docs/segmented-control) (or a [Switch](/docs/switch)),
+  and a CSS `:has()` rule on the wrapper shows the annual prices while
+  "annual" is checked. No JS.
+- **Comparison tables** show one table on wide screens and a stacked table
+  per plan on phones. Each feature name has a [Tooltip](/docs/tooltip)
+  with a short explanation.
+
+```sh
+npx @ava-ui/apogee add pricing/simple-cards-01
+```
+
+<DocsIndex group="Pricing sections" self="pricing-sections" />

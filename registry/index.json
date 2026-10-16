@@ -10381,6 +10381,474 @@
       ],
       "dependencies": [],
       "usesJs": false
+    },
+    "pricing/abstract-angles": {
+      "name": "pricing/abstract-angles",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Abstract angles",
+      "description": "A heading and annual switch on a tinted band over three plan cards on a striped ground.",
+      "files": [
+        "blocks/pricing/AbstractAngles.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "Switch"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/dual-action": {
+      "name": "pricing/dual-action",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Dual action",
+      "description": "A centred heading and billing switch over three plan cards with two actions and a features panel.",
+      "files": [
+        "blocks/pricing/DualAction.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/featured-cards-01": {
+      "name": "pricing/featured-cards-01",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Featured cards 01",
+      "description": "A heading beside two plan cards with icons.",
+      "files": [
+        "blocks/pricing/FeaturedCards01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/featured-cards-02": {
+      "name": "pricing/featured-cards-02",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Featured cards 02",
+      "description": "A heading beside two plan cards, the first marked most popular.",
+      "files": [
+        "blocks/pricing/FeaturedCards02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/featured-cards-03": {
+      "name": "pricing/featured-cards-03",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Featured cards 03",
+      "description": "A heading beside two grey plan cards with icons on their top edge.",
+      "files": [
+        "blocks/pricing/FeaturedCards03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/featured-cards-04": {
+      "name": "pricing/featured-cards-04",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Featured cards 04",
+      "description": "A heading and three feature rows beside one wide plan card.",
+      "files": [
+        "blocks/pricing/FeaturedCards04.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/gray-badge": {
+      "name": "pricing/gray-badge",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Gray badge",
+      "description": "A centred heading with actions over three plan cards with badges.",
+      "files": [
+        "blocks/pricing/GrayBadge.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Divider",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/large-table-01": {
+      "name": "pricing/large-table-01",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Large table 01",
+      "description": "A centred heading over a plan comparison table with grouped features and tooltips.",
+      "files": [
+        "blocks/pricing/LargeTable01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Section",
+        "SectionHeader",
+        "Table",
+        "Tooltip"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/large-table-02": {
+      "name": "pricing/large-table-02",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Large table 02",
+      "description": "A heading over a plan comparison table with plan icons and the middle plan highlighted.",
+      "files": [
+        "blocks/pricing/LargeTable02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader",
+        "Table",
+        "Tooltip"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/primary-card-icon": {
+      "name": "pricing/primary-card-icon",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Primary card icon",
+      "description": "A centred heading and billing switch over three tinted plan panels with icons.",
+      "files": [
+        "blocks/pricing/PrimaryCardIcon.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/primary-card-simple": {
+      "name": "pricing/primary-card-simple",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Primary card simple",
+      "description": "A heading over three tinted plan panels with filled checks.",
+      "files": [
+        "blocks/pricing/PrimaryCardSimple.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/primary-dark-badge": {
+      "name": "pricing/primary-dark-badge",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Primary dark badge",
+      "description": "A heading and billing switch on a brand band, with three plan cards overlapping it.",
+      "files": [
+        "blocks/pricing/PrimaryDarkBadge.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Divider",
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-accent-line": {
+      "name": "pricing/simple-accent-line",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple accent line",
+      "description": "A centred heading and billing switch over three plans joined into one panel with a brand top edge.",
+      "files": [
+        "blocks/pricing/SimpleAccentLine.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Divider",
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-banner": {
+      "name": "pricing/simple-banner",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple banner",
+      "description": "A centred heading and billing switch over three plan cards, the middle one with a banner.",
+      "files": [
+        "blocks/pricing/SimpleBanner.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-call-out": {
+      "name": "pricing/simple-call-out",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple call out",
+      "description": "A large heading over three plan cards with two actions each, the first marked most popular.",
+      "files": [
+        "blocks/pricing/SimpleCallOut.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-cards-01": {
+      "name": "pricing/simple-cards-01",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple cards 01",
+      "description": "A heading over three plan cards, each with an icon, contained checks and a footer button.",
+      "files": [
+        "blocks/pricing/SimpleCards01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-cards-02": {
+      "name": "pricing/simple-cards-02",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple cards 02",
+      "description": "A heading over three plan cards, the first marked most popular.",
+      "files": [
+        "blocks/pricing/SimpleCards02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-cards-03": {
+      "name": "pricing/simple-cards-03",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple cards 03",
+      "description": "A centred heading over three plan cards with two actions and a features panel.",
+      "files": [
+        "blocks/pricing/SimpleCards03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-cards-04": {
+      "name": "pricing/simple-cards-04",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple cards 04",
+      "description": "A centred heading over two wide plan cards with features in two columns.",
+      "files": [
+        "blocks/pricing/SimpleCards04.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-dual-check-item": {
+      "name": "pricing/simple-dual-check-item",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple dual check item",
+      "description": "A centred heading and billing switch over two wide plan cards with features in two columns.",
+      "files": [
+        "blocks/pricing/SimpleDualCheckItem.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "SegmentedControl"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-icon": {
+      "name": "pricing/simple-icon",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple icon",
+      "description": "A large heading over three plan cards with icons.",
+      "files": [
+        "blocks/pricing/SimpleIcon.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "pricing/simple-icon-offset": {
+      "name": "pricing/simple-icon-offset",
+      "kind": "block",
+      "category": "pricing",
+      "title": "Simple icon offset",
+      "description": "A centred heading with actions over three grey plan cards with icons on their top edge.",
+      "files": [
+        "blocks/pricing/SimpleIconOffset.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
     }
   }
 }

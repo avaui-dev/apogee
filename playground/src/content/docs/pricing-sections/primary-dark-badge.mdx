@@ -1,0 +1,23 @@
+---
+title: "Primary dark badge"
+description: "A heading and billing switch on a brand band, with three plan cards overlapping it."
+group: Pricing sections
+order: 16
+related: [sections/pricing, segmented-control, table]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="pricing/primary-dark-badge" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add pricing/primary-dark-badge
+```
+
+This copies the block to `src/components/apogee/blocks/pricing/` with everything it uses: Badge, Button, Divider, Section, SectionHeader, SegmentedControl. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.

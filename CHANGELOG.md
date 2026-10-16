@@ -45,6 +45,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Pricing sections:** 22 blocks: plan cards in nine styles, billing switches that work without JS, and two comparison tables with grouped features and tooltips.
 - **Newsletter sections:** 16 email signups, centred, beside the heading, in a card, or next to a phone or screen mockup.
 - **Metrics sections:** 16 blocks of headline figures in a row, a card, on a photo or beside an image, with dividers, accent lines, icons or links.
 - **Header sections:** 30 inner-page headers, centred, left-aligned or split, on the page or the brand colour, with buttons, an email signup, a search field or a billing switch.

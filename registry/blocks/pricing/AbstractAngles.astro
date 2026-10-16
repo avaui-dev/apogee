@@ -1,0 +1,96 @@
+---
+/**
+ * Abstract angles: A heading and annual switch on a tinted band over three plan cards on a striped ground.
+ *
+ * @block pricing
+ * @order 17
+ */
+import { Check, Layers2, Layers3, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Switch from '../../components/Switch/Switch.astro'
+
+---
+
+<Section spacing="none" container={false}>
+  <div class="group/pricing">
+    <div class="bg-primary-faded pt-section-lg pb-32 md:pb-48">
+      <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 md:px-8">
+        <Badge color="primary" size="large" rounded>Pricing plans</Badge>
+        <SectionHeader heading="Plans for all sizes" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" class="-mt-4" />
+        <Switch name="billing" value="annual" label="Annual pricing (save 20%)" />
+      </div>
+    </div>
+    <div class="relative">
+      <div class="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(135deg,var(--border-neutral)_0_1px,transparent_1px_24px)] mask-b-from-50%" aria-hidden="true"></div>
+      <div class="relative mx-auto -mt-16 max-w-7xl px-4 pb-section-lg md:-mt-24 md:px-8">
+      <div class="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
+    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
+      <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
+        <FeaturedIcon theme="outline" color="neutral" size="large"><Zap /></FeaturedIcon>
+        <Heading as="h3" size="h5" class="text-primary">Basic plan</Heading>
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$10</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$9</span></span><span class="text-neutral-faded">/mth</span></p>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <div class="flex-1 px-6 py-8 md:px-8">
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Access to all basic features</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Basic reporting and analytics</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Up to 10 individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>20 GB individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Basic chat and email support</span></li>
+      </ul>
+      </div>
+      <div class="border-t border-neutral bg-neutral-faded p-6 md:px-8">
+        <Button href="#" size="large" fullWidth>Get started</Button>
+      </div>
+    </div>
+    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
+      <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
+        <FeaturedIcon theme="outline" color="neutral" size="large"><Layers2 /></FeaturedIcon>
+        <Heading as="h3" size="h5" class="text-primary">Business plan</Heading>
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$20</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$15</span></span><span class="text-neutral-faded">/mth</span></p>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <div class="flex-1 px-6 py-8 md:px-8">
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>200+ integrations</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Advanced reporting and analytics</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Up to 20 individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>40 GB individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Priority chat and email support</span></li>
+      </ul>
+      </div>
+      <div class="border-t border-neutral bg-neutral-faded p-6 md:px-8">
+        <Button href="#" size="large" fullWidth>Get started</Button>
+      </div>
+    </div>
+    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
+      <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
+        <FeaturedIcon theme="outline" color="neutral" size="large"><Layers3 /></FeaturedIcon>
+        <Heading as="h3" size="h5" class="text-primary">Enterprise plan</Heading>
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$40</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$39</span></span><span class="text-neutral-faded">/mth</span></p>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <div class="flex-1 px-6 py-8 md:px-8">
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Advanced custom fields</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Audit log and data history</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Unlimited individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Unlimited individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-faded text-primary"><Check class="size-4" aria-hidden="true" /></span><span>Personalised and priority service</span></li>
+      </ul>
+      </div>
+      <div class="border-t border-neutral bg-neutral-faded p-6 md:px-8">
+        <Button href="#" size="large" fullWidth>Get started</Button>
+      </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+</Section>

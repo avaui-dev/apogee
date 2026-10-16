@@ -1,0 +1,69 @@
+---
+/**
+ * Featured cards 02: A heading beside two plan cards, the first marked most popular.
+ *
+ * @block pricing
+ * @order 6
+ */
+import { Check, CornerLeftDown } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid gap-12 xl:grid-cols-[minmax(0,28rem)_1fr] xl:gap-16">
+    <SectionHeader eyebrow="Upgrade" heading="Pricing plans that scale" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="medium" />
+    <div class="grid items-start gap-8 pt-8 md:grid-cols-2">
+      <div class="relative">
+      <p class="absolute -top-8 end-4 flex items-center gap-1 text-sm font-semibold text-primary"><CornerLeftDown class="size-4 rtl:-scale-x-100" aria-hidden="true" />Most popular</p>
+      <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral h-full">
+      <div class="flex flex-col items-center gap-2 px-6 pt-8 text-center md:px-8 md:pt-10">
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$10</span><span class="text-neutral-faded">/mth</span></p>
+        <Heading as="h3" size="h5">Basic plan</Heading>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <div class="flex-1 px-6 py-8 md:px-8">
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Access to all basic features</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Basic reporting and analytics</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Up to 10 individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>20 GB individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Basic chat and email support</span></li>
+      </ul>
+      </div>
+      <div class="border-t border-neutral p-6 md:px-8">
+      <div class="flex flex-col gap-3">
+        <Button href="#" size="large" fullWidth>Get started</Button>
+      </div>
+      </div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral h-full">
+      <div class="flex flex-col items-center gap-2 px-6 pt-8 text-center md:px-8 md:pt-10">
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$20</span><span class="text-neutral-faded">/mth</span></p>
+        <Heading as="h3" size="h5">Business plan</Heading>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <div class="flex-1 px-6 py-8 md:px-8">
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>200+ integrations</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Advanced reporting</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Up to 20 individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>40 GB individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Priority chat and email support</span></li>
+      </ul>
+      </div>
+      <div class="border-t border-neutral p-6 md:px-8">
+      <div class="flex flex-col gap-3">
+        <Button href="#" size="large" fullWidth>Get started</Button>
+      </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</Section>

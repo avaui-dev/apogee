@@ -1,0 +1,64 @@
+---
+/**
+ * Primary card simple: A heading over three tinted plan panels with filled checks.
+ *
+ * @block pricing
+ * @order 20
+ */
+import { Check } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-12 md:gap-16">
+    <SectionHeader eyebrow="Pricing" heading="Simple, transparent pricing" description="We believe good tools should be open to every company, whatever its size." size="large" />
+    <div class="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
+    <div class="flex flex-col gap-8 bg-primary-faded px-6 py-8 md:px-8 md:py-10">
+      <div class="flex flex-col items-center gap-3 text-center"><p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$10</span><span class="text-neutral-faded">/mth</span></p>
+        <Heading as="h3" size="h5" class="text-primary">Basic plan</Heading>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded flex-1">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Access to all basic features</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Basic reporting and analytics</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Up to 10 individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>20 GB individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Basic chat and email support</span></li>
+      </ul>
+      <Button href="#" size="large" fullWidth>Get started</Button>
+    </div>
+    <div class="flex flex-col gap-8 bg-primary-faded px-6 py-8 md:px-8 md:py-10">
+      <div class="flex flex-col items-center gap-3 text-center"><p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$20</span><span class="text-neutral-faded">/mth</span></p>
+        <Heading as="h3" size="h5" class="text-primary">Business plan</Heading>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded flex-1">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>200+ integrations</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Advanced reporting and analytics</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Up to 20 individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>40 GB individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Priority chat and email support</span></li>
+      </ul>
+      <Button href="#" size="large" fullWidth>Get started</Button>
+    </div>
+    <div class="flex flex-col gap-8 bg-primary-faded px-6 py-8 md:px-8 md:py-10">
+      <div class="flex flex-col items-center gap-3 text-center"><p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$40</span><span class="text-neutral-faded">/mth</span></p>
+        <Heading as="h3" size="h5" class="text-primary">Enterprise plan</Heading>
+        <p class="text-neutral-faded">Billed annually.</p>
+      </div>
+      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded flex-1">
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Advanced custom fields</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Audit log and data history</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Unlimited individual users</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Unlimited individual data</span></li>
+        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"><Check class="size-4" aria-hidden="true" /></span><span>Personalised and priority service</span></li>
+      </ul>
+      <Button href="#" size="large" fullWidth>Get started</Button>
+    </div>
+  </div>
+  </div>
+</Section>

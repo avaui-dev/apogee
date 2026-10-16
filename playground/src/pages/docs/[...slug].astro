@@ -24,7 +24,7 @@ const { entry } = Astro.props
 const { Content, headings } = await render(entry)
 
 // Sidebar nav — group + order from frontmatter.
-const GROUP_ORDER = ['Getting started', 'Foundations', 'Components', 'Basic sections', 'Banner sections', 'Blog sections', 'Careers sections', 'Contact sections', 'Content sections', 'CTA sections', 'FAQ sections', 'Features sections', 'Footer sections', 'Header navigation sections', 'Hero sections', 'Header sections', 'Metrics sections', 'Newsletter sections', 'Log in pages', 'Sign up pages', 'Verification pages', 'Forgot password pages', '404 pages']
+const GROUP_ORDER = ['Getting started', 'Foundations', 'Components', 'Basic sections', 'Banner sections', 'Blog sections', 'Careers sections', 'Contact sections', 'Content sections', 'CTA sections', 'FAQ sections', 'Features sections', 'Footer sections', 'Header navigation sections', 'Hero sections', 'Header sections', 'Metrics sections', 'Newsletter sections', 'Pricing sections', 'Log in pages', 'Sign up pages', 'Verification pages', 'Forgot password pages', '404 pages']
 const all = await getCollection('docs')
 const byGroup = new Map<string, typeof all>()
 for (const d of all) {
