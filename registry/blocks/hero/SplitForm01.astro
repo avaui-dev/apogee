@@ -1,0 +1,54 @@
+---
+/**
+ * Split form 01: A heading, line and rating beside a sign-up card.
+ *
+ * @block hero
+ * @order 7
+ */
+import { KeyRound } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+import Card from '../../components/Card/Card.astro'
+import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import Rating from '../../components/Rating/Rating.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Customer service, simplified</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <div class="flex items-center gap-4">
+      <AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }, { name: 'Margaret Hamilton' }]} size="medium" />
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-2"><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /><span class="font-semibold">5.0</span></div>
+        <p class="text-sm text-neutral-faded">from 200+ reviews</p>
+      </div>
+    </div>
+    </div>
+    <div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 max-md:bg-transparent! max-md:p-0!">
+      <Card padding="large" class="w-full max-w-md justify-self-center">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-1">
+          <Heading as="h2" size="h4">Create an account</Heading>
+          <p class="text-neutral-faded">Start your 30-day free trial.</p>
+        </div>
+        <form method="post" class="flex flex-col gap-4">
+          <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+          <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+          <Button type="submit" size="large" fullWidth>Get started</Button>
+          <Button href="#" variant="outline" color="neutral" size="large" fullWidth><KeyRound slot="start" aria-hidden="true" />Sign up with SSO</Button>
+        </form>
+        <p class="text-center text-sm text-neutral-faded">Already have an account? <Link href="#">Log in</Link></p>
+      </div>
+    </Card>
+    </div>
+  </div>
+</Section>

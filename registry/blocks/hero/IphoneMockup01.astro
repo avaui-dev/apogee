@@ -1,0 +1,42 @@
+---
+/**
+ * iPhone mockup 01: A heading, line and app buttons beside a phone, over a dot grid.
+ *
+ * @block hero
+ * @order 21
+ */
+import { ArrowRight, Download, Smartphone } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Container from '../../components/Container/Container.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+
+---
+
+<Section spacing="large" container={false} class="overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] bg-[radial-gradient(var(--border-neutral)_1px,transparent_1px)] bg-size-[1.5rem_1.5rem]" aria-hidden="true"></div>
+  <Container class="relative">
+    <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+      <Badge color="primary" rounded>New feature</Badge>Personal coaching in the app<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+    </Link>
+      <Heading as="h1" size="display" class="text-balance">Portfolio tracking made easy</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <div class="flex flex-wrap gap-3">
+      <Button href="#" size="large" variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />Download for iOS</Button>
+      <Button href="#" size="large" variant="outline" color="neutral"><Download slot="start" aria-hidden="true" />Get it on Android</Button>
+    </div>
+    </div>
+    <div class="relative flex justify-center ">
+      <span class="absolute inset-x-0 top-1/2 mx-auto aspect-square w-full max-w-md -translate-y-1/2 rounded-full bg-neutral-faded" aria-hidden="true"></span>
+      <DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="relative w-64 md:w-72" />
+    </div>
+  </div>
+  </Container>
+</Section>

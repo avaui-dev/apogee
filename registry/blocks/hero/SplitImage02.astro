@@ -1,0 +1,35 @@
+---
+/**
+ * Split image 02: A heading, line and two buttons beside a photo with a slanted edge.
+ *
+ * @block hero
+ * @order 2
+ */
+import { ArrowRight, CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Image from '../../components/Image/Image.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+      <Badge color="primary" rounded>We're hiring!</Badge>Join our remote team<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+    </Link>
+      <Heading as="h1" size="display" class="text-balance">People who care about your growth</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#" size="large">Sign up</Button>
+    </div>
+    </div>
+    <Image src="https://picsum.photos/seed/apogee-hero-2/1200/1400" alt="" width={1200} height={1400} fit="cover" loading="eager" class="aspect-[6/7] w-full rounded-xl xl:rounded-none xl:[clip-path:polygon(18%_0,100%_0,100%_100%,0_100%)]" />
+  </div>
+</Section>

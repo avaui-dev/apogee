@@ -1,0 +1,46 @@
+---
+/**
+ * Card mockup 11: A heading and email signup beside a cascade of payment cards on a panel.
+ *
+ * @block hero
+ * @order 39
+ */
+import { ArrowRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Input from '../../components/Input/Input.astro'
+import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+      <Badge color="primary" rounded>We're hiring!</Badge>Join our remote team<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+    </Link>
+      <Heading as="h1" size="display" class="text-balance">Smart business credit cards</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+    </div>
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
+        <Button type="submit" size="large">Get started</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+    </div>
+    <div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 h-96 md:h-120">
+      <div class="relative h-full w-full max-w-lg">
+        <div class="absolute w-56 md:w-72 start-0 top-0"><PaymentCard variant="glass" last4="1001" /></div>
+        <div class="absolute w-56 md:w-72 start-[10%] top-[18%]"><PaymentCard color="neutral" last4="2002" /></div>
+        <div class="absolute w-56 md:w-72 start-[20%] top-[36%]"><PaymentCard variant="glass" last4="3003" /></div>
+        <div class="absolute w-56 md:w-72 start-[30%] top-[54%]"><PaymentCard color="primary" last4="4242" /></div>
+      </div>
+    </div>
+  </div>
+</Section>

@@ -1,0 +1,49 @@
+---
+/**
+ * Screen mockup 02: A heading, two buttons and customer logos beside a screenshot, on a tint with a dot grid.
+ *
+ * @block hero
+ * @order 14
+ */
+import { Atom, CirclePlay, Hexagon, Mountain, Sprout, Waves, Wind } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Container from '../../components/Container/Container.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+
+const logos = [
+  { name: 'Lumen', icon: Hexagon },
+  { name: 'Quanta', icon: Atom },
+  { name: 'Fieldwork', icon: Sprout },
+  { name: 'Northpeak', icon: Mountain },
+  { name: 'Arcwave', icon: Waves },
+  { name: 'Kitestring', icon: Wind },
+]
+---
+
+<Section spacing="large" container={false} background="neutral-faded" class="overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] bg-[radial-gradient(var(--border-neutral)_1px,transparent_1px)] bg-size-[1.5rem_1.5rem]" aria-hidden="true"></div>
+  <Container class="relative">
+    <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Beautiful analytics to grow smarter</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#" size="large">Sign up</Button>
+    </div>
+      <div class="flex flex-col gap-4">
+      <p class="text-sm font-medium text-neutral-faded">Trusted by 4,000+ companies</p>
+      <ul class="flex list-none flex-wrap items-center gap-x-8 gap-y-4 p-0" aria-label="Customers">
+        {logos.map((l) => <li class="flex items-center gap-2 text-lg font-semibold text-neutral-faded"><l.icon class="size-6" aria-hidden="true" />{l.name}</li>)}
+      </ul>
+    </div>
+    </div>
+    <DeviceFrame device="browser" src="/mockups/app-customers-desktop-light.jpg" srcDark="/mockups/app-customers-desktop-dark.jpg" alt="The customers table in a browser" class="" />
+  </div>
+  </Container>
+</Section>

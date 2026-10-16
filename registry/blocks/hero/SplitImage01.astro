@@ -1,0 +1,39 @@
+---
+/**
+ * Split image 01: A heading, line and email signup beside an abstract image.
+ *
+ * @block hero
+ * @order 1
+ */
+import { ArrowRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Input from '../../components/Input/Input.astro'
+import Image from '../../components/Image/Image.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+      <Badge color="primary" rounded>We're hiring!</Badge>Join our remote team<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+    </Link>
+      <Heading as="h1" size="display" class="text-balance">People who care about your growth</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
+        <Button type="submit" size="large">Get started</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+    </div>
+    <Image src="https://picsum.photos/seed/apogee-hero-1/1200/1200" alt="" width={1200} height={1200} fit="cover" radius="xl" loading="eager" class="aspect-square w-full" />
+  </div>
+</Section>

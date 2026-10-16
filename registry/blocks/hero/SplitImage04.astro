@@ -1,0 +1,44 @@
+---
+/**
+ * Split image 04: A heading, line, email signup and rating beside a portrait photo.
+ *
+ * @block hero
+ * @order 4
+ */
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+import Image from '../../components/Image/Image.astro'
+import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import Rating from '../../components/Rating/Rating.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">People who care about your growth</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
+        <Button type="submit" size="large">Get started</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+      <div class="flex items-center gap-4">
+      <AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }, { name: 'Margaret Hamilton' }]} size="medium" />
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-2"><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /><span class="font-semibold">5.0</span></div>
+        <p class="text-sm text-neutral-faded">from 200+ reviews</p>
+      </div>
+    </div>
+    </div>
+    <Image src="https://picsum.photos/seed/apogee-hero-4/1000/1250" alt="" width={1000} height={1250} fit="cover" radius="xl" loading="eager" class="aspect-[4/5] w-full" />
+  </div>
+</Section>

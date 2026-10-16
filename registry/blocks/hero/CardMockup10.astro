@@ -1,0 +1,34 @@
+---
+/**
+ * Card mockup 10: A heading and two buttons over a wide panel of tilted payment cards.
+ *
+ * @block hero
+ * @order 38
+ */
+import { CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-8 md:gap-12">
+    <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Simple, transparent business credit cards</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+    </div>
+    <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#" size="large">Sign up</Button>
+    </div>
+  </div>
+  <div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 mt-12 h-80 md:mt-16 md:h-112">
+      <div class="relative h-full w-full max-w-2xl">
+        <div class="absolute w-56 md:w-72 start-[5%] top-[15%] -rotate-[30deg]"><PaymentCard color="neutral" last4="1234" /></div>
+        <div class="absolute w-56 md:w-72 end-[5%] top-[25%] rotate-[30deg]"><PaymentCard color="primary" last4="4242" /></div>
+      </div>
+    </div>
+</Section>

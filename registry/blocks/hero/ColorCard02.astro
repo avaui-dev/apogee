@@ -1,0 +1,49 @@
+---
+/**
+ * Color card 02: A heading and email signup beside a chart, on a brand card.
+ *
+ * @block hero
+ * @order 26
+ */
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+import CircularProgress from '../../components/CircularProgress/CircularProgress.astro'
+
+---
+
+<Section spacing="large">
+  <div class="rounded-none bg-primary px-6 py-12 text-on-primary md:rounded-3xl md:px-12 md:py-16 ">
+    <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Grow your users. Smarter.</Heading>
+      <p class="max-w-2xl text-lg md:text-xl opacity-85">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
+        <Button type="submit" size="large" color="neutral">Get started</Button>
+      </div>
+      <p class="text-sm opacity-85">We care about your data in our <Link href="#" color="inherit">privacy policy</Link>.</p>
+    </form>
+    </div>
+    <div class="relative w-full max-w-xl pb-10">
+      <div class="rounded-2xl bg-elevation-raised p-6 text-neutral shadow-raised ring-1 ring-neutral" role="img" aria-label="Users over time: rising from about 2,100 in January to 4,000 in December">
+        <p class="font-semibold">Users over time</p>
+        <div class="mt-6 flex h-40 items-end gap-1.5 md:h-52">
+          {[52, 48, 58, 55, 63, 60, 70, 74, 71, 82, 88, 100].map((h) => <span class="flex-1 rounded-t-sm bg-primary" style={`height: ${h}%`}></span>)}
+        </div>
+        <div class="mt-2 flex justify-between text-xs text-neutral-faded"><span>Jan</span><span>Jun</span><span>Dec</span></div>
+      </div>
+      <div class="absolute end-4 bottom-0 flex items-center gap-4 rounded-2xl bg-elevation-raised p-4 text-neutral shadow-raised ring-1 ring-neutral">
+        <CircularProgress value={72} label="Active users" size="large" />
+        <div><p class="text-sm text-neutral-faded">Active users</p><p class="text-xl font-semibold tabular-nums">1,000</p></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</Section>

@@ -1,0 +1,35 @@
+---
+/**
+ * Card mockup 07: An eyebrow, heading and two buttons beside three stacked payment cards, on the brand colour.
+ *
+ * @block hero
+ * @order 35
+ */
+import { CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      <p class="text-sm font-semibold ">Super. Simple. Banking.</p>
+      <Heading as="h1" size="display" class="text-balance">Banking that has your back.</Heading>
+      <p class="max-w-2xl text-lg md:text-xl opacity-85">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+    </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#" size="large" color="neutral">Sign up</Button>
+    </div>
+    </div>
+    <div class="h-96 md:h-120"><div class="relative h-full w-full max-w-md">
+        <div class="absolute inset-x-0 mx-auto w-56 md:w-72 top-[10%] -rotate-6"><PaymentCard variant="glass" last4="8080" /></div>
+        <div class="absolute inset-x-0 mx-auto w-56 md:w-72 top-[30%]"><PaymentCard variant="glass" last4="1234" /></div>
+        <div class="absolute inset-x-0 mx-auto w-56 md:w-72 top-[50%] rotate-6"><PaymentCard color="neutral" last4="4242" /></div>
+      </div></div>
+  </div>
+</Section>

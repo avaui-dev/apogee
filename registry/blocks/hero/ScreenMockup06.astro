@@ -1,0 +1,39 @@
+---
+/**
+ * Screen mockup 06: A heading and two buttons beside a screenshot with a phone in front, over a dot grid.
+ *
+ * @block hero
+ * @order 18
+ */
+import { ArrowRight, CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Container from '../../components/Container/Container.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+
+---
+
+<Section spacing="large" container={false} class="overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] bg-[radial-gradient(var(--border-neutral)_1px,transparent_1px)] bg-size-[1.5rem_1.5rem]" aria-hidden="true"></div>
+  <Container class="relative">
+    <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+      <Badge color="primary" rounded>We're hiring!</Badge>Join our remote team<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+    </Link>
+      <Heading as="h1" size="display" class="text-balance">Beautiful banking to grow smarter</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+    </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#" size="large">Sign up</Button>
+    </div>
+    </div>
+    <div class="relative pb-10 ps-10 md:pb-16 md:ps-16"><DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" /><div class="absolute start-0 bottom-0 w-24 md:w-36"><DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customers table on a phone" class="" /></div></div>
+  </div>
+  </Container>
+</Section>

@@ -1,0 +1,55 @@
+---
+/**
+ * iPhone mockup 04: A heading, two buttons and a rating beside a phone, with notifications beside it.
+ *
+ * @block hero
+ * @order 24
+ */
+import { CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Container from '../../components/Container/Container.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import Rating from '../../components/Rating/Rating.astro'
+
+---
+
+<Section spacing="large" container={false} class="overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] bg-[radial-gradient(var(--border-neutral)_1px,transparent_1px)] bg-size-[1.5rem_1.5rem]" aria-hidden="true"></div>
+  <Container class="relative">
+    <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Growth tracking made easy</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#" size="large">Sign up</Button>
+    </div>
+      <div class="flex items-center gap-4">
+      <AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }, { name: 'Margaret Hamilton' }]} size="medium" />
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-2"><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /><span class="font-semibold">5.0</span></div>
+        <p class="text-sm text-neutral-faded">from 200+ reviews</p>
+      </div>
+    </div>
+    </div>
+    <div class="flex items-center justify-center gap-6"><ul class="flex list-none flex-col gap-3 p-0 max-lg:hidden" aria-hidden="true">
+        {[['Ada Lovelace', '2 min ago'], ['Alan Turing', '8 min ago'], ['Grace Hopper', '1 hr ago']].map(([n, t]) => (
+          <li class="flex w-64 items-center gap-3 rounded-xl bg-elevation-raised p-3 shadow-raised ring-1 ring-neutral">
+            <Avatar name={n} size="small" />
+            <span class="flex flex-col text-sm"><span><span class="font-semibold">{n}</span> followed you</span><span class="text-neutral-faded">{t}</span></span>
+          </li>
+        ))}
+      </ul><div class="relative flex justify-center ">
+      <span class="absolute inset-x-0 top-1/2 mx-auto aspect-square w-full max-w-md -translate-y-1/2 rounded-full bg-neutral-faded" aria-hidden="true"></span>
+      <DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="relative w-60 md:w-64" />
+    </div></div>
+  </div>
+  </Container>
+</Section>

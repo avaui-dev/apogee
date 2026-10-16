@@ -1,0 +1,28 @@
+---
+/**
+ * Simple text 02: A large heading with an underlined phrase, a line and two buttons over a wide photo, on the brand colour.
+ *
+ * @block hero
+ * @order 41
+ */
+import { CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Image from '../../components/Image/Image.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="flex flex-col gap-8 md:gap-12">
+    <div class="flex flex-col gap-4 md:gap-6">
+      <Heading as="h1" size="display" class="max-w-4xl text-balance">We design <span class="underline decoration-4 underline-offset-8 decoration-current">digital experiences</span> that make people happy</Heading>
+      <p class="max-w-2xl text-lg md:text-xl opacity-85">We're a full-service design and development studio. We help teams build websites people enjoy using.</p>
+    </div>
+    <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!"><CirclePlay slot="start" aria-hidden="true" />Showreel</Button>
+      <Button href="#" size="large" color="neutral">Get in touch</Button>
+    </div>
+  </div>
+  <Image src="https://picsum.photos/seed/apogee-hero-41/1600/800" alt="" width={1600} height={800} fit="cover" radius="xl" loading="eager" class="mt-12 h-60 w-full md:mt-16 md:h-129" />
+</Section>

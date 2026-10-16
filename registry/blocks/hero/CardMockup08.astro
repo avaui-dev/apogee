@@ -1,0 +1,48 @@
+---
+/**
+ * Card mockup 08: A heading, email signup and three points over a wide panel of payment cards, over a dot grid.
+ *
+ * @block hero
+ * @order 36
+ */
+import { CircleCheck } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Container from '../../components/Container/Container.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+
+---
+
+<Section spacing="large" container={false} class="overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] bg-[radial-gradient(var(--border-neutral)_1px,transparent_1px)] bg-size-[1.5rem_1.5rem]" aria-hidden="true"></div>
+  <Container class="relative">
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-end">
+    <div class="flex flex-col gap-8 md:gap-12">
+    <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Simple, transparent business credit cards</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+    </div>
+    <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
+        <Button type="submit" size="large">Get started</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+  </div>
+    <ul class="flex list-none flex-col gap-4 p-0 max-lg:hidden"><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />No annual fees</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Cards for every team member</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Spending limits you control</li></ul>
+  </div>
+  <div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 mt-12 h-96 md:mt-16 md:h-120">
+      <div class="relative h-full w-full max-w-lg">
+        <div class="absolute w-56 md:w-72 start-0 top-0"><PaymentCard variant="glass" last4="1001" /></div>
+        <div class="absolute w-56 md:w-72 start-[10%] top-[18%]"><PaymentCard color="neutral" last4="2002" /></div>
+        <div class="absolute w-56 md:w-72 start-[20%] top-[36%]"><PaymentCard variant="glass" last4="3003" /></div>
+        <div class="absolute w-56 md:w-72 start-[30%] top-[54%]"><PaymentCard color="primary" last4="4242" /></div>
+      </div>
+    </div>
+  </Container>
+</Section>

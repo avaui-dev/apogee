@@ -1,0 +1,25 @@
+---
+title: "Split image 01"
+description: "A heading, line and email signup beside an abstract image."
+group: Hero sections
+order: 1
+related: [section, heading, button, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="hero/split-image-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add hero/split-image-01
+```
+
+This copies the block to `src/components/apogee/blocks/hero/` with everything it uses: Badge, Button, Heading, Image, Input, Link, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is the page's `h1`; the items below are one level down.
+- The email field is named "Email" (the placeholder is not a label); the form submits without JS.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

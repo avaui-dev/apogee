@@ -8278,6 +8278,959 @@
         "@lucide/astro"
       ],
       "usesJs": false
+    },
+    "hero/abstract-angles-01": {
+      "name": "hero/abstract-angles-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Abstract angles 01",
+      "description": "A centred heading and two buttons over a video on a slanted band.",
+      "files": [
+        "blocks/hero/AbstractAngles01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Link",
+        "Section",
+        "VideoPlayer"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/abstract-angles-02": {
+      "name": "hero/abstract-angles-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Abstract angles 02",
+      "description": "A centred heading and two buttons over a wide video on a slanted band.",
+      "files": [
+        "blocks/hero/AbstractAngles02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Link",
+        "Section",
+        "VideoPlayer"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/abstract-angles-03": {
+      "name": "hero/abstract-angles-03",
+      "kind": "block",
+      "category": "hero",
+      "title": "Abstract angles 03",
+      "description": "A centred heading and two buttons over a screenshot on a slanted band.",
+      "files": [
+        "blocks/hero/AbstractAngles03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "DeviceFrame",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/abstract-angles-04": {
+      "name": "hero/abstract-angles-04",
+      "kind": "block",
+      "category": "hero",
+      "title": "Abstract angles 04",
+      "description": "A centred heading and two buttons over a cropped screenshot on a slanted band.",
+      "files": [
+        "blocks/hero/AbstractAngles04.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "DeviceFrame",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-01": {
+      "name": "hero/card-mockup-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 01",
+      "description": "A centred heading and two buttons over two payment cards on a panel, over a fine grid.",
+      "files": [
+        "blocks/hero/CardMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-02": {
+      "name": "hero/card-mockup-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 02",
+      "description": "A heading and two buttons beside two payment cards on a panel, on a tint with a dot grid.",
+      "files": [
+        "blocks/hero/CardMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-03": {
+      "name": "hero/card-mockup-03",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 03",
+      "description": "A centred heading and two buttons over five payment cards fanned on a brand panel, over a fine grid.",
+      "files": [
+        "blocks/hero/CardMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-04": {
+      "name": "hero/card-mockup-04",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 04",
+      "description": "A heading and two buttons beside three stacked payment cards on a brand panel.",
+      "files": [
+        "blocks/hero/CardMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-05": {
+      "name": "hero/card-mockup-05",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 05",
+      "description": "A centred eyebrow, heading and two buttons over two tilted payment cards, over a fine grid.",
+      "files": [
+        "blocks/hero/CardMockup05.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "Heading",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-06": {
+      "name": "hero/card-mockup-06",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 06",
+      "description": "A centred eyebrow, heading and two buttons over five fanned payment cards, on the brand colour.",
+      "files": [
+        "blocks/hero/CardMockup06.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-07": {
+      "name": "hero/card-mockup-07",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 07",
+      "description": "An eyebrow, heading and two buttons beside three stacked payment cards, on the brand colour.",
+      "files": [
+        "blocks/hero/CardMockup07.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-08": {
+      "name": "hero/card-mockup-08",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 08",
+      "description": "A heading, email signup and three points over a wide panel of payment cards, over a dot grid.",
+      "files": [
+        "blocks/hero/CardMockup08.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "Heading",
+        "Input",
+        "Link",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-09": {
+      "name": "hero/card-mockup-09",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 09",
+      "description": "A heading and two buttons beside four payment cards on a panel.",
+      "files": [
+        "blocks/hero/CardMockup09.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-10": {
+      "name": "hero/card-mockup-10",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 10",
+      "description": "A heading and two buttons over a wide panel of tilted payment cards.",
+      "files": [
+        "blocks/hero/CardMockup10.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-mockup-11": {
+      "name": "hero/card-mockup-11",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card mockup 11",
+      "description": "A heading and email signup beside a cascade of payment cards on a panel.",
+      "files": [
+        "blocks/hero/CardMockup11.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Input",
+        "Link",
+        "PaymentCard",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/color-card-01": {
+      "name": "hero/color-card-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Color card 01",
+      "description": "A centred heading and email signup on a brand card, over a chart.",
+      "files": [
+        "blocks/hero/ColorCard01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "CircularProgress",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/color-card-02": {
+      "name": "hero/color-card-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Color card 02",
+      "description": "A heading and email signup beside a chart, on a brand card.",
+      "files": [
+        "blocks/hero/ColorCard02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "CircularProgress",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/color-card-03": {
+      "name": "hero/color-card-03",
+      "kind": "block",
+      "category": "hero",
+      "title": "Color card 03",
+      "description": "A centred heading and email signup on a brand card, over a screenshot that overlaps it.",
+      "files": [
+        "blocks/hero/ColorCard03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/color-card-04": {
+      "name": "hero/color-card-04",
+      "kind": "block",
+      "category": "hero",
+      "title": "Color card 04",
+      "description": "A heading and email signup beside a screenshot, on a brand card.",
+      "files": [
+        "blocks/hero/ColorCard04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/geometric-shapes-01": {
+      "name": "hero/geometric-shapes-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Geometric shapes 01",
+      "description": "A heading, line and two buttons beside a block of geometric shapes, over a dot grid.",
+      "files": [
+        "blocks/hero/GeometricShapes01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/geometric-shapes-02": {
+      "name": "hero/geometric-shapes-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Geometric shapes 02",
+      "description": "A heading, line and two buttons beside geometric shapes that fill the right half, over a grid.",
+      "files": [
+        "blocks/hero/GeometricShapes02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/geometric-shapes-03": {
+      "name": "hero/geometric-shapes-03",
+      "kind": "block",
+      "category": "hero",
+      "title": "Geometric shapes 03",
+      "description": "A centred heading, line and two buttons over a wide row of geometric shapes, over a dot grid.",
+      "files": [
+        "blocks/hero/GeometricShapes03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/iphone-mockup-01": {
+      "name": "hero/iphone-mockup-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "iPhone mockup 01",
+      "description": "A heading, line and app buttons beside a phone, over a dot grid.",
+      "files": [
+        "blocks/hero/IphoneMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/iphone-mockup-02": {
+      "name": "hero/iphone-mockup-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "iPhone mockup 02",
+      "description": "A heading, line and app buttons beside a phone over a screenshot, on a tint with a dot grid.",
+      "files": [
+        "blocks/hero/IphoneMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/iphone-mockup-03": {
+      "name": "hero/iphone-mockup-03",
+      "kind": "block",
+      "category": "hero",
+      "title": "iPhone mockup 03",
+      "description": "A heading, line and a text-me-a-link form beside a phone over a screenshot, over a dot grid.",
+      "files": [
+        "blocks/hero/IphoneMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Input",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/iphone-mockup-04": {
+      "name": "hero/iphone-mockup-04",
+      "kind": "block",
+      "category": "hero",
+      "title": "iPhone mockup 04",
+      "description": "A heading, two buttons and a rating beside a phone, with notifications beside it.",
+      "files": [
+        "blocks/hero/IphoneMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "AvatarGroup",
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-01": {
+      "name": "hero/screen-mockup-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 01",
+      "description": "A centred heading and two buttons over a cropped screenshot, on a tint with a dot grid.",
+      "files": [
+        "blocks/hero/ScreenMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-02": {
+      "name": "hero/screen-mockup-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 02",
+      "description": "A heading, two buttons and customer logos beside a screenshot, on a tint with a dot grid.",
+      "files": [
+        "blocks/hero/ScreenMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-03": {
+      "name": "hero/screen-mockup-03",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 03",
+      "description": "A centred heading and two buttons over a screenshot, on a tint with a dot grid.",
+      "files": [
+        "blocks/hero/ScreenMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-04": {
+      "name": "hero/screen-mockup-04",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 04",
+      "description": "A heading, two buttons and customer logos beside a screenshot on a panel, on a tint with a dot grid.",
+      "files": [
+        "blocks/hero/ScreenMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-05": {
+      "name": "hero/screen-mockup-05",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 05",
+      "description": "A centred heading and two buttons over a phone on small screens and a browser on wide ones, over a grid.",
+      "files": [
+        "blocks/hero/ScreenMockup05.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-06": {
+      "name": "hero/screen-mockup-06",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 06",
+      "description": "A heading and two buttons beside a screenshot with a phone in front, over a dot grid.",
+      "files": [
+        "blocks/hero/ScreenMockup06.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-07": {
+      "name": "hero/screen-mockup-07",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 07",
+      "description": "A centred heading and two buttons over a screenshot, over a fine grid.",
+      "files": [
+        "blocks/hero/ScreenMockup07.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-mockup-08": {
+      "name": "hero/screen-mockup-08",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen mockup 08",
+      "description": "A heading and two buttons beside a large screenshot, over a dot grid.",
+      "files": [
+        "blocks/hero/ScreenMockup08.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Container",
+        "DeviceFrame",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/simple-text-01": {
+      "name": "hero/simple-text-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Simple text 01",
+      "description": "A large heading with an underlined phrase, a line and two buttons over a wide photo, over a dot grid.",
+      "files": [
+        "blocks/hero/SimpleText01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "Heading",
+        "Image",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/simple-text-02": {
+      "name": "hero/simple-text-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Simple text 02",
+      "description": "A large heading with an underlined phrase, a line and two buttons over a wide photo, on the brand colour.",
+      "files": [
+        "blocks/hero/SimpleText02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/split-form-01": {
+      "name": "hero/split-form-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split form 01",
+      "description": "A heading, line and rating beside a sign-up card.",
+      "files": [
+        "blocks/hero/SplitForm01.astro"
+      ],
+      "registryDependencies": [
+        "AvatarGroup",
+        "Button",
+        "Card",
+        "Heading",
+        "Input",
+        "Link",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/split-form-02": {
+      "name": "hero/split-form-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split form 02",
+      "description": "A heading, line and three points beside a sign-up card.",
+      "files": [
+        "blocks/hero/SplitForm02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Card",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/split-image-01": {
+      "name": "hero/split-image-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split image 01",
+      "description": "A heading, line and email signup beside an abstract image.",
+      "files": [
+        "blocks/hero/SplitImage01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Image",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/split-image-02": {
+      "name": "hero/split-image-02",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split image 02",
+      "description": "A heading, line and two buttons beside a photo with a slanted edge.",
+      "files": [
+        "blocks/hero/SplitImage02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Image",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/split-image-03": {
+      "name": "hero/split-image-03",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split image 03",
+      "description": "A heading, line and two buttons beside a photo with one large rounded corner.",
+      "files": [
+        "blocks/hero/SplitImage03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/split-image-04": {
+      "name": "hero/split-image-04",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split image 04",
+      "description": "A heading, line, email signup and rating beside a portrait photo.",
+      "files": [
+        "blocks/hero/SplitImage04.astro"
+      ],
+      "registryDependencies": [
+        "AvatarGroup",
+        "Button",
+        "Heading",
+        "Image",
+        "Input",
+        "Link",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/split-image-05": {
+      "name": "hero/split-image-05",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split image 05",
+      "description": "A heading, line and two buttons beside a workspace photo, over a dot grid.",
+      "files": [
+        "blocks/hero/SplitImage05.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "Heading",
+        "Image",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/split-image-06": {
+      "name": "hero/split-image-06",
+      "kind": "block",
+      "category": "hero",
+      "title": "Split image 06",
+      "description": "A heading, line and email signup beside a portrait photo, over a dot grid.",
+      "files": [
+        "blocks/hero/SplitImage06.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Container",
+        "Heading",
+        "Image",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
     }
   }
 }

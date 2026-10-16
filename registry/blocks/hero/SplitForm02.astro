@@ -1,0 +1,46 @@
+---
+/**
+ * Split form 02: A heading, line and three points beside a sign-up card.
+ *
+ * @block hero
+ * @order 8
+ */
+import { CircleCheck, KeyRound } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+import Card from '../../components/Card/Card.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Customer service, simplified</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <ul class="flex list-none flex-col gap-4 p-0 "><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />30-day free trial</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Personal onboarding</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Every feature included</li></ul>
+    </div>
+    <div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 max-md:bg-transparent! max-md:p-0!">
+      <Card padding="large" class="w-full max-w-md justify-self-center">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-1">
+          <Heading as="h2" size="h4">Create an account</Heading>
+          <p class="text-neutral-faded">Start your 30-day free trial.</p>
+        </div>
+        <form method="post" class="flex flex-col gap-4">
+          <Input label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
+          <Input label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+          <Button type="submit" size="large" fullWidth>Get started</Button>
+          <Button href="#" variant="outline" color="neutral" size="large" fullWidth><KeyRound slot="start" aria-hidden="true" />Sign up with SSO</Button>
+        </form>
+        <p class="text-center text-sm text-neutral-faded">Already have an account? <Link href="#">Log in</Link></p>
+      </div>
+    </Card>
+    </div>
+  </div>
+</Section>

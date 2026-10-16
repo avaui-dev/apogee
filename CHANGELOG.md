@@ -45,6 +45,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Hero sections:** 44 hero blocks: split image, sign-up form, angled and geometric patterns, screen and phone mockups, colour cards, card mockups and plain text, each with the page's `h1`.
+
 - **Header navigation sections**: 20 headers whose menus open lists, columns, feature cards, blog posts or video tutorials, under the button or across the page, in a plain or floating bar.
 - **NavDropdown**: a Navbar item that opens a panel of links; a native popover under the button or across the header (`fullWidth`, `floating`), a `<details>` row in the phone menu. Zero JS.
 - **Navbar** `floating`: the bar on a rounded, raised pill. The header is the anchor for full-width dropdown panels, and the phone menu scrolls when it is taller than the screen.

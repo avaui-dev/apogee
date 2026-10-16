@@ -1,0 +1,35 @@
+---
+/**
+ * Card mockup 06: A centred eyebrow, heading and two buttons over five fanned payment cards, on the brand colour.
+ *
+ * @block hero
+ * @order 34
+ */
+import { CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="flex flex-col gap-8 md:gap-12 items-center text-center">
+    <div class="flex flex-col gap-4 md:gap-6 items-center text-center">
+      <p class="text-sm font-semibold ">Super. Simple. Banking.</p>
+      <Heading as="h1" size="display" class="text-balance">Banking that has your back.</Heading>
+      <p class="max-w-2xl text-lg md:text-xl opacity-85">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+    </div>
+    <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-center ">
+      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#" size="large" color="neutral">Sign up</Button>
+    </div>
+  </div>
+    <div class="mx-auto mt-12 h-80 max-w-4xl md:h-112"><div class="relative h-full w-full max-w-2xl">
+        <div class="absolute inset-x-0 bottom-8 mx-auto w-44 origin-bottom md:w-60 -rotate-[24deg]"><PaymentCard variant="glass" last4="1001" /></div>
+        <div class="absolute inset-x-0 bottom-8 mx-auto w-44 origin-bottom md:w-60 -rotate-12"><PaymentCard variant="glass" last4="2002" /></div>
+        <div class="absolute inset-x-0 bottom-8 mx-auto w-44 origin-bottom md:w-60 "><PaymentCard variant="glass" last4="3003" /></div>
+        <div class="absolute inset-x-0 bottom-8 mx-auto w-44 origin-bottom md:w-60 rotate-12"><PaymentCard variant="glass" last4="4004" /></div>
+        <div class="absolute inset-x-0 bottom-8 mx-auto w-44 origin-bottom md:w-60 rotate-[24deg]"><PaymentCard variant="glass" last4="4242" /></div>
+      </div></div>
+</Section>

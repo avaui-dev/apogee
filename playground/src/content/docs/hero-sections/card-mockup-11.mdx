@@ -1,0 +1,25 @@
+---
+title: "Card mockup 11"
+description: "A heading and email signup beside a cascade of payment cards on a panel."
+group: Hero sections
+order: 39
+related: [section, heading, button, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="hero/card-mockup-11" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add hero/card-mockup-11
+```
+
+This copies the block to `src/components/apogee/blocks/hero/` with everything it uses: Badge, Button, Heading, Input, Link, PaymentCard, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is the page's `h1`; the items below are one level down.
+- The email field is named "Email" (the placeholder is not a label); the form submits without JS.
+- Each payment card is one image, named by its last four digits.

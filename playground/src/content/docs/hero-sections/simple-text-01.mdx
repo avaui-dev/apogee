@@ -1,0 +1,24 @@
+---
+title: "Simple text 01"
+description: "A large heading with an underlined phrase, a line and two buttons over a wide photo, over a dot grid."
+group: Hero sections
+order: 40
+related: [section, heading, button, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="hero/simple-text-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add hero/simple-text-01
+```
+
+This copies the block to `src/components/apogee/blocks/hero/` with everything it uses: Button, Container, Heading, Image, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is the page's `h1`; the items below are one level down.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

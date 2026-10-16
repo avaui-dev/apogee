@@ -1,0 +1,39 @@
+---
+/**
+ * Split image 06: A heading, line and email signup beside a portrait photo, over a dot grid.
+ *
+ * @block hero
+ * @order 6
+ */
+import Section from '../../components/Section/Section.astro'
+import Container from '../../components/Container/Container.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Input from '../../components/Input/Input.astro'
+import Image from '../../components/Image/Image.astro'
+
+---
+
+<Section spacing="large" container={false} class="overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] bg-[radial-gradient(var(--border-neutral)_1px,transparent_1px)] bg-size-[1.5rem_1.5rem]" aria-hidden="true"></div>
+  <Container class="relative">
+    <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+    <div class="flex flex-col gap-8 md:gap-12">
+      <div class="flex flex-col gap-4 md:gap-6 items-start">
+      
+      <Heading as="h1" size="display" class="text-balance">Customer service software for customer-first teams</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+    </div>
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
+        <Button type="submit" size="large">Get started</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+    </div>
+    <Image src="https://picsum.photos/seed/apogee-hero-6/1000/1250" alt="" width={1000} height={1250} fit="cover" loading="eager" class="aspect-[4/5] w-full rounded-xl rounded-se-[6rem] rounded-es-[6rem]" />
+  </div>
+  </Container>
+</Section>
