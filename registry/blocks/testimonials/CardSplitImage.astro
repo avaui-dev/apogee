@@ -1,0 +1,38 @@
+---
+/**
+ * Card split image: Rotating quotes in a grey card beside a video of the customer.
+ *
+ * @block testimonials
+ * @order 21
+ */
+import Section from '../../components/Section/Section.astro'
+import Rating from '../../components/Rating/Rating.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+import VideoPlayer from '../../components/VideoPlayer/VideoPlayer.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid overflow-hidden rounded-2xl md:rounded-3xl lg:grid-cols-[1fr_auto] bg-neutral-faded">
+    <div class="min-w-0 p-6 md:p-8 lg:p-16">
+      <Carousel label="Testimonials" visibleItems={{ base: 1 }} controls={false} dots>
+          <figure class="flex flex-col gap-6">
+            <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+            <blockquote class="text-xl font-medium tracking-tight text-balance md:text-3xl"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
+            <figcaption class="flex flex-col gap-1"><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">— Amara Nwosu</span><span class="text-sm text-neutral-faded">Head of Operations, Lumen</span></span></figcaption>
+          </figure>
+          <figure class="flex flex-col gap-6">
+            <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+            <blockquote class="text-xl font-medium tracking-tight text-balance md:text-3xl"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
+            <figcaption class="flex flex-col gap-1"><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">— Daniel Reyes</span><span class="text-sm text-neutral-faded">Engineering Lead, Quanta</span></span></figcaption>
+          </figure>
+          <figure class="flex flex-col gap-6">
+            <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+            <blockquote class="text-xl font-medium tracking-tight text-balance md:text-3xl"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
+            <figcaption class="flex flex-col gap-1"><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">— Sofia Marchetti</span><span class="text-sm text-neutral-faded">Product Designer, Fieldwork</span></span></figcaption>
+          </figure>
+      </Carousel>
+    </div>
+    <VideoPlayer src="/media/app-tour.mp4" poster="https://picsum.photos/id/823/960/1080" captions="/media/app-tour.vtt" title="Leah Goldberg on working with us" ratio="1/1" radius="none" class="border-0 lg:w-120" />
+  </div>
+</Section>

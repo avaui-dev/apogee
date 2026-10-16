@@ -1,0 +1,24 @@
+---
+title: "Simple centered 01"
+description: "Three rotating quotes with the person and stars, and dots to switch."
+group: Testimonials sections
+order: 5
+related: [sections/testimonials, carousel, rating]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="testimonials/simple-centered-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add testimonials/simple-centered-01
+```
+
+This copies the block to `src/components/apogee/blocks/testimonials/` with everything it uses: Avatar, Carousel, Rating, Section. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The stars are read as one rating ("Rated 5 out of 5").
+- The carousel is a named region; its arrows are buttons and it scrolls by swipe or keyboard too.

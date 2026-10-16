@@ -1,0 +1,32 @@
+---
+/**
+ * Simple centered 01: Three rotating quotes with the person and stars, and dots to switch.
+ *
+ * @block testimonials
+ * @order 5
+ */
+import Section from '../../components/Section/Section.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import Rating from '../../components/Rating/Rating.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+
+---
+
+<Section spacing="large">
+  <div class="mx-auto max-w-4xl">
+    <Carousel label="Testimonials" visibleItems={{ base: 1 }} controls={false} dots>
+      <figure class="flex flex-col items-center gap-8 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
+        <div class="flex flex-col items-center gap-3"><figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Amara Nwosu</span><span class="text-sm text-neutral-faded">Head of Operations, Lumen</span></span></figcaption><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /></div>
+      </figure>
+      <figure class="flex flex-col items-center gap-8 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
+        <div class="flex flex-col items-center gap-3"><figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/91/192/192" name="Daniel Reyes" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Daniel Reyes</span><span class="text-sm text-neutral-faded">Engineering Lead, Quanta</span></span></figcaption><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /></div>
+      </figure>
+      <figure class="flex flex-col items-center gap-8 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
+        <div class="flex flex-col items-center gap-3"><figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/832/192/192" name="Sofia Marchetti" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Sofia Marchetti</span><span class="text-sm text-neutral-faded">Product Designer, Fieldwork</span></span></figcaption><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /></div>
+      </figure>
+    </Carousel>
+  </div>
+</Section>

@@ -1,0 +1,75 @@
+---
+/**
+ * Glassmorphic cards 03: A heading with actions over six portraits with glass panels, and a load-more button on phones.
+ *
+ * @block testimonials
+ * @order 20
+ */
+import { ArrowDown } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Image from '../../components/Image/Image.astro'
+import Rating from '../../components/Rating/Rating.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-12 md:gap-16">
+    <SectionHeader heading="What our customers say" description="Hear from the teams building with us every day." size="large">
+      <Fragment slot="actions"><div class="flex flex-col-reverse gap-3 sm:flex-row"><Button href="#" size="large" variant="outline" color="neutral">Our customers</Button><Button href="#" size="large">Create account</Button></div></Fragment>
+    </SectionHeader>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
+        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/1027/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+        <figcaption class="flex flex-col gap-3 m-3 rounded-xl bg-page/80 p-5 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:rounded-2xl">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <span class="text-xl font-semibold md:text-2xl">Amara Nwosu</span>
+          <span class="text-sm"><span class="font-semibold">Head of Operations, Lumen</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
+        </figcaption>
+      </figure>
+    <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
+        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/91/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+        <figcaption class="flex flex-col gap-3 m-3 rounded-xl bg-page/80 p-5 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:rounded-2xl">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <span class="text-xl font-semibold md:text-2xl">Daniel Reyes</span>
+          <span class="text-sm"><span class="font-semibold">Engineering Lead, Quanta</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
+        </figcaption>
+      </figure>
+    <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
+        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/832/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+        <figcaption class="flex flex-col gap-3 m-3 rounded-xl bg-page/80 p-5 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:rounded-2xl">
+          <blockquote class="text-xl font-semibold"><p>“Clear, calm and fast to work with.”</p></blockquote>
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <span class="text-xl font-semibold md:text-2xl">Sofia Marchetti</span>
+          <span class="text-sm"><span class="font-semibold">Product Designer, Fieldwork</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
+        </figcaption>
+      </figure>
+    <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
+        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/856/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+        <figcaption class="flex flex-col gap-3 m-3 rounded-xl bg-page/80 p-5 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:rounded-2xl">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <span class="text-xl font-semibold md:text-2xl">Kenji Watanabe</span>
+          <span class="text-sm"><span class="font-semibold">Founder, Northpeak</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
+        </figcaption>
+      </figure>
+    <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
+        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/823/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+        <figcaption class="flex flex-col gap-3 m-3 rounded-xl bg-page/80 p-5 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:rounded-2xl">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <span class="text-xl font-semibold md:text-2xl">Leah Goldberg</span>
+          <span class="text-sm"><span class="font-semibold">Customer Success Lead, Arcwave</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
+        </figcaption>
+      </figure>
+    <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
+        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/375/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+        <figcaption class="flex flex-col gap-3 m-3 rounded-xl bg-page/80 p-5 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:rounded-2xl">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <span class="text-xl font-semibold md:text-2xl">Omar Haddad</span>
+          <span class="text-sm"><span class="font-semibold">CTO, Kitestring</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
+        </figcaption>
+      </figure>
+    </div>
+    <Button href="?page=2" size="large" variant="outline" color="neutral" class="self-center md:hidden"><ArrowDown slot="start" aria-hidden="true" />Load more</Button>
+  </div>
+</Section>

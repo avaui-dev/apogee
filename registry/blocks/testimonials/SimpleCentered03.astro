@@ -1,0 +1,40 @@
+---
+/**
+ * Simple centered 03: Quotes from five companies, switched by tabs that show each company.
+ *
+ * @block testimonials
+ * @order 9
+ */
+import { Atom, Hexagon, Mountain, Sprout, Waves } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+
+---
+
+<Section spacing="large">
+  <div class="mx-auto max-w-4xl">
+    <Tabs label="Customers" tabs={[{ label: 'Lumen', icon: Hexagon, value: 'lumen' }, { label: 'Quanta', icon: Atom, value: 'quanta' }, { label: 'Fieldwork', icon: Sprout, value: 'fieldwork' }, { label: 'Northpeak', icon: Mountain, value: 'northpeak' }, { label: 'Arcwave', icon: Waves, value: 'arcwave' }]} value="fieldwork" class="[&_[role=tablist]]:justify-center">
+      <figure slot="panel-lumen" class="flex flex-col items-center gap-8 pt-10 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
+        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Amara Nwosu</span><span class="text-sm text-neutral-faded">Head of Operations, Lumen</span></span></figcaption>
+      </figure>
+      <figure slot="panel-quanta" class="flex flex-col items-center gap-8 pt-10 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
+        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/91/192/192" name="Daniel Reyes" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Daniel Reyes</span><span class="text-sm text-neutral-faded">Engineering Lead, Quanta</span></span></figcaption>
+      </figure>
+      <figure slot="panel-fieldwork" class="flex flex-col items-center gap-8 pt-10 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
+        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/832/192/192" name="Sofia Marchetti" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Sofia Marchetti</span><span class="text-sm text-neutral-faded">Product Designer, Fieldwork</span></span></figcaption>
+      </figure>
+      <figure slot="panel-northpeak" class="flex flex-col items-center gap-8 pt-10 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“It replaced four tools and a spreadsheet nobody wanted to open.”</p></blockquote>
+        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/856/192/192" name="Kenji Watanabe" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Kenji Watanabe</span><span class="text-sm text-neutral-faded">Founder, Northpeak</span></span></figcaption>
+      </figure>
+      <figure slot="panel-arcwave" class="flex flex-col items-center gap-8 pt-10 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Onboarding took a day. Our new hires were shipping by the end of their first week.”</p></blockquote>
+        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/823/192/192" name="Leah Goldberg" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Leah Goldberg</span><span class="text-sm text-neutral-faded">Customer Success Lead, Arcwave</span></span></figcaption>
+      </figure>
+    </Tabs>
+  </div>
+</Section>

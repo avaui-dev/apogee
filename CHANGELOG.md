@@ -71,6 +71,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **WorldMap** `region`: one continent (North America, South America, Europe, Africa, Asia, Oceania) from the same dots, in that region's shape.
 - **VideoPlayer** `radius`: `none`, `small`, `medium`, `large` (default) or `full`.
 - **Navbar** `tools` slot: icon buttons that stay in the bar at every width, before the phone menu toggle.
+- **Testimonials sections:** 26 blocks of customer quotes: single statements, rotating carousels, card grids, glass portraits, case-study panels and photo splits, on the page or the brand colour.
 - **Team sections:** 14 blocks of people with round or square photos, bios and links, in grids, cards, a mosaic, glass panels or a scrolling row.
 - **Social proof sections:** 12 blocks of customer logos (a row, two rows, a scrolling strip, a card, tiles) and press mentions, on the page or the brand colour.
 - **Pricing sections:** 22 blocks: plan cards in nine styles, billing switches that work without JS, and two comparison tables with grouped features and tooltips.

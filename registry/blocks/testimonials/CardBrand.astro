@@ -1,0 +1,19 @@
+---
+/**
+ * Card brand: One quote in a brand-colour card, with the person under it.
+ *
+ * @block testimonials
+ * @order 2
+ */
+import Section from '../../components/Section/Section.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+
+---
+
+<Section spacing="large">
+  <figure class="flex flex-col items-center gap-8 rounded-2xl px-6 py-10 text-center md:px-8 md:py-12 lg:p-16 bg-primary text-on-primary">
+    <p class="text-sm font-semibold opacity-85">Retail and commerce</p>
+    <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
+    <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Amara Nwosu</span><span class="text-sm opacity-85">Head of Operations, Lumen</span></span></figcaption>
+  </figure>
+</Section>

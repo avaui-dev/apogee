@@ -1,0 +1,51 @@
+---
+/**
+ * Split image 02: Rotating rated quotes beside a photo of each person with a flush glass strip.
+ *
+ * @block testimonials
+ * @order 24
+ */
+import Section from '../../components/Section/Section.astro'
+import Rating from '../../components/Rating/Rating.astro'
+import Carousel from '../../components/Carousel/Carousel.astro'
+import Image from '../../components/Image/Image.astro'
+
+---
+
+<Section spacing="large">
+  <Carousel label="Testimonials" visibleItems={{ base: 1 }} controlsPosition="below">
+      <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <figure class="flex flex-col gap-8">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl line-clamp-5"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
+          <figcaption class="flex flex-col"><span class="text-lg font-semibold">Amara Nwosu</span><span class="text-neutral-faded">Lumen</span></figcaption>
+        </figure>
+        <div class="relative isolate flex h-140 flex-col justify-end overflow-hidden lg:h-180">
+          <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/1027/960/1440" alt="" width={960} height={1440} fit="cover" class="size-full" /></div>
+          <div class="flex flex-col gap-1 border-t border-neutral bg-page/80 p-5 backdrop-blur-md" aria-hidden="true"><span class="flex items-center justify-between gap-4 text-xl font-semibold">Amara Nwosu<Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /></span><span class="text-sm font-semibold">Head of Operations</span><span class="text-sm text-neutral-faded">Lumen</span></div>
+        </div>
+      </div>
+      <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <figure class="flex flex-col gap-8">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl line-clamp-5"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
+          <figcaption class="flex flex-col"><span class="text-lg font-semibold">Daniel Reyes</span><span class="text-neutral-faded">Quanta</span></figcaption>
+        </figure>
+        <div class="relative isolate flex h-140 flex-col justify-end overflow-hidden lg:h-180">
+          <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/91/960/1440" alt="" width={960} height={1440} fit="cover" class="size-full" /></div>
+          <div class="flex flex-col gap-1 border-t border-neutral bg-page/80 p-5 backdrop-blur-md" aria-hidden="true"><span class="flex items-center justify-between gap-4 text-xl font-semibold">Daniel Reyes<Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /></span><span class="text-sm font-semibold">Engineering Lead</span><span class="text-sm text-neutral-faded">Quanta</span></div>
+        </div>
+      </div>
+      <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <figure class="flex flex-col gap-8">
+          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
+          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl line-clamp-5"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
+          <figcaption class="flex flex-col"><span class="text-lg font-semibold">Sofia Marchetti</span><span class="text-neutral-faded">Fieldwork</span></figcaption>
+        </figure>
+        <div class="relative isolate flex h-140 flex-col justify-end overflow-hidden lg:h-180">
+          <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/832/960/1440" alt="" width={960} height={1440} fit="cover" class="size-full" /></div>
+          <div class="flex flex-col gap-1 border-t border-neutral bg-page/80 p-5 backdrop-blur-md" aria-hidden="true"><span class="flex items-center justify-between gap-4 text-xl font-semibold">Sofia Marchetti<Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /></span><span class="text-sm font-semibold">Product Designer</span><span class="text-sm text-neutral-faded">Fieldwork</span></div>
+        </div>
+      </div>
+    </Carousel>
+</Section>

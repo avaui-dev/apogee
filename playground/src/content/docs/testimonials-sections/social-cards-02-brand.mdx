@@ -1,0 +1,24 @@
+---
+title: "Social cards 02brand"
+description: "Six rated quote cards with each person and their handle on the brand colour."
+group: Testimonials sections
+order: 14
+related: [sections/testimonials, carousel, rating]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="testimonials/social-cards-02-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add testimonials/social-cards-02-brand
+```
+
+This copies the block to `src/components/apogee/blocks/testimonials/` with everything it uses: Avatar, Rating, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- The stars are read as one rating ("Rated 5 out of 5").
