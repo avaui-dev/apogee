@@ -203,10 +203,35 @@ const arrow = [
       s.setAttribute('aria-roledescription', 'slide')
       if (!s.hasAttribute('aria-label')) s.setAttribute('aria-label', `${i + 1} of ${slides.length}`)
     })
-    const step = () => track.clientWidth * 0.8
-    // In RTL the inline axis runs right-to-left, so "next" is a negative scroll.
-    const sign = () => (getComputedStyle(track).direction === 'rtl' ? -1 : 1)
-    const go = (dir: number) => track.scrollBy({ left: dir * sign() * step(), behavior: 'smooth' })
+    // Arrows scroll to an exact slide position instead of a fixed distance: a script-driven
+    // smooth scroll doesn't always re-snap (WebKit), which would leave a slide cut in half.
+    const rtl = () => getComputedStyle(track).direction === 'rtl'
+    const pad = () => parseFloat(getComputedStyle(track).scrollPaddingInlineStart) || 0
+    // Distance from the track's start edge to a slide's start edge, in scroll units (always ≥ 0).
+    const offset = (el: HTMLElement) => {
+      const t = track.getBoundingClientRect()
+      const r = el.getBoundingClientRect()
+      return (rtl() ? t.right - r.right : r.left - t.left) + Math.abs(track.scrollLeft) - pad()
+    }
+    // The scroll position that shows a slide where snapping would put it.
+    const target = (el: HTMLElement) => {
+      const centre = c.dataset.align === 'center'
+      const view = track.clientWidth - pad() * 2
+      const left = centre ? offset(el) - (view - el.offsetWidth) / 2 : offset(el)
+      return Math.max(0, Math.min(left, track.scrollWidth - track.clientWidth))
+    }
+    const scrollToSlide = (el: HTMLElement) =>
+      track.scrollTo({ left: (rtl() ? -1 : 1) * target(el), behavior: reduced.matches ? 'auto' : 'smooth' })
+    const go = (dir: number) => {
+      const pos = Math.abs(track.scrollLeft)
+      const view = track.clientWidth - pad() * 2
+      // Next: the first slide that isn't fully in view. Previous: the first slide one view back.
+      const el =
+        dir > 0
+          ? slides.find((s) => offset(s) + s.offsetWidth > pos + view + 1 && target(s) > pos + 1) ?? slides[slides.length - 1]
+          : slides.find((s) => target(s) >= pos - view - 1 && target(s) < pos - 1) ?? slides[0]
+      if (el) scrollToSlide(el)
+    }
 
     const prev = c.querySelector<HTMLElement>('.apogee-carousel-prev')
     const next = c.querySelector<HTMLElement>('.apogee-carousel-next')
@@ -247,10 +272,6 @@ const arrow = [
     slides.forEach((s) => io.observe(s))
 
     // Dots: click to scroll to a slide.
-    const scrollToSlide = (el: HTMLElement) => {
-      const left = el.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft
-      track.scrollTo({ left, behavior: 'smooth' })
-    }
     dots.forEach((dot, i) => { const s = slides[i]; if (s) dot.addEventListener('click', () => scrollToSlide(s)) })
 
     // Autoplay: advance on a timer, pause on hover/focus, never under reduced-motion.

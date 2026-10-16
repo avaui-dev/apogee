@@ -9,7 +9,7 @@ related: [navbar, nav-link, footer]
 import Preview from '../../components/Preview.astro'
 import JsNote from '../../components/JsNote.astro'
 import Sidebar from '../../../../registry/components/Sidebar/Sidebar.astro'
-import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
+import NavLink, { navLinkClass, navLinkIdle } from '../../../../registry/components/NavLink/NavLink.astro'
 import NavGroup from '../../../../registry/components/NavLink/NavGroup.astro'
 import Divider from '../../../../registry/components/Divider/Divider.astro'
 import Badge from '../../../../registry/components/Badge/Badge.astro'
@@ -169,25 +169,27 @@ plain text; a Divider separates sections.
 
 An icon-only rail from `md`. Give every link a `start` icon; wrap it in a
 Tooltip for a visible name on hover and focus (the label stays in the
-accessibility tree). A Popover on a rail item is the flyout for a group:
+accessibility tree). A Popover on a rail item is the flyout for a group. Its trigger takes the NavLink classes
+(`navLinkClass`, `navLinkIdle`) and an `apogee-navlink-label`, so it shows its
+label on phones and goes icon-only on the rail like the links:
 
 <Preview code={`<Sidebar variant="slim">
   <a slot="brand" href="/" aria-label="Larkspur">A</a>
   <Tooltip text="Dashboard" placement="end"><NavLink href="/dashboard"><Home slot="start" />Dashboard</NavLink></Tooltip>
   <Tooltip text="Inbox" placement="end"><NavLink href="/inbox"><Inbox slot="start" />Inbox</NavLink></Tooltip>
   <Popover id="rail-projects" placement="end">
-    <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects" class="text-neutral-faded hover:text-neutral"><FolderKanban /></Button>
+    <button slot="anchor" popovertarget="rail-projects" class={\`\${navLinkClass} \${navLinkIdle}\`}><FolderKanban class="size-4" /><span class="apogee-navlink-label">Projects</span></button>
     <NavLink href="/projects/spring">Spring launch</NavLink>
     <NavLink href="/projects/site">Website</NavLink>
   </Popover>
 </Sidebar>`} block>
   <div data-apogee-sidebar="slim" class="flex">
     <Sidebar variant="slim" class="rounded-lg border md:h-96!">
-      <a slot="brand" href="/" class="grid size-9 place-items-center rounded-md bg-primary font-semibold text-on-primary" aria-label="Larkspur">A</a>
+      <a slot="brand" href="/" class="grid size-10 place-items-center rounded-md bg-primary font-semibold text-on-primary" aria-label="Larkspur">A</a>
       <Tooltip text="Dashboard" placement="end"><NavLink href="#"><Home slot="start" />Dashboard</NavLink></Tooltip>
       <Tooltip text="Inbox" placement="end"><NavLink href="#"><Inbox slot="start" />Inbox</NavLink></Tooltip>
       <Popover id="rail-projects" placement="end">
-        <Button slot="anchor" popovertarget="rail-projects" variant="ghost" color="neutral" iconOnly aria-label="Projects" class="text-neutral-faded hover:text-neutral"><FolderKanban /></Button>
+        <button slot="anchor" popovertarget="rail-projects" class={`${navLinkClass} ${navLinkIdle}`}><FolderKanban class="size-4" /><span class="apogee-navlink-label">Projects</span></button>
         <div class="flex w-48 flex-col gap-0.5">
           <NavLink href="#">Spring launch</NavLink>
           <NavLink href="#">Website</NavLink>

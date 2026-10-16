@@ -2,7 +2,7 @@
 /**
  * Tooltip — a hint on hover / focus. The bubble is a `popover="manual"` panel
  * anchored to the trigger (top layer: never clipped by an overflow ancestor),
- * opened by a small island with hover intent: `delay` (500 ms) on first hover,
+ * opened by a small island with hover intent: `delay` (120 ms) on first hover,
  * instant when another tooltip closed within the last 500 ms, `closeDelay`
  * (150 ms) to close, focus
  * opens at once, Escape closes, touch is ignored. Without JS the bubble is a
@@ -36,7 +36,7 @@ const {
   text,
   description,
   arrow = false,
-  delay = 500,
+  delay = 120,
   closeDelay = 150,
   placement = 'top',
   panelClass: panelClassName,
@@ -56,7 +56,7 @@ const anchor = `--${id}`
       class:list={['apogee-tooltip inline-flex', className]}
       style={`anchor-name: ${anchor}`}
       aria-describedby={id}
-      data-delay={delay !== 500 ? delay : undefined}
+      data-delay={delay !== 120 ? delay : undefined}
       data-close-delay={closeDelay !== 150 ? closeDelay : undefined}
       {...rest}
     >
@@ -83,7 +83,11 @@ const anchor = `--${id}`
 }
 
 <style>
-  /* `arrow`: a rotated square on the edge that faces the trigger. */
+  /* `arrow`: a rotated square on the edge that faces the trigger. A popover clips
+     its overflow by default, which would hide the square. */
+  .apogee-tooltip-arrow {
+    overflow: visible;
+  }
   .apogee-tooltip-arrow::after {
     content: '';
     position: absolute;
@@ -159,7 +163,7 @@ const anchor = `--${id}`
       trigger.setAttribute('aria-describedby', ids.join(' '))
       root.removeAttribute('aria-describedby')
     }
-    const delay = Number(root.dataset.delay ?? 500)
+    const delay = Number(root.dataset.delay ?? 120)
     const closeDelay = Number(root.dataset.closeDelay ?? 150)
     let timer: ReturnType<typeof setTimeout> | undefined
     const open = () => {

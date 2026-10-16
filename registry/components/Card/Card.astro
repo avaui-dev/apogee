@@ -1,8 +1,8 @@
 ---
 /**
  * Card — a surface container. Compose freely inside (Heading, Text, Button…).
- * Optional `media` slot renders flush at the top (or at the start with
- * `mediaPosition="start"`); `header` and `footer` slots are bordered regions
+ * Optional `media` slot renders at the top (or at the start with
+ * `mediaPosition="start"`), inset 4px from the edge with matching corners; `header` and `footer` slots are bordered regions
  * above and below the padded body. Set `href` to make the whole card a link.
  *
  * @composable
@@ -68,7 +68,7 @@ const Region = Tag === 'button' ? 'span' : 'div'
     hasMedia && (
       <Region
         class:list={[
-          'apogee-card-media block overflow-hidden [&>img]:size-full [&>img]:object-cover',
+          'apogee-card-media block p-1 [&>*]:overflow-hidden [&>*]:rounded-sm [&>img]:size-full [&>img]:object-cover',
           sideMedia ? 'aspect-video sm:aspect-auto sm:w-60 sm:shrink-0' : 'aspect-video',
         ]}
       >

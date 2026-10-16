@@ -24,14 +24,17 @@ interface Props extends HTMLAttributes<'figure'> {
   captionsLang?: string
   /** Width over height, for the space reserved before it loads. @category layout */
   ratio?: '16/9' | '16/10' | '4/3' | '1/1'
+  /** Corner rounding. `full` is the largest rounding a video takes without cropping the picture. @category layout */
+  radius?: 'none' | 'small' | 'medium' | 'large' | 'full'
   class?: string
 }
 
-const { src, poster, title, captions, captionsLang = 'en', ratio = '16/9', class: className, ...rest } = Astro.props
+const { src, poster, title, captions, captionsLang = 'en', ratio = '16/9', radius = 'large', class: className, ...rest } = Astro.props
+const radii = { none: 'rounded-none', small: 'rounded-md', medium: 'rounded-lg', large: 'rounded-xl', full: 'rounded-3xl' } as const
 const ratios = { '16/9': 'aspect-video', '16/10': 'aspect-[16/10]', '4/3': 'aspect-[4/3]', '1/1': 'aspect-square' } as const
 ---
 
-<figure class:list={['apogee-video relative m-0 overflow-hidden rounded-xl bg-inverted shadow-raised', ratios[ratio], className]} {...rest}>
+<figure class:list={['apogee-video relative m-0 overflow-hidden border border-neutral-faded', radii[radius], ratios[ratio], className]} {...rest}>
   <video class="block size-full object-cover" src={src} poster={poster} title={title} controls preload="none" playsinline>
     {captions && <track kind="captions" src={captions} srclang={captionsLang} label="Captions" default />}
   </video>

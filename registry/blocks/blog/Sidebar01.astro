@@ -108,7 +108,7 @@ const categories = [
     </div>
   </SectionHeader>
   <div class="grid gap-12 lg:grid-cols-[16rem_minmax(0,1fr)]">
-    <aside class="flex flex-col gap-6">
+    <aside class="flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
       <Input type="search" name="q" placeholder="Search" aria-label="Search posts"><SearchIcon slot="start" /></Input>
       <Tabs label="Categories" value="all" orientation="vertical" variant="borderless" tabs={categories} />
     </aside>

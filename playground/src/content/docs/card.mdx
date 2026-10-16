@@ -55,7 +55,7 @@ Card.Header/Card.Body family:
 - **Root** — the `<a>` (when `href` is set) or `<div>` surface: border, radius,
   background. Any content you pass goes directly inside its padded body, in
   the default slot.
-- **`slot="media"`** (optional) — renders flush at the top, above the body,
+- **`slot="media"`** (optional) — renders at the top, above the body, inset 4px with matching corners,
   clipped to a 16:9 (`aspect-video`) box; with `mediaPosition="start"` it
   becomes a fixed-width column beside the body from `sm`. Meant for an
   `<img>` — the slot content is sized to fill it (`size-full object-cover`).
@@ -86,7 +86,7 @@ The only structural variant is presence of the `media` slot:
 <Preview code={`<Card>
   <img slot="media" src="https://picsum.photos/seed/apogee/640/360" alt="" />
   <Heading as="h3">With media</Heading>
-  <Text color="neutral-faded" size="small">An image slotted above the body, flush to the card's edges.</Text>
+  <Text color="neutral-faded" size="small">An image slotted above the body, inset 4px from the card's edges.</Text>
 </Card>
 <Card>
   <Heading as="h3">Without media</Heading>
@@ -95,7 +95,7 @@ The only structural variant is presence of the `media` slot:
   <Card>
     <img slot="media" src="https://picsum.photos/seed/apogee/640/360" alt="" />
     <Heading as="h3">With media</Heading>
-    <Text color="neutral-faded" size="small">An image slotted above the body, flush to the card's edges.</Text>
+    <Text color="neutral-faded" size="small">An image slotted above the body, inset 4px from the card's edges.</Text>
   </Card>
   <Card>
     <Heading as="h3">Without media</Heading>

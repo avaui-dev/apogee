@@ -54,15 +54,16 @@ const card = variant === 'card'
       )
     }
   </summary>
-  <div class:list={['text-neutral-faded', large ? 'px-6 pb-6 text-base' : 'px-4 pb-4 text-sm', icon === 'plus' && iconPosition === 'start' && (large ? 'ps-15' : 'ps-13')]}>
-    <slot />
+  <div class="apogee-accordion-panel grid">
+    <div class="min-h-0 overflow-hidden">
+      <div class:list={['text-neutral-faded', large ? 'px-6 pb-6 text-base' : 'px-4 pb-4 text-sm', icon === 'plus' && iconPosition === 'start' && (large ? 'ps-15' : 'ps-13')]}>
+        <slot />
+      </div>
+    </div>
   </div>
 </details>
 
 <style>
-  .apogee-accordion {
-    interpolate-size: allow-keywords;
-  }
   .apogee-accordion-icon {
     transition: rotate var(--duration-medium) var(--ease-standard);
   }
@@ -87,20 +88,26 @@ const card = variant === 'card'
   .apogee-accordion[open] .apogee-accordion-plus {
     display: none;
   }
+  /* Open and close animate a grid row from 0fr to 1fr (every engine animates it; height to
+     `auto` needs interpolate-size, which WebKit lacks). The content stays rendered so the row
+     can animate; `visibility` keeps a closed panel out of the tab order and screen readers.
+     Without ::details-content support the panel simply shows and hides. */
   .apogee-accordion::details-content {
-    block-size: 0;
-    overflow: hidden;
-    content-visibility: hidden;
-    transition:
-      block-size var(--duration-slow) var(--ease-standard),
-      content-visibility var(--duration-slow) var(--ease-standard) allow-discrete;
-  }
-  .apogee-accordion[open]::details-content {
-    block-size: auto;
     content-visibility: visible;
   }
+  .apogee-accordion-panel {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--duration-slow) var(--ease-standard),
+      visibility var(--duration-slow) var(--ease-standard);
+  }
+  .apogee-accordion[open] > .apogee-accordion-panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
   @media (prefers-reduced-motion: reduce) {
-    .apogee-accordion::details-content,
+    .apogee-accordion-panel,
     .apogee-accordion-icon {
       transition: none;
     }

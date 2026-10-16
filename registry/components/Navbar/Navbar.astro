@@ -6,7 +6,9 @@
  * nav is never a dead control. Slots: `brand` (logo), default (nav links),
  * `actions` (buttons at the end). The actions render inline on desktop and
  * again inside the mobile panel, so they stay reachable at every width — don't
- * put elements with ids in that slot, or they'd be duplicated. `secondary`
+ * put elements with ids in that slot, or they'd be duplicated. `tools` holds
+ * icon buttons that stay in the bar at every width (theme, repository link),
+ * just before the menu toggle on phones. `secondary`
  * is a second row under the header (tabs or pills for the active section);
  * `centered` puts the links in the middle with brand and actions either side.
  * `floating` sets the bar on a rounded, raised pill with space around it.
@@ -43,7 +45,7 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
   <nav
     class:list={[
       'relative mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6',
-      floating && 'rounded-2xl bg-page/85 shadow-raised ring-1 ring-neutral backdrop-blur max-md:has-[[data-open=true]]:rounded-b-none',
+      floating && 'rounded-2xl bg-page/85 shadow-raised ring-1 ring-neutral backdrop-blur max-md:has-[[data-open=true]]:rounded-b-none max-md:has-[[data-open=true]]:bg-page',
     ]}
   >
     <div class:list={['flex items-center', centered ? 'flex-1' : 'md:me-2']}>
@@ -54,6 +56,8 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
       class:list={[
         'apogee-navbar-menu absolute inset-x-0 top-full hidden max-h-[calc(100dvh-5rem)] flex-col gap-0.5 overflow-y-auto border-b border-neutral bg-page p-4 no-js:flex md:max-h-none md:overflow-visible data-[open=true]:flex md:static md:flex md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0',
         centered ? 'md:justify-center' : 'md:me-auto',
+        // Floating: the open phone menu continues the card (its top edge clipped so no seam shows).
+        floating && 'max-md:rounded-b-2xl max-md:border-0 max-md:shadow-raised max-md:ring-1 max-md:ring-neutral max-md:[clip-path:inset(0_-2rem_-2rem_-2rem)]',
       ]}
     >
       <slot />
@@ -61,6 +65,7 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
     </div>
     <div class:list={['flex items-center justify-end gap-2', centered ? 'flex-1' : 'ms-auto']}>
       {actions && <div class="hidden items-center gap-2 md:flex" set:html={actions} />}
+      <slot name="tools" />
       <button
         type="button"
         class="apogee-navbar-toggle press grid size-9 place-items-center rounded-md text-neutral transition-colors hover:bg-neutral-faded-highlighted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus no-js:hidden md:hidden"

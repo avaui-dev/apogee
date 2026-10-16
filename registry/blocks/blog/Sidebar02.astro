@@ -108,7 +108,7 @@ const categories = [
 <Section spacing="large">
   <SectionHeader eyebrow="Our blog" heading="Resources and insights" description="The latest industry news, interviews, technologies and resources." headingLevel={1} class="mb-16" />
   <div class="grid gap-12 lg:grid-cols-[16rem_minmax(0,1fr)]">
-    <aside class="flex flex-col gap-6">
+    <aside class="flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
       <Input type="search" name="q" placeholder="Search" aria-label="Search posts"><SearchIcon slot="start" /></Input>
       <Select aria-label="Category" class="lg:hidden">
         {categories.map((c) => <option value={c.value}>{c.label}</option>)}

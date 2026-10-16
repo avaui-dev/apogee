@@ -15,7 +15,6 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Copy, Check } from '@lucide/astro'
-import { innerRadius } from '../utils/radius.ts'
 import { Code as Highlighted } from 'astro:components'
 import type { ComponentProps } from 'astro/types'
 
@@ -70,7 +69,7 @@ const panel = 'apogee-code-pre rounded-lg border border-neutral bg-page-faded p-
       {copy && (
         <button
           type="button"
-          class:list={['apogee-code-copy press absolute top-2 end-2 grid size-8 place-items-center border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus', innerRadius['lg-2']]}
+          class="apogee-code-copy press absolute top-0 end-0 grid size-9 place-items-center rounded-se-lg rounded-es-lg border border-neutral bg-page text-neutral-faded no-js:hidden hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           aria-label="Copy code"
         >
           <Copy class="apogee-code-icon-copy size-4" aria-hidden="true" />

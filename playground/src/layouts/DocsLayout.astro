@@ -6,7 +6,9 @@ import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.as
 import Prose from '../../../registry/components/Prose/Prose.astro'
 import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
-import { Sun, Moon, Search, Menu, Layers } from '@lucide/astro'
+import Button from '../../../registry/components/Button/Button.astro'
+import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
+import { Sun, Moon, Menu, Layers } from '@lucide/astro'
 import DocsCard from '../components/DocsCard.astro'
 import DocsNav from '../components/DocsNav.astro'
 import BrandHead from '../components/BrandHead.astro'
@@ -35,6 +37,8 @@ const flat = nav.flatMap((g) => g.items)
 const idx = flat.findIndex((i) => norm(i.href) === norm(Astro.url.pathname))
 const prev = idx > 0 ? flat[idx - 1] : null
 const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
+// The group's first page is its overview; the breadcrumb links to it.
+const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
 ---
 
 <!doctype html>
@@ -56,66 +60,37 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
     </script>
   </head>
   <body class="min-h-dvh bg-page text-neutral">
-    <Navbar>
+    <Navbar class="md:[&_.apogee-navbar-menu]:flex-1 md:[&_.apogee-navbar-menu]:justify-end">
       <a slot="brand" href="/docs" class="inline-flex rounded-sm text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><Logo /></a>
       <NavLink href="/docs">Docs</NavLink>
-      <div slot="actions" class="flex items-center gap-1">
-        <button
-          type="button"
-          command="show-modal"
-          commandfor="docs-mobile-nav"
-          class="grid size-9 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral md:hidden"
-          aria-label="Open navigation"
-        >
-          <Menu class="size-5" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          data-command-open="docsearch"
-          class="inline-flex h-9 items-center gap-2 rounded-md border border-neutral bg-page px-2.5 text-sm text-neutral-faded transition-colors hover:text-neutral"
-          aria-label="Search"
-        >
-          <Search class="size-4" aria-hidden="true" />
-          <kbd class="hidden rounded border border-neutral px-1 text-xs sm:inline">⌘K</kbd>
-        </button>
-        <a
-          href="https://github.com/avaui-dev/apogee"
-          class="grid size-9 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral"
-          aria-label="GitHub"
-        >
-          <svg class="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.47.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.58.24 2.75.12 3.04.74.82 1.19 1.85 1.19 3.11 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.2.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>
-          </svg>
-        </a>
-        <button
-          data-skin-toggle
-          type="button"
-          class="grid size-9 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral in-data-[skin=skeuomorphic]:text-primary"
-          aria-label="Toggle skin"
-          title="Skeuomorphic skin"
-        >
-          <Layers class="size-4" aria-hidden="true" />
-        </button>
-        <button
-          data-theme-toggle
-          type="button"
-          class="grid size-9 place-items-center rounded-md text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral"
-          aria-label="Toggle theme"
-        >
-          <Sun class="size-4 hidden dark:block" aria-hidden="true" />
-          <Moon class="size-4 dark:hidden" aria-hidden="true" />
-        </button>
+      <div slot="tools" class="flex items-center gap-1">
+        <Tooltip text="Source on GitHub" placement="bottom">
+          <Button href="https://github.com/avaui-dev/apogee" variant="ghost" color="neutral" iconOnly aria-label="Source on GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.47.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.58.24 2.75.12 3.04.74.82 1.19 1.85 1.19 3.11 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.2.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>
+            </svg>
+          </Button>
+        </Tooltip>
+        <Tooltip text="Skeuomorphic skin" placement="bottom">
+          <Button data-skin-toggle variant="ghost" color="neutral" iconOnly aria-label="Skeuomorphic skin" class="in-data-[skin=skeuomorphic]:text-primary"><Layers /></Button>
+        </Tooltip>
+        <Tooltip text="Light or dark theme" placement="bottom">
+          <Button data-theme-toggle variant="ghost" color="neutral" iconOnly aria-label="Light or dark theme">
+            <Sun class="hidden dark:block" />
+            <Moon class="dark:hidden" />
+          </Button>
+        </Tooltip>
       </div>
     </Navbar>
 
     <div class="mx-auto flex w-full max-w-7xl gap-8 px-4">
       <aside class="hidden w-64 shrink-0 md:block">
-        <DocsNav nav={nav} class="sticky top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto py-8 pe-2" />
+        <DocsNav nav={nav} class="sticky top-16 bg-page max-h-[calc(100dvh-4rem)] overflow-y-auto pb-8 pe-2" />
       </aside>
 
       <main class="min-w-0 flex-1 py-10">
         <Breadcrumbs
-          items={[{ label: 'Docs', href: '/docs' }, ...(group && group !== title ? [{ label: group }] : []), { label: title }]}
+          items={[{ label: 'Docs', href: '/docs' }, ...(group && group !== title ? [{ label: group, ...(groupHref ? { href: groupHref } : {}) }] : []), { label: title }]}
         />
         <h1 class="mt-4 text-3xl font-semibold tracking-tight">{title}</h1>
         {description && <p class="mt-2 text-lg text-neutral-faded">{description}</p>}
@@ -192,9 +167,12 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
       }
     </div>
 
-    <Dialog id="docs-mobile-nav" position="start" title="Menu" class="md:hidden">
-      <DocsNav nav={nav} />
+    <Dialog id="docs-mobile-nav" position="start" title="Docs menu" class="md:hidden">
+      <DocsNav nav={nav} class="[--docs-nav-bg:var(--background-elevation-raised)]" />
     </Dialog>
+    <div class="fixed end-4 bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] z-30 md:hidden">
+      <Button command="show-modal" commandfor="docs-mobile-nav" class="shadow-raised"><Menu slot="start" />Docs menu</Button>
+    </div>
 
     <CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
 
@@ -246,15 +224,14 @@ const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
         const restore = () => {
           const saved = sessionStorage.getItem(key)
           if (saved !== null) el.scrollTop = Number(saved)
-          else {
-            // Scroll only the sidebar (scrollIntoView would move the page too).
-            const link = el.querySelector('[aria-current="page"]')
-            if (!link) return
-            const l = link.getBoundingClientRect()
-            const box = el.getBoundingClientRect()
-            if (l.top < box.top) el.scrollTop += l.top - box.top
-            else if (l.bottom > box.bottom) el.scrollTop += l.bottom - box.bottom
-          }
+          // Arriving from a link elsewhere can leave the current page out of view: bring it in,
+          // below the sticky search and group heading. Scroll only the sidebar, not the page.
+          const link = el.querySelector('[aria-current="page"]')
+          if (!link) return
+          const l = link.getBoundingClientRect()
+          const box = el.getBoundingClientRect()
+          const top = box.top + 96
+          if (l.top < top || l.bottom > box.bottom) el.scrollTop += l.top - (box.top + box.height / 2)
         }
         // While the menu opens, its focus scroll is not the reader's: don't save it.
         let opening = false

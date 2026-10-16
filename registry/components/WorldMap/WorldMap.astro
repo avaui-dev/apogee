@@ -1,8 +1,9 @@
 ---
 /**
- * WorldMap — a dotted world map with pins for your offices. Each pin is a link
- * to that place on a full map, with a tooltip naming it and its address on
- * hover or focus. The dots are decoration; the pins carry the meaning. Pins
+ * WorldMap — a dotted world map with pins for your offices. `region` zooms
+ * to one continent (the same dots, cropped; the map takes that region's
+ * shape). Each pin is a link to that place on a full map, with a tooltip
+ * naming it and its address on hover or focus. The dots are decoration; the pins carry the meaning. Pins
  * sit by latitude and longitude (84°N to 60°S). Zero JS of its own (the
  * tooltips use Tooltip's small island, and work without it).
  *
@@ -13,6 +14,17 @@ import Tooltip from '../Tooltip/Tooltip.astro'
 import { land } from './land.ts'
 
 type Pin = { label: string; lat: number; lon: number; detail?: string | undefined; href?: string | undefined }
+// Bounds per region: west and east longitude, north and south latitude.
+const regions = {
+  world: [-180, 180, 84, -60],
+  'north-america': [-170, -50, 75, 7],
+  'south-america': [-85, -32, 13, -56],
+  europe: [-25, 45, 72, 34],
+  africa: [-20, 55, 38, -36],
+  asia: [25, 150, 78, -10],
+  oceania: [110, 180, 0, -50],
+} as const
+type Region = keyof typeof regions
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -20,18 +32,26 @@ interface Props extends HTMLAttributes<'div'> {
   pins: Pin[]
   /** Names the map for screen readers. @category content */
   label?: string
+  /** The whole world or one continent. @category layout */
+  region?: Region
   class?: string
 }
 
-const { pins, label = 'Our offices', class: className, ...rest } = Astro.props
-// Same projection as the dots: x across 360° of longitude, y from 84°N to 60°S.
-const x = (lon: number) => ((lon + 180) / 360) * 100
-const y = (lat: number) => ((84 - lat) / 144) * 100
+const { pins, label = 'Our offices', region = 'world', class: className, ...rest } = Astro.props
+// The dots are drawn on a 1000 × 400 grid: x across 360° of longitude, y from 84°N to 60°S.
+// A region crops that grid; pins sit by the same projection inside the crop.
+const [west, east, north, south] = regions[region]
+const vx = ((west + 180) / 360) * 1000
+const vy = ((84 - north) / 144) * 400
+const vw = ((east - west) / 360) * 1000
+const vh = ((north - south) / 144) * 400
+const x = (lon: number) => ((lon - west) / (east - west)) * 100
+const y = (lat: number) => ((north - lat) / (north - south)) * 100
 const mapHref = (p: Pin) => p.href ?? `https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=12/${p.lat}/${p.lon}`
 ---
 
-<div role="group" aria-label={label} class:list={['apogee-world-map relative aspect-[5/2] w-full', className]} {...rest}>
-  <svg viewBox="0 0 1000 400" class="absolute inset-0 size-full text-neutral-faded" aria-hidden="true" focusable="false">
+<div role="group" aria-label={label} class:list={['apogee-world-map relative w-full', className]} style={`aspect-ratio: ${vw.toFixed(1)} / ${vh.toFixed(1)}`} data-region={region} {...rest}>
+  <svg viewBox={`${vx.toFixed(1)} ${vy.toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`} class="absolute inset-0 size-full overflow-hidden text-neutral-faded" aria-hidden="true" focusable="false">
     <path d={land} fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity="0.5" />
   </svg>
   <ul class="m-0 list-none p-0">

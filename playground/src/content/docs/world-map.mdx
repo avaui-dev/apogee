@@ -43,7 +43,28 @@ import WorldMap from '@/components/apogee/WorldMap/WorldMap.astro'
 |---|---|---|---|
 | `pins` | `{ label, lat, lon, detail?, href? }[]` | — | Required. `detail` is the second tooltip line (an address); `href` overrides the full-map link. |
 | `label` | `string` | `'Our offices'` | Names the map for screen readers. |
-| `class` | `string` | — | Extra classes on the root, merged last. Width fills; height follows (5:2). |
+| `region` | `'world' \| 'north-america' \| 'south-america' \| 'europe' \| 'africa' \| 'asia' \| 'oceania'` | `'world'` | The whole world, or one continent: the same dots, cropped to it. |
+| `class` | `string` | — | Extra classes on the root, merged last. Width fills; height follows the region's shape (5:2 for the world). |
+
+## Variants
+
+Every `region`, each with an office in it:
+
+<Preview block code={`<WorldMap region="north-america" pins={[…]} />
+<WorldMap region="south-america" pins={[…]} />
+<WorldMap region="europe" pins={[…]} />
+<WorldMap region="africa" pins={[…]} />
+<WorldMap region="asia" pins={[…]} />
+<WorldMap region="oceania" pins={[…]} />`}>
+  <div class="grid w-full gap-8 sm:grid-cols-2">
+    <WorldMap region="north-america" label="Offices in North America" pins={[{ label: 'San Francisco', detail: '100 Market Street', lat: 37.7936, lon: -122.395 }, { label: 'Toronto', detail: '100 King Street West', lat: 43.6487, lon: -79.3817 }]} />
+    <WorldMap region="south-america" label="Offices in South America" pins={[{ label: 'São Paulo', detail: '1000 Avenida Paulista', lat: -23.5614, lon: -46.6559 }]} />
+    <WorldMap region="europe" label="Offices in Europe" pins={[{ label: 'London', detail: '100 Oxford Street', lat: 51.5154, lon: -0.141 }, { label: 'Berlin', detail: '1 Unter den Linden', lat: 52.5172, lon: 13.3889 }]} />
+    <WorldMap region="africa" label="Offices in Africa" pins={[{ label: 'Nairobi', detail: '1 Kenyatta Avenue', lat: -1.2864, lon: 36.8172 }]} />
+    <WorldMap region="asia" label="Offices in Asia" pins={[{ label: 'Tokyo', detail: '1-1 Marunouchi', lat: 35.6812, lon: 139.7671 }, { label: 'Singapore', detail: '1 Raffles Place', lat: 1.2841, lon: 103.8515 }]} />
+    <WorldMap region="oceania" label="Offices in Oceania" pins={[{ label: 'Melbourne', detail: '100 Flinders Street', lat: -37.8183, lon: 144.9671 }]} />
+  </div>
+</Preview>
 
 ## States
 

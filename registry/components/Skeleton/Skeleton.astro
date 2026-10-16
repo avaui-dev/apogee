@@ -16,16 +16,16 @@ const { class: className, ...rest } = Astro.props
 <div class:list={['apogee-skeleton min-h-5 rounded-md bg-neutral-faded', className]} aria-hidden="true" {...rest}></div>
 
 <style>
-  /* Fades between today's shade and a much lighter one; static under reduced motion. */
+  /* Fades from a clear grey to the light fill and back; static under reduced motion. */
   .apogee-skeleton {
     animation: apogee-skeleton 1.4s var(--ease-standard) infinite alternate;
   }
   @keyframes apogee-skeleton {
     from {
-      background-color: var(--background-neutral-faded);
+      background-color: color-mix(in oklch, var(--border-neutral) 55%, var(--background-page));
     }
     to {
-      background-color: color-mix(in oklch, var(--background-neutral-faded) 30%, var(--background-page));
+      background-color: var(--background-neutral-faded);
     }
   }
   @media (prefers-reduced-motion: reduce) {

@@ -29,8 +29,6 @@ const links = [
     <meta charset="utf-8" />
     <script is:inline>
       document.documentElement.classList.replace('no-js', 'js')
-      // iOS fires :active (the `press` feedback) only when a touchstart listener exists.
-      document.addEventListener('touchstart', () => {}, { passive: true })
       try { const t = localStorage.getItem('apogee-theme'); if (t) document.documentElement.dataset.theme = t } catch {}
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -16,8 +16,8 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   options: (string | { label: string; value: string })[]
   /** Selected value. */
   value?: string
-  /** @category layout */
-  size?: 'small' | 'medium' | 'large'
+  /** Matches the Button and Input of the same size (28 / 36 / 48 / 56px tall). @category layout */
+  size?: 'small' | 'medium' | 'large' | 'xlarge'
   'aria-label'?: string
   class?: string
 }
@@ -27,10 +27,12 @@ const name = nameProp ?? uid(Astro.locals, 'seg')
 const items = options.map((o) => (typeof o === 'string' ? { label: o, value: o } : o))
 const rid = uid(Astro.locals)
 
+// Option height = control height − 6px (2px track padding and 1px border, each side).
 const sizeMap = {
-  small: 'h-8 px-2.5 text-xs',
-  medium: 'h-9 px-3 text-sm',
-  large: 'h-11 px-4 text-base',
+  small: 'h-5.5 px-2 text-xs',
+  medium: 'h-7.5 px-3 text-sm',
+  large: 'h-10.5 px-4 text-base',
+  xlarge: 'h-12.5 px-5 text-lg',
 }
 ---
 

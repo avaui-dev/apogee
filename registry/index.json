@@ -413,7 +413,9 @@
       "registryDependencies": [
         "Image"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     },
     "Dialog": {

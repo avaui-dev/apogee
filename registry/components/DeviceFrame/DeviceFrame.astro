@@ -1,65 +1,118 @@
 ---
 /**
- * DeviceFrame — a screenshot in a device: a `phone` (rounded body, side
- * buttons, a camera pill) or a `browser` window (a toolbar with three dots and
- * an address bar). Give `src`, and `srcDark` for a dark-mode screenshot that
- * swaps with the theme; or put any content in the default slot instead. Drawn
- * in CSS with the neutral tokens, so it themes. Zero JS.
+ * DeviceFrame — a screenshot in a device: a `phone` (iPhone-like, portrait), a
+ * `tablet` (iPad-like, landscape) or a `browser` window. Give `src`, and
+ * `srcDark` for a dark-mode screenshot that swaps with the theme; or put any
+ * content in the default slot instead.
+ *
+ * Every part is sized in container units (`cqw`) of the frame's own width, so
+ * a frame keeps its exact proportions at any size: make it smaller with a width
+ * class and the bezel, corners, status bar and address bar shrink with it. The
+ * phone and tablet have a status bar, so content starts below the rounded
+ * corners. Content areas have fixed shapes (phone 393:798, tablet 1180:796,
+ * browser 16:10); a screenshot of that shape shows uncut. Drawn in CSS with
+ * the neutral tokens, so it themes. Zero JS.
  *
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+import { Signal, Wifi, BatteryFull } from '@lucide/astro'
 import Image from '../Image/Image.astro'
 
 /** @composable */
 interface Props extends HTMLAttributes<'figure'> {
-  /** @category layout */ device?: 'phone' | 'browser'
+  /** @category layout */ device?: 'phone' | 'tablet' | 'browser'
   /** The screenshot. */ src?: ImageMetadata | string | undefined
   /** A dark-mode screenshot, shown when the page is dark. */ srcDark?: ImageMetadata | string | undefined
   /** What the screenshot shows; empty when it only decorates. @category content */ alt?: string
   /** Text in the browser's address bar. @category content */ address?: string
-  /** Screenshot size, for the browser to reserve space. */ width?: number
+  /** Screenshot size in pixels, for the space reserved before it loads. */ width?: number
   /** */ height?: number
   class?: string
 }
 
 const { device = 'phone', src, srcDark, alt = '', address = 'app.example.com', width, height, class: className, ...rest } = Astro.props
-const phone = device === 'phone'
-const w = width ?? (phone ? 780 : 1440)
-const h = height ?? (phone ? 1688 : 900)
+// Default screenshot sizes match each content area's shape (phone at 2x).
+const sizes = { phone: [786, 1596], tablet: [1180, 796], browser: [1440, 900] } as const
+const w = width ?? sizes[device][0]
+const h = height ?? sizes[device][1]
 const shot = 'block size-full object-cover object-top'
+// The status bar the phone and tablet draw above the content (time and status icons).
+const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
 ---
 
 <figure
   class:list={[
-    'apogee-device relative m-0',
-    phone ? 'aspect-[9/19.5] w-full max-w-80 rounded-[3rem] bg-inverted p-2.5 shadow-raised ring-1 ring-neutral' : 'w-full overflow-hidden rounded-xl bg-elevation-raised shadow-raised ring-1 ring-neutral',
+    'apogee-device relative m-0 [container-type:inline-size]',
     className,
   ]}
+  data-device={device}
   {...rest}
 >
+  {/* The body is sized in cqw of the figure (an element can't use its own container units). */}
+  <div
+    class:list={[
+      'apogee-device-body relative',
+      device === 'phone' && 'rounded-[16.4cqw] bg-inverted p-[3.3cqw] ring-1 ring-neutral',
+      device === 'tablet' && 'rounded-[3.1cqw] bg-inverted p-[1.65cqw] ring-1 ring-neutral',
+      device === 'browser' && 'rounded-[1.4cqw] border border-neutral-faded bg-neutral-faded px-[0.55cqw] pb-[0.55cqw]',
+    ]}
+  >
   {
-    phone ? (
+    device === 'phone' && (
       <>
-        <span class="absolute -start-1 top-24 h-8 w-1 rounded-s bg-inverted" aria-hidden="true" />
-        <span class="absolute -start-1 top-36 h-14 w-1 rounded-s bg-inverted" aria-hidden="true" />
-        <span class="absolute -end-1 top-32 h-20 w-1 rounded-e bg-inverted" aria-hidden="true" />
-        <div class="relative size-full overflow-hidden rounded-[2.4rem] bg-page">
-          <span class="absolute start-1/2 top-[1.5%] z-10 aspect-[4/1] w-[30%] -translate-x-1/2 rounded-full bg-inverted rtl:translate-x-1/2" aria-hidden="true" />
-          <slot>
-            {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
-            {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
-          </slot>
+        <span class="absolute -start-[1cqw] top-[17%] h-[7cqw] w-[1cqw] rounded-s-[0.5cqw] bg-inverted" aria-hidden="true" />
+        <span class="absolute -start-[1cqw] top-[24%] h-[13cqw] w-[1cqw] rounded-s-[0.5cqw] bg-inverted" aria-hidden="true" />
+        <span class="absolute -start-[1cqw] top-[33%] h-[13cqw] w-[1cqw] rounded-s-[0.5cqw] bg-inverted" aria-hidden="true" />
+        <span class="absolute -end-[1cqw] top-[27%] h-[20cqw] w-[1cqw] rounded-e-[0.5cqw] bg-inverted" aria-hidden="true" />
+        <div class="relative flex flex-col overflow-hidden rounded-[13.1cqw] bg-page">
+          <div class="relative flex h-[12.8cqw] shrink-0 items-center justify-between px-[9cqw] pt-[1cqw] text-[3.9cqw] font-semibold text-neutral" aria-hidden="true">
+            <span class="tabular-nums">9:41</span>
+            <span class="absolute start-1/2 top-[2.6cqw] h-[8.8cqw] w-[29.9cqw] -translate-x-1/2 rounded-full bg-inverted rtl:translate-x-1/2" />
+            <span class="flex items-center gap-[1.2cqw]"><Signal class={icon} /><Wifi class={icon} /><BatteryFull class={icon} /></span>
+          </div>
+          <div class="relative aspect-[393/798] overflow-hidden">
+            <slot>
+              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
+              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
+            </slot>
+            <span class="absolute start-1/2 bottom-[1.9cqw] h-[1.2cqw] w-[31.8cqw] -translate-x-1/2 rounded-full bg-inverted/80 rtl:translate-x-1/2" aria-hidden="true" />
+          </div>
         </div>
       </>
-    ) : (
+    )
+  }
+  {
+    device === 'tablet' && (
       <>
-        <div class="flex items-center gap-3 border-b border-neutral bg-neutral-faded px-4 py-2.5" aria-hidden="true">
-          <span class="flex gap-1.5"><span class="size-2.5 rounded-full bg-(--border-neutral)" /><span class="size-2.5 rounded-full bg-(--border-neutral)" /><span class="size-2.5 rounded-full bg-(--border-neutral)" /></span>
-          <span class="mx-auto w-full max-w-sm truncate rounded-md bg-page px-3 py-1 text-center text-xs text-neutral-faded">{address}</span>
-          <span class="w-12" />
+        <span class="absolute -top-[0.4cqw] end-[8%] h-[0.4cqw] w-[5cqw] rounded-t-[0.2cqw] bg-inverted" aria-hidden="true" />
+        <span class="absolute -end-[0.4cqw] top-[10%] h-[5cqw] w-[0.4cqw] rounded-e-[0.2cqw] bg-inverted" aria-hidden="true" />
+        <span class="absolute -end-[0.4cqw] top-[18%] h-[5cqw] w-[0.4cqw] rounded-e-[0.2cqw] bg-inverted" aria-hidden="true" />
+        <span class="absolute start-1/2 top-[0.6cqw] size-[0.5cqw] -translate-x-1/2 rounded-full bg-page/25 rtl:translate-x-1/2" aria-hidden="true" />
+        <div class="relative flex flex-col overflow-hidden rounded-[1.5cqw] bg-page">
+          <div class="flex h-[2cqw] shrink-0 items-center justify-between px-[1.8cqw] text-[1.05cqw] font-semibold text-neutral" aria-hidden="true">
+            <span class="tabular-nums">9:41</span>
+            <span class="flex items-center gap-[0.4cqw]"><Wifi class={icon} /><BatteryFull class={icon} /></span>
+          </div>
+          <div class="relative aspect-[1180/796] overflow-hidden">
+            <slot>
+              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
+              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
+            </slot>
+            <span class="absolute start-1/2 bottom-[0.5cqw] h-[0.4cqw] w-[12cqw] -translate-x-1/2 rounded-full bg-inverted/80 rtl:translate-x-1/2" aria-hidden="true" />
+          </div>
         </div>
-        <div class="relative aspect-[16/10] bg-page">
+      </>
+    )
+  }
+  {
+    device === 'browser' && (
+      <>
+        <div class="relative flex h-[3.2cqw] items-center px-[0.9cqw]" aria-hidden="true">
+          <span class="flex gap-[0.55cqw]"><span class="size-[0.8cqw] rounded-full bg-(--border-neutral)" /><span class="size-[0.8cqw] rounded-full bg-(--border-neutral)" /><span class="size-[0.8cqw] rounded-full bg-(--border-neutral)" /></span>
+          <span class="absolute start-1/2 flex h-[2cqw] max-w-[45%] -translate-x-1/2 items-center truncate rounded-full bg-page px-[1.6cqw] text-[clamp(0.375rem,1.1cqw,0.8125rem)] text-neutral-faded rtl:translate-x-1/2">{address}</span>
+        </div>
+        <div class="relative aspect-[16/10] overflow-hidden rounded-[0.9cqw] bg-page ring-1 ring-(--border-neutral-faded)">
           <slot>
             {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
             {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
@@ -68,4 +121,17 @@ const shot = 'block size-full object-cover object-top'
       </>
     )
   }
+  </div>
 </figure>
+
+<style>
+  /* Default width in the components layer, so any width class passed in wins. */
+  @layer components {
+    :where(.apogee-device) {
+      width: 100%;
+    }
+    :where(.apogee-device[data-device='phone']) {
+      max-width: 20rem;
+    }
+  }
+</style>

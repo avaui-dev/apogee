@@ -45,15 +45,18 @@ const fmt = formatDate(date, localeProp ?? Astro.currentLocale ?? 'en')
   <div class:list={centred ? 'flex flex-col items-center text-center' : 'grid gap-10 md:grid-cols-2 md:items-center'}>
     <div class:list={['flex flex-col', centred && 'items-center']}>
       <SectionHeader id={headingId} eyebrow={eyebrow} heading={heading} description={description} headingLevel={headingLevel} align={centred ? 'center' : 'start'} background={background} size="large" class="max-w-3xl" />
-      <div class:list={['mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm', centred && 'justify-center']}>
+      {/* Author, then date and reading time on their own line. Centred, the avatar sits above the name. */}
+      <div class:list={['mt-6 flex flex-col gap-3 text-sm', centred && 'items-center']}>
         {author && (
-          <span class="flex items-center gap-2">
-            <Avatar src={author.avatar} name={author.name} size="small" />
+          <span class:list={['flex gap-2', centred ? 'flex-col items-center' : 'items-center']}>
+            <Avatar src={author.avatar} name={author.name} size={centred ? 'medium' : 'small'} />
             <span class="flex flex-col leading-tight"><span class="font-medium">{author.name}</span>{author.role && <span class:list={['text-xs', faded]}>{author.role}</span>}</span>
           </span>
         )}
-        <time datetime={date} class:list={faded}>{fmt}</time>
-        {readingTime && <span class:list={faded}>{readingTime}</span>}
+        <p class:list={['flex flex-wrap items-center gap-x-2', faded, centred && 'justify-center']}>
+          <time datetime={date}>{fmt}</time>
+          {readingTime && <><span aria-hidden="true">•</span><span>{readingTime}</span></>}
+        </p>
       </div>
     </div>
     {media && (

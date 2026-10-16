@@ -7,6 +7,20 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **DeviceFrame** is redrawn: every part is sized in container units of the frame's width, so a frame keeps its proportions at any size and shrinks as a whole. The phone has a status bar (time, camera cut-out, status icons) so content starts below the corners; the browser is a quieter window with a small address pill and the page rounded and inset; no drop shadows. Width classes now apply (the built-in width used to override them). Content areas have fixed shapes (phone 393:798, tablet 1180:796, browser 16:10), and the playground screenshots are captured to match.
+- **Dialog** side panels are at most 80vw wide, leaving room to tap outside; the centred dialog keeps 1rem off the screen edges.
+- **SegmentedControl** matches Button and Input height at every size (it was taller); adds `xlarge`.
+- **Inputs, selects and other outline fields** carry the outline button's subtle shadow.
+- **Tooltip** opens after 120ms instead of 500ms.
+- **Skeleton** fades from a clearly visible grey.
+- **VideoPlayer** loses its drop shadow and gains a subtle border.
+- **Card** media sits 4px inside the card's edge with matching corners, instead of touching it.
+- **PostCard** fills its grid cell, so cards in a row match the tallest and the author, tags or link sit at the bottom; on hover the image zooms further and slower, the title underlines and the arrow nudges.
+- **PostHeader** puts the date and reading time on their own line under the author, joined by a bullet; centred, the avatar sits above the name.
+- **Text wrapping**: paragraphs use `text-wrap: pretty` (no lone last word) and headings `balance`.
+- **Disabled controls** take no pointer anywhere: no hover, no press, no click.
+- **Code** copy button sits flush in the corner, the same size and look as the docs' code blocks.
+- **Carousel** arrows scroll to an exact slide position, so a slide is never left cut in half (WebKit didn't re-snap after the old fixed-distance scroll).
 - **Neutral grey** is `mist` (a cool blue-green grey) instead of `slate`; every grey and neutral fill takes its tint.
 - **Dark mode shadows** are black drop shadows, deeper than in light mode, instead of a faint white glow above each surface. Raised cards and menus now read as lifted on a dark page.
 - **Disabled controls** read the disabled tokens (fill, border, text) instead of fading to half opacity: Checkbox, Radio (labels too), Actionable, Tabs, Pagination, TreeView, ToggleButton, Slider, NumberInput, Breadcrumbs, Tag, ChoiceCard and FileUpload.
@@ -16,6 +30,14 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Fixed
 
+- **Accordion** and **Collapsible** animate open and closed in Safari and on iPhones (the height animation needed `interpolate-size`, which WebKit lacks; they now animate a grid row).
+- **Pressed feedback** shows on iPhones across the docs and examples (iOS fires `:active` only when the page has a touch listener).
+- **Tooltip** `arrow` shows (the popover clipped it).
+- **Table** and **DataGrid** sortable headers follow `headerStyle="caps"` (the sort button reset the case).
+- **Avatar** keeps its shape in a flex row; it no longer narrows in a table on phones.
+- **Sidebar** `slim` rail: links inside a flyout keep their labels (the flyout used to open empty).
+- **Navbar** `floating`: the open phone menu continues the card instead of hanging below it.
+- **Blocks**: inputs beside large buttons are large too (hero signups); card mockups 05 and 06 are centred, with larger cards in 06; content articles under a PostHeader lose the double gap after the header image; blog sidebars stick on desktop; newsletter screen mockup 04 no longer clips its heading on phones.
 - **DeviceFrame** phone camera scales with the phone, so a small phone keeps its screen.
 - Demo data and docs use invented company names instead of borrowed ones.
 - **Types:** sections and pages are now type-checked (they were outside the check). Section, SectionHeader, Avatar, EmptyState, Footer, Select, Textarea, Input and Stat accept `undefined` for optional props, so the sections compile under `exactOptionalPropertyTypes`.
@@ -45,6 +67,10 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **DeviceFrame** `device="tablet"`: an iPad-like landscape frame.
+- **WorldMap** `region`: one continent (North America, South America, Europe, Africa, Asia, Oceania) from the same dots, in that region's shape.
+- **VideoPlayer** `radius`: `none`, `small`, `medium`, `large` (default) or `full`.
+- **Navbar** `tools` slot: icon buttons that stay in the bar at every width, before the phone menu toggle.
 - **Pricing sections:** 22 blocks: plan cards in nine styles, billing switches that work without JS, and two comparison tables with grouped features and tooltips.
 - **Newsletter sections:** 16 email signups, centred, beside the heading, in a card, or next to a phone or screen mockup.
 - **Metrics sections:** 16 blocks of headline figures in a row, a card, on a photo or beside an image, with dividers, accent lines, icons or links.

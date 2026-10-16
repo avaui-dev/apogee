@@ -36,8 +36,9 @@ const navId = uid(Astro.locals, 'apogee-sidebar')
 const dialogId = `${navId}-overlay`
 const slim = variant === 'slim'
 // The rail: square, centred items in the nav and the footer; labels stay for assistive tech.
+// Links inside a flyout (a popover on a rail item) keep their full look and labels.
 const rail =
-  'md:px-2 md:items-center md:[&_.apogee-navlink]:size-10 md:[&_.apogee-navlink]:justify-center md:[&_.apogee-navlink]:px-0 md:[&_.apogee-navlink-label]:sr-only md:[&_.apogee-navlink>.ms-auto]:hidden md:[&_.apogee-navgroup-chevron]:hidden md:[&_.apogee-navgroup-list]:ps-0'
+  'md:px-2 md:items-center md:[&_.apogee-navlink:not([popover]_*)]:size-10 md:[&_.apogee-navlink:not([popover]_*)]:justify-center md:[&_.apogee-navlink:not([popover]_*)]:px-0 md:[&_.apogee-navlink-label:not([popover]_*)]:sr-only md:[&_.apogee-navlink:not([popover]_*)>.ms-auto]:hidden md:[&_.apogee-navgroup-chevron:not([popover]_*)]:hidden md:[&_.apogee-navgroup-list:not([popover]_*)]:ps-0'
 ---
 
 <aside

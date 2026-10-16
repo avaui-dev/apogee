@@ -1,11 +1,12 @@
 ---
 /**
  * DocsNav — the docs sidebar (desktop aside and the mobile menu share it).
- * Each group is a collapsible NavGroup with a count. Every group starts open;
- * a group the reader opened or closed keeps that state across pages and
- * reloads (localStorage, applied before paint).
+ * A search box sits on top; each group is a collapsible NavGroup with a count
+ * and a heading that sticks while its items scroll. The group holding the
+ * current page opens; any other group opens only after the reader opened it
+ * (kept across pages in localStorage, applied before paint).
  */
-import { Box } from '@lucide/astro'
+import { Box, Search } from '@lucide/astro'
 import NavLink from '../../../registry/components/NavLink/NavLink.astro'
 import NavGroup from '../../../registry/components/NavLink/NavGroup.astro'
 import Badge from '../../../registry/components/Badge/Badge.astro'
@@ -21,12 +22,23 @@ const { nav, class: className } = Astro.props
 const key = (group: string) => group.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 ---
 
-<nav aria-label="Docs" class:list={['docs-nav flex flex-col gap-1', className]}>
+<nav aria-label="Docs" class:list={['docs-nav flex flex-col gap-1 [--docs-nav-bg:var(--background-page)]', className]}>
+  <div class="sticky top-0 z-[2] bg-(--docs-nav-bg) pb-3 in-[aside]:pt-8">
+    <button
+      type="button"
+      data-command-open="docsearch"
+      class="press flex h-9 w-full items-center gap-2 rounded-md border border-neutral bg-page px-2.5 text-sm text-neutral-faded shadow-(--shadow-control) transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+    >
+      <Search class="size-4 shrink-0" aria-hidden="true" />
+      <span class="flex-1 text-start">Search the docs</span>
+      <kbd class="hidden rounded border border-neutral px-1 text-xs sm:inline">⌘K</kbd>
+    </button>
+  </div>
   {
     nav.map((g, gi) => (
       <>
       {gi > 0 && <Divider color="neutral-faded" inset={2} class="shrink-0" />}
-      <NavGroup label={g.group} open data-docs-group={key(g.group)} class="[&>.apogee-navgroup-list]:ps-0 [&>.apogee-navgroup-list]:pb-3 [&>summary]:px-2! [&>summary]:text-base! [&>summary]:font-semibold [&>summary]:text-neutral!">
+      <NavGroup label={g.group} data-docs-group={key(g.group)} class="[&>.apogee-navgroup-list]:ps-0 [&>.apogee-navgroup-list]:pb-3 [&>summary]:sticky [&>summary]:top-12 in-[aside]:[&>summary]:top-20 [&>summary]:z-[1] [&>summary]:bg-(--docs-nav-bg)! [&>summary]:px-2! [&>summary]:text-base! [&>summary]:font-semibold [&>summary]:text-neutral!">
         <Badge slot="end" size="small" color="neutral" data-docs-count>{g.items.length}</Badge>
         {g.items.map((i) => {
           // A category's items share its icon unless they have their own.
@@ -49,12 +61,14 @@ const key = (group: string) => group.toLowerCase().replace(/[^a-z0-9]+/g, '-')
   }
 </nav>
 <script is:inline>
-  // Before paint: re-apply the groups the reader opened or closed (others keep the server default).
+  // Before paint: re-apply the groups the reader opened or closed. The group holding the
+  // current page stays open, so the reader always sees where they are.
   ;(() => {
     let saved = {}
     try { saved = JSON.parse(localStorage.getItem('apogee-docs-groups') || '{}') } catch {}
     const nav = document.currentScript.previousElementSibling
     for (const d of nav.querySelectorAll('[data-docs-group]')) {
+      if (d.querySelector('[aria-current="page"]')) continue
       const open = saved[d.dataset.docsGroup]
       if (typeof open === 'boolean') d.open = open
     }

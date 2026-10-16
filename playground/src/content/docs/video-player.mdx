@@ -45,6 +45,7 @@ import VideoPlayer from '@/components/apogee/VideoPlayer/VideoPlayer.astro'
 | `captions` | `string` | — | A WebVTT captions file, on by default. |
 | `captionsLang` | `string` | `'en'` | Language of the captions. |
 | `ratio` | `'16/9' \| '16/10' \| '4/3' \| '1/1'` | `'16/9'` | Reserves the space before the video loads. |
+| `radius` | `'none' \| 'small' \| 'medium' \| 'large' \| 'full'` | `'large'` | Corner rounding. `full` is the largest rounding a video takes without cropping the picture. |
 | `class` | `string` | — | Size it here (`max-w-3xl`, `w-full`). |
 
 ## Variants
@@ -60,6 +61,22 @@ Every `ratio`:
     <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, 16 by 10" ratio="16/10" />
     <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, 4 by 3" ratio="4/3" />
     <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, square" ratio="1/1" />
+  </div>
+</Preview>
+
+Every `radius`:
+
+<Preview code={`<VideoPlayer radius="none" … />
+<VideoPlayer radius="small" … />
+<VideoPlayer radius="medium" … />
+<VideoPlayer radius="large" … />
+<VideoPlayer radius="full" … />`} block>
+  <div class="grid w-full gap-4 sm:grid-cols-2">
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, square corners" radius="none" />
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, small corners" radius="small" />
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, medium corners" radius="medium" />
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, large corners" radius="large" />
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, full corners" radius="full" />
   </div>
 </Preview>
 

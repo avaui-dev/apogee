@@ -27,6 +27,16 @@
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* No lone word on a paragraph's last line; headings even out their lines. */
+    text-wrap: pretty;
+  }
+  :is(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+  }
+  /* A disabled control takes no pointer: no hover, no press, no click. */
+  :where(button, a, input, select, textarea, summary, [role='button'], [role='tab'], [role='menuitem'], [role='menuitemcheckbox'], [role='menuitemradio'], [role='option'], [role='radio'], [role='checkbox'], [role='switch']):is(:disabled, [aria-disabled='true']),
+  :where(label):has(> :is(input, button):disabled) {
+    pointer-events: none;
   }
 }
 
@@ -311,7 +321,7 @@
 /* Pressed feedback: an ink layer over the fill while the pointer is down,
    stronger than hover. Keeps a skin's sheen (--apogee-sheen) underneath.
    iOS only fires :active when the page has a touchstart listener; the head
-   script in the Theme docs adds one. */
+   script in the Progressive enhancement docs adds one. */
 @utility press {
   &:active:not(:disabled, [aria-disabled='true']) {
     background-image: linear-gradient(var(--press-overlay), var(--press-overlay)), var(--apogee-sheen, none);

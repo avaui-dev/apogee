@@ -7,6 +7,7 @@ related: [tabs, toggle-button-group, radio-group]
 ---
 
 import Preview from '../../components/Preview.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
 import SegmentedControl from '../../../../registry/components/SegmentedControl/SegmentedControl.astro'
 
 <Preview code={`<SegmentedControl name="view" options={['List', 'Board', 'Calendar']} value="List" />`}>
@@ -40,20 +41,24 @@ passes through to the root `<div role="group">`.
 | `name` | `string` | — | Shared `name` for the underlying radio inputs. |
 | `options` | `(string \| { label: string; value: string })[]` | — | Options, in order. A plain string is used as both label and value. |
 | `value` | `string` | — | Selected value. |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | Control size. |
+| `size` | `'small' \| 'medium' \| 'large' \| 'xlarge'` | `'medium'` | Control size; the same height as a Button or Input of that size. |
 | `aria-label` | `string` | — | Accessible name for the group. |
 | `class` | `string` | — | Extra classes, merged last. |
 
 ## Sizes
 
-Every size:
+Every size, each beside a Button of the same size (they match in height):
 
 <Preview code={`<SegmentedControl name="size-sm" size="small" options={['List', 'Board', 'Calendar']} value="List" />
 <SegmentedControl name="size-md" options={['List', 'Board', 'Calendar']} value="List" />
-<SegmentedControl name="size-lg" size="large" options={['List', 'Board', 'Calendar']} value="List" />`}>
-  <SegmentedControl name="size-sm" size="small" options={['List', 'Board', 'Calendar']} value="List" />
-  <SegmentedControl name="size-md" options={['List', 'Board', 'Calendar']} value="List" />
-  <SegmentedControl name="size-lg" size="large" options={['List', 'Board', 'Calendar']} value="List" />
+<SegmentedControl name="size-lg" size="large" options={['List', 'Board', 'Calendar']} value="List" />
+<SegmentedControl name="size-xl" size="xlarge" options={['List', 'Board', 'Calendar']} value="List" />`}>
+  <div class="flex flex-col items-start gap-4">
+    <div class="flex items-center gap-2"><SegmentedControl name="size-sm" size="small" options={['List', 'Board', 'Calendar']} value="List" /><Button size="small" variant="outline" color="neutral">Export</Button></div>
+    <div class="flex items-center gap-2"><SegmentedControl name="size-md" options={['List', 'Board', 'Calendar']} value="List" /><Button variant="outline" color="neutral">Export</Button></div>
+    <div class="flex items-center gap-2"><SegmentedControl name="size-lg" size="large" options={['List', 'Board', 'Calendar']} value="List" /><Button size="large" variant="outline" color="neutral">Export</Button></div>
+    <div class="flex items-center gap-2"><SegmentedControl name="size-xl" size="xlarge" options={['List', 'Board', 'Calendar']} value="List" /><Button size="xlarge" variant="outline" color="neutral">Export</Button></div>
+  </div>
 </Preview>
 
 ## States

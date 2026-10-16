@@ -74,13 +74,14 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
 
 <article
   class:list={[
-    'apogee-post group/post @container relative flex flex-col',
+    // Fills its grid cell, so cards in a row match the tallest; the footer sits at the bottom.
+    'apogee-post group/post @container relative flex h-full flex-col',
     frame === 'card' && 'overflow-hidden rounded-2xl border border-neutral bg-elevation-raised',
     className,
   ]}
   {...rest}
 >
-  <div class:list={['flex flex-col', frame === 'card' ? 'gap-0' : 'gap-4', horizontal && '@xl:flex-row @xl:items-start', horizontal && frame !== 'card' && '@xl:gap-6']}>
+  <div class:list={['flex flex-1 flex-col', frame === 'card' ? 'gap-0' : 'gap-4', horizontal && '@xl:flex-row @xl:items-stretch', horizontal && frame !== 'card' && '@xl:gap-6']}>
     {
       post.image && (
         <div class:list={['relative shrink-0 overflow-hidden', imageCorners, horizontal && (large ? '@xl:w-1/2' : '@xl:w-2/5')]}>
@@ -127,8 +128,8 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
         }
         <div class="flex w-full flex-col gap-1">
           <Heading as={Tag} size={large ? 'h3' : 'h5'} class="flex justify-between gap-x-4">
-            <a href={post.href} class="rounded-xs after:absolute after:inset-0 after:z-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">{post.title}</a>
-            <ArrowUpRight class="mt-0.5 size-5 shrink-0 text-neutral-faded transition-colors group-hover/post:text-neutral" aria-hidden="true" />
+            <a href={post.href} class="apogee-post-title rounded-xs decoration-1 underline-offset-4 after:absolute after:inset-0 after:z-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">{post.title}</a>
+            <ArrowUpRight class="apogee-post-arrow mt-0.5 size-5 shrink-0 text-neutral-faded group-hover/post:text-neutral" aria-hidden="true" />
           </Heading>
           {post.summary && <p class:list={['text-neutral-faded', large ? 'line-clamp-3' : 'line-clamp-2']}>{post.summary}</p>}
         </div>
@@ -136,7 +137,7 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
 
       {
         footer === 'author' && post.author && (
-          <div class="flex items-center gap-2">
+          <div class="mt-auto flex items-center gap-2">
             <Avatar src={post.author.avatar} name={post.author.name} alt="" size="medium" />
             <div class="text-sm">
               {post.author.href ? <a href={post.author.href} class:list={['block font-semibold', inner]}>{post.author.name}</a> : <span class="block font-semibold">{post.author.name}</span>}
@@ -147,7 +148,7 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
       }
       {
         footer === 'tags' && post.tags?.length && (
-          <ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Tags">
+          <ul class="mt-auto flex list-none flex-wrap gap-2 p-0" aria-label="Tags">
             {post.tags.map((t) => (
               <li>{t.href ? <a href={t.href} class:list={['inline-flex', inner]}><Badge color={t.color ?? 'neutral'} rounded>{t.name}</Badge></a> : <Badge color={t.color ?? 'neutral'} rounded>{t.name}</Badge>}</li>
             ))}
@@ -156,9 +157,9 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
       }
       {
         footer === 'link' && (
-          <span class="inline-flex items-center gap-1.5 font-semibold text-primary" aria-hidden="true">
+          <span class="mt-auto inline-flex items-center gap-1.5 font-semibold text-primary" aria-hidden="true">
             {linkLabel}
-            <ArrowUpRight class="size-5" />
+            <ArrowUpRight class="apogee-post-arrow size-5" />
           </span>
         )
       }
@@ -167,18 +168,37 @@ const imageCorners = frame === 'card' ? (horizontal ? '@xl:rounded-none' : '') :
 </article>
 
 <style>
+  /* Hover: the image zooms in slowly, the title underlines, the arrow nudges toward its corner. */
   .apogee-post-image {
-    transition: scale var(--duration-fast) var(--ease-standard);
+    transition: scale var(--duration-slow) var(--ease-standard);
   }
   .apogee-post:hover .apogee-post-image {
-    scale: 1.05;
+    scale: 1.08;
+  }
+  .apogee-post:hover .apogee-post-title {
+    text-decoration-line: underline;
+  }
+  .apogee-post-arrow {
+    transition:
+      translate var(--duration-medium) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard);
+  }
+  .apogee-post:hover .apogee-post-arrow {
+    translate: 0.1875rem -0.1875rem;
+  }
+  .apogee-post:hover .apogee-post-arrow:dir(rtl) {
+    translate: -0.1875rem -0.1875rem;
   }
   @media (prefers-reduced-motion: reduce) {
-    .apogee-post-image {
+    .apogee-post-image,
+    .apogee-post-arrow {
       transition: none;
     }
     .apogee-post:hover .apogee-post-image {
       scale: none;
+    }
+    .apogee-post:hover .apogee-post-arrow {
+      translate: none;
     }
   }
 </style>

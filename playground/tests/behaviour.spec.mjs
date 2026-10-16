@@ -166,7 +166,7 @@ test('popover anchor slot makes any element the trigger', async ({ page }) => {
 
 test('tooltip opens on hover after a short delay, on focus at once, and closes on Escape', async ({ page }) => {
   await page.goto('/docs/tooltip')
-  const root = page.locator('.apogee-tooltip').first()
+  const root = page.locator('main .apogee-tooltip').first()
   const panel = root.locator('[role="tooltip"]')
   await root.hover()
   await expect(panel).not.toBeVisible()
@@ -187,7 +187,7 @@ test('tooltip ignores touch pointers', async ({ browser }) => {
   const ctx = await browser.newContext({ hasTouch: true, viewport: { width: 390, height: 800 } })
   const page = await ctx.newPage()
   await page.goto('/docs/tooltip')
-  const root = page.locator('.apogee-tooltip').first()
+  const root = page.locator('main .apogee-tooltip').first()
   await root.tap()
   await page.waitForTimeout(800)
   await expect(root.locator('[role="tooltip"]')).not.toBeVisible()
@@ -2495,22 +2495,21 @@ test('timeline: free-text times without datetime are not <time> elements', async
   await expect(page.locator('.apogee-timeline time:not([datetime])')).toHaveCount(0)
 })
 
-test('docs sidebar: groups collapse with a count, all open by default, and remember the reader', async ({ page }) => {
+test('docs sidebar: groups collapse with a count, only the current page\'s group opens, and remember the reader', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 })
   await page.goto('/docs/button')
   const groups = page.locator('aside .docs-nav [data-docs-group]')
   const components = page.locator('aside [data-docs-group="components"]')
-  expect(await groups.evaluateAll((els) => els.every((d) => d.open))).toBe(true)
-  // Close Foundations so the test can reopen it below.
-  await page.locator('aside [data-docs-group="foundations"] summary').click()
+  expect(await groups.evaluateAll((els) => els.filter((d) => d.open).map((d) => d.dataset.docsGroup))).toEqual(['components'])
   expect(await components.locator('summary [data-docs-count]').textContent()).toBe(String(await components.locator('a.apogee-navlink').count()))
   await expect(page.locator('aside [data-docs-group="basic-sections"] summary')).toContainText('Basic sections')
-  // Collapse the current group, open another; both survive a reload and a page change.
-  await components.locator('summary').click()
+  // A group the reader opens stays open across a reload; the current page's group always opens.
   await page.locator('aside [data-docs-group="foundations"] summary').click()
+  await components.locator('summary').click()
   await page.reload()
-  await expect(components).not.toHaveAttribute('open', '')
   await expect(page.locator('aside [data-docs-group="foundations"]')).toHaveAttribute('open', '')
+  await expect(components).toHaveAttribute('open', '')
+  // On a page in another group, a group the reader closed stays closed.
   await page.locator('aside [data-docs-group="foundations"] a').first().click()
   await expect(page.locator('aside [data-docs-group="components"]')).not.toHaveAttribute('open', '')
   expect(await groups.count()).toBeGreaterThan(5)
@@ -2521,25 +2520,33 @@ test('docs sidebar keeps its scroll position across link clicks, on desktop and 
   await page.goto('/docs/accordion')
   expect(await page.evaluate(() => scrollY)).toBe(0) // restoring the sidebar never scrolls the page
   const nav = page.locator('aside .docs-nav')
-  await nav.evaluate((el) => (el.scrollTop = 400))
-  const top = await nav.evaluate((el) => el.scrollTop)
+  // Scroll so the link the reader clicks is in view, partway down the list.
+  const top = await nav.evaluate((el) => {
+    const a = el.querySelector('a[href="/docs/avatar"]')
+    el.scrollTop += a.getBoundingClientRect().top - el.getBoundingClientRect().top - 300
+    return el.scrollTop
+  })
+  expect(top).toBeGreaterThan(0)
   // A DOM click: Playwright's own click would first scroll the link into view.
   await nav.locator('a[href="/docs/avatar"]').evaluate((a) => a.click())
   await page.waitForURL('**/docs/avatar')
   expect(await page.locator('aside .docs-nav').evaluate((el) => el.scrollTop)).toBe(top)
 
   await page.setViewportSize({ width: 390, height: 700 })
-  // On a phone the docs menu button sits in the navbar's own menu.
+  // On a phone the docs menu opens from the floating "Docs menu" button.
   const openMenu = async () => {
-    await page.locator('button[aria-label="Toggle menu"]').click()
-    await page.locator('[commandfor="docs-mobile-nav"]:visible').first().click()
+    await page.getByRole('button', { name: 'Docs menu' }).click()
   }
   await openMenu()
   const body = page.locator('#docs-mobile-nav .apogee-dialog-body')
   // Let the menu finish opening (it restores its own position two frames in) before the "reader" scrolls.
   await page.waitForTimeout(200)
-  await body.evaluate((el) => (el.scrollTop = 300))
-  const mtop = await body.evaluate((el) => el.scrollTop)
+  const mtop = await body.evaluate((el) => {
+    const a = el.querySelector('a[href="/docs/badge"]')
+    el.scrollTop += a.getBoundingClientRect().top - el.getBoundingClientRect().top - 250
+    return el.scrollTop
+  })
+  expect(mtop).toBeGreaterThan(0)
   await page.locator('#docs-mobile-nav a[href="/docs/badge"]').evaluate((a) => a.click())
   await page.waitForURL('**/docs/badge')
   await openMenu()
@@ -2667,7 +2674,7 @@ test('contact form: labelled fields, required ones marked, posts without JS', as
 test('world map pins are named links with the address in a tooltip', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 })
   await page.goto('/docs/world-map')
-  const pin = page.getByRole('link', { name: /^Melbourne, 100 Flinders Street/ })
+  const pin = page.locator('[data-region="world"]').first().getByRole('link', { name: /^Melbourne, 100 Flinders Street/ })
   await expect(pin).toHaveAttribute('href', /openstreetmap\.org/)
   await pin.focus()
   await expect(page.getByText('100 Flinders Street, Melbourne VIC 3000 AU').first()).toBeVisible()

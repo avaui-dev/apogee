@@ -14,7 +14,7 @@ import Button from '../../../../registry/components/Button/Button.astro'
 import Kbd from '../../../../registry/components/Kbd/Kbd.astro'
 
 <JsNote fallback="A CSS-only bubble above the trigger on hover and focus; no delay, and an overflow ancestor can clip it.">
-  Opens the bubble in the top layer with hover intent (500 ms on first hover,
+  Opens the bubble in the top layer with hover intent (120 ms on first hover,
   instant for neighbours), opens on focus at once, closes on Escape, ignores
   touch pointers, and moves `aria-describedby` onto the focusable trigger.
 </JsNote>
@@ -65,7 +65,7 @@ through to the root wrapper `<span>`.
 | `text` | `string` | — | The hint. Wraps at 20rem. An empty string renders the slot alone, no bubble. |
 | `description` | `string` | — | A second, muted line under the text; the bubble becomes left-aligned with more padding. |
 | `arrow` | `boolean` | `false` | A small triangle on the edge facing the trigger. |
-| `delay` | `number` | `500` | Hover delay before opening, in ms. |
+| `delay` | `number` | `120` | Hover delay before opening, in ms. |
 | `closeDelay` | `number` | `150` | Delay before closing after the pointer leaves, in ms. |
 | `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'start' \| 'start-top' \| 'start-bottom' \| 'end' \| 'end-top' \| 'end-bottom'` | `'top'` | Side and alignment; flips when out of room. `start`/`end` mirror in RTL. |
 | `panelClass` | `string` | — | Extra classes on the bubble. |
@@ -159,7 +159,7 @@ ancestor cannot cut it off.
 ## States
 
 - **Hidden** (default) — the popover is closed.
-- **Shown** — after `delay` (500 ms) of hover (instantly when a neighbouring
+- **Shown** — after `delay` (120 ms) of hover (instantly when a neighbouring
   tooltip closed within the last 500 ms), or at once on focus; fades in and
   slides from the trigger's side (`--duration-fast`, `--ease-standard`).
 - **Closing** — `closeDelay` (150 ms) after the pointer leaves, at once on

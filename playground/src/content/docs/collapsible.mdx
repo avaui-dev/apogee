@@ -58,9 +58,10 @@ import Collapsible from '@/components/apogee/Collapsible/Collapsible.astro'
 
 ## States
 
-- **Closed** — default; content is hidden and unmeasured (`content-visibility: hidden`).
-- **Open** — content animates open (`block-size` + `content-visibility`
-  transition); the trigger's chevron rotates 180°.
+- **Closed** — default; the content row is collapsed and hidden
+  (`visibility: hidden`), so nothing inside it takes focus or is read out.
+- **Open** — the content row animates from `0fr` to `1fr` (in every browser
+  engine, Safari included); the trigger's chevron rotates 180°.
 
 <Preview code={`<Collapsible open>
   <span slot="trigger">Open by default</span>

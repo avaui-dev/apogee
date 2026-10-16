@@ -91,22 +91,27 @@ html {
   position: relative;
 }
 .code-copy {
+  /* Same look as the Code component's always-visible button: flush in the corner,
+     that corner rounded like the block, the opposite corner rounded to match. */
   position: absolute;
-  inset-block-start: 0.5rem;
-  inset-inline-end: 0.5rem;
+  inset-block-start: 0;
+  inset-inline-end: 0;
   display: grid;
   place-items: center;
-  width: 1.9rem;
-  height: 1.9rem;
-  border-radius: var(--radius-md);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0;
+  border-start-end-radius: var(--radius-lg);
+  border-end-start-radius: var(--radius-lg);
   border: 1px solid var(--border-neutral);
-  background: color-mix(in oklab, var(--background-page) 85%, transparent);
+  background: var(--background-page);
   color: var(--foreground-neutral-faded);
   cursor: pointer;
   opacity: 0;
   transition:
     opacity var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
 }
 .code-block:hover .code-copy,
 .code-copy:focus-visible {
@@ -114,14 +119,15 @@ html {
 }
 .code-copy:hover {
   color: var(--foreground-neutral);
+  background: var(--background-neutral-faded-highlighted);
 }
 .code-copy.copied {
   color: var(--foreground-positive);
   opacity: 1;
 }
 .code-copy svg {
-  width: 0.9rem;
-  height: 0.9rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 /* One frame without transitions while the colour mode flips, so nothing tweens. */

@@ -14,7 +14,7 @@ import {
   Globe, SquareStack, RectangleHorizontal, CreditCard, GalleryHorizontal, ListChecks, SquareCheck, Code, ChevronDown, Palette,
   Search, Command, Frame, AlignCenter, FileText, MousePointer2, Table2, AppWindow, X, Minus, Inbox, ChevronsUpDown, Type,
   TextCursorInput, Upload, PanelBottom, LayoutGrid, Heading, EyeOff, Shapes, Image, Keyboard, Link, List, MoveHorizontal, Menu,
-  Gauge, ArrowRightLeft, Zap, Navigation, PanelTop, Rocket, Heading1, ChartNoAxesColumn, MailPlus, BadgeDollarSign, Hash, ChevronsRight, KeyRound, MessageSquare, CircleDot, Activity, Layers,
+  Gauge, ArrowRightLeft, Zap, Navigation, PanelTop, Rocket, Heading1, LayoutPanelTop, ChartNoAxesColumn, MailPlus, BadgeDollarSign, Hash, ChevronsRight, KeyRound, MessageSquare, CircleDot, Activity, Layers,
   BookOpen, Circle, Star, PenLine, Languages, ScrollText, LayoutTemplate, ToggleLeft, PanelLeft, Rows3, SkipForward,
   SlidersHorizontal, Ruler, LoaderCircle, TrendingUp, ListOrdered, ToggleRight, Table, PanelsTopLeft, Tags, Tag, Text, AlignLeft,
   GitCommitHorizontal, LogIn, UserPlus, MailCheck, LockKeyhole, FileQuestion, ListTree, MessageSquareText, Bell, Grid2x2, Paintbrush, MessageCircle, ALargeSmall, Wrench, SunMoon, Moon, Compass, Sparkles,
@@ -24,7 +24,7 @@ import {
 export const docsIcons: Record<string, typeof Box> = {
   accessibility: Accessibility, accordion: ChevronsDownUp, actionable: MousePointerClick, alert: TriangleAlert, 'aspect-ratio': Ratio,
   'avatar-group': Users, avatar: User, badge: BadgeCheck, blockquote: Quote, box: Box, breadcrumbs: ChevronRight, 'browser-support': Globe,
-  'button-group': SquareStack, button: RectangleHorizontal, card: CreditCard, carousel: GalleryHorizontal, 'checkbox-group': ListChecks,
+  'button-group': SquareStack, button: RectangleHorizontal, card: LayoutPanelTop, carousel: GalleryHorizontal, 'checkbox-group': ListChecks,
   checkbox: SquareCheck, code: Code, collapsible: ChevronDown, 'color-picker': Palette, color: Palette, combobox: Search,
   'command-palette': Command, container: Frame, 'content-wrapper': AlignCenter, content: FileText, 'context-menu': MousePointer2,
   'data-grid': Table2, dialog: AppWindow, dismissible: X, divider: Minus, dropdown: ChevronDown, 'empty-state': Inbox,

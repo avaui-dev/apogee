@@ -12,6 +12,8 @@ import Navbar from '../../../../registry/components/Navbar/Navbar.astro'
 import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
 import Button from '../../../../registry/components/Button/Button.astro'
 import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
+import Tooltip from '../../../../registry/components/Tooltip/Tooltip.astro'
+import { Moon } from '@lucide/astro'
 
 <JsNote fallback="The toggle is hidden (`no-js:hidden`) and the links panel stays expanded (`no-js:flex`), so below the md breakpoint the nav is fully reachable without a working control to click. Desktop viewports (md and up) are unaffected: links show inline via CSS regardless of JS.">
   Wires the mobile menu toggle: clicking it flips `data-open` on the
@@ -74,6 +76,9 @@ import NavLink from '@/components/apogee/NavLink/NavLink.astro'
 - **`actions` slot** — end-aligned buttons/controls. Rendered inline on
   desktop and again at the bottom of the mobile panel, so they stay reachable
   at every width. Don't put elements with ids in it; they would be duplicated.
+- **`tools` slot** — icon buttons that stay in the bar at every width (a
+  theme switch, a repository link), just before the menu toggle on phones.
+  Rendered once, so ids are fine here.
 - **`secondary` slot** — a second row under the header, full width, for
   the active section's tabs or pills. Scrolls sideways when it overflows.
 - **mobile toggle** — a hamburger button (`md:hidden`), controls the links
@@ -123,6 +128,30 @@ With brand, links, and actions:
     <Button slot="actions" variant="ghost" color="neutral" href="/login">Log in</Button>
     <Button slot="actions" href="/signup">Sign up</Button>
   </Navbar>
+</Preview>
+
+Icon buttons in `tools` stay in the bar on phones, next to the menu toggle:
+
+<Preview code={`<Navbar>
+  <a slot="brand" href="/">Larkspur</a>
+  <NavLink href="/docs">Docs</NavLink>
+  <NavLink href="/pricing">Pricing</NavLink>
+  <Button slot="actions" href="/signup">Sign up</Button>
+  <Tooltip slot="tools" text="Dark theme" placement="bottom">
+    <Button variant="ghost" color="neutral" iconOnly aria-label="Dark theme"><Moon /></Button>
+  </Tooltip>
+</Navbar>`} block>
+  <div data-apogee-navbar="tools">
+    <Navbar class="static">
+      <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
+      <NavLink href="/docs">Docs</NavLink>
+      <NavLink href="/pricing">Pricing</NavLink>
+      <Button slot="actions" href="/signup">Sign up</Button>
+      <Tooltip slot="tools" text="Dark theme" placement="bottom">
+        <Button variant="ghost" color="neutral" iconOnly aria-label="Dark theme"><Moon /></Button>
+      </Tooltip>
+    </Navbar>
+  </div>
 </Preview>
 
 A second row for the active section, and a centred layout:
