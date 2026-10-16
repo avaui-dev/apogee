@@ -26,7 +26,7 @@ export const pins = [
 npx @ava-ui/apogee add world-map
 ```
 
-Pulls in Tooltip. The land is drawn from Natural Earth (public domain) as about 1,900 dots in one path, around 18 KB.
+Pulls in Tooltip. The land is drawn from Natural Earth (public domain): each region has its own grid of dots, framed to that continent alone, with dots the same size in every region. Where land runs on past a region's frame (Russia east of Europe, the Aleutians west of North America), its dots fade out. Each region is drawn at its own latitude, so shapes come out true rather than stretched sideways. Europe includes Turkey and Cyprus; North America leaves out Greenland, which the world map shows. All seven grids together are about 25 KB.
 
 ## Usage
 
@@ -43,7 +43,7 @@ import WorldMap from '@/components/apogee/WorldMap/WorldMap.astro'
 |---|---|---|---|
 | `pins` | `{ label, lat, lon, detail?, href? }[]` | — | Required. `detail` is the second tooltip line (an address); `href` overrides the full-map link. |
 | `label` | `string` | `'Our offices'` | Names the map for screen readers. |
-| `region` | `'world' \| 'north-america' \| 'south-america' \| 'europe' \| 'africa' \| 'asia' \| 'oceania'` | `'world'` | The whole world, or one continent: the same dots, cropped to it. |
+| `region` | `'world' \| 'north-america' \| 'south-america' \| 'europe' \| 'africa' \| 'asia' \| 'oceania'` | `'world'` | The whole world, or one continent on its own grid: only its land, framed tightly, with dots the same size as every other region's. |
 | `class` | `string` | — | Extra classes on the root, merged last. Width fills; height follows the region's shape (5:2 for the world). |
 
 ## Variants

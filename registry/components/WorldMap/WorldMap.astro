@@ -1,8 +1,9 @@
 ---
 /**
- * WorldMap — a dotted world map with pins for your offices. `region` zooms
- * to one continent (the same dots, cropped; the map takes that region's
- * shape). Each pin is a link to that place on a full map, with a tooltip
+ * WorldMap — a dotted world map with pins for your offices. `region` shows
+ * one continent on its own grid: only that continent's land, framed tightly,
+ * with dots the same size as every other region's; where land runs on past the
+ * frame (Russia beyond Europe), it fades out. Each pin is a link to that place on a full map, with a tooltip
  * naming it and its address on hover or focus. The dots are decoration; the pins carry the meaning. Pins
  * sit by latitude and longitude (84°N to 60°S). Zero JS of its own (the
  * tooltips use Tooltip's small island, and work without it).
@@ -11,20 +12,10 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 import Tooltip from '../Tooltip/Tooltip.astro'
-import { land } from './land.ts'
+import { maps } from './land.ts'
 
 type Pin = { label: string; lat: number; lon: number; detail?: string | undefined; href?: string | undefined }
-// Bounds per region: west and east longitude, north and south latitude.
-const regions = {
-  world: [-180, 180, 84, -60],
-  'north-america': [-170, -50, 75, 7],
-  'south-america': [-85, -32, 13, -56],
-  europe: [-25, 45, 72, 34],
-  africa: [-20, 55, 38, -36],
-  asia: [25, 150, 78, -10],
-  oceania: [110, 180, 0, -50],
-} as const
-type Region = keyof typeof regions
+type Region = keyof typeof maps
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -38,21 +29,21 @@ interface Props extends HTMLAttributes<'div'> {
 }
 
 const { pins, label = 'Our offices', region = 'world', class: className, ...rest } = Astro.props
-// The dots are drawn on a 1000 × 400 grid: x across 360° of longitude, y from 84°N to 60°S.
-// A region crops that grid; pins sit by the same projection inside the crop.
-const [west, east, north, south] = regions[region]
-const vx = ((west + 180) / 360) * 1000
-const vy = ((84 - north) / 144) * 400
-const vw = ((east - west) / 360) * 1000
-const vh = ((north - south) / 144) * 400
+// Each region is its own grid of dots, in cell units; pins sit by its bounds.
+const { west, east, north, south, cols, rows, fade, d } = maps[region]
+// Where land runs on past the frame, its dots fade out instead of stopping at a hard edge.
+const across = fade.west || fade.east ? `linear-gradient(to right, ${fade.west ? 'transparent, black 15%' : 'black'}, ${fade.east ? 'black 85%, transparent' : 'black'})` : ''
+const down = fade.north || fade.south ? `linear-gradient(to bottom, ${fade.north ? 'transparent, black 15%' : 'black'}, ${fade.south ? 'black 85%, transparent' : 'black'})` : ''
+const masks = [across, down].filter(Boolean)
+const maskStyle = masks.length ? `mask-image: ${masks.join(', ')}; mask-composite: intersect` : undefined
 const x = (lon: number) => ((lon - west) / (east - west)) * 100
 const y = (lat: number) => ((north - lat) / (north - south)) * 100
 const mapHref = (p: Pin) => p.href ?? `https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=12/${p.lat}/${p.lon}`
 ---
 
-<div role="group" aria-label={label} class:list={['apogee-world-map relative w-full', className]} style={`aspect-ratio: ${vw.toFixed(1)} / ${vh.toFixed(1)}`} data-region={region} {...rest}>
-  <svg viewBox={`${vx.toFixed(1)} ${vy.toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`} class="absolute inset-0 size-full overflow-hidden text-neutral-faded" aria-hidden="true" focusable="false">
-    <path d={land} fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+<div role="group" aria-label={label} class:list={['apogee-world-map relative w-full', className]} style={`aspect-ratio: ${cols} / ${rows}`} data-region={region} {...rest}>
+  <svg viewBox={`0 0 ${cols} ${rows}`} class="absolute inset-0 size-full overflow-hidden text-neutral-faded" style={maskStyle} aria-hidden="true" focusable="false">
+    <path d={d} fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="0 1" stroke-linecap="round" opacity="0.5" />
   </svg>
   <ul class="m-0 list-none p-0">
     {
