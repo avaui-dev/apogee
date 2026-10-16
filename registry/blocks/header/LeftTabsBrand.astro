@@ -9,11 +9,17 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
 
+interface Props {
+  eyebrow?: string
+  heading?: string
+  description?: string
+}
+const { eyebrow = 'Pricing', heading = 'Simple, transparent pricing', description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.' } = Astro.props
 ---
 
 <Section spacing="large" background="primary">
   <div class="flex flex-col gap-8 md:gap-12 items-start">
-    <SectionHeader eyebrow="Pricing" heading="Simple, transparent pricing" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." headingLevel={1} size="large" background="primary" />
+    <SectionHeader eyebrow={eyebrow} heading={heading} description={description} headingLevel={1} size="large" background="primary" />
     <SegmentedControl name="billing" options={[{ label: 'Monthly billing', value: 'monthly' }, { label: 'Annual billing', value: 'annual' }]} value="monthly" aria-label="Billing period" size="large" class="bg-page" />
   </div>
 </Section>

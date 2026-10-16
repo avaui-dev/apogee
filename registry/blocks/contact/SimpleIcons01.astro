@@ -18,6 +18,8 @@ const methods = [
 ---
 
 <Section spacing="large" aria-label="Contact">
+  {/* The block has no visible heading; this one keeps the items one level under it. */}
+  <h2 class="sr-only">Ways to get in touch</h2>
   <ul class="list-none p-0 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
     {methods.map((m) => (
       <li><ContactMethod title={m.title} description={m.description} link={m.link} align="center"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>

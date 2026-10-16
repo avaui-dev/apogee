@@ -42,7 +42,7 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
 ---
 
 <header
-  class:list={['apogee-navbar sticky top-0 z-30', floating ? 'px-4 pt-3 sm:px-6' : ['border-b', background === 'page' ? 'border-neutral bg-page/85 backdrop-blur' : 'border-transparent', background === 'neutral-faded' && 'bg-page bg-[linear-gradient(var(--background-neutral-faded),var(--background-neutral-faded))]', background === 'primary' && 'bg-page text-neutral'], className]}
+  class:list={['apogee-navbar sticky top-0 z-30 text-neutral', floating ? 'px-4 pt-3 sm:px-6' : ['border-b', background === 'page' ? 'border-neutral bg-page/85 backdrop-blur' : 'border-transparent', background === 'neutral-faded' && 'bg-page bg-[linear-gradient(var(--background-neutral-faded),var(--background-neutral-faded))]', background === 'primary' && 'bg-page'], className]}
   data-surface={background === 'primary' ? 'primary' : undefined}
   data-floating={floating ? '' : undefined}
   style="anchor-name: --apogee-navbar; anchor-scope: --apogee-navbar"

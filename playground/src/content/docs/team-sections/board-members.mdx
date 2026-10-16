@@ -1,0 +1,24 @@
+---
+title: "Board members"
+description: "A centred heading on a grey band over four investors with round photos, their firm, a bio and links."
+group: Team sections
+order: 15
+related: [sections/team, image, carousel]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="team/board-members" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add team/board-members
+```
+
+This copies the block to `src/components/apogee/blocks/team/` with everything it uses: Heading, Image, Link, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

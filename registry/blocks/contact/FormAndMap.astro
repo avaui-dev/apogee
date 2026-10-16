@@ -18,12 +18,18 @@ const stores = [
   { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
   { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
 ]
+
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid gap-16 lg:grid-cols-2">
     <div>
-      <SectionHeader eyebrow="Contact us" heading="Contact us" description="We'd love to hear from you. Please fill out this form." class="mb-12" />
+      <SectionHeader headingLevel={headingLevel} eyebrow="Contact us" heading="Get in touch" description="We'd love to hear from you. Please fill out this form." class="mb-12" />
       <ContactForm />
     </div>
     <MapEmbed lat={stores[0]!.lat} lon={stores[0]!.lon} title={`Map of our ${stores[0]!.city} office`} class="h-full min-h-[40rem] max-lg:hidden" />

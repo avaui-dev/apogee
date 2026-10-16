@@ -12,12 +12,18 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
+const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
     <div class="flex flex-col items-center gap-8">
-      <SectionHeader eyebrow="Pricing" heading="Plans that fit your scale" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" />
+      <SectionHeader headingLevel={headingLevel} eyebrow="Pricing" heading="Plans that fit your scale" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" />
       <div class="flex flex-col-reverse gap-3 sm:flex-row">
         <Button href="#" size="large" variant="outline" color="neutral">Chat to sales</Button>
         <Button href="#" size="large">Get started</Button>
@@ -27,7 +33,7 @@ import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
     <div class="relative mt-6 flex flex-col items-center gap-8 rounded-2xl bg-neutral-faded px-6 pt-12 pb-8 text-center md:px-8">
       <div class="absolute -top-6 start-1/2 -translate-x-1/2 rtl:translate-x-1/2"><FeaturedIcon theme="outline" color="neutral" size="large"><Zap /></FeaturedIcon></div>
       <div class="flex flex-col items-center gap-2">
-        <Heading as="h3" size="h5">Basic plan</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5">Basic plan</Heading>
         <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$10</span><span class="text-neutral-faded">/mth</span></p>
         <p class="text-neutral-faded">Our most popular plan.</p>
       </div>
@@ -43,7 +49,7 @@ import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
     <div class="relative mt-6 flex flex-col items-center gap-8 rounded-2xl bg-neutral-faded px-6 pt-12 pb-8 text-center md:px-8">
       <div class="absolute -top-6 start-1/2 -translate-x-1/2 rtl:translate-x-1/2"><FeaturedIcon theme="outline" color="neutral" size="large"><Layers2 /></FeaturedIcon></div>
       <div class="flex flex-col items-center gap-2">
-        <Heading as="h3" size="h5">Business plan</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5">Business plan</Heading>
         <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$20</span><span class="text-neutral-faded">/mth</span></p>
         <p class="text-neutral-faded">Billed annually.</p>
       </div>
@@ -59,7 +65,7 @@ import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
     <div class="relative mt-6 flex flex-col items-center gap-8 rounded-2xl bg-neutral-faded px-6 pt-12 pb-8 text-center md:px-8">
       <div class="absolute -top-6 start-1/2 -translate-x-1/2 rtl:translate-x-1/2"><FeaturedIcon theme="outline" color="neutral" size="large"><Layers3 /></FeaturedIcon></div>
       <div class="flex flex-col items-center gap-2">
-        <Heading as="h3" size="h5">Enterprise plan</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5">Enterprise plan</Heading>
         <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$40</span><span class="text-neutral-faded">/mth</span></p>
         <p class="text-neutral-faded">Billed annually.</p>
       </div>

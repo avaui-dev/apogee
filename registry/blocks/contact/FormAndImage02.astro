@@ -11,6 +11,11 @@ import ContactForm from '../../components/ContactForm/ContactForm.astro'
 import Image from '../../components/Image/Image.astro'
 import Link from '../../components/Link/Link.astro'
 
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
 ---
 
 <Section spacing="none" container={false}>
@@ -18,7 +23,7 @@ import Link from '../../components/Link/Link.astro'
     <Image src="https://picsum.photos/seed/apogee-contact-2/1200/1600" alt="" width={1200} height={1600} fit="cover" class="h-full min-h-[50rem] w-full max-lg:hidden" />
     <div class="px-gutter py-section lg:px-16">
       <div class="mx-auto max-w-lg">
-        <SectionHeader heading="Let's level up your brand, together" class="mb-4" />
+        <SectionHeader headingLevel={headingLevel} heading="Let's level up your brand, together" class="mb-4" />
         <p class="mb-12 text-neutral-faded">You can reach us anytime via <Link href="mailto:hi@example.com">hi@example.com</Link></p>
         <ContactForm services={['Website design', 'Content creation', 'UX design', 'Strategy & consulting', 'User research', 'Other']} submitLabel="Get started" />
       </div>

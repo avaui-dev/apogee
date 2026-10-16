@@ -16,13 +16,20 @@ const methods = [
   { icon: MapPin, title: 'Office', description: "Come say hello at our office HQ.", link: { label: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' } },
   { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
 ]
+
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
+const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Contact us" heading="Contact us" description="Our friendly team would love to hear from you." align="center" class="mb-16" />
+  <SectionHeader headingLevel={headingLevel} eyebrow="Contact us" heading="Chat to our friendly team" description="Our friendly team would love to hear from you." align="center" class="mb-16" />
   <ul class="list-none p-0 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
     {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} align="center"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
+      <li><ContactMethod headingLevel={itemLevel} title={m.title} description={m.description} link={m.link} align="center"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
     ))}
   </ul>
 </Section>

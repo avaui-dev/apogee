@@ -14,6 +14,12 @@ import Badge from '../../components/Badge/Badge.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Switch from '../../components/Switch/Switch.astro'
 
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
+const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="none" container={false}>
@@ -21,7 +27,7 @@ import Switch from '../../components/Switch/Switch.astro'
     <div class="bg-primary-faded pt-section-lg pb-32 md:pb-48">
       <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 md:px-8">
         <Badge color="primary" size="large" rounded>Pricing plans</Badge>
-        <SectionHeader heading="Plans for all sizes" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" class="-mt-4" />
+        <SectionHeader headingLevel={headingLevel} heading="Plans for all sizes" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" class="-mt-4" />
         <Switch name="billing" value="annual" label="Annual pricing (save 20%)" />
       </div>
     </div>
@@ -32,7 +38,7 @@ import Switch from '../../components/Switch/Switch.astro'
     <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
       <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
         <FeaturedIcon theme="outline" color="neutral" size="large"><Zap /></FeaturedIcon>
-        <Heading as="h3" size="h5" class="text-primary">Basic plan</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5" class="text-primary">Basic plan</Heading>
         <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$10</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$9</span></span><span class="text-neutral-faded">/mth</span></p>
         <p class="text-neutral-faded">Billed annually.</p>
       </div>
@@ -52,7 +58,7 @@ import Switch from '../../components/Switch/Switch.astro'
     <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
       <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
         <FeaturedIcon theme="outline" color="neutral" size="large"><Layers2 /></FeaturedIcon>
-        <Heading as="h3" size="h5" class="text-primary">Business plan</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5" class="text-primary">Business plan</Heading>
         <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$20</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$15</span></span><span class="text-neutral-faded">/mth</span></p>
         <p class="text-neutral-faded">Billed annually.</p>
       </div>
@@ -72,7 +78,7 @@ import Switch from '../../components/Switch/Switch.astro'
     <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
       <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
         <FeaturedIcon theme="outline" color="neutral" size="large"><Layers3 /></FeaturedIcon>
-        <Heading as="h3" size="h5" class="text-primary">Enterprise plan</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5" class="text-primary">Enterprise plan</Heading>
         <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$40</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$39</span></span><span class="text-neutral-faded">/mth</span></p>
         <p class="text-neutral-faded">Billed annually.</p>
       </div>

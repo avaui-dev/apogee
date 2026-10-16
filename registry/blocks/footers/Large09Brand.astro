@@ -30,7 +30,7 @@ const columns = [
       <p class="text-lg opacity-85">Join over 4,000 startups already growing with us.</p>
     </div>
     <div class="flex flex-col-reverse gap-3 sm:flex-row">
-      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!">Chat to us</Button>
+      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!">Chat to us</Button>
       <Button href="#" size="large" color="neutral">Get started</Button>
     </div>
   </div>
@@ -42,7 +42,7 @@ const columns = [
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
                 <Link href="#" color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
-                {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! text-inherit!">{l.badge}</Badge>}
+                {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit!">{l.badge}</Badge>}
               </li>
             ))}
           </ul>

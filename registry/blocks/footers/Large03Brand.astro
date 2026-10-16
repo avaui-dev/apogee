@@ -32,7 +32,7 @@ const columns = [
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
                 <Link href="#" color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
-                {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! text-inherit!">{l.badge}</Badge>}
+                {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit!">{l.badge}</Badge>}
               </li>
             ))}
           </ul>
@@ -42,8 +42,8 @@ const columns = [
     <div class="col-span-2 md:col-span-1"><div class="flex flex-col gap-4">
       <p class="text-sm font-semibold opacity-85">Get the app</p>
       <div class="flex flex-col gap-3">
-        <Button href="#" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!"><Smartphone slot="start" aria-hidden="true" />Download for iOS</Button>
-        <Button href="#" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!"><Download slot="start" aria-hidden="true" />Get it on Android</Button>
+        <Button href="#" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!"><Smartphone slot="start" aria-hidden="true" />Download for iOS</Button>
+        <Button href="#" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!"><Download slot="start" aria-hidden="true" />Get it on Android</Button>
       </div>
     </div></div>
   </div>

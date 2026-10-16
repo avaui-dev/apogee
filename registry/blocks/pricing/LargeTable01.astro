@@ -13,11 +13,17 @@ import Badge from '../../components/Badge/Badge.astro'
 import Table from '../../components/Table/Table.astro'
 import Tooltip from '../../components/Tooltip/Tooltip.astro'
 
+interface Props {
+  /** 1 when the block opens a page. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
+const PlanHeading = headingLevel === 1 ? 'h2' : 'h3'
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader eyebrow="Pricing" heading="Compare our plans and find yours" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" />
+    <SectionHeader headingLevel={headingLevel} eyebrow="Pricing" heading="Compare our plans and find yours" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" />
     <div class="max-lg:hidden">
       <Table size="medium" striped class="table-fixed">
         <thead>
@@ -80,7 +86,7 @@ import Tooltip from '../../components/Tooltip/Tooltip.astro'
     <div class="flex flex-col gap-16 lg:hidden">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-3">
-          <h3 class="flex items-center gap-2 text-xl font-semibold">Basic<Badge color="primary" rounded>Popular</Badge></h3>
+          <PlanHeading class="flex items-center gap-2 text-xl font-semibold">Basic<Badge color="primary" rounded>Popular</Badge></PlanHeading>
           <p class="flex items-baseline gap-1"><span class="text-5xl font-semibold tracking-tight tabular-nums">$10</span><span class="text-neutral-faded">per month</span></p>
           <p class="text-sm text-neutral-faded">Basic features for up to 10 people, with everything you need.</p>
           <Button href="#" fullWidth>Get started</Button>
@@ -91,7 +97,7 @@ import Tooltip from '../../components/Tooltip/Tooltip.astro'
       </div>
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-3">
-          <h3 class="flex items-center gap-2 text-xl font-semibold">Business</h3>
+          <PlanHeading class="flex items-center gap-2 text-xl font-semibold">Business</PlanHeading>
           <p class="flex items-baseline gap-1"><span class="text-5xl font-semibold tracking-tight tabular-nums">$20</span><span class="text-neutral-faded">per month</span></p>
           <p class="text-sm text-neutral-faded">Advanced features and reporting, better workflows and automation.</p>
           <Button href="#" fullWidth>Get started</Button>
@@ -102,7 +108,7 @@ import Tooltip from '../../components/Tooltip/Tooltip.astro'
       </div>
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-3">
-          <h3 class="flex items-center gap-2 text-xl font-semibold">Enterprise</h3>
+          <PlanHeading class="flex items-center gap-2 text-xl font-semibold">Enterprise</PlanHeading>
           <p class="flex items-baseline gap-1"><span class="text-5xl font-semibold tracking-tight tabular-nums">$40</span><span class="text-neutral-faded">per month</span></p>
           <p class="text-sm text-neutral-faded">Personalised service and enterprise security for large teams.</p>
           <Button href="#" fullWidth>Get started</Button>

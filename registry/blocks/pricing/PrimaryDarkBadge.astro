@@ -13,13 +13,18 @@ import Badge from '../../components/Badge/Badge.astro'
 import Divider from '../../components/Divider/Divider.astro'
 import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
 
+interface Props {
+  /** 1 when the block opens a page. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
 ---
 
 <Section spacing="none" container={false}>
   <div class="group/pricing">
     <div class="bg-primary pt-section-lg pb-32 text-on-primary md:pb-48">
       <div class="mx-auto flex max-w-7xl flex-col items-stretch gap-8 px-4 sm:items-center md:gap-12 md:px-8">
-        <SectionHeader eyebrow="Pricing" heading="Pricing plans" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" background="primary" />
+        <SectionHeader headingLevel={headingLevel} eyebrow="Pricing" heading="Pricing plans" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" background="primary" />
         <SegmentedControl name="billing" options={[{ label: 'Monthly billing', value: 'monthly' }, { label: 'Annual billing', value: 'annual' }]} value="monthly" aria-label="Billing period" size="large" class="bg-page" />
       </div>
     </div>

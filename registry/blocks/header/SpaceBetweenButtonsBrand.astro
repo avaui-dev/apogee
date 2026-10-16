@@ -11,17 +11,23 @@ import Heading from '../../components/Heading/Heading.astro'
 import Text from '../../components/Text/Text.astro'
 import Button from '../../components/Button/Button.astro'
 
+interface Props {
+  eyebrow?: string
+  heading?: string
+  description?: string
+}
+const { eyebrow = 'Pricing', heading = 'Plans that fit your scale', description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.' } = Astro.props
 ---
 
 <Section spacing="large" background="primary">
-  <Eyebrow as="p" color="inherit">Pricing</Eyebrow>
+  <Eyebrow as="p" color="inherit">{eyebrow}</Eyebrow>
   <div class="mt-3 grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-x-16">
-    <Heading as="h1" size="display" class="text-balance">Plans that fit your scale</Heading>
-    <Text size="large" class="opacity-85 lg:mt-3">Simple, transparent pricing that grows with you. Try any plan free for 30 days.</Text>
+    <Heading as="h1" size="display" class="text-balance">{heading}</Heading>
+    <Text size="large" class="opacity-85 lg:mt-3">{description}</Text>
   </div>
   <div class="mt-8">
     <div class="flex flex-col-reverse gap-3 sm:flex-row">
-      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! text-inherit! shadow-none!">Chat to sales</Button>
+      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!">Chat to sales</Button>
       <Button href="#" size="large" color="neutral">Get started</Button>
     </div>
   </div>

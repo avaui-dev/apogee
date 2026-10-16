@@ -10,12 +10,17 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactForm from '../../components/ContactForm/ContactForm.astro'
 import Image from '../../components/Image/Image.astro'
 
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid gap-16 lg:grid-cols-2">
     <div>
-      <SectionHeader eyebrow="Contact us" heading="Contact us" description="We'd love to hear from you. Please fill out this form." class="mb-12" />
+      <SectionHeader headingLevel={headingLevel} eyebrow="Contact us" heading="Get in touch" description="We'd love to hear from you. Please fill out this form." class="mb-12" />
       <ContactForm rows={4} />
     </div>
     <Image src="https://picsum.photos/seed/apogee-contact-1/1200/1500" alt="" width={1200} height={1500} fit="cover" radius="xl" class="h-full min-h-[40rem] w-full max-lg:hidden" />

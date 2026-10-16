@@ -11,11 +11,17 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 
+interface Props {
+  eyebrow?: string
+  heading?: string
+  description?: string
+}
+const { eyebrow = 'Resources', heading = 'The Larkspur blog', description = 'The latest industry news, technologies and resources from our team.' } = Astro.props
 ---
 
 <Section spacing="large" background="primary">
   <div class="flex flex-col gap-8 md:gap-12 items-start">
-    <SectionHeader eyebrow="Resources" heading="The Larkspur blog" description="The latest industry news, technologies and resources from our team." headingLevel={1} size="large" background="primary" />
+    <SectionHeader eyebrow={eyebrow} heading={heading} description={description} headingLevel={1} size="large" background="primary" />
     <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />

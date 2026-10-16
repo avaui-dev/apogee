@@ -8,8 +8,14 @@
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 
+interface Props {
+  eyebrow?: string
+  heading?: string
+  description?: string
+}
+const { eyebrow = 'About us', heading = 'About the company', description = 'Learn more about the company and the team behind it.' } = Astro.props
 ---
 
 <Section spacing="large" background="primary">
-  <SectionHeader eyebrow="About us" heading="About the company" description="Learn more about the company and the team behind it." headingLevel={1} size="large" background="primary" />
+  <SectionHeader eyebrow={eyebrow} heading={heading} description={description} headingLevel={1} size="large" background="primary" />
 </Section>
