@@ -1,0 +1,156 @@
+---
+title: NavDropdown
+description: A Navbar item that opens a panel of links; a popover under the button or across the header on desktop, a row that expands in the phone menu.
+group: Components
+order: 0
+related: [navbar, nav-link, popover]
+---
+
+import Preview from '../../components/Preview.astro'
+import Navbar from '../../../../registry/components/Navbar/Navbar.astro'
+import NavLink from '../../../../registry/components/NavLink/NavLink.astro'
+import NavDropdown from '../../../../registry/components/NavDropdown/NavDropdown.astro'
+import Button from '../../../../registry/components/Button/Button.astro'
+
+export const links = [
+  ['Blog', 'News, guides and how-tos from the team.'],
+  ['Customer stories', 'How teams use the product to grow.'],
+  ['Documentation', 'Articles on every tool and feature.'],
+]
+
+<Preview code={`<Navbar>
+  <a slot="brand" href="/">Example</a>
+  <NavDropdown label="Resources">
+    <ul class="flex list-none flex-col gap-0.5 p-2">
+      <li><a href="/blog" class="block rounded-lg p-3 hover:bg-neutral-faded">Blog</a></li>
+      …
+    </ul>
+  </NavDropdown>
+  <NavLink href="/pricing">Pricing</NavLink>
+</Navbar>`} block>
+  <div class="h-96 w-full" data-demo="anchored">
+    <Navbar>
+      <a slot="brand" href="#" class="text-lg font-semibold">Example</a>
+      <NavDropdown label="Resources">
+        <ul class="flex list-none flex-col gap-0.5 p-2">
+          {links.map(([t, d]) => <li><a href="#" class="flex flex-col rounded-lg p-3 hover:bg-neutral-faded"><span class="font-semibold">{t}</span><span class="text-sm text-neutral-faded">{d}</span></a></li>)}
+        </ul>
+      </NavDropdown>
+      <NavLink href="#">Pricing</NavLink>
+      <Button slot="actions" href="#" size="small">Sign up</Button>
+    </Navbar>
+  </div>
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add nav-dropdown
+```
+
+Uses `@lucide/astro` (`ChevronDown`). Zero JS: a native popover on desktop, a
+`<details>` row in the phone menu.
+
+## Usage
+
+```astro
+---
+import Navbar from '@/components/apogee/Navbar/Navbar.astro'
+import NavDropdown from '@/components/apogee/NavDropdown/NavDropdown.astro'
+---
+<Navbar>
+  <a slot="brand" href="/">Example</a>
+  <NavDropdown label="Products" fullWidth>
+    <!-- columns of links -->
+  </NavDropdown>
+</Navbar>
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | The button's text, and the row's in the phone menu. |
+| `fullWidth` | `boolean` | `false` | The panel spans the header instead of opening under the button. |
+| `floating` | `boolean` | `false` | With `fullWidth`: the panel keeps to the bar's width, rounded; for a `floating` Navbar. |
+| `width` | `string` | `'20rem'` | Width of an anchored panel. |
+| `panelClass` | `string` | — | Extra classes on the desktop panel. |
+| `class` | `string` | — | Extra classes on the wrapper. |
+
+The default slot is the panel; it renders twice, in the desktop popover and
+in the phone row, so don't put ids in it.
+
+## Variants
+
+Full width, and full width in a floating Navbar:
+
+<Preview code={`<Navbar>
+  <NavDropdown label="Resources" fullWidth>…</NavDropdown>
+</Navbar>
+<Navbar floating>
+  <NavDropdown label="Resources" fullWidth floating>…</NavDropdown>
+</Navbar>`} block>
+  <div class="flex w-full flex-col gap-4">
+    <div class="h-80" data-demo="full">
+      <Navbar>
+        <a slot="brand" href="#" class="text-lg font-semibold">Example</a>
+        <NavDropdown label="Resources" fullWidth>
+          <ul class="mx-auto grid max-w-7xl list-none gap-2 p-4 sm:grid-cols-3 sm:px-6">
+            {links.map(([t, d]) => <li><a href="#" class="flex flex-col rounded-lg p-3 hover:bg-neutral-faded"><span class="font-semibold">{t}</span><span class="text-sm text-neutral-faded">{d}</span></a></li>)}
+          </ul>
+        </NavDropdown>
+        <NavLink href="#">Pricing</NavLink>
+      </Navbar>
+    </div>
+    <div class="h-80 bg-neutral-faded" data-demo="floating">
+      <Navbar floating>
+        <a slot="brand" href="#" class="text-lg font-semibold">Example</a>
+        <NavDropdown label="Resources" fullWidth floating>
+          <ul class="grid list-none gap-2 p-4 sm:grid-cols-3">
+            {links.map(([t, d]) => <li><a href="#" class="flex flex-col rounded-lg p-3 hover:bg-neutral-faded"><span class="font-semibold">{t}</span><span class="text-sm text-neutral-faded">{d}</span></a></li>)}
+          </ul>
+        </NavDropdown>
+        <NavLink href="#">Pricing</NavLink>
+      </Navbar>
+    </div>
+  </div>
+</Preview>
+
+## States
+
+- **Closed** — the chevron points down.
+- **Open** — the panel shows and the chevron turns; opening another dropdown closes this one.
+
+## Examples
+
+Every header in [Header navigation](/docs/header-navigation-sections) uses it.
+
+## Accessibility
+
+| Key | Action |
+|---|---|
+| `Enter` `Space` | Open or close the panel (desktop) or the row (phone). |
+| `Esc` | Close the panel; focus returns to the button. |
+| `Tab` | Moves through the panel's links after the button. |
+
+- The button is a native popover trigger, so it reports `aria-expanded`.
+- Click outside or open another dropdown and the panel closes.
+- The chevron's turn respects `prefers-reduced-motion`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-elevation-overlay` / `--shadow-overlay` | Panel surface and lift |
+| `--border-neutral` | Panel edge |
+| `--foreground-neutral-faded` | Button text at rest |
+| `--duration-fast` / `ease-standard` | Chevron turn |
+
+## Do / Don't
+
+- **Do** keep panels to links; a form or video belongs on its own page.
+- **Don't** use it for a single link; use `NavLink`.
+
+## Content
+
+- Labels are one word where possible: Products, Resources, Company.

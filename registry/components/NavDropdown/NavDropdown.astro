@@ -1,0 +1,92 @@
+---
+/**
+ * NavDropdown — a Navbar item that opens a panel of links. From `md` it is a
+ * button with a native popover: light dismiss, Esc, one open at a time,
+ * anchored under the button, or across the whole header with `fullWidth`
+ * (inside the bar's width when the Navbar is `floating`). Inside the phone
+ * menu the same content is a disclosure row (`<details>`). Zero JS; the
+ * chevron turns while open.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { ChevronDown } from '@lucide/astro'
+import { uid } from '../utils/uid.ts'
+import { panelStyle, panelClass, panelSurface } from '../utils/panel.ts'
+
+interface Props extends HTMLAttributes<'div'> {
+  /** The button's text. @category content */
+  label: string
+  /** Across the whole header instead of under the button. @category layout */
+  fullWidth?: boolean
+  /** Inside the bar's width with rounded corners, for a `floating` Navbar. @category layout */
+  floating?: boolean
+  /** Width of an anchored panel (any CSS length). */
+  width?: string
+  /** Extra classes on the panel. */
+  panelClass?: string
+  class?: string
+}
+
+const { label, fullWidth = false, floating = false, width = '20rem', panelClass: panelClassName, class: className, ...rest } = Astro.props
+const id = uid(Astro.locals, 'apogee-navdd')
+const anchor = `--${id}`
+// The content renders twice: in the popover (md+) and in the phone disclosure.
+const content = await Astro.slots.render('default')
+const full = fullWidth
+  ? 'position-anchor: --apogee-navbar; top: 4rem; top: anchor(bottom); margin: 0; width: auto; ' +
+    (floating ? 'inset-inline: max(1rem, (100vw - 80rem) / 2); margin-top: 0.5rem;' : 'inset-inline: 0;')
+  : ''
+---
+
+<div class:list={['apogee-nav-dropdown contents', className]} {...rest}>
+  <button
+    type="button"
+    popovertarget={id}
+    style={`anchor-name: ${anchor}`}
+    class="press inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-neutral-faded transition-colors hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus max-md:hidden"
+  >
+    {label}
+    <ChevronDown class="apogee-nav-dropdown-chevron size-4" aria-hidden="true" />
+  </button>
+  <div
+    id={id}
+    popover
+    style={fullWidth ? full : panelStyle({ anchor, placement: 'bottom-start', gap: 2, width })}
+    class:list={[
+      panelClass,
+      panelSurface.overlay,
+      'apogee-nav-dropdown-panel overflow-auto p-0 text-base max-md:hidden',
+      fullWidth && !floating && 'max-h-[calc(100dvh-5rem)] rounded-none border-x-0 border-t-0',
+      fullWidth && floating && 'max-h-[calc(100dvh-6rem)] rounded-2xl',
+      !fullWidth && 'max-h-[calc(100dvh-6rem)] rounded-2xl',
+      panelClassName,
+    ]}
+  >
+    <Fragment set:html={content} />
+  </div>
+  <details class="apogee-nav-dropdown-row md:hidden">
+    <summary class="press flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden">
+      {label}
+      <ChevronDown class="apogee-nav-dropdown-chevron size-4 text-neutral-faded" aria-hidden="true" />
+    </summary>
+    <div class="pb-2">
+      <Fragment set:html={content} />
+    </div>
+  </details>
+</div>
+
+<style>
+  .apogee-nav-dropdown-chevron {
+    transition: rotate var(--duration-fast) var(--ease-standard);
+  }
+  .apogee-nav-dropdown:has(> [popover]:popover-open) > button .apogee-nav-dropdown-chevron,
+  .apogee-nav-dropdown-row[open] .apogee-nav-dropdown-chevron {
+    rotate: 180deg;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-nav-dropdown-chevron {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,290 @@
+---
+/**
+ * Four columns with footer: A bar whose menus open across the page: four columns over a sign-up strip.
+ *
+ * @block header-navigation
+ * @order 13
+ */
+import { Book, BookOpen, Box, ChartColumn, ChartPie, CircleCheck, CircleDollarSign, CirclePlay, Code, DollarSign, FileCode, Flag, Folder, Funnel, HeartHandshake, Layers, LifeBuoy, MessageCircle, MessagesSquare, Mic, Monitor, Orbit, Sparkles, TrendingUp, Users } from '@lucide/astro'
+import Navbar from '../../components/Navbar/Navbar.astro'
+import NavLink from '../../components/NavLink/NavLink.astro'
+import NavDropdown from '../../components/NavDropdown/NavDropdown.astro'
+import Link from '../../components/Link/Link.astro'
+import Button from '../../components/Button/Button.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+type Item = { icon: typeof Orbit; title: string; text: string; badge?: string }
+const resources: Item[] = [
+  { icon: Book, title: 'Blog', text: 'The latest industry news and guides, written by our team.' },
+  { icon: Sparkles, title: 'Customer stories', text: 'How teams use the product to grow faster.' },
+  { icon: CirclePlay, title: 'Video tutorials', text: 'Get up and running on new features with short guides.' },
+  { icon: FileCode, title: 'Documentation', text: 'In-depth articles on our tools and technologies.' },
+  { icon: LifeBuoy, title: 'Help and support', text: 'Need help with something? Our team is here around the clock.' },
+  { icon: Code, title: 'API reference', text: 'Reference docs and helpful guides for our API.' },
+  { icon: Box, title: 'Setup 101', text: 'Get up and running fast with our starter guide.' },
+  { icon: Mic, title: 'Mic', text: 'Interviews and talk about the industry and the latest tech.' },
+  { icon: BookOpen, title: 'University', text: 'Free video courses and in-depth articles to master your craft.' },
+  { icon: Layers, title: 'Changelog', text: 'The latest updates and releases from our team.' },
+]
+const company: Item[] = [
+  { icon: Flag, title: 'About us', text: 'Our team and what we are working towards.' },
+  { icon: MessageCircle, title: 'Press', text: 'News, press releases and press resources.' },
+  { icon: Users, title: 'Careers', text: 'We are always looking for talented people. Join our remote team.', badge: "We're hiring" },
+  { icon: Folder, title: 'Legal', text: 'Company details, licensing, terms and privacy.' },
+]
+const products: Item[] = [
+  { icon: ChartPie, title: 'Interactive reports', text: 'Learn about your users.' },
+  { icon: Monitor, title: 'Team dashboard', text: 'Monitor your metrics.' },
+  { icon: Funnel, title: 'Segmentation', text: 'Surface hidden trends.' },
+  { icon: ChartColumn, title: 'Group analytics', text: 'Measure account health.' },
+]
+const useCases: Item[] = [
+  { icon: CircleCheck, title: 'Convert', text: 'Read conversion rates, and raise them.' },
+  { icon: HeartHandshake, title: 'Engage', text: 'Measure active use, and find what to improve.' },
+  { icon: CircleDollarSign, title: 'Retain', text: 'Find what keeps customers with you.' },
+  { icon: TrendingUp, title: 'Grow', text: 'Grow your user base faster.', badge: 'New' },
+]
+---
+
+<Navbar>
+  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+  <NavDropdown label="Products" fullWidth>
+    <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Products</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {products.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Use cases</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {useCases.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {resources.slice(0, 4).map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Company</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        </div>
+        <div class="flex flex-col gap-3 rounded-xl bg-neutral-faded px-4 py-3 sm:flex-row sm:items-center sm:justify-between mt-4 max-md:hidden">
+          <p class="text-sm"><span class="font-semibold">Ready to get started?</span> <Link href="#">Sign up for free</Link></p>
+          <ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 text-sm font-semibold max-sm:hidden">
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><DollarSign class="size-4" aria-hidden="true" />Pricing</Link></li>
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><CirclePlay class="size-4" aria-hidden="true" />Watch demo</Link></li>
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><MessagesSquare class="size-4" aria-hidden="true" />Chat to sales</Link></li>
+          </ul>
+        </div>
+      </div>
+  </NavDropdown>
+  <NavDropdown label="Services" fullWidth>
+    <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Products</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {products.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Use cases</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {useCases.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {resources.slice(0, 4).map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Company</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        </div>
+        <div class="flex flex-col gap-3 rounded-xl bg-neutral-faded px-4 py-3 sm:flex-row sm:items-center sm:justify-between mt-4 max-md:hidden">
+          <p class="text-sm"><span class="font-semibold">Ready to get started?</span> <Link href="#">Sign up for free</Link></p>
+          <ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 text-sm font-semibold max-sm:hidden">
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><DollarSign class="size-4" aria-hidden="true" />Pricing</Link></li>
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><CirclePlay class="size-4" aria-hidden="true" />Watch demo</Link></li>
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><MessagesSquare class="size-4" aria-hidden="true" />Chat to sales</Link></li>
+          </ul>
+        </div>
+      </div>
+  </NavDropdown>
+  <NavLink href="#">Pricing</NavLink>
+  <NavDropdown label="Resources" fullWidth>
+    <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Products</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {products.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Use cases</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {useCases.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {resources.slice(0, 4).map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Company</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <FeaturedIcon theme="outline" color="neutral" size="medium"><i.icon /></FeaturedIcon>
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        </div>
+        <div class="flex flex-col gap-3 rounded-xl bg-neutral-faded px-4 py-3 sm:flex-row sm:items-center sm:justify-between mt-4 max-md:hidden">
+          <p class="text-sm"><span class="font-semibold">Ready to get started?</span> <Link href="#">Sign up for free</Link></p>
+          <ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 text-sm font-semibold max-sm:hidden">
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><DollarSign class="size-4" aria-hidden="true" />Pricing</Link></li>
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><CirclePlay class="size-4" aria-hidden="true" />Watch demo</Link></li>
+            <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><MessagesSquare class="size-4" aria-hidden="true" />Chat to sales</Link></li>
+          </ul>
+        </div>
+      </div>
+  </NavDropdown>
+  <NavLink href="#">About</NavLink>
+  <Button slot="actions" href="#" variant="outline" color="neutral" size="small">Log in</Button>
+  <Button slot="actions" href="#" size="small">Sign up</Button>
+</Navbar>

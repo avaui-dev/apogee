@@ -1,0 +1,146 @@
+---
+/**
+ * Dropdown featured posts: A bar whose menus open company links beside the latest blog posts.
+ *
+ * @block header-navigation
+ * @order 8
+ */
+import { ArrowRight, Flag, Folder, MessageCircle, Orbit, Users } from '@lucide/astro'
+import Navbar from '../../components/Navbar/Navbar.astro'
+import NavLink from '../../components/NavLink/NavLink.astro'
+import NavDropdown from '../../components/NavDropdown/NavDropdown.astro'
+import Link from '../../components/Link/Link.astro'
+import Button from '../../components/Button/Button.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Image from '../../components/Image/Image.astro'
+
+type Item = { icon: typeof Orbit; title: string; text: string; badge?: string }
+const company: Item[] = [
+  { icon: Flag, title: 'About us', text: 'Our team and what we are working towards.' },
+  { icon: MessageCircle, title: 'Press', text: 'News, press releases and press resources.' },
+  { icon: Users, title: 'Careers', text: 'We are always looking for talented people. Join our remote team.', badge: "We're hiring" },
+  { icon: Folder, title: 'Legal', text: 'Company details, licensing, terms and privacy.' },
+]
+const posts = [
+  { title: 'Auto layout explained', text: 'How flexible layouts save hours on every screen.', image: 'https://picsum.photos/seed/apogee-nav-1/288/176' },
+  { title: 'Ways to level up your product design', text: 'Small habits that make a big difference over a year.', image: 'https://picsum.photos/seed/apogee-nav-2/288/176' },
+  { title: 'Synthesise data with affinity diagrams', text: 'Turn a wall of notes into findings your team trusts.', image: 'https://picsum.photos/seed/apogee-nav-3/288/176' },
+  { title: 'Streamline your user research', text: 'Plan, run and share research in half the time.', image: 'https://picsum.photos/seed/apogee-nav-4/288/176' },
+  { title: 'Inclusive UX research', text: 'Who you leave out shapes what you build.', image: 'https://picsum.photos/seed/apogee-nav-5/288/176' },
+  { title: 'The anatomy of a good story', text: 'Why some product stories stick and others slide off.', image: 'https://picsum.photos/seed/apogee-nav-6/288/176' },
+  { title: 'Copy that converts', text: 'Plain words, clear actions, fewer drop-offs.', image: 'https://picsum.photos/seed/apogee-nav-7/288/176' },
+  { title: 'A design presentation that lands', text: 'Show the problem first, then the work.', image: 'https://picsum.photos/seed/apogee-nav-8/288/176' },
+  { title: 'Showing the value of design', text: 'Numbers and stories that win the next budget.', image: 'https://picsum.photos/seed/apogee-nav-9/288/176' },
+]
+---
+
+<Navbar>
+  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+  <NavDropdown label="Products" width="48rem">
+    <div class="grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+          <div class="flex flex-col gap-2 p-3"><p class="px-3 text-sm font-semibold text-primary">Company</p><ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul></div>
+          <div class="flex flex-col gap-2 bg-neutral-faded p-3">
+            <p class="px-3 text-sm font-semibold text-primary">Latest blog posts</p>
+            <ul class="list-none p-0 flex flex-col gap-1">
+            {posts.slice(0, 3).map((p) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-4 rounded-lg p-2 transition-colors hover:bg-neutral-faded">
+                  <Image src={p.image} alt="" width={288} height={176} fit="cover" radius="md" class="h-[5.5rem] w-36 shrink-0" />
+                  <span class="flex flex-col gap-1">
+                    <span class="line-clamp-2 font-semibold">{p.title}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{p.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+            <Link href="#" class="mx-3 inline-flex items-center gap-1.5 text-sm font-semibold">All blog posts<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link>
+          </div>
+        </div>
+  </NavDropdown>
+  <NavDropdown label="Services" width="48rem">
+    <div class="grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+          <div class="flex flex-col gap-2 p-3"><p class="px-3 text-sm font-semibold text-primary">Company</p><ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul></div>
+          <div class="flex flex-col gap-2 bg-neutral-faded p-3">
+            <p class="px-3 text-sm font-semibold text-primary">Latest blog posts</p>
+            <ul class="list-none p-0 flex flex-col gap-1">
+            {posts.slice(0, 3).map((p) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-4 rounded-lg p-2 transition-colors hover:bg-neutral-faded">
+                  <Image src={p.image} alt="" width={288} height={176} fit="cover" radius="md" class="h-[5.5rem] w-36 shrink-0" />
+                  <span class="flex flex-col gap-1">
+                    <span class="line-clamp-2 font-semibold">{p.title}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{p.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+            <Link href="#" class="mx-3 inline-flex items-center gap-1.5 text-sm font-semibold">All blog posts<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link>
+          </div>
+        </div>
+  </NavDropdown>
+  <NavLink href="#">Pricing</NavLink>
+  <NavDropdown label="Resources" width="48rem">
+    <div class="grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+          <div class="flex flex-col gap-2 p-3"><p class="px-3 text-sm font-semibold text-primary">Company</p><ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul></div>
+          <div class="flex flex-col gap-2 bg-neutral-faded p-3">
+            <p class="px-3 text-sm font-semibold text-primary">Latest blog posts</p>
+            <ul class="list-none p-0 flex flex-col gap-1">
+            {posts.slice(0, 3).map((p) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-4 rounded-lg p-2 transition-colors hover:bg-neutral-faded">
+                  <Image src={p.image} alt="" width={288} height={176} fit="cover" radius="md" class="h-[5.5rem] w-36 shrink-0" />
+                  <span class="flex flex-col gap-1">
+                    <span class="line-clamp-2 font-semibold">{p.title}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{p.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+            <Link href="#" class="mx-3 inline-flex items-center gap-1.5 text-sm font-semibold">All blog posts<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link>
+          </div>
+        </div>
+  </NavDropdown>
+  <NavLink href="#">About</NavLink>
+  <Button slot="actions" href="#" variant="outline" color="neutral" size="small">Log in</Button>
+  <Button slot="actions" href="#" size="small">Sign up</Button>
+</Navbar>

@@ -45,6 +45,9 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Header navigation sections**: 20 headers whose menus open lists, columns, feature cards, blog posts or video tutorials, under the button or across the page, in a plain or floating bar.
+- **NavDropdown**: a Navbar item that opens a panel of links; a native popover under the button or across the header (`fullWidth`, `floating`), a `<details>` row in the phone menu. Zero JS.
+- **Navbar** `floating`: the bar on a rounded, raised pill. The header is the anchor for full-width dropdown panels, and the phone menu scrolls when it is taller than the screen.
 - **Footer sections**: 40 footers; link columns or a row of links with a newsletter or launch signup, a call to action, app buttons, a rating or social links over a copyright line, large and small, and brand-colour versions.
 - **Features sections**: 46 feature blocks; alternating rows, icon grids, icons beside a photo, phone or screenshot, icon cards, large screenshots, payment card stacks, feature tabs that switch screenshots, integration icons, and brand-colour versions.
 - **VideoPlayer**: a native video behind a poster and one large play button; the browser's own controls take over once it plays. Captions track, no download until play.

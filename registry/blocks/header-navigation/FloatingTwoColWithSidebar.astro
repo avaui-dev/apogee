@@ -1,0 +1,235 @@
+---
+/**
+ * Floating two columns with sidebar: A floating bar whose menus open two columns beside video tutorials, over two buttons.
+ *
+ * @block header-navigation
+ * @order 19
+ */
+import { ArrowRight, Book, BookOpen, Box, CirclePlay, Code, FileCode, Flag, Folder, Layers, LifeBuoy, MessageCircle, Mic, Orbit, Play, Sparkles, Users } from '@lucide/astro'
+import Navbar from '../../components/Navbar/Navbar.astro'
+import NavLink from '../../components/NavLink/NavLink.astro'
+import NavDropdown from '../../components/NavDropdown/NavDropdown.astro'
+import Link from '../../components/Link/Link.astro'
+import Button from '../../components/Button/Button.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Image from '../../components/Image/Image.astro'
+
+type Item = { icon: typeof Orbit; title: string; text: string; badge?: string }
+const resources: Item[] = [
+  { icon: Book, title: 'Blog', text: 'The latest industry news and guides, written by our team.' },
+  { icon: Sparkles, title: 'Customer stories', text: 'How teams use the product to grow faster.' },
+  { icon: CirclePlay, title: 'Video tutorials', text: 'Get up and running on new features with short guides.' },
+  { icon: FileCode, title: 'Documentation', text: 'In-depth articles on our tools and technologies.' },
+  { icon: LifeBuoy, title: 'Help and support', text: 'Need help with something? Our team is here around the clock.' },
+  { icon: Code, title: 'API reference', text: 'Reference docs and helpful guides for our API.' },
+  { icon: Box, title: 'Setup 101', text: 'Get up and running fast with our starter guide.' },
+  { icon: Mic, title: 'Mic', text: 'Interviews and talk about the industry and the latest tech.' },
+  { icon: BookOpen, title: 'University', text: 'Free video courses and in-depth articles to master your craft.' },
+  { icon: Layers, title: 'Changelog', text: 'The latest updates and releases from our team.' },
+]
+const company: Item[] = [
+  { icon: Flag, title: 'About us', text: 'Our team and what we are working towards.' },
+  { icon: MessageCircle, title: 'Press', text: 'News, press releases and press resources.' },
+  { icon: Users, title: 'Careers', text: 'We are always looking for talented people. Join our remote team.', badge: "We're hiring" },
+  { icon: Folder, title: 'Legal', text: 'Company details, licensing, terms and privacy.' },
+]
+const videos = [
+  { title: 'How to get started', text: 'An overview of the basics, so you can start building.', image: 'https://picsum.photos/seed/apogee-nav-video-1/480/270' },
+  { title: 'Advanced features', text: 'Advanced analytics, features and shortcuts, once you are ready.', image: 'https://picsum.photos/seed/apogee-nav-video-2/480/270' },
+]
+---
+
+<Navbar floating>
+  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+  <NavDropdown label="Products" fullWidth floating>
+    <div class="p-4 md:p-6">
+        <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {resources.slice(0, 4).map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+            <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Company</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          </div>
+          <div class="flex flex-col gap-4 rounded-2xl bg-neutral-faded p-4">
+            <div class="flex items-center justify-between gap-4"><p class="text-sm font-semibold text-primary">Tutorials</p><Link href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold">All video tutorials<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></div>
+            <ul class="flex list-none flex-col gap-4 p-0 sm:flex-row">
+            {videos.map((v) => (
+              <li class="flex flex-1 flex-col gap-3">
+                <div class="relative">
+                  <Image src={v.image} alt="" width={480} height={270} fit="cover" radius="lg" class="aspect-video w-full" />
+                  <span class="absolute inset-0 grid place-items-center" aria-hidden="true"><span class="grid size-10 place-items-center rounded-full bg-page/90 text-neutral"><Play class="size-4 translate-x-px fill-current" /></span></span>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <p class="font-semibold">{v.title}</p>
+                  <p class="line-clamp-2 text-sm text-neutral-faded">{v.text}</p>
+                </div>
+                <Link href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold">Watch video<span class="sr-only">: {v.title}</span><CirclePlay class="size-4" aria-hidden="true" /></Link>
+              </li>
+            ))}
+          </ul>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
+          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
+          <Button href="#" size="small">View all posts</Button>
+        </div>
+  </NavDropdown>
+  <NavDropdown label="Services" fullWidth floating>
+    <div class="p-4 md:p-6">
+        <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {resources.slice(0, 4).map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+            <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Company</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          </div>
+          <div class="flex flex-col gap-4 rounded-2xl bg-neutral-faded p-4">
+            <div class="flex items-center justify-between gap-4"><p class="text-sm font-semibold text-primary">Tutorials</p><Link href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold">All video tutorials<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></div>
+            <ul class="flex list-none flex-col gap-4 p-0 sm:flex-row">
+            {videos.map((v) => (
+              <li class="flex flex-1 flex-col gap-3">
+                <div class="relative">
+                  <Image src={v.image} alt="" width={480} height={270} fit="cover" radius="lg" class="aspect-video w-full" />
+                  <span class="absolute inset-0 grid place-items-center" aria-hidden="true"><span class="grid size-10 place-items-center rounded-full bg-page/90 text-neutral"><Play class="size-4 translate-x-px fill-current" /></span></span>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <p class="font-semibold">{v.title}</p>
+                  <p class="line-clamp-2 text-sm text-neutral-faded">{v.text}</p>
+                </div>
+                <Link href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold">Watch video<span class="sr-only">: {v.title}</span><CirclePlay class="size-4" aria-hidden="true" /></Link>
+              </li>
+            ))}
+          </ul>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
+          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
+          <Button href="#" size="small">View all posts</Button>
+        </div>
+  </NavDropdown>
+  <NavLink href="#">Pricing</NavLink>
+  <NavDropdown label="Resources" fullWidth floating>
+    <div class="p-4 md:p-6">
+        <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {resources.slice(0, 4).map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+            <div class="flex flex-col gap-2">
+          <p class="px-3 text-sm font-semibold text-primary">Company</p>
+          <ul class="list-none p-0 flex flex-col gap-0.5">
+            {company.map((i) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex flex-col gap-1">
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+          </div>
+          <div class="flex flex-col gap-4 rounded-2xl bg-neutral-faded p-4">
+            <div class="flex items-center justify-between gap-4"><p class="text-sm font-semibold text-primary">Tutorials</p><Link href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold">All video tutorials<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></div>
+            <ul class="flex list-none flex-col gap-4 p-0 sm:flex-row">
+            {videos.map((v) => (
+              <li class="flex flex-1 flex-col gap-3">
+                <div class="relative">
+                  <Image src={v.image} alt="" width={480} height={270} fit="cover" radius="lg" class="aspect-video w-full" />
+                  <span class="absolute inset-0 grid place-items-center" aria-hidden="true"><span class="grid size-10 place-items-center rounded-full bg-page/90 text-neutral"><Play class="size-4 translate-x-px fill-current" /></span></span>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <p class="font-semibold">{v.title}</p>
+                  <p class="line-clamp-2 text-sm text-neutral-faded">{v.text}</p>
+                </div>
+                <Link href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold">Watch video<span class="sr-only">: {v.title}</span><CirclePlay class="size-4" aria-hidden="true" /></Link>
+              </li>
+            ))}
+          </ul>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
+          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
+          <Button href="#" size="small">View all posts</Button>
+        </div>
+  </NavDropdown>
+  <NavLink href="#">About</NavLink>
+  <Button slot="actions" href="#" variant="outline" color="neutral" size="small">Log in</Button>
+  <Button slot="actions" href="#" size="small">Sign up</Button>
+</Navbar>

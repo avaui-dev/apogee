@@ -763,6 +763,20 @@
       "dependencies": [],
       "usesJs": false
     },
+    "NavDropdown": {
+      "name": "NavDropdown",
+      "kind": "component",
+      "files": [
+        "NavDropdown/NavDropdown.astro"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "NavLink": {
       "name": "NavLink",
       "kind": "component",
@@ -7793,6 +7807,472 @@
         "Input",
         "Link",
         "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/blog-posts-with-footer": {
+      "name": "header-navigation/blog-posts-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Blog posts with footer",
+      "description": "A bar whose menus open across the page: nine blog posts over two buttons.",
+      "files": [
+        "blocks/header-navigation/BlogPostsWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/blog-posts-with-sidebar": {
+      "name": "header-navigation/blog-posts-with-sidebar",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Blog posts with sidebar",
+      "description": "A bar whose menus open across the page: blog categories beside six posts.",
+      "files": [
+        "blocks/header-navigation/BlogPostsWithSidebar.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/dropdown-feature-card": {
+      "name": "header-navigation/dropdown-feature-card",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Dropdown feature card",
+      "description": "A bar whose menus open links beside a card about a new release.",
+      "files": [
+        "blocks/header-navigation/DropdownFeatureCard.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/dropdown-featured-posts": {
+      "name": "header-navigation/dropdown-featured-posts",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Dropdown featured posts",
+      "description": "A bar whose menus open company links beside the latest blog posts.",
+      "files": [
+        "blocks/header-navigation/DropdownFeaturedPosts.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/dropdown-simple": {
+      "name": "header-navigation/dropdown-simple",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Dropdown simple",
+      "description": "A bar whose menus open a short list of links with icons.",
+      "files": [
+        "blocks/header-navigation/DropdownSimple.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/dropdown-simple-two-columns": {
+      "name": "header-navigation/dropdown-simple-two-columns",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Dropdown simple two columns",
+      "description": "A bar whose menus open ten links in two columns.",
+      "files": [
+        "blocks/header-navigation/DropdownSimpleTwoColumns.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/dropdown-simple-two-columns-with-footer": {
+      "name": "header-navigation/dropdown-simple-two-columns-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Dropdown simple two columns with footer",
+      "description": "A bar whose menus open two headed columns over a sign-up strip.",
+      "files": [
+        "blocks/header-navigation/DropdownSimpleTwoColumnsWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/dropdown-simple-with-footer": {
+      "name": "header-navigation/dropdown-simple-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Dropdown simple with footer",
+      "description": "A bar whose menus open a short list of links with an “All resources” link under it.",
+      "files": [
+        "blocks/header-navigation/DropdownSimpleWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/dropdown-two-cols-with-links-and-footer": {
+      "name": "header-navigation/dropdown-two-cols-with-links-and-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Dropdown two columns with links and footer",
+      "description": "A bar whose menus open an intro, quick links and two columns over two buttons.",
+      "files": [
+        "blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/floating-blog-posts-with-footer": {
+      "name": "header-navigation/floating-blog-posts-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Floating blog posts with footer",
+      "description": "A floating bar whose menus open nine blog posts over two buttons.",
+      "files": [
+        "blocks/header-navigation/FloatingBlogPostsWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/floating-feature-card": {
+      "name": "header-navigation/floating-feature-card",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Floating feature card",
+      "description": "A floating bar whose menus open links beside a card about a new release.",
+      "files": [
+        "blocks/header-navigation/FloatingFeatureCard.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/floating-four-col-slim-with-footer": {
+      "name": "header-navigation/floating-four-col-slim-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Floating four columns slim with footer",
+      "description": "A floating bar whose menus open one row of four links over a sign-up strip.",
+      "files": [
+        "blocks/header-navigation/FloatingFourColSlimWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/floating-simple-with-footer": {
+      "name": "header-navigation/floating-simple-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Floating simple with footer",
+      "description": "A floating bar whose menus open a short list of links with an “All resources” link.",
+      "files": [
+        "blocks/header-navigation/FloatingSimpleWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/floating-two-col-with-links-and-footer": {
+      "name": "header-navigation/floating-two-col-with-links-and-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Floating two columns with links and footer",
+      "description": "A floating bar whose menus open an intro, quick links and two columns over two buttons.",
+      "files": [
+        "blocks/header-navigation/FloatingTwoColWithLinksAndFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/floating-two-col-with-sidebar": {
+      "name": "header-navigation/floating-two-col-with-sidebar",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Floating two columns with sidebar",
+      "description": "A floating bar whose menus open two columns beside video tutorials, over two buttons.",
+      "files": [
+        "blocks/header-navigation/FloatingTwoColWithSidebar.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/four-col-slim-with-footer": {
+      "name": "header-navigation/four-col-slim-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Four columns slim with footer",
+      "description": "A bar whose menus open across the page: one row of four links over a sign-up strip.",
+      "files": [
+        "blocks/header-navigation/FourColSlimWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/four-col-with-footer": {
+      "name": "header-navigation/four-col-with-footer",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Four columns with footer",
+      "description": "A bar whose menus open across the page: four columns over a sign-up strip.",
+      "files": [
+        "blocks/header-navigation/FourColWithFooter.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/three-col-with-sidebar": {
+      "name": "header-navigation/three-col-with-sidebar",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Three columns with sidebar",
+      "description": "A bar whose menus open across the page: three columns beside a release card.",
+      "files": [
+        "blocks/header-navigation/ThreeColWithSidebar.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/two-col-with-links": {
+      "name": "header-navigation/two-col-with-links",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Columns with links",
+      "description": "A bar whose menus open across the page: three columns beside a list of quick links.",
+      "files": [
+        "blocks/header-navigation/TwoColWithLinks.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "header-navigation/two-col-with-sidebar": {
+      "name": "header-navigation/two-col-with-sidebar",
+      "kind": "block",
+      "category": "header-navigation",
+      "title": "Two columns with sidebar",
+      "description": "A bar whose menus open across the page: two columns beside video tutorials.",
+      "files": [
+        "blocks/header-navigation/TwoColWithSidebar.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Image",
+        "Link",
+        "NavDropdown",
+        "NavLink",
+        "Navbar"
       ],
       "dependencies": [
         "@lucide/astro"

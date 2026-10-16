@@ -30,6 +30,18 @@ import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
   </Navbar>
 </Preview>
 
+`floating` sets the bar on a rounded, raised pill:
+
+<Preview code={`<Navbar floating>…</Navbar>`} block>
+  <div class="w-full bg-neutral-faded pb-6">
+    <Navbar floating>
+      <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
+      <NavLink href="/docs">Docs</NavLink>
+      <NavLink href="/pricing">Pricing</NavLink>
+    </Navbar>
+  </div>
+</Preview>
+
 ## Add
 
 ```sh
@@ -74,6 +86,7 @@ passes through to the root `<header>` (`...rest`).
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
+| `floating` | `boolean` | `false` | The bar on a rounded, raised pill with space around it. |
 | `centered` | `boolean` | `false` | Links in the middle, brand and actions at the edges. |
 | `menuLabel` | `string` | `'Toggle menu'` | Name of the phone menu button. |
 | `secondaryLabel` | `string` | `'Section'` | Name of the `secondary` nav row. |

@@ -1,0 +1,24 @@
+---
+title: "Blog posts with footer"
+description: "A bar whose menus open across the page: nine blog posts over two buttons."
+group: Header navigation sections
+order: 17
+related: [navbar, nav-dropdown, nav-link]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="header-navigation/blog-posts-with-footer" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add header-navigation/blog-posts-with-footer
+```
+
+This copies the block to `src/components/apogee/blocks/header-navigation/` with everything it uses: Button, FeaturedIcon, Image, Link, NavDropdown, NavLink, Navbar. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- Each menu is a button with a native popover: Esc or a click outside closes it and focus returns to the button. On phones the menus are rows that expand inside the menu. No JS is needed for either.
+- Photos that only decorate have an empty `alt`; give yours one when it carries meaning.

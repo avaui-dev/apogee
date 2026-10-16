@@ -1,0 +1,99 @@
+---
+/**
+ * Blog posts with footer: A bar whose menus open across the page: nine blog posts over two buttons.
+ *
+ * @block header-navigation
+ * @order 17
+ */
+import { BookOpen, Orbit } from '@lucide/astro'
+import Navbar from '../../components/Navbar/Navbar.astro'
+import NavLink from '../../components/NavLink/NavLink.astro'
+import NavDropdown from '../../components/NavDropdown/NavDropdown.astro'
+import Link from '../../components/Link/Link.astro'
+import Button from '../../components/Button/Button.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Image from '../../components/Image/Image.astro'
+
+const posts = [
+  { title: 'Auto layout explained', text: 'How flexible layouts save hours on every screen.', image: 'https://picsum.photos/seed/apogee-nav-1/288/176' },
+  { title: 'Ways to level up your product design', text: 'Small habits that make a big difference over a year.', image: 'https://picsum.photos/seed/apogee-nav-2/288/176' },
+  { title: 'Synthesise data with affinity diagrams', text: 'Turn a wall of notes into findings your team trusts.', image: 'https://picsum.photos/seed/apogee-nav-3/288/176' },
+  { title: 'Streamline your user research', text: 'Plan, run and share research in half the time.', image: 'https://picsum.photos/seed/apogee-nav-4/288/176' },
+  { title: 'Inclusive UX research', text: 'Who you leave out shapes what you build.', image: 'https://picsum.photos/seed/apogee-nav-5/288/176' },
+  { title: 'The anatomy of a good story', text: 'Why some product stories stick and others slide off.', image: 'https://picsum.photos/seed/apogee-nav-6/288/176' },
+  { title: 'Copy that converts', text: 'Plain words, clear actions, fewer drop-offs.', image: 'https://picsum.photos/seed/apogee-nav-7/288/176' },
+  { title: 'A design presentation that lands', text: 'Show the problem first, then the work.', image: 'https://picsum.photos/seed/apogee-nav-8/288/176' },
+  { title: 'Showing the value of design', text: 'Numbers and stories that win the next budget.', image: 'https://picsum.photos/seed/apogee-nav-9/288/176' },
+]
+---
+
+<Navbar>
+  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+  <NavDropdown label="Products" fullWidth>
+    <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">
+        <ul class="list-none p-0 grid gap-2 lg:grid-cols-2 xl:grid-cols-3">
+            {posts.slice(0, 9).map((p) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-4 rounded-lg p-2 transition-colors hover:bg-neutral-faded">
+                  <Image src={p.image} alt="" width={288} height={176} fit="cover" radius="md" class="h-[5.5rem] w-36 shrink-0" />
+                  <span class="flex flex-col gap-1">
+                    <span class="line-clamp-2 font-semibold">{p.title}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{p.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+      </div>
+      <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
+          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
+          <Button href="#" size="small">View all posts</Button>
+        </div>
+  </NavDropdown>
+  <NavDropdown label="Services" fullWidth>
+    <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">
+        <ul class="list-none p-0 grid gap-2 lg:grid-cols-2 xl:grid-cols-3">
+            {posts.slice(0, 9).map((p) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-4 rounded-lg p-2 transition-colors hover:bg-neutral-faded">
+                  <Image src={p.image} alt="" width={288} height={176} fit="cover" radius="md" class="h-[5.5rem] w-36 shrink-0" />
+                  <span class="flex flex-col gap-1">
+                    <span class="line-clamp-2 font-semibold">{p.title}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{p.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+      </div>
+      <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
+          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
+          <Button href="#" size="small">View all posts</Button>
+        </div>
+  </NavDropdown>
+  <NavLink href="#">Pricing</NavLink>
+  <NavDropdown label="Resources" fullWidth>
+    <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">
+        <ul class="list-none p-0 grid gap-2 lg:grid-cols-2 xl:grid-cols-3">
+            {posts.slice(0, 9).map((p) => (
+              <li>
+                <Link href="#" color="inherit" underline="none" class="flex gap-4 rounded-lg p-2 transition-colors hover:bg-neutral-faded">
+                  <Image src={p.image} alt="" width={288} height={176} fit="cover" radius="md" class="h-[5.5rem] w-36 shrink-0" />
+                  <span class="flex flex-col gap-1">
+                    <span class="line-clamp-2 font-semibold">{p.title}</span>
+                    <span class="line-clamp-2 text-sm text-neutral-faded">{p.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+      </div>
+      <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
+          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
+          <Button href="#" size="small">View all posts</Button>
+        </div>
+  </NavDropdown>
+  <NavLink href="#">About</NavLink>
+  <Button slot="actions" href="#" variant="outline" color="neutral" size="small">Log in</Button>
+  <Button slot="actions" href="#" size="small">Sign up</Button>
+</Navbar>
