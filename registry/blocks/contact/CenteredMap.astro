@@ -18,15 +18,22 @@ const stores = [
   { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
   { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
 ]
+
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
+const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Locations" heading="Visit our stores" description="Find us at these locations." align="center" class="mb-16" />
+  <SectionHeader headingLevel={headingLevel} eyebrow="Locations" heading="Visit our stores" description="Find us at these locations." align="center" class="mb-16" />
   <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)]">
     <ul class="list-none p-0 flex flex-col gap-8">
     {stores.slice(0, 3).map((s) => (
       <li class="flex flex-col gap-1">
-        <Heading as="h3" size="h6">{s.city}</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h6">{s.city}</Heading>
         <p class="apogee-store-address">{s.address}</p>
       </li>
     ))}
@@ -35,7 +42,7 @@ const stores = [
     <ul class="list-none p-0 flex flex-col gap-8">
     {stores.slice(3).map((s) => (
       <li class="flex flex-col gap-1">
-        <Heading as="h3" size="h6">{s.city}</Heading>
+        <Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h6">{s.city}</Heading>
         <p class="apogee-store-address">{s.address}</p>
       </li>
     ))}

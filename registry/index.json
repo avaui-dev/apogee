@@ -1814,6 +1814,227 @@
       "dependencies": [],
       "usesJs": false
     },
+    "about/about-page-01": {
+      "name": "about/about-page-01",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 01",
+      "description": "A floating header, a centred heading, four figures beside a photo, customer logos, the team, six values, open positions and a large footer.",
+      "files": [
+        "pages/about/AboutPage01.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/card-04",
+        "features/simple-icons-02",
+        "footers/large-01",
+        "header-navigation/floating-simple-with-footer",
+        "header/centered",
+        "metrics/split-image-01",
+        "social-proof/full-width",
+        "team/image-card-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-02": {
+      "name": "about/about-page-02",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 02",
+      "description": "A map of offices, store addresses on the brand colour, the team, open positions, a contact form, press mentions and a brand footer.",
+      "files": [
+        "pages/about/AboutPage02.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/simple-03",
+        "contact/map-02",
+        "contact/simple-form-01",
+        "contact/simple-icons-04-brand",
+        "footers/large-01-brand",
+        "header-navigation/dropdown-simple",
+        "social-proof/press-mentions",
+        "team/simple-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-03": {
+      "name": "about/about-page-03",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 03",
+      "description": "A brand banner, a header, store addresses beside a map, the team, review cards, a call to join and a large footer.",
+      "files": [
+        "pages/about/AboutPage03.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "banner/slim-brand-full-width",
+        "contact/centered-map",
+        "cta/simple-centered",
+        "footers/large-04",
+        "header-navigation/dropdown-feature-card",
+        "team/simple-01",
+        "testimonials/social-cards-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-04": {
+      "name": "about/about-page-04",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 04",
+      "description": "A floating header, a centred heading, six team portraits on glass, figures beside a photo, one quote, a call to join and a large footer.",
+      "files": [
+        "pages/about/AboutPage04.astro"
+      ],
+      "registryDependencies": [
+        "cta/split-image-01",
+        "footers/large-05",
+        "header-navigation/floating-feature-card",
+        "header/centered",
+        "metrics/split-image-02",
+        "team/image-glass-01",
+        "testimonials/simple-centered-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-05": {
+      "name": "about/about-page-05",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 05",
+      "description": "A centred heading, figure cards on a photo, values with icons, the team, open positions, rotating quotes, a newsletter signup and a large footer.",
+      "files": [
+        "pages/about/AboutPage05.astro"
+      ],
+      "registryDependencies": [
+        "careers/simple-01",
+        "features/simple-icons-03",
+        "footers/large-06",
+        "header-navigation/dropdown-simple-with-footer",
+        "header/centered-buttons",
+        "metrics/image-with-cards-01",
+        "newsletter/simple-centered",
+        "team/simple-02",
+        "testimonials/abstract-image"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-06": {
+      "name": "about/about-page-06",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 06",
+      "description": "A split heading, figures with actions, open positions, a world map of offices, one quote in a card, a newsletter card and a large footer.",
+      "files": [
+        "pages/about/AboutPage06.astro"
+      ],
+      "registryDependencies": [
+        "careers/simple-02",
+        "contact/vector-map-03",
+        "footers/large-07",
+        "header-navigation/dropdown-simple-two-columns",
+        "header/space-between",
+        "metrics/simple-with-actions-01",
+        "newsletter/card-horizontal",
+        "testimonials/card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-07": {
+      "name": "about/about-page-07",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 07",
+      "description": "A split heading on the brand colour, feature cards, open positions in tabs, questions and a footer that opens with a call to action.",
+      "files": [
+        "pages/about/AboutPage07.astro"
+      ],
+      "registryDependencies": [
+        "careers/card-01",
+        "faq/accordion-01",
+        "features/icon-cards-01",
+        "footers/large-09",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "header/space-between-brand"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-08": {
+      "name": "about/about-page-08",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 08",
+      "description": "A centred heading, customer logos, the leadership team, open positions, a brand newsletter card, a contact form and a footer with a call to action.",
+      "files": [
+        "pages/about/AboutPage08.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/simple-04",
+        "contact/simple-form-02",
+        "footers/large-10",
+        "header-navigation/four-col-with-footer",
+        "header/centered",
+        "newsletter/card-horizontal-brand",
+        "social-proof/card",
+        "team/simple-03"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-09": {
+      "name": "about/about-page-09",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 09",
+      "description": "A split heading with buttons, figures in a grey card, the mission, case studies, a scrolling row of the team, open positions and a large footer.",
+      "files": [
+        "pages/about/AboutPage09.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/card-02",
+        "content/section-simple-02",
+        "footers/large-03",
+        "header-navigation/two-col-with-links",
+        "header/space-between-buttons",
+        "metrics/card-gray-light",
+        "team/image-glass-04",
+        "testimonials/case-study-cards"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "about/about-page-10": {
+      "name": "about/about-page-10",
+      "kind": "page",
+      "category": "about",
+      "title": "About page 10",
+      "description": "A centred heading with buttons, alternating feature rows, six values, a collage of the team, a newsletter signup and a large footer.",
+      "files": [
+        "pages/about/AboutPage10.astro"
+      ],
+      "registryDependencies": [
+        "features/alternating-layout-01",
+        "features/simple-icons-02",
+        "footers/large-08",
+        "header-navigation/three-col-with-sidebar",
+        "header/centered-buttons",
+        "newsletter/simple-left",
+        "team/image-collage-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "forgot-password/check-email": {
       "name": "forgot-password/check-email",
       "kind": "page",

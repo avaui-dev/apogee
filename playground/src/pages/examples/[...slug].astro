@@ -9,12 +9,12 @@ import { examples } from '../../components/examples'
 export function getStaticPaths() {
   return Object.entries(examples).map(([slug, e]) => ({ params: { slug }, props: e }))
 }
-const { title, Page } = Astro.props
+const { title, Page, source } = Astro.props
 // Headers open panels and a phone menu below the bar: give the frame room to show them.
 const roomy = Astro.params.slug?.startsWith('header-navigation/')
 ---
 
-<Example title={title}>
+<Example title={title} ownMain={source.includes('<main')}>
   <Page />
   {roomy && <div class="h-[36rem]" aria-hidden="true"></div>}
 </Example>

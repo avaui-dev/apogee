@@ -1,0 +1,25 @@
+---
+title: "About page 04"
+description: "A floating header, a centred heading, six team portraits on glass, figures beside a photo, one quote, a call to join and a large footer."
+group: About pages
+order: 4
+related: [sections/team, sections/stats, sections/page-header]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="about/about-page-04" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add about/about-page-04
+```
+
+This copies the page to `src/components/apogee/pages/about/` with the blocks it stacks and everything they use: [header-navigation/floating-feature-card](/docs/header-navigation-sections/floating-feature-card), [header/centered](/docs/header-sections/centered), [team/image-glass-01](/docs/team-sections/image-glass-01), [metrics/split-image-02](/docs/metrics-sections/split-image-02), [testimonials/simple-centered-02](/docs/testimonials-sections/simple-centered-02), [cta/split-image-01](/docs/cta-sections/split-image-01), [footers/large-05](/docs/footers-sections/large-05). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/centered) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

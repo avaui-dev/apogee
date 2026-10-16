@@ -1,0 +1,24 @@
+---
+/**
+ * About page 10: A centred heading with buttons, alternating feature rows, six values, a collage of the team, a newsletter signup and a large footer.
+ *
+ * @page about
+ */
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Header from '../../blocks/header/CenteredButtons.astro'
+import Features from '../../blocks/features/AlternatingLayout01.astro'
+import Features2 from '../../blocks/features/SimpleIcons02.astro'
+import Team from '../../blocks/team/ImageCollage02.astro'
+import Newsletter from '../../blocks/newsletter/SimpleLeft.astro'
+import Footer from '../../blocks/footers/Large08.astro'
+---
+
+<Navigation />
+<main>
+  <Header />
+  <Features />
+  <Features2 />
+  <Team />
+  <Newsletter />
+</main>
+<Footer />

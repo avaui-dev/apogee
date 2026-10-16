@@ -1,0 +1,30 @@
+---
+title: About pages
+navTitle: Overview
+description: "Whole about pages: the company, its figures, the team, values, open positions and ways to get in touch, each between a header and a footer."
+group: About pages
+order: -1
+related: [sections/team, sections/stats, sections/page-header]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole page stacked from blocks: a header navigation, an inner-page header, sections such as [team](/docs/team-sections), [metrics](/docs/metrics-sections) and [careers](/docs/careers-sections), and a footer. Adding a page copies those blocks too, so you can edit one block and every page that uses it follows. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add about/about-page-01
+```
+
+```astro
+---
+// src/pages/about.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/about/AboutPage01.astro'
+---
+
+<Layout title="About">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="About pages" self="about-pages" />

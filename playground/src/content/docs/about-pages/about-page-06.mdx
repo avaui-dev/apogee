@@ -1,0 +1,25 @@
+---
+title: "About page 06"
+description: "A split heading, figures with actions, open positions, a world map of offices, one quote in a card, a newsletter card and a large footer."
+group: About pages
+order: 6
+related: [sections/team, sections/stats, sections/page-header]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="about/about-page-06" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add about/about-page-06
+```
+
+This copies the page to `src/components/apogee/pages/about/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple-two-columns](/docs/header-navigation-sections/dropdown-simple-two-columns), [header/space-between](/docs/header-sections/space-between), [metrics/simple-with-actions-01](/docs/metrics-sections/simple-with-actions-01), [careers/simple-02](/docs/careers-sections/simple-02), [contact/vector-map-03](/docs/contact-sections/vector-map-03), [testimonials/card](/docs/testimonials-sections/card), [newsletter/card-horizontal](/docs/newsletter-sections/card-horizontal), [footers/large-07](/docs/footers-sections/large-07). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/space-between) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

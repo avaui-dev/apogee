@@ -5,6 +5,16 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+### Added
+
+- **About pages:** 10 whole about pages, each stacked from blocks (a header navigation, an inner-page header, team, metrics, careers, testimonials and more, then a footer). `apogee add about/about-page-01` copies the page and the blocks it uses.
+- **Pages built from blocks:** the registry records each block a page imports, so `apogee add` pulls those blocks in with the page.
+- **Contact blocks** `map-02` and `centered-map` take `headingLevel={1}` to open a page; their item headings move down with it.
+
+### Fixed
+
+- **Careers** `card-01` and **Content** `simple` blocks: the centred tab row no longer runs past the screen on phones; it scrolls inside its column.
+
 ## [0.5.0] — 2026-10-16
 
 ### Changed

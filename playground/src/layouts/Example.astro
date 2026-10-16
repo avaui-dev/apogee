@@ -9,8 +9,10 @@ import BrandHead from '../components/BrandHead.astro'
 
 interface Props {
   title: string
+  /** The page brings its own header, <main> and footer, so the layout adds no <main>. */
+  ownMain?: boolean
 }
-const { title } = Astro.props
+const { title, ownMain = false } = Astro.props
 ---
 
 <!doctype html>
@@ -31,8 +33,6 @@ const { title } = Astro.props
     </script>
   </head>
   <body class="min-h-dvh bg-page text-neutral">
-    <main>
-      <slot />
-    </main>
+    {ownMain ? <slot /> : <main><slot /></main>}
   </body>
 </html>

@@ -28,14 +28,21 @@ const pins = [
   { label: 'Tokyo', detail: '1-1 Marunouchi, Chiyoda City, Tokyo JP', lat: 35.6812, lon: 139.7671 },
   { label: 'Cape Town', detail: '100 Long Street, Cape Town 8001 ZA', lat: -33.9213, lon: 18.418 },
 ]
+
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
+const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Contact us" heading="We'd love to hear from you" description="Our friendly team is always here to chat." align="center" class="mb-16" />
+  <SectionHeader headingLevel={headingLevel} eyebrow="Contact us" heading="We'd love to hear from you" description="Our friendly team is always here to chat." align="center" class="mb-16" />
   <WorldMap pins={pins} label="Our offices" class="mb-16 max-lg:hidden" />
   <ul class="list-none p-0 grid gap-6 md:grid-cols-3">
     {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} variant="card"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
+      <li><ContactMethod title={m.title} description={m.description} link={m.link} variant="card" headingLevel={itemLevel}><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
     ))}
   </ul>
 </Section>

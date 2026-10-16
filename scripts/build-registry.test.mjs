@@ -41,3 +41,20 @@ test('blocks are keyed by category/slug like pages, with their own kind', () => 
   assert.ok(block.title && block.description.length > 10)
   for (const dep of ['Banner', 'Input', 'Button']) assert.ok(block.registryDependencies.includes(dep), `depends on ${dep}`)
 })
+
+test('a page that imports a block depends on that block by its category/slug key', () => {
+  const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-z])([0-9])/g, '$1-$2').toLowerCase()
+  const pages = Object.values(index.components).filter((c) => c.kind === 'page')
+  let seen = 0
+  for (const p of pages) {
+    const src = readFileSync(new URL(`../registry/${p.files[0]}`, import.meta.url), 'utf8')
+    for (const [, cat, file] of src.matchAll(/from '\.\.\/\.\.\/blocks\/([\w-]+)\/(\w+)\.astro'/g)) {
+      const key = `${cat}/${kebab(file)}`
+      assert.ok(index.components[key]?.kind === 'block', `${key} is a block`)
+      assert.ok(p.registryDependencies.includes(key), `${p.name} depends on ${key}`)
+      assert.ok(!p.registryDependencies.includes(cat), `${p.name} does not depend on a bare "${cat}"`)
+      seen++
+    }
+  }
+  assert.ok(seen > 0, 'at least one page imports a block')
+})

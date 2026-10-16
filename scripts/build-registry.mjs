@@ -30,7 +30,11 @@ const depsOf = (src, self) => {
   for (const m of src.matchAll(IMPORT_RE)) {
     const spec = m[1] ?? m[2]
     if (!spec) continue
-    if (spec.startsWith('../') && (spec.endsWith('.astro') || spec.endsWith('.ts'))) {
+    const block = spec.match(/^\.\.\/\.\.\/blocks\/([\w-]+)\/(\w+)\.astro$/)
+    if (block) {
+      // A page built from blocks depends on each by its key: ../../blocks/team/Simple01.astro → team/simple-01.
+      registryDeps.add(`${block[1]}/${block[2].replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-z])([0-9])/g, '$1-$2').toLowerCase()}`)
+    } else if (spec.startsWith('../') && (spec.endsWith('.astro') || spec.endsWith('.ts'))) {
       const depDir = spec.split('/').at(-2)
       if (depDir && depDir !== self) registryDeps.add(depDir)
     } else if (!spec.startsWith('.') && !spec.startsWith('/') && !spec.startsWith('astro')) {

@@ -1,0 +1,25 @@
+---
+title: "About page 07"
+description: "A split heading on the brand colour, feature cards, open positions in tabs, questions and a footer that opens with a call to action."
+group: About pages
+order: 7
+related: [sections/team, sections/stats, sections/page-header]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="about/about-page-07" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add about/about-page-07
+```
+
+This copies the page to `src/components/apogee/pages/about/` with the blocks it stacks and everything they use: [header-navigation/dropdown-two-cols-with-links-and-footer](/docs/header-navigation-sections/dropdown-two-cols-with-links-and-footer), [header/space-between-brand](/docs/header-sections/space-between-brand), [features/icon-cards-01](/docs/features-sections/icon-cards-01), [careers/card-01](/docs/careers-sections/card-01), [faq/accordion-01](/docs/faq-sections/accordion-01), [footers/large-09](/docs/footers-sections/large-09). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (header/space-between-brand) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

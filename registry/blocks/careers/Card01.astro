@@ -79,7 +79,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
 <Section spacing="large" containerWidth="medium">
   <SectionHeader eyebrow="We're hiring!" heading="Open positions" description="Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work." align="center" class="mb-12" />
-  <Tabs tabs={departments.map((d) => ({ label: d, value: slug(d) }))} variant="pills-raised" class="[&_.apogee-tabs-list]:mx-auto [&_.apogee-tabs-list]:w-fit">
+  <Tabs tabs={departments.map((d) => ({ label: d, value: slug(d) }))} variant="pills-raised" class="[&_.apogee-tabs-list]:mx-auto [&_.apogee-tabs-list]:w-fit [&_.apogee-tabs-list]:max-w-full">
     {departments.map((d) => (
       <ul slot={`panel-${slug(d)}`} class="mt-8 flex list-none flex-col gap-6 p-0">
         {jobs.filter((job) => d === 'View all' || job.department === d).map((job) => <li><JobCard job={job} variant="card" /></li>)}

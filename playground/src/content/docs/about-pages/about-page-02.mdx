@@ -1,0 +1,25 @@
+---
+title: "About page 02"
+description: "A map of offices, store addresses on the brand colour, the team, open positions, a contact form, press mentions and a brand footer."
+group: About pages
+order: 2
+related: [sections/team, sections/stats, sections/page-header]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="about/about-page-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add about/about-page-02
+```
+
+This copies the page to `src/components/apogee/pages/about/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple](/docs/header-navigation-sections/dropdown-simple), [contact/map-02](/docs/contact-sections/map-02), [contact/simple-icons-04-brand](/docs/contact-sections/simple-icons-04-brand), [team/simple-02](/docs/team-sections/simple-02), [careers/simple-03](/docs/careers-sections/simple-03), [contact/simple-form-01](/docs/contact-sections/simple-form-01), [social-proof/press-mentions](/docs/social-proof-sections/press-mentions), [footers/large-01-brand](/docs/footers-sections/large-01-brand). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (contact/map-02) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

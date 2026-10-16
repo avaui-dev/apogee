@@ -1,0 +1,28 @@
+---
+/**
+ * About page 08: A centred heading, customer logos, the leadership team, open positions, a brand newsletter card, a contact form and a footer with a call to action.
+ *
+ * @page about
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Header from '../../blocks/header/Centered.astro'
+import Logos from '../../blocks/social-proof/Card.astro'
+import Team from '../../blocks/team/Simple03.astro'
+import Careers from '../../blocks/careers/Simple04.astro'
+import Newsletter from '../../blocks/newsletter/CardHorizontalBrand.astro'
+import Contact from '../../blocks/contact/SimpleForm02.astro'
+import Footer from '../../blocks/footers/Large10.astro'
+---
+
+<Navigation />
+<main>
+  <Header />
+  <Logos />
+  <Team />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Careers />
+  <Newsletter />
+  <Contact />
+</main>
+<Footer />
