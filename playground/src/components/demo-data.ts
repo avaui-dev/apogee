@@ -1,7 +1,7 @@
 // Demo content for section docs and showcase pages. Wordmarks are inline SVGs.
 const wordmark = (text: string) =>
   `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="32" viewBox="0 0 120 32"><text x="0" y="23" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1d1f22">${text}</text></svg>`)}`
-export const logos = ['Northwind', 'Acme', 'Globex', 'Initech', 'Umbrella', 'Hooli'].map((name) => ({ src: wordmark(name), alt: name }))
+export const logos = ['Oakmere', 'Larkspur', 'Fernhill', 'Brightwell', 'Halcyon', 'Tidewater'].map((name) => ({ src: wordmark(name), alt: name }))
 export const picture = (seed: string, w = 1200, h = 800) => ({ src: `https://picsum.photos/seed/${seed}/${w}/${h}`, alt: 'Placeholder photograph', width: w, height: h })
 export const features = [
   { icon: 'zap' as const, title: 'Fast by default', description: 'Static HTML, no runtime, islands only where a browser needs one.' },
@@ -18,9 +18,9 @@ export const stats = [
   { value: 'AA', label: 'Contrast', description: 'Every pair, both themes' },
 ]
 export const quotes = [
-  { quote: 'We shipped the marketing site in a week and the design never drifted from the product.', name: 'Ada Lovelace', role: 'Head of Design, Northwind', avatar: 'https://i.pravatar.cc/96?img=5' },
-  { quote: 'The sections are honest HTML. Our editors fill them in and nothing breaks.', name: 'Alan Turing', role: 'Engineering lead, Globex', avatar: 'https://i.pravatar.cc/96?img=12' },
-  { quote: 'Dark mode, right to left, contrast: all handled before we asked.', name: 'Grace Hopper', role: 'Founder, Initech' },
+  { quote: 'We shipped the marketing site in a week and the design never drifted from the product.', name: 'Ada Lovelace', role: 'Head of Design, Oakmere', avatar: 'https://i.pravatar.cc/96?img=5' },
+  { quote: 'The sections are honest HTML. Our editors fill them in and nothing breaks.', name: 'Alan Turing', role: 'Engineering lead, Fernhill', avatar: 'https://i.pravatar.cc/96?img=12' },
+  { quote: 'Dark mode, right to left, contrast: all handled before we asked.', name: 'Grace Hopper', role: 'Founder, Brightwell' },
 ]
 export const faqs = [
   { question: 'Do I need to install a package at runtime?', answer: 'No. Components and sections are copied into your repository and build to plain HTML.' },
@@ -85,9 +85,9 @@ export const tableColumns = [
   { key: 'status', label: 'Status' },
 ]
 export const tableRows = [
-  { name: 'Northwind', plan: 'Pro', seats: 24, status: 'Active' },
-  { name: 'Acme', plan: 'Agency', seats: 120, status: 'Active' },
-  { name: 'Globex', plan: 'Starter', seats: 3, status: 'Trial' },
-  { name: 'Initech', plan: 'Pro', seats: 18, status: 'Past due' },
-  { name: 'Umbrella', plan: 'Agency', seats: 64, status: 'Active' },
+  { name: 'Oakmere', plan: 'Pro', seats: 24, status: 'Active' },
+  { name: 'Larkspur', plan: 'Agency', seats: 120, status: 'Active' },
+  { name: 'Fernhill', plan: 'Starter', seats: 3, status: 'Trial' },
+  { name: 'Brightwell', plan: 'Pro', seats: 18, status: 'Past due' },
+  { name: 'Halcyon', plan: 'Agency', seats: 64, status: 'Active' },
 ]

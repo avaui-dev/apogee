@@ -1,0 +1,23 @@
+---
+title: "Large screen mockup 02"
+description: "A centred heading on a tinted band, over a full-width screenshot that overlaps it."
+group: Features sections
+order: 26
+related: [featured-icon, tabs, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="features/large-screen-mockup-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add features/large-screen-mockup-02
+```
+
+This copies the block to `src/components/apogee/blocks/features/` with everything it uses: Container, DeviceFrame, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.

@@ -1,0 +1,72 @@
+---
+/**
+ * Alternating layout 03: A centred heading over three rows: a screenshot, two phones, and a screenshot with a phone over it.
+ *
+ * @block features
+ * @order 3
+ */
+import { ChartLine, CircleCheck, MessagesSquare, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Features" heading="Beautiful analytics to grow smarter" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" class="mb-12 md:mb-16" />
+  <div class="flex flex-col gap-16 md:gap-24">
+    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
+      <div class="flex max-w-xl flex-col gap-8">
+        <div class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="light" color="primary" size="large"><MessagesSquare /></FeaturedIcon>
+          <Heading as="h3" size="h4">Share team inboxes</Heading>
+          <p class="text-lg text-neutral-faded">Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.</p>
+        </div>
+        <ul class="flex list-none flex-col gap-4 p-0">
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Leverage automation to move fast</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Always give customers a human to chat to</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Automate support and close leads faster</span></li>
+        </ul>
+      </div>
+      <div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 md:p-12">
+      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" />
+    </div>
+    </div>
+    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
+      <div class="flex max-w-xl flex-col gap-8 lg:order-last">
+        <div class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="light" color="primary" size="large"><Zap /></FeaturedIcon>
+          <Heading as="h3" size="h4">Deliver instant answers</Heading>
+          <p class="text-lg text-neutral-faded">One place for support, so customers get what they need without waiting on a reply.</p>
+        </div>
+        <ul class="flex list-none flex-col gap-4 p-0">
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Keep customers in the loop with live chat</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Embed help articles right on your website</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Customers never leave the page to find an answer</span></li>
+        </ul>
+      </div>
+      <div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 md:p-12">
+      <div class="flex items-end justify-center gap-6"><DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="w-44 md:w-56" /><DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customers table on a phone" class="w-44 max-md:hidden md:w-56" /></div>
+    </div>
+    </div>
+    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
+      <div class="flex max-w-xl flex-col gap-8">
+        <div class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="light" color="primary" size="large"><ChartLine /></FeaturedIcon>
+          <Heading as="h3" size="h4">Manage your team with reports</Heading>
+          <p class="text-lg text-neutral-faded">Measure what matters. Filter, export and drill down on the data in a couple of clicks.</p>
+        </div>
+        <ul class="flex list-none flex-col gap-4 p-0">
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Filter, export and drill down on the data</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Save, schedule and send reports to your inbox</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Connect the tools you already use</span></li>
+        </ul>
+      </div>
+      <div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 md:p-12">
+      <div class="relative w-full pb-12 md:pb-16"><DeviceFrame device="browser" src="/mockups/app-settings-desktop-light.jpg" srcDark="/mockups/app-settings-desktop-dark.jpg" alt="The settings page in a browser" class="w-[88%]" /><div class="absolute end-0 bottom-0 w-28 md:w-40"><DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customers table on a phone" class="" /></div></div>
+    </div>
+    </div>
+  </div>
+</Section>

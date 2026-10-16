@@ -1,0 +1,24 @@
+---
+/**
+ * Large screen mockup 02: A centred heading on a tinted band, over a full-width screenshot that overlaps it.
+ *
+ * @block features
+ * @order 26
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Container from '../../components/Container/Container.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+
+---
+
+<Section spacing="none" container={false}>
+  <div class="bg-neutral-faded pt-section-lg pb-24 md:pb-40">
+    <Container><SectionHeader eyebrow="Features" heading="Beautiful analytics to grow smarter" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" /></Container>
+  </div>
+  <Container class="-mt-16 pb-section-lg md:-mt-28">
+    <div class="max-h-105 overflow-hidden rounded-xl mask-b-from-70% md:max-h-140">
+      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" />
+    </div>
+  </Container>
+</Section>

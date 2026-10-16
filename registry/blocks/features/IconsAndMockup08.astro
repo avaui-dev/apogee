@@ -1,0 +1,51 @@
+---
+/**
+ * Icons and mockup 08: A heading over three features with links beside three payment cards fanned on the brand colour.
+ *
+ * @block features
+ * @order 24
+ */
+import { ArrowRight, ChartLine, Command, MessageCircle, MessageCircleHeart, MessagesSquare, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Link from '../../components/Link/Link.astro'
+import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+
+const features = [
+  { icon: MessagesSquare, title: 'Share team inboxes', text: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.' },
+  { icon: Zap, title: 'Deliver instant answers', text: 'One place for support, so customers get what they need without waiting on a reply.' },
+  { icon: ChartLine, title: 'Manage your team with reports', text: 'Measure what matters. Filter, export and drill down on the data in a couple of clicks.' },
+  { icon: MessageCircle, title: 'Connect with customers', text: 'Solve a problem or close a sale in real time with chat, and fall back to email when no one is free.' },
+  { icon: Command, title: 'Connect the tools you already use', text: 'Over 100 integrations make your day-to-day work faster and familiar, plus a full set of developer tools.' },
+  { icon: MessageCircleHeart, title: 'Our people make the difference', text: "We're an extension of your support team, and our help is free. Chat to us any time, day or night." },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Features" heading="Overflowing with useful features" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." class="mb-12 md:mb-16" />
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <ul class="grid list-none p-0 gap-10  ">
+    {features.slice(0, 3).map((f) => (
+      <li class="flex items-start gap-4">
+        <FeaturedIcon theme="outline" color="neutral" size="large"><f.icon /></FeaturedIcon>
+          <div class="flex flex-col items-start gap-4">
+          <div class="flex flex-col gap-2">
+            <Heading as="h3" size="h6">{f.title}</Heading>
+            <p class="text-neutral-faded">{f.text}</p>
+          </div>
+          <Link href="#" color="primary" underline="none" class="inline-flex items-center gap-1.5 font-semibold">Learn more<span class="sr-only"> about {f.title}</span><ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link>
+          </div>
+      </li>
+    ))}
+  </ul>
+    <div class="flex items-center justify-center overflow-hidden rounded-3xl bg-primary p-6 md:p-10 h-80 md:h-120">
+      <div class="relative h-full w-full max-w-md">
+        <div class="absolute inset-x-0 top-1/2 mx-auto w-56 -translate-y-1/2 -rotate-12 md:w-72"><PaymentCard color="neutral" last4="8080" /></div>
+        <div class="absolute inset-x-0 top-1/2 mx-auto w-56 -translate-y-1/2 md:w-72"><PaymentCard color="neutral" last4="1234" /></div>
+        <div class="absolute inset-x-0 top-1/2 mx-auto w-56 -translate-y-1/2 rotate-12 md:w-72"><PaymentCard color="neutral" last4="4242" /></div>
+      </div>
+    </div>
+  </div>
+</Section>

@@ -1,0 +1,83 @@
+---
+/**
+ * PaymentCard — a payment card drawn in CSS: a name, a chip, the contactless
+ * mark, the last four digits, the holder and the expiry. `variant="solid"`
+ * fills it with `color`; `glass` is a frosted pane over whatever sits behind
+ * it. It reads as one image, named by its last four digits. It fills the
+ * width it is given; the type scales with it. Zero JS.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Nfc } from '@lucide/astro'
+
+interface Props extends HTMLAttributes<'div'> {
+  /** @category layout */
+  variant?: 'solid' | 'glass'
+  /** Fill of a solid card. @category layout */
+  color?: 'primary' | 'neutral'
+  /** The name on the card. @category content */
+  name?: string
+  /** @category content */
+  holder?: string
+  /** The last four digits. @category content */
+  last4?: string
+  /** MM/YY. @category content */
+  expiry?: string
+  /** The image's name; defaults to "Payment card ending in {last4}". @category content */
+  label?: string
+  class?: string
+}
+
+const {
+  variant = 'solid',
+  color = 'primary',
+  name = 'Example',
+  holder = 'Ada Lovelace',
+  last4 = '4242',
+  expiry = '06/28',
+  label,
+  class: className,
+  ...rest
+} = Astro.props
+const fills = {
+  primary: 'bg-primary text-on-primary',
+  neutral: 'bg-inverted text-on-inverted',
+} as const
+---
+
+<div
+  role="img"
+  aria-label={label ?? `Payment card ending in ${last4}`}
+  class:list={[
+    'apogee-payment-card @container relative aspect-[1.586] overflow-hidden rounded-2xl shadow-raised',
+    variant === 'solid' ? fills[color] : 'apogee-payment-card-glass text-neutral ring-1 ring-neutral backdrop-blur-md',
+    className,
+  ]}
+  {...rest}
+>
+  <!-- Sized in container units (cqw) so the type scales with the card. -->
+  <div class="absolute inset-0 flex flex-col justify-between p-[6cqw]">
+    <div class="flex items-start justify-between">
+      <span class="text-[5.5cqw] font-semibold">{name}</span>
+      <Nfc class="size-[8cqw]" aria-hidden="true" />
+    </div>
+    <span class="apogee-payment-card-chip h-[10cqw] w-[13cqw] rounded-[1.8cqw]"></span>
+    <div class="flex items-end justify-between gap-[4cqw] text-[4.5cqw] font-medium tabular-nums">
+      <span class="flex min-w-0 flex-col gap-[1cqw]">
+        <span class="truncate uppercase tracking-wide">{holder}</span>
+        <span>•••• {last4}</span>
+      </span>
+      <span>{expiry}</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .apogee-payment-card-glass {
+    background: color-mix(in oklab, var(--background-page) 45%, transparent);
+  }
+  .apogee-payment-card-chip {
+    background: linear-gradient(135deg, color-mix(in oklab, currentColor 55%, transparent), color-mix(in oklab, currentColor 25%, transparent));
+  }
+</style>

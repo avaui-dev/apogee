@@ -2733,3 +2733,39 @@ test('accordion plus icon turns to a minus when the item opens', async ({ page }
   await expect(item.locator('.apogee-accordion-minus')).toBeVisible()
   await expect(item.locator('.apogee-accordion-plus')).toBeHidden()
 })
+
+test('feature tabs: named by the title, described by the line, and they switch panels', async ({ page }) => {
+  await page.goto('/docs/tabs')
+  const root = page.locator('[data-apogee-feature-tabs] .apogee-tabs').first()
+  const second = root.getByRole('tab', { name: 'Know your customers', exact: true })
+  await expect(second).toHaveAccessibleDescription('Every account, plan and seat in one table.')
+  await second.click()
+  await expect(second).toHaveAttribute('aria-selected', 'true')
+  await expect(root.getByRole('tabpanel')).toHaveText(/customers panel/)
+})
+
+test('video player: the play button starts the video and hands over to the native controls', async ({ page }) => {
+  await page.goto('/docs/video-player')
+  const player = page.locator('.apogee-video').first()
+  const video = player.locator('video')
+  await expect(video).not.toHaveAttribute('controls')
+  await player.getByRole('button', { name: 'Play video: A tour of the dashboard' }).click()
+  await expect(video).toHaveAttribute('controls')
+  await expect(player.getByRole('button', { name: /Play video/ })).toBeHidden()
+  await expect.poll(() => video.evaluate((v) => !v.paused || v.ended)).toBe(true)
+})
+
+test('video player works without JS through the native controls', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false })
+  const page = await context.newPage()
+  await page.goto('/docs/video-player')
+  const player = page.locator('.apogee-video').first()
+  await expect(player.locator('video')).toHaveAttribute('controls')
+  await expect(player.getByRole('button', { name: /Play video/ })).toBeHidden()
+  await context.close()
+})
+
+test('payment card is one image named by its last four digits', async ({ page }) => {
+  await page.goto('/docs/payment-card')
+  await expect(page.getByRole('img', { name: 'Payment card ending in 4242' }).first()).toBeVisible()
+})

@@ -9,14 +9,14 @@ import Preview from '../../../components/Preview.astro'
 import PageHeader from '../../../../../registry/sections/PageHeader/PageHeader.astro'
 import Button from '../../../../../registry/components/Button/Button.astro'
 
-export const crumbs = [{ label: 'Home', href: '#' }, { label: 'Customers', href: '#' }, { label: 'Northwind' }]
+export const crumbs = [{ label: 'Home', href: '#' }, { label: 'Customers', href: '#' }, { label: 'Oakmere' }]
 export const tabs = [{ label: 'Overview', href: '#', active: true }, { label: 'Billing', href: '#' }, { label: 'Members', href: '#' }, { label: 'Settings', href: '#' }]
 
-<Preview block code={`<PageHeader layout="with-actions" breadcrumbs={[{ label, href? }]} heading="Northwind" description="…">
+<Preview block code={`<PageHeader layout="with-actions" breadcrumbs={[{ label, href? }]} heading="Oakmere" description="…">
   <Button slot="actions" variant="outline" color="neutral">Export</Button>
   <Button slot="actions">New invoice</Button>
 </PageHeader>`}>
-  <PageHeader layout="with-actions" breadcrumbs={crumbs} heading="Northwind" description="Customer since March 2024." headingLevel={2}>
+  <PageHeader layout="with-actions" breadcrumbs={crumbs} heading="Oakmere" description="Customer since March 2024." headingLevel={2}>
     <Button slot="actions" variant="outline" color="neutral">Export</Button>
     <Button slot="actions">New invoice</Button>
   </PageHeader>
@@ -44,9 +44,9 @@ npx @ava-ui/apogee add page-header
 ## Layouts
 
 <Preview block code={`<PageHeader heading="Customers" />
-<PageHeader layout="with-tabs" heading="Northwind" tabs={[{ label, href, active? }]} />`}>
+<PageHeader layout="with-tabs" heading="Oakmere" tabs={[{ label, href, active? }]} />`}>
   <PageHeader heading="Customers" description="Everyone with an account." headingLevel={2} />
-  <PageHeader layout="with-tabs" breadcrumbs={crumbs} heading="Northwind" tabs={tabs} headingLevel={2} />
+  <PageHeader layout="with-tabs" breadcrumbs={crumbs} heading="Oakmere" tabs={tabs} headingLevel={2} />
 </Preview>
 
 ## Accessibility

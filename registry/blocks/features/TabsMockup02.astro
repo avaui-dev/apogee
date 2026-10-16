@@ -1,0 +1,31 @@
+---
+/**
+ * Tabs mockup 02: A heading over two phones, with feature tabs under it that switch what it shows.
+ *
+ * @block features
+ * @order 28
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+
+const tabs = [
+  { label: 'Track what matters', description: 'Revenue, active users, churn and open tickets on one screen.' },
+  { label: 'Know your customers', description: 'Every account with its plan, seats and status, searchable and sortable.' },
+  { label: 'Set it up your way', description: 'Profile, language and notifications, saved in one place.' },
+]
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-4 items-center mb-12 md:mb-16">
+    <Badge color="primary" variant="faded" rounded>Features</Badge>
+    <SectionHeader heading="Cutting-edge features for advanced analytics" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" />
+  </div>
+  <Tabs variant="feature" tabs={tabs} label="Features" class="flex flex-col-reverse gap-12 md:gap-16 ">
+    <div slot="panel-0" class="flex justify-center"><div class="flex items-end justify-center gap-6"><DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="w-52 md:w-64" /><DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customers table on a phone" class="w-52 max-md:hidden md:w-64" /></div></div>
+    <div slot="panel-1" class="flex justify-center"><div class="flex items-end justify-center gap-6"><DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customers table on a phone" class="w-52 md:w-64" /><DeviceFrame device="phone" src="/mockups/app-settings-phone-light.jpg" srcDark="/mockups/app-settings-phone-dark.jpg" alt="The settings page on a phone" class="w-52 max-md:hidden md:w-64" /></div></div>
+    <div slot="panel-2" class="flex justify-center"><div class="flex items-end justify-center gap-6"><DeviceFrame device="phone" src="/mockups/app-settings-phone-light.jpg" srcDark="/mockups/app-settings-phone-dark.jpg" alt="The settings page on a phone" class="w-52 md:w-64" /><DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="w-52 max-md:hidden md:w-64" /></div></div>
+  </Tabs>
+</Section>

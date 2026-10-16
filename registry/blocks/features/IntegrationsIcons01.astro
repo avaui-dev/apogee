@@ -1,0 +1,51 @@
+---
+/**
+ * Integrations icons 01: A heading and two buttons beside a grid of eight integration icons.
+ *
+ * @block features
+ * @order 39
+ */
+import { BookOpen, Bug, Calendar, CirclePlay, CreditCard, FileText, Folder, GitBranch, HardDrive, LifeBuoy, Mail, MessageCircle, MessagesSquare, PenTool, Ticket, Users, Workflow } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+const tools = [
+  { name: 'Docs', icon: FileText },
+  { name: 'Chat', icon: MessagesSquare },
+  { name: 'Drive', icon: HardDrive },
+  { name: 'Help desk', icon: LifeBuoy },
+  { name: 'Issues', icon: Bug },
+  { name: 'Files', icon: Folder },
+  { name: 'Payments', icon: CreditCard },
+  { name: 'Automations', icon: Workflow },
+  { name: 'Design', icon: PenTool },
+  { name: 'Wiki', icon: BookOpen },
+  { name: 'Email', icon: Mail },
+  { name: 'Tickets', icon: Ticket },
+  { name: 'Calendar', icon: Calendar },
+  { name: 'Messages', icon: MessageCircle },
+  { name: 'Community', icon: Users },
+  { name: 'Code', icon: GitBranch },
+]
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="flex flex-col items-start gap-8">
+      <div class="flex flex-col gap-4 items-start ">
+    <Badge color="primary" variant="faded" rounded>Integrations</Badge>
+    <SectionHeader heading="Get more value from your tools" description="Connect your tools, connect your teams. With over 100 apps already in our directory, your team's favourite tools are a click away." />
+  </div>
+      <div class="flex flex-col gap-3 sm:flex-row">
+      <Button href="#" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+      <Button href="#">All integrations</Button>
+    </div>
+    </div>
+    <ul class="grid list-none grid-cols-4 justify-items-center gap-4 p-0 md:gap-8">
+      {tools.slice(0, 8).map((t) => <li><FeaturedIcon theme="outline" color="neutral" size="xlarge" label={t.name} class=""><t.icon /></FeaturedIcon></li>)}
+    </ul>
+  </div>
+</Section>

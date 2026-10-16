@@ -831,6 +831,18 @@
       ],
       "usesJs": true
     },
+    "PaymentCard": {
+      "name": "PaymentCard",
+      "kind": "component",
+      "files": [
+        "PaymentCard/PaymentCard.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "PinInput": {
       "name": "PinInput",
       "kind": "component",
@@ -1327,6 +1339,20 @@
       ],
       "registryDependencies": [
         "Checkbox",
+        "utils"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": true
+    },
+    "VideoPlayer": {
+      "name": "VideoPlayer",
+      "kind": "component",
+      "files": [
+        "VideoPlayer/VideoPlayer.astro"
+      ],
+      "registryDependencies": [
         "utils"
       ],
       "dependencies": [
@@ -5997,6 +6023,935 @@
         "Link",
         "Section",
         "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/alternating-layout-01": {
+      "name": "features/alternating-layout-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Alternating layout 01",
+      "description": "A centred heading over three rows of text and a screenshot, swapping sides, each with three points.",
+      "files": [
+        "blocks/features/AlternatingLayout01.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/alternating-layout-02": {
+      "name": "features/alternating-layout-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Alternating layout 02",
+      "description": "A centred heading over three rows of text, buttons and a screenshot on a panel, swapping sides.",
+      "files": [
+        "blocks/features/AlternatingLayout02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/alternating-layout-03": {
+      "name": "features/alternating-layout-03",
+      "kind": "block",
+      "category": "features",
+      "title": "Alternating layout 03",
+      "description": "A centred heading over three rows: a screenshot, two phones, and a screenshot with a phone over it.",
+      "files": [
+        "blocks/features/AlternatingLayout03.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/alternating-layout-04": {
+      "name": "features/alternating-layout-04",
+      "kind": "block",
+      "category": "features",
+      "title": "Alternating layout 04",
+      "description": "A centred heading over three rows of text and a tall photo, swapping sides.",
+      "files": [
+        "blocks/features/AlternatingLayout04.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/center-mockup-01": {
+      "name": "features/center-mockup-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Center mockup 01",
+      "description": "A centred heading over a large screenshot, then three features with links.",
+      "files": [
+        "blocks/features/CenterMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/center-mockup-02": {
+      "name": "features/center-mockup-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Center mockup 02",
+      "description": "A centred heading over a screenshot with a phone in front, then three features with links.",
+      "files": [
+        "blocks/features/CenterMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icon-cards-01": {
+      "name": "features/icon-cards-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Icon cards 01",
+      "description": "A heading over four feature cards in a row, each with a link.",
+      "files": [
+        "blocks/features/IconCards01.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icon-cards-02": {
+      "name": "features/icon-cards-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Icon cards 02",
+      "description": "An icon and heading beside four feature cards, each with a link.",
+      "files": [
+        "blocks/features/IconCards02.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-image-01": {
+      "name": "features/icons-and-image-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and image 01",
+      "description": "A heading over four features with icons beside a screenshot on a panel.",
+      "files": [
+        "blocks/features/IconsAndImage01.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-image-02": {
+      "name": "features/icons-and-image-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and image 02",
+      "description": "A heading over three features with icons and links beside a photo.",
+      "files": [
+        "blocks/features/IconsAndImage02.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-image-03": {
+      "name": "features/icons-and-image-03",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and image 03",
+      "description": "A heading and two features on a tinted band, over a video that overlaps it.",
+      "files": [
+        "blocks/features/IconsAndImage03.astro"
+      ],
+      "registryDependencies": [
+        "Container",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader",
+        "VideoPlayer"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-image-04": {
+      "name": "features/icons-and-image-04",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and image 04",
+      "description": "A heading and two features on a tinted band, over a wide photo that overlaps it.",
+      "files": [
+        "blocks/features/IconsAndImage04.astro"
+      ],
+      "registryDependencies": [
+        "Container",
+        "FeaturedIcon",
+        "Heading",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-01": {
+      "name": "features/icons-and-mockup-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 01",
+      "description": "A heading over four features with icons beside a phone.",
+      "files": [
+        "blocks/features/IconsAndMockup01.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-02": {
+      "name": "features/icons-and-mockup-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 02",
+      "description": "A heading over three features with links beside a phone.",
+      "files": [
+        "blocks/features/IconsAndMockup02.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-03": {
+      "name": "features/icons-and-mockup-03",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 03",
+      "description": "A heading over three features with links beside two phones.",
+      "files": [
+        "blocks/features/IconsAndMockup03.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-04": {
+      "name": "features/icons-and-mockup-04",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 04",
+      "description": "A centred heading over a phone with two features on each side.",
+      "files": [
+        "blocks/features/IconsAndMockup04.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-05": {
+      "name": "features/icons-and-mockup-05",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 05",
+      "description": "A centred heading over a chart card with two features on each side.",
+      "files": [
+        "blocks/features/IconsAndMockup05.astro"
+      ],
+      "registryDependencies": [
+        "CircularProgress",
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-06": {
+      "name": "features/icons-and-mockup-06",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 06",
+      "description": "A heading over three features with links beside two payment cards.",
+      "files": [
+        "blocks/features/IconsAndMockup06.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-07": {
+      "name": "features/icons-and-mockup-07",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 07",
+      "description": "A heading over three features with links beside a stack of four payment cards.",
+      "files": [
+        "blocks/features/IconsAndMockup07.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/icons-and-mockup-08": {
+      "name": "features/icons-and-mockup-08",
+      "kind": "block",
+      "category": "features",
+      "title": "Icons and mockup 08",
+      "description": "A heading over three features with links beside three payment cards fanned on the brand colour.",
+      "files": [
+        "blocks/features/IconsAndMockup08.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "PaymentCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/integrations-icons-01": {
+      "name": "features/integrations-icons-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Integrations icons 01",
+      "description": "A heading and two buttons beside a grid of eight integration icons.",
+      "files": [
+        "blocks/features/IntegrationsIcons01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/integrations-icons-02": {
+      "name": "features/integrations-icons-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Integrations icons 02",
+      "description": "A centred heading over sixteen integration icons and a button.",
+      "files": [
+        "blocks/features/IntegrationsIcons02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/integrations-icons-03": {
+      "name": "features/integrations-icons-03",
+      "kind": "block",
+      "category": "features",
+      "title": "Integrations icons 03",
+      "description": "A centred heading over six integrations with icons and links.",
+      "files": [
+        "blocks/features/IntegrationsIcons03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/integrations-icons-04": {
+      "name": "features/integrations-icons-04",
+      "kind": "block",
+      "category": "features",
+      "title": "Integrations icons 04",
+      "description": "A centred heading over six integration cards, each icon overlapping its card.",
+      "files": [
+        "blocks/features/IntegrationsIcons04.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/large-screen-mockup-01": {
+      "name": "features/large-screen-mockup-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Large screen mockup 01",
+      "description": "A centred heading over a full-width screenshot cropped at the bottom edge.",
+      "files": [
+        "blocks/features/LargeScreenMockup01.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/large-screen-mockup-02": {
+      "name": "features/large-screen-mockup-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Large screen mockup 02",
+      "description": "A centred heading on a tinted band, over a full-width screenshot that overlaps it.",
+      "files": [
+        "blocks/features/LargeScreenMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Container",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/simple-icons-01": {
+      "name": "features/simple-icons-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 01",
+      "description": "Three features with icons, centred, with no heading.",
+      "files": [
+        "blocks/features/SimpleIcons01.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/simple-icons-01-brand": {
+      "name": "features/simple-icons-01-brand",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 01 brand",
+      "description": "Three features with icons, centred, with no heading, on the brand colour.",
+      "files": [
+        "blocks/features/SimpleIcons01Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/simple-icons-02": {
+      "name": "features/simple-icons-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 02",
+      "description": "A centred heading over six features with icons.",
+      "files": [
+        "blocks/features/SimpleIcons02.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/simple-icons-02-brand": {
+      "name": "features/simple-icons-02-brand",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 02 brand",
+      "description": "A centred heading over six features with icons, on the brand colour.",
+      "files": [
+        "blocks/features/SimpleIcons02Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/simple-icons-03": {
+      "name": "features/simple-icons-03",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 03",
+      "description": "A heading over six features with icons and a link each.",
+      "files": [
+        "blocks/features/SimpleIcons03.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/simple-icons-03-brand": {
+      "name": "features/simple-icons-03-brand",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 03 brand",
+      "description": "A heading over six features with icons and a link each, on the brand colour.",
+      "files": [
+        "blocks/features/SimpleIcons03Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/simple-icons-04": {
+      "name": "features/simple-icons-04",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 04",
+      "description": "An icon and heading beside six features in two columns.",
+      "files": [
+        "blocks/features/SimpleIcons04.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/simple-icons-04-brand": {
+      "name": "features/simple-icons-04-brand",
+      "kind": "block",
+      "category": "features",
+      "title": "Simple icons 04 brand",
+      "description": "An icon and heading beside six features in two columns, on the brand colour.",
+      "files": [
+        "blocks/features/SimpleIcons04Brand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "features/tabs-mockup-01": {
+      "name": "features/tabs-mockup-01",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 01",
+      "description": "A heading over a screenshot, with feature tabs under it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-02": {
+      "name": "features/tabs-mockup-02",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 02",
+      "description": "A heading over two phones, with feature tabs under it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-03": {
+      "name": "features/tabs-mockup-03",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 03",
+      "description": "A heading over a phone, with feature tabs under it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-04": {
+      "name": "features/tabs-mockup-04",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 04",
+      "description": "A heading over a phone on an arch with notifications beside it, with feature tabs under it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Badge",
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-05": {
+      "name": "features/tabs-mockup-05",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 05",
+      "description": "A heading over a screenshot on a panel, with feature tabs beside it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup05.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-06": {
+      "name": "features/tabs-mockup-06",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 06",
+      "description": "A heading over a screenshot with a phone in front, with feature tabs beside it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup06.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-07": {
+      "name": "features/tabs-mockup-07",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 07",
+      "description": "A heading over a screenshot, with feature tabs beside it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup07.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-08": {
+      "name": "features/tabs-mockup-08",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 08",
+      "description": "A heading over a screenshot on a tinted panel, with feature tabs beside it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup08.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-09": {
+      "name": "features/tabs-mockup-09",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 09",
+      "description": "A heading over two phones, with feature tabs beside it that switch what it shows.",
+      "files": [
+        "blocks/features/TabsMockup09.astro"
+      ],
+      "registryDependencies": [
+        "DeviceFrame",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-10": {
+      "name": "features/tabs-mockup-10",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 10",
+      "description": "A heading over feature tabs beside payment cards; each tab shows its own arrangement.",
+      "files": [
+        "blocks/features/TabsMockup10.astro"
+      ],
+      "registryDependencies": [
+        "PaymentCard",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-11": {
+      "name": "features/tabs-mockup-11",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 11",
+      "description": "A heading over feature tabs beside a stack of payment cards; each tab shows its own arrangement.",
+      "files": [
+        "blocks/features/TabsMockup11.astro"
+      ],
+      "registryDependencies": [
+        "PaymentCard",
+        "Section",
+        "SectionHeader",
+        "Tabs"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "features/tabs-mockup-12": {
+      "name": "features/tabs-mockup-12",
+      "kind": "block",
+      "category": "features",
+      "title": "Tabs mockup 12",
+      "description": "A heading over feature tabs beside payment cards on the brand colour; each tab shows its own arrangement.",
+      "files": [
+        "blocks/features/TabsMockup12.astro"
+      ],
+      "registryDependencies": [
+        "PaymentCard",
+        "Section",
+        "SectionHeader",
+        "Tabs"
       ],
       "dependencies": [],
       "usesJs": false

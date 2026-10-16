@@ -1,0 +1,66 @@
+---
+/**
+ * Alternating layout 04: A centred heading over three rows of text and a tall photo, swapping sides.
+ *
+ * @block features
+ * @order 4
+ */
+import { ChartLine, CircleCheck, MessagesSquare, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Image from '../../components/Image/Image.astro'
+
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Features" heading="Beautiful analytics to grow smarter" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" class="mb-12 md:mb-16" />
+  <div class="flex flex-col gap-16 md:gap-24">
+    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
+      <div class="flex max-w-xl flex-col gap-8">
+        <div class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="light" color="primary" size="large"><MessagesSquare /></FeaturedIcon>
+          <Heading as="h3" size="h4">Share team inboxes</Heading>
+          <p class="text-lg text-neutral-faded">Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.</p>
+        </div>
+        <ul class="flex list-none flex-col gap-4 p-0">
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Leverage automation to move fast</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Always give customers a human to chat to</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Automate support and close leads faster</span></li>
+        </ul>
+      </div>
+      <Image src="https://picsum.photos/seed/apogee-features-1/1200/1100" alt="" width={1200} height={1100} fit="cover" radius="xl" class="h-80 w-full md:h-140" />
+    </div>
+    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
+      <div class="flex max-w-xl flex-col gap-8 lg:order-last">
+        <div class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="light" color="primary" size="large"><Zap /></FeaturedIcon>
+          <Heading as="h3" size="h4">Deliver instant answers</Heading>
+          <p class="text-lg text-neutral-faded">One place for support, so customers get what they need without waiting on a reply.</p>
+        </div>
+        <ul class="flex list-none flex-col gap-4 p-0">
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Keep customers in the loop with live chat</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Embed help articles right on your website</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Customers never leave the page to find an answer</span></li>
+        </ul>
+      </div>
+      <Image src="https://picsum.photos/seed/apogee-features-2/1200/1100" alt="" width={1200} height={1100} fit="cover" radius="xl" class="h-80 w-full md:h-140" />
+    </div>
+    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
+      <div class="flex max-w-xl flex-col gap-8">
+        <div class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="light" color="primary" size="large"><ChartLine /></FeaturedIcon>
+          <Heading as="h3" size="h4">Manage your team with reports</Heading>
+          <p class="text-lg text-neutral-faded">Measure what matters. Filter, export and drill down on the data in a couple of clicks.</p>
+        </div>
+        <ul class="flex list-none flex-col gap-4 p-0">
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Filter, export and drill down on the data</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Save, schedule and send reports to your inbox</span></li>
+          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Connect the tools you already use</span></li>
+        </ul>
+      </div>
+      <Image src="https://picsum.photos/seed/apogee-features-3/1200/1100" alt="" width={1200} height={1100} fit="cover" radius="xl" class="h-80 w-full md:h-140" />
+    </div>
+  </div>
+</Section>

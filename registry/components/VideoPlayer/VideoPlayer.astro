@@ -1,0 +1,85 @@
+---
+/**
+ * VideoPlayer — a native `<video>` behind a poster and one large play button.
+ * The island hides the browser's controls until the first play, then hands
+ * over to them (seek, volume, captions, full screen). Without JS the native
+ * controls show from the start and the play button is hidden. `captions`
+ * adds a WebVTT track; `title` names the button and the video.
+ *
+ * @composable
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { Play } from '@lucide/astro'
+
+interface Props extends HTMLAttributes<'figure'> {
+  /** The video file (MP4 or WebM). */
+  src: string
+  /** The image shown before it plays. */
+  poster?: string | undefined
+  /** What the video shows; names the play button. @category content */
+  title: string
+  /** A WebVTT captions file. */
+  captions?: string | undefined
+  /** Language of the captions. @category content */
+  captionsLang?: string
+  /** Width over height, for the space reserved before it loads. @category layout */
+  ratio?: '16/9' | '16/10' | '4/3' | '1/1'
+  class?: string
+}
+
+const { src, poster, title, captions, captionsLang = 'en', ratio = '16/9', class: className, ...rest } = Astro.props
+const ratios = { '16/9': 'aspect-video', '16/10': 'aspect-[16/10]', '4/3': 'aspect-[4/3]', '1/1': 'aspect-square' } as const
+---
+
+<figure class:list={['apogee-video relative m-0 overflow-hidden rounded-xl bg-inverted shadow-raised', ratios[ratio], className]} {...rest}>
+  <video class="block size-full object-cover" src={src} poster={poster} title={title} controls preload="none" playsinline>
+    {captions && <track kind="captions" src={captions} srclang={captionsLang} label="Captions" default />}
+  </video>
+  <button
+    type="button"
+    class="apogee-video-play press absolute inset-0 flex cursor-pointer items-center justify-center bg-transparent focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-focus no-js:hidden"
+    aria-label={`Play video: ${title}`}
+    hidden
+  >
+    <span class="flex size-16 items-center justify-center rounded-full bg-page/90 text-neutral shadow-raised backdrop-blur-sm transition-transform md:size-20">
+      <Play class="size-6 translate-x-0.5 fill-current md:size-8 rtl:-scale-x-100" aria-hidden="true" />
+    </span>
+  </button>
+</figure>
+
+<style>
+  .apogee-video-play:hover > span {
+    transform: scale(1.06);
+  }
+  .apogee-video-play > span {
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease-standard);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .apogee-video-play > span {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { island } from '../utils/island.ts'
+
+  island('.apogee-video', (root) => {
+    const video = root.querySelector('video')!
+    const play = root.querySelector<HTMLButtonElement>('.apogee-video-play')!
+    // Our button until the first play; the browser's controls after.
+    video.controls = false
+    play.hidden = false
+    const handOver = () => {
+      play.hidden = true
+      video.controls = true
+    }
+    play.addEventListener('click', () => {
+      handOver()
+      video.focus()
+      void video.play()
+    })
+    video.addEventListener('play', handOver, { once: true })
+  })
+</script>

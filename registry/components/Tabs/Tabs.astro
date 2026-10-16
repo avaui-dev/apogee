@@ -16,6 +16,8 @@
  * (`aria-current="page"`) and the arrow keys are not used: navigation, not tabs.
  * `disabled` tabs are skipped by the arrows.
  * Items take an `icon` (Lucide component) and a `badge` (count or text).
+ * `variant="feature"`: each tab is a title and a `description` over a thick bar
+ * (beside it when vertical), for feature sections.
  * `orientation="vertical"` stacks the list beside the panels (Up/Down move);
  * `activation="manual"` moves focus with the arrows and selects on Enter/Space.
  *
@@ -33,6 +35,7 @@ const lists = {
   pills: 'gap-1',
   'pills-raised': 'gap-0.5 rounded-md bg-neutral-faded p-0.5',
   primary: 'gap-1',
+  feature: 'flex-col gap-6 md:flex-row md:gap-8',
 } as const
 const tabStyles = {
   bordered: 'border-b-2 border-transparent selected:border-primary selected:text-neutral',
@@ -40,6 +43,7 @@ const tabStyles = {
   pills: 'rounded-md selected:bg-neutral-faded selected:text-neutral',
   'pills-raised': `${innerRadius['md-0.5']} selected:bg-page selected:text-neutral selected:shadow-outline dark:selected:bg-neutral`,
   primary: 'rounded-md selected:bg-primary-faded selected:text-primary',
+  feature: 'flex-1 flex-col items-center gap-1 border-t-4 border-neutral px-4 pt-5 text-center selected:border-primary hover:border-primary',
 } as const
 // Vertical underline variants draw the line on the start edge.
 const verticalTabStyles = {
@@ -47,6 +51,7 @@ const verticalTabStyles = {
   borderless: 'border-s-2 border-transparent selected:border-primary selected:text-neutral',
 } as const
 const verticalLists = { bordered: 'border-s border-neutral', borderless: '' } as const
+const verticalFeature = 'flex-col items-start gap-1 border-s-4 border-neutral py-4 ps-5 text-start selected:border-primary hover:border-primary'
 const sizes = {
   small: 'px-2.5 py-1.5 text-xs',
   medium: 'px-3 py-2 text-sm',
@@ -62,6 +67,8 @@ export interface TabItem {
   icon?: IconComponent
   /** A count or short text shown after the label, from `md`. */
   badge?: string | number
+  /** A line under the label, for `variant="feature"`. */
+  description?: string
 }
 interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   tabs: (string | TabItem)[]
@@ -96,15 +103,18 @@ const {
 } = Astro.props
 const vertical = orientation === 'vertical'
 const underline = variant === 'bordered' || variant === 'borderless'
+// Feature tabs: a title and a line over (or beside) a thick bar; they carry their own bar, no slide.
+const feature = variant === 'feature'
 // The selected fill slides between tabs (tokens file, CSS anchor positioning).
 // Vertical underline tabs keep their own start border.
-const slides = !(vertical && underline)
+const slides = !(vertical && underline) && !feature
 const slideLooks = {
   bordered: 'bg-primary',
   borderless: 'bg-primary',
   pills: 'rounded-md bg-neutral-faded',
   'pills-raised': `${innerRadius['md-0.5']} bg-page shadow-outline dark:bg-neutral`,
   primary: 'rounded-md bg-primary-faded',
+  feature: '',
 } as const
 const items = tabs.map((t, i) => {
   const o: TabItem = typeof t === 'string' ? { label: t } : t
@@ -116,6 +126,8 @@ const found = items.findIndex((t) => t.value === value && !t.disabled && (nav ||
 const initial = nav ? found : found >= 0 ? found : Math.max(0, items.findIndex((t) => !t.disabled && !t.href))
 const id = uid(Astro.locals)
 const Root = nav ? 'nav' : 'div'
+const featureTabClass =
+  'press flex cursor-pointer text-neutral transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:text-disabled'
 const tabClass =
   'press inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap font-medium text-neutral-faded transition-colors hover:text-neutral focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus aria-disabled:pointer-events-none aria-disabled:text-disabled'
 ---
@@ -134,8 +146,10 @@ const tabClass =
     class:list={[
       'apogee-tabs-list flex [scrollbar-width:none]',
       vertical
-        ? ['shrink-0 flex-col items-stretch overflow-y-auto', underline ? `gap-1 ${verticalLists[variant]}` : lists[variant]]
-        : ['overflow-x-auto data-[fade~=left]:mask-l-from-85% data-[fade~=right]:mask-r-from-85%', lists[variant]],
+        ? ['shrink-0 flex-col items-stretch overflow-y-auto', feature ? 'gap-2' : underline ? `gap-1 ${verticalLists[variant]}` : lists[variant]]
+        : feature
+          ? lists.feature
+          : ['overflow-x-auto data-[fade~=left]:mask-l-from-85% data-[fade~=right]:mask-r-from-85%', lists[variant]],
       fullWidth && !vertical && 'w-full',
     ]}
   >
@@ -157,17 +171,30 @@ const tabClass =
             aria-selected={nav ? undefined : on ? 'true' : 'false'}
             aria-current={nav && on ? 'page' : undefined}
             aria-disabled={t.disabled ? 'true' : undefined}
+            aria-labelledby={feature && t.description ? `${id}-tab-${i}-label` : undefined}
+            aria-describedby={feature && t.description ? `${id}-tab-${i}-description` : undefined}
             tabindex={nav ? undefined : on ? 0 : -1}
-            class:list={[
-              tabClass,
-              vertical && underline ? [verticalTabStyles[variant], '-ms-px'] : tabStyles[variant],
-              sizes[size],
-              vertical && 'justify-start text-start',
-              fullWidth && !vertical && 'flex-1 justify-center',
-            ]}
+            class:list={
+              feature
+                ? [featureTabClass, vertical ? verticalFeature : tabStyles.feature]
+                : [
+                    tabClass,
+                    vertical && underline ? [verticalTabStyles[variant], '-ms-px'] : tabStyles[variant],
+                    sizes[size],
+                    vertical && 'justify-start text-start',
+                    fullWidth && !vertical && 'flex-1 justify-center',
+                  ]
+            }
           >
             {Icon && <Icon class="size-4 shrink-0" aria-hidden="true" />}
-            {t.label}
+            {feature ? (
+              <>
+                <span id={`${id}-tab-${i}-label`} class="text-lg font-semibold">{t.label}</span>
+                {t.description && <span id={`${id}-tab-${i}-description`} class="text-base text-neutral-faded">{t.description}</span>}
+              </>
+            ) : (
+              t.label
+            )}
             {t.badge !== undefined && (
               <Badge
                 size="small"
@@ -194,7 +221,7 @@ const tabClass =
             aria-labelledby={`${id}-tab-${i}`}
             tabindex="0"
             class:list={[
-              vertical ? 'min-w-0 flex-1 text-sm' : 'pt-4 text-sm',
+              feature ? 'min-w-0' : vertical ? 'min-w-0 flex-1 text-sm' : 'pt-4 text-sm',
               'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
               // Hidden by a JS-only class, not the attribute: without JS every panel shows.
               i !== initial && 'js:hidden',

@@ -1,0 +1,89 @@
+---
+title: PaymentCard
+description: A payment card drawn in CSS, solid or frosted glass, for pricing, billing and feature sections.
+group: Components
+order: 0
+related: [device-frame, card]
+---
+
+import Preview from '../../components/Preview.astro'
+import PaymentCard from '../../../../registry/components/PaymentCard/PaymentCard.astro'
+
+<Preview code={`<PaymentCard class="w-80" />`}>
+  <PaymentCard class="w-80" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add payment-card
+```
+
+Uses `@lucide/astro` (`Nfc`). Zero JS.
+
+## Usage
+
+```astro
+---
+import PaymentCard from '@/components/apogee/PaymentCard/PaymentCard.astro'
+---
+<PaymentCard name="Larkspur" holder="Grace Hopper" last4="1234" expiry="09/29" class="w-72" />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'solid' \| 'glass'` | `'solid'` | A filled card, or a frosted pane over what sits behind it. |
+| `color` | `'primary' \| 'neutral'` | `'primary'` | Fill of a solid card: the brand colour or the inverted surface. |
+| `name` | `string` | `'Example'` | The name on the card. |
+| `holder` | `string` | `'Ada Lovelace'` | Card holder. |
+| `last4` | `string` | `'4242'` | The last four digits. |
+| `expiry` | `string` | `'06/28'` | MM/YY. |
+| `label` | `string` | "Payment card ending in \{last4\}" | The image's name. |
+| `class` | `string` | — | Give it a width (`w-64`); it fills its container otherwise, and the type scales with it. |
+
+## Variants
+
+Every `variant` and `color`, the glass card over a photo:
+
+<Preview code={`<PaymentCard color="primary" />
+<PaymentCard color="neutral" />
+<PaymentCard variant="glass" />`} block>
+  <div class="flex w-full flex-wrap items-center justify-center gap-6 rounded-xl bg-[url(https://picsum.photos/seed/apogee-card/1200/600)] bg-cover p-8">
+    <PaymentCard color="primary" class="w-64" />
+    <PaymentCard color="neutral" last4="1234" class="w-64" />
+    <PaymentCard variant="glass" last4="8080" class="w-64" />
+  </div>
+</Preview>
+
+## States
+
+- **Static** — an illustration with no interactive states; it never takes focus.
+
+## Examples
+
+Card stacks in feature sections: [Features sections](/docs/features-sections).
+
+## Accessibility
+
+- The card is one image (`role="img"`), named "Payment card ending in \{last4\}"; its text is not read piece by piece.
+- Use it as an illustration; never as the place someone reads their real card details.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-primary` / `--on-primary` | Primary solid card |
+| `--background-inverted` / `--on-inverted` | Neutral solid card |
+| `--background-page` / `--border-neutral` | Glass card pane and edge |
+| `--shadow-raised` | Lift |
+
+## Do / Don't
+
+- **Do** use made-up names and `4242`-style digits.
+- **Don't** add a real card network's mark.
+
+## Content
+
+- Holder in capitals is styling; write the name normally.

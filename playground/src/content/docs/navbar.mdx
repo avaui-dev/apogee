@@ -19,12 +19,12 @@ import Tabs from '../../../../registry/components/Tabs/Tabs.astro'
 </JsNote>
 
 <Preview code={`<Navbar>
-  <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+  <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
   <NavLink href="/docs">Docs</NavLink>
   <NavLink href="/pricing">Pricing</NavLink>
 </Navbar>`}>
   <Navbar>
-    <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+    <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
     <NavLink href="/docs">Docs</NavLink>
     <NavLink href="/pricing">Pricing</NavLink>
   </Navbar>
@@ -48,7 +48,7 @@ import Navbar from '@/components/apogee/Navbar/Navbar.astro'
 import NavLink from '@/components/apogee/NavLink/NavLink.astro'
 ---
 <Navbar>
-  <a slot="brand" href="/">Acme</a>
+  <a slot="brand" href="/">Larkspur</a>
   <NavLink href="/docs">Docs</NavLink>
   <NavLink href="/pricing">Pricing</NavLink>
 </Navbar>
@@ -95,7 +95,7 @@ passes through to the root `<header>` (`...rest`).
 With brand, links, and actions:
 
 <Preview code={`<Navbar>
-  <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+  <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
   <NavLink href="/docs">Docs</NavLink>
   <NavLink href="/pricing">Pricing</NavLink>
   <NavLink href="/blog">Blog</NavLink>
@@ -103,7 +103,7 @@ With brand, links, and actions:
   <Button slot="actions" href="/signup">Sign up</Button>
 </Navbar>`}>
   <Navbar>
-    <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+    <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
     <NavLink href="/docs">Docs</NavLink>
     <NavLink href="/pricing">Pricing</NavLink>
     <NavLink href="/blog">Blog</NavLink>
@@ -115,7 +115,7 @@ With brand, links, and actions:
 A second row for the active section, and a centred layout:
 
 <Preview code={`<Navbar>
-  <a slot="brand" href="/">Acme</a>
+  <a slot="brand" href="/">Larkspur</a>
   <NavLink href="/docs" match="prefix">Docs</NavLink>
   <NavLink href="/pricing">Pricing</NavLink>
   <Tabs slot="secondary" variant="underline" tabs={[{ label: 'Overview' }, { label: 'Members' }, { label: 'Billing' }]} />
@@ -123,7 +123,7 @@ A second row for the active section, and a centred layout:
 <Navbar centered>…</Navbar>`} block>
   <div data-apogee-navbar="secondary">
     <Navbar class="static">
-      <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+      <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
       <NavLink href="/docs" match="prefix">Docs</NavLink>
       <NavLink href="/pricing">Pricing</NavLink>
       <Button slot="actions" size="small">Sign up</Button>
@@ -132,7 +132,7 @@ A second row for the active section, and a centred layout:
   </div>
   <div data-apogee-navbar="centered">
     <Navbar centered class="static">
-      <a slot="brand" href="/" class="text-lg font-semibold">Acme</a>
+      <a slot="brand" href="/" class="text-lg font-semibold">Larkspur</a>
       <NavLink href="/docs">Docs</NavLink>
       <NavLink href="/pricing">Pricing</NavLink>
       <NavLink href="/blog">Blog</NavLink>

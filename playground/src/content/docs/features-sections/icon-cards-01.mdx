@@ -1,0 +1,25 @@
+---
+title: "Icon cards 01"
+description: "A heading over four feature cards in a row, each with a link."
+group: Features sections
+order: 13
+related: [featured-icon, tabs, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="features/icon-cards-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add features/icon-cards-01
+```
+
+This copies the block to `src/components/apogee/blocks/features/` with everything it uses: FeaturedIcon, Heading, Link, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- Each integration icon is an image named after the tool.
+- Each "Learn more" link names its feature for screen readers.

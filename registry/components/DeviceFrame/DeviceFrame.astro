@@ -45,7 +45,7 @@ const shot = 'block size-full object-cover object-top'
         <span class="absolute -start-1 top-36 h-14 w-1 rounded-s bg-inverted" aria-hidden="true" />
         <span class="absolute -end-1 top-32 h-20 w-1 rounded-e bg-inverted" aria-hidden="true" />
         <div class="relative size-full overflow-hidden rounded-[2.4rem] bg-page">
-          <span class="absolute start-1/2 top-2.5 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-inverted rtl:translate-x-1/2" aria-hidden="true" />
+          <span class="absolute start-1/2 top-[1.5%] z-10 aspect-[4/1] w-[30%] -translate-x-1/2 rounded-full bg-inverted rtl:translate-x-1/2" aria-hidden="true" />
           <slot>
             {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
             {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}

@@ -29,14 +29,14 @@ import { Settings, Home, FolderKanban, Users, LifeBuoy, Inbox } from '@lucide/as
 </JsNote>
 
 <Preview code={`<Sidebar>
-  <a slot="brand" href="/" class="font-semibold">Acme</a>
+  <a slot="brand" href="/" class="font-semibold">Larkspur</a>
   <a href="/dashboard">Dashboard</a>
   <a href="/projects">Projects</a>
   <a href="/settings">Settings</a>
   <div slot="footer">v1.2.0</div>
 </Sidebar>`}>
   <Sidebar>
-    <a slot="brand" href="/" class="font-semibold">Acme</a>
+    <a slot="brand" href="/" class="font-semibold">Larkspur</a>
     <a href="/dashboard">Dashboard</a>
     <a href="/projects">Projects</a>
     <a href="/settings">Settings</a>
@@ -62,7 +62,7 @@ Ships `@lucide/astro` (for the toggle's `Menu` icon). No Apogee component depend
 import Sidebar from '@/components/apogee/Sidebar/Sidebar.astro'
 ---
 <Sidebar>
-  <a slot="brand" href="/">Acme</a>
+  <a slot="brand" href="/">Larkspur</a>
   <a href="/dashboard">Dashboard</a>
   <a href="/settings">Settings</a>
 </Sidebar>
@@ -109,16 +109,16 @@ passes through.
 Nav links with an icon, and a footer used for a persistent action:
 
 <Preview code={`<Sidebar>
-  <a slot="brand" href="/" class="font-semibold">Acme</a>
+  <a slot="brand" href="/" class="font-semibold">Larkspur</a>
   <a href="/dashboard">Dashboard</a>
   <a href="/settings" class="flex items-center gap-2"><Settings class="size-4" /> Settings</a>
-  <div slot="footer" class="text-sm text-neutral-faded">Signed in as jane@acme.com</div>
+  <div slot="footer" class="text-sm text-neutral-faded">Signed in as jane@example.com</div>
 </Sidebar>`}>
   <Sidebar>
-    <a slot="brand" href="/" class="font-semibold">Acme</a>
+    <a slot="brand" href="/" class="font-semibold">Larkspur</a>
     <a href="/dashboard">Dashboard</a>
     <a href="/settings" class="flex items-center gap-2"><Settings class="size-4" /> Settings</a>
-    <div slot="footer" class="text-sm text-neutral-faded">Signed in as jane@acme.com</div>
+    <div slot="footer" class="text-sm text-neutral-faded">Signed in as jane@example.com</div>
   </Sidebar>
 </Preview>
 
@@ -127,7 +127,7 @@ native `<details>` that opens when it contains the current page; headings are
 plain text; a Divider separates sections.
 
 <Preview code={`<Sidebar>
-  <a slot="brand" href="/">Acme</a>
+  <a slot="brand" href="/">Larkspur</a>
   <NavLink href="/dashboard" match="prefix"><Home slot="start" />Dashboard</NavLink>
   <NavGroup label="Projects">
     <FolderKanban slot="start" />
@@ -143,7 +143,7 @@ plain text; a Divider separates sections.
   </Dismissible>
 </Sidebar>`} block>
   <Sidebar class="rounded-lg border">
-    <a slot="brand" href="/" class="font-semibold">Acme</a>
+    <a slot="brand" href="/" class="font-semibold">Larkspur</a>
     <NavLink href="/dashboard" match="prefix"><Home slot="start" />Dashboard</NavLink>
     <NavGroup label="Projects" open>
       <FolderKanban slot="start" />
@@ -172,7 +172,7 @@ Tooltip for a visible name on hover and focus (the label stays in the
 accessibility tree). A Popover on a rail item is the flyout for a group:
 
 <Preview code={`<Sidebar variant="slim">
-  <a slot="brand" href="/" aria-label="Acme">A</a>
+  <a slot="brand" href="/" aria-label="Larkspur">A</a>
   <Tooltip text="Dashboard" placement="end"><NavLink href="/dashboard"><Home slot="start" />Dashboard</NavLink></Tooltip>
   <Tooltip text="Inbox" placement="end"><NavLink href="/inbox"><Inbox slot="start" />Inbox</NavLink></Tooltip>
   <Popover id="rail-projects" placement="end">
@@ -183,7 +183,7 @@ accessibility tree). A Popover on a rail item is the flyout for a group:
 </Sidebar>`} block>
   <div data-apogee-sidebar="slim" class="flex">
     <Sidebar variant="slim" class="rounded-lg border md:h-96!">
-      <a slot="brand" href="/" class="grid size-9 place-items-center rounded-md bg-primary font-semibold text-on-primary" aria-label="Acme">A</a>
+      <a slot="brand" href="/" class="grid size-9 place-items-center rounded-md bg-primary font-semibold text-on-primary" aria-label="Larkspur">A</a>
       <Tooltip text="Dashboard" placement="end"><NavLink href="#"><Home slot="start" />Dashboard</NavLink></Tooltip>
       <Tooltip text="Inbox" placement="end"><NavLink href="#"><Inbox slot="start" />Inbox</NavLink></Tooltip>
       <Popover id="rail-projects" placement="end">
@@ -204,17 +204,17 @@ On a phone the nav opens as a drawer over the page. Resize below `md` and
 press the toggle:
 
 <Preview code={`<Sidebar overlay>
-  <a slot="brand" href="/">Acme</a>
+  <a slot="brand" href="/">Larkspur</a>
   <NavLink href="/dashboard"><Home slot="start" />Dashboard</NavLink>
   …
 </Sidebar>`} block>
   <div data-apogee-sidebar="overlay">
     <Sidebar overlay class="rounded-lg border">
-      <a slot="brand" href="/" class="font-semibold">Acme</a>
+      <a slot="brand" href="/" class="font-semibold">Larkspur</a>
       <NavLink href="#"><Home slot="start" />Dashboard</NavLink>
       <NavLink href="#"><Users slot="start" />Members</NavLink>
       <NavLink href="#"><Settings slot="start" />Settings</NavLink>
-      <div slot="footer" class="text-sm text-neutral-faded">Signed in as jane@acme.com</div>
+      <div slot="footer" class="text-sm text-neutral-faded">Signed in as jane@example.com</div>
     </Sidebar>
   </div>
 </Preview>

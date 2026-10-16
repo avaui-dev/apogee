@@ -1,0 +1,39 @@
+---
+/**
+ * Tabs mockup 10: A heading over feature tabs beside payment cards; each tab shows its own arrangement.
+ *
+ * @block features
+ * @order 36
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+
+const tabs = [
+  { label: 'A card for every team', description: 'Issue cards in seconds, each with its own name and budget.' },
+  { label: 'Set spending limits', description: 'Cap each card by day, month or merchant, and change it any time.' },
+  { label: 'See every payment', description: 'Every charge lands in one feed, matched to its receipt.' },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Features" heading="Cards your whole team can use" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." class="mb-12 md:mb-16" />
+  <Tabs variant="feature" orientation="vertical" tabs={tabs} label="Features" class="flex-col gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+    <div slot="panel-0"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 h-80 md:h-120">
+      <PaymentCard color="primary" class="w-64 -rotate-3 md:w-80" />
+    </div></div>
+    <div slot="panel-1"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 h-80 md:h-120">
+      <div class="relative h-full w-full max-w-md">
+        <div class="absolute start-0 top-1/2 w-60 -translate-y-3/4 -rotate-6 md:w-80"><PaymentCard variant="glass" last4="8080" /></div>
+        <div class="absolute end-0 top-1/2 w-60 -translate-y-1/4 rotate-6 md:w-80"><PaymentCard color="neutral" last4="1234" /></div>
+      </div>
+    </div></div>
+    <div slot="panel-2"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 h-80 md:h-120">
+      <div class="relative h-full w-full max-w-md">
+        <div class="absolute start-0 top-1/2 w-60 -translate-y-3/4 -rotate-6 md:w-80"><PaymentCard variant="glass" last4="8080" /></div>
+        <div class="absolute end-0 top-1/2 w-60 -translate-y-1/4 rotate-6 md:w-80"><PaymentCard color="neutral" last4="1234" /></div>
+      </div>
+    </div></div>
+  </Tabs>
+</Section>

@@ -1,0 +1,64 @@
+---
+/**
+ * Icons and mockup 05: A centred heading over a chart card with two features on each side.
+ *
+ * @block features
+ * @order 21
+ */
+import { ChartLine, Command, MessageCircle, MessageCircleHeart, MessagesSquare, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import CircularProgress from '../../components/CircularProgress/CircularProgress.astro'
+
+const features = [
+  { icon: MessagesSquare, title: 'Share team inboxes', text: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.' },
+  { icon: Zap, title: 'Deliver instant answers', text: 'One place for support, so customers get what they need without waiting on a reply.' },
+  { icon: ChartLine, title: 'Manage your team with reports', text: 'Measure what matters. Filter, export and drill down on the data in a couple of clicks.' },
+  { icon: MessageCircle, title: 'Connect with customers', text: 'Solve a problem or close a sale in real time with chat, and fall back to email when no one is free.' },
+  { icon: Command, title: 'Connect the tools you already use', text: 'Over 100 integrations make your day-to-day work faster and familiar, plus a full set of developer tools.' },
+  { icon: MessageCircleHeart, title: 'Our people make the difference', text: "We're an extension of your support team, and our help is free. Chat to us any time, day or night." },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Features" heading="Overflowing with useful features" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" class="mb-12 md:mb-16" />
+  <div class="grid items-center gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+    <ul class="grid list-none gap-10 p-0 lg:col-span-3">
+      {features.slice(0, 2).map((f) => (
+        <li class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="outline" color="neutral" size="large"><f.icon /></FeaturedIcon>
+          <div class="flex flex-col gap-2">
+            <Heading as="h3" size="h6">{f.title}</Heading>
+            <p class="text-neutral-faded">{f.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <div class="max-md:order-last md:col-span-2 lg:order-none lg:col-span-6"><div class="flex justify-center"><div class="relative w-full max-w-xl pb-10">
+      <div class="rounded-2xl bg-elevation-raised p-6 shadow-raised ring-1 ring-neutral" role="img" aria-label="Users over time: rising from about 2,100 in January to 4,000 in December">
+        <p class="font-semibold">Users over time</p>
+        <div class="mt-6 flex h-40 items-end gap-1.5 md:h-56">
+          {[52, 48, 58, 55, 63, 60, 70, 74, 71, 82, 88, 100].map((h) => <span class="flex-1 rounded-t-sm bg-primary" style={`height: ${h}%`}></span>)}
+        </div>
+        <div class="mt-2 flex justify-between text-xs text-neutral-faded"><span>Jan</span><span>Jun</span><span>Dec</span></div>
+      </div>
+      <div class="absolute end-4 bottom-0 flex items-center gap-4 rounded-2xl bg-elevation-raised p-4 shadow-raised ring-1 ring-neutral">
+        <CircularProgress value={72} label="Active users" size="large" />
+        <div><p class="text-sm text-neutral-faded">Active users</p><p class="text-xl font-semibold tabular-nums">1,000</p></div>
+      </div>
+    </div></div></div>
+    <ul class="grid list-none gap-10 p-0 lg:col-span-3">
+      {features.slice(2, 4).map((f) => (
+        <li class="flex flex-col items-start gap-4">
+          <FeaturedIcon theme="outline" color="neutral" size="large"><f.icon /></FeaturedIcon>
+          <div class="flex flex-col gap-2">
+            <Heading as="h3" size="h6">{f.title}</Heading>
+            <p class="text-neutral-faded">{f.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Section>

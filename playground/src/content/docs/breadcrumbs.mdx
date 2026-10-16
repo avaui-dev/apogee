@@ -146,19 +146,19 @@ current account, with radio items.
 <Preview code={`<div class="flex items-center gap-2">
   <Dropdown id="acct" label="Switch workspace">
     <Button slot="anchor" popovertarget="acct" aria-haspopup="menu" variant="ghost" color="neutral" size="small">
-      <Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown slot="end" class="size-3.5" />
+      <Avatar name="Larkspur" size="xsmall" />Larkspur<ChevronsUpDown slot="end" class="size-3.5" />
     </Button>
-    <DropdownItem indicator="radio" selected>Acme</DropdownItem>
-    <DropdownItem indicator="radio">Globex</DropdownItem>
+    <DropdownItem indicator="radio" selected>Larkspur</DropdownItem>
+    <DropdownItem indicator="radio">Fernhill</DropdownItem>
   </Dropdown>
   <span aria-hidden="true">/</span>
   <Breadcrumbs items={[…]} />
 </div>`}>
   <div class="flex flex-wrap items-center gap-2">
     <Dropdown id="bc-acct" label="Switch workspace">
-      <Button slot="anchor" popovertarget="bc-acct" aria-haspopup="menu" variant="ghost" color="neutral" size="small"><Avatar name="Acme" size="xsmall" />Acme<ChevronsUpDown slot="end" class="size-3.5 text-neutral-faded" aria-hidden="true" /></Button>
-      <DropdownItem indicator="radio" selected>Acme</DropdownItem>
-      <DropdownItem indicator="radio">Globex</DropdownItem>
+      <Button slot="anchor" popovertarget="bc-acct" aria-haspopup="menu" variant="ghost" color="neutral" size="small"><Avatar name="Larkspur" size="xsmall" />Larkspur<ChevronsUpDown slot="end" class="size-3.5 text-neutral-faded" aria-hidden="true" /></Button>
+      <DropdownItem indicator="radio" selected>Larkspur</DropdownItem>
+      <DropdownItem indicator="radio">Fernhill</DropdownItem>
     </Dropdown>
     <span class="text-neutral-faded" aria-hidden="true">/</span>
     <Breadcrumbs items={[{ label: 'Projects', href: '#' }, { label: 'Spring launch' }]} />

@@ -67,7 +67,7 @@ through to the root `<div>`.
 |---|---|---|---|
 | `tabs` | `(string \| { label, value?, href?, disabled?, icon?, badge? })[]` | — | Tabs in order. A string is a label; an object adds a `value` (panel slot name and event value, defaults to the index), an `href` (renders a link, no panel), `disabled`, an `icon` (Lucide component) or a `badge` (count or short text, shown from `md`). |
 | `value` | `string` | first enabled tab | Value of the tab shown first. |
-| `variant` | `'bordered' \| 'borderless' \| 'pills' \| 'pills-raised' \| 'primary'` | `'bordered'` | Underline with a list border, underline alone, chip, chip in a raised tray, or a primary-tinted chip. |
+| `variant` | `'bordered' \| 'borderless' \| 'pills' \| 'pills-raised' \| 'primary' \| 'feature'` | `'bordered'` | Underline with a list border, underline alone, chip, chip in a raised tray, a primary-tinted chip, or a feature tab (title and line over a thick bar). |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | `vertical` stacks the list beside the panels; Up and Down move between tabs; underline variants draw on the start edge. |
 | `fullWidth` | `boolean` | `false` | Tabs share the list width equally (horizontal only). |
 | `activation` | `'automatic' \| 'manual'` | `'automatic'` | `manual`: arrows move focus, Enter or Space selects. Use it when a panel is expensive to show. |
@@ -96,6 +96,39 @@ Every `variant`:
   ))}
 </Preview>
 
+## Feature tabs
+
+`variant="feature"` makes each tab a title and a `description` over a thick
+bar, for feature sections; vertical feature tabs put the bar on the start edge.
+The title names the tab and the line describes it. Put the panels above the
+row with `flex flex-col-reverse` on the root.
+
+<Preview code={`<Tabs variant="feature" class="flex flex-col-reverse gap-8" tabs={[
+  { label: 'Track what matters', description: 'Revenue, users and churn at a glance.' },
+  { label: 'Know your customers', description: 'Every account, plan and seat in one table.' },
+  { label: 'Set it up your way', description: 'Profile and preferences in one place.' },
+]}>…</Tabs>
+<Tabs variant="feature" orientation="vertical" tabs={[…]}>…</Tabs>`} block>
+  <div class="flex w-full flex-col gap-12" data-apogee-feature-tabs>
+    <Tabs variant="feature" class="flex flex-col-reverse gap-8" tabs={[
+      { label: 'Track what matters', description: 'Revenue, users and churn at a glance.' },
+      { label: 'Know your customers', description: 'Every account, plan and seat in one table.' },
+      { label: 'Set it up your way', description: 'Profile and preferences in one place.' },
+    ]}>
+      <div slot="panel-0" class="rounded-lg bg-neutral-faded p-6 text-center">The overview panel.</div>
+      <div slot="panel-1" class="rounded-lg bg-neutral-faded p-6 text-center">The customers panel.</div>
+      <div slot="panel-2" class="rounded-lg bg-neutral-faded p-6 text-center">The settings panel.</div>
+    </Tabs>
+    <Tabs variant="feature" orientation="vertical" tabs={[
+      { label: 'Track what matters', description: 'Revenue, users and churn at a glance.' },
+      { label: 'Know your customers', description: 'Every account, plan and seat in one table.' },
+    ]}>
+      <div slot="panel-0" class="rounded-lg bg-neutral-faded p-6">The overview panel.</div>
+      <div slot="panel-1" class="rounded-lg bg-neutral-faded p-6">The customers panel.</div>
+    </Tabs>
+  </div>
+</Preview>
+
 ## Sizes
 
 <Preview code={`<Tabs size="small" tabs={['Overview', 'Billing']}>…</Tabs>
@@ -111,7 +144,7 @@ Every `variant`:
 
 ## Items
 
-Objects add a `value`, a link (`href`) or `disabled`; `value` on the root
+Objects add a `value`, a link (`href`), `disabled` or a `description` (feature tabs); `value` on the root
 picks the tab shown first.
 
 <Preview code={`<Tabs
@@ -262,6 +295,8 @@ The root dispatches `apogee:tabs-change` (`detail: { index, value }`, bubbling) 
 - Full **WAI-ARIA tabs pattern**: `role="tablist"` / `role="tab"` /
   `role="tabpanel"`, wired with `aria-selected`, `aria-controls`, and
   `aria-labelledby`.
+- A feature tab is named by its title (`aria-labelledby`) and described by
+  its line (`aria-describedby`).
 - Each panel is focusable (`tabindex="0"`), so `Tab` from the active tab lands
   on its panel before moving on.
 - **Focus** — a visible `focus-visible` ring on each tab.

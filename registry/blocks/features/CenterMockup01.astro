@@ -1,0 +1,45 @@
+---
+/**
+ * Center mockup 01: A centred heading over a large screenshot, then three features with links.
+ *
+ * @block features
+ * @order 15
+ */
+import { ArrowRight, ChartLine, Command, MessageCircle, MessageCircleHeart, MessagesSquare, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Link from '../../components/Link/Link.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+const features = [
+  { icon: MessagesSquare, title: 'Share team inboxes', text: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.' },
+  { icon: Zap, title: 'Deliver instant answers', text: 'One place for support, so customers get what they need without waiting on a reply.' },
+  { icon: ChartLine, title: 'Manage your team with reports', text: 'Measure what matters. Filter, export and drill down on the data in a couple of clicks.' },
+  { icon: MessageCircle, title: 'Connect with customers', text: 'Solve a problem or close a sale in real time with chat, and fall back to email when no one is free.' },
+  { icon: Command, title: 'Connect the tools you already use', text: 'Over 100 integrations make your day-to-day work faster and familiar, plus a full set of developer tools.' },
+  { icon: MessageCircleHeart, title: 'Our people make the difference', text: "We're an extension of your support team, and our help is free. Chat to us any time, day or night." },
+]
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-4 items-center mb-12 md:mb-16">
+    <Badge color="primary" variant="faded" rounded>Features</Badge>
+    <SectionHeader heading="Cutting-edge features for advanced analytics" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" />
+  </div>
+  <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="mx-auto max-w-5xl" />
+  <ul class="grid list-none p-0 gap-x-8 gap-y-10 md:gap-y-16 sm:grid-cols-2 lg:grid-cols-3 mt-16 md:mt-24">
+    {features.slice(0, 3).map((f) => (
+      <li class="flex flex-col items-center gap-4 text-center">
+        <FeaturedIcon theme="outline" color="neutral" size="large"><f.icon /></FeaturedIcon>
+          <div class="flex flex-col gap-2">
+            <Heading as="h3" size="h6">{f.title}</Heading>
+            <p class="text-neutral-faded">{f.text}</p>
+          </div>
+          <Link href="#" color="primary" underline="none" class="inline-flex items-center gap-1.5 font-semibold">Learn more<span class="sr-only"> about {f.title}</span><ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link>
+      </li>
+    ))}
+  </ul>
+</Section>

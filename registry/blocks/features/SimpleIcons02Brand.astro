@@ -1,0 +1,37 @@
+---
+/**
+ * Simple icons 02 brand: A centred heading over six features with icons, on the brand colour.
+ *
+ * @block features
+ * @order 44
+ */
+import { ChartLine, Command, MessageCircle, MessageCircleHeart, MessagesSquare, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+
+const features = [
+  { icon: MessagesSquare, title: 'Share team inboxes', text: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.' },
+  { icon: Zap, title: 'Deliver instant answers', text: 'One place for support, so customers get what they need without waiting on a reply.' },
+  { icon: ChartLine, title: 'Manage your team with reports', text: 'Measure what matters. Filter, export and drill down on the data in a couple of clicks.' },
+  { icon: MessageCircle, title: 'Connect with customers', text: 'Solve a problem or close a sale in real time with chat, and fall back to email when no one is free.' },
+  { icon: Command, title: 'Connect the tools you already use', text: 'Over 100 integrations make your day-to-day work faster and familiar, plus a full set of developer tools.' },
+  { icon: MessageCircleHeart, title: 'Our people make the difference', text: "We're an extension of your support team, and our help is free. Chat to us any time, day or night." },
+]
+---
+
+<Section spacing="large" background="primary">
+  <SectionHeader eyebrow="Features" heading="Beautiful analytics to grow smarter" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" background="primary" class="mb-12 md:mb-16" />
+  <ul class="grid list-none p-0 gap-x-8 gap-y-10 md:gap-y-16 sm:grid-cols-2 lg:grid-cols-3 ">
+    {features.slice(0, 6).map((f) => (
+      <li class="flex flex-col items-center gap-4 text-center">
+        <FeaturedIcon theme="light" color="primary" size="large"><f.icon /></FeaturedIcon>
+          <div class="flex flex-col gap-2">
+            <Heading as="h3" size="h6">{f.title}</Heading>
+            <p class="opacity-85">{f.text}</p>
+          </div>
+      </li>
+    ))}
+  </ul>
+</Section>

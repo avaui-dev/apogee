@@ -1,0 +1,26 @@
+---
+title: "Icons and mockup 06"
+description: "A heading over three features with links beside two payment cards."
+group: Features sections
+order: 22
+related: [featured-icon, tabs, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="features/icons-and-mockup-06" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add features/icons-and-mockup-06
+```
+
+This copies the block to `src/components/apogee/blocks/features/` with everything it uses: FeaturedIcon, Heading, Link, PaymentCard, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- Each payment card is one image, named by its last four digits.
+- Each integration icon is an image named after the tool.
+- Each "Learn more" link names its feature for screen readers.

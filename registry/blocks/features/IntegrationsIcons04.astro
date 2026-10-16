@@ -1,0 +1,47 @@
+---
+/**
+ * Integrations icons 04: A centred heading over six integration cards, each icon overlapping its card.
+ *
+ * @block features
+ * @order 42
+ */
+import { BookOpen, Bug, Calendar, CreditCard, FileText, Folder, GitBranch, HardDrive, LifeBuoy, Mail, MessageCircle, MessagesSquare, PenTool, Ticket, Users, Workflow } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+
+const tools = [
+  { name: 'Docs', icon: FileText },
+  { name: 'Chat', icon: MessagesSquare },
+  { name: 'Drive', icon: HardDrive },
+  { name: 'Help desk', icon: LifeBuoy },
+  { name: 'Issues', icon: Bug },
+  { name: 'Files', icon: Folder },
+  { name: 'Payments', icon: CreditCard },
+  { name: 'Automations', icon: Workflow },
+  { name: 'Design', icon: PenTool },
+  { name: 'Wiki', icon: BookOpen },
+  { name: 'Email', icon: Mail },
+  { name: 'Tickets', icon: Ticket },
+  { name: 'Calendar', icon: Calendar },
+  { name: 'Messages', icon: MessageCircle },
+  { name: 'Community', icon: Users },
+  { name: 'Code', icon: GitBranch },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Integrations" heading="Get more value from your tools" description="Connect your tools, connect your teams. With over 100 apps already in our directory, your team's favourite tools are a click away." align="center" class="mb-12 md:mb-16" />
+  <ul class="grid list-none gap-x-8 gap-y-12 p-0 sm:grid-cols-2 lg:grid-cols-3">
+    {tools.slice(0, 6).map((t) => (
+      <li class="mt-6 flex flex-col items-center gap-4 rounded-2xl bg-neutral-faded px-6 pb-8 text-center">
+        <FeaturedIcon theme="outline" color="neutral" size="xlarge" label={t.name} class="-mt-7"><t.icon /></FeaturedIcon>
+        <div class="flex flex-col gap-2">
+          <Heading as="h3" size="h6">{t.name} integration</Heading>
+          <p class="text-neutral-faded">{`Work faster by connecting ${t.name.toLowerCase()} straight to your workspace.`}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</Section>

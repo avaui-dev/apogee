@@ -1,0 +1,24 @@
+---
+title: "Tabs mockup 07"
+description: "A heading over a screenshot, with feature tabs beside it that switch what it shows."
+group: Features sections
+order: 33
+related: [featured-icon, tabs, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="features/tabs-mockup-07" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add features/tabs-mockup-07
+```
+
+This copies the block to `src/components/apogee/blocks/features/` with everything it uses: DeviceFrame, Section, SectionHeader, Tabs. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- The feature tabs are a tab list: arrow keys move between them, each tab is named by its title and described by its line, and without JS every panel shows.

@@ -1,0 +1,98 @@
+---
+title: VideoPlayer
+description: A native video behind a poster and one large play button; the browser's own controls take over once it plays.
+group: Components
+order: 0
+related: [device-frame, image, aspect-ratio]
+---
+
+import Preview from '../../components/Preview.astro'
+import JsNote from '../../components/JsNote.astro'
+import VideoPlayer from '../../../../registry/components/VideoPlayer/VideoPlayer.astro'
+
+<JsNote fallback="The play button is hidden and the browser's own video controls show from the start.">
+  Shows the large play button over the poster and hides the browser's controls until the first play, then hands over to them.
+</JsNote>
+
+<Preview code={`<VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard" />`} block>
+  <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard" ratio="16/10" class="max-w-3xl" />
+</Preview>
+
+## Add
+
+```sh
+npx @ava-ui/apogee add video-player
+```
+
+Uses `@lucide/astro` (`Play`).
+
+## Usage
+
+```astro
+---
+import VideoPlayer from '@/components/apogee/VideoPlayer/VideoPlayer.astro'
+---
+<VideoPlayer src="/media/tour.mp4" poster="/media/tour.jpg" captions="/media/tour.vtt" title="A tour of the reports page" />
+```
+
+## API
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `src` | `string` | — | The video file (MP4 or WebM). |
+| `title` | `string` | — | What the video shows; names the play button ("Play video: …"). |
+| `poster` | `string` | — | The image shown before it plays. |
+| `captions` | `string` | — | A WebVTT captions file, on by default. |
+| `captionsLang` | `string` | `'en'` | Language of the captions. |
+| `ratio` | `'16/9' \| '16/10' \| '4/3' \| '1/1'` | `'16/9'` | Reserves the space before the video loads. |
+| `class` | `string` | — | Size it here (`max-w-3xl`, `w-full`). |
+
+## Variants
+
+Every `ratio`:
+
+<Preview code={`<VideoPlayer ratio="16/9" … />
+<VideoPlayer ratio="16/10" … />
+<VideoPlayer ratio="4/3" … />
+<VideoPlayer ratio="1/1" … />`} block>
+  <div class="grid w-full gap-4 sm:grid-cols-2">
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, 16 by 9" ratio="16/9" />
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, 16 by 10" ratio="16/10" />
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, 4 by 3" ratio="4/3" />
+    <VideoPlayer src="/media/app-tour.mp4" poster="/mockups/app-desktop-light.jpg" captions="/media/app-tour.vtt" title="A tour of the dashboard, square" ratio="1/1" />
+  </div>
+</Preview>
+
+## States
+
+- **Before play** — the poster and the play button; the browser's controls are hidden.
+- **Playing** — the button is gone and the browser's controls take over: pause, seek, volume, captions, full screen.
+
+## Examples
+
+Feature sections with a video: [Features sections](/docs/features-sections).
+
+## Accessibility
+
+- The play button is named "Play video: \{title\}"; after it, focus moves to the video, where the browser's controls take the keyboard.
+- `preload="none"`: nothing downloads until someone presses play.
+- Give the video captions (`captions`) when it has speech or text that matters.
+- The play button's hover growth respects `prefers-reduced-motion`.
+
+## Tokens
+
+| Token | Used for |
+|---|---|
+| `--background-inverted` | Behind the video while it loads |
+| `--background-page` | Play button disc |
+| `--shadow-raised` | Lift |
+| `--duration-fast` / `ease-standard` | Play button hover |
+
+## Do / Don't
+
+- **Do** set a `poster`; without one the frame is a dark box until it plays.
+- **Don't** autoplay with sound.
+
+## Content
+
+- Write `title` for what happens in the video ("A tour of the reports page"), not "Video".

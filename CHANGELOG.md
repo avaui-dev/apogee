@@ -16,6 +16,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Fixed
 
+- **DeviceFrame** phone camera scales with the phone, so a small phone keeps its screen.
+- Demo data and docs use invented company names instead of borrowed ones.
 - **Types:** sections and pages are now type-checked (they were outside the check). Section, SectionHeader, Avatar, EmptyState, Footer, Select, Textarea, Input and Stat accept `undefined` for optional props, so the sections compile under `exactOptionalPropertyTypes`.
 - **Steps** puts `aria-current="step"` on the current step's list item instead of its marker, which had no text with `marker="icon"` or `"dot"`.
 - **ProgressIndicator** remaining dots and segments use the solid neutral fill; the faded one nearly vanished in dark mode.
@@ -42,6 +44,12 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 - **Package** ships no test files.
 
 ### Added
+
+- **Features sections**: 46 feature blocks; alternating rows, icon grids, icons beside a photo, phone or screenshot, icon cards, large screenshots, payment card stacks, feature tabs that switch screenshots, integration icons, and brand-colour versions.
+- **VideoPlayer**: a native video behind a poster and one large play button; the browser's own controls take over once it plays. Captions track, no download until play.
+- **PaymentCard**: a payment card drawn in CSS, solid or frosted glass, read as one image named by its last four digits.
+- **Tabs** `variant="feature"`: each tab is a title and a `description` over a thick bar (on the start edge when vertical), named by the title and described by the line.
+- **Docs**: customers and settings screenshots of the showcase dashboard in `/mockups/`, and a short dashboard tour video in `/media/`.
 
 - **FAQ sections**: 16 FAQ blocks; questions in a grid (with or without icons, beside a photo) or in an accordion (plain or cards, beside the heading), each with a brand-colour version.
 - **Accordion** `variant="plain"` (dividers, no outer border). **AccordionItem** `icon="plus"` (a circled plus that turns to a minus), `variant="card"` (a rounded card, tinted while open) and `size="large"`; the text and icon take the on-colour on a solid fill.

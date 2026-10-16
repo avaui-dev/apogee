@@ -1,0 +1,33 @@
+---
+/**
+ * Tabs mockup 08: A heading over a screenshot on a tinted panel, with feature tabs beside it that switch what it shows.
+ *
+ * @block features
+ * @order 34
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import Tabs from '../../components/Tabs/Tabs.astro'
+
+const tabs = [
+  { label: 'Track what matters', description: 'Revenue, active users, churn and open tickets on one screen.' },
+  { label: 'Know your customers', description: 'Every account with its plan, seats and status, searchable and sortable.' },
+  { label: 'Set it up your way', description: 'Profile, language and notifications, saved in one place.' },
+]
+---
+
+<Section spacing="large">
+  <SectionHeader eyebrow="Features" heading="Overflowing with useful features" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." class="mb-12 md:mb-16" />
+  <Tabs variant="feature" orientation="vertical" tabs={tabs} label="Features" class="flex-col gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+    <div slot="panel-0"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 bg-primary-faded! md:p-12">
+      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" />
+    </div></div>
+    <div slot="panel-1"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 bg-primary-faded! md:p-12">
+      <DeviceFrame device="browser" src="/mockups/app-customers-desktop-light.jpg" srcDark="/mockups/app-customers-desktop-dark.jpg" alt="The customers table in a browser" class="" />
+    </div></div>
+    <div slot="panel-2"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 bg-primary-faded! md:p-12">
+      <DeviceFrame device="browser" src="/mockups/app-settings-desktop-light.jpg" srcDark="/mockups/app-settings-desktop-dark.jpg" alt="The settings page in a browser" class="" />
+    </div></div>
+  </Tabs>
+</Section>
