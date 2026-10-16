@@ -1,0 +1,53 @@
+---
+/**
+ * Simple accent line brand: A centred heading over four figures, each with an accent line and a link, on the brand colour.
+ *
+ * @block metrics
+ * @order 8
+ */
+import { ArrowRight, Zap } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Link from '../../components/Link/Link.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <div class="flex flex-col gap-12 md:gap-16">
+    <div class="flex flex-col items-center gap-4 md:gap-6">
+      <FeaturedIcon theme="solid" color="neutral" size="xlarge"><Zap /></FeaturedIcon>
+      <SectionHeader heading="Build something great" description="Everything you need to build modern interfaces and great products." size="large" align="center" background="primary" />
+    </div>
+    <dl class="flex flex-col gap-10 md:flex-row md:justify-between md:gap-8">
+      <div class="border-t-2 pt-6 md:border-t-0 md:border-s-2 md:ps-6 md:pt-0 border-current/40">
+        <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Projects completed</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">400+</dd>
+            <dd class="order-4 mt-2"><Link href="#" color="inherit" class="inline-flex items-center gap-1 font-semibold">View projects<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></dd>
+          </div>
+      </div>
+      <div class="border-t-2 pt-6 md:border-t-0 md:border-s-2 md:ps-6 md:pt-0 border-current/40">
+        <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Return on investment</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">600%</dd>
+            <dd class="order-4 mt-2"><Link href="#" color="inherit" class="inline-flex items-center gap-1 font-semibold">Read the study<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></dd>
+          </div>
+      </div>
+      <div class="border-t-2 pt-6 md:border-t-0 md:border-s-2 md:ps-6 md:pt-0 border-current/40">
+        <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Global downloads</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">10k</dd>
+            <dd class="order-4 mt-2"><Link href="#" color="inherit" class="inline-flex items-center gap-1 font-semibold">Download now<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></dd>
+          </div>
+      </div>
+      <div class="border-t-2 pt-6 md:border-t-0 md:border-s-2 md:ps-6 md:pt-0 border-current/40">
+        <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Five-star reviews</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">200+</dd>
+            <dd class="order-4 mt-2"><Link href="#" color="inherit" class="inline-flex items-center gap-1 font-semibold">View reviews<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></dd>
+          </div>
+      </div>
+    </dl>
+  </div>
+</Section>

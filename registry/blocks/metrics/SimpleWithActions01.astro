@@ -1,0 +1,44 @@
+---
+/**
+ * Simple with actions 01: A heading with actions beside it, over four figures with a line each.
+ *
+ * @block metrics
+ * @order 11
+ */
+import { CirclePlay } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-12 md:gap-16">
+    <SectionHeader heading="Build something great" description="Everything you need to build modern interfaces and great products." size="large">
+      <Fragment slot="actions"><Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
+        <Button href="#" size="large">Get started</Button></Fragment>
+    </SectionHeader>
+    <dl class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Projects completed</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">400+</dd>
+            <dd class="order-3 text-neutral-faded">We've helped build over 400 projects with teams of every size.</dd>
+          </div>
+        <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Return on investment</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">600%</dd>
+            <dd class="order-3 text-neutral-faded">Customers report an average return of about 600%.</dd>
+          </div>
+        <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Global downloads</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">10k</dd>
+            <dd class="order-3 text-neutral-faded">Our starter kit has been downloaded over 10k times.</dd>
+          </div>
+        <div class="flex flex-col gap-3">
+            <dt class="order-2 text-lg font-semibold">Five-star reviews</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">200+</dd>
+            <dd class="order-3 text-neutral-faded">We're proud of a five-star rating across 200+ reviews.</dd>
+          </div>
+    </dl>
+  </div>
+</Section>

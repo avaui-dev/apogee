@@ -1,0 +1,31 @@
+---
+/**
+ * Card gray light: A centred heading over three figures in a grey card.
+ *
+ * @block metrics
+ * @order 2
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-12 md:gap-16">
+    <SectionHeader heading="Build something great" description="Everything you need to build modern interfaces and great products." size="large" align="center" />
+    <dl class="flex flex-col gap-8 rounded-2xl bg-neutral-faded px-6 py-10 md:flex-row md:p-16 [&>*]:flex-1">
+        <div class="flex flex-col gap-3 items-center text-center">
+            <dt class="order-2 text-lg font-semibold">Projects completed</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">400+</dd>
+          </div>
+        <div class="flex flex-col gap-3 items-center text-center">
+            <dt class="order-2 text-lg font-semibold">Return on investment</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">600%</dd>
+          </div>
+        <div class="flex flex-col gap-3 items-center text-center">
+            <dt class="order-2 text-lg font-semibold">Global downloads</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">10k</dd>
+          </div>
+    </dl>
+  </div>
+</Section>

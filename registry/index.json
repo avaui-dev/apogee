@@ -9779,6 +9779,291 @@
       ],
       "dependencies": [],
       "usesJs": false
+    },
+    "metrics/card-brand-dark": {
+      "name": "metrics/card-brand-dark",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Card brand dark",
+      "description": "A centred heading over three figures in a brand-colour card.",
+      "files": [
+        "blocks/metrics/CardBrandDark.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/card-gray-light": {
+      "name": "metrics/card-gray-light",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Card gray light",
+      "description": "A centred heading over three figures in a grey card.",
+      "files": [
+        "blocks/metrics/CardGrayLight.astro"
+      ],
+      "registryDependencies": [
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/image-with-cards-01": {
+      "name": "metrics/image-with-cards-01",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Image with cards 01",
+      "description": "A centred heading with a badge over three figure cards on a photo.",
+      "files": [
+        "blocks/metrics/ImageWithCards01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/image-with-cards-02": {
+      "name": "metrics/image-with-cards-02",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Image with cards 02",
+      "description": "A heading and actions on a brand band, over three figure cards on a photo.",
+      "files": [
+        "blocks/metrics/ImageWithCards02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "metrics/minimal-centered-text": {
+      "name": "metrics/minimal-centered-text",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Minimal centered text",
+      "description": "Four centred figures between two rules.",
+      "files": [
+        "blocks/metrics/MinimalCenteredText.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/minimal-centered-text-brand": {
+      "name": "metrics/minimal-centered-text-brand",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Minimal centered text brand",
+      "description": "Four centred figures between two rules on the brand colour.",
+      "files": [
+        "blocks/metrics/MinimalCenteredTextBrand.astro"
+      ],
+      "registryDependencies": [
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/simple-accent-line": {
+      "name": "metrics/simple-accent-line",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Simple accent line",
+      "description": "A centred heading over four figures, each with an accent line and a link.",
+      "files": [
+        "blocks/metrics/SimpleAccentLine.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "metrics/simple-accent-line-brand": {
+      "name": "metrics/simple-accent-line-brand",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Simple accent line brand",
+      "description": "A centred heading over four figures, each with an accent line and a link, on the brand colour.",
+      "files": [
+        "blocks/metrics/SimpleAccentLineBrand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "metrics/simple-centered-text": {
+      "name": "metrics/simple-centered-text",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Simple centered text",
+      "description": "A centred heading over three figures split by dividers.",
+      "files": [
+        "blocks/metrics/SimpleCenteredText.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "metrics/simple-centered-text-brand": {
+      "name": "metrics/simple-centered-text-brand",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Simple centered text brand",
+      "description": "A centred heading over three figures split by dividers, on the brand colour.",
+      "files": [
+        "blocks/metrics/SimpleCenteredTextBrand.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "metrics/simple-with-actions-01": {
+      "name": "metrics/simple-with-actions-01",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Simple with actions 01",
+      "description": "A heading with actions beside it, over four figures with a line each.",
+      "files": [
+        "blocks/metrics/SimpleWithActions01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "metrics/simple-with-actions-02": {
+      "name": "metrics/simple-with-actions-02",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Simple with actions 02",
+      "description": "A heading and actions beside four figures, each with an icon.",
+      "files": [
+        "blocks/metrics/SimpleWithActions02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "metrics/split-image-01": {
+      "name": "metrics/split-image-01",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Split image 01",
+      "description": "A heading over four figures with a line each, beside a photo.",
+      "files": [
+        "blocks/metrics/SplitImage01.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/split-image-01-brand": {
+      "name": "metrics/split-image-01-brand",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Split image 01brand",
+      "description": "A heading over four figures with a line each, beside a photo, on the brand colour.",
+      "files": [
+        "blocks/metrics/SplitImage01Brand.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/split-image-02": {
+      "name": "metrics/split-image-02",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Split image 02",
+      "description": "A photo beside a heading and four figures.",
+      "files": [
+        "blocks/metrics/SplitImage02.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "metrics/split-image-02-brand": {
+      "name": "metrics/split-image-02-brand",
+      "kind": "block",
+      "category": "metrics",
+      "title": "Split image 02brand",
+      "description": "A photo beside a heading and four figures, on the brand colour.",
+      "files": [
+        "blocks/metrics/SplitImage02Brand.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
     }
   }
 }

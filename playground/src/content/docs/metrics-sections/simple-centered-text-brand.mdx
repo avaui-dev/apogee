@@ -1,0 +1,23 @@
+---
+title: "Simple centered text brand"
+description: "A centred heading over three figures split by dividers, on the brand colour."
+group: Metrics sections
+order: 10
+related: [section-header, featured-icon, sections/stats]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="metrics/simple-centered-text-brand" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add metrics/simple-centered-text-brand
+```
+
+This copies the block to `src/components/apogee/blocks/metrics/` with everything it uses: FeaturedIcon, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.

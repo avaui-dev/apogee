@@ -1,0 +1,31 @@
+---
+/**
+ * Minimal centered text brand: Four centred figures between two rules on the brand colour.
+ *
+ * @block metrics
+ * @order 6
+ */
+import Section from '../../components/Section/Section.astro'
+
+---
+
+<Section spacing="large" background="primary">
+  <dl aria-label="Key figures" class="grid gap-x-4 gap-y-8 md:grid-cols-2 md:border-y md:py-16 lg:grid-cols-4 border-current/25">
+      <div class="flex flex-col gap-3 items-center text-center">
+            <dt class="order-2 text-lg font-semibold">Projects completed</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">400+</dd>
+          </div>
+        <div class="flex flex-col gap-3 items-center text-center">
+            <dt class="order-2 text-lg font-semibold">Return on investment</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">600%</dd>
+          </div>
+        <div class="flex flex-col gap-3 items-center text-center">
+            <dt class="order-2 text-lg font-semibold">Global downloads</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">10k</dd>
+          </div>
+        <div class="flex flex-col gap-3 items-center text-center">
+            <dt class="order-2 text-lg font-semibold">Five-star reviews</dt>
+            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl ">200+</dd>
+          </div>
+    </dl>
+</Section>

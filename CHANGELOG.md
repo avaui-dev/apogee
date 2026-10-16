@@ -45,6 +45,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Metrics sections:** 16 blocks of headline figures in a row, a card, on a photo or beside an image, with dividers, accent lines, icons or links.
 - **Header sections:** 30 inner-page headers, centred, left-aligned or split, on the page or the brand colour, with buttons, an email signup, a search field or a billing switch.
 - **Hero sections:** 44 hero blocks: split image, sign-up form, angled and geometric patterns, screen and phone mockups, colour cards, card mockups and plain text, each with the page's `h1`.
 
