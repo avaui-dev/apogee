@@ -1,0 +1,29 @@
+---
+/**
+ * Landing page 11: A heading and two buttons beside four payment cards on a panel. Then features with icons, pricing plans, customer quotes, customer logos, a call to action with a screenshot and a footer on dark.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeatureCard.astro'
+import Hero from '../../blocks/hero/CardMockup09.astro'
+import Features from '../../blocks/features/SimpleIcons02.astro'
+import Pricing from '../../blocks/pricing/SimpleCards03.astro'
+import Testimonials from '../../blocks/testimonials/GlassmorphicCards01.astro'
+import Logos from '../../blocks/social-proof/Card.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup01.astro'
+import Footer from '../../blocks/footers/Large11.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Pricing />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <Logos />
+  <CallToAction />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

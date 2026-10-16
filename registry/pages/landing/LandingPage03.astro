@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 03: A centred heading and email signup on a brand card, over a chart. Then integrations, figures, features under a screenshot, pricing plans, questions in an accordion, customer logos and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Hero from '../../blocks/hero/ColorCard01.astro'
+import Features from '../../blocks/features/IntegrationsIcons03.astro'
+import Metrics from '../../blocks/metrics/CardGrayLight.astro'
+import Features2 from '../../blocks/features/CenterMockup02.astro'
+import Pricing from '../../blocks/pricing/SimpleCards04.astro'
+import Questions from '../../blocks/faq/Accordion01.astro'
+import Logos from '../../blocks/social-proof/Card.astro'
+import Footer from '../../blocks/footers/Large03.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Metrics />
+  <Features2 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Pricing />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Questions />
+  <Logos />
+</main>
+<Footer />

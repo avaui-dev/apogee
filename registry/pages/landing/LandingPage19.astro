@@ -1,0 +1,34 @@
+---
+/**
+ * Landing page 19: A heading, line and two buttons beside a workspace photo, over a dot grid on grey. Then customer logos on grey, integrations, a large screenshot, figures, a call to action card, customer quotes on grey, a call to action with a screenshot, a newsletter signup on grey and a footer on grey.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithSidebar.astro'
+import Hero from '../../blocks/hero/SplitImage05.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/IntegrationsIcons04.astro'
+import Features2 from '../../blocks/features/LargeScreenMockup02.astro'
+import Metrics from '../../blocks/metrics/SimpleCenteredText.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Testimonials from '../../blocks/testimonials/SimpleCentered02.astro'
+import CallToAction2 from '../../blocks/cta/ScreenMockup01.astro'
+import Newsletter from '../../blocks/newsletter/SimpleLeft.astro'
+import Footer from '../../blocks/footers/Large01.astro'
+---
+
+<Navigation background="neutral-faded" />
+<main>
+  <div class="bg-neutral-faded"><Hero /></div>
+  <div class="bg-neutral-faded"><Logos /></div>
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <Features2 />
+  <Metrics />
+  <CallToAction />
+  <div class="bg-neutral-faded"><Testimonials /></div>
+  <CallToAction2 />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<div class="bg-neutral-faded"><Footer /></div>

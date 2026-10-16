@@ -1,0 +1,30 @@
+---
+/**
+ * Landing page 05: A centred eyebrow, heading and two buttons over five fanned payment cards, on the brand colour. Then customer logos, features with icons, a call to action with a photo, feature tabs, pricing plans on grey, customer quotes on the brand colour and a footer on the brand colour.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Hero from '../../blocks/hero/CardMockup06.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/SimpleIcons04.astro'
+import CallToAction from '../../blocks/cta/SplitImage04.astro'
+import Features2 from '../../blocks/features/TabsMockup08.astro'
+import Pricing from '../../blocks/pricing/FeaturedCards01.astro'
+import Testimonials from '../../blocks/testimonials/CardSplitImageBrand.astro'
+import Footer from '../../blocks/footers/Large05Brand.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Hero />
+  <Logos />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <CallToAction />
+  <Features2 />
+  <div class="bg-neutral-faded"><Pricing /></div>
+  <Testimonials />
+</main>
+<Footer />

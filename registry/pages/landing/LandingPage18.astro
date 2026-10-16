@@ -1,0 +1,28 @@
+---
+/**
+ * Landing page 18: A heading, line and email signup beside a portrait photo, over a dot grid. Then alternating feature rows, a call to action card, feature tabs, customer quotes, a call to action with a screenshot, a newsletter signup on grey and a footer on dark.
+ *
+ * @page landing
+ */
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Hero from '../../blocks/hero/SplitImage06.astro'
+import Features from '../../blocks/features/AlternatingLayout03.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Features2 from '../../blocks/features/TabsMockup06.astro'
+import Testimonials from '../../blocks/testimonials/CardSplitImage.astro'
+import CallToAction2 from '../../blocks/cta/ScreenMockup04.astro'
+import Newsletter from '../../blocks/newsletter/SimpleLeft.astro'
+import Footer from '../../blocks/footers/Large10.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Features />
+  <CallToAction />
+  <Features2 />
+  <Testimonials />
+  <CallToAction2 />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

@@ -1,0 +1,30 @@
+---
+title: Landing pages
+navTitle: Overview
+description: "Whole landing pages: a hero, customer logos, features, quotes, pricing and calls to action, between a header and a footer."
+group: Landing pages
+order: -1
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole product landing page stacked from blocks: a header navigation in the hero's colour, a hero from [Hero sections](/docs/hero-sections) that holds the page's `h1`, then customer logos, features, quotes, pricing, questions and calls to action, alternating between the page colour, grey bands, the brand colour and a dark footer. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-01
+```
+
+```astro
+---
+// src/pages/landing.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/landing/LandingPage01.astro'
+---
+
+<Layout title="Landing">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="Landing pages" self="landing-pages" />

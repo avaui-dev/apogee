@@ -1,0 +1,25 @@
+---
+title: "Landing page 09"
+description: "A heading, email signup and three points over a wide panel of payment cards, over a dot grid. Then customer logos, a large screenshot, customer quotes, a call to action card, feature tabs, pricing plans on grey, a newsletter signup on the brand colour and a footer."
+group: Landing pages
+order: 9
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="landing/landing-page-09" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-09
+```
+
+This copies the page to `src/components/apogee/pages/landing/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-sidebar](/docs/header-navigation-sections/two-col-with-sidebar), [hero/card-mockup-08](/docs/hero-sections/card-mockup-08), [social-proof/full-width](/docs/social-proof-sections/full-width), [features/large-screen-mockup-02](/docs/features-sections/large-screen-mockup-02), [testimonials/simple-centered-02](/docs/testimonials-sections/simple-centered-02), [cta/card-horizontal](/docs/cta-sections/card-horizontal), [features/tabs-mockup-11](/docs/features-sections/tabs-mockup-11), [pricing/featured-cards-04](/docs/pricing-sections/featured-cards-04), [newsletter/simple-left-brand](/docs/newsletter-sections/simple-left-brand), [footers/large-09](/docs/footers-sections/large-09). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (hero/card-mockup-08) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

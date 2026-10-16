@@ -1,0 +1,25 @@
+---
+title: "Landing page 06"
+description: "A heading and two buttons over a wide panel of tilted payment cards. Then customer logos, feature tabs, a large screenshot, a call to action on grey, pricing plans, a call to action card on the brand colour and a footer."
+group: Landing pages
+order: 6
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="landing/landing-page-06" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-06
+```
+
+This copies the page to `src/components/apogee/pages/landing/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-links](/docs/header-navigation-sections/two-col-with-links), [hero/card-mockup-10](/docs/hero-sections/card-mockup-10), [social-proof/card](/docs/social-proof-sections/card), [features/tabs-mockup-10](/docs/features-sections/tabs-mockup-10), [features/large-screen-mockup-01](/docs/features-sections/large-screen-mockup-01), [cta/simple-centered](/docs/cta-sections/simple-centered), [pricing/featured-cards-04](/docs/pricing-sections/featured-cards-04), [cta/card-horizontal-brand](/docs/cta-sections/card-horizontal-brand), [footers/large-06](/docs/footers-sections/large-06). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (hero/card-mockup-10) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

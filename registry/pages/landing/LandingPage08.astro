@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 08: A centred eyebrow, heading and two buttons over two tilted payment cards, over a fine grid. Then features beside a mockup, pricing plans, features with icons on grey, feature tabs, integrations, customer logos, a call to action card on the brand colour and a footer on grey.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Hero from '../../blocks/hero/CardMockup05.astro'
+import Features from '../../blocks/features/IconsAndMockup08.astro'
+import Pricing from '../../blocks/pricing/SimpleCards02.astro'
+import Features2 from '../../blocks/features/SimpleIcons01.astro'
+import Features3 from '../../blocks/features/TabsMockup09.astro'
+import Features4 from '../../blocks/features/IntegrationsIcons03.astro'
+import Logos from '../../blocks/social-proof/Card.astro'
+import CallToAction from '../../blocks/cta/CardHorizontalBrand.astro'
+import Footer from '../../blocks/footers/Large08.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Features />
+  <Pricing />
+  <div class="bg-neutral-faded"><Features2 /></div>
+  <Features3 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features4 />
+  <Logos />
+  <CallToAction />
+</main>
+<div class="bg-neutral-faded"><Footer /></div>

@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 10: A heading and two buttons beside two payment cards on a panel, on a tint with a dot grid on grey. Then customer logos, customer quotes, feature tabs, press mentions, more posts on grey, a call to action with customer logos, a newsletter signup on grey and a footer on dark.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
+import Hero from '../../blocks/hero/CardMockup02.astro'
+import Logos from '../../blocks/social-proof/FullWidthMasked.astro'
+import Testimonials from '../../blocks/testimonials/CaseStudyCards.astro'
+import Features from '../../blocks/features/TabsMockup02.astro'
+import Logos2 from '../../blocks/social-proof/PressMentions.astro'
+import Posts from '../../blocks/blog/SimpleLeftAligned01.astro'
+import CallToAction from '../../blocks/cta/SimpleLogos02.astro'
+import Newsletter from '../../blocks/newsletter/SimpleLeft.astro'
+import Footer from '../../blocks/footers/Large10.astro'
+---
+
+<Navigation background="neutral-faded" />
+<main>
+  <div class="bg-neutral-faded"><Hero /></div>
+  <Logos />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <Features />
+  <Logos2 />
+  <div class="bg-neutral-faded"><Posts /></div>
+  <CallToAction />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

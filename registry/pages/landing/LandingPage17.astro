@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 17: A centred heading and two buttons over a video on a slanted band. Then customer logos, feature tabs, customer quotes, a call to action with a screenshot, more posts, a call to action with customer logos and a footer on dark.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Hero from '../../blocks/hero/AbstractAngles01.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/TabsMockup07.astro'
+import Testimonials from '../../blocks/testimonials/CaseStudyCards.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup03.astro'
+import Posts from '../../blocks/blog/CarouselLayout02.astro'
+import CallToAction2 from '../../blocks/cta/SimpleLogos02.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Logos />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+  <Posts />
+  <CallToAction2 />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

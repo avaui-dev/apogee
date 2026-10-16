@@ -1,0 +1,30 @@
+---
+/**
+ * Landing page 07: A heading and email signup beside a cascade of payment cards on a panel. Then customer logos on grey, features beside a mockup, a call to action with images on grey, feature cards, pricing plans on grey, a newsletter signup, a call to action card on the brand colour and a footer on dark.
+ *
+ * @page landing
+ */
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Hero from '../../blocks/hero/CardMockup11.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/IconsAndMockup07.astro'
+import CallToAction from '../../blocks/cta/AbstractImages.astro'
+import Features2 from '../../blocks/features/IconCards01.astro'
+import Pricing from '../../blocks/pricing/FeaturedCards01.astro'
+import Newsletter from '../../blocks/newsletter/CardVertical.astro'
+import CallToAction2 from '../../blocks/cta/CardVerticalBrand.astro'
+import Footer from '../../blocks/footers/Large07.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <div class="bg-neutral-faded"><Logos /></div>
+  <Features />
+  <div class="bg-neutral-faded"><CallToAction /></div>
+  <Features2 />
+  <div class="bg-neutral-faded"><Pricing /></div>
+  <Newsletter />
+  <CallToAction2 />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

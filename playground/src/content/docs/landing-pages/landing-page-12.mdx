@@ -1,0 +1,25 @@
+---
+title: "Landing page 12"
+description: "A heading, line and a text-me-a-link form beside a phone over a screenshot, over a dot grid. Then feature tabs, a call to action card, questions in an accordion, an app download call to action, a newsletter signup on grey and a footer."
+group: Landing pages
+order: 12
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="landing/landing-page-12" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-12
+```
+
+This copies the page to `src/components/apogee/pages/landing/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple-with-footer](/docs/header-navigation-sections/dropdown-simple-with-footer), [hero/iphone-mockup-03](/docs/hero-sections/iphone-mockup-03), [features/tabs-mockup-09](/docs/features-sections/tabs-mockup-09), [cta/card-horizontal](/docs/cta-sections/card-horizontal), [faq/accordion-01](/docs/faq-sections/accordion-01), [cta/iphone-mockup-01](/docs/cta-sections/iphone-mockup-01), [newsletter/simple-centered](/docs/newsletter-sections/simple-centered), [footers/large-03](/docs/footers-sections/large-03). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (hero/iphone-mockup-03) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

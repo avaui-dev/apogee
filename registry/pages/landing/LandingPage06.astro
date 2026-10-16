@@ -1,0 +1,30 @@
+---
+/**
+ * Landing page 06: A heading and two buttons over a wide panel of tilted payment cards. Then customer logos, feature tabs, a large screenshot, a call to action on grey, pricing plans, a call to action card on the brand colour and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Hero from '../../blocks/hero/CardMockup10.astro'
+import Logos from '../../blocks/social-proof/Card.astro'
+import Features from '../../blocks/features/TabsMockup10.astro'
+import Features2 from '../../blocks/features/LargeScreenMockup01.astro'
+import CallToAction from '../../blocks/cta/SimpleCentered.astro'
+import Pricing from '../../blocks/pricing/FeaturedCards04.astro'
+import CallToAction2 from '../../blocks/cta/CardHorizontalBrand.astro'
+import Footer from '../../blocks/footers/Large06.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Logos />
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features2 />
+  <div class="bg-neutral-faded"><CallToAction /></div>
+  <Pricing />
+  <CallToAction2 />
+</main>
+<Footer />

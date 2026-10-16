@@ -1,0 +1,31 @@
+---
+/**
+ * Landing page 14: A centred heading, line and two buttons over a wide row of geometric shapes, over a dot grid. Then customer logos, a content section, customer quotes, figures, ways to get in touch, a newsletter signup and a footer on dark.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro'
+import Hero from '../../blocks/hero/GeometricShapes03.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Article from '../../blocks/content/SectionSplitImage03.astro'
+import Testimonials from '../../blocks/testimonials/AbstractImage.astro'
+import Metrics from '../../blocks/metrics/SplitImage01.astro'
+import Contact from '../../blocks/contact/IconsAndImage.astro'
+import Newsletter from '../../blocks/newsletter/CardVertical.astro'
+import Footer from '../../blocks/footers/Large15.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Logos />
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Metrics />
+  <Contact />
+  <Newsletter />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

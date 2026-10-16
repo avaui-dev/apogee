@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 20: A heading, line and two buttons beside a photo with one large rounded corner. Then customer logos, feature tabs, figures, a call to action on grey, pricing plans, customer quotes, a call to action with images and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
+import Hero from '../../blocks/hero/SplitImage03.astro'
+import Logos from '../../blocks/social-proof/Card.astro'
+import Features from '../../blocks/features/TabsMockup06.astro'
+import Metrics from '../../blocks/metrics/CardGrayLight.astro'
+import CallToAction from '../../blocks/cta/SimpleLeft.astro'
+import Pricing from '../../blocks/pricing/SimpleCards02.astro'
+import Testimonials from '../../blocks/testimonials/CardSplitImage.astro'
+import CallToAction2 from '../../blocks/cta/AbstractImages.astro'
+import Footer from '../../blocks/footers/Large12.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Logos />
+  <Features />
+  <Metrics />
+  <div class="bg-neutral-faded"><CallToAction /></div>
+  <Pricing />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <CallToAction2 />
+</main>
+<Footer />

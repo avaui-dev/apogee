@@ -1,0 +1,25 @@
+---
+title: "Landing page 20"
+description: "A heading, line and two buttons beside a photo with one large rounded corner. Then customer logos, feature tabs, figures, a call to action on grey, pricing plans, customer quotes, a call to action with images and a footer."
+group: Landing pages
+order: 20
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="landing/landing-page-20" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-20
+```
+
+This copies the page to `src/components/apogee/pages/landing/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple](/docs/header-navigation-sections/dropdown-simple), [hero/split-image-03](/docs/hero-sections/split-image-03), [social-proof/card](/docs/social-proof-sections/card), [features/tabs-mockup-06](/docs/features-sections/tabs-mockup-06), [metrics/card-gray-light](/docs/metrics-sections/card-gray-light), [cta/simple-left](/docs/cta-sections/simple-left), [pricing/simple-cards-02](/docs/pricing-sections/simple-cards-02), [testimonials/card-split-image](/docs/testimonials-sections/card-split-image), [cta/abstract-images](/docs/cta-sections/abstract-images), [footers/large-12](/docs/footers-sections/large-12). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (hero/split-image-03) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

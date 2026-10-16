@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 16: A large heading with an underlined phrase, a line and two buttons over a wide photo, over a dot grid. Then customer logos, feature tabs, customer quotes, features with icons, contact cards, a newsletter signup on grey and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Hero from '../../blocks/hero/SimpleText01.astro'
+import Logos from '../../blocks/social-proof/FullWidthDual.astro'
+import Features from '../../blocks/features/TabsMockup06.astro'
+import Testimonials from '../../blocks/testimonials/SimpleCentered02.astro'
+import Features2 from '../../blocks/features/SimpleIcons02.astro'
+import Contact from '../../blocks/contact/IconCards01.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large13.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Logos />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <Testimonials />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features2 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Contact />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<Footer />

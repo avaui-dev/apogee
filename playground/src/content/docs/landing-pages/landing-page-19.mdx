@@ -1,0 +1,25 @@
+---
+title: "Landing page 19"
+description: "A heading, line and two buttons beside a workspace photo, over a dot grid on grey. Then customer logos on grey, integrations, a large screenshot, figures, a call to action card, customer quotes on grey, a call to action with a screenshot, a newsletter signup on grey and a footer on grey."
+group: Landing pages
+order: 19
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="landing/landing-page-19" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-19
+```
+
+This copies the page to `src/components/apogee/pages/landing/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-sidebar](/docs/header-navigation-sections/two-col-with-sidebar), [hero/split-image-05](/docs/hero-sections/split-image-05), [social-proof/full-width](/docs/social-proof-sections/full-width), [features/integrations-icons-04](/docs/features-sections/integrations-icons-04), [features/large-screen-mockup-02](/docs/features-sections/large-screen-mockup-02), [metrics/simple-centered-text](/docs/metrics-sections/simple-centered-text), [cta/card-horizontal](/docs/cta-sections/card-horizontal), [testimonials/simple-centered-02](/docs/testimonials-sections/simple-centered-02), [cta/screen-mockup-01](/docs/cta-sections/screen-mockup-01), [newsletter/simple-left](/docs/newsletter-sections/simple-left), [footers/large-01](/docs/footers-sections/large-01). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (hero/split-image-05) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

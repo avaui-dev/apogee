@@ -1,0 +1,26 @@
+---
+/**
+ * Landing page 15: A large heading with an underlined phrase, a line and two buttons over a wide photo, on the brand colour. Then customer logos on the brand colour, features beside a photo, customer quotes on grey, figures, a contact form and a footer.
+ *
+ * @page landing
+ */
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Hero from '../../blocks/hero/SimpleText02.astro'
+import Logos from '../../blocks/social-proof/FullWidthBrand.astro'
+import Features from '../../blocks/features/IconsAndImage04.astro'
+import Testimonials from '../../blocks/testimonials/SimpleLeftAligned.astro'
+import Metrics from '../../blocks/metrics/MinimalCenteredText.astro'
+import Contact from '../../blocks/contact/SimpleForm02.astro'
+import Footer from '../../blocks/footers/Large08.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Hero />
+  <Logos />
+  <Features />
+  <div class="bg-neutral-faded"><Testimonials /></div>
+  <Metrics />
+  <Contact />
+</main>
+<Footer />

@@ -1,0 +1,29 @@
+---
+/**
+ * Landing page 13: A heading, line and app buttons beside a phone, over a dot grid. Then customer logos on grey, features beside a mockup, an app download call to action, pricing plans, a newsletter signup and a footer on the brand colour.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Hero from '../../blocks/hero/IphoneMockup01.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/IconsAndMockup01.astro'
+import CallToAction from '../../blocks/cta/IphoneMockup04.astro'
+import Pricing from '../../blocks/pricing/FeaturedCards02.astro'
+import Newsletter from '../../blocks/newsletter/IphoneMockup03.astro'
+import Footer from '../../blocks/footers/Large11Brand.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <div class="bg-neutral-faded"><Logos /></div>
+  <Features />
+  <CallToAction />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Pricing />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Newsletter />
+</main>
+<Footer />

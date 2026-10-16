@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 09: A heading, email signup and three points over a wide panel of payment cards, over a dot grid. Then customer logos, a large screenshot, customer quotes, a call to action card, feature tabs, pricing plans on grey, a newsletter signup on the brand colour and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithSidebar.astro'
+import Hero from '../../blocks/hero/CardMockup08.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/LargeScreenMockup02.astro'
+import Testimonials from '../../blocks/testimonials/SimpleCentered02.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Features2 from '../../blocks/features/TabsMockup11.astro'
+import Pricing from '../../blocks/pricing/FeaturedCards04.astro'
+import Newsletter from '../../blocks/newsletter/SimpleLeftBrand.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Logos />
+  <Features />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <CallToAction />
+  <Features2 />
+  <div class="bg-neutral-faded"><Pricing /></div>
+  <Newsletter />
+</main>
+<Footer />

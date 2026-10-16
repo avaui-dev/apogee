@@ -1,0 +1,28 @@
+---
+/**
+ * Landing page 12: A heading, line and a text-me-a-link form beside a phone over a screenshot, over a dot grid. Then feature tabs, a call to action card, questions in an accordion, an app download call to action, a newsletter signup on grey and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleWithFooter.astro'
+import Hero from '../../blocks/hero/IphoneMockup03.astro'
+import Features from '../../blocks/features/TabsMockup09.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Questions from '../../blocks/faq/Accordion01.astro'
+import CallToAction2 from '../../blocks/cta/IphoneMockup01.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large03.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <CallToAction />
+  <Questions />
+  <CallToAction2 />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<Footer />

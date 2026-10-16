@@ -1,0 +1,32 @@
+---
+/**
+ * Landing page 01: A centred heading and two buttons over a phone on small screens and a browser on wide ones, over a grid. Then customer logos, features with icons, customer quotes on grey, questions in an accordion, customer quotes, more posts and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeatureCard.astro'
+import Hero from '../../blocks/hero/ScreenMockup05.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/SimpleIcons02.astro'
+import Testimonials from '../../blocks/testimonials/SimpleCentered02.astro'
+import Questions from '../../blocks/faq/Accordion01.astro'
+import Testimonials2 from '../../blocks/testimonials/SocialCards03.astro'
+import Posts from '../../blocks/blog/SimpleLeftAligned01.astro'
+import Footer from '../../blocks/footers/Large01.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Logos />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Features />
+  <div class="bg-neutral-faded"><Testimonials /></div>
+  <Questions />
+  <Testimonials2 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts />
+</main>
+<Footer />

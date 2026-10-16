@@ -1,0 +1,29 @@
+---
+/**
+ * Landing page 04: A centred heading and two buttons over two payment cards on a panel, over a fine grid. Then customer logos, features with icons on grey, pricing plans, customer quotes, a call to action with a screenshot and a footer.
+ *
+ * @page landing
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro'
+import Hero from '../../blocks/hero/CardMockup01.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import Features from '../../blocks/features/SimpleIcons02.astro'
+import Pricing from '../../blocks/pricing/SimpleCards03.astro'
+import Testimonials from '../../blocks/testimonials/GlassmorphicCards01.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup03.astro'
+import Footer from '../../blocks/footers/Large04.astro'
+---
+
+<Navigation />
+<main>
+  <Hero />
+  <Logos />
+  <div class="bg-neutral-faded"><Features /></div>
+  <Pricing />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Testimonials />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+</main>
+<Footer />

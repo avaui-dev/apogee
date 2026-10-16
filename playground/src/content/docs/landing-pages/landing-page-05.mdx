@@ -1,0 +1,25 @@
+---
+title: "Landing page 05"
+description: "A centred eyebrow, heading and two buttons over five fanned payment cards, on the brand colour. Then customer logos, features with icons, a call to action with a photo, feature tabs, pricing plans on grey, customer quotes on the brand colour and a footer on the brand colour."
+group: Landing pages
+order: 5
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="landing/landing-page-05" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-05
+```
+
+This copies the page to `src/components/apogee/pages/landing/` with the blocks it stacks and everything they use: [header-navigation/dropdown-featured-posts](/docs/header-navigation-sections/dropdown-featured-posts), [hero/card-mockup-06](/docs/hero-sections/card-mockup-06), [social-proof/full-width](/docs/social-proof-sections/full-width), [features/simple-icons-04](/docs/features-sections/simple-icons-04), [cta/split-image-04](/docs/cta-sections/split-image-04), [features/tabs-mockup-08](/docs/features-sections/tabs-mockup-08), [pricing/featured-cards-01](/docs/pricing-sections/featured-cards-01), [testimonials/card-split-image-brand](/docs/testimonials-sections/card-split-image-brand), [footers/large-05-brand](/docs/footers-sections/large-05-brand). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (hero/card-mockup-06) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

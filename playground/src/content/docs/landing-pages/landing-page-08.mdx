@@ -1,0 +1,25 @@
+---
+title: "Landing page 08"
+description: "A centred eyebrow, heading and two buttons over two tilted payment cards, over a fine grid. Then features beside a mockup, pricing plans, features with icons on grey, feature tabs, integrations, customer logos, a call to action card on the brand colour and a footer on grey."
+group: Landing pages
+order: 8
+related: [sections/hero, sections/features, sections/pricing]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="landing/landing-page-08" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add landing/landing-page-08
+```
+
+This copies the page to `src/components/apogee/pages/landing/` with the blocks it stacks and everything they use: [header-navigation/three-col-with-sidebar](/docs/header-navigation-sections/three-col-with-sidebar), [hero/card-mockup-05](/docs/hero-sections/card-mockup-05), [features/icons-and-mockup-08](/docs/features-sections/icons-and-mockup-08), [pricing/simple-cards-02](/docs/pricing-sections/simple-cards-02), [features/simple-icons-01](/docs/features-sections/simple-icons-01), [features/tabs-mockup-09](/docs/features-sections/tabs-mockup-09), [features/integrations-icons-03](/docs/features-sections/integrations-icons-03), [social-proof/card](/docs/social-proof-sections/card), [cta/card-horizontal-brand](/docs/cta-sections/card-horizontal-brand), [footers/large-08](/docs/footers-sections/large-08). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (hero/card-mockup-05) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.
