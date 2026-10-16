@@ -1,0 +1,22 @@
+---
+/**
+ * Blog page 09: A heading beside a subscribe form, a category filter, and a two-column grid of horizontal posts. Then more posts, a call to action on grey and a footer on dark.
+ *
+ * @page blog
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithSidebar.astro'
+import Posts from '../../blocks/blog/Simple06.astro'
+import Posts2 from '../../blocks/blog/SplitLayout02.astro'
+import CallToAction from '../../blocks/cta/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large05.astro'
+---
+
+<Navigation />
+<main>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts2 />
+  <div class="bg-neutral-faded"><CallToAction /></div>
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

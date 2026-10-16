@@ -1,0 +1,22 @@
+---
+/**
+ * Blog page 05: A banner on the brand colour and a centred header with an email sign-up, a large featured post, a grid of posts and pagination. Then more posts on grey, a call to action and a footer.
+ *
+ * @page blog
+ */
+import Banner from '../../blocks/banner/SlimBrandFullWidth.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Posts from '../../blocks/blog/FeaturedPost03.astro'
+import Posts2 from '../../blocks/blog/CarouselLayout02.astro'
+import CallToAction from '../../blocks/cta/SplitImageQuote02.astro'
+import Footer from '../../blocks/footers/Large02.astro'
+---
+
+<Banner />
+<Navigation />
+<main>
+  <Posts />
+  <div class="bg-neutral-faded"><Posts2 /></div>
+  <CallToAction />
+</main>
+<Footer />

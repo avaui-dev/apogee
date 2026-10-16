@@ -1,0 +1,22 @@
+---
+/**
+ * Blog page 01: A heading, a large featured post, category tabs with a sort menu, a grid of posts and pagination. Then a call to action, a call to action on grey and a footer.
+ *
+ * @page blog
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeatureCard.astro'
+import Posts from '../../blocks/blog/FeaturedPost01.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup03.astro'
+import CallToAction2 from '../../blocks/cta/SimpleLeft.astro'
+import Footer from '../../blocks/footers/Large05.astro'
+---
+
+<Navigation />
+<main>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+  <div class="bg-neutral-faded"><CallToAction2 /></div>
+</main>
+<Footer />

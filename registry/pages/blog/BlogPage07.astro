@@ -1,0 +1,22 @@
+---
+/**
+ * Blog page 07: A header on the brand colour with a newsletter form, then a grid of posts and pagination. Then a newsletter signup on grey, a call to action and a footer on dark.
+ *
+ * @page blog
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Posts from '../../blocks/blog/FeaturedPost04.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import CallToAction from '../../blocks/cta/IphoneMockup02.astro'
+import Footer from '../../blocks/footers/Large08.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <div class="bg-neutral-faded"><Newsletter /></div>
+  <CallToAction />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

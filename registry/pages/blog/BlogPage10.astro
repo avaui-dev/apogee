@@ -1,0 +1,22 @@
+---
+/**
+ * Blog page 10: A centred header with an email form, then one centred column of horizontal posts and pagination. Then more posts, a newsletter signup and a footer on the brand colour.
+ *
+ * @page blog
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
+import Posts from '../../blocks/blog/AltLayout04.astro'
+import Posts2 from '../../blocks/blog/SimpleCenterAligned01.astro'
+import Newsletter from '../../blocks/newsletter/CardVertical.astro'
+import Footer from '../../blocks/footers/Large04Brand.astro'
+---
+
+<Navigation />
+<main>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts2 />
+  <Newsletter />
+</main>
+<Footer />

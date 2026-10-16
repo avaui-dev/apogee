@@ -1,0 +1,30 @@
+---
+title: Blog pages
+navTitle: Overview
+description: "Whole blog index pages: a blog header, featured posts, categories, a grid or list of posts and pagination, between a header and a footer."
+group: Blog pages
+order: -1
+related: [sections/blog-list, post-card, pagination]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole blog index stacked from blocks: a header navigation, a blog index from [Blog sections](/docs/blog-sections) (its heading is the page's `h1`), then calls to action, more posts or a newsletter signup before the footer. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add blog/blog-page-01
+```
+
+```astro
+---
+// src/pages/blog.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/blog/BlogPage01.astro'
+---
+
+<Layout title="Blog">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="Blog pages" self="blog-pages" />

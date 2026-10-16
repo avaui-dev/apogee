@@ -1,0 +1,22 @@
+---
+/**
+ * Blog page 06: A centred blog header, a large featured post, then a search field and category list beside a grid of posts. Then a call to action, customer logos on grey, a call to action on dark and a footer on grey.
+ *
+ * @page blog
+ */
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Posts from '../../blocks/blog/FeaturedPost02.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
+import CallToAction2 from '../../blocks/cta/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large01.astro'
+---
+
+<Navigation />
+<main>
+  <Posts />
+  <CallToAction />
+  <div class="bg-neutral-faded"><Logos /></div>
+  <div data-theme="dark" class="bg-page text-neutral"><CallToAction2 /></div>
+</main>
+<div class="bg-neutral-faded"><Footer /></div>

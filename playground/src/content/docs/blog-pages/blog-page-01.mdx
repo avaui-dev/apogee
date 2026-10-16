@@ -1,0 +1,25 @@
+---
+title: "Blog page 01"
+description: "A heading, a large featured post, category tabs with a sort menu, a grid of posts and pagination. Then a call to action, a call to action on grey and a footer."
+group: Blog pages
+order: 1
+related: [sections/blog-list, post-card, pagination]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog/blog-page-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog/blog-page-01
+```
+
+This copies the page to `src/components/apogee/pages/blog/` with the blocks it stacks and everything they use: [header-navigation/dropdown-feature-card](/docs/header-navigation-sections/dropdown-feature-card), [blog/featured-post-01](/docs/blog-sections/featured-post-01), [cta/screen-mockup-03](/docs/cta-sections/screen-mockup-03), [cta/simple-left](/docs/cta-sections/simple-left), [footers/large-05](/docs/footers-sections/large-05). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (blog/featured-post-01) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

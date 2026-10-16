@@ -1819,20 +1819,20 @@
       "kind": "page",
       "category": "about",
       "title": "About page 01",
-      "description": "A floating header, a centred heading, four figures beside a photo, customer logos, the team, six values, open positions and a large footer.",
+      "description": "A page header, figures on grey, customer logos, the team, features on grey, open positions and a footer on dark.",
       "files": [
         "pages/about/AboutPage01.astro"
       ],
       "registryDependencies": [
         "Divider",
-        "careers/card-04",
+        "careers/card-03",
         "features/simple-icons-02",
-        "footers/large-01",
-        "header-navigation/floating-simple-with-footer",
+        "footers/large-02",
+        "header-navigation/floating-feature-card",
         "header/centered",
-        "metrics/split-image-01",
+        "metrics/split-image-02",
         "social-proof/full-width",
-        "team/image-card-01"
+        "team/simple-04"
       ],
       "dependencies": [],
       "usesJs": false
@@ -1842,20 +1842,20 @@
       "kind": "page",
       "category": "about",
       "title": "About page 02",
-      "description": "A map of offices, store addresses on the brand colour, the team, open positions, a contact form, press mentions and a brand footer.",
+      "description": "A map of offices, ways to get in touch on the brand colour, the team, open positions, a contact form, press mentions and a footer on the brand colour.",
       "files": [
         "pages/about/AboutPage02.astro"
       ],
       "registryDependencies": [
         "Divider",
-        "careers/simple-03",
+        "careers/card-04",
         "contact/map-02",
         "contact/simple-form-01",
         "contact/simple-icons-04-brand",
-        "footers/large-01-brand",
-        "header-navigation/dropdown-simple",
+        "footers/large-05-brand",
+        "header-navigation/dropdown-simple-with-footer",
         "social-proof/press-mentions",
-        "team/simple-02"
+        "team/simple-01"
       ],
       "dependencies": [],
       "usesJs": false
@@ -1865,19 +1865,19 @@
       "kind": "page",
       "category": "about",
       "title": "About page 03",
-      "description": "A brand banner, a header, store addresses beside a map, the team, review cards, a call to join and a large footer.",
+      "description": "A banner on the brand colour, a map of offices, the team, customer quotes, a call to action and a footer.",
       "files": [
         "pages/about/AboutPage03.astro"
       ],
       "registryDependencies": [
         "Divider",
         "banner/slim-brand-full-width",
-        "contact/centered-map",
+        "contact/map-01",
         "cta/simple-centered",
         "footers/large-04",
-        "header-navigation/dropdown-feature-card",
-        "team/simple-01",
-        "testimonials/social-cards-01"
+        "header-navigation/dropdown-simple-two-columns",
+        "team/image-card-01",
+        "testimonials/social-cards-03"
       ],
       "dependencies": [],
       "usesJs": false
@@ -1887,18 +1887,19 @@
       "kind": "page",
       "category": "about",
       "title": "About page 04",
-      "description": "A floating header, a centred heading, six team portraits on glass, figures beside a photo, one quote, a call to join and a large footer.",
+      "description": "A page header, the team, figures, customer quotes, a call to action on grey and a footer on dark.",
       "files": [
         "pages/about/AboutPage04.astro"
       ],
       "registryDependencies": [
-        "cta/split-image-01",
-        "footers/large-05",
-        "header-navigation/floating-feature-card",
+        "Divider",
+        "cta/simple-centered",
+        "footers/large-03",
+        "header-navigation/floating-four-col-slim-with-footer",
         "header/centered",
-        "metrics/split-image-02",
+        "metrics/image-with-cards-01",
         "team/image-glass-01",
-        "testimonials/simple-centered-02"
+        "testimonials/simple-centered-01"
       ],
       "dependencies": [],
       "usesJs": false
@@ -1908,19 +1909,19 @@
       "kind": "page",
       "category": "about",
       "title": "About page 05",
-      "description": "A centred heading, figure cards on a photo, values with icons, the team, open positions, rotating quotes, a newsletter signup and a large footer.",
+      "description": "A page header, figures, features, the team, open positions, customer quotes, a newsletter signup on grey and a footer on dark.",
       "files": [
         "pages/about/AboutPage05.astro"
       ],
       "registryDependencies": [
-        "careers/simple-01",
-        "features/simple-icons-03",
-        "footers/large-06",
-        "header-navigation/dropdown-simple-with-footer",
-        "header/centered-buttons",
+        "careers/card-01",
+        "features/simple-icons-02",
+        "footers/large-05",
+        "header-navigation/dropdown-featured-posts",
+        "header/centered",
         "metrics/image-with-cards-01",
         "newsletter/simple-centered",
-        "team/simple-02",
+        "team/simple-04",
         "testimonials/abstract-image"
       ],
       "dependencies": [],
@@ -1931,15 +1932,16 @@
       "kind": "page",
       "category": "about",
       "title": "About page 06",
-      "description": "A split heading, figures with actions, open positions, a world map of offices, one quote in a card, a newsletter card and a large footer.",
+      "description": "A page header, figures, open positions, a map of offices, customer quotes, a newsletter signup and a footer on grey.",
       "files": [
         "pages/about/AboutPage06.astro"
       ],
       "registryDependencies": [
-        "careers/simple-02",
+        "Divider",
+        "careers/card-03",
         "contact/vector-map-03",
         "footers/large-07",
-        "header-navigation/dropdown-simple-two-columns",
+        "header-navigation/two-col-with-links",
         "header/space-between",
         "metrics/simple-with-actions-01",
         "newsletter/card-horizontal",
@@ -1953,16 +1955,17 @@
       "kind": "page",
       "category": "about",
       "title": "About page 07",
-      "description": "A split heading on the brand colour, feature cards, open positions in tabs, questions and a footer that opens with a call to action.",
+      "description": "A page header on the brand colour, ways to get in touch, open positions, questions and a footer.",
       "files": [
         "pages/about/AboutPage07.astro"
       ],
       "registryDependencies": [
+        "Divider",
         "careers/card-01",
+        "contact/icon-cards-03",
         "faq/accordion-01",
-        "features/icon-cards-01",
         "footers/large-09",
-        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "header-navigation/four-col-with-footer",
         "header/space-between-brand"
       ],
       "dependencies": [],
@@ -1973,19 +1976,19 @@
       "kind": "page",
       "category": "about",
       "title": "About page 08",
-      "description": "A centred heading, customer logos, the leadership team, open positions, a brand newsletter card, a contact form and a footer with a call to action.",
+      "description": "A page header, customer logos on grey, the team, open positions, a newsletter signup on the brand colour, a contact form and a footer on dark.",
       "files": [
         "pages/about/AboutPage08.astro"
       ],
       "registryDependencies": [
         "Divider",
         "careers/simple-04",
-        "contact/simple-form-02",
-        "footers/large-10",
-        "header-navigation/four-col-with-footer",
+        "contact/simple-form-01",
+        "footers/large-13",
+        "header-navigation/three-col-with-sidebar",
         "header/centered",
-        "newsletter/card-horizontal-brand",
-        "social-proof/card",
+        "newsletter/card-vertical-brand",
+        "social-proof/full-width",
         "team/simple-03"
       ],
       "dependencies": [],
@@ -1996,17 +1999,17 @@
       "kind": "page",
       "category": "about",
       "title": "About page 09",
-      "description": "A split heading with buttons, figures in a grey card, the mission, case studies, a scrolling row of the team, open positions and a large footer.",
+      "description": "A page header, figures, a content section, customer quotes, the team on grey, open positions and a footer on grey.",
       "files": [
         "pages/about/AboutPage09.astro"
       ],
       "registryDependencies": [
         "Divider",
-        "careers/card-02",
-        "content/section-simple-02",
-        "footers/large-03",
-        "header-navigation/two-col-with-links",
-        "header/space-between-buttons",
+        "careers/simple-03",
+        "content/section-simple-03",
+        "footers/large-08",
+        "header-navigation/two-col-with-sidebar",
+        "header/space-between",
         "metrics/card-gray-light",
         "team/image-glass-04",
         "testimonials/case-study-cards"
@@ -2019,18 +2022,411 @@
       "kind": "page",
       "category": "about",
       "title": "About page 10",
-      "description": "A centred heading with buttons, alternating feature rows, six values, a collage of the team, a newsletter signup and a large footer.",
+      "description": "A page header on grey, features, features on grey, the team, a newsletter signup on grey and a footer.",
       "files": [
         "pages/about/AboutPage10.astro"
       ],
       "registryDependencies": [
-        "features/alternating-layout-01",
+        "features/alternating-layout-04",
         "features/simple-icons-02",
-        "footers/large-08",
-        "header-navigation/three-col-with-sidebar",
+        "footers/large-04",
+        "header-navigation/dropdown-simple",
         "header/centered-buttons",
-        "newsletter/simple-left",
+        "newsletter/simple-centered",
         "team/image-collage-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-01": {
+      "name": "blog/blog-page-01",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 01",
+      "description": "A heading, a large featured post, category tabs with a sort menu, a grid of posts and pagination. Then a call to action, a call to action on grey and a footer.",
+      "files": [
+        "pages/blog/BlogPage01.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/featured-post-01",
+        "cta/screen-mockup-03",
+        "cta/simple-left",
+        "footers/large-05",
+        "header-navigation/dropdown-feature-card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-02": {
+      "name": "blog/blog-page-02",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 02",
+      "description": "A centred header with an email form, recent posts (one large, two beside it), then all posts with pagination. Then a call to action and a footer on dark.",
+      "files": [
+        "pages/blog/BlogPage02.astro"
+      ],
+      "registryDependencies": [
+        "blog/alt-layout-02",
+        "cta/iphone-mockup-02",
+        "footers/large-09",
+        "header-navigation/dropdown-simple-with-footer"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-03": {
+      "name": "blog/blog-page-03",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 03",
+      "description": "A centred header with search, category tabs and a sort menu, a grid of posts with a newsletter card inside it, and pagination. Then a call to action and a footer.",
+      "files": [
+        "pages/blog/BlogPage03.astro"
+      ],
+      "registryDependencies": [
+        "blog/simple-01",
+        "cta/abstract-images",
+        "footers/large-08",
+        "header-navigation/dropdown-simple-two-columns"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-04": {
+      "name": "blog/blog-page-04",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 04",
+      "description": "A header, then a search field and category list beside a grid of posts whose featured post spans the full width. Then a footer on grey.",
+      "files": [
+        "pages/blog/BlogPage04.astro"
+      ],
+      "registryDependencies": [
+        "blog/sidebar-02",
+        "footers/large-08",
+        "header-navigation/dropdown-two-cols-with-links-and-footer"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-05": {
+      "name": "blog/blog-page-05",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 05",
+      "description": "A banner on the brand colour and a centred header with an email sign-up, a large featured post, a grid of posts and pagination. Then more posts on grey, a call to action and a footer.",
+      "files": [
+        "pages/blog/BlogPage05.astro"
+      ],
+      "registryDependencies": [
+        "banner/slim-brand-full-width",
+        "blog/carousel-layout-02",
+        "blog/featured-post-03",
+        "cta/split-image-quote-02",
+        "footers/large-02",
+        "header-navigation/dropdown-featured-posts"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-06": {
+      "name": "blog/blog-page-06",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 06",
+      "description": "A centred blog header, a large featured post, then a search field and category list beside a grid of posts. Then a call to action, customer logos on grey, a call to action on dark and a footer on grey.",
+      "files": [
+        "pages/blog/BlogPage06.astro"
+      ],
+      "registryDependencies": [
+        "blog/featured-post-02",
+        "cta/card-horizontal",
+        "cta/simple-centered",
+        "footers/large-01",
+        "header-navigation/two-col-with-links",
+        "social-proof/full-width"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-07": {
+      "name": "blog/blog-page-07",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 07",
+      "description": "A header on the brand colour with a newsletter form, then a grid of posts and pagination. Then a newsletter signup on grey, a call to action and a footer on dark.",
+      "files": [
+        "pages/blog/BlogPage07.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/featured-post-04",
+        "cta/iphone-mockup-02",
+        "footers/large-08",
+        "header-navigation/four-col-with-footer",
+        "newsletter/simple-centered"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-08": {
+      "name": "blog/blog-page-08",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 08",
+      "description": "A heading beside a subscribe form, a category filter (a menu on phones, tabs from md), a grid of posts and pagination. Then more posts, a newsletter signup on dark and a footer on grey.",
+      "files": [
+        "pages/blog/BlogPage08.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/simple-05",
+        "blog/simple-left-aligned-02",
+        "footers/large-01",
+        "header-navigation/three-col-with-sidebar",
+        "newsletter/simple-centered"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-09": {
+      "name": "blog/blog-page-09",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 09",
+      "description": "A heading beside a subscribe form, a category filter, and a two-column grid of horizontal posts. Then more posts, a call to action on grey and a footer on dark.",
+      "files": [
+        "pages/blog/BlogPage09.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/simple-06",
+        "blog/split-layout-02",
+        "cta/simple-centered",
+        "footers/large-05",
+        "header-navigation/two-col-with-sidebar"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/blog-page-10": {
+      "name": "blog/blog-page-10",
+      "kind": "page",
+      "category": "blog",
+      "title": "Blog page 10",
+      "description": "A centred header with an email form, then one centred column of horizontal posts and pagination. Then more posts, a newsletter signup and a footer on the brand colour.",
+      "files": [
+        "pages/blog/BlogPage10.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/alt-layout-04",
+        "blog/simple-center-aligned-01",
+        "footers/large-04-brand",
+        "header-navigation/dropdown-simple",
+        "newsletter/card-vertical"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-01": {
+      "name": "blog-post/blog-post-01",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 01",
+      "description": "A heading block over a photo carousel, the body, then the author and topics. Then more posts, a call to action, a newsletter signup and a footer.",
+      "files": [
+        "pages/blog-post/BlogPost01.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/simple-left-aligned-01",
+        "content/alternative-02",
+        "cta/abstract-images",
+        "footers/large-01",
+        "header-navigation/dropdown-feature-card",
+        "newsletter/card-horizontal"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-02": {
+      "name": "blog-post/blog-post-02",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 02",
+      "description": "A centred title over a wide photo, the body, then the author and share links. Then more posts, a newsletter signup on the brand colour and a footer on dark.",
+      "files": [
+        "pages/blog-post/BlogPost02.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/simple-left-aligned-02",
+        "content/large-image-01",
+        "footers/large-04",
+        "header-navigation/dropdown-simple-with-footer",
+        "newsletter/simple-left-brand"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-03": {
+      "name": "blog-post/blog-post-03",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 03",
+      "description": "A place title beside a tall photo, the body, then share links. Then more posts on grey and a footer.",
+      "files": [
+        "pages/blog-post/BlogPost03.astro"
+      ],
+      "registryDependencies": [
+        "blog/split-layout-02",
+        "content/alternative-03",
+        "footers/small-04",
+        "header-navigation/dropdown-simple-two-columns"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-04": {
+      "name": "blog-post/blog-post-04",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 04",
+      "description": "A banner on grey and a split header beside a wide photo, the body, then share links. Then more posts, a call to action, a newsletter signup and a footer.",
+      "files": [
+        "pages/blog-post/BlogPost04.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "banner/slim-full-width",
+        "blog/simple-left-aligned-01",
+        "content/split-image-04",
+        "cta/abstract-images",
+        "footers/large-01",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "newsletter/card-horizontal"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-05": {
+      "name": "blog-post/blog-post-05",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 05",
+      "description": "A split header with a tall photo, then a table of contents and share links beside the body. Then more posts, a call to action and a footer on dark.",
+      "files": [
+        "pages/blog-post/BlogPost05.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/carousel-layout-01",
+        "content/split-image-01",
+        "cta/card-horizontal",
+        "footers/large-16",
+        "header-navigation/dropdown-featured-posts"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-06": {
+      "name": "blog-post/blog-post-06",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 06",
+      "description": "A split header with a photo on a tinted panel, the body, then share links. Then more posts on grey and a footer on dark.",
+      "files": [
+        "pages/blog-post/BlogPost06.astro"
+      ],
+      "registryDependencies": [
+        "blog/carousel-layout-02",
+        "content/split-image-02",
+        "footers/large-09",
+        "header-navigation/two-col-with-links"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-07": {
+      "name": "blog-post/blog-post-07",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 07",
+      "description": "A header on the brand colour, a wide photo overlapping it, the body, then topics and share links. Then more posts, a newsletter signup on the brand colour and a footer.",
+      "files": [
+        "pages/blog-post/BlogPost07.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/split-layout-01",
+        "content/large-image-04",
+        "footers/large-06",
+        "header-navigation/four-col-with-footer",
+        "newsletter/card-vertical-brand"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-08": {
+      "name": "blog-post/blog-post-08",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 08",
+      "description": "A split header, then a sidebar with contents, contributors, a newsletter form and share links beside the body. Then more posts, a call to action, a newsletter signup on grey and a footer.",
+      "files": [
+        "pages/blog-post/BlogPost08.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/simple-center-aligned-01",
+        "content/split-image-03",
+        "cta/screen-mockup-01",
+        "footers/large-02",
+        "header-navigation/three-col-with-sidebar",
+        "newsletter/simple-centered"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-09": {
+      "name": "blog-post/blog-post-09",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 09",
+      "description": "A header and wide photo, then the body beside a newsletter card (from lg). Then more posts and a footer on dark.",
+      "files": [
+        "pages/blog-post/BlogPost09.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/split-layout-01",
+        "content/large-image-03",
+        "footers/large-08",
+        "header-navigation/two-col-with-sidebar"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog-post/blog-post-10": {
+      "name": "blog-post/blog-post-10",
+      "kind": "page",
+      "category": "blog-post",
+      "title": "Blog post 10",
+      "description": "A banner on the brand colour and a centred header with the author over a wide photo, the body, then topics and share links. Then a newsletter signup on the brand colour, a call to action and a footer on the brand colour.",
+      "files": [
+        "pages/blog-post/BlogPost10.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "banner/slim-brand-full-width",
+        "content/large-image-02",
+        "cta/simple-logos-02",
+        "footers/large-07-brand",
+        "header-navigation/dropdown-simple",
+        "newsletter/card-vertical-brand"
       ],
       "dependencies": [],
       "usesJs": false
@@ -4026,6 +4422,44 @@
       "description": "A centred heading over three posts and a View all posts button.",
       "files": [
         "blocks/blog/SimpleCenterAligned01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/simple-left-aligned-01": {
+      "name": "blog/simple-left-aligned-01",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple left aligned 01",
+      "description": "A heading with a View all posts button beside it, over three posts.",
+      "files": [
+        "blocks/blog/SimpleLeftAligned01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Grid",
+        "PostCard",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "blog/simple-left-aligned-02": {
+      "name": "blog/simple-left-aligned-02",
+      "kind": "block",
+      "category": "blog",
+      "title": "Simple left aligned 02",
+      "description": "A heading over four posts in two columns, with a View all posts button under a rule.",
+      "files": [
+        "blocks/blog/SimpleLeftAligned02.astro"
       ],
       "registryDependencies": [
         "Button",

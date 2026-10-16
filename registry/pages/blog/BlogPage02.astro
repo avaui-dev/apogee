@@ -1,0 +1,18 @@
+---
+/**
+ * Blog page 02: A centred header with an email form, recent posts (one large, two beside it), then all posts with pagination. Then a call to action and a footer on dark.
+ *
+ * @page blog
+ */
+import Navigation from '../../blocks/header-navigation/DropdownSimpleWithFooter.astro'
+import Posts from '../../blocks/blog/AltLayout02.astro'
+import CallToAction from '../../blocks/cta/IphoneMockup02.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Navigation />
+<main>
+  <Posts />
+  <CallToAction />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

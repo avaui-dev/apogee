@@ -1,0 +1,25 @@
+---
+title: "Blog page 10"
+description: "A centred header with an email form, then one centred column of horizontal posts and pagination. Then more posts, a newsletter signup and a footer on the brand colour."
+group: Blog pages
+order: 10
+related: [sections/blog-list, post-card, pagination]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog/blog-page-10" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog/blog-page-10
+```
+
+This copies the page to `src/components/apogee/pages/blog/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple](/docs/header-navigation-sections/dropdown-simple), [blog/alt-layout-04](/docs/blog-sections/alt-layout-04), [blog/simple-center-aligned-01](/docs/blog-sections/simple-center-aligned-01), [newsletter/card-vertical](/docs/newsletter-sections/card-vertical), [footers/large-04-brand](/docs/footers-sections/large-04-brand). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (blog/alt-layout-04) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

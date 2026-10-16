@@ -7,13 +7,28 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
-- **About pages:** 10 whole about pages, each stacked from blocks (a header navigation, an inner-page header, team, metrics, careers, testimonials and more, then a footer). `apogee add about/about-page-01` copies the page and the blocks it uses.
+- **About pages, Blog post pages and Blog pages:** 10 whole pages each, stacked from blocks in the order of a real marketing site: a header navigation, the page header or article, then sections that alternate between the page colour, a grey band, the brand colour and a dark band, and a footer. `apogee add about/about-page-01` copies the page and the blocks it uses.
 - **Pages built from blocks:** the registry records each block a page imports, so `apogee add` pulls those blocks in with the page.
-- **Contact blocks** `map-02` and `centered-map` take `headingLevel={1}` to open a page; their item headings move down with it.
+- **Navbar** `background`: `page` (default, 85% with blur), `neutral-faded` or `primary` (both solid, so content scrolling under the sticky bar never shows through). On `primary` the links, menu button and action buttons take the on-brand colours by themselves; dropdown panels keep the page colours.
+- **Brand surface:** `data-surface="primary"` on any element turns its subtree into a brand-colour band. Neutral text and lines take the on-primary ink and primary buttons invert, so components inside need no colour props.
+- **`--navbar-height`:** a sticky Navbar outside `<main>` publishes its height (a CSS default per style without JS, measured with it). Sticky sidebars in the blog and article blocks and **ContentWrapper** `sticky` use `top-[calc(var(--navbar-height)+2rem)]`, so they stop below the bar instead of under it.
+- **Header navigation blocks** take `background` and `theme="dark"`, passed to their Navbar.
+- **Blog blocks** `simple-left-aligned-01` (a heading with a View all posts button beside it, over three posts) and `simple-left-aligned-02` (four posts in two columns).
+- **Contact blocks** `map-01`, `map-02` and `centered-map` take `headingLevel={1}` to open a page; their item headings move down with it.
+
+### Changed
+
+- **Button** `outline` sits on a solid page fill, so it stays readable on a grey band, a blurred bar or a photo. Its hover tint lays over that fill instead of replacing it. On a brand surface the fill is the brand colour.
+- **Section spacing:** `py-section-lg` (the `large` spacing every block uses) is 64px on phones and 96px on wide screens, down from up to 144px. Stacked sections sit closer, and the first section under the header no longer floats far below it.
 
 ### Fixed
 
 - **Careers** `card-01` and **Content** `simple` blocks: the centred tab row no longer runs past the screen on phones; it scrolls inside its column.
+- **Testimonials** `social-cards-03` (and brand): cards on the outer edges keep their outline and shadow; the fading column box clipped them.
+- **Skeleton** and **LoaderText** mix their greys in OKLab. Mixing in OKLCH with a hue-0 white could tint them pink.
+- **Contact** `map-01`: the eyebrow no longer repeats the heading.
+- **PostCard** horizontal: the image covers its frame when the text is taller than the image, instead of leaving a gap under it with square bottom corners.
+- **PostCard** no longer sets its own full height. A featured post above a grid of posts (as in the blog sidebar layouts) stretched to its column's height and pushed the grid out over the next section. In a grid cell, pass `class="h-full"` to match the tallest card, as the blocks do.
 
 ## [0.5.0] — 2026-10-16
 

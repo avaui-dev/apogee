@@ -1,0 +1,23 @@
+---
+/**
+ * Blog page 08: A heading beside a subscribe form, a category filter (a menu on phones, tabs from md), a grid of posts and pagination. Then more posts, a newsletter signup on dark and a footer on grey.
+ *
+ * @page blog
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Posts from '../../blocks/blog/Simple05.astro'
+import Posts2 from '../../blocks/blog/SimpleLeftAligned02.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large01.astro'
+---
+
+<Navigation background="neutral-faded" />
+<main>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts2 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <div data-theme="dark" class="bg-page text-neutral"><Newsletter /></div>
+</main>
+<div class="bg-neutral-faded"><Footer /></div>
