@@ -7,14 +7,18 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
-- **About pages, Blog post pages and Blog pages:** 10 whole pages each, stacked from blocks in the order of a real marketing site: a header navigation, the page header or article, then sections that alternate between the page colour, a grey band, the brand colour and a dark band, and a footer. `apogee add about/about-page-01` copies the page and the blocks it uses.
+- **About, Blog post, Blog, Contact, FAQ, Pricing and Team pages (10 each), Landing pages (20) and Legal pages (5):** whole pages stacked from blocks in the order of a real marketing site: a header navigation, the page header or article, then sections that alternate between the page colour, a grey band, the brand colour and a dark band, and a footer. `apogee add about/about-page-01` copies the page and the blocks it uses.
 - **Pages built from blocks:** the registry records each block a page imports, so `apogee add` pulls those blocks in with the page.
 - **Navbar** `background`: `page` (default, 85% with blur), `neutral-faded` or `primary` (both solid, so content scrolling under the sticky bar never shows through). On `primary` the links, menu button and action buttons take the on-brand colours by themselves; dropdown panels keep the page colours.
 - **Brand surface:** `data-surface="primary"` on any element turns its subtree into a brand-colour band. Neutral text and lines take the on-primary ink and primary buttons invert, so components inside need no colour props.
 - **`--navbar-height`:** a sticky Navbar outside `<main>` publishes its height (a CSS default per style without JS, measured with it). Sticky sidebars in the blog and article blocks and **ContentWrapper** `sticky` use `top-[calc(var(--navbar-height)+2rem)]`, so they stop below the bar instead of under it.
 - **Header navigation blocks** take `background` and `theme="dark"`, passed to their Navbar.
 - **Blog blocks** `simple-left-aligned-01` (a heading with a View all posts button beside it, over three posts) and `simple-left-aligned-02` (four posts in two columns).
-- **Contact blocks** `map-01`, `map-02` and `centered-map` take `headingLevel={1}` to open a page; their item headings move down with it.
+- **Contact blocks** `map-01`, `map-02`, `centered-map`, `form-and-image-01/02`, `form-and-map`, `simple-form`, `simple-form-03/05` and `simple-links-01/02` take `headingLevel={1}` to open a page; their item headings move down with it.
+- **Header blocks** take `eyebrow`, `heading` and `description`, so a page can say what it is about; the defaults are the old copy.
+- **Pricing blocks** that open a page (`simple-call-out`, `abstract-angles`, `primary-dark-badge`, `dual-action`, `large-table-01/02`, `simple-dual-check-item`, `simple-banner`, `primary-card-simple`, `simple-icon-offset`) take `headingLevel={1}`; plan names move down with it.
+- **Team** `board-members`: four investors with their firm, a bio and links, on a grey band.
+- **Contact** `icons-and-map-02`: two offices on a grey band over a map that overlaps its edge (the brand version already existed).
 
 ### Changed
 
@@ -23,10 +27,13 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Fixed
 
+- **Navbar** sets its own text colour, so the logo and links read on a dark or brand-colour bar (they inherited the page's colour).
+- **Features** and **Contact** `simple-icons-01` (and brand): a visually hidden `h2` sits over the items, which were `h3` with no section heading above them.
+- **Brand blocks:** outline buttons on a brand-colour band stay transparent with the band's text colour (the solid outline fill turned them white on white).
 - **Careers** `card-01` and **Content** `simple` blocks: the centred tab row no longer runs past the screen on phones; it scrolls inside its column.
 - **Testimonials** `social-cards-03` (and brand): cards on the outer edges keep their outline and shadow; the fading column box clipped them.
 - **Skeleton** and **LoaderText** mix their greys in OKLab. Mixing in OKLCH with a hue-0 white could tint them pink.
-- **Contact** `map-01`: the eyebrow no longer repeats the heading.
+- **Repeated headings:** blocks whose eyebrow repeated the heading (Contact us / Contact us, Our blog / Our blog) now say something new, and feature blocks no longer share one heading, so pages that stack them read naturally.
 - **PostCard** horizontal: the image covers its frame when the text is taller than the image, instead of leaving a gap under it with square bottom corners.
 - **PostCard** no longer sets its own full height. A featured post above a grid of posts (as in the blog sidebar layouts) stretched to its column's height and pushed the grid out over the next section. In a grid cell, pass `class="h-full"` to match the tallest card, as the blocks do.
 

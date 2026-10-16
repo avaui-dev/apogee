@@ -1819,7 +1819,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 01",
-      "description": "A page header, figures on grey, customer logos, the team, features on grey, open positions and a footer on dark.",
+      "description": "A centred eyebrow, heading and line. Then figures on grey, customer logos, the team, features with icons on grey, open positions and a footer on dark.",
       "files": [
         "pages/about/AboutPage01.astro"
       ],
@@ -1842,7 +1842,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 02",
-      "description": "A map of offices, ways to get in touch on the brand colour, the team, open positions, a contact form, press mentions and a footer on the brand colour.",
+      "description": "A centred heading, a world map with office pins (from lg) and three contact cards. Then office addresses on the brand colour, the team, open positions, a contact form, press mentions and a footer on the brand colour.",
       "files": [
         "pages/about/AboutPage02.astro"
       ],
@@ -1865,7 +1865,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 03",
-      "description": "A banner on the brand colour, a map of offices, the team, customer quotes, a call to action and a footer.",
+      "description": "A banner on the brand colour and a centred heading, a wide map and three office cards with their hours and addresses. Then the team, customer quotes, a call to action and a footer.",
       "files": [
         "pages/about/AboutPage03.astro"
       ],
@@ -1887,7 +1887,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 04",
-      "description": "A page header, the team, figures, customer quotes, a call to action on grey and a footer on dark.",
+      "description": "A centred eyebrow, heading and line. Then the team, figures, customer quotes, a call to action on grey and a footer on dark.",
       "files": [
         "pages/about/AboutPage04.astro"
       ],
@@ -1909,7 +1909,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 05",
-      "description": "A page header, figures, features, the team, open positions, customer quotes, a newsletter signup on grey and a footer on dark.",
+      "description": "A centred eyebrow, heading and line. Then figures, features with icons, the team, open positions, customer quotes, a newsletter signup on grey and a footer on dark.",
       "files": [
         "pages/about/AboutPage05.astro"
       ],
@@ -1932,7 +1932,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 06",
-      "description": "A page header, figures, open positions, a map of offices, customer quotes, a newsletter signup and a footer on grey.",
+      "description": "A split eyebrow, heading and line. Then figures, open positions, a map of offices, customer quotes, a newsletter signup and a footer on grey.",
       "files": [
         "pages/about/AboutPage06.astro"
       ],
@@ -1955,7 +1955,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 07",
-      "description": "A page header on the brand colour, ways to get in touch, open positions, questions and a footer.",
+      "description": "A split eyebrow, heading and line on the brand colour. Then contact cards, open positions, questions in an accordion and a footer.",
       "files": [
         "pages/about/AboutPage07.astro"
       ],
@@ -1976,7 +1976,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 08",
-      "description": "A page header, customer logos on grey, the team, open positions, a newsletter signup on the brand colour, a contact form and a footer on dark.",
+      "description": "A centred eyebrow, heading and line. Then customer logos on grey, the team, open positions, a newsletter signup on the brand colour, a contact form and a footer on dark.",
       "files": [
         "pages/about/AboutPage08.astro"
       ],
@@ -1999,7 +1999,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 09",
-      "description": "A page header, figures, a content section, customer quotes, the team on grey, open positions and a footer on grey.",
+      "description": "A split eyebrow, heading and line. Then figures, a content section, customer quotes, the team on grey, open positions and a footer on grey.",
       "files": [
         "pages/about/AboutPage09.astro"
       ],
@@ -2022,7 +2022,7 @@
       "kind": "page",
       "category": "about",
       "title": "About page 10",
-      "description": "A page header on grey, features, features on grey, the team, a newsletter signup on grey and a footer.",
+      "description": "A centred heading, line and two buttons on grey. Then alternating feature rows, features with icons on grey, the team, a newsletter signup on grey and a footer.",
       "files": [
         "pages/about/AboutPage10.astro"
       ],
@@ -2043,7 +2043,7 @@
       "kind": "page",
       "category": "blog",
       "title": "Blog page 01",
-      "description": "A heading, a large featured post, category tabs with a sort menu, a grid of posts and pagination. Then a call to action, a call to action on grey and a footer.",
+      "description": "A heading, a large featured post, category tabs with a sort menu, a grid of posts and pagination. Then a call to action with a screenshot, a call to action on grey and a footer.",
       "files": [
         "pages/blog/BlogPage01.astro"
       ],
@@ -2063,7 +2063,7 @@
       "kind": "page",
       "category": "blog",
       "title": "Blog page 02",
-      "description": "A centred header with an email form, recent posts (one large, two beside it), then all posts with pagination. Then a call to action and a footer on dark.",
+      "description": "A centred header with an email form, recent posts (one large, two beside it), then all posts with pagination. Then an app download call to action and a footer on dark.",
       "files": [
         "pages/blog/BlogPage02.astro"
       ],
@@ -2081,7 +2081,7 @@
       "kind": "page",
       "category": "blog",
       "title": "Blog page 03",
-      "description": "A centred header with search, category tabs and a sort menu, a grid of posts with a newsletter card inside it, and pagination. Then a call to action and a footer.",
+      "description": "A centred header with search, category tabs and a sort menu, a grid of posts with a newsletter card inside it, and pagination. Then a call to action with images and a footer.",
       "files": [
         "pages/blog/BlogPage03.astro"
       ],
@@ -2116,7 +2116,7 @@
       "kind": "page",
       "category": "blog",
       "title": "Blog page 05",
-      "description": "A banner on the brand colour and a centred header with an email sign-up, a large featured post, a grid of posts and pagination. Then more posts on grey, a call to action and a footer.",
+      "description": "A banner on the brand colour and a centred header with an email sign-up, a large featured post, a grid of posts and pagination. Then more posts on grey, a call to action beside a quote and a footer.",
       "files": [
         "pages/blog/BlogPage05.astro"
       ],
@@ -2136,7 +2136,7 @@
       "kind": "page",
       "category": "blog",
       "title": "Blog page 06",
-      "description": "A centred blog header, a large featured post, then a search field and category list beside a grid of posts. Then a call to action, customer logos on grey, a call to action on dark and a footer on grey.",
+      "description": "A centred blog header, a large featured post, then a search field and category list beside a grid of posts. Then a call to action card, customer logos on grey, a call to action on dark and a footer on grey.",
       "files": [
         "pages/blog/BlogPage06.astro"
       ],
@@ -2156,7 +2156,7 @@
       "kind": "page",
       "category": "blog",
       "title": "Blog page 07",
-      "description": "A header on the brand colour with a newsletter form, then a grid of posts and pagination. Then a newsletter signup on grey, a call to action and a footer on dark.",
+      "description": "A header on the brand colour with a newsletter form, then a grid of posts and pagination. Then a newsletter signup on grey, an app download call to action and a footer on dark.",
       "files": [
         "pages/blog/BlogPage07.astro"
       ],
@@ -2236,7 +2236,7 @@
       "kind": "page",
       "category": "blog-post",
       "title": "Blog post 01",
-      "description": "A heading block over a photo carousel, the body, then the author and topics. Then more posts, a call to action, a newsletter signup and a footer.",
+      "description": "A heading block over a photo carousel, the body, then the author and topics. Then more posts, a call to action with images, a newsletter signup and a footer.",
       "files": [
         "pages/blog-post/BlogPost01.astro"
       ],
@@ -2295,7 +2295,7 @@
       "kind": "page",
       "category": "blog-post",
       "title": "Blog post 04",
-      "description": "A banner on grey and a split header beside a wide photo, the body, then share links. Then more posts, a call to action, a newsletter signup and a footer.",
+      "description": "A banner on grey and a split header beside a wide photo, the body, then share links. Then more posts, a call to action with images, a newsletter signup and a footer.",
       "files": [
         "pages/blog-post/BlogPost04.astro"
       ],
@@ -2317,7 +2317,7 @@
       "kind": "page",
       "category": "blog-post",
       "title": "Blog post 05",
-      "description": "A split header with a tall photo, then a table of contents and share links beside the body. Then more posts, a call to action and a footer on dark.",
+      "description": "A split header with a tall photo, then a table of contents and share links beside the body. Then more posts, a call to action card and a footer on dark.",
       "files": [
         "pages/blog-post/BlogPost05.astro"
       ],
@@ -2375,7 +2375,7 @@
       "kind": "page",
       "category": "blog-post",
       "title": "Blog post 08",
-      "description": "A split header, then a sidebar with contents, contributors, a newsletter form and share links beside the body. Then more posts, a call to action, a newsletter signup on grey and a footer.",
+      "description": "A split header, then a sidebar with contents, contributors, a newsletter form and share links beside the body. Then more posts, a call to action with a screenshot, a newsletter signup on grey and a footer.",
       "files": [
         "pages/blog-post/BlogPost08.astro"
       ],
@@ -2415,7 +2415,7 @@
       "kind": "page",
       "category": "blog-post",
       "title": "Blog post 10",
-      "description": "A banner on the brand colour and a centred header with the author over a wide photo, the body, then topics and share links. Then a newsletter signup on the brand colour, a call to action and a footer on the brand colour.",
+      "description": "A banner on the brand colour and a centred header with the author over a wide photo, the body, then topics and share links. Then a newsletter signup on the brand colour, a call to action with customer logos and a footer on the brand colour.",
       "files": [
         "pages/blog-post/BlogPost10.astro"
       ],
@@ -2427,6 +2427,390 @@
         "footers/large-07-brand",
         "header-navigation/dropdown-simple",
         "newsletter/card-vertical-brand"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-01": {
+      "name": "contact/contact-page-01",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 01",
+      "description": "A heading and contact form beside a photo (the photo shows from lg). Then a footer.",
+      "files": [
+        "pages/contact/ContactPage01.astro"
+      ],
+      "registryDependencies": [
+        "contact/form-and-image-01",
+        "footers/large-01",
+        "header-navigation/dropdown-feature-card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-02": {
+      "name": "contact/contact-page-02",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 02",
+      "description": "A photo beside a heading, an email link and a contact form with a services checklist. Then a footer.",
+      "files": [
+        "pages/contact/ContactPage02.astro"
+      ],
+      "registryDependencies": [
+        "contact/form-and-image-02",
+        "footers/large-02",
+        "header-navigation/dropdown-simple-with-footer"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-03": {
+      "name": "contact/contact-page-03",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 03",
+      "description": "A heading and contact form beside a map (the map shows from lg). Then office addresses, contact cards, a call to action card and a footer on dark.",
+      "files": [
+        "pages/contact/ContactPage03.astro"
+      ],
+      "registryDependencies": [
+        "contact/form-and-map",
+        "contact/icon-cards-03",
+        "contact/simple-icons-04",
+        "cta/card-horizontal",
+        "footers/large-03",
+        "header-navigation/dropdown-simple-two-columns"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-04": {
+      "name": "contact/contact-page-04",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 04",
+      "description": "A centred heading, a wide map and three office cards with their hours and addresses. Then contact cards and a footer.",
+      "files": [
+        "pages/contact/ContactPage04.astro"
+      ],
+      "registryDependencies": [
+        "contact/icon-cards-01",
+        "contact/map-01",
+        "footers/large-04",
+        "header-navigation/dropdown-two-cols-with-links-and-footer"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-05": {
+      "name": "contact/contact-page-05",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 05",
+      "description": "A centred heading, a world map with office pins (from lg) and three contact cards. Then office addresses on the brand colour, a contact form, a newsletter signup and a footer.",
+      "files": [
+        "pages/contact/ContactPage05.astro"
+      ],
+      "registryDependencies": [
+        "contact/map-02",
+        "contact/simple-form-03",
+        "contact/simple-icons-04-brand",
+        "footers/large-01",
+        "header-navigation/dropdown-featured-posts",
+        "newsletter/simple-centered"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-06": {
+      "name": "contact/contact-page-06",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 06",
+      "description": "A centred heading over three contact methods with icons and links. Then a contact form, a newsletter signup and a footer on dark.",
+      "files": [
+        "pages/contact/ContactPage06.astro"
+      ],
+      "registryDependencies": [
+        "contact/simple-form-01",
+        "contact/simple-links-01",
+        "footers/large-07",
+        "header-navigation/two-col-with-links",
+        "newsletter/card-horizontal"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-07": {
+      "name": "contact/contact-page-07",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 07",
+      "description": "A heading over four contact cards, a map of offices, a contact form and a footer.",
+      "files": [
+        "pages/contact/ContactPage07.astro"
+      ],
+      "registryDependencies": [
+        "contact/icons-and-map-02",
+        "contact/simple-form-01",
+        "contact/simple-links-02",
+        "footers/large-09",
+        "header-navigation/four-col-with-footer"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-08": {
+      "name": "contact/contact-page-08",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 08",
+      "description": "A centred heading over a contact form, ways to get in touch, a call to action card and a footer on the brand colour.",
+      "files": [
+        "pages/contact/ContactPage08.astro"
+      ],
+      "registryDependencies": [
+        "contact/icons-and-image",
+        "contact/simple-form",
+        "cta/card-vertical",
+        "footers/large-11-brand",
+        "header-navigation/three-col-with-sidebar"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-09": {
+      "name": "contact/contact-page-09",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 09",
+      "description": "A heading, an email link and a contact form with a services checklist beside a photo.",
+      "files": [
+        "pages/contact/ContactPage09.astro"
+      ],
+      "registryDependencies": [
+        "contact/simple-form-03",
+        "header-navigation/two-col-with-sidebar"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "contact/contact-page-10": {
+      "name": "contact/contact-page-10",
+      "kind": "page",
+      "category": "contact",
+      "title": "Contact page 10",
+      "description": "A brand-colour sidebar with contact methods and links (from lg) beside a form with a services checklist.",
+      "files": [
+        "pages/contact/ContactPage10.astro"
+      ],
+      "registryDependencies": [
+        "contact/simple-form-05"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-01": {
+      "name": "faq/faq-page-01",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 01",
+      "description": "A centred heading, line and search field. Then questions in a grid, a call to action with a screenshot and a footer.",
+      "files": [
+        "pages/faq/FaqPage01.astro"
+      ],
+      "registryDependencies": [
+        "cta/screen-mockup-03",
+        "faq/simple-01",
+        "footers/large-02",
+        "header-navigation/dropdown-feature-card",
+        "header/centered-search"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-02": {
+      "name": "faq/faq-page-02",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 02",
+      "description": "A centred heading, line and search field. Then questions in a grid on grey, the team, a newsletter signup on grey, customer quotes and a footer on dark.",
+      "files": [
+        "pages/faq/FaqPage02.astro"
+      ],
+      "registryDependencies": [
+        "faq/simple-02",
+        "footers/large-05",
+        "header-navigation/dropdown-simple-with-footer",
+        "header/centered-search",
+        "newsletter/simple-centered",
+        "team/image-collage-02",
+        "testimonials/social-cards-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-03": {
+      "name": "faq/faq-page-03",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 03",
+      "description": "A split heading, line and two buttons on grey. Then questions in a grid, features beside a photo, a call to action on grey and a footer.",
+      "files": [
+        "pages/faq/FaqPage03.astro"
+      ],
+      "registryDependencies": [
+        "cta/simple-centered",
+        "faq/simple-03",
+        "features/icons-and-image-04",
+        "footers/large-03",
+        "header-navigation/dropdown-simple-two-columns",
+        "header/space-between-buttons"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-04": {
+      "name": "faq/faq-page-04",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 04",
+      "description": "A centred eyebrow, heading and line. Then questions in a grid, a content section, customer quotes and a footer.",
+      "files": [
+        "pages/faq/FaqPage04.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "content/section-split-image-03",
+        "faq/simple-04",
+        "footers/large-04",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "header/centered",
+        "testimonials/simple-centered-03"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-05": {
+      "name": "faq/faq-page-05",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 05",
+      "description": "A centred heading, line and two buttons. Then questions in an accordion, integrations, a newsletter signup on grey and a footer.",
+      "files": [
+        "pages/faq/FaqPage05.astro"
+      ],
+      "registryDependencies": [
+        "faq/accordion-01",
+        "features/integrations-icons-02",
+        "footers/large-06",
+        "header-navigation/dropdown-featured-posts",
+        "header/centered-buttons",
+        "newsletter/simple-centered"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-06": {
+      "name": "faq/faq-page-06",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 06",
+      "description": "A centred heading, line and search field on dark. Then questions in an accordion, a call to action card, a call to action with images, a newsletter signup and a footer.",
+      "files": [
+        "pages/faq/FaqPage06.astro"
+      ],
+      "registryDependencies": [
+        "cta/abstract-images",
+        "cta/card-vertical",
+        "faq/accordion-02",
+        "footers/large-08",
+        "header-navigation/two-col-with-links",
+        "header/centered-search",
+        "newsletter/card-vertical"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-07": {
+      "name": "faq/faq-page-07",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 07",
+      "description": "A left-aligned eyebrow, heading and line. Then questions in an accordion, a newsletter signup on the brand colour, a content section and a footer.",
+      "files": [
+        "pages/faq/FaqPage07.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "content/section-split-image-01",
+        "faq/accordion-03",
+        "footers/large-09",
+        "header-navigation/four-col-with-footer",
+        "header/left",
+        "newsletter/card-horizontal-brand"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-08": {
+      "name": "faq/faq-page-08",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 08",
+      "description": "A split heading, line and search field on the brand colour. Then questions in an accordion, a call to action card on the brand colour, features beside a photo and a footer on the brand colour.",
+      "files": [
+        "pages/faq/FaqPage08.astro"
+      ],
+      "registryDependencies": [
+        "cta/card-vertical-brand",
+        "faq/accordion-04",
+        "features/icons-and-image-01",
+        "footers/large-10-brand",
+        "header-navigation/three-col-with-sidebar",
+        "header/space-between-search-brand"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-09": {
+      "name": "faq/faq-page-09",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 09",
+      "description": "A centred heading, line and search field on grey. Then questions in a grid, a call to action with a screenshot and a footer on grey.",
+      "files": [
+        "pages/faq/FaqPage09.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/screen-mockup-01",
+        "faq/simple-01",
+        "footers/large-16",
+        "header-navigation/two-col-with-sidebar",
+        "header/centered-search"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "faq/faq-page-10": {
+      "name": "faq/faq-page-10",
+      "kind": "page",
+      "category": "faq",
+      "title": "FAQ page 10",
+      "description": "A centred heading, line and search field. Then questions in an accordion, a content section, a call to action with a photo and a footer on grey.",
+      "files": [
+        "pages/faq/FaqPage10.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "content/section-split-image-02",
+        "cta/split-image-03",
+        "faq/accordion-02",
+        "footers/large-09",
+        "header-navigation/dropdown-simple",
+        "header/centered-search"
       ],
       "dependencies": [],
       "usesJs": false
@@ -2531,6 +2915,583 @@
       "dependencies": [
         "@lucide/astro"
       ],
+      "usesJs": false
+    },
+    "landing/landing-page-01": {
+      "name": "landing/landing-page-01",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 01",
+      "description": "A centred heading and two buttons over a phone on small screens and a browser on wide ones, over a grid. Then customer logos, features with icons, customer quotes on grey, questions in an accordion, customer quotes, more posts and a footer.",
+      "files": [
+        "pages/landing/LandingPage01.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/simple-left-aligned-01",
+        "faq/accordion-01",
+        "features/simple-icons-02",
+        "footers/large-01",
+        "header-navigation/dropdown-feature-card",
+        "hero/screen-mockup-05",
+        "social-proof/full-width",
+        "testimonials/simple-centered-02",
+        "testimonials/social-cards-03"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-02": {
+      "name": "landing/landing-page-02",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 02",
+      "description": "A centred heading and two buttons over a cropped screenshot, on a tint with a dot grid on grey. Then customer logos, alternating feature rows, integrations on grey, figures, a call to action card, customer quotes, a call to action with a screenshot and a footer on dark.",
+      "files": [
+        "pages/landing/LandingPage02.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/card-horizontal",
+        "cta/screen-mockup-01",
+        "features/alternating-layout-01",
+        "features/integrations-icons-02",
+        "footers/large-02",
+        "header-navigation/dropdown-simple-with-footer",
+        "hero/screen-mockup-01",
+        "metrics/simple-centered-text",
+        "social-proof/full-width-masked",
+        "testimonials/simple-centered-03"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-03": {
+      "name": "landing/landing-page-03",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 03",
+      "description": "A centred heading and email signup on a brand card, over a chart. Then integrations, figures, features under a screenshot, pricing plans, questions in an accordion, customer logos and a footer.",
+      "files": [
+        "pages/landing/LandingPage03.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "faq/accordion-01",
+        "features/center-mockup-02",
+        "features/integrations-icons-03",
+        "footers/large-03",
+        "header-navigation/dropdown-simple-two-columns",
+        "hero/color-card-01",
+        "metrics/card-gray-light",
+        "pricing/simple-cards-04",
+        "social-proof/card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-04": {
+      "name": "landing/landing-page-04",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 04",
+      "description": "A centred heading and two buttons over two payment cards on a panel, over a fine grid. Then customer logos, features with icons on grey, pricing plans, customer quotes, a call to action with a screenshot and a footer.",
+      "files": [
+        "pages/landing/LandingPage04.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/screen-mockup-03",
+        "features/simple-icons-02",
+        "footers/large-04",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "hero/card-mockup-01",
+        "pricing/simple-cards-03",
+        "social-proof/full-width",
+        "testimonials/glassmorphic-cards-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-05": {
+      "name": "landing/landing-page-05",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 05",
+      "description": "A centred eyebrow, heading and two buttons over five fanned payment cards, on the brand colour. Then customer logos, features with icons, a call to action with a photo, feature tabs, pricing plans on grey, customer quotes on the brand colour and a footer on the brand colour.",
+      "files": [
+        "pages/landing/LandingPage05.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/split-image-04",
+        "features/simple-icons-04",
+        "features/tabs-mockup-08",
+        "footers/large-05-brand",
+        "header-navigation/dropdown-featured-posts",
+        "hero/card-mockup-06",
+        "pricing/featured-cards-01",
+        "social-proof/full-width",
+        "testimonials/card-split-image-brand"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-06": {
+      "name": "landing/landing-page-06",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 06",
+      "description": "A heading and two buttons over a wide panel of tilted payment cards. Then customer logos, feature tabs, a large screenshot, a call to action on grey, pricing plans, a call to action card on the brand colour and a footer.",
+      "files": [
+        "pages/landing/LandingPage06.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/card-horizontal-brand",
+        "cta/simple-centered",
+        "features/large-screen-mockup-01",
+        "features/tabs-mockup-10",
+        "footers/large-06",
+        "header-navigation/two-col-with-links",
+        "hero/card-mockup-10",
+        "pricing/featured-cards-04",
+        "social-proof/card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-07": {
+      "name": "landing/landing-page-07",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 07",
+      "description": "A heading and email signup beside a cascade of payment cards on a panel. Then customer logos on grey, features beside a mockup, a call to action with images on grey, feature cards, pricing plans on grey, a newsletter signup, a call to action card on the brand colour and a footer on dark.",
+      "files": [
+        "pages/landing/LandingPage07.astro"
+      ],
+      "registryDependencies": [
+        "cta/abstract-images",
+        "cta/card-vertical-brand",
+        "features/icon-cards-01",
+        "features/icons-and-mockup-07",
+        "footers/large-07",
+        "header-navigation/four-col-with-footer",
+        "hero/card-mockup-11",
+        "newsletter/card-vertical",
+        "pricing/featured-cards-01",
+        "social-proof/full-width"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-08": {
+      "name": "landing/landing-page-08",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 08",
+      "description": "A centred eyebrow, heading and two buttons over two tilted payment cards, over a fine grid. Then features beside a mockup, pricing plans, features with icons on grey, feature tabs, integrations, customer logos, a call to action card on the brand colour and a footer on grey.",
+      "files": [
+        "pages/landing/LandingPage08.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/card-horizontal-brand",
+        "features/icons-and-mockup-08",
+        "features/integrations-icons-03",
+        "features/simple-icons-01",
+        "features/tabs-mockup-09",
+        "footers/large-08",
+        "header-navigation/three-col-with-sidebar",
+        "hero/card-mockup-05",
+        "pricing/simple-cards-02",
+        "social-proof/card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-09": {
+      "name": "landing/landing-page-09",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 09",
+      "description": "A heading, email signup and three points over a wide panel of payment cards, over a dot grid. Then customer logos, a large screenshot, customer quotes, a call to action card, feature tabs, pricing plans on grey, a newsletter signup on the brand colour and a footer.",
+      "files": [
+        "pages/landing/LandingPage09.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/card-horizontal",
+        "features/large-screen-mockup-02",
+        "features/tabs-mockup-11",
+        "footers/large-09",
+        "header-navigation/two-col-with-sidebar",
+        "hero/card-mockup-08",
+        "newsletter/simple-left-brand",
+        "pricing/featured-cards-04",
+        "social-proof/full-width",
+        "testimonials/simple-centered-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-10": {
+      "name": "landing/landing-page-10",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 10",
+      "description": "A heading and two buttons beside two payment cards on a panel, on a tint with a dot grid on grey. Then customer logos, customer quotes, feature tabs, press mentions, more posts on grey, a call to action with customer logos, a newsletter signup on grey and a footer on dark.",
+      "files": [
+        "pages/landing/LandingPage10.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/simple-left-aligned-01",
+        "cta/simple-logos-02",
+        "features/tabs-mockup-02",
+        "footers/large-10",
+        "header-navigation/dropdown-simple",
+        "hero/card-mockup-02",
+        "newsletter/simple-left",
+        "social-proof/full-width-masked",
+        "social-proof/press-mentions",
+        "testimonials/case-study-cards"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-11": {
+      "name": "landing/landing-page-11",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 11",
+      "description": "A heading and two buttons beside four payment cards on a panel. Then features with icons, pricing plans, customer quotes, customer logos, a call to action with a screenshot and a footer on dark.",
+      "files": [
+        "pages/landing/LandingPage11.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/screen-mockup-01",
+        "features/simple-icons-02",
+        "footers/large-11",
+        "header-navigation/dropdown-feature-card",
+        "hero/card-mockup-09",
+        "pricing/simple-cards-03",
+        "social-proof/card",
+        "testimonials/glassmorphic-cards-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-12": {
+      "name": "landing/landing-page-12",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 12",
+      "description": "A heading, line and a text-me-a-link form beside a phone over a screenshot, over a dot grid. Then feature tabs, a call to action card, questions in an accordion, an app download call to action, a newsletter signup on grey and a footer.",
+      "files": [
+        "pages/landing/LandingPage12.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/card-horizontal",
+        "cta/iphone-mockup-01",
+        "faq/accordion-01",
+        "features/tabs-mockup-09",
+        "footers/large-03",
+        "header-navigation/dropdown-simple-with-footer",
+        "hero/iphone-mockup-03",
+        "newsletter/simple-centered"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-13": {
+      "name": "landing/landing-page-13",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 13",
+      "description": "A heading, line and app buttons beside a phone, over a dot grid. Then customer logos on grey, features beside a mockup, an app download call to action, pricing plans, a newsletter signup and a footer on the brand colour.",
+      "files": [
+        "pages/landing/LandingPage13.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/iphone-mockup-04",
+        "features/icons-and-mockup-01",
+        "footers/large-11-brand",
+        "header-navigation/dropdown-simple-two-columns",
+        "hero/iphone-mockup-01",
+        "newsletter/iphone-mockup-03",
+        "pricing/featured-cards-02",
+        "social-proof/full-width"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-14": {
+      "name": "landing/landing-page-14",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 14",
+      "description": "A centred heading, line and two buttons over a wide row of geometric shapes, over a dot grid. Then customer logos, a content section, customer quotes, figures, ways to get in touch, a newsletter signup and a footer on dark.",
+      "files": [
+        "pages/landing/LandingPage14.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "contact/icons-and-image",
+        "content/section-split-image-03",
+        "footers/large-15",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "hero/geometric-shapes-03",
+        "metrics/split-image-01",
+        "newsletter/card-vertical",
+        "social-proof/full-width",
+        "testimonials/abstract-image"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-15": {
+      "name": "landing/landing-page-15",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 15",
+      "description": "A large heading with an underlined phrase, a line and two buttons over a wide photo, on the brand colour. Then customer logos on the brand colour, features beside a photo, customer quotes on grey, figures, a contact form and a footer.",
+      "files": [
+        "pages/landing/LandingPage15.astro"
+      ],
+      "registryDependencies": [
+        "contact/simple-form-02",
+        "features/icons-and-image-04",
+        "footers/large-08",
+        "header-navigation/dropdown-featured-posts",
+        "hero/simple-text-02",
+        "metrics/minimal-centered-text",
+        "social-proof/full-width-brand",
+        "testimonials/simple-left-aligned"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-16": {
+      "name": "landing/landing-page-16",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 16",
+      "description": "A large heading with an underlined phrase, a line and two buttons over a wide photo, over a dot grid. Then customer logos, feature tabs, customer quotes, features with icons, contact cards, a newsletter signup on grey and a footer.",
+      "files": [
+        "pages/landing/LandingPage16.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "contact/icon-cards-01",
+        "features/simple-icons-02",
+        "features/tabs-mockup-06",
+        "footers/large-13",
+        "header-navigation/two-col-with-links",
+        "hero/simple-text-01",
+        "newsletter/simple-centered",
+        "social-proof/full-width-dual",
+        "testimonials/simple-centered-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-17": {
+      "name": "landing/landing-page-17",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 17",
+      "description": "A centred heading and two buttons over a video on a slanted band. Then customer logos, feature tabs, customer quotes, a call to action with a screenshot, more posts, a call to action with customer logos and a footer on dark.",
+      "files": [
+        "pages/landing/LandingPage17.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "blog/carousel-layout-02",
+        "cta/screen-mockup-03",
+        "cta/simple-logos-02",
+        "features/tabs-mockup-07",
+        "footers/large-09",
+        "header-navigation/four-col-with-footer",
+        "hero/abstract-angles-01",
+        "social-proof/full-width",
+        "testimonials/case-study-cards"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-18": {
+      "name": "landing/landing-page-18",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 18",
+      "description": "A heading, line and email signup beside a portrait photo, over a dot grid. Then alternating feature rows, a call to action card, feature tabs, customer quotes, a call to action with a screenshot, a newsletter signup on grey and a footer on dark.",
+      "files": [
+        "pages/landing/LandingPage18.astro"
+      ],
+      "registryDependencies": [
+        "cta/card-horizontal",
+        "cta/screen-mockup-04",
+        "features/alternating-layout-03",
+        "features/tabs-mockup-06",
+        "footers/large-10",
+        "header-navigation/three-col-with-sidebar",
+        "hero/split-image-06",
+        "newsletter/simple-left",
+        "testimonials/card-split-image"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-19": {
+      "name": "landing/landing-page-19",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 19",
+      "description": "A heading, line and two buttons beside a workspace photo, over a dot grid on grey. Then customer logos on grey, integrations, a large screenshot, figures, a call to action card, customer quotes on grey, a call to action with a screenshot, a newsletter signup on grey and a footer on grey.",
+      "files": [
+        "pages/landing/LandingPage19.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/card-horizontal",
+        "cta/screen-mockup-01",
+        "features/integrations-icons-04",
+        "features/large-screen-mockup-02",
+        "footers/large-01",
+        "header-navigation/two-col-with-sidebar",
+        "hero/split-image-05",
+        "metrics/simple-centered-text",
+        "newsletter/simple-left",
+        "social-proof/full-width",
+        "testimonials/simple-centered-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "landing/landing-page-20": {
+      "name": "landing/landing-page-20",
+      "kind": "page",
+      "category": "landing",
+      "title": "Landing page 20",
+      "description": "A heading, line and two buttons beside a photo with one large rounded corner. Then customer logos, feature tabs, figures, a call to action on grey, pricing plans, customer quotes, a call to action with images and a footer.",
+      "files": [
+        "pages/landing/LandingPage20.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/abstract-images",
+        "cta/simple-left",
+        "features/tabs-mockup-06",
+        "footers/large-12",
+        "header-navigation/dropdown-simple",
+        "hero/split-image-03",
+        "metrics/card-gray-light",
+        "pricing/simple-cards-02",
+        "social-proof/card",
+        "testimonials/card-split-image"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "legal/legal-page-01": {
+      "name": "legal/legal-page-01",
+      "kind": "page",
+      "category": "legal",
+      "title": "Legal page 01",
+      "description": "A centred eyebrow, heading and line. Then a content section and a footer.",
+      "files": [
+        "pages/legal/LegalPage01.astro"
+      ],
+      "registryDependencies": [
+        "content/rich-text-02",
+        "footers/large-16",
+        "header-navigation/dropdown-feature-card",
+        "header/centered"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "legal/legal-page-02": {
+      "name": "legal/legal-page-02",
+      "kind": "page",
+      "category": "legal",
+      "title": "Legal page 02",
+      "description": "A policy page: a centred header with legal and plain-language tabs over the policy text. Then a call to action on grey and a footer on dark.",
+      "files": [
+        "pages/legal/LegalPage02.astro"
+      ],
+      "registryDependencies": [
+        "content/simple",
+        "cta/simple-centered",
+        "footers/large-02",
+        "header-navigation/dropdown-simple-with-footer"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "legal/legal-page-03": {
+      "name": "legal/legal-page-03",
+      "kind": "page",
+      "category": "legal",
+      "title": "Legal page 03",
+      "description": "A banner on the brand colour and a split heading, line and search field. Then a content section, a call to action with customer logos and a footer.",
+      "files": [
+        "pages/legal/LegalPage03.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "banner/slim-brand-full-width",
+        "content/rich-text-02",
+        "cta/simple-logos-02",
+        "footers/large-06",
+        "header-navigation/dropdown-simple-two-columns",
+        "header/space-between-search"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "legal/legal-page-04": {
+      "name": "legal/legal-page-04",
+      "kind": "page",
+      "category": "legal",
+      "title": "Legal page 04",
+      "description": "A centred heading, line and email signup on dark. Then a content section, a call to action with a photo, a call to action with a photo and a footer.",
+      "files": [
+        "pages/legal/LegalPage04.astro"
+      ],
+      "registryDependencies": [
+        "content/rich-text-02",
+        "cta/split-image-01",
+        "cta/split-image-03",
+        "footers/large-09",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "header/centered-email"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "legal/legal-page-05": {
+      "name": "legal/legal-page-05",
+      "kind": "page",
+      "category": "legal",
+      "title": "Legal page 05",
+      "description": "A centred eyebrow, heading and line on the brand colour. Then a content section, a call to action card on the brand colour and a footer.",
+      "files": [
+        "pages/legal/LegalPage05.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "content/rich-text-02",
+        "cta/card-horizontal-brand",
+        "footers/large-07",
+        "header-navigation/dropdown-featured-posts",
+        "header/centered-brand"
+      ],
+      "dependencies": [],
       "usesJs": false
     },
     "log-in/card-combined": {
@@ -3127,6 +4088,213 @@
       ],
       "usesJs": false
     },
+    "pricing/pricing-page-01": {
+      "name": "pricing/pricing-page-01",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 01",
+      "description": "A large heading over three plan cards with two actions each, the first marked most popular. Then features with icons on grey, questions in a grid, a call to action with customer logos on the brand colour and a footer.",
+      "files": [
+        "pages/pricing/PricingPage01.astro"
+      ],
+      "registryDependencies": [
+        "cta/simple-logos-01-brand",
+        "faq/simple-04",
+        "features/simple-icons-03",
+        "footers/large-01",
+        "header-navigation/dropdown-feature-card",
+        "pricing/simple-call-out"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-02": {
+      "name": "pricing/pricing-page-02",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 02",
+      "description": "A heading and annual switch on a tinted band over three plan cards on a striped ground. Then a call to action card, features with icons, customer logos, questions in a grid, a call to action on grey and a footer.",
+      "files": [
+        "pages/pricing/PricingPage02.astro"
+      ],
+      "registryDependencies": [
+        "cta/card-horizontal",
+        "cta/simple-left",
+        "faq/simple-03",
+        "features/simple-icons-03",
+        "footers/large-05",
+        "header-navigation/dropdown-simple-with-footer",
+        "pricing/abstract-angles",
+        "social-proof/card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-03": {
+      "name": "pricing/pricing-page-03",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 03",
+      "description": "A heading and billing switch on a brand band, with three plan cards overlapping it. Then features with icons on grey, questions in an accordion, a call to action with customer logos on grey and a footer.",
+      "files": [
+        "pages/pricing/PricingPage03.astro"
+      ],
+      "registryDependencies": [
+        "cta/simple-logos-01",
+        "faq/accordion-04",
+        "features/simple-icons-01",
+        "footers/large-05",
+        "header-navigation/dropdown-simple-two-columns",
+        "pricing/primary-dark-badge"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-04": {
+      "name": "pricing/pricing-page-04",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 04",
+      "description": "A centred heading and billing switch over three plan cards with two actions and a features panel. Then questions in an accordion, customer quotes, a call to action card and a footer on dark.",
+      "files": [
+        "pages/pricing/PricingPage04.astro"
+      ],
+      "registryDependencies": [
+        "cta/card-horizontal",
+        "faq/accordion-01",
+        "footers/large-04",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "pricing/dual-action",
+        "testimonials/social-cards-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-05": {
+      "name": "pricing/pricing-page-05",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 05",
+      "description": "A centred heading over a plan comparison table with grouped features and tooltips. Then questions in an accordion, customer logos, a call to action card and a footer on the brand colour.",
+      "files": [
+        "pages/pricing/PricingPage05.astro"
+      ],
+      "registryDependencies": [
+        "cta/card-vertical",
+        "faq/accordion-01",
+        "footers/large-01-brand",
+        "header-navigation/dropdown-featured-posts",
+        "pricing/large-table-01",
+        "social-proof/full-width"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-06": {
+      "name": "pricing/pricing-page-06",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 06",
+      "description": "A banner on the brand colour, a heading over a plan comparison table with plan icons and the middle plan highlighted, a call to action with a screenshot, a call to action on grey and a footer on dark.",
+      "files": [
+        "pages/pricing/PricingPage06.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "banner/slim-brand-full-width",
+        "cta/screen-mockup-02",
+        "cta/simple-centered",
+        "footers/large-09",
+        "header-navigation/two-col-with-links",
+        "pricing/large-table-02"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-07": {
+      "name": "pricing/pricing-page-07",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 07",
+      "description": "A centred heading and billing switch over two wide plan cards with features in two columns. Then questions in an accordion, customer quotes, a call to action on the brand colour and a footer on dark.",
+      "files": [
+        "pages/pricing/PricingPage07.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/simple-centered-brand",
+        "faq/accordion-03",
+        "footers/large-05",
+        "header-navigation/four-col-with-footer",
+        "pricing/simple-dual-check-item",
+        "testimonials/social-cards-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-08": {
+      "name": "pricing/pricing-page-08",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 08",
+      "description": "A centred heading and billing switch over three plan cards, the middle one with a banner. Then features under a screenshot, features beside a photo, questions in a grid, a call to action card on the brand colour and a footer.",
+      "files": [
+        "pages/pricing/PricingPage08.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/card-horizontal-brand",
+        "faq/simple-01",
+        "features/center-mockup-01",
+        "features/icons-and-image-03",
+        "footers/large-02",
+        "header-navigation/three-col-with-sidebar",
+        "pricing/simple-banner"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-09": {
+      "name": "pricing/pricing-page-09",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 09",
+      "description": "A banner on grey, a heading over three tinted plan panels with filled checks, questions in an accordion, a call to action with images, a call to action card and a footer on dark.",
+      "files": [
+        "pages/pricing/PricingPage09.astro"
+      ],
+      "registryDependencies": [
+        "banner/slim-full-width",
+        "cta/abstract-images",
+        "cta/card-horizontal",
+        "faq/accordion-03",
+        "footers/large-05",
+        "header-navigation/two-col-with-sidebar",
+        "pricing/primary-card-simple"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "pricing/pricing-page-10": {
+      "name": "pricing/pricing-page-10",
+      "kind": "page",
+      "category": "pricing",
+      "title": "Pricing page 10",
+      "description": "A centred heading with actions over three grey plan cards with icons on their top edge. Then questions in a grid, a call to action with a screenshot and a footer.",
+      "files": [
+        "pages/pricing/PricingPage10.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "cta/screen-mockup-04",
+        "faq/simple-02",
+        "footers/large-03",
+        "header-navigation/dropdown-simple",
+        "pricing/simple-icon-offset"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "sign-up/card-combined": {
       "name": "sign-up/card-combined",
       "kind": "page",
@@ -3588,6 +4756,228 @@
       "dependencies": [
         "@lucide/astro"
       ],
+      "usesJs": false
+    },
+    "team/team-page-01": {
+      "name": "team/team-page-01",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 01",
+      "description": "A centred eyebrow, heading and line. Then the team, open positions, a newsletter signup on grey and a footer.",
+      "files": [
+        "pages/team/TeamPage01.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/card-03",
+        "footers/large-01",
+        "header-navigation/dropdown-feature-card",
+        "header/centered",
+        "newsletter/simple-centered",
+        "team/image-card-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-02": {
+      "name": "team/team-page-02",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 02",
+      "description": "A centred eyebrow, heading and line. Then the team, the team, open positions, the team, customer quotes, a newsletter signup on grey and a footer.",
+      "files": [
+        "pages/team/TeamPage02.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/card-01",
+        "footers/large-04",
+        "header-navigation/dropdown-simple-with-footer",
+        "header/centered",
+        "newsletter/simple-centered",
+        "team/board-members",
+        "team/image-collage-02",
+        "team/simple-01",
+        "testimonials/social-cards-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-03": {
+      "name": "team/team-page-03",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 03",
+      "description": "A left-aligned eyebrow, heading and line on grey. Then the team, open positions, a newsletter signup on dark and a footer on dark.",
+      "files": [
+        "pages/team/TeamPage03.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/card-04",
+        "footers/large-02",
+        "header-navigation/dropdown-simple-two-columns",
+        "header/left",
+        "newsletter/simple-centered",
+        "team/simple-03"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-04": {
+      "name": "team/team-page-04",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 04",
+      "description": "A centred eyebrow, heading and line. Then the team, open positions, a call to action card, customer quotes and a footer on dark.",
+      "files": [
+        "pages/team/TeamPage04.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/card-01",
+        "cta/card-vertical",
+        "footers/large-03",
+        "header-navigation/dropdown-two-cols-with-links-and-footer",
+        "header/centered",
+        "team/image-glass-01",
+        "testimonials/simple-centered-03"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-05": {
+      "name": "team/team-page-05",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 05",
+      "description": "A centred heading, line and two buttons. Then the team, features with icons, open positions, customer quotes, a newsletter signup on grey and a footer on the brand colour.",
+      "files": [
+        "pages/team/TeamPage05.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/simple-01",
+        "features/simple-icons-02",
+        "footers/large-05-brand",
+        "header-navigation/dropdown-featured-posts",
+        "header/centered-buttons",
+        "newsletter/simple-centered",
+        "team/image-glass-02",
+        "testimonials/abstract-image"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-06": {
+      "name": "team/team-page-06",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 06",
+      "description": "A centred heading, line and two buttons on dark. Then the team, features with icons, open positions, a call to action card, customer quotes, a newsletter signup and a footer.",
+      "files": [
+        "pages/team/TeamPage06.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/card-02",
+        "cta/card-vertical",
+        "features/simple-icons-04",
+        "footers/large-07",
+        "header-navigation/two-col-with-links",
+        "header/centered-buttons",
+        "newsletter/card-vertical",
+        "team/image-glass-03",
+        "testimonials/simple-left-aligned"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-07": {
+      "name": "team/team-page-07",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 07",
+      "description": "A left-aligned eyebrow, heading and line. Then the team, open positions, a map of offices, customer quotes, a newsletter signup on the brand colour and a footer on grey.",
+      "files": [
+        "pages/team/TeamPage07.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/simple-04",
+        "contact/vector-map-03",
+        "footers/large-08",
+        "header-navigation/four-col-with-footer",
+        "header/left",
+        "newsletter/card-horizontal-brand",
+        "team/image-card-02",
+        "testimonials/card"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-08": {
+      "name": "team/team-page-08",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 08",
+      "description": "A split eyebrow, heading and line on the brand colour. Then the team, features with icons, open positions and a footer.",
+      "files": [
+        "pages/team/TeamPage08.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/simple-03",
+        "features/simple-icons-03",
+        "footers/large-09",
+        "header-navigation/three-col-with-sidebar",
+        "header/space-between-brand",
+        "team/image-glass-04"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-09": {
+      "name": "team/team-page-09",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 09",
+      "description": "A centred heading, line and two buttons. Then the team, features with icons on grey, open positions, a newsletter signup and a footer.",
+      "files": [
+        "pages/team/TeamPage09.astro"
+      ],
+      "registryDependencies": [
+        "careers/card-04",
+        "features/simple-icons-02",
+        "footers/large-15",
+        "header-navigation/two-col-with-sidebar",
+        "header/centered-buttons",
+        "newsletter/card-vertical",
+        "team/simple-01"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "team/team-page-10": {
+      "name": "team/team-page-10",
+      "kind": "page",
+      "category": "team",
+      "title": "Team page 10",
+      "description": "A centred eyebrow, heading and line. Then the team, figures, a content section, open positions and a footer on grey.",
+      "files": [
+        "pages/team/TeamPage10.astro"
+      ],
+      "registryDependencies": [
+        "Divider",
+        "careers/simple-03",
+        "content/section-split-image-03",
+        "footers/large-09",
+        "header-navigation/dropdown-simple",
+        "header/centered",
+        "metrics/card-gray-light",
+        "team/simple-04"
+      ],
+      "dependencies": [],
       "usesJs": false
     },
     "verification/check-email": {
@@ -5010,6 +6400,24 @@
       "dependencies": [
         "@lucide/astro"
       ],
+      "usesJs": false
+    },
+    "contact/icons-and-map-02": {
+      "name": "contact/icons-and-map-02",
+      "kind": "block",
+      "category": "contact",
+      "title": "Icons and map 02",
+      "description": "A heading and two offices on a grey band, over a map that overlaps its edge.",
+      "files": [
+        "blocks/contact/IconsAndMap02.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "MapEmbed",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
       "usesJs": false
     },
     "contact/icons-and-map-02-brand": {
@@ -11707,6 +13115,27 @@
         "Section"
       ],
       "dependencies": [],
+      "usesJs": false
+    },
+    "team/board-members": {
+      "name": "team/board-members",
+      "kind": "block",
+      "category": "team",
+      "title": "Board members",
+      "description": "A centred heading on a grey band over four investors with round photos, their firm, a bio and links.",
+      "files": [
+        "blocks/team/BoardMembers.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     },
     "team/image-card-01": {
