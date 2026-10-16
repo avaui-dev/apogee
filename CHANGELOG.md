@@ -5,6 +5,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-10-16
+
 ### Added
 
 - **About, Blog post, Blog, Contact, FAQ, Pricing and Team pages (10 each), Landing pages (20) and Legal pages (5):** whole pages stacked from blocks in the order of a real marketing site: a header navigation, the page header or article, then sections that alternate between the page colour, a grey band, the brand colour and a dark band, and a footer. `apogee add about/about-page-01` copies the page and the blocks it uses.
@@ -453,6 +455,7 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.6.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.6.0
 [0.5.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.5.0
 [0.4.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.4.0
 [0.3.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.3.0
