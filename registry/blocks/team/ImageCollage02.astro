@@ -1,0 +1,34 @@
+---
+/**
+ * Image collage 02: A heading and actions beside a collage of five team photos.
+ *
+ * @block team
+ * @order 10
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Image from '../../components/Image/Image.astro'
+import Button from '../../components/Button/Button.astro'
+
+---
+
+<Section spacing="large" class="overflow-hidden">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="flex flex-col gap-8">
+      <SectionHeader eyebrow="Join our team" heading="We're just getting started" description="We hire diverse, passionate people and build a culture that lets everyone do their best work." size="large" />
+      <div class="flex flex-col gap-3 sm:flex-row-reverse sm:justify-end">
+        <Button href="#" size="large">We're hiring!</Button>
+        <Button href="#" size="large" variant="outline" color="neutral">Read our principles</Button>
+      </div>
+    </div>
+    <div class="-mx-[25%] overflow-hidden sm:-mx-[10%] md:mx-0">
+      <div class="grid h-122 grid-cols-12 grid-rows-12 gap-2 sm:h-124 md:gap-4" aria-hidden="true">
+        <Image src="https://picsum.photos/id/1027/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-7 col-start-5 row-end-13 col-end-9" />
+        <Image src="https://picsum.photos/id/856/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-1 col-start-7 row-end-7 col-end-11" />
+        <Image src="https://picsum.photos/id/832/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-3 col-start-3 row-end-7 col-end-7" />
+        <Image src="https://picsum.photos/id/91/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-7 col-start-9 row-end-11 col-end-13" />
+        <Image src="https://picsum.photos/id/64/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-7 col-start-1 row-end-12 col-end-5" />
+      </div>
+    </div>
+  </div>
+</Section>

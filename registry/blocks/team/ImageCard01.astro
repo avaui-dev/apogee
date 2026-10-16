@@ -1,0 +1,36 @@
+---
+/**
+ * Image card 01: A centred heading and actions over eight people with square photos and bios.
+ *
+ * @block team
+ * @order 5
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Image from '../../components/Image/Image.astro'
+import Button from '../../components/Button/Button.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-12 md:gap-16">
+    <div class="flex flex-col gap-8 items-center">
+      <SectionHeader eyebrow="We're hiring!" heading="Meet our team" description="We hire diverse, passionate people and build a culture that lets everyone do their best work." size="large" align="center" />
+      <div class="flex flex-col gap-3 sm:flex-row-reverse sm:justify-center">
+        <Button href="#" size="large">Open positions</Button>
+        <Button href="#" size="large" variant="outline" color="neutral">About us</Button>
+      </div>
+    </div>
+    <ul class="grid list-none p-0 gap-x-8 gap-y-10 sm:grid-cols-2 md:gap-y-12 lg:grid-cols-3 xl:grid-cols-4">
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/1027/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Maya Okafor</Heading><p class="text-primary">Founder and CEO</p><p class="mt-2 text-neutral-faded">Started the company after ten years building tools for small teams.</p></div></div></li>
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/856/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Tomas Lindqvist</Heading><p class="text-primary">Engineering Manager</p><p class="mt-2 text-neutral-faded">Keeps the team shipping and the pager quiet.</p></div></div></li>
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/832/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Priya Raman</Heading><p class="text-primary">Product Manager</p><p class="mt-2 text-neutral-faded">Turns customer calls into roadmaps people can read.</p></div></div></li>
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/91/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Jonah Weiss</Heading><p class="text-primary">Frontend Developer</p><p class="mt-2 text-neutral-faded">Cares about fast pages and buttons that feel right.</p></div></div></li>
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/64/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Lucía Ortega</Heading><p class="text-primary">Backend Developer</p><p class="mt-2 text-neutral-faded">Builds the APIs and keeps the data honest.</p></div></div></li>
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/375/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Samir Haddad</Heading><p class="text-primary">Product Designer</p><p class="mt-2 text-neutral-faded">Sketches first, then sweats the last pixel.</p></div></div></li>
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/823/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Hana Kobayashi</Heading><p class="text-primary">UX Researcher</p><p class="mt-2 text-neutral-faded">Talks to customers so the rest of us can listen.</p></div></div></li>
+      <li><div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/836/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Eli Brennan</Heading><p class="text-primary">Customer Success</p><p class="mt-2 text-neutral-faded">Answers every question as if it were the first.</p></div></div></li>
+    </ul>
+  </div>
+</Section>
