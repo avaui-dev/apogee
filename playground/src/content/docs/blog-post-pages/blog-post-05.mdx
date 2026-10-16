@@ -1,0 +1,25 @@
+---
+title: "Blog post 05"
+description: "A split header with a tall photo, then a table of contents and share links beside the body. Then more posts, a call to action and a footer on dark."
+group: Blog post pages
+order: 5
+related: [sections/post-header, post-card, share-links]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog-post/blog-post-05" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog-post/blog-post-05
+```
+
+This copies the page to `src/components/apogee/pages/blog-post/` with the blocks it stacks and everything they use: [header-navigation/dropdown-featured-posts](/docs/header-navigation-sections/dropdown-featured-posts), [content/split-image-01](/docs/content-sections/split-image-01), [blog/carousel-layout-01](/docs/blog-sections/carousel-layout-01), [cta/card-horizontal](/docs/cta-sections/card-horizontal), [footers/large-16](/docs/footers-sections/large-16). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (content/split-image-01) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

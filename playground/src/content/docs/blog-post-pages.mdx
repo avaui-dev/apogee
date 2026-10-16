@@ -1,0 +1,30 @@
+---
+title: Blog post pages
+navTitle: Overview
+description: "Whole article pages: a post header, the article, share links and more posts, between a header and a footer."
+group: Blog post pages
+order: -1
+related: [sections/post-header, post-card, share-links]
+---
+
+import DocsIndex from '../../components/DocsIndex.astro'
+
+Each example is a whole article page stacked from blocks: a header navigation, an article from [Content sections](/docs/content-sections) (its header holds the page's `h1`), more posts from [Blog sections](/docs/blog-sections), and often a call to action or newsletter signup before the footer. Adding a page copies its blocks too. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+
+```sh
+npx @ava-ui/apogee add blog-post/blog-post-01
+```
+
+```astro
+---
+// src/pages/blog-post.astro
+import Layout from '../layouts/Layout.astro'
+import Page from '../components/apogee/pages/blog-post/BlogPost01.astro'
+---
+
+<Layout title="Blog post">
+  <Page />
+</Layout>
+```
+
+<DocsIndex group="Blog post pages" self="blog-post-pages" />

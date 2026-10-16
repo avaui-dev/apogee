@@ -9,7 +9,7 @@ related: [sections/team, sections/stats, sections/page-header]
 
 import DocsIndex from '../../components/DocsIndex.astro'
 
-Each example is a whole page stacked from blocks: a header navigation, an inner-page header, sections such as [team](/docs/team-sections), [metrics](/docs/metrics-sections) and [careers](/docs/careers-sections), and a footer. Adding a page copies those blocks too, so you can edit one block and every page that uses it follows. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
+Each example is a whole page stacked from blocks: a header navigation, an inner-page header, sections such as [team](/docs/team-sections), [metrics](/docs/metrics-sections) and [careers](/docs/careers-sections), and a footer. Sections alternate between the page colour, a grey band, the brand colour and a dark footer, as the page needs. Adding a page copies its blocks too, so you can edit one block and every page that uses it follows. The page renders its own header, `<main>` and footer, so give it a layout without a `<main>`.
 
 ```sh
 npx @ava-ui/apogee add about/about-page-01

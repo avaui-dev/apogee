@@ -1,0 +1,20 @@
+---
+/**
+ * Blog post 09: A header and wide photo, then the body beside a newsletter card (from lg). Then more posts and a footer on dark.
+ *
+ * @page blog-post
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithSidebar.astro'
+import Article from '../../blocks/content/LargeImage03.astro'
+import Posts from '../../blocks/blog/SplitLayout01.astro'
+import Footer from '../../blocks/footers/Large08.astro'
+---
+
+<Navigation />
+<main>
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

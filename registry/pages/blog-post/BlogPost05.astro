@@ -1,0 +1,23 @@
+---
+/**
+ * Blog post 05: A split header with a tall photo, then a table of contents and share links beside the body. Then more posts, a call to action and a footer on dark.
+ *
+ * @page blog-post
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownFeaturedPosts.astro'
+import Article from '../../blocks/content/SplitImage01.astro'
+import Posts from '../../blocks/blog/CarouselLayout01.astro'
+import CallToAction from '../../blocks/cta/CardHorizontal.astro'
+import Footer from '../../blocks/footers/Large16.astro'
+---
+
+<Navigation />
+<main>
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

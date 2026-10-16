@@ -1,21 +1,23 @@
 ---
 /**
- * About page 07: A split heading on the brand colour, feature cards, open positions in tabs, questions and a footer that opens with a call to action.
+ * About page 07: A page header on the brand colour, contact cards, open positions, questions and a footer.
  *
  * @page about
  */
-import Navigation from '../../blocks/header-navigation/DropdownTwoColsWithLinksAndFooter.astro'
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
 import Header from '../../blocks/header/SpaceBetweenBrand.astro'
-import Features from '../../blocks/features/IconCards01.astro'
+import Contact from '../../blocks/contact/IconCards03.astro'
 import Careers from '../../blocks/careers/Card01.astro'
 import Questions from '../../blocks/faq/Accordion01.astro'
 import Footer from '../../blocks/footers/Large09.astro'
 ---
 
-<Navigation />
+<Navigation background="primary" />
 <main>
   <Header />
-  <Features />
+  <Contact />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Careers />
   <Questions />
 </main>

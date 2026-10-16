@@ -1,0 +1,24 @@
+---
+title: "Simple left aligned 01"
+description: "A heading with a View all posts button beside it, over three posts."
+group: Blog sections
+order: 22
+related: [post-card, sections/blog-list]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog/simple-left-aligned-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog/simple-left-aligned-01
+```
+
+This copies the block to `src/components/apogee/blocks/blog/` with everything it uses: Button, Grid, PostCard, Section, SectionHeader. It slots into any page, such as a home page or a product page. Swap the `posts` array for your content collection. Use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- Each post is one link: the title stretches over the card, and the author, category and tag links sit above it and stay clickable.
+- The decorative arrow and the images are hidden from screen readers (their alt is empty because the title already names the post).

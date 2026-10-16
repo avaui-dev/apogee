@@ -1,18 +1,18 @@
 ---
 /**
- * About page 02: A map of offices, store addresses on the brand colour, the team, open positions, a contact form, press mentions and a brand footer.
+ * About page 02: A centred heading, a world map with office pins (from lg) and three contact cards. Then office addresses on the brand colour, the team, open positions, a contact form, press mentions and a footer on the brand colour.
  *
  * @page about
  */
 import Divider from '../../components/Divider/Divider.astro'
-import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleWithFooter.astro'
 import Contact from '../../blocks/contact/Map02.astro'
 import Contact2 from '../../blocks/contact/SimpleIcons04Brand.astro'
-import Team from '../../blocks/team/Simple02.astro'
-import Careers from '../../blocks/careers/Simple03.astro'
+import Team from '../../blocks/team/Simple01.astro'
+import Careers from '../../blocks/careers/Card04.astro'
 import Contact3 from '../../blocks/contact/SimpleForm01.astro'
 import Logos from '../../blocks/social-proof/PressMentions.astro'
-import Footer from '../../blocks/footers/Large01Brand.astro'
+import Footer from '../../blocks/footers/Large05Brand.astro'
 ---
 
 <Navigation />
@@ -22,7 +22,9 @@ import Footer from '../../blocks/footers/Large01Brand.astro'
   <Team />
   <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Careers />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Contact3 />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Logos />
 </main>
 <Footer />

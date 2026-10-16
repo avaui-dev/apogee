@@ -1,28 +1,28 @@
 ---
 /**
- * About page 01: A floating header, a centred heading, four figures beside a photo, customer logos, the team, six values, open positions and a large footer.
+ * About page 01: A page header, figures on grey, customer logos, the team, features on grey, open positions and a footer on dark.
  *
  * @page about
  */
 import Divider from '../../components/Divider/Divider.astro'
-import Navigation from '../../blocks/header-navigation/FloatingSimpleWithFooter.astro'
+import Navigation from '../../blocks/header-navigation/FloatingFeatureCard.astro'
 import Header from '../../blocks/header/Centered.astro'
-import Metrics from '../../blocks/metrics/SplitImage01.astro'
+import Metrics from '../../blocks/metrics/SplitImage02.astro'
 import Logos from '../../blocks/social-proof/FullWidth.astro'
-import Team from '../../blocks/team/ImageCard01.astro'
-import Values from '../../blocks/features/SimpleIcons02.astro'
-import Careers from '../../blocks/careers/Card04.astro'
-import Footer from '../../blocks/footers/Large01.astro'
+import Team from '../../blocks/team/Simple04.astro'
+import Features from '../../blocks/features/SimpleIcons02.astro'
+import Careers from '../../blocks/careers/Card03.astro'
+import Footer from '../../blocks/footers/Large02.astro'
 ---
 
 <Navigation />
 <main>
   <Header />
-  <Metrics />
+  <div class="bg-neutral-faded"><Metrics /></div>
   <Logos />
   <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Team />
-  <Values />
+  <div class="bg-neutral-faded"><Features /></div>
   <Careers />
 </main>
-<Footer />
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

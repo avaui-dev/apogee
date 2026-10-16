@@ -1,24 +1,24 @@
 ---
 /**
- * About page 10: A centred heading with buttons, alternating feature rows, six values, a collage of the team, a newsletter signup and a large footer.
+ * About page 10: A page header on grey, features, features on grey, the team, a newsletter signup on grey and a footer.
  *
  * @page about
  */
-import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
 import Header from '../../blocks/header/CenteredButtons.astro'
-import Features from '../../blocks/features/AlternatingLayout01.astro'
+import Features from '../../blocks/features/AlternatingLayout04.astro'
 import Features2 from '../../blocks/features/SimpleIcons02.astro'
 import Team from '../../blocks/team/ImageCollage02.astro'
-import Newsletter from '../../blocks/newsletter/SimpleLeft.astro'
-import Footer from '../../blocks/footers/Large08.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large04.astro'
 ---
 
-<Navigation />
+<Navigation background="neutral-faded" />
 <main>
-  <Header />
+  <div class="bg-neutral-faded"><Header /></div>
   <Features />
-  <Features2 />
+  <div class="bg-neutral-faded"><Features2 /></div>
   <Team />
-  <Newsletter />
+  <div class="bg-neutral-faded"><Newsletter /></div>
 </main>
 <Footer />

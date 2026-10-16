@@ -1,0 +1,60 @@
+---
+/**
+ * Simple left aligned 01: A heading with a View all posts button beside it, over three posts.
+ *
+ * @block blog
+ * @order 22
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import PostCard, { type Post } from '../../components/PostCard/PostCard.astro'
+import Grid from '../../components/Grid/Grid.astro'
+import Button from '../../components/Button/Button.astro'
+
+const posts: Post[] = [
+  {
+    title: 'Designing review sessions people look forward to',
+    href: '#',
+    summary: 'How to run critiques that sharpen the work instead of draining the room.',
+    date: '2026-01-20',
+    readingTime: '8 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-1/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Design', href: '#' },
+    author: { name: 'Ada Lovelace', href: '#' },
+    tags: [{ name: 'Design', href: '#', color: 'primary' }, { name: 'Research', href: '#', color: 'neutral' }, { name: 'Process', href: '#', color: 'positive' }],
+  },
+  {
+    title: 'Migrating to a typed component library',
+    href: '#',
+    summary: 'What changed when we moved two hundred screens onto one set of typed parts.',
+    date: '2026-01-19',
+    readingTime: '6 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-2/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Engineering', href: '#' },
+    author: { name: 'Alan Turing', href: '#' },
+    tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'Tooling', href: '#', color: 'neutral' }],
+  },
+  {
+    title: 'Building your first internal API',
+    href: '#',
+    summary: 'The shape of a small API that teams can grow without rewriting.',
+    date: '2026-01-18',
+    readingTime: '7 min read',
+    image: { src: 'https://picsum.photos/seed/apogee-blog-3/960/640', alt: '', width: 960, height: 640 },
+    category: { name: 'Engineering', href: '#' },
+    author: { name: 'Grace Hopper', href: '#' },
+    tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'APIs', href: '#', color: 'warning' }],
+  },
+]
+---
+
+<Section spacing="large">
+  <div class="mb-12 flex flex-col items-start justify-between gap-8 md:mb-16 lg:flex-row lg:items-end">
+    <SectionHeader eyebrow="Our blog" heading="Latest blog posts" description="Tools and strategies modern teams need to help their companies grow." />
+    <Button href="#" size="large" class="shrink-0 max-lg:hidden">View all posts</Button>
+  </div>
+  <Grid as="ul" cols={{ base: 1, md: 2, lg: 3 }} gap={8} class="list-none p-0">
+    {posts.map((post) => <li><PostCard post={post} meta="byline" footer="tags" headingLevel={3} class="h-full" /></li>)}
+  </Grid>
+  <Button href="#" size="large" fullWidth class="mt-12 lg:hidden">View all posts</Button>
+</Section>

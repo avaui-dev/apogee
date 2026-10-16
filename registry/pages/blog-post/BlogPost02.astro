@@ -1,0 +1,22 @@
+---
+/**
+ * Blog post 02: A centred title over a wide photo, the body, then the author and share links. Then more posts, a newsletter signup on the brand colour and a footer on dark.
+ *
+ * @page blog-post
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleWithFooter.astro'
+import Article from '../../blocks/content/LargeImage01.astro'
+import Posts from '../../blocks/blog/SimpleLeftAligned02.astro'
+import Newsletter from '../../blocks/newsletter/SimpleLeftBrand.astro'
+import Footer from '../../blocks/footers/Large04.astro'
+---
+
+<Navigation />
+<main>
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts />
+  <Newsletter />
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

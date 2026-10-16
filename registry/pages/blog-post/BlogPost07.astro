@@ -1,0 +1,23 @@
+---
+/**
+ * Blog post 07: A header on the brand colour, a wide photo overlapping it, the body, then topics and share links. Then more posts, a newsletter signup on the brand colour and a footer.
+ *
+ * @page blog-post
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Article from '../../blocks/content/LargeImage04.astro'
+import Posts from '../../blocks/blog/SplitLayout01.astro'
+import Newsletter from '../../blocks/newsletter/CardVerticalBrand.astro'
+import Footer from '../../blocks/footers/Large06.astro'
+---
+
+<Navigation background="primary" />
+<main>
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Newsletter />
+</main>
+<Footer />

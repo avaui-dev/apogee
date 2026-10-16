@@ -1,0 +1,25 @@
+---
+title: "Blog post 04"
+description: "A banner on grey and a split header beside a wide photo, the body, then share links. Then more posts, a call to action, a newsletter signup and a footer."
+group: Blog post pages
+order: 4
+related: [sections/post-header, post-card, share-links]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog-post/blog-post-04" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog-post/blog-post-04
+```
+
+This copies the page to `src/components/apogee/pages/blog-post/` with the blocks it stacks and everything they use: [banner/slim-full-width](/docs/banner-sections/slim-full-width), [header-navigation/dropdown-two-cols-with-links-and-footer](/docs/header-navigation-sections/dropdown-two-cols-with-links-and-footer), [content/split-image-04](/docs/content-sections/split-image-04), [blog/simple-left-aligned-01](/docs/blog-sections/simple-left-aligned-01), [cta/abstract-images](/docs/cta-sections/abstract-images), [newsletter/card-horizontal](/docs/newsletter-sections/card-horizontal), [footers/large-01](/docs/footers-sections/large-01). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (content/split-image-04) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

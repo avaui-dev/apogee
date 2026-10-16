@@ -1,0 +1,25 @@
+---
+/**
+ * Blog post 08: A split header, then a sidebar with contents, contributors, a newsletter form and share links beside the body. Then more posts, a call to action, a newsletter signup on grey and a footer.
+ *
+ * @page blog-post
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
+import Article from '../../blocks/content/SplitImage03.astro'
+import Posts from '../../blocks/blog/SimpleCenterAligned01.astro'
+import CallToAction from '../../blocks/cta/ScreenMockup01.astro'
+import Newsletter from '../../blocks/newsletter/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large02.astro'
+---
+
+<Navigation />
+<main>
+  <Article />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <Posts />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+  <div class="bg-neutral-faded"><Newsletter /></div>
+</main>
+<Footer />

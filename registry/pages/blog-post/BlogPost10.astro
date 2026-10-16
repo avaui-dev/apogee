@@ -1,0 +1,24 @@
+---
+/**
+ * Blog post 10: A banner on the brand colour and a centred header with the author over a wide photo, the body, then topics and share links. Then a newsletter signup on the brand colour, a call to action and a footer on the brand colour.
+ *
+ * @page blog-post
+ */
+import Divider from '../../components/Divider/Divider.astro'
+import Banner from '../../blocks/banner/SlimBrandFullWidth.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimple.astro'
+import Article from '../../blocks/content/LargeImage02.astro'
+import Newsletter from '../../blocks/newsletter/CardVerticalBrand.astro'
+import CallToAction from '../../blocks/cta/SimpleLogos02.astro'
+import Footer from '../../blocks/footers/Large07Brand.astro'
+---
+
+<Banner />
+<Navigation />
+<main>
+  <Article />
+  <Newsletter />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
+</main>
+<Footer />

@@ -1,16 +1,16 @@
 ---
 /**
- * About page 03: A brand banner, a header, store addresses beside a map, the team, review cards, a call to join and a large footer.
+ * About page 03: A banner on the brand colour and a centred heading, a wide map and three office cards with their hours and addresses. Then the team, customer quotes, a call to action and a footer.
  *
  * @page about
  */
 import Divider from '../../components/Divider/Divider.astro'
 import Banner from '../../blocks/banner/SlimBrandFullWidth.astro'
-import Navigation from '../../blocks/header-navigation/DropdownFeatureCard.astro'
-import Contact from '../../blocks/contact/CenteredMap.astro'
-import Team from '../../blocks/team/Simple01.astro'
-import Testimonials from '../../blocks/testimonials/SocialCards01.astro'
-import Join from '../../blocks/cta/SimpleCentered.astro'
+import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Contact from '../../blocks/contact/Map01.astro'
+import Team from '../../blocks/team/ImageCard01.astro'
+import Testimonials from '../../blocks/testimonials/SocialCards03.astro'
+import CallToAction from '../../blocks/cta/SimpleCentered.astro'
 import Footer from '../../blocks/footers/Large04.astro'
 ---
 
@@ -18,9 +18,11 @@ import Footer from '../../blocks/footers/Large04.astro'
 <Navigation />
 <main>
   <Contact headingLevel={1} />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Team />
   <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Testimonials />
-  <Join />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
+  <CallToAction />
 </main>
 <Footer />

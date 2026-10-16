@@ -1,24 +1,28 @@
 ---
 /**
- * About page 04: A floating header, a centred heading, six team portraits on glass, figures beside a photo, one quote, a call to join and a large footer.
+ * About page 04: A page header, the team, figures, customer quotes, a call to action on grey and a footer on dark.
  *
  * @page about
  */
-import Navigation from '../../blocks/header-navigation/FloatingFeatureCard.astro'
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/FloatingFourColSlimWithFooter.astro'
 import Header from '../../blocks/header/Centered.astro'
 import Team from '../../blocks/team/ImageGlass01.astro'
-import Metrics from '../../blocks/metrics/SplitImage02.astro'
-import Testimonials from '../../blocks/testimonials/SimpleCentered02.astro'
-import Join from '../../blocks/cta/SplitImage01.astro'
-import Footer from '../../blocks/footers/Large05.astro'
+import Metrics from '../../blocks/metrics/ImageWithCards01.astro'
+import Testimonials from '../../blocks/testimonials/SimpleCentered01.astro'
+import CallToAction from '../../blocks/cta/SimpleCentered.astro'
+import Footer from '../../blocks/footers/Large03.astro'
 ---
 
 <Navigation />
 <main>
   <Header />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Team />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Metrics />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Testimonials />
-  <Join />
+  <div class="bg-neutral-faded"><CallToAction /></div>
 </main>
-<Footer />
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

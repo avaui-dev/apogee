@@ -1,0 +1,18 @@
+---
+/**
+ * Blog post 06: A split header with a photo on a tinted panel, the body, then share links. Then more posts on grey and a footer on dark.
+ *
+ * @page blog-post
+ */
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
+import Article from '../../blocks/content/SplitImage02.astro'
+import Posts from '../../blocks/blog/CarouselLayout02.astro'
+import Footer from '../../blocks/footers/Large09.astro'
+---
+
+<Navigation />
+<main>
+  <Article />
+  <div class="bg-neutral-faded"><Posts /></div>
+</main>
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

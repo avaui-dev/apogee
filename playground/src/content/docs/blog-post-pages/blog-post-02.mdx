@@ -1,0 +1,25 @@
+---
+title: "Blog post 02"
+description: "A centred title over a wide photo, the body, then the author and share links. Then more posts, a newsletter signup on the brand colour and a footer on dark."
+group: Blog post pages
+order: 2
+related: [sections/post-header, post-card, share-links]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="blog-post/blog-post-02" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add blog-post/blog-post-02
+```
+
+This copies the page to `src/components/apogee/pages/blog-post/` with the blocks it stacks and everything they use: [header-navigation/dropdown-simple-with-footer](/docs/header-navigation-sections/dropdown-simple-with-footer), [content/large-image-01](/docs/content-sections/large-image-01), [blog/simple-left-aligned-02](/docs/blog-sections/simple-left-aligned-02), [newsletter/simple-left-brand](/docs/newsletter-sections/simple-left-brand), [footers/large-04](/docs/footers-sections/large-04). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+
+## Accessibility
+
+- The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
+- The heading of the first section (content/large-image-01) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- Each block keeps its own accessibility notes; follow the links above.

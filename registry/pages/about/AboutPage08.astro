@@ -1,28 +1,29 @@
 ---
 /**
- * About page 08: A centred heading, customer logos, the leadership team, open positions, a brand newsletter card, a contact form and a footer with a call to action.
+ * About page 08: A page header, customer logos on grey, the team, open positions, a newsletter signup on the brand colour, a contact form and a footer on dark.
  *
  * @page about
  */
 import Divider from '../../components/Divider/Divider.astro'
-import Navigation from '../../blocks/header-navigation/FourColWithFooter.astro'
+import Navigation from '../../blocks/header-navigation/ThreeColWithSidebar.astro'
 import Header from '../../blocks/header/Centered.astro'
-import Logos from '../../blocks/social-proof/Card.astro'
+import Logos from '../../blocks/social-proof/FullWidth.astro'
 import Team from '../../blocks/team/Simple03.astro'
 import Careers from '../../blocks/careers/Simple04.astro'
-import Newsletter from '../../blocks/newsletter/CardHorizontalBrand.astro'
-import Contact from '../../blocks/contact/SimpleForm02.astro'
-import Footer from '../../blocks/footers/Large10.astro'
+import Newsletter from '../../blocks/newsletter/CardVerticalBrand.astro'
+import Contact from '../../blocks/contact/SimpleForm01.astro'
+import Footer from '../../blocks/footers/Large13.astro'
 ---
 
 <Navigation />
 <main>
   <Header />
-  <Logos />
+  <div class="bg-neutral-faded"><Logos /></div>
   <Team />
   <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Careers />
   <Newsletter />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Contact />
 </main>
-<Footer />
+<div data-theme="dark" class="bg-page text-neutral"><Footer /></div>

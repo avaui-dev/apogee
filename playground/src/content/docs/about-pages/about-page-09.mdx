@@ -1,6 +1,6 @@
 ---
 title: "About page 09"
-description: "A split heading with buttons, figures in a grey card, the mission, case studies, a scrolling row of the team, open positions and a large footer."
+description: "A page header, figures, a content section, customer quotes, the team on grey, open positions and a footer on grey."
 group: About pages
 order: 9
 related: [sections/team, sections/stats, sections/page-header]
@@ -16,10 +16,10 @@ import PagePreview from '../../../components/PagePreview.astro'
 npx @ava-ui/apogee add about/about-page-09
 ```
 
-This copies the page to `src/components/apogee/pages/about/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-links](/docs/header-navigation-sections/two-col-with-links), [header/space-between-buttons](/docs/header-sections/space-between-buttons), [metrics/card-gray-light](/docs/metrics-sections/card-gray-light), [content/section-simple-02](/docs/content-sections/section-simple-02), [testimonials/case-study-cards](/docs/testimonials-sections/case-study-cards), [team/image-glass-04](/docs/team-sections/image-glass-04), [careers/card-02](/docs/careers-sections/card-02), [footers/large-03](/docs/footers-sections/large-03). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
+This copies the page to `src/components/apogee/pages/about/` with the blocks it stacks and everything they use: [header-navigation/two-col-with-sidebar](/docs/header-navigation-sections/two-col-with-sidebar), [header/space-between](/docs/header-sections/space-between), [metrics/card-gray-light](/docs/metrics-sections/card-gray-light), [content/section-simple-03](/docs/content-sections/section-simple-03), [testimonials/case-study-cards](/docs/testimonials-sections/case-study-cards), [team/image-glass-04](/docs/team-sections/image-glass-04), [careers/simple-03](/docs/careers-sections/simple-03), [footers/large-08](/docs/footers-sections/large-08). Render it from a page in `src/pages/` inside a layout that has no `<main>` of its own, or use **Copy code** above.
 
 ## Accessibility
 
 - The page brings its own landmarks: the header and its navigation, one `<main>`, and the footer.
-- The heading of the first section (header/space-between-buttons) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
+- The heading of the first section (header/space-between) is the page's only `h1`; every other section heading is an `h2`, with item titles one level down.
 - Each block keeps its own accessibility notes; follow the links above.

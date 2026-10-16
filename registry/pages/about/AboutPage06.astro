@@ -1,13 +1,14 @@
 ---
 /**
- * About page 06: A split heading, figures with actions, open positions, a world map of offices, one quote in a card, a newsletter card and a large footer.
+ * About page 06: A page header, figures, open positions, a map of offices, customer quotes, a newsletter signup and a footer on grey.
  *
  * @page about
  */
-import Navigation from '../../blocks/header-navigation/DropdownSimpleTwoColumns.astro'
+import Divider from '../../components/Divider/Divider.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
 import Header from '../../blocks/header/SpaceBetween.astro'
 import Metrics from '../../blocks/metrics/SimpleWithActions01.astro'
-import Careers from '../../blocks/careers/Simple02.astro'
+import Careers from '../../blocks/careers/Card03.astro'
 import Contact from '../../blocks/contact/VectorMap03.astro'
 import Testimonials from '../../blocks/testimonials/Card.astro'
 import Newsletter from '../../blocks/newsletter/CardHorizontal.astro'
@@ -18,9 +19,10 @@ import Footer from '../../blocks/footers/Large07.astro'
 <main>
   <Header />
   <Metrics />
+  <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Careers />
   <Contact />
   <Testimonials />
   <Newsletter />
 </main>
-<Footer />
+<div class="bg-neutral-faded"><Footer /></div>

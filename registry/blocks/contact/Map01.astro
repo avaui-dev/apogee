@@ -20,15 +20,22 @@ const stores = [
   { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
   { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
 ]
+
+interface Props {
+  /** 1 when the block opens a page; its items move one level down with it. */
+  headingLevel?: 1 | 2
+}
+const { headingLevel = 2 } = Astro.props
+const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Our locations" heading="Our locations" description="Find us at these locations." align="center" class="mb-12" />
+  <SectionHeader headingLevel={headingLevel} eyebrow="Locations" heading="Our locations" description="Find us at these locations." align="center" class="mb-12" />
   <MapEmbed lat={stores[0]!.lat} lon={stores[0]!.lon} title={`Map of our ${stores[0]!.city} office`} class="h-96 md:h-[30rem]" />
   <ul class="mt-12 grid list-none gap-6 p-0 md:grid-cols-3">
     {stores.slice(0, 3).map((s) => (
       <li>
-        <ContactMethod title={s.city} description="Mon–Sat 10am to 6pm" link={{ label: s.address, href: '#map' }} variant="card">
+        <ContactMethod title={s.city} description="Mon–Sat 10am to 6pm" link={{ label: s.address, href: '#map' }} variant="card" headingLevel={itemLevel}>
           <FeaturedIcon slot="icon" theme="outline" color="neutral"><MapPin /></FeaturedIcon>
         </ContactMethod>
       </li>

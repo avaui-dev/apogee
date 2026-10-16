@@ -1,28 +1,28 @@
 ---
 /**
- * About page 09: A split heading with buttons, figures in a grey card, the mission, case studies, a scrolling row of the team, open positions and a large footer.
+ * About page 09: A page header, figures, a content section, customer quotes, the team on grey, open positions and a footer on grey.
  *
  * @page about
  */
 import Divider from '../../components/Divider/Divider.astro'
-import Navigation from '../../blocks/header-navigation/TwoColWithLinks.astro'
-import Header from '../../blocks/header/SpaceBetweenButtons.astro'
+import Navigation from '../../blocks/header-navigation/TwoColWithSidebar.astro'
+import Header from '../../blocks/header/SpaceBetween.astro'
 import Metrics from '../../blocks/metrics/CardGrayLight.astro'
-import Content from '../../blocks/content/SectionSimple02.astro'
+import Article from '../../blocks/content/SectionSimple03.astro'
 import Testimonials from '../../blocks/testimonials/CaseStudyCards.astro'
 import Team from '../../blocks/team/ImageGlass04.astro'
-import Careers from '../../blocks/careers/Card02.astro'
-import Footer from '../../blocks/footers/Large03.astro'
+import Careers from '../../blocks/careers/Simple03.astro'
+import Footer from '../../blocks/footers/Large08.astro'
 ---
 
 <Navigation />
 <main>
   <Header />
   <Metrics />
-  <Content />
+  <Article />
   <div class="mx-auto max-w-7xl px-gutter"><Divider /></div>
   <Testimonials />
-  <Team />
+  <div class="bg-neutral-faded"><Team /></div>
   <Careers />
 </main>
-<Footer />
+<div class="bg-neutral-faded"><Footer /></div>
