@@ -1,0 +1,40 @@
+---
+/**
+ * Screen mockup 01: A heading, three benefits and an email signup beside a screen that runs off the edge.
+ *
+ * @block newsletter
+ * @order 13
+ */
+import { CircleCheck } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import List from '../../components/List/List.astro'
+
+---
+
+<Section spacing="large" class="overflow-hidden">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="flex flex-col items-start gap-8 md:gap-12">
+      <SectionHeader heading="We'll send you a nice letter once a week" description="No spam. Just the latest releases and tips, interesting articles and interviews with great people." size="large" />
+      <List marker="none" class="flex flex-col gap-4 space-y-0">
+        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Latest releases and tips</li>
+        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Our favourite articles each week</li>
+        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Interviews with people worth hearing from</li>
+      </List>
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
+        <Button type="submit" size="large">Subscribe</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+    </div>
+    <div class="lg:-me-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:overflow-hidden">
+      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="lg:w-[48rem]" />
+    </div>
+  </div>
+</Section>

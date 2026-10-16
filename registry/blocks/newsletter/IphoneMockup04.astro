@@ -1,0 +1,42 @@
+---
+/**
+ * IPhone mockup 04: A brand-colour card with a heading, email signup and a phone, with notifications beside it.
+ *
+ * @block newsletter
+ * @order 12
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid overflow-hidden rounded-2xl bg-primary text-on-primary md:rounded-3xl lg:min-h-120 lg:grid-cols-2">
+    <div class="flex flex-col items-start gap-8 px-6 pt-10 pb-12 md:p-12 md:gap-12 lg:p-16">
+      <SectionHeader heading="Be the first to know when we launch our new platform" description="We're still building. Subscribe for updates and 20% off when we launch. No spam, we promise!" size="large" background="primary" />
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
+        <Button type="submit" size="large" color="neutral">Subscribe</Button>
+      </div>
+      <p class="text-sm opacity-85">We care about your data in our <Link href="#" color="inherit">privacy policy</Link>.</p>
+    </form>
+    </div>
+    <div class="relative flex items-end justify-center gap-6 px-6 lg:items-center">
+      <ul class="flex list-none flex-col gap-3 p-0 max-lg:hidden text-neutral" aria-hidden="true">
+          {[['Ada Lovelace', 'followed you'], ['Alan Turing', 'gave your post kudos'], ['Grace Hopper', 'joined your team']].map(([n, t]) => (
+            <li class="flex w-64 items-center gap-3 rounded-xl bg-elevation-raised/90 p-3 shadow-raised ring-1 ring-neutral backdrop-blur-lg">
+              <Avatar name={n} size="small" />
+              <span class="text-sm"><span class="font-semibold">{n}</span> {t}</span>
+            </li>
+          ))}
+        </ul>
+      <DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="w-56 translate-y-8 md:w-64" />
+    </div>
+  </div>
+</Section>

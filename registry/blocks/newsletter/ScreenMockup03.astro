@@ -1,0 +1,31 @@
+---
+/**
+ * Screen mockup 03: A centred heading and email signup over a screen cropped at the bottom.
+ *
+ * @block newsletter
+ * @order 15
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col items-center gap-8 md:gap-12">
+    <SectionHeader heading="We'll send you a nice letter once a week" description="No spam. Just the latest releases and tips, interesting articles and interviews with great people." size="large" align="center" />
+    <form method="post" class="flex w-full max-w-md flex-col gap-2 mx-auto text-center">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
+        <Button type="submit" size="large">Subscribe</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+  </div>
+  <div class="mt-16 max-h-100 overflow-hidden mask-b-from-70%">
+    <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="mx-auto max-w-5xl" />
+  </div>
+</Section>

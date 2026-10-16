@@ -1,0 +1,27 @@
+---
+/**
+ * Card horizontal: A heading beside an email signup in a grey card.
+ *
+ * @block newsletter
+ * @order 5
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+
+---
+
+<Section spacing="large">
+  <div class="flex flex-col gap-8 rounded-2xl px-6 py-10 lg:flex-row lg:items-start lg:justify-between lg:gap-16 lg:p-16 bg-neutral-faded">
+    <SectionHeader heading="Join 2,000+ subscribers" description="Stay in the loop with everything you need to know." size="large" />
+    <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
+        <Button type="submit" size="large">Subscribe</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">Read about our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+  </div>
+</Section>

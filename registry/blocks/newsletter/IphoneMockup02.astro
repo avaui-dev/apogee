@@ -1,0 +1,42 @@
+---
+/**
+ * IPhone mockup 02: A heading and email signup beside a phone in a grey panel, with notifications over it.
+ *
+ * @block newsletter
+ * @order 10
+ */
+import Section from '../../components/Section/Section.astro'
+import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <div class="flex flex-col items-start gap-8 md:gap-12">
+      <SectionHeader heading="Be the first to know when we launch" description="We're still building. Subscribe for updates and 20% off when we launch. No spam, we promise!" size="large" />
+      <form method="post" class="flex w-full max-w-md flex-col gap-2">
+      <div class="flex flex-col gap-3 md:flex-row">
+        <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
+        <Button type="submit" size="large">Subscribe</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
+    </form>
+    </div>
+    <div class="relative flex min-h-90 items-start justify-center overflow-hidden rounded-2xl bg-neutral-faded pt-8 md:min-h-140 md:pt-16 lg:justify-end lg:pe-12">
+      <DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="w-60 md:w-64" />
+      <ul class="flex list-none flex-col gap-3 p-0 max-lg:hidden absolute bottom-8 start-8" aria-hidden="true">
+          {[['Ada Lovelace', 'followed you'], ['Alan Turing', 'gave your post kudos'], ['Grace Hopper', 'joined your team']].map(([n, t]) => (
+            <li class="flex w-64 items-center gap-3 rounded-xl bg-elevation-raised/90 p-3 shadow-raised ring-1 ring-neutral backdrop-blur-lg">
+              <Avatar name={n} size="small" />
+              <span class="text-sm"><span class="font-semibold">{n}</span> {t}</span>
+            </li>
+          ))}
+        </ul>
+    </div>
+  </div>
+</Section>

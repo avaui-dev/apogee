@@ -10064,6 +10064,323 @@
       ],
       "dependencies": [],
       "usesJs": false
+    },
+    "newsletter/card-horizontal": {
+      "name": "newsletter/card-horizontal",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Card horizontal",
+      "description": "A heading beside an email signup in a grey card.",
+      "files": [
+        "blocks/newsletter/CardHorizontal.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/card-horizontal-brand": {
+      "name": "newsletter/card-horizontal-brand",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Card horizontal brand",
+      "description": "A heading beside an email signup in a brand-colour card.",
+      "files": [
+        "blocks/newsletter/CardHorizontalBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/card-vertical": {
+      "name": "newsletter/card-vertical",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Card vertical",
+      "description": "A centred heading over an email signup in a grey card.",
+      "files": [
+        "blocks/newsletter/CardVertical.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/card-vertical-brand": {
+      "name": "newsletter/card-vertical-brand",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Card vertical brand",
+      "description": "A centred heading over an email signup in a brand-colour card.",
+      "files": [
+        "blocks/newsletter/CardVerticalBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/iphone-mockup-01": {
+      "name": "newsletter/iphone-mockup-01",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "IPhone mockup 01",
+      "description": "A heading and email signup beside a phone on a soft circle.",
+      "files": [
+        "blocks/newsletter/IphoneMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/iphone-mockup-02": {
+      "name": "newsletter/iphone-mockup-02",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "IPhone mockup 02",
+      "description": "A heading and email signup beside a phone in a grey panel, with notifications over it.",
+      "files": [
+        "blocks/newsletter/IphoneMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/iphone-mockup-03": {
+      "name": "newsletter/iphone-mockup-03",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "IPhone mockup 03",
+      "description": "A heading and email signup beside two overlapping phones in a grey panel.",
+      "files": [
+        "blocks/newsletter/IphoneMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/iphone-mockup-04": {
+      "name": "newsletter/iphone-mockup-04",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "IPhone mockup 04",
+      "description": "A brand-colour card with a heading, email signup and a phone, with notifications beside it.",
+      "files": [
+        "blocks/newsletter/IphoneMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/screen-mockup-01": {
+      "name": "newsletter/screen-mockup-01",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Screen mockup 01",
+      "description": "A heading, three benefits and an email signup beside a screen that runs off the edge.",
+      "files": [
+        "blocks/newsletter/ScreenMockup01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "List",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "newsletter/screen-mockup-02": {
+      "name": "newsletter/screen-mockup-02",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Screen mockup 02",
+      "description": "A heading and email signup beside a screen with a phone over its edge.",
+      "files": [
+        "blocks/newsletter/ScreenMockup02.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/screen-mockup-03": {
+      "name": "newsletter/screen-mockup-03",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Screen mockup 03",
+      "description": "A centred heading and email signup over a screen cropped at the bottom.",
+      "files": [
+        "blocks/newsletter/ScreenMockup03.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/screen-mockup-04": {
+      "name": "newsletter/screen-mockup-04",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Screen mockup 04",
+      "description": "A grey card with a heading and email signup, and a screen spilling out of its corner.",
+      "files": [
+        "blocks/newsletter/ScreenMockup04.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/simple-centered": {
+      "name": "newsletter/simple-centered",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Simple centered",
+      "description": "A centred heading and email signup.",
+      "files": [
+        "blocks/newsletter/SimpleCentered.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/simple-centered-brand": {
+      "name": "newsletter/simple-centered-brand",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Simple centered brand",
+      "description": "A centred heading and email signup on the brand colour.",
+      "files": [
+        "blocks/newsletter/SimpleCenteredBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/simple-left": {
+      "name": "newsletter/simple-left",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Simple left",
+      "description": "A heading beside an email signup.",
+      "files": [
+        "blocks/newsletter/SimpleLeft.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "newsletter/simple-left-brand": {
+      "name": "newsletter/simple-left-brand",
+      "kind": "block",
+      "category": "newsletter",
+      "title": "Simple left brand",
+      "description": "A heading beside an email signup on the brand colour.",
+      "files": [
+        "blocks/newsletter/SimpleLeftBrand.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section",
+        "SectionHeader"
+      ],
+      "dependencies": [],
+      "usesJs": false
     }
   }
 }

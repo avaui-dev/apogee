@@ -1,0 +1,24 @@
+---
+title: "Screen mockup 01"
+description: "A heading, three benefits and an email signup beside a screen that runs off the edge."
+group: Newsletter sections
+order: 13
+related: [input, button, device-frame]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="newsletter/screen-mockup-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add newsletter/screen-mockup-01
+```
+
+This copies the block to `src/components/apogee/blocks/newsletter/` with everything it uses: Button, DeviceFrame, Input, Link, List, Section, SectionHeader. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Accessibility
+
+- The heading is an `h2` by default, so the block slots into a page under its `h1`; item titles are one level down.
+- The email field is named "Email" (the placeholder is not a label); the form submits without JS.
