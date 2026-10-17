@@ -1,7 +1,9 @@
 ---
 /**
  * DocsCard — one docs page as a card: sidebar icon, title, two-line
- * description. Used by the overview grids and the Related row.
+ * description. Used by the overview grids and the Related row. With `thumb`
+ * (a /thumbs path without the theme suffix) the card leads with a 4:3 picture
+ * of the page's content, light or dark to match the docs theme.
  */
 import Card from '../../../registry/components/Card/Card.astro'
 import { Box } from '@lucide/astro'
@@ -12,11 +14,24 @@ interface Props {
   title: string
   description?: string | undefined
   href: string
+  thumb?: string | undefined
 }
-const { id, title, description, href } = Astro.props
+const { id, title, description, href, thumb } = Astro.props
 const Icon = docsIcons[id] ?? docsIcons[id.split('/')[0]!] ?? Box
 ---
 
+{thumb ? (
+<Card href={href} padding="small" class="[&_.apogee-card-media]:aspect-4/3">
+  <span slot="media" class="block size-full border border-neutral-faded bg-page">
+    <img src={`${thumb}.light.webp`} alt="" width="640" height="480" loading="lazy" decoding="async" class="size-full object-cover dark:hidden" />
+    <img src={`${thumb}.dark.webp`} alt="" width="640" height="480" loading="lazy" decoding="async" class="hidden size-full object-cover dark:block" />
+  </span>
+  <span class="flex flex-col gap-0.5">
+    <span class="text-sm font-medium text-neutral">{title}</span>
+    {description && <span class="line-clamp-2 text-xs leading-5 text-neutral-faded">{description}</span>}
+  </span>
+</Card>
+) : (
 <Card href={href} padding="small">
   <span class="flex items-start gap-3">
     <span class="grid size-8 shrink-0 place-items-center rounded-md bg-neutral-faded text-neutral">
@@ -28,3 +43,4 @@ const Icon = docsIcons[id] ?? docsIcons[id.split('/')[0]!] ?? Box
     </span>
   </span>
 </Card>
+)}

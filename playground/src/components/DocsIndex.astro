@@ -1,10 +1,12 @@
 ---
 /**
  * DocsIndex — the card grid on a category overview page: every docs page in
- * `group` (except the overview itself), with its sidebar icon, title and a
- * two-line description. Four per row on wide screens.
+ * `group` (except the overview itself), with a picture of what it holds (from
+ * public/thumbs, made by scripts/build-thumbs.mjs), title and a two-line
+ * description. Three per row on wide screens; pages without a picture keep their icon.
  */
 import { getCollection } from 'astro:content'
+import thumbs from './thumbs.json'
 import DocsCard from './DocsCard.astro'
 
 interface Props {
@@ -16,8 +18,10 @@ const { group, self } = Astro.props
 const pages = (await getCollection('docs'))
   .filter((d) => d.data.group === group && d.id !== self)
   .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
+const haveThumb = new Set<string>(thumbs)
+const thumbOf = (id: string) => (haveThumb.has(id) ? `/thumbs/${id.replaceAll('/', '__')}` : undefined)
 ---
 
-<div class="not-content mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-  {pages.map((d) => <DocsCard id={d.id} title={d.data.title} description={d.data.description} href={d.id === 'index' ? '/docs' : `/docs/${d.id}`} />)}
+<div class="not-content mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {pages.map((d) => <DocsCard id={d.id} title={d.data.title} description={d.data.description} thumb={thumbOf(d.id)} href={d.id === 'index' ? '/docs' : `/docs/${d.id}`} />)}
 </div>

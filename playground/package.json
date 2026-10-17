@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
+    "thumbs": "node scripts/build-thumbs.mjs",
     "test:a11y": "playwright test tests/a11y.spec.mjs",
     "check:strict": "astro check --tsconfig tsconfig.strictest.json",
     "test:behaviour": "playwright test tests/behaviour.spec.mjs"
