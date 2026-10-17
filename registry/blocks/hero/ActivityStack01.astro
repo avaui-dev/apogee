@@ -1,0 +1,55 @@
+---
+/**
+ * Activity stack 01: A pill, heading, line and two buttons beside a fading stack of activity cards, over a video card and an ask-anything bar.
+ *
+ * @block hero
+ * @order 84
+ */
+import { ArrowUp, Bell, Clock, FileText, Mic, Phone, Play, Sparkles } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+
+const cards = [
+  { icon: Sparkles, title: 'Contact enriched', body: 'Found a profile and an email address' },
+  { icon: Bell, title: 'Reminder set', body: 'Follow up with Angela on Monday at 9 AM' },
+  { icon: FileText, title: 'Quote for Marcus Hale', body: 'Full kitchen refit, oak worktop and two new taps' },
+]
+---
+
+<Section spacing="large">
+  <div class="grid items-center gap-12 lg:grid-cols-2">
+    <div class="flex flex-col items-start gap-6">
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-neutral-faded px-3 py-1 text-sm"><Clock class="size-4" aria-hidden="true" />Late quotes still convert</span>
+      <Heading as="h1" size="display" class="font-normal text-balance">New customers don’t leave a message.</Heading>
+      <p class="max-w-xl text-lg text-neutral-faded">Someone who wants a quote after dinner won’t wait until office hours. We answer, take down the details and book the visit that used to die in voicemail.</p>
+      <div class="flex flex-wrap gap-3">
+        <Button href="#" size="large" rounded>Get started</Button>
+        <Button href="#" size="large" rounded variant="outline" color="neutral"><Phone slot="start" aria-hidden="true" />Try it live</Button>
+      </div>
+    </div>
+
+    <ul class="flex flex-col gap-3 mask-y-from-80%" aria-label="What happened after one call">
+      <li class="px-4 text-sm text-neutral-faded" aria-hidden="true">Angela · (561) 300 8821</li>
+      {cards.map((c, i) => (
+        <li class:list={['flex flex-col overflow-hidden rounded-2xl border border-neutral-faded bg-page shadow-sm', i % 2 === 0 ? 'lg:ms-6' : 'lg:me-6']}>
+          <span class="flex items-center gap-2 border-b border-neutral-faded px-4 py-3 font-medium"><c.icon class="size-4" aria-hidden="true" />{c.title}</span>
+          <span class="px-4 py-3">{c.body}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="mt-16 flex flex-col items-center gap-16">
+    <a href="#" class="flex w-full max-w-lg items-center gap-4 rounded-2xl border border-neutral-faded p-2 pe-4">
+      <span class="grid size-16 shrink-0 place-items-center rounded-xl bg-neutral-faded"><Play class="size-5" aria-hidden="true" /></span>
+      <span class="flex flex-col"><span class="font-medium">How the phone line works for small teams</span><span class="text-sm text-neutral-faded">Watch it in action</span></span>
+    </a>
+    <form class="flex w-full max-w-md items-center gap-2 rounded-full border border-neutral-faded bg-page p-1.5 shadow-lg" onsubmit="return false">
+      <label for="activity-stack-ask" class="sr-only">Ask a question</label>
+      <input id="activity-stack-ask" type="text" placeholder="Ask anything about us" class="min-w-0 flex-1 bg-transparent px-3 outline-none placeholder:text-neutral-faded" />
+      <button type="button" class="grid size-9 place-items-center rounded-full bg-neutral-faded" aria-label="Speak"><Mic class="size-4" /></button>
+      <button type="submit" class="grid size-9 place-items-center rounded-full bg-(--foreground-neutral) text-(--background-page)" aria-label="Send"><ArrowUp class="size-4" /></button>
+    </form>
+  </div>
+</Section>

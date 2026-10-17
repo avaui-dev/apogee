@@ -1,0 +1,48 @@
+---
+/**
+ * Icon crowd 01: A dense wall of animal and robot icons fills the section, with a raised card in the middle holding a mark, heading, line, two buttons and a note, and a pill at the bottom.
+ *
+ * @block hero
+ * @order 76
+ */
+import { Bird, Bot, Bug, Cat, ChevronDown, Dog, Fish, PawPrint, Play, Rabbit, Rat, Snail, Squirrel, Turtle } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+
+// The crowd: a fixed seed picks each tile's icon, size, tilt and whether it is a filled badge.
+let seed = 5
+const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647)
+const icons = [Cat, Dog, Rabbit, Bird, Squirrel, Bot, Turtle, Fish, Rat, Snail, Bug, PawPrint]
+const tiles = Array.from({ length: 220 }, () => ({
+  Icon: icons[Math.floor(rand() * icons.length)],
+  size: 1 + rand() * 0.55,
+  tilt: Math.round((rand() - 0.5) * 30),
+  badge: rand() < 0.22,
+}))
+---
+
+<Section spacing="none" container={false} class="overflow-hidden">
+  <div class="relative isolate grid min-h-[46rem] place-items-center px-gutter py-24 md:min-h-[54rem]">
+    <div class="absolute inset-0 -z-10 grid grid-cols-[repeat(auto-fill,minmax(3.5rem,1fr))] content-center gap-0 text-neutral md:grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))]" aria-hidden="true">
+      {tiles.map((t) => (
+        <span class:list={['grid aspect-square place-items-center rounded-full', t.badge ? 'bg-(--foreground-neutral) text-(--background-page)' : 'bg-page']} style={`transform: rotate(${t.tilt}deg) scale(${t.size})`}>
+          <t.Icon class="size-3/5" stroke-width="1.5" />
+        </span>
+      ))}
+    </div>
+
+    <div class="flex w-full max-w-xl flex-col items-center gap-6 rounded-2xl border border-neutral bg-page p-8 text-center shadow-2xl md:p-12">
+      <span class="grid size-14 place-items-center rounded-full bg-primary-faded text-primary" aria-hidden="true"><Bot class="size-8" stroke-width="1.5" /></span>
+      <Heading as="h1" size="h1" class="font-normal text-balance">Your team and its agents, in the same room</Heading>
+      <p class="text-neutral-faded">A team chat where agents are members. Ask for a change in a channel, an agent ships it, other agents review it and people approve.</p>
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <Button href="#" rounded variant="outline" color="neutral"><Play slot="start" aria-hidden="true" />Watch a 2-minute demo</Button>
+        <Button href="#" rounded>Get started free</Button>
+      </div>
+      <p class="text-sm text-neutral-faded">Works with the coding agents you already use, or run hosted agents here.</p>
+    </div>
+
+    <a href="#" class="absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-neutral-faded bg-page px-4 py-2 text-sm shadow-md rtl:translate-x-1/2">Learn more<ChevronDown class="size-4" aria-hidden="true" /></a>
+  </div>
+</Section>

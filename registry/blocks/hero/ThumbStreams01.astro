@@ -1,0 +1,55 @@
+---
+/**
+ * Thumb streams 01: Streams of small video thumbnails that curve across the section and grow toward the end, with a heading, line and two buttons at the start and a preview card in the corner.
+ *
+ * @block hero
+ * @order 66
+ */
+import { ArrowUp, ArrowUpRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+
+// Three streams along gentle curves; thumbnails get bigger and brighter toward the end.
+const ids = [10, 11, 15, 16, 17, 18, 19, 20, 22, 24, 27, 28, 29, 33, 34, 37, 39, 40, 42, 43, 47, 49, 50, 54]
+const streams = [
+  { y: 22, amp: -14, phase: 0.6 },
+  { y: 52, amp: 6, phase: 0 },
+  { y: 78, amp: -10, phase: 1.2 },
+]
+const thumbs = streams.flatMap((s, si) => Array.from({ length: 11 }, (_, i) => {
+  const t = i / 10
+  return { id: ids[(si * 11 + i) % ids.length], x: 5 + t * 88, y: s.y + s.amp * Math.sin(t * Math.PI + s.phase), w: 3.5 + t * t * 7, o: 0.25 + t * 0.75 }
+}))
+---
+
+<Section spacing="none" container={false} class="overflow-hidden">
+  <div class="relative min-h-[48rem] md:min-h-[56rem]">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      {thumbs.map((t) => (
+        <img src={`https://picsum.photos/id/${t.id}/320/200`} alt="" loading="lazy" class="absolute aspect-16/10 -translate-x-1/2 -translate-y-1/2 rounded-md object-cover shadow-md rtl:translate-x-1/2" style={`inset-inline-start: ${t.x}%; top: ${t.y}%; width: ${t.w}rem; opacity: ${t.o}`} />
+      ))}
+    </div>
+    <!-- Page colour behind the text so it reads over the thumbnails. -->
+    <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--background-page)_25%,transparent_65%)] rtl:bg-[linear-gradient(to_left,var(--background-page)_25%,transparent_65%)]" aria-hidden="true"></div>
+
+    <div class="relative flex max-w-3xl flex-col gap-6 px-gutter pt-40 md:pt-56">
+      <Heading as="h1" size="display" class="font-normal text-balance">See what your footage knows</Heading>
+      <p class="max-w-2xl text-lg md:text-xl">Every moment, every play, every decision is already on video. Finding it used to take days. Now it takes a question.</p>
+      <div class="mt-2 flex flex-wrap gap-3">
+        <Button href="#" size="xlarge" rounded>Try it now<ArrowUpRight slot="end" aria-hidden="true" /></Button>
+        <Button href="#" size="xlarge" rounded variant="outline" color="neutral">Talk to sales</Button>
+      </div>
+    </div>
+
+    <a href="#" class="relative mx-gutter mt-16 flex max-w-sm flex-col gap-4 rounded-2xl border border-neutral-faded bg-neutral-faded p-4 backdrop-blur-md md:absolute md:bottom-8 md:end-8 md:mx-0 md:mt-0">
+      <div data-theme="dark" class="flex flex-col items-center gap-3 rounded-lg bg-page p-6 text-neutral">
+        <span class="text-lg">Scout</span>
+        <span class="flex w-full items-center justify-between gap-3 rounded-full border border-neutral-faded px-3 py-1.5 text-xs">Sum up what works across our ad archive<ArrowUp class="size-4 shrink-0" aria-hidden="true" /></span>
+      </div>
+      <Badge variant="outline" color="primary" class="self-start">Research preview</Badge>
+      <span class="text-lg leading-snug">Meet Scout, an agent that watches and understands video</span>
+    </a>
+  </div>
+</Section>

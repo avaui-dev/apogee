@@ -1,0 +1,45 @@
+---
+/**
+ * Gifting tabs 01: A huge heading with an italic second line, a line and an email signup between two tilted product photos on soft blooms, over a row of feature tabs with a title and pager.
+ *
+ * @block hero
+ * @order 87
+ */
+import { ArrowRight, ChevronLeft, ChevronRight, Mail } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+
+const tabs = ['The dashboard', 'Gift tracking', 'Branded experience', 'Gift options', 'Gift calendar']
+---
+
+<Section spacing="large" container={false} class="overflow-hidden" style="background: radial-gradient(ellipse 30% 35% at 75% 45%, color-mix(in oklab, var(--background-primary) 22%, transparent), transparent), radial-gradient(ellipse 30% 30% at 25% 75%, color-mix(in oklab, var(--background-primary) 14%, transparent), transparent), var(--background-page)">
+  <div class="relative mx-auto flex max-w-6xl flex-col items-center gap-8 px-gutter text-center">
+    <img src="https://picsum.photos/id/292/400/320" alt="" class="absolute -start-6 top-[45%] hidden w-48 -rotate-6 rounded-xl object-cover shadow-2xl lg:block" />
+    <img src="https://picsum.photos/id/312/360/360" alt="" class="absolute -end-4 top-[25%] hidden w-44 rotate-12 rounded-xl object-cover shadow-2xl lg:block" />
+
+    <Heading as="h1" size="display" class="font-normal tracking-tight text-[clamp(2.75rem,1rem+6vw,6rem)]!">Company gifting for <span class="block italic">sales teams</span></Heading>
+    <p class="max-w-md text-lg text-neutral-faded">One place to send thoughtful, branded gifts at scale.</p>
+    <form class="flex w-full max-w-xl flex-col gap-3 sm:flex-row" onsubmit="return false">
+      <label class="flex flex-1 items-center gap-2 rounded-full border border-neutral-faded bg-page p-1.5 ps-4 shadow-lg">
+        <Mail class="size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
+        <span class="sr-only">Work email</span>
+        <input type="email" placeholder="Work email" autocomplete="email" class="min-w-0 flex-1 bg-transparent outline-none placeholder:text-neutral-faded" />
+        <Button type="submit" rounded>Book a demo<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+      </label>
+      <Button href="#" size="large" rounded variant="outline" color="neutral">Sign in</Button>
+    </form>
+
+    <p class="mt-12 text-sm italic text-neutral-faded">See it in action</p>
+    <ul class="flex max-w-full gap-3 overflow-x-auto pb-1">
+      {tabs.map((t, i) => <li><a href="#" aria-current={i === 0 ? 'true' : undefined} class:list={['block whitespace-nowrap rounded-full border px-5 py-2 text-sm', i === 0 ? 'border-transparent bg-(--foreground-neutral) text-(--background-page)' : 'border-neutral-faded bg-page']}>{t}</a></li>)}
+    </ul>
+    <div class="flex flex-col items-center gap-2">
+      <p class="text-4xl font-medium">The dashboard</p>
+      <p class="text-neutral-faded">Budget, redemptions and return in one calm, live view.</p>
+    </div>
+    <div class="flex items-center gap-4 font-mono text-sm text-neutral-faded tabular-nums">
+      <a href="#" class="grid size-10 place-items-center rounded-full border border-neutral-faded" aria-label="Previous"><ChevronLeft class="size-4 rtl:-scale-x-100" /></a>01 / 05<a href="#" class="grid size-10 place-items-center rounded-full border border-neutral-faded" aria-label="Next"><ChevronRight class="size-4 rtl:-scale-x-100" /></a>
+    </div>
+  </div>
+</Section>

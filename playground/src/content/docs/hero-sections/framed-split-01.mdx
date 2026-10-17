@@ -1,0 +1,31 @@
+---
+title: "Framed split 01"
+description: "A two-tone heading, a button and an industry picker beside a live status card and a bracketed image, inside a ruled frame on a primary tint."
+group: Hero sections
+order: 45
+related: [section, heading, button, select, badge, image]
+---
+
+import PagePreview from '../../../components/PagePreview.astro'
+
+<PagePreview slug="hero/framed-split-01" />
+
+## Add
+
+```sh
+npx @ava-ui/apogee add hero/framed-split-01
+```
+
+This copies the block to `src/components/apogee/blocks/hero/` with everything it uses: Badge, Button, Heading, Image, Section, Select. Replace the sample data at the top of the file with yours, or use **Copy code** above to paste it instead.
+
+## Theming
+
+- The tint mixes the primary hue into the page colour, so it follows light and dark mode and your brand colour.
+- The status card is always dark (`data-theme="dark"`), with the same hue mixed in.
+
+## Accessibility
+
+- The heading is the page's `h1`; the faded first half is part of the same heading.
+- The industry picker is a native select with a visible "Industry" label; it works without JS.
+- The readout is a description list, so each value is read with its name.
+- The ruler and corner brackets are hidden from assistive tech.

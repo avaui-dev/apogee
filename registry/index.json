@@ -10980,6 +10980,180 @@
       ],
       "usesJs": false
     },
+    "hero/activity-stack-01": {
+      "name": "hero/activity-stack-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Activity stack 01",
+      "description": "A pill, heading, line and two buttons beside a fading stack of activity cards, over a video card and an ask-anything bar.",
+      "files": [
+        "blocks/hero/ActivityStack01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/app-panel-01": {
+      "name": "hero/app-panel-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "App panel 01",
+      "description": "A serif heading beside a short line, two round buttons, then an app mockup with a sidebar, prompt box and recent projects on a soft primary panel, over a row of logos.",
+      "files": [
+        "blocks/hero/AppPanel01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Divider",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/arc-headline-01": {
+      "name": "hero/arc-headline-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Arc headline 01",
+      "description": "A sky band cut by a wide curve, a product photo in the middle with two halves of the heading tilted along the curve beside it, a line, a round button and four feature columns.",
+      "files": [
+        "blocks/hero/ArcHeadline01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/archive-board-01": {
+      "name": "hero/archive-board-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Archive board 01",
+      "description": "A framed archive card with a spaced title, a catalogue number and three mounted black-and-white photos, one turned on its side.",
+      "files": [
+        "blocks/hero/ArchiveBoard01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/audit-cards-01": {
+      "name": "hero/audit-cards-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Audit cards 01",
+      "description": "A centred eyebrow, heading, line and square button on a soft wash, over a composite of product cards: a summary, insights with tags and a validation table with pass and fail rows.",
+      "files": [
+        "blocks/hero/AuditCards01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Section",
+        "Skeleton"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/brand-panel-01": {
+      "name": "hero/brand-panel-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Brand panel 01",
+      "description": "A mono eyebrow, heading, line, button and a testimonial card beside a full-height photo.",
+      "files": [
+        "blocks/hero/BrandPanel01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Image",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/brand-photos-01": {
+      "name": "hero/brand-photos-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Brand photos 01",
+      "description": "A centred heading and line on the brand surface, over a wide photo with a round button and a tall photo with a caption.",
+      "files": [
+        "blocks/hero/BrandPhotos01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/brand-statement-01": {
+      "name": "hero/brand-statement-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Brand statement 01",
+      "description": "A photo of a person on the brand colour, a stacked mono menu at the top start, a lit button at the top end and a huge uppercase mono statement at the bottom end, over a row of backers.",
+      "files": [
+        "blocks/hero/BrandStatement01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/card-field-01": {
+      "name": "hero/card-field-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Card field 01",
+      "description": "A tight wall of image cards that fades away from the top corner, with a two-tone serif heading, line and two buttons in the opposite corner.",
+      "files": [
+        "blocks/hero/CardField01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "hero/card-mockup-01": {
       "name": "hero/card-mockup-01",
       "kind": "block",
@@ -11301,6 +11475,196 @@
       "dependencies": [],
       "usesJs": false
     },
+    "hero/coverflow-01": {
+      "name": "hero/coverflow-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Coverflow 01",
+      "description": "A row of cards turned toward a centre card in a hexagon frame, with a mono label above, a two-tone heading below and a link with a hexagon arrow.",
+      "files": [
+        "blocks/hero/Coverflow01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/curved-gallery-01": {
+      "name": "hero/curved-gallery-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Curved gallery 01",
+      "description": "A centred heading and line over a row of team photos; the middle one is framed, and the side ones bleed off the edges inside large curves.",
+      "files": [
+        "blocks/hero/CurvedGallery01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/dashboard-prompt-01": {
+      "name": "hero/dashboard-prompt-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Dashboard prompt 01",
+      "description": "A breadcrumb, a two-tone heading, a line and two buttons in a dashed frame, over a patterned panel where a prompt turns into three stat cards.",
+      "files": [
+        "blocks/hero/DashboardPrompt01.astro"
+      ],
+      "registryDependencies": [
+        "Avatar",
+        "AvatarGroup",
+        "Badge",
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/dusk-card-01": {
+      "name": "hero/dusk-card-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Dusk card 01",
+      "description": "A rounded card painted like a dim evening sky, with a small mark, a centred heading, a mono line and two small mono buttons.",
+      "files": [
+        "blocks/hero/DuskCard01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/editorial-images-01": {
+      "name": "hero/editorial-images-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Editorial images 01",
+      "description": "A very large heading with an indented first line over a tall photo and a wide photo, with numbered facts under the wide one.",
+      "files": [
+        "blocks/hero/EditorialImages01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/fanned-cards-01": {
+      "name": "hero/fanned-cards-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Fanned cards 01",
+      "description": "A centred heading over four service cards fanned out like a hand, each in a different brand fill; a swipe row on phones.",
+      "files": [
+        "blocks/hero/FannedCards01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/film-strip-01": {
+      "name": "hero/film-strip-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Film strip 01",
+      "description": "A photo framed like a frame of cine film, with the next frames peeking in above and below, a centred two-part heading and two dotted links.",
+      "files": [
+        "blocks/hero/FilmStrip01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/floating-gifts-01": {
+      "name": "hero/floating-gifts-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Floating gifts 01",
+      "description": "A search bar over a huge three-line heading with the last line in the brand colour, a line, two buttons and a rating, with four gift items floating in the corners.",
+      "files": [
+        "blocks/hero/FloatingGifts01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Rating",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/framed-panels-01": {
+      "name": "hero/framed-panels-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Framed panels 01",
+      "description": "A heading, line and button in a ruled panel beside a progress strip, a bracketed image and a live stat, over a row of logos.",
+      "files": [
+        "blocks/hero/FramedPanels01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Image",
+        "Progress",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/framed-split-01": {
+      "name": "hero/framed-split-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Framed split 01",
+      "description": "A two-tone heading, a button and an industry picker beside a live status card and a bracketed image, inside a ruled frame on a primary tint.",
+      "files": [
+        "blocks/hero/FramedSplit01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Image",
+        "Section",
+        "Select"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
     "hero/geometric-shapes-01": {
       "name": "hero/geometric-shapes-01",
       "kind": "block",
@@ -11358,6 +11722,82 @@
         "Container",
         "Heading",
         "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/gifting-tabs-01": {
+      "name": "hero/gifting-tabs-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Gifting tabs 01",
+      "description": "A huge heading with an italic second line, a line and an email signup between two tilted product photos on soft blooms, over a row of feature tabs with a title and pager.",
+      "files": [
+        "blocks/hero/GiftingTabs01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/greeting-plus-01": {
+      "name": "hero/greeting-plus-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Greeting plus 01",
+      "description": "A full-screen grid with corner labels, stacked greetings in four languages, a short statement and a footer row with a now-playing note.",
+      "files": [
+        "blocks/hero/GreetingPlus01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Image",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/halftone-glow-01": {
+      "name": "hero/halftone-glow-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Halftone glow 01",
+      "description": "A centred heading, line and two round buttons on a band that runs from dark through the primary hue into the page, with a halftone dot texture and a logo strip below.",
+      "files": [
+        "blocks/hero/HalftoneGlow01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Marquee",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/icon-crowd-01": {
+      "name": "hero/icon-crowd-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Icon crowd 01",
+      "description": "A dense wall of animal and robot icons fills the section, with a raised card in the middle holding a mark, heading, line, two buttons and a note, and a pill at the bottom.",
+      "files": [
+        "blocks/hero/IconCrowd01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
         "Section"
       ],
       "dependencies": [
@@ -11451,6 +11891,146 @@
       "dependencies": [
         "@lucide/astro"
       ],
+      "usesJs": false
+    },
+    "hero/orbit-arcs-01": {
+      "name": "hero/orbit-arcs-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Orbit arcs 01",
+      "description": "A centred heading, line and square button on a soft primary wash, over three half-circle arcs with featured icons sitting on them and a mark at the centre.",
+      "files": [
+        "blocks/hero/OrbitArcs01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "FeaturedIcon",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/photo-stamps-01": {
+      "name": "hero/photo-stamps-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Photo stamps 01",
+      "description": "A full-width photo with a centred eyebrow, heading, line and round button, a column of round stamps down one side and a rounded panel rising over the bottom edge.",
+      "files": [
+        "blocks/hero/PhotoStamps01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Image",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/photo-wordmark-01": {
+      "name": "hero/photo-wordmark-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Photo wordmark 01",
+      "description": "A full-screen still-life photo with a quiet five-column bar on top: two links, a centred wordmark, two links.",
+      "files": [
+        "blocks/hero/PhotoWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Image",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/product-photo-01": {
+      "name": "hero/product-photo-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Product photo 01",
+      "description": "A full-screen product photo with a mono eyebrow, heading, line and two round buttons at the bottom start, a scroll cue in the middle and a video thumbnail at the bottom end.",
+      "files": [
+        "blocks/hero/ProductPhoto01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Image",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/product-tiles-01": {
+      "name": "hero/product-tiles-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Product tiles 01",
+      "description": "A news pill, a centred heading with an underlined last word, a line and two buttons, over three product tiles: a chat, a coding terminal and an assistant thread.",
+      "files": [
+        "blocks/hero/ProductTiles01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/prompt-cubes-01": {
+      "name": "hero/prompt-cubes-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Prompt cubes 01",
+      "description": "A mono eyebrow, centred heading and line over a prompt box with actions, flanked by two gridded cubes, above an app window on a gridded panel.",
+      "files": [
+        "blocks/hero/PromptCubes01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Eyebrow",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/screen-hills-01": {
+      "name": "hero/screen-hills-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Screen hills 01",
+      "description": "A centred heading, line and round button over an app screenshot that sits between two rolling hills.",
+      "files": [
+        "blocks/hero/ScreenHills01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "DeviceFrame",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [],
       "usesJs": false
     },
     "hero/screen-mockup-01": {
@@ -11840,6 +12420,82 @@
         "Image",
         "Input",
         "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/swatch-scatter-01": {
+      "name": "hero/swatch-scatter-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Swatch scatter 01",
+      "description": "Pattern swatches with mono captions scattered across the section, a pill, a large heading at the bottom start and a line with two buttons at the bottom end.",
+      "files": [
+        "blocks/hero/SwatchScatter01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/thumb-streams-01": {
+      "name": "hero/thumb-streams-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Thumb streams 01",
+      "description": "Streams of small video thumbnails that curve across the section and grow toward the end, with a heading, line and two buttons at the start and a preview card in the corner.",
+      "files": [
+        "blocks/hero/ThumbStreams01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "hero/tinted-photo-01": {
+      "name": "hero/tinted-photo-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Tinted photo 01",
+      "description": "A rounded photo card washed in the primary hue, with a small mark and label, a statement heading and an outline round button at the top start.",
+      "files": [
+        "blocks/hero/TintedPhoto01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "hero/wordmark-photo-01": {
+      "name": "hero/wordmark-photo-01",
+      "kind": "block",
+      "category": "hero",
+      "title": "Wordmark photo 01",
+      "description": "A rounded photo card with a stacked heading, a line and a round button, a giant wordmark across the bottom and a scrolling strip of claims under it.",
+      "files": [
+        "blocks/hero/WordmarkPhoto01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Image",
+        "Marquee",
         "Section"
       ],
       "dependencies": [],

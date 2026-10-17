@@ -1,0 +1,45 @@
+---
+/**
+ * Floating gifts 01: A search bar over a huge three-line heading with the last line in the brand colour, a line, two buttons and a rating, with four gift items floating in the corners.
+ *
+ * @block hero
+ * @order 88
+ */
+import { ArrowRight, Search } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+import Rating from '../../components/Rating/Rating.astro'
+---
+
+<Section spacing="medium" container={false} class="overflow-hidden">
+  <div class="relative mx-auto max-w-6xl px-gutter">
+    <label class="mx-auto flex max-w-xl items-center gap-3 rounded-full border border-neutral-faded bg-page px-5 py-3 shadow-md">
+      <Search class="size-4 text-neutral-faded" aria-hidden="true" /><span class="sr-only">Search gifts</span>
+      <input type="search" placeholder="Search" class="min-w-0 flex-1 bg-transparent outline-none placeholder:text-neutral-faded" />
+    </label>
+
+    <!-- Gift items: decoration in the four corners on wide screens. -->
+    <div class="pointer-events-none absolute inset-0 hidden text-sm font-medium lg:block" aria-hidden="true">
+      <figure class="absolute -start-4 top-[30%] flex flex-col items-end gap-2">
+        <div class="flex aspect-[1.6] w-48 -rotate-12 flex-col justify-between rounded-xl bg-primary p-4 text-on-primary shadow-xl"><span class="font-mono text-[0.625rem] tracking-widest">GIFT CARD</span><span class="text-2xl">Bloom & Co.</span><span class="self-end text-xl tabular-nums">$100</span></div>
+      </figure>
+      <figure class="absolute -end-4 top-[22%] flex flex-col gap-2"><img src="https://picsum.photos/id/1080/320/300" alt="" class="w-40 rotate-6 rounded-lg object-cover shadow-xl" /></figure>
+      <figure class="absolute bottom-6 -start-6 flex flex-col gap-2"><img src="https://picsum.photos/id/431/320/260" alt="" class="w-44 rounded-lg object-cover shadow-xl" /></figure>
+      <figure class="absolute bottom-10 -end-4 flex flex-col gap-1"><div data-theme="dark" class="flex aspect-[1.6] w-44 rotate-[-18deg] items-end justify-between rounded-xl bg-page p-4 text-neutral shadow-xl"><span class="text-lg font-semibold">Gift cash</span><span class="size-12 rounded-full border-[6px] border-(--foreground-neutral)"></span></div>
+      </figure>
+    </div>
+
+    <div class="relative flex flex-col items-center gap-6 pb-12 pt-20 text-center md:pt-28">
+      <Heading as="h1" size="display" class="max-w-2xl font-medium leading-[0.95] tracking-tight text-[clamp(3rem,1rem+5.5vw,6rem)]!">Send the perfect gift, <span class="text-primary">instantly.</span></Heading>
+      <p class="max-w-xl text-lg text-neutral-faded">Send gift cards and almost anything else online for birthdays, weddings and more. Delivered anywhere, any time.</p>
+      <p class="text-neutral-faded">Sending for work? <Link href="#" color="neutral">See the team plan →</Link></p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <Button href="#" size="large" rounded>Start gifting</Button>
+        <Button href="#" size="large" rounded color="neutral" variant="outline">Get the app<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+      </div>
+      <div class="flex flex-col items-center gap-1 text-sm text-neutral-faded"><Rating value={5} readonly size="small" color="primary" aria-label="Rated 5 out of 5" />5 stars, loved by millions</div>
+    </div>
+  </div>
+</Section>

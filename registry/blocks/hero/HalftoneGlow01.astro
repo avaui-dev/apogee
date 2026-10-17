@@ -1,0 +1,48 @@
+---
+/**
+ * Halftone glow 01: A centred heading, line and two round buttons on a band that runs from dark through the primary hue into the page, with a halftone dot texture and a logo strip below.
+ *
+ * @block hero
+ * @order 65
+ */
+import { ChevronRight, Atom, Hexagon, Mountain, Sprout, Waves, Wind } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Marquee from '../../components/Marquee/Marquee.astro'
+
+const logos = [
+  { name: 'Lumen', icon: Hexagon },
+  { name: 'Quanta', icon: Atom },
+  { name: 'Fieldwork', icon: Sprout },
+  { name: 'Northpeak', icon: Mountain },
+  { name: 'Arcwave', icon: Waves },
+  { name: 'Kitestring', icon: Wind },
+]
+---
+
+<!--
+  --glow-to is the outer page colour, read before the band turns dark, so the band
+  ends in the page whatever the theme.
+-->
+<Section spacing="none" container={false} class="overflow-hidden" style="--glow-to: var(--background-page)">
+  <div data-theme="dark" class="relative isolate text-neutral" style="background: linear-gradient(to bottom, var(--background-page), color-mix(in oklab, var(--background-primary) 75%, var(--background-page)) 45%, color-mix(in oklab, var(--background-primary) 45%, var(--glow-to)) 75%, var(--glow-to))">
+    <!-- Halftone dots, strongest in the middle. -->
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle,color-mix(in_oklab,var(--foreground-neutral)_35%,transparent)_1px,transparent_1.5px)] bg-size-[6px_6px] mask-[radial-gradient(ellipse_50%_40%_at_50%_70%,black,transparent)]" aria-hidden="true"></div>
+    <div class="mx-auto flex max-w-4xl flex-col items-center gap-6 px-gutter pb-56 pt-(--spacing-section-lg) text-center md:pb-72">
+      <Heading as="h1" size="display" class="font-medium text-balance">The AI platform for travel data, decisions and savings</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">One system for travel and finance teams to move faster, spend less and automate the busywork.</p>
+      <div class="mt-2 flex flex-col gap-3 sm:flex-row">
+        <Button href="#" size="large" rounded color="neutral" variant="outline">Request a demo</Button>
+        <Button href="#" size="large" rounded variant="ghost" color="neutral">See how it works<ChevronRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-8 pb-16">
+    <p class="px-gutter text-center text-neutral-faded">Trusted by teams running travel programmes worldwide</p>
+    <Marquee label="Customers">
+      {logos.map((l) => <span class="flex items-center gap-2 px-6 text-lg font-semibold text-neutral-faded"><l.icon class="size-6" aria-hidden="true" />{l.name}</span>)}
+    </Marquee>
+  </div>
+</Section>

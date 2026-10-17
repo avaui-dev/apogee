@@ -1,0 +1,33 @@
+---
+/**
+ * Editorial images 01: A very large heading with an indented first line over a tall photo and a wide photo, with numbered facts under the wide one.
+ *
+ * @block hero
+ * @order 50
+ */
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Image from '../../components/Image/Image.astro'
+
+const facts = [
+  ['30+', 'More than thirty awards for work that ties brand, product and code together.'],
+  ['9', 'Nine years of doing the slow, careful work it takes to get good at this.'],
+  ['3', 'Named studio of the year three times, and still building the web we want to use.'],
+]
+---
+
+<Section spacing="medium" containerWidth="full">
+  <Heading as="h1" size="display" class="indent-[18%] text-[clamp(2.75rem,1rem+6vw,7.5rem)]! leading-[0.95] tracking-tighter text-balance">We design for people. That is the whole job, every time.</Heading>
+  <div class="mt-10 grid gap-2 md:mt-14 md:grid-cols-2 md:grid-rows-[auto_1fr]">
+    <Image src="https://picsum.photos/id/64/1000/1400" alt="" width={1000} height={1400} fit="cover" loading="eager" class="aspect-5/7 w-full md:row-span-2" />
+    <Image src="https://picsum.photos/id/91/1200/800" alt="" width={1200} height={800} fit="cover" loading="eager" class="aspect-3/2 w-full" />
+    <dl class="flex flex-col gap-6 self-start py-6 md:ms-auto md:max-w-md">
+      {facts.map(([n, text]) => (
+        <div class="grid grid-cols-[4rem_1fr] gap-4 text-lg font-semibold leading-snug">
+          <dt class="text-end tabular-nums">({n})</dt>
+          <dd>{text}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</Section>

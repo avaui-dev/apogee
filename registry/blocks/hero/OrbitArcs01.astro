@@ -1,0 +1,51 @@
+---
+/**
+ * Orbit arcs 01: A centred heading, line and square button on a soft primary wash, over three half-circle arcs with featured icons sitting on them and a mark at the centre.
+ *
+ * @block hero
+ * @order 67
+ */
+import { Asterisk, ChartLine, FileCheck, Handshake, Scale, Workflow } from '@lucide/astro'
+import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+
+// Arcs in a 1000 × 500 box, centred at the bottom middle. Icons sit on an arc at an angle (0° = start side).
+const arcs = [480, 380, 280]
+const marks = [
+  { Icon: ChartLine, arc: 0, deg: 22 },
+  { Icon: Handshake, arc: 0, deg: 118 },
+  { Icon: Workflow, arc: 1, deg: 70 },
+  { Icon: Scale, arc: 1, deg: 158 },
+  { Icon: FileCheck, arc: 2, deg: 40 },
+].map((p) => {
+  const r = arcs[p.arc], a = (p.deg * Math.PI) / 180
+  return { ...p, x: ((500 - Math.cos(a) * r) / 1000) * 100, y: ((500 - Math.sin(a) * r) / 500) * 100 }
+})
+---
+
+<Section spacing="none" container={false} class="overflow-hidden">
+  <div class="relative isolate">
+    <!-- Soft wash: the primary hue mixed into the page, in two loose shapes. -->
+    <div class="absolute inset-0 -z-10" style="background: radial-gradient(ellipse 40% 50% at 95% 15%, color-mix(in oklab, var(--background-primary) 14%, var(--background-page)), transparent), radial-gradient(ellipse 30% 40% at 5% 40%, color-mix(in oklab, var(--background-primary) 12%, var(--background-page)), transparent), linear-gradient(to bottom, var(--background-page) 20%, color-mix(in oklab, var(--background-primary) 16%, var(--background-page)))" aria-hidden="true"></div>
+
+    <div class="mx-auto flex max-w-3xl flex-col items-center gap-8 px-gutter pt-(--spacing-section-lg) text-center">
+      <Heading as="h1" size="display" class="font-normal text-balance">Build agent teams that finish the job</Heading>
+      <p class="text-lg md:text-xl text-neutral-faded">We’re hiring people who want software to do the work, not file another ticket. Our teams match contracts to reality, settle the exceptions and leave a trail you can stand behind.</p>
+      <Button href="#" size="large" class="rounded-none! px-8 font-mono uppercase tracking-wider">See open roles</Button>
+    </div>
+
+    <div class="relative mx-auto mt-16 aspect-2/1 w-full max-w-4xl px-gutter md:mt-24" aria-hidden="true">
+      <div class="relative size-full">
+        <svg viewBox="0 0 1000 500" class="absolute inset-0 size-full text-primary" fill="none">
+          {arcs.map((r) => <path d={`M${500 - r} 500A${r} ${r} 0 0 1 ${500 + r} 500`} stroke="currentColor" stroke-width="1.5" />)}
+        </svg>
+        {marks.map((p) => (
+          <span class="absolute -translate-x-1/2 -translate-y-1/2" style={`left: ${p.x}%; top: ${p.y}%`}><FeaturedIcon size="xlarge" theme="outline" color="primary" class="bg-page shadow-md"><p.Icon /></FeaturedIcon></span>
+        ))}
+        <Asterisk class="absolute bottom-0 left-1/2 size-16 -translate-x-1/2 text-primary md:size-28" stroke-width="3" />
+      </div>
+    </div>
+  </div>
+</Section>

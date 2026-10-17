@@ -1,0 +1,43 @@
+---
+/**
+ * Product photo 01: A full-screen product photo with a mono eyebrow, heading, line and two round buttons at the bottom start, a scroll cue in the middle and a video thumbnail at the bottom end.
+ *
+ * @block hero
+ * @order 56
+ */
+import { ArrowRight, ChevronDown, Play } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Button from '../../components/Button/Button.astro'
+import Image from '../../components/Image/Image.astro'
+import Link from '../../components/Link/Link.astro'
+---
+
+<!-- Always dark: the text sits on a photo, so it keeps light ink in both themes. -->
+<Section spacing="none" container={false} theme="dark" class="overflow-hidden">
+  <div class="relative isolate flex min-h-svh flex-col justify-end gap-10 px-gutter pb-10 pt-32 md:flex-row md:items-end md:justify-between md:pb-14">
+    <Image src="https://picsum.photos/id/1018/2400/1600" alt="" width={2400} height={1600} fit="cover" loading="eager" class="absolute inset-0 -z-10 size-full" />
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,color-mix(in_oklab,var(--background-page)_85%,transparent),transparent_60%)]" aria-hidden="true"></div>
+
+    <div class="flex max-w-2xl flex-col gap-4">
+      <Eyebrow color="neutral" class="font-mono">The Ridgeline X1</Eyebrow>
+      <Heading as="h1" size="display" class="font-normal text-balance">A new kind of trail bike starts here</Heading>
+      <p class="text-lg md:text-xl text-neutral-faded">Made for riders who keep going past the end of the map.</p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <Button href="#" size="large" rounded variant="outline" color="neutral">Explore the bike<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+        <Button href="#" size="large" rounded>Configure yours<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+      </div>
+    </div>
+
+    <p class="absolute bottom-6 start-1/2 hidden -translate-x-1/2 flex-col items-center text-sm text-neutral-faded md:flex rtl:translate-x-1/2" aria-hidden="true">Scroll<ChevronDown class="size-4" /></p>
+
+    <Link href="#" color="inherit" underline="none" class="group flex w-full max-w-xs flex-col gap-3 text-sm">
+      <span class="relative block overflow-hidden rounded-md">
+        <Image src="https://picsum.photos/id/1072/640/400" alt="" width={640} height={400} fit="cover" class="aspect-16/10 w-full transition-transform duration-(--duration-medium) group-hover:scale-105 motion-reduce:transition-none" />
+        <span class="absolute inset-0 grid place-items-center"><span class="grid size-12 place-items-center rounded-full bg-page/80 backdrop-blur"><Play class="size-5" aria-hidden="true" /></span></span>
+      </span>
+      <span>Play the launch film <span class="tabular-nums text-neutral-faded">02:56</span></span>
+    </Link>
+  </div>
+</Section>

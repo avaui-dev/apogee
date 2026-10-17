@@ -1,0 +1,64 @@
+---
+/**
+ * Framed split 01: A two-tone heading, a button and an industry picker beside a live status card and a bracketed image, inside a ruled frame on a primary tint.
+ *
+ * @block hero
+ * @order 45
+ */
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Select from '../../components/Select/Select.astro'
+import Image from '../../components/Image/Image.astro'
+
+const stats = [
+  ['Sources', '312 carrier feeds'],
+  ['Lanes watched', '86'],
+  ['Shipments at risk', '9'],
+  ['Delay exposure', '4 days'],
+]
+const industries = ['Logistics', 'Energy', 'Manufacturing', 'Healthcare']
+---
+
+<!-- The tint is the primary hue mixed into the page colour, so it reads as a light wash in light mode and a dim glow in dark mode. -->
+<Section spacing="medium" class="bg-[linear-gradient(to_bottom,var(--background-page)_10%,color-mix(in_oklab,var(--background-primary)_14%,var(--background-page)))]">
+  <div class="relative grid border-y border-neutral-faded lg:grid-cols-2">
+    <!-- Ruler down the middle on wide screens. -->
+    <div class="pointer-events-none absolute inset-y-6 start-1/2 hidden w-3 -translate-x-1/2 border-s border-neutral-faded bg-[repeating-linear-gradient(to_bottom,var(--border-neutral)_0_1px,transparent_1px_5.5rem)] bg-size-[0.75rem_100%] bg-no-repeat lg:block rtl:translate-x-1/2" aria-hidden="true"></div>
+
+    <div class="flex flex-col gap-10 py-12 md:py-16 lg:pe-16">
+      <Heading as="h1" size="display" class="text-balance"><span class="text-neutral-faded">Keep every freight lane moving</span> with agents that act on what they see</Heading>
+      <Button href="#" size="large" class="self-start">Request a demo</Button>
+      <div class="mt-auto flex max-w-lg border border-neutral-faded bg-page">
+        <label for="framed-split-industry" class="flex shrink-0 items-center border-e border-neutral-faded px-4 font-mono text-sm uppercase tracking-wide text-neutral-faded">Industry</label>
+        <Select id="framed-split-industry" name="industry" variant="ghost" size="large" class="min-w-0 flex-1">
+          <span slot="start" class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+          {industries.map((name) => <option>{name}</option>)}
+        </Select>
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-center gap-6 border-t border-neutral-faded py-12 md:py-16 lg:border-t-0 lg:ps-16">
+      <div data-theme="dark" class="flex flex-col gap-5 rounded-lg border border-neutral-faded bg-[color-mix(in_oklab,var(--background-primary)_16%,var(--background-page))] p-5 text-neutral shadow-lg">
+        <div class="flex items-start justify-between gap-4">
+          <p class="flex items-center gap-3 font-medium"><span class="size-2.5 shrink-0 rounded-full bg-primary" aria-hidden="true"></span>Port congestion watch</p>
+          <Badge variant="outline" color="neutral" size="small">Review</Badge>
+        </div>
+        <p class="flex flex-wrap items-center gap-2 border-t border-neutral-faded pt-5 text-sm"><Badge variant="faded" color="primary" size="small">Live</Badge>Delayed containers flagged: <span class="tabular-nums text-critical">23</span></p>
+      </div>
+
+      <!-- Corner brackets around the readout and image. -->
+      <div class="relative flex flex-col gap-6 p-5">
+        <span class="absolute start-0 top-0 size-4 border-s border-t border-primary" aria-hidden="true"></span>
+        <span class="absolute end-0 top-0 size-4 border-e border-t border-primary" aria-hidden="true"></span>
+        <span class="absolute bottom-0 start-0 size-4 border-b border-s border-primary" aria-hidden="true"></span>
+        <span class="absolute bottom-0 end-0 size-4 border-b border-e border-primary" aria-hidden="true"></span>
+        <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 font-mono text-xs uppercase tabular-nums">
+          {stats.map(([term, value]) => <><dt class="text-neutral-faded">{term}:</dt><dd class="text-primary">{value}</dd></>)}
+        </dl>
+        <Image src="https://picsum.photos/id/1048/1200/800" alt="" width={1200} height={800} fit="cover" radius="md" loading="eager" class="aspect-3/2 w-full" />
+      </div>
+    </div>
+  </div>
+</Section>

@@ -1,0 +1,31 @@
+---
+/**
+ * Dusk card 01: A rounded card painted like a dim evening sky, with a small mark, a centred heading, a mono line and two small mono buttons.
+ *
+ * @block hero
+ * @order 64
+ */
+import { Sparkle } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+---
+
+<!-- Always dark: a night sky made of primary washes over the dark page. -->
+<Section spacing="none" container={false} theme="dark">
+  <div class="p-2 md:p-4">
+    <div class="relative isolate grid min-h-[calc(100svh-2rem)] place-items-center overflow-hidden rounded-xl px-gutter py-24" style="background: radial-gradient(ellipse 60% 25% at 65% 22%, color-mix(in oklab, var(--background-primary) 40%, transparent), transparent), radial-gradient(ellipse 50% 20% at 20% 12%, color-mix(in oklab, var(--background-primary) 25%, transparent), transparent), linear-gradient(to bottom, color-mix(in oklab, var(--background-primary) 18%, var(--background-neutral)), color-mix(in oklab, var(--background-primary) 8%, var(--background-page)) 70%, var(--background-page))">
+      <!-- A faint streak across the sky. -->
+      <span class="absolute end-[28%] top-[8%] h-40 w-px rotate-[25deg] bg-[linear-gradient(to_bottom,transparent,color-mix(in_oklab,var(--foreground-primary)_60%,transparent))]" aria-hidden="true"></span>
+      <div class="flex max-w-xl flex-col items-center gap-8 text-center">
+        <Sparkle class="size-10" stroke-width="1.25" aria-hidden="true" />
+        <Heading as="h1" size="h1" class="font-normal text-balance">All your locations, in one place at last</Heading>
+        <p class="mt-6 font-mono text-sm leading-relaxed">A <em>(carefully)</em> designed way to scout, book and share film locations with your whole crew.</p>
+        <div class="flex flex-wrap justify-center gap-1">
+          <Button href="#" size="small" color="neutral" variant="faded" class="font-mono">create a free account</Button>
+          <Button href="#" size="small" color="neutral" variant="faded" class="font-mono">book a demo</Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>

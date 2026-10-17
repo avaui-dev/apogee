@@ -1,0 +1,58 @@
+---
+/**
+ * Dashboard prompt 01: A breadcrumb, a two-tone heading, a line and two buttons in a dashed frame, over a patterned panel where a prompt turns into three stat cards.
+ *
+ * @block hero
+ * @order 83
+ */
+import { ArrowDown, ArrowUp } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Avatar from '../../components/Avatar/Avatar.astro'
+import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Link from '../../components/Link/Link.astro'
+
+const stats = [
+  { label: 'Cash', value: '$3.7m', change: '$122k', up: true },
+  { label: 'Runway', value: '49m', note: 'Until 25 Oct 2030' },
+  { label: 'ARR', value: '$6.8m', change: '3%', up: false },
+]
+---
+
+<Section spacing="none" containerWidth="large">
+  <div class="border-x border-dashed border-neutral">
+    <div class="flex flex-col items-center gap-6 border-b border-dashed border-neutral px-6 py-(--spacing-section-lg) text-center">
+      <nav aria-label="Breadcrumb" class="text-sm"><ol class="flex gap-2"><li><Link href="#" color="neutral" underline="hover">Platform</Link></li><li aria-hidden="true" class="text-neutral-faded">/</li><li aria-current="page">Dashboards</li></ol></nav>
+      <Heading as="h1" size="h1" class="text-balance">Dashboards as code <span class="block text-neutral-faded">edit them in bulk</span></Heading>
+      <p class="max-w-xl text-lg text-neutral-faded">Connect your data and the dashboards your revenue team needs build themselves: recurring revenue, retention, churn and more.</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <Button href="#">Sign up</Button>
+        <Button href="#" variant="outline" color="neutral">Book a demo<AvatarGroup slot="end" size="xsmall"><Avatar src="https://picsum.photos/id/1005/64/64" name="Ana Lima" size="xsmall" /><Avatar src="https://picsum.photos/id/1012/64/64" name="Sam Ortiz" size="xsmall" /></AvatarGroup></Button>
+      </div>
+    </div>
+
+    <!-- Patterned panel: rounded tiles drawn with two gradients. -->
+    <div class="flex justify-center px-4 py-20 md:py-28" style="background: radial-gradient(circle at 50% 50%, transparent 55%, var(--border-neutral-faded) 56%, transparent 60%) 0 0 / 3rem 6rem, var(--background-neutral-faded)">
+      <div class="flex w-full max-w-lg flex-col gap-4" aria-hidden="true">
+        <div class="flex items-start gap-3">
+          <img src="https://picsum.photos/id/1012/80/80" alt="" class="size-9 rounded-full object-cover" />
+          <p class="rounded-xl border border-neutral-faded bg-page px-4 py-2.5 text-sm shadow-sm">Build a dashboard with cash and ARR, month over month, then the runway left.</p>
+        </div>
+        <div class="rounded-2xl bg-neutral-faded p-1.5">
+          <p class="px-2 py-1.5 font-mono text-xs text-neutral-faded">Q2 overview</p>
+          <ul class="grid grid-cols-3 gap-1.5">
+            {stats.map((s) => (
+              <li class="flex flex-col items-center gap-2 rounded-xl bg-page px-2 py-5 text-center shadow-sm">
+                <span class="text-sm text-neutral-faded">{s.label}</span>
+                <span class="text-2xl font-semibold tabular-nums md:text-3xl">{s.value}</span>
+                {s.change ? <Badge size="small" variant="faded" color={s.up ? 'positive' : 'critical'} class="tabular-nums">{s.up ? <ArrowUp slot="start" /> : <ArrowDown slot="start" />}{s.change}</Badge> : <span class="text-xs text-neutral-faded">{s.note}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>

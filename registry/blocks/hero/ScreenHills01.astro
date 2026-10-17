@@ -1,0 +1,36 @@
+---
+/**
+ * Screen hills 01: A centred heading, line and round button over an app screenshot that sits between two rolling hills.
+ *
+ * @block hero
+ * @order 60
+ */
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+---
+
+<Section spacing="none" container={false} class="overflow-hidden">
+  <div class="flex flex-col items-center gap-6 px-gutter pt-(--spacing-section-lg) text-center">
+    <Heading as="h1" size="display" class="max-w-4xl text-balance">Show your designs in motion</Heading>
+    <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Pick a template, drop in images or clips, tune the timing and export a video. All in the browser, nothing to install.</p>
+    <Button href="#" size="large" rounded class="px-8">Try it free</Button>
+  </div>
+
+  <div class="relative mt-16 md:mt-20">
+    <div class="relative mx-auto max-w-5xl px-gutter"><DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The editor with templates, a preview and settings" /></div>
+    <!-- Two hills rise over the screenshot's base; the primary tint mixes into the page so they follow the theme. -->
+    <svg class="pointer-events-none relative -mt-[18%] block w-full" viewBox="0 0 1440 420" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="screen-hills-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="color-mix(in oklab, var(--background-primary) 30%, var(--background-page))" />
+          <stop offset="1" stop-color="var(--background-page)" />
+        </linearGradient>
+      </defs>
+      <path d="M0 40C180 40 300 160 420 300C500 390 560 420 720 420H0Z" fill="url(#screen-hills-fill)" />
+      <path d="M1440 40C1260 40 1140 160 1020 300C940 390 880 420 720 420H1440Z" fill="url(#screen-hills-fill)" />
+      <rect y="400" width="1440" height="20" fill="var(--background-page)" />
+    </svg>
+  </div>
+</Section>

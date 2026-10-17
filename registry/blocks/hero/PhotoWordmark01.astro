@@ -1,0 +1,24 @@
+---
+/**
+ * Photo wordmark 01: A full-screen still-life photo with a quiet five-column bar on top: two links, a centred wordmark, two links.
+ *
+ * @block hero
+ * @order 59
+ */
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+import Image from '../../components/Image/Image.astro'
+---
+
+<Section spacing="none" container={false} theme="light" class="overflow-hidden">
+  <div class="relative isolate min-h-svh">
+    <Image src="https://picsum.photos/id/201/2400/1600" alt="A laptop, glasses and a mouse on a wooden desk" width={2400} height={1600} fit="cover" loading="eager" class="absolute inset-0 -z-10 size-full" />
+    <div class="grid grid-cols-2 items-center gap-y-3 px-gutter py-5 text-sm md:grid-cols-5">
+      <Link href="#" color="inherit" underline="hover" class="justify-self-center max-md:hidden">Shop</Link>
+      <Link href="#" color="inherit" underline="hover" class="justify-self-center max-md:hidden">Search</Link>
+      <h1 class="col-span-2 text-center text-3xl font-light tracking-tight md:col-span-1 md:text-4xl">Hollis Ward</h1>
+      <Link href="#" color="inherit" underline="hover" class="justify-self-center">Cart <span class="tabular-nums">0</span></Link>
+      <Link href="#" color="inherit" underline="hover" class="justify-self-center">About</Link>
+    </div>
+  </div>
+</Section>

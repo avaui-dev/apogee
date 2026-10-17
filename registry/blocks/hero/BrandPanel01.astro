@@ -1,0 +1,38 @@
+---
+/**
+ * Brand panel 01: A mono eyebrow, heading, line, button and a testimonial card beside a full-height photo.
+ *
+ * @block hero
+ * @order 57
+ */
+import { ArrowRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Button from '../../components/Button/Button.astro'
+import Image from '../../components/Image/Image.astro'
+---
+
+<Section spacing="none" container={false}>
+  <div class="grid lg:min-h-[52rem] lg:grid-cols-2">
+    <div class="flex flex-col gap-8 px-gutter py-16 lg:py-20">
+      <Eyebrow color="neutral" class="self-start border-b border-neutral pb-1 font-mono">AI for wholesale sales and operations</Eyebrow>
+      <Heading as="h1" size="display" class="text-balance">Wholesale shouldn’t run on manual fixes</Heading>
+      <p class="max-w-xl text-lg text-neutral-faded">One place for rep orders, online, EDI and marketplace sales. Agents take the repetitive work off your team, so revenue grows without the overhead.</p>
+      <Button href="#" size="large" color="neutral" variant="outline" class="self-start rounded-none! px-8">Book a demo<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+
+      <figure class="mt-auto flex flex-col gap-6 bg-primary-faded p-6 sm:flex-row md:p-8">
+        <Image src="https://picsum.photos/id/1005/400/480" alt="" width={400} height={480} fit="cover" class="aspect-5/6 w-28 shrink-0 sm:w-36" />
+        <div class="flex flex-col gap-5">
+          <blockquote class="text-lg leading-snug">“Faster ordering, tools we can shape to fit, and support that answers. We save money and grow quicker than before.”</blockquote>
+          <figcaption class="flex flex-wrap items-center justify-between gap-4">
+            <span class="inline-flex divide-x divide-neutral-faded border border-neutral-faded text-sm uppercase rtl:divide-x-reverse"><span class="px-3 py-1.5">Mara Lindqvist</span><span class="px-3 py-1.5 text-neutral-faded">CEO, Oakline Home</span></span>
+            <span class="text-lg font-semibold tracking-tight text-neutral-faded">OH</span>
+          </figcaption>
+        </div>
+      </figure>
+    </div>
+
+    <img src="https://picsum.photos/id/1031/1200/1600" alt="" loading="eager" class="h-full min-h-[32rem] w-full object-cover" />
+  </div>
+</Section>

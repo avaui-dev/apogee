@@ -1,0 +1,66 @@
+---
+/**
+ * Framed panels 01: A heading, line and button in a ruled panel beside a progress strip, a bracketed image and a live stat, over a row of logos.
+ *
+ * @block hero
+ * @order 47
+ */
+import { Atom, Hexagon, Mountain, Sprout, Waves } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Progress from '../../components/Progress/Progress.astro'
+import Image from '../../components/Image/Image.astro'
+
+const logos = [
+  { name: 'Lumen', icon: Hexagon },
+  { name: 'Quanta', icon: Atom },
+  { name: 'Fieldwork', icon: Sprout },
+  { name: 'Northpeak', icon: Mountain },
+  { name: 'Arcwave', icon: Waves },
+]
+---
+
+<Section spacing="medium">
+  <div class="grid gap-6 lg:grid-cols-[3fr_2fr]">
+    <!-- Ruled panel: lines across the top and bottom with short end ticks. -->
+    <div class="relative flex flex-col justify-center gap-6 border-y border-neutral-faded px-6 py-16 md:px-10 lg:py-24">
+      <span class="absolute start-0 top-0 h-4 border-s border-neutral-faded" aria-hidden="true"></span>
+      <span class="absolute end-0 top-0 h-4 border-e border-neutral-faded" aria-hidden="true"></span>
+      <span class="absolute bottom-0 start-0 h-4 border-s border-neutral-faded" aria-hidden="true"></span>
+      <span class="absolute bottom-0 end-0 h-4 border-e border-neutral-faded" aria-hidden="true"></span>
+      <Heading as="h1" size="display" class="max-w-3xl text-balance">Put agents to work where the work is physical</Heading>
+      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">We help plants, fleets and grids design, ship and scale agents that run real operations. Results in weeks, not quarters.</p>
+      <Button href="#" size="large" class="self-start">Request a demo</Button>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      <div class="flex items-center gap-4 border border-neutral-faded px-5 py-3">
+        <span class="shrink-0 font-mono text-xs text-neutral-faded">Rollout progress</span>
+        <Progress value={92} label="Rollout progress" size="small" class="flex-1" />
+      </div>
+
+      <div class="relative flex-1 p-5">
+        <span class="absolute start-0 top-0 size-3 border-s border-t border-neutral" aria-hidden="true"></span>
+        <span class="absolute end-0 top-0 size-3 border-e border-t border-neutral" aria-hidden="true"></span>
+        <span class="absolute bottom-0 start-0 size-3 border-b border-s border-neutral" aria-hidden="true"></span>
+        <span class="absolute bottom-0 end-0 size-3 border-b border-e border-neutral" aria-hidden="true"></span>
+        <p class="flex items-center gap-3 font-mono text-xs uppercase tracking-wide text-neutral-faded"><span class="size-1.5 rounded-full bg-primary" aria-hidden="true"></span>Energy and utilities</p>
+        <Image src="https://picsum.photos/id/1031/1000/700" alt="" width={1000} height={700} fit="cover" class="mt-4 aspect-10/7 w-full lg:aspect-auto lg:h-[calc(100%-2rem)]" loading="eager" />
+      </div>
+
+      <div class="flex flex-col gap-4 border border-neutral-faded bg-neutral-faded p-5">
+        <p class="flex items-center gap-3 font-mono text-xs uppercase tracking-wide">Operations feed <Badge variant="outline" color="primary" size="small">Live</Badge></p>
+        <p class="flex flex-col gap-1"><span class="text-4xl font-medium tabular-nums">42</span><span class="text-neutral-faded">Faults caught before downtime</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    <p class="shrink-0 text-neutral-faded">Built by engineers from</p>
+    <ul class="flex flex-wrap items-center gap-x-10 gap-y-4">
+      {logos.map((l) => <li class="flex items-center gap-2 text-lg font-semibold text-neutral-faded"><l.icon class="size-6" aria-hidden="true" />{l.name}</li>)}
+    </ul>
+  </div>
+</Section>

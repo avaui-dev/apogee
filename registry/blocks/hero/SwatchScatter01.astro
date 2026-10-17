@@ -1,0 +1,61 @@
+---
+/**
+ * Swatch scatter 01: Pattern swatches with mono captions scattered across the section, a pill, a large heading at the bottom start and a line with two buttons at the bottom end.
+ *
+ * @block hero
+ * @order 55
+ */
+import { ArrowRight, Sparkles } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+// Swatches are CSS patterns on the primary and neutral tokens, so they follow the theme.
+const p = 'var(--background-primary)', pf = 'var(--background-primary-faded)', n = 'var(--foreground-neutral)', bg = 'var(--background-page)'
+const looks = {
+  halftone: `radial-gradient(circle, ${p} 1.2px, transparent 1.6px) 0 0 / 6px 6px, linear-gradient(135deg, ${pf}, ${bg})`,
+  mist: `radial-gradient(circle at 30% 30%, color-mix(in oklab, ${p} 60%, ${bg}), transparent 60%), radial-gradient(circle at 70% 75%, color-mix(in oklab, ${n} 35%, ${bg}), transparent 55%), ${pf}`,
+  fluted: `repeating-linear-gradient(90deg, color-mix(in oklab, ${p} 90%, ${bg}) 0 8%, color-mix(in oklab, ${p} 35%, ${bg}) 8% 12%, color-mix(in oklab, ${n} 70%, ${bg}) 12% 14%)`,
+  scanline: `repeating-linear-gradient(0deg, color-mix(in oklab, ${n} 18%, transparent) 0 1px, transparent 1px 3px), radial-gradient(ellipse at 40% 60%, color-mix(in oklab, ${n} 40%, ${bg}), ${bg})`,
+  fade: `radial-gradient(circle, color-mix(in oklab, ${p} 70%, ${bg}) 1px, transparent 1.5px) 0 0 / 5px 5px, linear-gradient(90deg, ${bg}, ${pf})`,
+  glow: `radial-gradient(circle at 50% 45%, ${p}, color-mix(in oklab, ${p} 30%, ${bg}) 45%, ${bg} 80%)`,
+}
+// Position (percent of the section) and width (rem) per swatch; `wide` hides it on phones.
+const swatches = [
+  { name: 'Pearl Grid', kind: 'Halftone', look: looks.halftone, x: 12, y: 6, w: 11, ratio: '4/3', wide: false },
+  { name: 'Low Mist', kind: 'Photo & grain', look: looks.mist, x: 30, y: 12, w: 15, ratio: '3/4', wide: true },
+  { name: 'Fluted Glow', kind: 'Fluted glass', look: looks.fluted, x: 50, y: 30, w: 15, ratio: '4/3', wide: false },
+  { name: 'Scanline', kind: 'Photo & scanlines', look: looks.scanline, x: 70, y: 4, w: 14, ratio: '1/1', wide: true },
+  { name: 'Dot Fade', kind: 'Halftone', look: looks.fade, x: 10, y: 40, w: 12, ratio: '4/3', wide: true },
+  { name: 'Soft Bloom', kind: 'Glow & grain', look: looks.glow, x: 70, y: 48, w: 15, ratio: '3/4', wide: true },
+  { name: 'Deep Field', kind: 'Aberration', look: looks.mist, x: 90, y: 30, w: 11, ratio: '1/1', wide: true },
+]
+---
+
+<Section spacing="none" containerWidth="full" class="overflow-hidden">
+  <div class="relative min-h-[48rem] md:min-h-[56rem]">
+    {swatches.map((s) => (
+      <figure class:list={['absolute flex-col gap-3', s.wide ? 'hidden md:flex' : 'flex']} style={`inset-inline-start: ${s.x}%; top: ${s.y}%; width: min(${s.w}rem, 40vw)`} aria-hidden="true">
+        <div class="w-full rounded-xl" style={`aspect-ratio: ${s.ratio}; background: ${s.look}`}></div>
+        <figcaption class="flex flex-col font-mono text-xs"><span>{s.name}</span><span class="text-neutral-faded">{s.kind}</span></figcaption>
+      </figure>
+    ))}
+
+    <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,var(--background-page)_20%,transparent_55%)]" aria-hidden="true"></div>
+
+    <div class="absolute inset-x-0 bottom-0 flex flex-col gap-8 px-gutter pb-16 md:flex-row md:items-end md:justify-between">
+      <div class="flex flex-col items-start gap-6">
+        <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 rounded-full! border border-neutral-faded bg-page px-3 py-1 text-sm"><Sparkles class="size-4" aria-hidden="true" />New: share a look, remix a link</Link>
+        <Heading as="h1" size="display" class="max-w-3xl text-balance">Backgrounds nobody else has, in seconds</Heading>
+      </div>
+      <div class="flex max-w-sm flex-col gap-6">
+        <p class="text-lg text-neutral-faded">Mix gradients, glass and grain into backgrounds and loops of your own.</p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="#" size="large">Open the studio<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+          <Button href="#" size="large" variant="outline" color="neutral">Browse looks</Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>

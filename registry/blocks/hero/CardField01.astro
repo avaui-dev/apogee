@@ -1,0 +1,41 @@
+---
+/**
+ * Card field 01: A tight wall of image cards that fades away from the top corner, with a two-tone serif heading, line and two buttons in the opposite corner.
+ *
+ * @block hero
+ * @order 53
+ */
+import { ArrowRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+
+// Cards fill a 6 × 5 grid edge to edge, 4px apart.
+const cols = 6
+const ids = [21, 26, 29, 36, 42, 48, 54, 60, 64, 65, 70, 76, 82, 88, 96, 100, 103, 106, 110, 113, 119, 129, 133, 139, 145, 152, 160, 164, 177, 180]
+const cards = ids.map((id, i) => ({ id, c: i % cols, r: Math.floor(i / cols) }))
+---
+
+<Section spacing="none" containerWidth="full" class="overflow-hidden">
+  <div class="relative min-h-[46rem] md:min-h-[52rem]">
+    <div class="pointer-events-none absolute inset-0 grid grid-cols-6 grid-rows-5 gap-1 p-1 mask-[radial-gradient(ellipse_at_85%_15%,black_20%,transparent_65%)] rtl:mask-[radial-gradient(ellipse_at_15%_15%,black_20%,transparent_65%)]" aria-hidden="true">
+      {cards.map((k) => (
+        <div class="relative overflow-hidden rounded-md" style={`grid-column: ${k.c + 1}; grid-row: ${k.r + 1}`}>
+          <img src={`https://picsum.photos/id/${k.id}/300/480`} alt="" loading="lazy" class="size-full object-cover" />
+        </div>
+      ))}
+    </div>
+
+    <!-- Fade behind the text so it reads over the cards. -->
+    <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,var(--background-page)_30%,transparent_65%)]" aria-hidden="true"></div>
+
+    <div class="absolute inset-x-0 bottom-0 flex flex-col gap-6 px-gutter pb-16 md:pb-24">
+      <Heading as="h1" size="display" class="max-w-3xl text-balance">New ads that win, every week. <span class="text-neutral-faded">Picked by designers.</span></Heading>
+      <p class="max-w-xl text-lg md:text-xl text-neutral-faded">Ad creatives made with AI and chosen by senior designers. Stills, video and motion for fast-growing brands, tested every week.</p>
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <Button href="#" size="large" rounded><ArrowRight slot="start" class="rtl:-scale-x-100" aria-hidden="true" />Book a demo</Button>
+        <Button href="#" size="large" rounded variant="ghost" color="neutral">See how it works</Button>
+      </div>
+    </div>
+  </div>
+</Section>

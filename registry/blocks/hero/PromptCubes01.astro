@@ -1,0 +1,74 @@
+---
+/**
+ * Prompt cubes 01: A mono eyebrow, centred heading and line over a prompt box with actions, flanked by two gridded cubes, above an app window on a gridded panel.
+ *
+ * @block hero
+ * @order 80
+ */
+import { Brush, Library, LayoutTemplate, Map, Paperclip, Play, Globe, Share2, Upload } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const steps = [['Brief', Map], ['Sitemap', Map], ['Wireframe', LayoutTemplate], ['Design', Brush]] as const
+// A cube face: a grid drawn with two repeating lines over a primary shade.
+const face = (mix: number) => `background: linear-gradient(var(--foreground-neutral) 1px, transparent 1px) 0 0 / 10% 10%, linear-gradient(90deg, var(--foreground-neutral) 1px, transparent 1px) 0 0 / 10% 10%, color-mix(in oklab, var(--background-primary) ${mix}%, var(--background-page))`
+---
+
+<Section spacing="large" container={false} class="overflow-hidden">
+  <!-- Cubes: three faces each, turned in 3D. -->
+  {[{ side: '-start-16 rotate-12', }, { side: '-end-16 -rotate-12' }].map((c) => (
+    <div class:list={['cube pointer-events-none absolute top-[32%] hidden lg:block', c.side]} aria-hidden="true">
+      <span style={face(85)}></span><span style={face(55)}></span><span style={face(70)}></span>
+    </div>
+  ))}
+
+  <div class="relative mx-auto flex max-w-2xl flex-col items-center gap-6 px-gutter text-center">
+    <Eyebrow class="font-mono">Trusted by 1M+ freelancers and agencies</Eyebrow>
+    <Heading as="h1" size="display" class="font-normal text-balance">Build a marketing site you’d actually publish</Heading>
+    <p class="text-lg text-neutral-faded">Start with a brief. We draft the sitemap, the wireframes and a site you’d be happy to ship. The AI does the work; you make the calls.</p>
+    <form class="flex w-full flex-col gap-4 rounded-xl border border-neutral-faded bg-page p-4 text-start shadow-lg" onsubmit="return false">
+      <label for="prompt-cubes-brief" class="sr-only">Your brief</label>
+      <textarea id="prompt-cubes-brief" rows="3" placeholder="Drop in your notes, a brief or a URL…" class="w-full resize-none bg-transparent outline-none placeholder:text-neutral-faded"></textarea>
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <button type="button" class="text-neutral-faded" aria-label="Attach a file"><Paperclip class="size-4" /></button>
+        <span class="flex flex-wrap gap-2">
+          <Button size="small" variant="outline" color="neutral"><Globe slot="start" aria-hidden="true" />Publish</Button>
+          <Button size="small" variant="outline" color="neutral"><Upload slot="start" aria-hidden="true" />Export</Button>
+          <Button size="small" type="submit">Generate site</Button>
+        </span>
+      </div>
+    </form>
+    <Link href="#" color="neutral" class="text-sm decoration-dotted">Try an example</Link>
+  </div>
+
+  <div class="relative mx-auto mt-16 max-w-5xl px-gutter" aria-hidden="true">
+    <div class="rounded-t-2xl border border-b-0 border-neutral-faded px-3 pt-12 md:px-12" style="background: linear-gradient(color-mix(in oklab, var(--background-primary) 20%, transparent) 1px, transparent 1px) 0 0 / 3rem 3rem, linear-gradient(90deg, color-mix(in oklab, var(--background-primary) 20%, transparent) 1px, transparent 1px) 0 0 / 3rem 3rem, var(--background-primary-faded)">
+      <div class="overflow-hidden rounded-t-xl border border-b-0 border-neutral-faded bg-page text-sm shadow-xl">
+        <div class="flex items-center gap-3 border-b border-neutral-faded px-4 py-2">
+          <span class="font-medium">Maisons</span>
+          <span class="mx-auto hidden gap-1 rounded-lg bg-neutral-faded p-1 md:flex">{steps.map(([s, Icon], i) => <span class:list={['flex items-center gap-1.5 rounded-md px-2.5 py-1', i === 3 && 'bg-page shadow-sm']}><Icon class="size-3.5" />{s}</span>)}</span>
+          <span class="ms-auto flex items-center gap-2 md:ms-0"><Share2 class="size-4 text-neutral-faded" /><Play class="size-4 text-neutral-faded" /><span class="rounded-md bg-primary px-2.5 py-1 text-on-primary">Publish site</span></span>
+        </div>
+        <div class="flex">
+          <div class="flex flex-col gap-4 border-e border-neutral-faded p-3 text-xs text-neutral-faded"><Globe class="size-4" /><Library class="size-4" /><Brush class="size-4" /></div>
+          <div class="flex flex-1 flex-col gap-3 p-4">
+            <span class="rounded-md border border-neutral-faded px-3 py-1.5 text-neutral-faded">Home</span>
+            <div data-theme="dark" class="flex items-center gap-6 rounded-t-md bg-page px-4 py-3 text-xs text-neutral"><span class="font-semibold tracking-[0.2em]">MAISONS</span><span class="hidden gap-4 text-neutral-faded sm:flex"><span>Living</span><span>Places</span><span>Lifestyle</span></span><span class="ms-auto rounded border border-neutral-faded px-2 py-1">Register</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style>
+  /* A cube from three faces: top, front and side, each a gridded square. */
+  .cube { --s: 13rem; inline-size: var(--s); block-size: var(--s); transform-style: preserve-3d; transform: rotateX(-25deg) rotateY(40deg); }
+  .cube span { position: absolute; inset: 0; border: 1px solid var(--foreground-neutral); }
+  .cube span:nth-child(1) { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); }
+  .cube span:nth-child(2) { transform: translateZ(calc(var(--s) / 2)); }
+  .cube span:nth-child(3) { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); }
+</style>

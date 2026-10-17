@@ -1,0 +1,56 @@
+---
+/**
+ * Photo stamps 01: A full-width photo with a centred eyebrow, heading, line and round button, a column of round stamps down one side and a rounded panel rising over the bottom edge.
+ *
+ * @block hero
+ * @order 54
+ */
+import { ArrowRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Button from '../../components/Button/Button.astro'
+import Image from '../../components/Image/Image.astro'
+
+// Stamps: words that run around the rim, and a short mark in the middle.
+const stamps = [
+  { ring: 'Grown slow · Picked ripe ·', mark: 'GS', tone: 'bg-primary text-on-primary' },
+  { ring: 'Family farms · Since 2012 ·', mark: '12', tone: 'bg-page text-primary' },
+  { ring: 'No sprays · No shortcuts ·', mark: '100%', tone: 'bg-primary-faded text-primary' },
+  { ring: 'Shipped cold · Same week ·', mark: '48h', tone: 'bg-neutral text-on-neutral' },
+]
+---
+
+<Section spacing="none" container={false} class="overflow-hidden">
+  <div class="relative isolate flex min-h-[44rem] flex-col items-center justify-center px-gutter pb-40 pt-24 text-center md:min-h-[52rem]">
+    <Image src="https://picsum.photos/id/1018/2000/1300" alt="" width={2000} height={1300} fit="cover" loading="eager" class="absolute inset-0 -z-10 size-full" />
+    <!-- Page colour washes down from the top so the text reads in either theme. -->
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,var(--background-page)_10%,color-mix(in_oklab,var(--background-page)_70%,transparent)_45%,transparent_80%)]" aria-hidden="true"></div>
+
+    <div class="flex max-w-4xl flex-col items-center gap-6">
+      <Eyebrow color="neutral" class="tracking-widest">Picked ripe · Packed the same day</Eyebrow>
+      <Heading as="h1" size="display" class="text-balance">The freshest fruit you can order online</Heading>
+      <p class="text-lg md:text-xl">Orchard fruit, berries and greens from small farms. Shipped cold, anywhere in the country.</p>
+      <Button href="#" size="large" rounded class="px-10 uppercase tracking-widest">Shop all<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+    </div>
+
+    <ul class="absolute end-6 top-1/2 hidden -translate-y-1/2 flex-col gap-8 lg:flex" aria-hidden="true">
+      {stamps.map((s, i) => (
+        <li class:list={['grid size-28 place-items-center rounded-full shadow-md', s.tone]}>
+          <svg viewBox="0 0 100 100" class="size-full">
+            <defs><path id={`photo-stamp-${i}`} d="M50 50m-36 0a36 36 0 1 1 72 0a36 36 0 1 1-72 0" /></defs>
+            <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.5" />
+            <circle cx="50" cy="50" r="26" fill="none" stroke="currentColor" stroke-width="1" />
+            <text font-size="9" font-weight="600" letter-spacing="1.5" fill="currentColor"><textPath href={`#photo-stamp-${i}`}>{s.ring.toUpperCase()}</textPath></text>
+            <text x="50" y="55" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">{s.mark}</text>
+          </svg>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="relative z-10 -mt-16 rounded-t-[2.5rem] px-gutter py-12 text-center" style="background: linear-gradient(var(--background-neutral-faded), var(--background-neutral-faded)), var(--background-page)">
+    <p class="text-2xl font-semibold md:text-4xl">Trusted by families across the country</p>
+    <p class="mt-3 text-neutral-faded tabular-nums">120,000 orders shipped · 4.9 average rating · 300 partner farms</p>
+  </div>
+</Section>

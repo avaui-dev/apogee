@@ -1,0 +1,79 @@
+---
+/**
+ * Audit cards 01: A centred eyebrow, heading, line and square button on a soft wash, over a composite of product cards: a summary, insights with tags and a validation table with pass and fail rows.
+ *
+ * @block hero
+ * @order 69
+ */
+import { Asterisk, Plus, Sparkles } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Skeleton from '../../components/Skeleton/Skeleton.astro'
+
+const insights = ['Document summary', 'Extraction summary', 'Charges check', 'Audit record']
+const rows = [
+  { step: 'Charge: ocean freight', ok: true },
+  { step: 'Charge: terminal handling', ok: true },
+  { step: '', ok: false },
+  { step: '', ok: true },
+  { step: 'Charge: container packing', ok: true, note: 'Within 10% of the agreed rate' },
+]
+---
+
+<Section spacing="large" container={false} class="overflow-hidden" style="background: radial-gradient(ellipse 40% 35% at 100% 35%, color-mix(in oklab, var(--background-primary) 12%, var(--background-page)), transparent), radial-gradient(ellipse 35% 30% at 0% 50%, color-mix(in oklab, var(--background-primary) 10%, var(--background-page)), transparent), linear-gradient(to bottom, var(--background-page) 25%, color-mix(in oklab, var(--background-primary) 10%, var(--background-page)))">
+  <div class="mx-auto flex max-w-3xl flex-col items-center gap-8 px-gutter text-center">
+    <Eyebrow color="neutral" class="flex items-center gap-2 font-mono"><span class="size-2 bg-primary" aria-hidden="true"></span>For freight teams</Eyebrow>
+    <Heading as="h1" size="display" class="font-normal text-balance">Freight moves your business, and quietly eats your margin</Heading>
+    <p class="text-lg md:text-xl text-neutral-faded">Carrier bills are dense and most teams check only a few. Our agents match every line to the contract, settle the exceptions and send clean results to your books, with a record you can audit.</p>
+    <Button href="#" size="large" class="rounded-none! px-8 font-mono uppercase tracking-wider">Request a demo</Button>
+  </div>
+
+  <div class="relative mx-auto mt-16 grid max-w-5xl gap-4 px-gutter text-sm md:mt-20 md:grid-cols-2 md:ps-24" aria-hidden="true">
+    <!-- Mark with a dashed rail into the cards. -->
+    <div class="absolute inset-y-24 start-gutter hidden w-16 rounded-s-2xl border border-e-0 border-dashed border-neutral md:block">
+      <span class="absolute start-0 top-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-lg bg-primary text-on-primary shadow-lg rtl:translate-x-1/2"><Asterisk class="size-8" stroke-width="3" /></span>
+    </div>
+
+    <div class="flex flex-col gap-3 rounded-xl border border-neutral-faded bg-page p-4 shadow-lg">
+      <p class="flex items-center gap-2 font-medium"><span class="grid size-6 place-items-center rounded bg-primary text-on-primary"><Sparkles class="size-3.5" /></span>Summary</p>
+      <div class="flex flex-col gap-1 rounded-lg bg-neutral-faded p-3">
+        <p>Suggest rejecting invoice <span class="text-primary tabular-nums">#INV-57834961</span> because:</p>
+        <ul class="list-disc ps-5 text-xs text-neutral-faded tabular-nums"><li>Tolls exceed the agreed rate (+$175.50)</li><li>Fuel surcharge worked out wrong (+$44.12)</li></ul>
+      </div>
+      <div class="flex flex-col gap-2 rounded-lg bg-neutral-faded p-3">
+        <p class="flex items-center justify-between gap-2 text-positive">Notes for the carrier <Badge size="small" color="positive"><Plus slot="start" />Drafted for you</Badge></p>
+        <Skeleton class="min-h-0! h-2" /><Skeleton class="min-h-0! h-2 w-3/4" />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 rounded-xl border border-neutral-faded bg-page p-4 shadow-lg">
+      <p class="flex flex-wrap items-center gap-2 font-medium"><span class="grid size-6 place-items-center rounded bg-primary text-on-primary"><Sparkles class="size-3.5" /></span>Insights<span class="ms-auto flex gap-1"><Badge size="small" rounded color="positive">Parsed</Badge><Badge size="small" rounded color="positive">Workflow</Badge><Badge size="small" rounded color="positive">Reply</Badge></span></p>
+      <div class="grid grid-cols-2 gap-2">
+        {insights.map((t) => <div class="flex flex-col gap-2 rounded-lg bg-neutral-faded p-3"><span>{t}</span><Skeleton class="min-h-0! h-2" /><Skeleton class="min-h-0! h-2 w-2/3" /></div>)}
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-neutral-faded bg-page p-4 shadow-lg md:col-span-2 md:p-6">
+      <p class="mb-4 text-base font-medium">Rate check and charge differences</p>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-xl text-start">
+          <thead class="text-xs text-primary"><tr><th class="py-2 text-start font-normal">Step</th><th></th><th class="py-2 text-start font-normal">Actual</th><th class="py-2 text-start font-normal">Expected</th><th class="py-2 text-start font-normal">Result</th></tr></thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr class="border-t border-neutral-faded">
+                <td class="py-3 pe-4">{r.step || <Skeleton class="min-h-0! h-2 w-32" />}</td>
+                <td class="pe-4"><Badge variant="faded" color={r.ok ? 'positive' : 'critical'}>{r.ok ? 'Pass' : 'Fail'}</Badge></td>
+                <td class="pe-4"><Skeleton class="min-h-0! h-1.5 w-10" /></td>
+                <td class="pe-4"><Skeleton class="min-h-0! h-1.5 w-10" /></td>
+                <td>{r.note ? <span class="text-xs">{r.note}</span> : <Skeleton class="min-h-0! h-1.5 w-40" />}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</Section>

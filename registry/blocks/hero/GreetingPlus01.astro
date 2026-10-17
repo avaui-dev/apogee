@@ -1,0 +1,42 @@
+---
+/**
+ * Greeting plus 01: A full-screen grid with corner labels, stacked greetings in four languages, a short statement and a footer row with a now-playing note.
+ *
+ * @block hero
+ * @order 51
+ */
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Image from '../../components/Image/Image.astro'
+import Link from '../../components/Link/Link.astro'
+
+const greetings = ['Hello', 'Salut', 'Hola', 'Ciao']
+const links = ['Home', 'About', 'Work', 'Careers', 'Contact']
+---
+
+<Section spacing="none" containerWidth="full" class="overflow-hidden">
+  <div class="relative grid min-h-svh grid-cols-2 grid-rows-[auto_1fr_auto] gap-x-6 gap-y-10 py-6 text-sm font-medium md:grid-cols-4">
+    <p class="relative">Lisbon 08:02</p>
+    <p class="relative hidden md:block">Design · Brand</p>
+    <p class="relative hidden md:block"></p>
+    <p class="relative text-end">© 2026</p>
+
+    <div class="relative col-span-2 flex flex-col justify-center gap-10 md:col-span-4 md:grid md:grid-cols-4 md:gap-6">
+      <Heading as="h1" size="h3" class="max-w-md text-balance md:col-span-2 md:self-center lg:col-span-1 lg:text-2xl">A design and technology studio for people building what comes next. <span class="text-neutral-faded">Ready when you are.</span></Heading>
+      <p class="text-[clamp(4rem,2rem+9vw,10rem)] font-bold leading-[0.85] tracking-tighter md:col-span-2 md:col-start-3 lg:col-start-2" aria-hidden="true">
+        {greetings.map((g) => <span class="block">{g}</span>)}
+      </p>
+    </div>
+
+    <div class="relative col-span-2 flex items-center gap-3 md:col-span-1">
+      <Image src="https://picsum.photos/id/145/96/96" alt="" width={96} height={96} fit="cover" radius="sm" class="size-10" />
+      <p class="flex flex-col leading-tight"><span class="text-neutral-faded">Playing in the studio</span><span>Slow Tide</span><span class="text-neutral-faded">Harbour Lights</span></p>
+    </div>
+    <p class="relative hidden self-end md:block">(Scroll to see more)</p>
+    <nav class="relative col-span-2 self-end md:justify-self-end" aria-label="Main">
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {links.map((l, i) => <li><Link href="#" color={i === 0 ? 'neutral' : 'inherit'} underline="none" class:list={['inline-flex items-center gap-1.5', i > 0 && 'text-neutral-faded hover:text-neutral']}>{i === 0 && <span class="size-1.5 rounded-full bg-current" aria-hidden="true"></span>}{l}</Link></li>)}
+      </ul>
+    </nav>
+  </div>
+</Section>

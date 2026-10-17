@@ -1,0 +1,101 @@
+---
+/**
+ * App panel 01: A serif heading beside a short line, two round buttons, then an app mockup with a sidebar, prompt box and recent projects on a soft primary panel, over a row of logos.
+ *
+ * @block hero
+ * @order 52
+ */
+import { ArrowRight, Atom, BarChart3, Box, FileText, Folder, Hexagon, Home, Layers, Mountain, Plus, Search, Sparkles, Sprout, ArrowUp, Waves, Wind, Megaphone, Palette, Plug, BookOpen } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Divider from '../../components/Divider/Divider.astro'
+
+const nav = [
+  { label: 'Home', icon: Home, active: true },
+  { label: 'Insights', icon: Sparkles },
+  { label: 'Deliverables', icon: FileText },
+  { label: 'Analytics', icon: BarChart3 },
+  { label: 'Automations', icon: Layers },
+]
+const records = [
+  { label: 'Campaigns', icon: Megaphone },
+  { label: 'Creatives', icon: Palette },
+  { label: 'Product', icon: Box },
+]
+const projects = [
+  { name: 'Spring launch', meta: 'In progress', badge: 'Working' },
+  { name: 'Ad refresh for new buyers', meta: 'Updated 2 hours ago' },
+  { name: 'Weekly spend review', meta: 'Updated 3 hours ago' },
+]
+const logos = [
+  { name: 'Lumen', icon: Hexagon },
+  { name: 'Quanta', icon: Atom },
+  { name: 'Fieldwork', icon: Sprout },
+  { name: 'Northpeak', icon: Mountain },
+  { name: 'Arcwave', icon: Waves },
+  { name: 'Kitestring', icon: Wind },
+]
+---
+
+<Section spacing="large">
+  <div class="grid items-end gap-6 lg:grid-cols-2 lg:gap-16">
+    <Heading as="h1" size="display" class="text-balance">Marketing that pays its way</Heading>
+    <p class="max-w-xl text-lg md:text-xl text-neutral-faded lg:justify-self-end">An assistant that finds your buyers, makes the ads and runs the campaigns around the clock. You set the rules; every spend is measured on revenue.</p>
+  </div>
+  <Divider class="my-8" />
+  <div class="flex flex-col gap-3 sm:flex-row">
+    <Button href="#" size="large" rounded><ArrowRight slot="start" class="rtl:-scale-x-100" aria-hidden="true" />Book a demo</Button>
+    <Button href="#" size="large" rounded variant="outline" color="neutral">See it in action</Button>
+  </div>
+
+  <!-- Soft panel: the primary hue mixed into the page in a few washes, so it follows the theme. -->
+  <div class="mt-10 rounded-2xl p-3 sm:p-6 md:p-12" style="background: radial-gradient(ellipse at 15% 10%, color-mix(in oklab, var(--background-primary) 8%, var(--background-page)), transparent 60%), radial-gradient(ellipse at 90% 70%, color-mix(in oklab, var(--background-primary) 40%, var(--background-page)), transparent 70%), color-mix(in oklab, var(--background-primary) 22%, var(--background-page))" aria-hidden="true">
+    <div class="flex overflow-hidden rounded-xl border border-neutral-faded bg-page text-sm shadow-lg">
+      <div class="hidden w-56 shrink-0 flex-col gap-4 border-e border-neutral-faded bg-neutral-faded p-3 md:flex">
+        <div class="flex items-center justify-between px-2 pt-1"><span class="flex items-center gap-2 font-medium"><span class="grid size-5 place-items-center rounded bg-primary text-xs text-on-primary">b</span>Brightfield</span><Search class="size-4 text-neutral-faded" /></div>
+        <ul class="flex flex-col gap-0.5">
+          {nav.map((n) => <li class:list={['flex items-center gap-2 rounded-md px-2 py-1.5', n.active && 'bg-page shadow-sm']}><n.icon class="size-4 text-neutral-faded" />{n.label}</li>)}
+        </ul>
+        <div class="flex flex-col gap-0.5">
+          <p class="px-2 text-xs uppercase tracking-wide text-neutral-faded">Records</p>
+          <ul class="flex flex-col gap-0.5">{records.map((n) => <li class="flex items-center gap-2 rounded-md px-2 py-1.5"><n.icon class="size-4 text-neutral-faded" />{n.label}</li>)}</ul>
+        </div>
+        <ul class="mt-auto flex flex-col gap-0.5">
+          <li class="flex items-center gap-2 px-2 py-1.5"><BookOpen class="size-4 text-neutral-faded" />Knowledge</li>
+          <li class="flex items-center gap-2 px-2 py-1.5"><Plug class="size-4 text-neutral-faded" />Integrations</li>
+        </ul>
+      </div>
+      <div class="flex min-w-0 flex-1 flex-col">
+        <div class="flex items-center gap-1 border-b border-neutral-faded px-3 py-2">
+          <Plus class="size-4 text-neutral-faded" />
+          <span class="flex items-center gap-1.5 rounded-md bg-neutral-faded px-2 py-1"><Home class="size-4" />Home</span>
+          <span class="flex items-center gap-1.5 px-2 py-1 text-neutral-faded"><Megaphone class="size-4" />Campaigns</span>
+          <span class="hidden items-center gap-1.5 px-2 py-1 text-neutral-faded sm:flex"><Palette class="size-4" />Creatives</span>
+        </div>
+        <div class="flex flex-col items-center gap-6 px-4 py-10 md:py-16">
+          <p class="text-base font-medium">What should we work on next?</p>
+          <div class="flex w-full max-w-2xl flex-col gap-6 rounded-xl border border-neutral-faded p-3 shadow-sm">
+            <span class="text-neutral-faded">Ask anything, or type @ to add context</span>
+            <span class="flex justify-between"><span class="grid size-6 place-items-center rounded-md border border-neutral-faded"><Plus class="size-3.5" /></span><span class="grid size-6 place-items-center rounded-full bg-neutral-faded"><ArrowUp class="size-3.5" /></span></span>
+          </div>
+          <div class="flex w-full max-w-lg flex-col">
+            <p class="pb-2 text-neutral-faded">Recent projects</p>
+            {projects.map((p) => (
+              <div class="flex items-center gap-3 border-t border-neutral-faded py-3">
+                <span class="grid size-8 place-items-center rounded-md bg-neutral-faded"><Folder class="size-4 text-neutral-faded" /></span>
+                <span class="flex min-w-0 flex-1 flex-col"><span class="truncate">{p.name}</span><span class="text-xs text-neutral-faded">{p.meta}</span></span>
+                {p.badge && <Badge variant="faded" color="primary">{p.badge}</Badge>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
+    {logos.map((l) => <li class="flex items-center gap-2 text-lg font-semibold text-neutral-faded"><l.icon class="size-6" aria-hidden="true" />{l.name}</li>)}
+  </ul>
+</Section>

@@ -5,6 +5,15 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+### Added
+
+- **Hero blocks (34 new, orders 45–88):** framed splits, editorial and photo-led heroes, card walls, coverflow, product tiles, prompt boxes, dashboards, gifting and more. Gradients mix the brand hue into the page colour or sit on a band that is always dark, so each works in light and dark mode. `apogee add hero/<name>` copies one.
+- **Docs overviews show what is inside:** every category overview is a three-column grid of cards that lead with a 4:3 picture of the page, block or component, light or dark to match the docs. `npm run thumbs` in `playground/` regenerates the pictures from the dev server.
+
+### Fixed
+
+- **Button** and **ToggleButton** `rounded` now gives fully round ends; the size's corner radius used to win.
+
 ### Changed
 
 - **WorldMap** draws each region on its own grid from Natural Earth 50m countries: only that continent's land, framed by where it actually is, with the same number of columns as every other region, so dots match in size. Regions no longer cut off land (Arctic islands, Indonesia, New Guinea) or show neighbours; where land runs on past a frame (Russia east of Europe, the Aleutians), its dots fade out. Each region scales longitude to its middle latitude, so shapes come out true instead of stretched sideways, and a cell counts as land if any of nine points across it is, so narrow land (Italy, Greece, islands) keeps its dots. Europe is framed 25°W–45°E, 34°–72°N and includes Turkey and Cyprus; North America leaves Greenland to the world map. The world map is finer (2° dots). `scripts/build-world-map.mjs` regenerates the data.
