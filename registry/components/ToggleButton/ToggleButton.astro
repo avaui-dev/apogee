@@ -72,7 +72,7 @@ const {
     buttonStyles[variant][color],
     pressedStyles[selectedVariant][selectedColor],
     buttonSizes[size],
-    rounded && 'rounded-full',
+    rounded && 'rounded-full!', // beats the size's radius, which sorts later in the CSS
     className,
   ]}
   {...rest}

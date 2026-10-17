@@ -97,7 +97,7 @@ const hideWhileLoading = loading && !showTextWhileLoading
     link ? linkSizes[size] : buttonSizes[size],
     color === 'critical' && 'focus-visible:outline-critical',
     hideWhileLoading && '[&>*:not(.apogee-spinner)]:opacity-0',
-    rounded && 'rounded-full',
+    rounded && 'rounded-full!', // beats the size's radius, which sorts later in the CSS
     raised && 'shadow-raised',
     fullWidth && 'w-full',
     className,
