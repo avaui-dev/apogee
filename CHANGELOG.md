@@ -3,7 +3,7 @@
 All notable changes to Apogee are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](https://semver.org).
 
-## [Unreleased]
+## [0.8.2] — 2026-10-20
 
 ### Changed
 
