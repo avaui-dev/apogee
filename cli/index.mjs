@@ -21,9 +21,10 @@ const registryDir = join(pkgRoot, 'registry')
 const index = JSON.parse(readFileSync(join(registryDir, 'index.json'), 'utf8'))
 
 const CONFIG = 'apogee.json'
-const VERSION = JSON.parse(readFileSync(join(pkgRoot, 'package.json'), 'utf8')).version
+const { name: NAME, version: VERSION } = JSON.parse(readFileSync(join(pkgRoot, 'package.json'), 'utf8'))
 // PostHog project "Apogee CLI" (AVA UI org, EU cloud). A project key can only send
 // events, never read them, so it is safe to ship. An empty key sends nothing.
+// Forks publish under their own name, so their runs stay out of this project.
 const POSTHOG_KEY = 'phc_ujwx92m25QmL2tSRhkwiTmj7eZmujr65bLkN6fp42FTJ'
 const POSTHOG_URL = 'https://eu.i.posthog.com/i/v0/e/'
 const DEFAULTS = { componentsDir: 'src/components/apogee', tokens: 'src/styles/apogee.css' }
@@ -65,7 +66,7 @@ const rootFor = (relFile, cfg) => (relFile.startsWith('layouts/') ? join(process
 
 // One anonymous event per command. Never throws and never waits more than 1.5s.
 async function track(command, props) {
-  if (!POSTHOG_KEY || telemetryOff(process.env)) return
+  if (!POSTHOG_KEY || NAME !== '@ava-ui/apogee' || telemetryOff(process.env)) return
   const dir = join(process.env.XDG_CONFIG_HOME || join(homedir(), '.config'), 'apogee')
   const file = join(dir, 'telemetry.json')
   let id

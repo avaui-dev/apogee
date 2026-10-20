@@ -44,7 +44,8 @@
     "cli",
     "scripts",
     "!**/*.test.mjs",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "NOTICE"
   ],
   "publishConfig": {
     "access": "public"

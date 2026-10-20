@@ -1,0 +1,10 @@
+name: Idea
+description: A component, option or change you'd like.
+labels: [idea]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you'd like, and the problem it solves
+    validations:
+      required: true

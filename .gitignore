@@ -17,3 +17,4 @@ GEMINI.md
 # any dotfile or dotfolder (keep .gitignore itself tracked)
 .*
 !.gitignore
+!.github

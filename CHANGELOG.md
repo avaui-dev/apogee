@@ -3,6 +3,13 @@
 All notable changes to Apogee are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](https://semver.org).
 
+## [Unreleased]
+
+### Changed
+
+- **Telemetry only from the official package.** The CLI sends events only when its package name is `@ava-ui/apogee`, so a fork published under another name sends nothing.
+- **License** is plain MIT, so GitHub detects it; the Reshaped credit moved to `NOTICE`, which the package now ships. Added `SECURITY.md`, `CONTRIBUTING.md` and issue forms.
+
 ## [0.8.1] — 2026-10-20
 
 ### Fixed

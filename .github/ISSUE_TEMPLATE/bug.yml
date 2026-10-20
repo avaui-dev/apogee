@@ -1,0 +1,27 @@
+name: Bug
+description: Something renders, behaves or reads wrong.
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Apogee version
+      description: "@ava-ui/apogee" in your package.json, or `npm ls @ava-ui/apogee`.
+    validations:
+      required: true
+  - type: input
+    id: component
+    attributes:
+      label: Component, section or block
+      placeholder: dialog, hero/simple-text-01
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Browser, screen width, keyboard or screen reader if relevant.
