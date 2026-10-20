@@ -1,0 +1,48 @@
+---
+/**
+ * Image banner 01: A photo banner with a heading and button, three link columns, then a framed bottom bar with the copyright, a centred mark and a social link. Always dark.
+ *
+ * @block footers
+ * @order 41
+ */
+import { Orbit } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  { heading: 'Platform', links: ['Consolidate', 'Build', 'Control', 'Scale', 'Integrations', 'Security'] },
+  { heading: 'Solutions', links: ['Aerospace and defence', 'Chemicals', 'Energy and commodities', 'Engineering', 'Shipping', 'Telecoms'] },
+  { heading: 'Company', links: ['About', 'Careers', 'Terms of service', 'Cookie policy'] },
+]
+---
+
+<Section as="footer" spacing="small" containerWidth="full" theme="dark">
+  <div class="relative isolate flex min-h-80 flex-col justify-between gap-10 overflow-hidden rounded-md p-8 md:min-h-96 md:p-10">
+    <img src="https://picsum.photos/id/1018/1800/700" alt="" loading="lazy" class="absolute inset-0 -z-10 size-full object-cover" />
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--background-page)_80%,transparent),transparent_70%)]" aria-hidden="true"></div>
+    <Heading as="h2" size="h1" class="max-w-xl font-normal text-balance">Bring AI into the core of your operations</Heading>
+    <Button href="#" size="large" color="neutral" variant="outline" class="self-start rounded-none!">Request a demo</Button>
+  </div>
+
+  <div class="grid grid-cols-2 gap-10 px-2 py-16 md:grid-cols-4 md:px-8 md:py-24">
+    {columns.map((c) => (
+      <nav aria-label={c.heading}>
+        <p class="font-mono text-xs uppercase tracking-widest text-neutral-faded">{c.heading}</p>
+        <ul class="mt-6 flex list-none flex-col gap-3 p-0">
+          {c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}
+        </ul>
+      </nav>
+    ))}
+  </div>
+
+  <!-- Bottom bar framed by a top line with short end ticks. -->
+  <div class="relative grid grid-cols-[1fr_auto_1fr] items-center gap-4 border-y border-neutral-faded px-4 py-6 font-mono text-xs uppercase tracking-widest text-neutral-faded md:px-8">
+    <span class="absolute -top-3 start-0 h-3 border-s border-neutral-faded" aria-hidden="true"></span>
+    <span class="absolute -top-3 end-0 h-3 border-e border-neutral-faded" aria-hidden="true"></span>
+    <p>© 2026 Northwave</p>
+    <Link href="/" color="inherit" underline="none" aria-label="Northwave home"><Orbit class="size-6 text-neutral" aria-hidden="true" /></Link>
+    <Link href="#" color="inherit" underline="hover" class="justify-self-end">Social</Link>
+  </div>
+</Section>

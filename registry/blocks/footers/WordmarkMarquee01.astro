@@ -1,0 +1,57 @@
+---
+/**
+ * Wordmark marquee 01: A scrolling strip of claims and round stamps, a mission paragraph, two link columns and a newsletter signup, then a giant wordmark and the copyright, on a tinted band.
+ *
+ * @block footers
+ * @order 44
+ */
+import Section from '../../components/Section/Section.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+import Marquee from '../../components/Marquee/Marquee.astro'
+
+const claims = ['Grown and harvested close to home', '4,000+ five-star reviews', 'Small farms, slow growing']
+const columns = [
+  { heading: 'The fine print', links: ['Contact us', 'Terms of service', 'Manage your account', 'Refunds', 'Shipping', 'Accessibility statement', 'Get the app'] },
+  { heading: 'Helpful links', links: ['Your account', 'Contact us', 'Questions', 'Returns', 'Blog', 'Rewards'] },
+]
+---
+
+<Section as="footer" spacing="none" container={false} class="overflow-hidden bg-primary-faded">
+  <div data-theme="dark" class="bg-page py-4 text-neutral">
+    <Marquee label="What we stand for">
+      {claims.map((c) => (
+        <span class="flex items-center gap-8 px-8 font-mono text-sm uppercase tracking-wider">
+          <span class="grid size-14 place-items-center rounded-full border-2 border-current text-xs font-bold" aria-hidden="true">PF</span>{c}
+        </span>
+      ))}
+    </Marquee>
+  </div>
+
+  <div class="px-gutter pt-12">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1.4fr]">
+      <div>
+        <p class="text-2xl tracking-tight">Our mission</p>
+        <p class="mt-4 max-w-sm text-neutral-faded">We aren’t just a shop, and we aren’t a courier either. We work with small family farms that do things the slow way, because we believe in food that does you good.</p>
+      </div>
+      {columns.map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-2xl tracking-tight">{c.heading}</p>
+          <ul class="mt-4 flex list-none flex-col gap-2 p-0">
+            {c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}
+          </ul>
+        </nav>
+      ))}
+      <form class="flex flex-col gap-4" onsubmit="return false">
+        <p class="text-3xl tracking-tight">Join the family</p>
+        <p class="text-neutral-faded">Save 10% on your first order and hear first about new products and restocks.</p>
+        <Input type="email" name="email" placeholder="Your email" aria-label="Email" autocomplete="email" size="large" />
+        <Button type="submit" size="large" rounded fullWidth class="uppercase tracking-widest">Sign up</Button>
+      </form>
+    </div>
+
+    <div class="@container mt-12"><p class="whitespace-nowrap text-[20cqi] font-bold leading-none tracking-tighter text-primary" aria-hidden="true">Pastureland</p></div>
+    <p class="py-6 text-xs text-neutral-faded">© 2026 Pastureland.</p>
+  </div>
+</Section>

@@ -1,0 +1,58 @@
+---
+/**
+ * Ruled grid 01: A footer cut into cells by thin rules: the logo, a blurb and social links down the start, many link groups in the middle, and sign-in links with the copyright at the end. Always dark.
+ *
+ * @block footers
+ * @order 46
+ */
+import { AtSign, Box, Camera } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+
+const groups = [
+  { heading: 'Product', links: ['Orders', 'Shop', 'CRM', 'Studio', 'Pay'] },
+  { heading: 'AI co-workers', links: ['Order entry assistant', 'Quote assistant', 'Sales copilot'] },
+  { heading: 'Industries', links: ['Home furnishing', 'Gifts and accessories', 'Food and drink', 'Industrial'] },
+  { heading: 'Resources', links: ['Blog', 'Events and webinars', 'Product updates', 'Careers', 'Help centre', 'Privacy policy', 'Glossary', 'Podcast'] },
+  { heading: 'Product tours', links: ['Orders', 'Shop', 'Assistant'] },
+  { heading: 'Compare', links: ['Spreadsheets', 'Email orders', 'Legacy portals', 'Paper catalogues'] },
+  { heading: 'Solutions', links: ['Wholesale ecommerce', 'Order entry software', 'Distributor ecommerce', 'Field sales CRM'] },
+]
+---
+
+<Section as="footer" spacing="none" container={false} theme="dark">
+  <div class="grid border-neutral-faded lg:grid-cols-[1fr_3fr_auto]">
+    <div class="flex items-center border-b border-neutral-faded px-gutter py-12 lg:border-e lg:px-10">
+      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-3 text-3xl font-semibold"><Box class="size-8" aria-hidden="true" />Tradewell</Link>
+    </div>
+    <div class="hidden border-b border-neutral-faded lg:col-span-2 lg:block"></div>
+
+    <div class="flex flex-col justify-between gap-12 border-b border-neutral-faded px-gutter py-10 lg:border-b-0 lg:border-e lg:px-10">
+      <div class="flex flex-col gap-4">
+        <p class="text-lg text-neutral-faded">A sales and ordering platform for wholesalers and distributors, with AI built in.</p>
+        <Link href="#" color="neutral" underline="hover" class="text-lg">Ask our assistant about us</Link>
+      </div>
+      <div class="flex flex-col gap-4">
+        <p class="text-lg text-neutral-faded">Connect with us</p>
+        <ul class="flex list-none gap-8 p-0">
+          <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2 text-lg"><AtSign class="size-5" aria-hidden="true" />Updates</Link></li>
+          <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2 text-lg"><Camera class="size-5" aria-hidden="true" />Photos</Link></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-x-8 gap-y-12 border-b border-neutral-faded px-gutter py-10 sm:grid-cols-3 lg:border-b-0 lg:border-e lg:px-10 xl:grid-cols-5">
+      {groups.map((g) => (
+        <nav aria-label={g.heading}>
+          <p class="text-lg text-neutral-faded">{g.heading}</p>
+          <ul class="mt-5 flex list-none flex-col gap-3 p-0">{g.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+
+    <div class="flex flex-col justify-between gap-12 px-gutter py-10 lg:w-56 lg:px-10">
+      <ul class="flex list-none flex-col gap-1 p-0"><li><Link href="#" color="neutral" underline="hover">Log in</Link></li><li><Link href="#" color="neutral" underline="hover">Book a demo</Link></li></ul>
+      <p class="text-sm text-neutral-faded">© 2026<br />Tradewell.</p>
+    </div>
+  </div>
+</Section>

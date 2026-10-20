@@ -1,0 +1,48 @@
+---
+/**
+ * Photo links 01: A row of four promises, a row of six black-and-white photo links with captions, then small link groups, a newsletter line, a centred wordmark and the copyright.
+ *
+ * @block footers
+ * @order 47
+ */
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+
+const promises = [
+  ['Free shipping', 'on orders over $200 at home.'],
+  ['Made locally', 'with fabrics from mills we know by name.'],
+  ['Sign up', 'and get 10% off your first order.'],
+  ['Secure payments', 'with every major card and wallet.'],
+]
+const photos = [['Shop all', 1005], ['Journal', 1018], ['Materials', 1031], ['Support', 1048], ['About', 1062], ['Contact', 1067]] as const
+---
+
+<Section as="footer" spacing="medium" containerWidth="full" class="text-sm">
+  <ul class="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4">
+    {promises.map(([t, d]) => <li class="grid grid-cols-[8rem_1fr] gap-3"><span class="uppercase">{t}</span><span class="text-neutral-faded">{d}</span></li>)}
+  </ul>
+
+  <ul class="mx-auto mt-16 grid max-w-5xl list-none grid-cols-3 gap-3 p-0 md:grid-cols-6">
+    {photos.map(([label, id]) => (
+      <li><Link href="#" color="neutral" underline="hover" class="group flex flex-col gap-2">
+        <img src={`https://picsum.photos/id/${id}/320/400?grayscale`} alt="" loading="lazy" class="aspect-4/5 w-full object-cover opacity-80 transition-opacity duration-(--duration-fast) group-hover:opacity-100" />{label}
+      </Link></li>
+    ))}
+  </ul>
+
+  <div class="mt-16 grid items-start gap-10 md:grid-cols-2 lg:grid-cols-[1fr_1fr_auto_1fr_1fr]">
+    <nav aria-label="Support" class="grid grid-cols-[5rem_1fr] gap-3"><span class="uppercase">Support</span><ul class="flex list-none flex-col p-0">{['Legal', 'Questions', 'Contact', 'Book a fitting'].map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul></nav>
+    <form class="flex max-w-xs flex-col gap-1" onsubmit="return false">
+      <span class="uppercase">Newsletter</span>
+      <span class="text-neutral-faded">Sign up and get 10% off your first order.</span>
+      <span class="mt-2 flex items-end gap-3">
+        <label for="photo-links-email" class="sr-only">Email</label>
+        <input id="photo-links-email" type="email" placeholder="Email" autocomplete="email" class="min-w-0 flex-1 border-b border-neutral bg-transparent py-1 outline-none placeholder:text-neutral-faded focus-visible:border-primary" />
+        <button type="submit" class="underline underline-offset-4">Submit</button>
+      </span>
+    </form>
+    <p class="text-3xl tracking-tight md:col-span-2 lg:col-span-1 lg:justify-self-center">Hollis Ward</p>
+    <nav aria-label="Company" class="grid grid-cols-[5rem_1fr] gap-3"><span class="uppercase">Company</span><ul class="flex list-none flex-col p-0">{['Contact', 'About', 'Journal'].map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul></nav>
+    <div class="flex flex-col gap-6"><ul class="flex list-none flex-col p-0"><li>Currency: <Link href="#" color="neutral">USD</Link></li><li><Link href="#" color="neutral" underline="hover">Terms and privacy</Link></li><li><Link href="#" color="neutral" underline="hover">Credits</Link></li></ul><p class="text-neutral-faded">© 2026 Hollis Ward</p></div>
+  </div>
+</Section>

@@ -8,6 +8,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 ### Added
 
 - **Hero blocks (34 new, orders 45–88):** framed splits, editorial and photo-led heroes, card walls, coverflow, product tiles, prompt boxes, dashboards, gifting and more. Gradients mix the brand hue into the page colour or sit on a band that is always dark, so each works in light and dark mode. `apogee add hero/<name>` copies one.
+- **Footer blocks (23 new, orders 41–63):** image banners, giant wordmarks, ruled grids, newsletter and contact footers and brand-colour bands, all in the brand tokens and working in light and dark. `apogee add footers/<name>` copies one.
 - **Docs overviews show what is inside:** every category overview is a three-column grid of cards that lead with a 4:3 picture of the page, block or component, light or dark to match the docs. `npm run thumbs` in `playground/` regenerates the pictures from the dev server.
 
 ### Fixed

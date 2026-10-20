@@ -1,0 +1,47 @@
+---
+/**
+ * Card over wordmark 01: A page-coloured card with a rounded bottom holding a two-tone heading, a button, three link columns and the copyright, over a giant wordmark on a brand-tinted gradient.
+ *
+ * @block footers
+ * @order 54
+ */
+import { Flower2 } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  { heading: 'Company', links: ['Call us', 'Careers', 'Blog'] },
+  { heading: 'Social', links: ['Photos', 'Updates', 'Community'] },
+  { heading: 'Legal', links: ['Privacy policy', 'Terms of service'] },
+]
+---
+
+<Section as="footer" spacing="none" container={false} class="overflow-hidden" style="background: linear-gradient(to bottom, color-mix(in oklab, var(--background-primary) 10%, var(--background-page)), color-mix(in oklab, var(--background-primary) 28%, var(--background-page)))">
+  <div class="rounded-b-[3rem] bg-page px-gutter pb-12 pt-(--spacing-section-lg) shadow-sm">
+    <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2">
+      <div class="flex flex-col items-start gap-8">
+        <Heading as="h2" size="h1" class="font-normal">AI that runs the <span class="block italic">clinic front desk</span></Heading>
+        <Button href="#">Get started</Button>
+      </div>
+      <div class="flex flex-col gap-16">
+        <div class="grid grid-cols-3 gap-6">
+          {columns.map((c) => (
+            <nav aria-label={c.heading}>
+              <p class="text-neutral-faded">{c.heading}</p>
+              <ul class="mt-2 flex list-none flex-col gap-1.5 p-0">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+            </nav>
+          ))}
+        </div>
+        <div class="flex flex-col gap-2 font-mono text-sm">
+          <Flower2 class="size-9" aria-hidden="true" />
+          <p>© 2026 Pawsley, Inc. All rights reserved.<br />Made in Portmere.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="@container px-gutter pt-6">
+    <p class="whitespace-nowrap text-[29.6cqi] font-medium leading-[0.85] tracking-tight text-(--background-page) [margin-bottom:-0.1em]" aria-hidden="true">Pawsley</p>
+  </div>
+</Section>

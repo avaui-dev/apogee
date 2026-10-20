@@ -1,0 +1,45 @@
+---
+/**
+ * Landscape scene 01: A two-tone heading and a button, a small mark and four link columns, then a wide landscape picture that fades in from the page along the bottom, then the copyright.
+ *
+ * @block footers
+ * @order 63
+ */
+import { Globe } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  { heading: 'Product', links: ['Live demo', 'All features', 'Changelog', 'Pricing'] },
+  { heading: 'Docs', links: ['Get started', 'Add the tracker', 'Install guides', 'Command line', 'Import your data'] },
+  { heading: 'Support', links: ['Contact', 'Questions', 'Charges', 'Billing and usage'] },
+  { heading: 'Legal', links: ['Privacy', 'Terms', 'Data protection', 'Processing agreement'] },
+]
+---
+
+<Section as="footer" spacing="none" container={false} class="overflow-hidden">
+  <div class="mx-auto max-w-6xl px-gutter pt-(--spacing-section-lg)">
+    <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <Heading as="h2" size="h2" class="font-normal">Find out what your traffic is really worth. <span class="block text-neutral-faded">Free for 15 days, no card needed.</span></Heading>
+      <Button href="#" size="large" class="shrink-0">Try free for 15 days</Button>
+    </div>
+    <div class="mt-24 grid gap-10 md:grid-cols-[1fr_2fr]">
+      <Globe class="size-8 text-neutral-faded" aria-hidden="true" />
+      <div class="grid grid-cols-2 gap-8 text-sm sm:grid-cols-4">
+        {columns.map((c) => (
+          <nav aria-label={c.heading}>
+            <p class="font-medium">{c.heading}</p>
+            <ul class="mt-3 flex list-none flex-col gap-1.5 p-0">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l}</Link></li>)}</ul>
+          </nav>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="-mt-8">
+    <img src="https://picsum.photos/id/1036/2000/800" alt="" loading="lazy" class="aspect-[5/2] w-full object-cover mask-t-from-60%" />
+  </div>
+  <p class="mx-auto max-w-6xl px-gutter py-6 text-xs text-neutral-faded">© 2026 Harbourline. All rights reserved. Made on the coast.</p>
+</Section>

@@ -1,0 +1,34 @@
+---
+/**
+ * Contact wordmark 01: A heading, a line and a round brand-colour button over a rule, a company blurb beside a small link grid, then a giant lowercase wordmark and the copyright. Always dark.
+ *
+ * @block footers
+ * @order 59
+ */
+import { ArrowRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const links = ['Home', 'Careers', 'About us', 'Contact', 'Solutions', 'Updates']
+---
+
+<Section as="footer" spacing="medium" containerWidth="full" theme="dark" class="bg-neutral-faded">
+  <div class="flex flex-col items-start gap-4 border-b border-neutral-faded pb-40">
+    <Heading as="h2" size="h1" class="max-w-xl text-balance">Speed up your materials research</Heading>
+    <p class="max-w-sm">We can help. Tell us what you want to measure in our contact form.</p>
+    <Button href="#" rounded>Contact us<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+  </div>
+
+  <div class="mt-40 grid gap-10 md:grid-cols-[1fr_auto]">
+    <p class="max-w-xl text-xl">Alkane Labs builds instruments and runs services that speed up materials discovery for carbon capture and gas separation.</p>
+    <ul class="grid list-none grid-cols-3 gap-x-8 gap-y-3 p-0">{links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+  </div>
+
+  <p class="mt-24 pb-[0.15em] text-center text-[clamp(4rem,0.5rem+14vw,14rem)] leading-[0.8] tracking-tight" aria-hidden="true">alkane labs</p>
+  <div class="mt-16 flex flex-wrap justify-between gap-4 text-sm">
+    <p>© 2026 Alkane Labs, Inc. All rights reserved.</p>
+    <p class="text-neutral-faded">Made with care</p>
+  </div>
+</Section>

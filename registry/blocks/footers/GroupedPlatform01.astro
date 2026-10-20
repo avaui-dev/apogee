@@ -1,0 +1,68 @@
+---
+/**
+ * Grouped platform 01: A mark, line and round social icons beside a newsletter field, then a platform column split into three sub-groups and three more link columns, then the copyright and a faded mark and wordmark across the full width. Always dark.
+ *
+ * @block footers
+ * @order 55
+ */
+import { ArrowRight, AtSign, Code, Users, Video } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+
+const platform = [
+  { heading: 'Voice', links: ['Overview', 'Phone trunking', 'Global coverage', 'Voice API', 'Web calling'] },
+  { heading: 'Messaging', links: ['Overview', 'Calls', 'Messages'] },
+  { heading: 'Compliance and trust', links: ['Security', 'Privacy policy', 'Terms of use', 'Acceptable use', 'Cookie policy', 'Cookie preferences'] },
+]
+const columns = [
+  { heading: 'Resources', links: ['About us', 'Documentation', 'Blog', 'Newsroom', 'Newsletter', 'Questions'] },
+  { heading: 'Developers', links: ['API reference', 'API specification', 'Developer console', 'Integrations', 'Status', 'SDKs and examples', 'Agent skills'] },
+  { heading: 'Useful links', links: ['Pricing', 'Contact us', 'Partner programme', 'Careers'] },
+]
+const social = [[Code, 'Code'], [Video, 'Videos'], [Users, 'Community'], [AtSign, 'Updates']] as const
+// The mark: a quarter disc and a wedge, drawn once.
+const mark = 'M0 0h60a60 60 0 0 1-60 60ZM70 60a60 60 0 0 1 60-60v25a35 35 0 0 0-35 35Z'
+---
+
+<Section as="footer" spacing="large" theme="dark" class="overflow-hidden">
+  <div class="grid gap-10 lg:grid-cols-2">
+    <div class="flex flex-col gap-3">
+      <svg viewBox="0 0 130 60" class="w-14 text-primary" aria-hidden="true"><path d={mark} fill="currentColor" /></svg>
+      <p class="mt-4 text-lg">Voice infrastructure built for the AI era.</p>
+      <p class="text-sm text-neutral-faded">Lineworks Ltd</p>
+      <ul class="mt-4 flex list-none gap-3 p-0">{social.map(([Icon, l]) => <li><Link href="#" color="inherit" underline="none" aria-label={l} class="grid size-8 place-items-center rounded-full! bg-(--foreground-neutral) text-(--background-page)!"><Icon class="size-4" aria-hidden="true" /></Link></li>)}</ul>
+    </div>
+    <form class="flex flex-col gap-3 lg:justify-self-end" onsubmit="return false">
+      <label for="grouped-platform-email" class="text-sm text-neutral-faded">Stay up to date with our newsletter</label>
+      <div class="flex gap-2 rounded-lg border border-neutral-faded bg-neutral-faded p-1.5 lg:w-md">
+        <Input id="grouped-platform-email" type="email" name="email" placeholder="Your email" autocomplete="email" variant="ghost" class="flex-1" />
+        <Button type="submit">Submit<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+      </div>
+    </form>
+  </div>
+
+  <div class="mt-20 grid gap-10 lg:grid-cols-[3fr_1fr_1fr_1fr]">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-faded">Platform</p>
+      <div class="mt-8 grid grid-cols-2 gap-8 sm:grid-cols-3">
+        {platform.map((g) => <nav aria-label={g.heading}><p class="text-sm text-neutral-faded">{g.heading}</p><ul class="mt-3 flex list-none flex-col gap-2.5 p-0">{g.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul></nav>)}
+      </div>
+    </div>
+    {columns.map((c) => (
+      <nav aria-label={c.heading}>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-faded">{c.heading}</p>
+        <ul class="mt-8 flex list-none flex-col gap-2.5 p-0">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+      </nav>
+    ))}
+  </div>
+
+  <div class="mt-20 flex flex-col items-center">
+    <p class="text-sm text-neutral-faded">© 2026 Lineworks Ltd. All rights reserved.</p>
+    <ul class="mt-4 flex list-none gap-6 p-0 text-sm">{['Privacy policy', 'Terms of use', 'Legal'].map((l) => <li><Link href="#" color="neutral" underline="hover" class="text-neutral-faded">{l}</Link></li>)}</ul>
+  </div>
+  <div class="@container mt-12">
+    <p class="flex items-center gap-[0.2em] whitespace-nowrap text-[16.8cqi] font-bold leading-none tracking-tight text-neutral-faded opacity-30 mask-b-from-20%" aria-hidden="true"><svg viewBox="0 0 130 60" class="h-[0.7em] shrink-0"><path d={mark} fill="currentColor" /></svg>lineworks</p>
+  </div>
+</Section>

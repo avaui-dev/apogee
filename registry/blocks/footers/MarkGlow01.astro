@@ -1,0 +1,54 @@
+---
+/**
+ * Mark glow 01: A centred two-line heading and two round buttons over a huge mark that blurs into a glow, then a ruled row of social links with arrows, four ruled link columns and the copyright. Always dark.
+ *
+ * @block footers
+ * @order 62
+ */
+import { ArrowRight, AtSign, Camera, MessageCircle, Users } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const social = [[Camera, 'Photos'], [Users, 'Community'], [AtSign, 'Updates'], [MessageCircle, 'Chat']] as const
+const columns = [
+  { heading: 'Company', links: ['About', 'Work', 'Privacy policy', 'Terms and conditions'] },
+  { heading: 'Services', links: ['Crafted websites', 'Website redesign', 'Online shops', 'Content-managed sites'] },
+  { heading: 'Resources', links: ['Blog', 'Templates', 'Cookies', 'Questions'] },
+  { heading: 'Contact', links: ['hello@vantage.studio', '+44 20 7946 0388', 'Based in Bristol', 'Working worldwide'] },
+]
+---
+
+<Section as="footer" spacing="none" container={false} theme="dark" class="overflow-hidden">
+  <div class="flex flex-col items-center gap-6 px-gutter pt-(--spacing-section-lg) text-center">
+    <Heading as="h2" size="display" class="font-semibold tracking-tight">Create bold. <span class="block">Deliver better.</span></Heading>
+    <div class="flex gap-3">
+      <Button href="#" rounded variant="faded" color="neutral">See our work</Button>
+      <Button href="#" rounded color="neutral" variant="outline">Get in touch</Button>
+    </div>
+  </div>
+
+  <!-- The mark: two slanted strokes, sharp at the top and blurring into a glow at the bottom. -->
+  <div class="relative -mb-16 mt-12 flex justify-center" aria-hidden="true">
+    <svg viewBox="0 0 200 110" class="w-[min(30rem,80vw)] text-neutral mask-b-from-40%"><path d="M30 0h40l30 70 30-70h40l-55 110h-30Z" fill="currentColor" /></svg>
+    <div class="absolute inset-x-[20%] bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_oklab,var(--foreground-neutral)_45%,transparent),transparent_70%)] blur-2xl"></div>
+  </div>
+
+  <div class="relative border-y border-neutral-faded">
+    <ul class="mx-auto grid max-w-6xl list-none grid-cols-2 border-neutral-faded p-0 md:grid-cols-4">
+      {social.map(([Icon, l]) => <li class="border-e border-neutral-faded first:border-s"><Link href="#" color="neutral" underline="none" class="flex items-center justify-between px-5 py-4 text-sm backdrop-blur-sm hover:bg-neutral-faded"><span class="inline-flex items-center gap-2"><Icon class="size-4" aria-hidden="true" />{l}</span><ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></li>)}
+    </ul>
+  </div>
+  <div class="border-b border-neutral-faded">
+    <div class="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-4">
+      {columns.map((c) => (
+        <nav aria-label={c.heading} class="border-e border-neutral-faded px-5 py-10 first:border-s">
+          <p class="text-sm text-neutral-faded">{c.heading}</p>
+          <ul class="mt-4 flex list-none flex-col gap-2.5 p-0 text-sm">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+  </div>
+  <p class="py-6 text-center text-xs text-neutral-faded">© 2026 Vantage. All rights reserved.</p>
+</Section>

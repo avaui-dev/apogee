@@ -9035,6 +9035,217 @@
       "dependencies": [],
       "usesJs": false
     },
+    "footers/backers-row-01": {
+      "name": "footers/backers-row-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Backers row 01",
+      "description": "The logo, a line, social icons and a release-notes signup beside four link columns with external marks, then a row of backers and the copyright with small links.",
+      "files": [
+        "blocks/footers/BackersRow01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/brand-contact-01": {
+      "name": "footers/brand-contact-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Brand contact 01",
+      "description": "A hexagon mark beside a big question, a line and a mono button on the brand colour, then a giant wordmark with a trademark sign, a rule, the company line and social squares.",
+      "files": [
+        "blocks/footers/BrandContact01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/card-over-wordmark-01": {
+      "name": "footers/card-over-wordmark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Card over wordmark 01",
+      "description": "A page-coloured card with a rounded bottom holding a two-tone heading, a button, three link columns and the copyright, over a giant wordmark on a brand-tinted gradient.",
+      "files": [
+        "blocks/footers/CardOverWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/contact-card-01": {
+      "name": "footers/contact-card-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Contact card 01",
+      "description": "A small label, a two-line question and a contact card with a photo, email and phone; local time, place and social links at the end; giant initials and the copyright along the bottom. Always dark.",
+      "files": [
+        "blocks/footers/ContactCard01.astro"
+      ],
+      "registryDependencies": [
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/contact-wordmark-01": {
+      "name": "footers/contact-wordmark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Contact wordmark 01",
+      "description": "A heading, a line and a round brand-colour button over a rule, a company blurb beside a small link grid, then a giant lowercase wordmark and the copyright. Always dark.",
+      "files": [
+        "blocks/footers/ContactWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/faded-wordmark-01": {
+      "name": "footers/faded-wordmark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Faded wordmark 01",
+      "description": "Five link columns and two certification marks on a soft brand tint, an ask-an-assistant row and social icons, then the logo mark and wordmark huge and faded along the bottom.",
+      "files": [
+        "blocks/footers/FadedWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/gradient-signup-01": {
+      "name": "footers/gradient-signup-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Gradient signup 01",
+      "description": "A line and three link columns, then a large knot mark beside an underlined name and email signup with a consent note, and a row of small links, on a brand-colour gradient.",
+      "files": [
+        "blocks/footers/GradientSignup01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "footers/gradient-wordmark-01": {
+      "name": "footers/gradient-wordmark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Gradient wordmark 01",
+      "description": "The logo, a line and an app button beside four link columns, a rule and the copyright with legal links, over a faded wordmark sinking into a brand-colour gradient.",
+      "files": [
+        "blocks/footers/GradientWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/grouped-platform-01": {
+      "name": "footers/grouped-platform-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Grouped platform 01",
+      "description": "A mark, line and round social icons beside a newsletter field, then a platform column split into three sub-groups and three more link columns, then the copyright and a faded mark and wordmark across the full width. Always dark.",
+      "files": [
+        "blocks/footers/GroupedPlatform01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/image-banner-01": {
+      "name": "footers/image-banner-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Image banner 01",
+      "description": "A photo banner with a heading and button, three link columns, then a framed bottom bar with the copyright, a centred mark and a social link. Always dark.",
+      "files": [
+        "blocks/footers/ImageBanner01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/landscape-scene-01": {
+      "name": "footers/landscape-scene-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Landscape scene 01",
+      "description": "A two-tone heading and a button, a small mark and four link columns, then a wide landscape picture that fades in from the page along the bottom, then the copyright.",
+      "files": [
+        "blocks/footers/LandscapeScene01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "footers/large-01": {
       "name": "footers/large-01",
       "kind": "block",
@@ -9722,6 +9933,118 @@
       ],
       "usesJs": false
     },
+    "footers/mark-glow-01": {
+      "name": "footers/mark-glow-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Mark glow 01",
+      "description": "A centred two-line heading and two round buttons over a huge mark that blurs into a glow, then a ruled row of social links with arrows, four ruled link columns and the copyright. Always dark.",
+      "files": [
+        "blocks/footers/MarkGlow01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/photo-links-01": {
+      "name": "footers/photo-links-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Photo links 01",
+      "description": "A row of four promises, a row of six black-and-white photo links with captions, then small link groups, a newsletter line, a centred wordmark and the copyright.",
+      "files": [
+        "blocks/footers/PhotoLinks01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [],
+      "usesJs": false
+    },
+    "footers/pill-wordmark-01": {
+      "name": "footers/pill-wordmark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Pill wordmark 01",
+      "description": "A brand-colour card with a half-round start edge holding a tagline, two link columns, a newsletter pill and round social icons, with a giant wordmark along the bottom end.",
+      "files": [
+        "blocks/footers/PillWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/pixel-ground-01": {
+      "name": "footers/pixel-ground-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Pixel ground 01",
+      "description": "A two-tone heading, a how-to row, link columns, social buttons and a compliance note beside a framed picture card with a button, over a strip of pixel grass in brand shades.",
+      "files": [
+        "blocks/footers/PixelGround01.astro"
+      ],
+      "registryDependencies": [
+        "Badge",
+        "Button",
+        "Heading",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/ruled-columns-mark-01": {
+      "name": "footers/ruled-columns-mark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Ruled columns mark 01",
+      "description": "Eight link groups in four ruled columns with certification marks, then a full-width wordmark on soft brand blooms, and the copyright.",
+      "files": [
+        "blocks/footers/RuledColumnsMark01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/ruled-grid-01": {
+      "name": "footers/ruled-grid-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Ruled grid 01",
+      "description": "A footer cut into cells by thin rules: the logo, a blurb and social links down the start, many link groups in the middle, and sign-in links with the copyright at the end. Always dark.",
+      "files": [
+        "blocks/footers/RuledGrid01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
     "footers/small-01": {
       "name": "footers/small-01",
       "kind": "block",
@@ -9876,6 +10199,119 @@
       "dependencies": [
         "@lucide/astro"
       ],
+      "usesJs": false
+    },
+    "footers/spiral-wordmark-01": {
+      "name": "footers/spiral-wordmark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Spiral wordmark 01",
+      "description": "A features column at the start and three link columns at the end, social icons and the copyright, then a spiral mark and a giant wordmark across the full width.",
+      "files": [
+        "blocks/footers/SpiralWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/split-wordmark-01": {
+      "name": "footers/split-wordmark-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Split wordmark 01",
+      "description": "A two-word wordmark pushed to opposite ends on the brand colour, then a rule, an acknowledgement paragraph, three mono columns and the copyright with a small mark.",
+      "files": [
+        "blocks/footers/SplitWordmark01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/status-tiles-01": {
+      "name": "footers/status-tiles-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Status tiles 01",
+      "description": "A live status line, a tagline and social icons beside grouped link columns, then the copyright and legal links.",
+      "files": [
+        "blocks/footers/StatusTiles01.astro"
+      ],
+      "registryDependencies": [
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/tagline-columns-01": {
+      "name": "footers/tagline-columns-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Tagline columns 01",
+      "description": "The logo and a two-tone tagline beside three link columns and a let's-talk column with arrow links and social icons, then the copyright and legal links.",
+      "files": [
+        "blocks/footers/TaglineColumns01.astro"
+      ],
+      "registryDependencies": [
+        "FeaturedIcon",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/video-newsletter-01": {
+      "name": "footers/video-newsletter-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Video newsletter 01",
+      "description": "A heading and round button at the start; a menu, social links and a release-video card at the end over a newsletter signup; then the copyright and legal links. Always dark.",
+      "files": [
+        "blocks/footers/VideoNewsletter01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Heading",
+        "Input",
+        "Link",
+        "Section"
+      ],
+      "dependencies": [
+        "@lucide/astro"
+      ],
+      "usesJs": false
+    },
+    "footers/wordmark-marquee-01": {
+      "name": "footers/wordmark-marquee-01",
+      "kind": "block",
+      "category": "footers",
+      "title": "Wordmark marquee 01",
+      "description": "A scrolling strip of claims and round stamps, a mission paragraph, two link columns and a newsletter signup, then a giant wordmark and the copyright, on a tinted band.",
+      "files": [
+        "blocks/footers/WordmarkMarquee01.astro"
+      ],
+      "registryDependencies": [
+        "Button",
+        "Input",
+        "Link",
+        "Marquee",
+        "Section"
+      ],
+      "dependencies": [],
       "usesJs": false
     },
     "header/centered": {

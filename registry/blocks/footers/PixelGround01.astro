@@ -1,0 +1,58 @@
+---
+/**
+ * Pixel ground 01: A two-tone heading, a how-to row, link columns, social buttons and a compliance note beside a framed picture card with a button, over a strip of pixel grass in brand shades.
+ *
+ * @block footers
+ * @order 49
+ */
+import { AtSign, Lock, Users } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Badge from '../../components/Badge/Badge.astro'
+import Link from '../../components/Link/Link.astro'
+
+const howTo = ['How to start', 'How to build', 'How to sell', 'How to scale']
+const columns = [['Homepage', 'Resources', 'Pricing', 'Careers'], ['Privacy policy', 'Terms of service', 'Docs']]
+
+// Pixel grass: columns of squares from a fixed seed, in three strengths of the brand colour.
+let seed = 4
+const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647)
+const pixels = Array.from({ length: 160 }, (_, x) => {
+  const h = 2 + Math.floor(rand() * 4)
+  return Array.from({ length: h }, (_, y) => ({ x, y: 8 - y, o: y === h - 1 ? 0.35 : y > 1 ? 0.6 : 0.9 })).concat(rand() < 0.25 ? [{ x, y: 8 - h - 1 - Math.floor(rand() * 2), o: 0.3 }] : [])
+}).flat()
+---
+
+<Section as="footer" spacing="none" container={false} class="overflow-hidden">
+  <div class="mx-auto grid max-w-6xl gap-12 px-gutter pt-(--spacing-section-lg) lg:grid-cols-[1fr_auto]">
+    <div class="flex flex-col gap-10">
+      <Heading as="h2" size="h1" class="font-normal">Run a whole company <span class="block text-neutral-faded">with AI agents</span></Heading>
+      <nav aria-label="How to" class="flex flex-wrap items-center gap-x-4 gap-y-2"><span class="text-neutral-faded">How to</span>{howTo.map((h) => <Link href="#" color="neutral" underline="hover">{h.replace('How to ', 'How to ')}</Link>)}</nav>
+      <div class="flex gap-16">{columns.map((c) => <ul class="flex list-none flex-col gap-2 p-0">{c.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>)}</div>
+      <ul class="flex list-none gap-2 p-0">
+        <li><Button href="#" iconOnly variant="outline" color="neutral" aria-label="Updates"><AtSign aria-hidden="true" /></Button></li>
+        <li><Button href="#" iconOnly variant="outline" color="neutral" aria-label="Community"><Users aria-hidden="true" /></Button></li>
+      </ul>
+      <div class="flex flex-col gap-2 text-sm text-neutral-faded">
+        <p class="flex items-center gap-2">Automate with <Badge size="small" variant="outline" color="neutral"><Lock slot="start" />SOC 2</Badge> compliant security</p>
+        <p>© 2026 Northwave Labs</p>
+      </div>
+    </div>
+
+    <div class="w-full max-w-sm justify-self-center rounded-3xl border border-neutral-faded bg-page p-3 shadow-sm">
+      <div class="relative flex aspect-3/4 flex-col justify-end gap-4 overflow-hidden rounded-2xl p-6">
+        <img src="https://picsum.photos/id/1080/120/160" alt="" class="absolute inset-0 -z-0 size-full object-cover [image-rendering:pixelated]" />
+        <p data-theme="dark" class="relative text-xl font-medium text-neutral [text-shadow:0_1px_4px_var(--background-page)]">One place to run a company with agents</p>
+        <span class="relative"><Button href="#" color="neutral" variant="outline">Run a company</Button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-16">
+    <svg viewBox="0 0 160 9" class="block w-full text-primary" preserveAspectRatio="none" aria-hidden="true">
+      {pixels.map((p) => <rect x={p.x} y={p.y} width="1.02" height="1.02" fill="currentColor" fill-opacity={p.o} />)}
+    </svg>
+    <p class="bg-primary py-2 text-center text-xs text-on-primary">Made with care by Northwave Labs</p>
+  </div>
+</Section>

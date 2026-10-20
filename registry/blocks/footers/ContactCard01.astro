@@ -1,0 +1,38 @@
+---
+/**
+ * Contact card 01: A small label, a two-line question and a contact card with a photo, email and phone; local time, place and social links at the end; giant initials and the copyright along the bottom. Always dark.
+ *
+ * @block footers
+ * @order 60
+ */
+import { CornerDownRight } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Link from '../../components/Link/Link.astro'
+
+const social = ['Portfolio', 'Updates', 'Photos']
+---
+
+<Section as="footer" spacing="medium" containerWidth="full" theme="dark">
+  <div class="flex flex-col justify-between gap-12 md:flex-row">
+    <div class="flex flex-col gap-8">
+      <p class="text-sm text-neutral-faded">( Get in touch )</p>
+      <Heading as="h2" size="h1" class="font-normal">Have a project in mind? <span class="block">Let’s talk.</span></Heading>
+      <a href="#" class="mt-6 flex items-center gap-4 self-start rounded-md bg-neutral-faded p-1.5 pe-6 hover:bg-neutral-faded-highlighted">
+        <img src="https://picsum.photos/id/1012/96/96" alt="" class="size-12 rounded object-cover" />
+        <span class="flex flex-col"><span class="text-lg">hello@mirastudio.design</span><span class="text-sm text-neutral-faded tabular-nums">+44 20 7946 0321</span></span>
+      </a>
+    </div>
+    <div class="flex flex-col gap-10 md:w-56 md:pt-12">
+      <p class="flex flex-col"><span class="text-neutral-faded tabular-nums">20:58 local time</span>Remote from Lisbon</p>
+      <nav aria-label="Social">
+        <p class="text-neutral-faded">Social</p>
+        <ul class="mt-2 flex list-none flex-col gap-1 p-0">{social.map((s) => <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><CornerDownRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />{s}</Link></li>)}</ul>
+      </nav>
+    </div>
+  </div>
+  <div class="mt-24 flex flex-col-reverse gap-6 md:flex-row md:items-end md:justify-between">
+    <p class="text-sm text-neutral-faded">© 2026 Mira Studio</p>
+    <p class="text-[clamp(4rem,1rem+10vw,10rem)] font-normal leading-[0.8] tracking-tight" aria-hidden="true">MRST ©</p>
+  </div>
+</Section>

@@ -1,0 +1,44 @@
+---
+/**
+ * Spiral wordmark 01: A features column at the start and three link columns at the end, social icons and the copyright, then a spiral mark and a giant wordmark across the full width.
+ *
+ * @block footers
+ * @order 58
+ */
+import { AtSign, Users, Video } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  { heading: 'Product', links: ['Pricing', 'Enterprise', 'Integrations', 'Notepad or notetaker', 'For sales', 'For product teams', 'Explore more…'] },
+  { heading: 'Company', links: ['Customers', 'Careers', 'Press', 'Events', 'Startup programme', 'Student programme'] },
+  { heading: 'Resources', links: ['Blog', 'Security', 'Transparency', 'Help centre', 'Status', 'Affiliates', 'Contact us', 'Terms', 'Privacy', 'Licence'] },
+]
+---
+
+<Section as="footer" spacing="large">
+  <div class="grid gap-10 md:grid-cols-[1fr_auto]">
+    <nav aria-label="Features">
+      <p class="text-2xl">Features</p>
+      <ul class="mt-4 flex list-none flex-col gap-2 p-0 text-sm">{['Notepad', 'Chat', 'Mobile'].map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+    </nav>
+    <div class="grid grid-cols-2 gap-10 sm:grid-cols-3">
+      {columns.map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-2xl">{c.heading}</p>
+          <ul class="mt-4 flex list-none flex-col gap-2 p-0 text-sm">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+  </div>
+
+  <div class="mt-12 flex items-center justify-between gap-4 text-sm text-neutral-faded">
+    <ul class="flex list-none gap-4 p-0">{[[Users, 'Community'], [AtSign, 'Updates'], [Video, 'Videos']].map(([Icon, l]) => <li><Link href="#" color="neutral" underline="none" aria-label={l as string} class="text-neutral-faded hover:text-neutral"><Icon class="size-5" aria-hidden="true" /></Link></li>)}</ul>
+    <p>© Notebrook, Inc. 2026</p>
+  </div>
+
+  <div class="@container mt-16"><p class="flex items-center gap-[0.15em] whitespace-nowrap text-[16.6cqi] font-black leading-none tracking-tight" aria-hidden="true">
+    <svg viewBox="-8 -8 116 116" class="h-[1.05em] shrink-0" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round"><path d="M88 22A44 44 0 1 0 92 56C90 76 72 86 56 84S28 66 32 52s20-20 30-14 8 18 0 20" /></svg>
+    notebrook
+  </p></div>
+</Section>

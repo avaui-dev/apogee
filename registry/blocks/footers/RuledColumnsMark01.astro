@@ -1,0 +1,39 @@
+---
+/**
+ * Ruled columns mark 01: Eight link groups in four ruled columns with certification marks, then a full-width wordmark on soft brand blooms, and the copyright.
+ *
+ * @block footers
+ * @order 52
+ */
+import { ShieldCheck } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+
+const groups = [
+  { heading: 'Platform', links: ['Platform overview', 'Models overview'] },
+  { heading: 'Enterprise', links: ['Overview', 'Case studies', 'Partners', 'Security'] },
+  { heading: 'Developers', links: ['API docs', 'SDKs', 'Community', 'Developer hub', 'Sample apps', 'Research'] },
+  { heading: 'Legal', links: ['Website terms', 'Terms of use', 'Enterprise terms', 'Privacy policy', 'Trust centre'] },
+  { heading: 'Capabilities', links: ['Embed', 'Search', 'Analyse'] },
+  { heading: 'Solutions', links: ['Media and entertainment', 'Advertising', 'Public sector', 'Security', 'Sport and broadcast'] },
+  { heading: 'Company', links: ['About us', 'Careers', 'Newsletter', 'Blog', 'Press'] },
+  { heading: 'Social', links: ['Updates', 'Videos', 'Community'] },
+]
+---
+
+<Section as="footer" spacing="none" container={false} class="overflow-hidden">
+  <div class="grid grid-cols-2 border-neutral-faded px-gutter md:grid-cols-4">
+    {groups.map((g, i) => (
+      <nav aria-label={g.heading} class:list={['border-s border-neutral-faded px-6 py-8 md:px-10', i % 4 === 3 && 'md:border-e', i % 2 === 1 && 'max-md:border-e']}>
+        <p class="font-semibold">{g.heading}</p>
+        <ul class="mt-6 flex list-none flex-col gap-3 p-0">{g.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+        {g.heading === 'Social' && <ul class="mt-8 flex list-none gap-3 p-0" aria-label="Certifications">{['SOC 2', 'GDPR', 'TPN'].map((c) => <li class="grid size-14 place-items-center rounded-full bg-neutral-faded text-center text-[0.5625rem] font-bold"><ShieldCheck class="size-4" aria-hidden="true" />{c}</li>)}</ul>}
+      </nav>
+    ))}
+  </div>
+
+  <div class="px-gutter pb-8 pt-16" style="background: radial-gradient(ellipse 45% 70% at 10% 90%, color-mix(in oklab, var(--background-primary) 25%, transparent), transparent), radial-gradient(ellipse 35% 60% at 95% 100%, color-mix(in oklab, var(--background-primary) 15%, transparent), transparent)">
+    <div class="@container"><p class="whitespace-nowrap text-[22.6cqi] font-medium leading-none tracking-tight" aria-hidden="true">Twelvefold</p></div>
+    <p class="mt-12 text-center text-sm text-neutral-faded">© 2026 Twelvefold, Inc. All rights reserved</p>
+  </div>
+</Section>

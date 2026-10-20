@@ -1,0 +1,47 @@
+---
+/**
+ * Status tiles 01: A live status line, a tagline and social icons beside grouped link columns, then the copyright and legal links.
+ *
+ * @block footers
+ * @order 42
+ */
+import { AtSign, Mail, MessageCircle, Rss, Users } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  [{ heading: 'Solutions', links: ['Trading', 'Payments', 'Agents'] }, { heading: 'Ecosystem', links: ['Explore', 'Ecosystem fund'] }],
+  [{ heading: 'Developers', links: ['Documentation', 'Dashboard', 'Block explorer', 'Bug bounty'] }],
+  [{ heading: 'Resources', links: ['Vision', 'Jobs', 'Blog', 'Events', 'Brand guidelines'] }],
+]
+const social = [{ label: 'Email', icon: Mail }, { label: 'Community', icon: Users }, { label: 'Chat', icon: MessageCircle }, { label: 'Feed', icon: Rss }, { label: 'Profile', icon: AtSign }]
+---
+
+<Section as="footer" spacing="medium">
+  <div class="grid gap-10 md:grid-cols-4">
+    <div class="flex flex-col gap-3">
+      <p class="flex items-center gap-2 text-primary"><span class="size-2.5 rounded-full bg-primary ring-4 ring-primary-faded" aria-hidden="true"></span>All systems operational</p>
+      <p class="text-neutral-faded">Build what comes next on our network.</p>
+      <ul class="flex list-none gap-3 p-0">
+        {social.map((s) => <li><Link href="#" color="neutral" underline="none" aria-label={s.label} class="text-neutral-faded hover:text-neutral"><s.icon class="size-5" aria-hidden="true" /></Link></li>)}
+      </ul>
+    </div>
+    {columns.map((col) => (
+      <div class="flex flex-col gap-8">
+        {col.map((c) => (
+          <nav aria-label={c.heading}>
+            <p class="font-medium">{c.heading}</p>
+            <ul class="mt-2 flex list-none flex-col gap-1.5 p-0">
+              {c.links.map((l) => <li><Link href="#" color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l}</Link></li>)}
+            </ul>
+          </nav>
+        ))}
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-12 flex flex-wrap items-center justify-between gap-4 text-sm text-neutral-faded">
+    <p>© 2026</p>
+    <ul class="flex list-none items-center gap-3 p-0"><li><Link href="#" color="neutral" underline="hover">Terms of service</Link></li><li aria-hidden="true">·</li><li><Link href="#" color="neutral" underline="hover">Privacy policy</Link></li></ul>
+  </div>
+</Section>

@@ -1,0 +1,50 @@
+---
+/**
+ * Faded wordmark 01: Five link columns and two certification marks on a soft brand tint, an ask-an-assistant row and social icons, then the logo mark and wordmark huge and faded along the bottom.
+ *
+ * @block footers
+ * @order 51
+ */
+import { AtSign, Bot, Loader, MessageCircle, ShieldCheck, Sparkles, Video, Users } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  { heading: 'Platform', links: ['Overview', 'Security', 'Request a demo'] },
+  { heading: 'Use cases', links: ['Automation and workflows', 'Supplier management', 'Forecasts and budgets', 'Policy and approvals', 'Sustainability', 'Meetings'] },
+  { heading: 'Industries', links: ['Professional services', 'Technology', 'Life sciences'] },
+  { heading: 'Resources', links: ['Blog', 'White papers', 'Free tools', 'Webinars'] },
+  { heading: 'Company', links: ['About us', 'Community', 'Careers', 'Legal'] },
+]
+---
+
+<Section as="footer" spacing="none" container={false} class="overflow-hidden" style="background: linear-gradient(to bottom, color-mix(in oklab, var(--background-primary) 6%, var(--background-page)), color-mix(in oklab, var(--background-primary) 14%, var(--background-page)))">
+  <div class="mx-auto max-w-6xl px-gutter pt-(--spacing-section-lg)">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-[repeat(5,auto)_1fr]">
+      {columns.map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-sm text-neutral-faded">{c.heading}</p>
+          <ul class="mt-3 flex list-none flex-col gap-3 p-0">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+        </nav>
+      ))}
+      <ul class="flex list-none gap-3 p-0 lg:justify-self-end" aria-label="Certifications">
+        {['ISO 27001', 'GDPR'].map((c) => <li class="grid size-14 place-items-center rounded-full border-2 border-neutral text-center text-[0.5625rem] font-bold leading-tight"><ShieldCheck class="size-4" aria-hidden="true" />{c}</li>)}
+      </ul>
+    </div>
+
+    <div class="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-neutral-faded pt-8 text-sm text-neutral-faded">
+      <div class="flex flex-col gap-3">
+        <p>Ask an assistant to sum us up</p>
+        <ul class="flex list-none gap-3 p-0 text-neutral">{[Sparkles, Bot, MessageCircle, Loader].map((Icon, i) => <li><Link href="#" color="neutral" underline="none" aria-label={`Assistant ${i + 1}`}><Icon class="size-4" aria-hidden="true" /></Link></li>)}</ul>
+      </div>
+      <div class="flex flex-col items-end gap-3">
+        <p>© 2026 Clearview. All rights reserved.</p>
+        <ul class="flex list-none gap-4 p-0 text-neutral">{[[Users, 'Community'], [AtSign, 'Updates'], [Video, 'Videos']].map(([Icon, l]) => <li><Link href="#" color="neutral" underline="none" aria-label={l as string}><Icon class="size-5" aria-hidden="true" /></Link></li>)}</ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="@container mt-16 px-gutter">
+    <p class="flex items-center gap-[0.15em] whitespace-nowrap text-[18.3cqi] font-bold leading-[0.85] tracking-tight text-[color-mix(in_oklab,var(--background-primary)_22%,var(--background-page))] [margin-bottom:-0.12em]" aria-hidden="true"><Loader class="size-[0.9em] shrink-0" stroke-width="2.5" />Clearview</p>
+  </div>
+</Section>

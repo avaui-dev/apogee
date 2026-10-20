@@ -1,0 +1,52 @@
+---
+/**
+ * Backers row 01: The logo, a line, social icons and a release-notes signup beside four link columns with external marks, then a row of backers and the copyright with small links.
+ *
+ * @block footers
+ * @order 61
+ */
+import { AtSign, Code, ExternalLink, Users, Video, Hexagon, Atom, Sprout, Mountain } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Button from '../../components/Button/Button.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  { heading: 'Product', links: [['Overview'], ['SDK'], ['Hub'], ['Pricing'], ['Changelog', true], ['Web viewer']] },
+  { heading: 'Resources', links: [['Documentation'], ['Quick start'], ['Examples'], ['API reference'], ['Blog']] },
+  { heading: 'Community', links: [['Code', true], ['Chat', true], ['Updates', true], ['Videos', true]] },
+  { heading: 'Company', links: [['Careers'], ['Team'], ['Media kit'], ['Contact us', true], ['Privacy policy'], ['Terms of service']] },
+] as const
+const backers = [{ name: 'Lumen', icon: Hexagon }, { name: 'Quanta', icon: Atom }, { name: 'Fieldwork', icon: Sprout }, { name: 'Northpeak', icon: Mountain }]
+---
+
+<Section as="footer" spacing="large">
+  <div class="grid gap-12 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+    <div class="flex flex-col gap-4">
+      <p class="text-2xl font-bold tracking-tight">rerise</p>
+      <p class="max-w-xs text-neutral-faded">The data layer for physical AI, from collection to training.</p>
+      <ul class="flex list-none gap-3 p-0">{[[Code, 'Code'], [Users, 'Community'], [AtSign, 'Updates'], [Video, 'Videos']].map(([Icon, l]) => <li><Link href="#" color="neutral" underline="none" aria-label={l as string} class="text-neutral-faded hover:text-neutral"><Icon class="size-5" aria-hidden="true" /></Link></li>)}</ul>
+      <div class="mt-8 flex flex-col items-start gap-2">
+        <p class="font-medium">Subscribe to release notes</p>
+        <p class="max-w-xs text-neutral-faded">Hear about new features as soon as they ship.</p>
+        <Button href="#" size="small">Subscribe</Button>
+      </div>
+    </div>
+    {columns.map((c) => (
+      <nav aria-label={c.heading}>
+        <p class="font-medium">{c.heading}</p>
+        <ul class="mt-4 flex list-none flex-col gap-3 p-0">
+          {c.links.map(([l, ext]) => <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-1 text-neutral-faded hover:text-neutral">{l}{ext && <ExternalLink class="size-3" aria-label="(opens elsewhere)" />}</Link></li>)}
+        </ul>
+      </nav>
+    ))}
+  </div>
+
+  <div class="mt-12 flex flex-col items-center gap-6 border-y border-neutral-faded py-10">
+    <p class="text-sm text-neutral-faded">Backed by</p>
+    <ul class="flex list-none flex-wrap justify-center gap-x-10 gap-y-4 p-0">{backers.map((b) => <li class="flex items-center gap-2 text-2xl font-bold"><b.icon class="size-7" aria-hidden="true" />{b.name}</li>)}</ul>
+  </div>
+  <div class="mt-6 flex flex-wrap justify-between gap-4 text-xs text-neutral-faded">
+    <p>© 2026 Rerise AB. All rights reserved.</p>
+    <ul class="flex list-none gap-5 p-0">{['Privacy', 'Terms', 'Brand', 'Contact'].map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+  </div>
+</Section>

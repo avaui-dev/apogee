@@ -1,0 +1,60 @@
+---
+/**
+ * Video newsletter 01: A heading and round button at the start; a menu, social links and a release-video card at the end over a newsletter signup; then the copyright and legal links. Always dark.
+ *
+ * @block footers
+ * @order 45
+ */
+import { ArrowRight, AtSign, Camera, Play, Rss, Video } from '@lucide/astro'
+import Section from '../../components/Section/Section.astro'
+import Heading from '../../components/Heading/Heading.astro'
+import Button from '../../components/Button/Button.astro'
+import Input from '../../components/Input/Input.astro'
+import Link from '../../components/Link/Link.astro'
+
+const menu = ['Home', 'The bike', 'Technical specs', 'Our story', 'Support', 'Careers', 'Press kit']
+const social = [{ label: 'Photos', icon: Camera }, { label: 'Updates', icon: AtSign }, { label: 'Videos', icon: Video }, { label: 'Feed', icon: Rss }]
+const legal = ['Terms', 'Privacy policy', 'Privacy settings', 'Accessibility']
+---
+
+<Section as="footer" spacing="medium" theme="dark">
+  <div class="grid gap-12 lg:grid-cols-2">
+    <div class="flex flex-col items-start gap-6">
+      <Heading as="h2" size="h1" class="font-normal">Explore <span class="block">beyond limits.</span></Heading>
+      <Button href="#" size="large" rounded variant="outline" color="neutral">Pre-order now<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+    </div>
+
+    <div class="flex flex-col gap-16">
+      <div class="grid gap-10 sm:grid-cols-3">
+        <nav aria-label="Menu">
+          <p class="font-mono text-xs uppercase tracking-widest text-neutral-faded">Menu</p>
+          <ul class="mt-6 flex list-none flex-col gap-2 p-0">{menu.map((m) => <li><Link href="#" color="neutral" underline="hover">{m}</Link></li>)}</ul>
+        </nav>
+        <nav aria-label="Social">
+          <p class="font-mono text-xs uppercase tracking-widest text-neutral-faded">Social</p>
+          <ul class="mt-6 flex list-none flex-col gap-2.5 p-0">{social.map((s) => <li><Link href="#" color="neutral" underline="hover" class="inline-flex items-center gap-2"><s.icon class="size-4" aria-hidden="true" />{s.label}</Link></li>)}</ul>
+        </nav>
+        <a href="#" class="group flex flex-col gap-2">
+          <span class="relative block overflow-hidden rounded-md">
+            <img src="https://picsum.photos/id/1071/480/300" alt="" loading="lazy" class="aspect-8/5 w-full object-cover transition-transform duration-(--duration-medium) group-hover:scale-105 motion-reduce:transition-none" />
+            <span class="absolute inset-0 grid place-items-center"><span class="grid size-10 place-items-center rounded-full bg-page/80 backdrop-blur"><Play class="size-4" aria-hidden="true" /></span></span>
+          </span>
+          <span class="text-sm">Play the release film <span class="text-neutral-faded tabular-nums">2:56</span></span>
+        </a>
+      </div>
+
+      <form class="flex flex-col gap-4" onsubmit="return false">
+        <label for="video-newsletter-email" class="text-2xl">Stay up to date with our newsletter</label>
+        <div class="flex max-w-lg gap-2">
+          <Input id="video-newsletter-email" type="email" name="email" placeholder="Email address" autocomplete="email" size="large" class="flex-1" />
+          <Button type="submit" size="large" rounded color="neutral" variant="outline">Subscribe</Button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-16 flex flex-col gap-4 border-t border-neutral-faded pt-6 text-sm md:flex-row md:justify-between">
+    <p>© 2026 Radiant</p>
+    <ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0">{legal.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+  </div>
+</Section>

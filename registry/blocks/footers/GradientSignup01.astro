@@ -1,0 +1,54 @@
+---
+/**
+ * Gradient signup 01: A line and three link columns, then a large knot mark beside an underlined name and email signup with a consent note, and a row of small links, on a brand-colour gradient.
+ *
+ * @block footers
+ * @order 57
+ */
+import Section from '../../components/Section/Section.astro'
+import Link from '../../components/Link/Link.astro'
+
+const columns = [
+  { heading: 'Shop', links: ['Restoring shampoo', 'Restoring conditioner', 'Restoring serum', 'Restoring set'] },
+  { heading: 'Learn more', links: ['About us', 'Delivery and returns', 'Contact us', 'Questions', 'Privacy policy'] },
+  { heading: 'Connect', links: ['Photos'] },
+]
+---
+
+<!-- The brand surface, deepening toward the top. -->
+<Section as="footer" spacing="none" container={false} data-surface="primary" class="text-neutral" style="background: linear-gradient(to bottom, color-mix(in oklab, var(--background-page) 75%, black), var(--background-page))">
+  <div class="grid gap-12 px-gutter pt-12 lg:grid-cols-[1fr_2fr]">
+    <p class="max-w-56 text-lg leading-snug">Modern haircare rooted in shared knowledge.</p>
+    <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+      {columns.map((c) => (
+        <nav aria-label={c.heading}>
+          <p class="text-xl">{c.heading}</p>
+          <ul class="mt-2 flex list-none flex-col gap-1 p-0 text-sm">{c.links.map((l) => <li><Link href="#" color="inherit" underline="hover">{l}</Link></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+  </div>
+
+  <div class="mt-32 grid gap-12 px-gutter pb-10 lg:grid-cols-[1fr_2fr] lg:items-end">
+    <!-- The knot: four rounded loops woven around a centre. -->
+    <svg viewBox="0 0 100 80" class="w-48 md:w-64" fill="none" stroke="currentColor" stroke-width="7" aria-hidden="true">
+      <rect x="6" y="6" width="44" height="34" rx="17" /><rect x="50" y="6" width="44" height="34" rx="17" />
+      <rect x="6" y="40" width="44" height="34" rx="17" /><rect x="50" y="40" width="44" height="34" rx="17" />
+      <path d="M30 22 70 58M70 22 30 58" />
+    </svg>
+    <div>
+      <form class="flex flex-col gap-4" onsubmit="return false">
+        <p>Sign up to get 10% off your first order and hear first about new releases.</p>
+        <label class="sr-only" for="gradient-signup-name">Name</label>
+        <input id="gradient-signup-name" type="text" placeholder="Name" autocomplete="name" class="border-b border-neutral bg-transparent py-1.5 text-lg outline-none placeholder:text-neutral-faded focus-visible:border-current" />
+        <label class="sr-only" for="gradient-signup-email">Email</label>
+        <input id="gradient-signup-email" type="email" placeholder="Email" autocomplete="email" class="border-b border-neutral bg-transparent py-1.5 text-lg outline-none placeholder:text-neutral-faded focus-visible:border-current" />
+        <p class="text-xs">By subscribing you agree to receive marketing emails and accept our <Link href="#" color="inherit">privacy policy</Link>. You can unsubscribe at any time.</p>
+        <button type="submit" class="flex items-center gap-2 self-start"><span class="size-1.5 rounded-full bg-current" aria-hidden="true"></span>Subscribe</button>
+      </form>
+      <ul class="mt-8 grid list-none grid-cols-2 gap-2 p-0 text-xs sm:grid-cols-4">
+        <li>© Lumen Hair, 2026</li><li><Link href="#" color="inherit" underline="hover">Privacy policy</Link></li><li><Link href="#" color="inherit" underline="hover">Terms</Link></li><li><Link href="#" color="inherit" underline="hover">Credits</Link></li>
+      </ul>
+    </div>
+  </div>
+</Section>
