@@ -3,12 +3,11 @@
  * SegmentedControl — a row of connected options backed by native radios. Zero JS.
  * One selection, submits with the form under `name`. Full keyboard support and
  * a11y come from the native radio group.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import { innerRadius } from '../utils/radius.ts'
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   /** Form field name; generated when omitted. */
   name?: string

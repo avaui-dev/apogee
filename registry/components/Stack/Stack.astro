@@ -10,10 +10,10 @@ import type { HTMLAttributes } from 'astro/types'
 import { responsive, type Responsive } from '../utils/responsive.ts'
 import { tables } from '../utils/responsive-tables.ts'
 
-type Direction = keyof typeof tables.direction.base
-type Gap = keyof typeof tables.gap.base
-type Align = keyof typeof tables.align.base
-type Justify = keyof typeof tables.justify.base
+type Direction = 'row' | 'column' | 'row-reverse' | 'column-reverse'
+type Gap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16
+type Align = 'start' | 'center' | 'end' | 'stretch' | 'baseline'
+type Justify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {

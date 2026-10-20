@@ -23,8 +23,8 @@ interface Props extends HTMLAttributes<'div'> {
   width?: 'trigger' | string
   /** Scrolls the panel content past this height. */
   maxHeight?: string
-  padding?: keyof typeof panelPadding
-  elevation?: keyof typeof panelSurface
+  padding?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+  elevation?: 'raised' | 'overlay'
   /** Extra classes on the panel. */
   panelClass?: string
   /** Extra classes on the trigger (built-in button or anchor wrapper). */

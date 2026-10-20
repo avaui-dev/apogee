@@ -16,7 +16,7 @@ type State = 'done' | 'current' | 'upcoming'
 const sizes = {
   small: { m: '[--steps-m:1.5rem]', marker: 'size-6 text-xs [&>svg]:size-3.5', title: 'text-sm', desc: 'text-xs', pb: '[--steps-gap-y:1.5rem]' },
   medium: { m: '[--steps-m:2rem]', marker: 'size-8 text-sm [&>svg]:size-4', title: 'text-sm', desc: 'text-sm', pb: '[--steps-gap-y:2rem]' },
-} as const
+} as const satisfies Record<NonNullable<Props['size']>, unknown>
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -28,7 +28,7 @@ interface Props extends HTMLAttributes<'div'> {
   /** Numbers, small dots, or each item's `icon`. @category layout */
   marker?: 'number' | 'dot' | 'icon'
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium'
   class?: string
 }
 

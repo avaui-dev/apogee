@@ -5,16 +5,15 @@
  * the boxes into one hidden field that submits under `name`. Without JS each box
  * submits its own character as a repeated `name` field (join them server-side) —
  * so the code is never lost.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { fieldVariants, type FieldVariant } from '../utils/field.ts'
 import Field from '../Field/Field.astro'
 import { uid } from '../utils/uid.ts'
 
-const patterns = { numeric: '[0-9]', alphabetic: '[A-Za-z]', alphanumeric: '[A-Za-z0-9]' } as const
+const patterns = { numeric: '[0-9]', alphabetic: '[A-Za-z]', alphanumeric: '[A-Za-z0-9]' } as const satisfies Record<NonNullable<Props['pattern']>, string>
 
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
   /** @category layout */
   size?: 'small' | 'medium' | 'large' | 'xlarge'
@@ -32,7 +31,7 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'type'> {
   /** Boxes per group; a separator sits between groups (6 boxes, `groups={3}` → 123 – 456). @category layout */
   groups?: number
   /** Accepted characters; sets the keypad and the native `pattern`. */
-  pattern?: keyof typeof patterns
+  pattern?: 'numeric' | 'alphabetic' | 'alphanumeric'
   /** Older alias: `numeric` ⇒ `pattern="numeric"`, `text` ⇒ `alphanumeric`. */
   type?: 'numeric' | 'text'
   'aria-label'?: string

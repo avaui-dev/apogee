@@ -11,13 +11,13 @@ import type { HTMLAttributes } from 'astro/types'
 import { responsive, type Responsive } from '../utils/responsive.ts'
 import { tables } from '../utils/responsive-tables.ts'
 
-const colGaps = { 0: 'gap-x-0', 1: 'gap-x-1', 2: 'gap-x-2', 3: 'gap-x-3', 4: 'gap-x-4', 6: 'gap-x-6', 8: 'gap-x-8', 10: 'gap-x-10', 12: 'gap-x-12' } as const
-const rowGaps = { 0: 'gap-y-0', 1: 'gap-y-1', 2: 'gap-y-2', 3: 'gap-y-3', 4: 'gap-y-4', 6: 'gap-y-6', 8: 'gap-y-8', 10: 'gap-y-10', 12: 'gap-y-12' } as const
-const aligns = { start: 'items-start', center: 'items-center', end: 'items-end', stretch: 'items-stretch' } as const
-const justifies = { start: 'justify-items-start', center: 'justify-items-center', end: 'justify-items-end', stretch: 'justify-items-stretch' } as const
+const colGaps = { 0: 'gap-x-0', 1: 'gap-x-1', 2: 'gap-x-2', 3: 'gap-x-3', 4: 'gap-x-4', 6: 'gap-x-6', 8: 'gap-x-8', 10: 'gap-x-10', 12: 'gap-x-12' } as const satisfies Record<NonNullable<Props['colGap']>, string>
+const rowGaps = { 0: 'gap-y-0', 1: 'gap-y-1', 2: 'gap-y-2', 3: 'gap-y-3', 4: 'gap-y-4', 6: 'gap-y-6', 8: 'gap-y-8', 10: 'gap-y-10', 12: 'gap-y-12' } as const satisfies Record<NonNullable<Props['rowGap']>, string>
+const aligns = { start: 'items-start', center: 'items-center', end: 'items-end', stretch: 'items-stretch' } as const satisfies Record<NonNullable<Props['align']>, string>
+const justifies = { start: 'justify-items-start', center: 'justify-items-center', end: 'justify-items-end', stretch: 'justify-items-stretch' } as const satisfies Record<NonNullable<Props['justify']>, string>
 
-type Cols = keyof typeof tables.cols.base
-type Gap = keyof typeof tables.gap.base
+type Cols = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto'
+type Gap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
@@ -29,13 +29,13 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'align'> {
   /** @category layout */
   gap?: Responsive<Gap>
   /** @category layout */
-  colGap?: keyof typeof colGaps
+  colGap?: 0 | 1 | 2 | 3 | 4 | 6 | 8 | 10 | 12
   /** @category layout */
-  rowGap?: keyof typeof rowGaps
+  rowGap?: 0 | 1 | 2 | 3 | 4 | 6 | 8 | 10 | 12
   /** @category layout */
-  align?: keyof typeof aligns
+  align?: 'start' | 'center' | 'end' | 'stretch'
   /** @category layout */
-  justify?: keyof typeof justifies
+  justify?: 'start' | 'center' | 'end' | 'stretch'
   class?: string
 }
 

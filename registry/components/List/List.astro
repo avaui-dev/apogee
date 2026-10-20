@@ -1,10 +1,12 @@
 ---
 /**
  * List — a styled ordered or unordered list. Put `<li>`s in the slot.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/**
+ * @composable
+ * @children li
+ */
 interface Props extends Omit<HTMLAttributes<'ul'>, 'as'> {
   as?: 'ul' | 'ol'
   /** `none` drops the marker and indent. */

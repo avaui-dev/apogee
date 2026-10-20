@@ -3,10 +3,9 @@
  * SkipLink — a "skip to content" link. Hidden until focused (first Tab), then it
  * jumps keyboard users past the nav. Put it first in `<body>`; point `href` at
  * your main content's id. Zero JS.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'a'> {
   href?: string
   class?: string

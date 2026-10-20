@@ -10,10 +10,9 @@
  * can't reach slotted/injected HTML, so this is the right tool here. `:where()`
  * keeps specificity at zero so you can still override. Wrap a block in
  * `.not-prose` (a callout, a card) to keep Prose's styles off it.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   class?: string
 }

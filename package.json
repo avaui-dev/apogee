@@ -16,7 +16,8 @@
     "check:strict": "npm --prefix playground run check:strict",
     "test:behaviour": "npm --prefix playground run test:behaviour",
     "build:responsive": "node scripts/build-responsive.mjs",
-    "check:docs": "node scripts/check-docs.mjs"
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:kit": "node scripts/check-kit.mjs"
   },
   "license": "MIT",
   "author": "AVA UI (https://avaui.dev)",

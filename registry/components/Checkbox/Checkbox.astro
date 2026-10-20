@@ -3,11 +3,10 @@
  * Checkbox — a native checkbox with a custom look. The real `<input>` is styled
  * directly (`appearance: none`), so it stays the actual control (keyboard, form
  * value, a11y) — no JS, no fake proxy element.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
+/** @composable */
 interface Props extends HTMLAttributes<'input'> {
   id?: string
   label?: string

@@ -8,12 +8,12 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 
-const overflow = { vertical: 'overflow-y-auto overflow-x-hidden', horizontal: 'overflow-x-auto overflow-y-hidden', both: 'overflow-auto' } as const
+const overflow = { vertical: 'overflow-y-auto overflow-x-hidden', horizontal: 'overflow-x-auto overflow-y-hidden', both: 'overflow-auto' } as const satisfies Record<NonNullable<Props['direction']>, string>
 const scrollbars = {
   thin: '[scrollbar-width:thin]',
   hidden: '[scrollbar-width:none]',
   hover: '[scrollbar-width:none] hover:[scrollbar-width:thin]',
-} as const
+} as const satisfies Record<NonNullable<Props['scrollbar']>, string>
 const fades = {
   vertical: 'data-[fade~=top]:mask-t-from-90% data-[fade~=bottom]:mask-b-from-90%',
   horizontal: 'data-[fade~=left]:mask-l-from-90% data-[fade~=right]:mask-r-from-90%',
@@ -23,7 +23,7 @@ const fades = {
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** @category layout */
-  direction?: keyof typeof overflow
+  direction?: 'vertical' | 'horizontal' | 'both'
   /** Max height, any CSS length. @category layout */
   height?: string
   /** Alias of `height`. @category layout */
@@ -31,7 +31,7 @@ interface Props extends HTMLAttributes<'div'> {
   /** Fade the edge that hides content (a small island). @category layout */
   fade?: boolean
   /** @category layout */
-  scrollbar?: keyof typeof scrollbars
+  scrollbar?: 'thin' | 'hidden' | 'hover'
   class?: string
 }
 

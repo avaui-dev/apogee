@@ -4,8 +4,6 @@
  * an alert, a stat or a feature card. `theme` is the tile style, `color` the
  * hue, `size` the tile. Zero JS. Decorative by default; pass `label` when the
  * icon carries meaning on its own.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
@@ -33,7 +31,7 @@ const themes = {
     positive: 'bg-elevation-raised text-positive shadow-(--shadow-surface) before:border-positive-faded after:border-positive-faded/60',
     warning: 'bg-elevation-raised text-warning shadow-(--shadow-surface) before:border-warning-faded after:border-warning-faded/60',
   },
-} as const
+} as const satisfies Record<NonNullable<Props['theme']>, Record<NonNullable<Props['color']>, string>>
 const outlineRings =
   'before:absolute before:inset-0 before:rounded-[inherit] before:border-2 after:absolute after:-inset-1.5 after:rounded-[inherit] after:border'
 const sizes = {
@@ -41,15 +39,16 @@ const sizes = {
   medium: 'size-10 [&>svg]:size-5',
   large: 'size-12 [&>svg]:size-6',
   xlarge: 'size-14 [&>svg]:size-7',
-} as const
+} as const satisfies Record<NonNullable<Props['size']>, string>
 
+/** @composable */
 interface Props extends HTMLAttributes<'span'> {
   /** Tile style. @category layout */
-  theme?: keyof typeof themes
+  theme?: 'light' | 'solid' | 'outline'
   /** Hue. @category layout */
-  color?: keyof typeof themes.light
+  color?: 'neutral' | 'primary' | 'critical' | 'positive' | 'warning'
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium' | 'large' | 'xlarge'
   /** Circle instead of a rounded square. @category layout */
   rounded?: boolean
   /** Accessible name when the icon carries meaning; otherwise it is decorative. @category content */

@@ -24,7 +24,7 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** @category content */ heading: string
   /** @category content */ description?: string
   /** Shown beside the form in `form-details`. @shape { icon: 'mail'|'phone'|'map-pin', label: string, value: string, href?: string } @category content */
-  details?: { icon: keyof typeof icons; label: string; value: string; href?: string }[]
+  details?: { icon: 'mail' | 'phone' | 'map-pin'; label: string; value: string; href?: string }[]
   /** Form target. @category content */ action?: string
   /** @category content */ method?: 'get' | 'post'
   /** Submit label. @category content */ submitLabel?: string

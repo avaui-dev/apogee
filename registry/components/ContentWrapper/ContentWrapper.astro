@@ -8,10 +8,9 @@
  * - `sticky` — two columns; the second sticks as the first scrolls
  *
  * `reverse` shows the second column first (from `md` up).
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   variant?: 'stack' | 'columns' | 'sticky'
   reverse?: boolean

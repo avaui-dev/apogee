@@ -9,12 +9,11 @@
  * `data-sortable="false"` to a header to skip it; headers holding a control are
  * skipped too). `selectable` wires
  * author-placed `<Checkbox data-row>` cells and one `<Checkbox data-all>`.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronsUpDown, ChevronUp, ChevronDown } from '@lucide/astro'
 
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'table'>, 'border'> {
   /** Header text style. @category layout */
   headerStyle?: 'normal' | 'caps'

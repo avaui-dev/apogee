@@ -9,11 +9,11 @@ import type { HTMLAttributes } from 'astro/types'
 import { responsive, type Responsive } from '../utils/responsive.ts'
 import { tables } from '../utils/responsive-tables.ts'
 
-const colStarts = { 1: 'col-start-1', 2: 'col-start-2', 3: 'col-start-3', 4: 'col-start-4', 5: 'col-start-5', 6: 'col-start-6', 7: 'col-start-7', 8: 'col-start-8', 9: 'col-start-9', 10: 'col-start-10', 11: 'col-start-11', 12: 'col-start-12', 13: 'col-start-13' } as const
-const rowStarts = { 1: 'row-start-1', 2: 'row-start-2', 3: 'row-start-3', 4: 'row-start-4', 5: 'row-start-5', 6: 'row-start-6', 7: 'row-start-7' } as const
+const colStarts = { 1: 'col-start-1', 2: 'col-start-2', 3: 'col-start-3', 4: 'col-start-4', 5: 'col-start-5', 6: 'col-start-6', 7: 'col-start-7', 8: 'col-start-8', 9: 'col-start-9', 10: 'col-start-10', 11: 'col-start-11', 12: 'col-start-12', 13: 'col-start-13' } as const satisfies Record<NonNullable<Props['colStart']>, string>
+const rowStarts = { 1: 'row-start-1', 2: 'row-start-2', 3: 'row-start-3', 4: 'row-start-4', 5: 'row-start-5', 6: 'row-start-6', 7: 'row-start-7' } as const satisfies Record<NonNullable<Props['rowStart']>, string>
 
-type ColSpan = keyof typeof tables.colSpan.base
-type RowSpan = keyof typeof tables.rowSpan.base
+type ColSpan = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'full'
+type RowSpan = 1 | 2 | 3 | 4 | 5 | 6
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -23,9 +23,9 @@ interface Props extends HTMLAttributes<'div'> {
   /** @category layout */
   rowSpan?: Responsive<RowSpan>
   /** @category layout */
-  colStart?: keyof typeof colStarts
+  colStart?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
   /** @category layout */
-  rowStart?: keyof typeof rowStarts
+  rowStart?: 1 | 2 | 3 | 4 | 5 | 6 | 7
   class?: string
 }
 

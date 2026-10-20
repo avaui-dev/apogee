@@ -3,13 +3,17 @@
 //   apogee init            scaffold tokens + config
 //   apogee add <names...>  copy components, sections, pages or blocks (+ their deps)
 //   apogee list            list available components
+//   apogee diff [names...] what changed between your copies and the package
+//   apogee update [names...] take package changes for files you haven't edited
 // Dependency-free: Node built-ins only.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, mkdtempSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { dirname, resolve, join } from 'node:path'
+import { dirname, resolve, join, relative } from 'node:path'
 import { parseArgs } from 'node:util'
-import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin } from './lib.mjs'
+import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin, rendered, destOf, sha, fileStatus } from './lib.mjs'
 
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const registryDir = join(pkgRoot, 'registry')
@@ -19,7 +23,8 @@ const CONFIG = 'apogee.json'
 const DEFAULTS = { componentsDir: 'src/components/apogee', tokens: 'src/styles/apogee.css' }
 
 // --- tiny output helpers ---
-const c = (n) => (s) => `\x1b[${n}m${s}\x1b[0m`
+// Colour only on a terminal, so piped output stays plain text.
+const c = (n) => (s) => (process.stdout.isTTY ? `\x1b[${n}m${s}\x1b[0m` : s)
 const bold = c(1)
 const dim = c(2)
 const green = c(32)
@@ -41,6 +46,17 @@ const readConfig = () => {
   }
 }
 
+// apogee.json keeps `installed`: project path → hash of what Apogee last wrote
+// there. That's how `update` tells your edits from an older package version.
+const recordWrites = (cfg, paths) => {
+  const installed = { ...cfg.installed }
+  for (const p of paths) installed[relative(process.cwd(), p)] = sha(readFileSync(p, 'utf8'))
+  writeFileSync(join(process.cwd(), CONFIG), JSON.stringify({ ...cfg, installed }, null, 2) + '\n')
+}
+
+// Layouts go to src/layouts/ (Astro's convention, and where AVA looks), not the components dir.
+const rootFor = (relFile, cfg) => (relFile.startsWith('layouts/') ? join(process.cwd(), 'src') : join(process.cwd(), cfg.componentsDir))
+
 const canonical = (input) => canonicalIn(index, input)
 const resolveDeps = (names) => resolveDepsIn(index, names)
 const copyInto = (relFile, destRoot, overwrite) => copyIntoFrom(registryDir, relFile, destRoot, overwrite)
@@ -55,7 +71,9 @@ function cmdInit(opts) {
   if (existsSync(cfgPath) && !opts.force) {
     say(`${yellow('•')} ${CONFIG} already exists — keeping it. Use --force to overwrite.`)
   } else {
-    writeFileSync(cfgPath, JSON.stringify(config, null, 2) + '\n')
+    // --force resets the settings but keeps the record of installed files (diff/update need it).
+    const installed = readConfig()?.installed
+    writeFileSync(cfgPath, JSON.stringify(installed ? { ...config, installed } : config, null, 2) + '\n')
     say(`${green('✓')} wrote ${bold(CONFIG)}`)
   }
 
@@ -95,7 +113,6 @@ function cmdAdd(names, opts) {
   const config = readConfig()
   if (!config) say(`${yellow('•')} no ${CONFIG} — using defaults. Run \`apogee init\` first.`)
   const cfg = config ?? DEFAULTS
-  const destRoot = join(process.cwd(), cfg.componentsDir)
 
   // Resolve names.
   const resolved = []
@@ -113,11 +130,12 @@ function cmdAdd(names, opts) {
   for (const name of all) {
     const comp = index.components[name]
     for (const f of comp.files) {
-      const r = copyInto(f, destRoot, opts.overwrite)
+      const r = copyInto(f, rootFor(f, cfg), opts.overwrite)
       ;(r === 'skip' ? skipped : added).push(f)
     }
     for (const d of comp.dependencies) npmDeps.add(d)
   }
+  recordWrites(cfg, added.map((f) => destOf(f, rootFor(f, cfg))))
 
   const pulledIn = all.filter((n) => !resolved.includes(n))
   say(`${green('✓')} added ${bold(added.length)} file(s) to ${cyan(cfg.componentsDir)}`)
@@ -133,6 +151,67 @@ function cmdAdd(names, opts) {
   }
 }
 
+// Every installed file of the named entries (all entries when none are named), with its status.
+function statuses(names) {
+  const cfg = readConfig() ?? DEFAULTS
+  const picked = names.length
+    ? names.map((n) => canonical(n) ?? die(`unknown component: ${bold(n)}. Run \`apogee list\` to see all.`))
+    : Object.keys(index.components)
+  const rows = []
+  for (const name of picked) {
+    for (const f of index.components[name].files) {
+      const dest = destOf(f, rootFor(f, cfg))
+      if (!existsSync(dest)) continue
+      const rel = relative(process.cwd(), dest)
+      const upstream = rendered(registryDir, f)
+      rows.push({ f, dest, rel, upstream, status: fileStatus(readFileSync(dest, 'utf8'), cfg.installed?.[rel], upstream) })
+    }
+  }
+  if (!rows.length) die(names.length ? 'none of those are installed here.' : 'no Apogee files found here.')
+  return { cfg, rows }
+}
+
+const NOTE = {
+  current: 'same as the package',
+  outdated: 'the package changed, you didn\'t: `apogee update` takes it',
+  edited: 'you changed it, the package didn\'t: kept',
+  conflict: 'you and the package both changed it: `apogee update --overwrite` takes the package version',
+  unknown: 'differs from the package, no record of what was copied: `apogee update --overwrite` takes the package version',
+}
+
+function cmdDiff(names) {
+  const { rows } = statuses(names)
+  for (const r of rows) say(`${(r.status === 'current' ? dim : yellow)(r.status.padEnd(9))} ${r.rel}`)
+  const changed = rows.filter((r) => r.status !== 'current')
+  if (!changed.length) return say(`\n${green('✓')} every file matches the package.`)
+  for (const s of new Set(changed.map((r) => r.status))) say(dim(`  ${s}: ${NOTE[s]}`))
+  // ponytail: line diffs come from git, which nearly every project has; without it the status list stands alone.
+  const tmp = mkdtempSync(join(tmpdir(), 'apogee-diff-'))
+  for (const r of changed) {
+    const pkgCopy = join(tmp, r.f.replaceAll('/', '_'))
+    writeFileSync(pkgCopy, r.upstream)
+    const g = spawnSync('git', ['--no-pager', 'diff', '--no-index', '--color=auto', `--src-prefix=package/`, `--dst-prefix=yours/`, pkgCopy, r.dest], { encoding: 'utf8' })
+    if (g.error) return say(dim('\n(install git to see the changed lines)'))
+    // Name both sides by the project path instead of the temp copy's.
+    const out = g.stdout
+      .replace(/^((?:\x1b\[[\d;]*m)*)diff --git .*$/m, `$1diff ${r.rel}`)
+      .replace(/^((?:\x1b\[[\d;]*m)*)--- package\/\S+/m, `$1--- package/${r.rel}`)
+      .replace(/^((?:\x1b\[[\d;]*m)*)\+\+\+ yours\/\S+/m, `$1+++ yours/${r.rel}`)
+    say('\n' + out.trimEnd())
+  }
+}
+
+function cmdUpdate(names, opts) {
+  const { cfg, rows } = statuses(names)
+  const take = rows.filter((r) => r.status === 'outdated' || (opts.overwrite && (r.status === 'conflict' || r.status === 'unknown')))
+  for (const r of take) writeFileSync(r.dest, r.upstream)
+  recordWrites(cfg, take.map((r) => r.dest))
+  say(`${green('✓')} updated ${bold(take.length)} file(s)`)
+  for (const r of take) say(dim(`  ↑ ${r.rel}`))
+  const kept = rows.filter((r) => !take.includes(r) && r.status !== 'current')
+  for (const r of kept) say(`${yellow('•')} kept ${r.rel} ${dim(`(${r.status}: ${NOTE[r.status]})`)}`)
+}
+
 function cmdList() {
   // Names starting with _ are shared internals, pulled in as dependencies, never added on their own.
   const of = (kind) => Object.keys(index.components).filter((n) => index.components[n].kind === kind && !n.startsWith('_')).sort()
@@ -144,6 +223,8 @@ function cmdList() {
     say('')
   }
   if (sections.length) say(bold(`${sections.length} sections:`) + '\n  ' + sections.join('  ') + '\n')
+  const layouts = of('layout')
+  if (layouts.length) say(bold(`${layouts.length} layouts`) + dim(' (to src/layouts/)') + bold(':') + '\n  ' + layouts.join('  ') + '\n')
   say(bold(`${names.length} components:\n`))
   const width = Math.max(...names.map((n) => n.length)) + 2
   let line = ''
@@ -165,6 +246,8 @@ ${bold('Usage')}
   apogee init [--dir <path>] [--tokens <path>] [--skin <name>] [--force]
   apogee add <names...> [--overwrite]
   apogee list
+  apogee diff [names...]
+  apogee update [names...] [--overwrite]
 
 ${bold('Examples')}
   apogee init
@@ -192,4 +275,6 @@ if (values.help || !cmd) help()
 else if (cmd === 'init') cmdInit(values)
 else if (cmd === 'add') cmdAdd(rest, values)
 else if (cmd === 'list') cmdList()
+else if (cmd === 'diff') cmdDiff(rest)
+else if (cmd === 'update') cmdUpdate(rest, values)
 else die(`unknown command: ${bold(cmd)}. Run \`apogee --help\`.`)

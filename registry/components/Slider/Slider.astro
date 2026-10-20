@@ -5,8 +5,6 @@
  * second input for a lower/upper pair that submits as `<name>-min` / `<name>-max`
  * (or `minName` / `maxName`). `orientation="vertical"` turns the input with
  * `writing-mode`; give the field a height (`class="h-64"`).
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
@@ -16,8 +14,9 @@ const colors = {
   critical: 'var(--background-critical)',
   positive: 'var(--background-positive)',
   warning: 'var(--background-warning)',
-} as const
+} as const satisfies Record<NonNullable<Props['color']>, string>
 
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   name?: string
   min?: number
@@ -36,7 +35,7 @@ interface Props extends HTMLAttributes<'div'> {
   /** @category layout */
   orientation?: 'horizontal' | 'vertical'
   /** Hue of the filled track and thumb. @category layout */
-  color?: keyof typeof colors
+  color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
   /** Where the badge sits relative to a horizontal track. */
   labelPosition?: 'top' | 'bottom'
   'aria-label'?: string

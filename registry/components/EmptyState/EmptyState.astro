@@ -4,8 +4,6 @@
  * cleared list). Zero JS. Slots: `icon` (leading glyph or FeaturedIcon),
  * `actions` (buttons). `variant="plain"` drops the dashed box for use inside a
  * card or table; `pattern` draws faint rings or a grid behind the icon.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
@@ -13,8 +11,9 @@ const sizes = {
   small: { root: 'gap-2 p-6', icon: '[&>svg]:size-6', title: 'text-sm', desc: 'text-xs' },
   medium: { root: 'gap-3 p-10', icon: '[&>svg]:size-8', title: 'text-sm', desc: 'text-sm' },
   large: { root: 'gap-4 p-12', icon: '[&>svg]:size-10', title: 'text-lg', desc: 'text-base' },
-} as const
+} as const satisfies Record<NonNullable<Props['size']>, unknown>
 
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   title: string
   description?: string | undefined
@@ -23,7 +22,7 @@ interface Props extends HTMLAttributes<'div'> {
   /** `plain` drops the dashed box. @category layout */
   variant?: 'bordered' | 'plain' | undefined
   /** @category layout */
-  size?: keyof typeof sizes | undefined
+  size?: 'small' | 'medium' | 'large' | undefined
   /** A faint decoration behind the icon. @category layout */
   pattern?: 'none' | 'rings' | 'grid' | undefined
   class?: string | undefined

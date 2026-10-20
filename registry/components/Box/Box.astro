@@ -9,11 +9,11 @@ import type { HTMLAttributes } from 'astro/types'
 import { responsive, type Responsive } from '../utils/responsive.ts'
 import { tables } from '../utils/responsive-tables.ts'
 
-const pads = { 0: 'p-0', 1: 'p-1', 2: 'p-2', 3: 'p-3', 4: 'p-4', 5: 'p-5', 6: 'p-6', 8: 'p-8', 10: 'p-10', 12: 'p-12' } as const
-const padsInline = { 0: 'px-0', 1: 'px-1', 2: 'px-2', 3: 'px-3', 4: 'px-4', 5: 'px-5', 6: 'px-6', 8: 'px-8', 10: 'px-10', 12: 'px-12' } as const
-const padsBlock = { 0: 'py-0', 1: 'py-1', 2: 'py-2', 3: 'py-3', 4: 'py-4', 5: 'py-5', 6: 'py-6', 8: 'py-8', 10: 'py-10', 12: 'py-12' } as const
+const pads = { 0: 'p-0', 1: 'p-1', 2: 'p-2', 3: 'p-3', 4: 'p-4', 5: 'p-5', 6: 'p-6', 8: 'p-8', 10: 'p-10', 12: 'p-12' } as const satisfies Record<NonNullable<Props['padding']>, string>
+const padsInline = { 0: 'px-0', 1: 'px-1', 2: 'px-2', 3: 'px-3', 4: 'px-4', 5: 'px-5', 6: 'px-6', 8: 'px-8', 10: 'px-10', 12: 'px-12' } as const satisfies Record<NonNullable<Props['paddingInline']>, string>
+const padsBlock = { 0: 'py-0', 1: 'py-1', 2: 'py-2', 3: 'py-3', 4: 'py-4', 5: 'py-5', 6: 'py-6', 8: 'py-8', 10: 'py-10', 12: 'py-12' } as const satisfies Record<NonNullable<Props['paddingBlock']>, string>
 // Same steps as the paddings, so a child can cancel any of them (Card small = 3, medium = 5).
-const bleeds = { 0: 'mx-0', 1: '-mx-1', 2: '-mx-2', 3: '-mx-3', 4: '-mx-4', 5: '-mx-5', 6: '-mx-6', 8: '-mx-8', 10: '-mx-10', 12: '-mx-12' } as const
+const bleeds = { 0: 'mx-0', 1: '-mx-1', 2: '-mx-2', 3: '-mx-3', 4: '-mx-4', 5: '-mx-5', 6: '-mx-6', 8: '-mx-8', 10: '-mx-10', 12: '-mx-12' } as const satisfies Record<NonNullable<Props['bleed']>, string>
 const backgrounds = {
   page: 'bg-page', 'page-faded': 'bg-page-faded', neutral: 'bg-neutral', 'neutral-faded': 'bg-neutral-faded',
   primary: 'bg-primary text-on-primary', 'primary-faded': 'bg-primary-faded',
@@ -22,18 +22,18 @@ const backgrounds = {
   warning: 'bg-warning text-on-warning', 'warning-faded': 'bg-warning-faded',
   'elevation-base': 'bg-elevation-base', 'elevation-raised': 'bg-elevation-raised', 'elevation-overlay': 'bg-elevation-overlay',
   inverted: 'bg-inverted text-on-inverted',
-} as const
+} as const satisfies Record<NonNullable<Props['background']>, string>
 const borders = {
   neutral: 'border border-neutral', 'neutral-faded': 'border border-neutral-faded', primary: 'border border-primary',
   critical: 'border border-critical', positive: 'border border-positive', warning: 'border border-warning', transparent: 'border border-transparent',
-} as const
-const radii = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg', xl: 'rounded-xl', full: 'rounded-full' } as const
-const shadows = { outline: 'shadow-outline', raised: 'shadow-raised', overlay: 'shadow-overlay' } as const
+} as const satisfies Record<NonNullable<Props['border']>, string>
+const radii = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg', xl: 'rounded-xl', full: 'rounded-full' } as const satisfies Record<NonNullable<Props['radius']>, string>
+const shadows = { outline: 'shadow-outline', raised: 'shadow-raised', overlay: 'shadow-overlay' } as const satisfies Record<NonNullable<Props['shadow']>, string>
 
-type Direction = keyof typeof tables.direction.base
-type Gap = keyof typeof tables.gap.base
-type Align = keyof typeof tables.align.base
-type Justify = keyof typeof tables.justify.base
+type Direction = 'row' | 'column' | 'row-reverse' | 'column-reverse'
+type Gap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16
+type Align = 'start' | 'center' | 'end' | 'stretch' | 'baseline'
+type Justify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'align' | 'border' | 'width'> {
@@ -44,14 +44,14 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'align' | 'border' | 'width'
   /** @category layout */ justify?: Responsive<Justify>
   /** @category layout */ wrap?: Responsive<boolean>
   /** Hairline between children, following `direction` at every breakpoint. @category layout */ divided?: boolean
-  /** @category layout */ padding?: keyof typeof pads
-  /** @category layout */ paddingInline?: keyof typeof padsInline
-  /** @category layout */ paddingBlock?: keyof typeof padsBlock
-  /** Negative inline margin, for edge-to-edge children inside a padded parent. @category layout */ bleed?: keyof typeof bleeds
-  /** @category layout */ background?: keyof typeof backgrounds
-  /** @category layout */ border?: keyof typeof borders
-  /** @category layout */ radius?: keyof typeof radii
-  /** @category layout */ shadow?: keyof typeof shadows
+  /** @category layout */ padding?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+  /** @category layout */ paddingInline?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+  /** @category layout */ paddingBlock?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+  /** Negative inline margin, for edge-to-edge children inside a padded parent. @category layout */ bleed?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+  /** @category layout */ background?: 'page' | 'page-faded' | 'neutral' | 'neutral-faded' | 'primary' | 'primary-faded' | 'critical' | 'critical-faded' | 'positive' | 'positive-faded' | 'warning' | 'warning-faded' | 'elevation-base' | 'elevation-raised' | 'elevation-overlay' | 'inverted'
+  /** @category layout */ border?: 'neutral' | 'neutral-faded' | 'primary' | 'critical' | 'positive' | 'warning' | 'transparent'
+  /** @category layout */ radius?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  /** @category layout */ shadow?: 'outline' | 'raised' | 'overlay'
   /** @category layout */ width?: 'full' | 'auto'
   /** As a flex child: take the remaining space. @category layout */ grow?: boolean
   /** As a flex child: `false` keeps its size when space is short. @category layout */ shrink?: boolean

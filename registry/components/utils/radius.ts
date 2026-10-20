@@ -6,5 +6,5 @@ export const innerRadius = {
   'md-1': 'rounded-[calc(var(--radius-md)-0.25rem)]',
   'lg-1': 'rounded-[calc(var(--radius-lg)-0.25rem)]',
   'lg-2': 'rounded-[calc(var(--radius-lg)-0.5rem)]',
-} as const
-export type InnerRadius = keyof typeof innerRadius
+} as const satisfies Record<InnerRadius, string>
+export type InnerRadius = 'md-0.5' | 'md-1' | 'lg-1' | 'lg-2'

@@ -4,10 +4,9 @@
  *
  * For a link that looks like a button, use `Button` with `href`; for a
  * button that looks like a link, use `Button variant="link"`.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'a'> {
   href: string
   /** Text colour. `inherit` takes the surrounding text colour. @category layout */

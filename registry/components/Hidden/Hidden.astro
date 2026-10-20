@@ -6,17 +6,17 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 
-const below = { sm: 'max-sm:hidden', md: 'max-md:hidden', lg: 'max-lg:hidden', xl: 'max-xl:hidden' } as const
-const above = { sm: 'sm:hidden', md: 'md:hidden', lg: 'lg:hidden', xl: 'xl:hidden' } as const
+const below = { sm: 'max-sm:hidden', md: 'max-md:hidden', lg: 'max-lg:hidden', xl: 'max-xl:hidden' } as const satisfies Record<NonNullable<Props['below']>, string>
+const above = { sm: 'sm:hidden', md: 'md:hidden', lg: 'lg:hidden', xl: 'xl:hidden' } as const satisfies Record<NonNullable<Props['above']>, string>
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** @category layout */
   as?: 'div' | 'span'
   /** Hidden on viewports narrower than this breakpoint. @category layout */
-  below?: keyof typeof below
+  below?: 'sm' | 'md' | 'lg' | 'xl'
   /** Hidden on viewports at or wider than this breakpoint. @category layout */
-  above?: keyof typeof above
+  above?: 'sm' | 'md' | 'lg' | 'xl'
   /** Visually hidden, still announced. @category layout */
   visually?: boolean
   class?: string

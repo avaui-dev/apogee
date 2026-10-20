@@ -3,10 +3,9 @@
  * Progress — a determinate or indeterminate bar. The fill moves with a
  * transform (no layout work), and an optional value label sits after the bar,
  * under it, or floats above the fill. Zero JS.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   value?: number
   min?: number

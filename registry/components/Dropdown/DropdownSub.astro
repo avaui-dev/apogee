@@ -4,8 +4,6 @@
  * Click or ArrowRight (ArrowLeft in RTL) opens, the opposite arrow / Escape closes, hover opens with a
  * short delay (Dropdown island). Zero JS: click opens, light dismiss closes.
  * Slots: `start` (icon), default (`DropdownItem`s).
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronRight } from '@lucide/astro'
@@ -21,6 +19,7 @@ import {
   type ItemSize,
   type Placement,
 } from '../utils/panel.ts'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   label: string
   /** @category layout */

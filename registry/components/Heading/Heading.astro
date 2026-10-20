@@ -5,28 +5,27 @@
  * Semantic level via `as` (the tag), visual size via `size` (defaults to the
  * level). Sizes are fluid, from the type-scale tokens. Keep heading order
  * correct for accessibility even when the visual size differs.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
-const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' } as const
-const colors = { neutral: 'text-neutral', 'neutral-faded': 'text-neutral-faded', primary: 'text-primary', critical: 'text-critical', positive: 'text-positive', warning: 'text-warning' } as const
-const clamps = { 1: 'line-clamp-1 wrap-anywhere', 2: 'line-clamp-2', 3: 'line-clamp-3', 4: 'line-clamp-4', 5: 'line-clamp-5', 6: 'line-clamp-6' } as const
-const aligns = { start: 'text-start', center: 'text-center', end: 'text-end' } as const
+const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' } as const satisfies Record<NonNullable<Props['weight']>, string>
+const colors = { neutral: 'text-neutral', 'neutral-faded': 'text-neutral-faded', primary: 'text-primary', critical: 'text-critical', positive: 'text-positive', warning: 'text-warning' } as const satisfies Record<NonNullable<Props['color']>, string>
+const clamps = { 1: 'line-clamp-1 wrap-anywhere', 2: 'line-clamp-2', 3: 'line-clamp-3', 4: 'line-clamp-4', 5: 'line-clamp-5', 6: 'line-clamp-6' } as const satisfies Record<NonNullable<Props['maxLines']>, string>
+const aligns = { start: 'text-start', center: 'text-center', end: 'text-end' } as const satisfies Record<NonNullable<Props['align']>, string>
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'h2'>, 'size' | 'as'> {
   /** Semantic tag. */
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'div'
   /** Visual size; defaults to `as` when it's a heading, else h2. */
   size?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   /** @category layout */
-  weight?: keyof typeof weights
+  weight?: 'regular' | 'medium' | 'semibold' | 'bold'
   /** Text hue. Unset inherits, so headings on a solid fill keep the on-colour. @category layout */
-  color?: keyof typeof colors
+  color?: 'neutral' | 'neutral-faded' | 'primary' | 'critical' | 'positive' | 'warning'
   /** @category layout */
-  maxLines?: keyof typeof clamps
+  maxLines?: 1 | 2 | 3 | 4 | 5 | 6
   /** @category layout */
-  align?: keyof typeof aligns
+  align?: 'start' | 'center' | 'end'
   class?: string
 }
 

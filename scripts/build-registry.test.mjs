@@ -15,10 +15,11 @@ test('components importing a helper depend on utils', () => {
 
 test('every entry carries its kind', () => {
   for (const [name, c] of Object.entries(index.components)) {
-    assert.ok(['component', 'section', 'page', 'block'].includes(c.kind), `${name} has kind ${c.kind}`)
+    assert.ok(['component', 'section', 'page', 'block', 'layout'].includes(c.kind), `${name} has kind ${c.kind}`)
     if (c.kind === 'section') assert.ok(c.files.every((f) => f.startsWith('sections/')), `${name} files under sections/`)
     if (c.kind === 'page') assert.ok(c.files.every((f) => f.startsWith('pages/')), `${name} files under pages/`)
     if (c.kind === 'block') assert.ok(c.files.every((f) => f.startsWith('blocks/')), `${name} files under blocks/`)
+    if (c.kind === 'layout') assert.ok(c.files.every((f) => f.startsWith('layouts/')), `${name} files under layouts/`)
   }
 })
 

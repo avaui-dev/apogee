@@ -11,30 +11,30 @@
 import type { HTMLAttributes } from 'astro/types'
 
 // Lines read the border tokens, like every other rule and outline.
-const colors = { neutral: 'bg-(--border-neutral)', 'neutral-faded': 'bg-(--border-neutral-faded)' } as const
+const colors = { neutral: 'bg-(--border-neutral)', 'neutral-faded': 'bg-(--border-neutral-faded)' } as const satisfies Record<NonNullable<Props['color']>, string>
 const borders = { neutral: 'border-neutral', 'neutral-faded': 'border-neutral-faded' } as const
-const insetsH = { 0: 'my-0', 2: 'my-2', 4: 'my-4', 6: 'my-6', 8: 'my-8' } as const
+const insetsH = { 0: 'my-0', 2: 'my-2', 4: 'my-4', 6: 'my-6', 8: 'my-8' } as const satisfies Record<NonNullable<Props['inset']>, string>
 const insetsV = { 0: 'mx-0', 2: 'mx-2', 4: 'mx-4', 6: 'mx-6', 8: 'mx-8' } as const
 const variants = {
   line: 'gap-3',
   dual: 'justify-center border-y py-3',
   fill: 'justify-center rounded-lg bg-neutral-faded py-2',
-} as const
+} as const satisfies Record<NonNullable<Props['variant']>, string>
 
 /** @composable */
 interface Props extends HTMLAttributes<'hr'> {
   /** @category layout */
   orientation?: 'horizontal' | 'vertical'
   /** @category layout */
-  color?: keyof typeof colors
+  color?: 'neutral' | 'neutral-faded'
   /** Where the label sits on a horizontal divider (`line` only). @category layout */
   contentPosition?: 'start' | 'center' | 'end'
   /** How labelled content is framed. @category layout */
-  variant?: keyof typeof variants
+  variant?: 'line' | 'dual' | 'fill'
   /** The slot holds a control: no separator role, no faded text colour. */
   interactive?: boolean
   /** Margin along the main axis. @category layout */
-  inset?: keyof typeof insetsH
+  inset?: 0 | 2 | 4 | 6 | 8
   class?: string
 }
 

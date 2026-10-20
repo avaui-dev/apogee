@@ -98,6 +98,22 @@ for (const [folder, kind] of [['pages', 'page'], ['blocks', 'block']]) {
   }
 }
 
+// Layouts (registry/layouts/<Name>.astro): page shells, one entry per file. The CLI
+// writes them to src/layouts/, where Astro projects (and AVA) look for layouts.
+for (const file of existsSync(join(root, 'registry', 'layouts')) ? readdirSync(join(root, 'registry', 'layouts')).filter((f) => f.endsWith('.astro')) : []) {
+  const name = file.replace(/\.astro$/, '')
+  const src = readFileSync(join(root, 'registry', 'layouts', file), 'utf8')
+  const { registryDeps, npmDeps } = depsOf(src, null)
+  components[name] = {
+    name,
+    kind: 'layout',
+    files: [`layouts/${file}`],
+    registryDependencies: [...registryDeps].sort(),
+    dependencies: [...npmDeps].sort(),
+    usesJs: false,
+  }
+}
+
 const index = {
   $schema: 'apogee-registry@1',
   tokens: 'registry/tokens/theme.css',
@@ -107,4 +123,4 @@ const index = {
 const out = join(root, 'registry', 'index.json')
 writeFileSync(out, JSON.stringify(index, null, 2) + '\n')
 const counts = Object.values(components).reduce((n, c) => ((n[c.kind] = (n[c.kind] ?? 0) + 1), n), {})
-console.log(`Wrote ${out} — ${counts.component ?? 0} components, ${counts.section ?? 0} sections, ${counts.page ?? 0} pages, ${counts.block ?? 0} blocks.`)
+console.log(`Wrote ${out} — ${counts.component ?? 0} components, ${counts.section ?? 0} sections, ${counts.page ?? 0} pages, ${counts.block ?? 0} blocks, ${counts.layout ?? 0} layouts.`)

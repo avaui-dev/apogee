@@ -5,8 +5,6 @@
  * `selectedVariant` the pressed one. Self-toggles on click by default (small
  * island); pass `manual` when a parent owns the state. With `name` and `value`
  * a hidden input submits the value while pressed, with or without JS.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import {
@@ -18,6 +16,7 @@ import {
   type ButtonSize,
   type PressedVariant,
 } from '../Button/button.ts'
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'button'>, 'size'> {
   pressed?: boolean
   /** Don't self-toggle; the parent controls `aria-pressed`. */

@@ -8,8 +8,8 @@
 import type { HTMLAttributes } from 'astro/types'
 import { Image as AstroImage } from 'astro:assets'
 
-const fits = { cover: 'object-cover', contain: 'object-contain' } as const
-const radii = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg', xl: 'rounded-xl', full: 'rounded-full' } as const
+const fits = { cover: 'object-cover', contain: 'object-contain' } as const satisfies Record<NonNullable<Props['fit']>, string>
+const radii = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg', xl: 'rounded-xl', full: 'rounded-full' } as const satisfies Record<NonNullable<Props['radius']>, string>
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'alt' | 'width' | 'height' | 'loading' | 'decoding'> {
@@ -26,9 +26,9 @@ interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'alt' | 'width' | 'h
   quality?: number | 'low' | 'mid' | 'high' | 'max'
   format?: 'avif' | 'webp' | 'png' | 'jpeg' | 'svg'
   /** How the image fills a box you size with `width`/`height` or a class. @category layout */
-  fit?: keyof typeof fits
+  fit?: 'cover' | 'contain'
   /** @category layout */
-  radius?: keyof typeof radii
+  radius?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /** Inset hairline for images that blend into the page. @category layout */
   outline?: boolean
   class?: string

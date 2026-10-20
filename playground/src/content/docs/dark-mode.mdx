@@ -15,19 +15,20 @@ mode; they read tokens.
 ## How it works
 
 - `registry/tokens/theme.css` holds two generated blocks, `:root, [data-theme="light"]` and `[data-theme="dark"]`, both built from the same hue inputs. A brand change updates both.
+- `build:tokens` also copies the dark block under `@media (prefers-color-scheme: dark)` for `:root:not([data-theme])`. With no attribute on `<html>`, the page follows the system setting, without JS. The `dark:` variant follows it too.
 - The attribute works on any element, so one band of a light page can be dark. [Section](/docs/section)'s `theme` prop and the [Theme](/docs/theme) component set it for you.
-- Without the attribute the page renders light. The stylesheet has no `prefers-color-scheme` block; the script below picks the mode.
+- A `data-theme` attribute always wins over the system setting, on `<html>` or on a subtree.
 
 ## Set it before paint
 
-Put this inline in `<head>`, before any stylesheet paints, so the page never
-flashes the wrong mode. It uses the stored choice, else the system setting:
+Only needed when visitors can pick a mode. Put this inline in `<head>`, before any
+stylesheet paints, so a stored choice applies without a flash. With nothing stored
+the page follows the system setting:
 
 ```html
 <script is:inline>
   const t = localStorage.getItem('apogee-theme')
-  document.documentElement.dataset.theme =
-    t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  if (t) document.documentElement.dataset.theme = t
 </script>
 ```
 

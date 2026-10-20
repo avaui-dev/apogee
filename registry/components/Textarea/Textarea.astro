@@ -7,7 +7,7 @@ import { uid } from '../utils/uid.ts'
 import Field from '../Field/Field.astro'
 import { fieldSizes, fieldVariants, fieldBase, type FieldSize, type FieldVariant } from '../utils/field.ts'
 
-const resizes = { none: 'resize-none', vertical: 'resize-y', auto: 'resize-none [field-sizing:content]' } as const
+const resizes = { none: 'resize-none', vertical: 'resize-y', auto: 'resize-none [field-sizing:content]' } as const satisfies Record<NonNullable<Props['resize']>, string>
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'textarea'>, 'size'> {
@@ -25,7 +25,7 @@ interface Props extends Omit<HTMLAttributes<'textarea'>, 'size'> {
   /** @category layout */
   variant?: FieldVariant | undefined
   /** `auto` grows with the content (`field-sizing: content`, with a small island where unsupported). @category layout */
-  resize?: keyof typeof resizes | undefined
+  resize?: 'none' | 'vertical' | 'auto' | undefined
   required?: boolean | undefined
   class?: string | undefined
 }

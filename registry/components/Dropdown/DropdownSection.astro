@@ -2,11 +2,13 @@
 /**
  * DropdownSection — a labelled `role="group"` of items, with a rule above it
  * when it is not the first child of the menu.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
+/**
+ * @composable
+ * @children DropdownItem, DropdownSub
+ */
 interface Props extends HTMLAttributes<'div'> {
   label?: string
   class?: string

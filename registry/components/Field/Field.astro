@@ -8,20 +8,19 @@
  * The root carries `data-size`, so label and hint scale with the control. A
  * `tooltip` adds a help icon after the label that stays focusable when the
  * control is disabled. Hint and error render together when both are set.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Info } from '@lucide/astro'
 import Tooltip from '../Tooltip/Tooltip.astro'
-const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const
+const labelSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const satisfies Record<NonNullable<Props['size']>, string>
 const hintSizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base', xlarge: 'text-base' } as const
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   id: string
   /** Dims the label and marks the field. */
   disabled?: boolean | undefined
   /** Label and hint text size, matching the control. @category layout */
-  size?: keyof typeof labelSizes | undefined
+  size?: 'small' | 'medium' | 'large' | 'xlarge' | undefined
   label?: string | undefined
   /** Help text behind an info icon after the label. @category content */
   tooltip?: string | undefined

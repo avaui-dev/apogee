@@ -11,7 +11,7 @@ import type { HTMLAttributes } from 'astro/types'
 import { Info, CircleCheck, TriangleAlert, CircleAlert } from '@lucide/astro'
 import FeaturedIcon from '../FeaturedIcon/FeaturedIcon.astro'
 
-const icons = { primary: Info, neutral: Info, positive: CircleCheck, warning: TriangleAlert, critical: CircleAlert } as const
+const icons = { primary: Info, neutral: Info, positive: CircleCheck, warning: TriangleAlert, critical: CircleAlert } as const satisfies Record<NonNullable<Props['color']>, unknown>
 const faded = {
   primary: 'bg-primary-faded border-primary-faded',
   neutral: 'bg-neutral-faded border-neutral-faded',
@@ -29,7 +29,7 @@ const styles = {
     warning: 'bg-warning text-on-warning border-transparent',
   },
   banner: faded,
-} as const
+} as const satisfies Record<NonNullable<Props['variant']>, unknown>
 const tints = {
   primary: 'text-primary',
   neutral: 'text-neutral',
@@ -41,9 +41,9 @@ const tints = {
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'title'> {
   /** Hue. @category layout */
-  color?: keyof typeof icons
+  color?: 'primary' | 'neutral' | 'positive' | 'warning' | 'critical'
   /** Fill style; `banner` is a full-width strip. @category layout */
-  variant?: keyof typeof styles
+  variant?: 'faded' | 'solid' | 'banner'
   /** @category content */
   title?: string
   /** Hides the icon column. @category layout */

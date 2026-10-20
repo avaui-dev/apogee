@@ -5,10 +5,9 @@
  * new one in from the other side (prev/next pagers, step content). The first
  * state renders server-side (zero JS); the island only animates the swap and
  * dispatches `apogee:content-toggle-change` (`detail: { active }`).
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** `data-key` of the visible child. */
   active: string

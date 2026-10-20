@@ -143,7 +143,15 @@ export function renderBlocks(input) {
     for (const [k, v] of Object.entries(g.light)) light.push(`  --${k}: ${formatOklch(v)};`)
     for (const [k, v] of Object.entries(g.dark)) dark.push(`  --${k}: ${formatOklch(v)};`)
   }
+  // The inputs ride along, so the file can be regenerated (by a user or by AVA) without a hues.mjs.
+  light.push(`  /* hues ${JSON.stringify(input)} */`)
   return { light: light.join('\n'), dark: dark.join('\n') }
+}
+
+// The hue inputs a theme file was last generated from, or null.
+export function readHues(css) {
+  const m = css.match(/\/\* hues (\{.*\}) \*\/\n {2}\/\* @generated colors light end/)
+  return m ? JSON.parse(m[1]) : null
 }
 
 export function writeTheme(themePath, input) {
@@ -155,14 +163,32 @@ export function writeTheme(themePath, input) {
     if (!re.test(s)) throw new Error(`markers for "${mode}" not found in ${themePath}`)
     return s.replace(re, `$1\n${body}$2`)
   }
-  writeFileSync(themePath, sub(sub(src, 'light', light), 'dark', dark))
+  writeFileSync(themePath, mirrorSystemDark(sub(sub(src, 'light', light), 'dark', dark)))
+}
+
+// With no data-theme the page follows the OS: the `@media (prefers-color-scheme:
+// dark)` block repeats the whole `[data-theme="dark"]` rule, hand-written lines
+// included. Optional: a theme without the system markers is left as it is.
+function mirrorSystemDark(css) {
+  const re = /(\/\* @generated system dark start \*\/)[\s\S]*?(\n {4}\/\* @generated system dark end \*\/)/
+  if (!re.test(css)) return css
+  const body = css.match(/\n\[data-theme="dark"\] \{\n([\s\S]*?)\n\}/)[1]
+  const copy = body
+    .split('\n')
+    .filter((l) => !l.includes('@generated colors dark'))
+    .map((l) => (l ? `  ${l}` : l))
+    .join('\n')
+  return css.replace(re, `$1\n${copy}$2`)
 }
 
 // Usage: build-tokens.mjs [theme.css] [hues.mjs]
-// Defaults to this package's theme and hues; a consumer points it at their copy.
+// Defaults to this package's theme and hues. A consumer points it at their copy;
+// without a hues file it regenerates from the inputs recorded in that copy.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const themePath = resolve(process.argv[2] ?? resolve(dirname(fileURLToPath(import.meta.url)), '..', 'registry', 'tokens', 'theme.css'))
-  const input = process.argv[3] ? (await import(resolve(process.argv[3]))).default : hues
+  const input = process.argv[3]
+    ? (await import(resolve(process.argv[3]))).default
+    : (process.argv[2] && readHues(readFileSync(themePath, 'utf8'))) || hues
   writeTheme(themePath, input)
   console.log(`Wrote colour blocks to ${themePath}`)
 }

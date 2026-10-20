@@ -23,7 +23,7 @@ const fills = {
     positive: 'bg-positive text-on-positive',
     warning: 'bg-warning text-on-warning',
   },
-} as const
+} as const satisfies Record<NonNullable<Props['variant']>, Record<NonNullable<Props['color']>, string>>
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'span'>, 'size'> {
@@ -40,9 +40,9 @@ interface Props extends Omit<HTMLAttributes<'span'>, 'size'> {
   /** A ring around the avatar, offset from it. @category layout */
   border?: boolean | undefined
   /** Fallback hue. @category layout */
-  color?: keyof typeof fills.faded | undefined
+  color?: 'neutral' | 'primary' | 'critical' | 'positive' | 'warning' | undefined
   /** Fallback fill style. @category layout */
-  variant?: keyof typeof fills | undefined
+  variant?: 'faded' | 'solid' | undefined
   /** Rounded square instead of a circle. @category layout */
   squared?: boolean | undefined
   class?: string | undefined

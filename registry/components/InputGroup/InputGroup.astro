@@ -4,13 +4,12 @@
  * Button or a native select before or after an Input, sharing one edge with
  * a 1px seam and square inner corners. The group owns the label, hint and
  * error; give the Input inside `grouped` (and the same `id`). Zero JS.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import Field from '../Field/Field.astro'
 import type { FieldSize } from '../utils/field.ts'
 
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   /** Id of the field inside; the label points at it. */
   id: string

@@ -9,8 +9,6 @@
  * and `end` slots take an icon, badge, or count — `end` is pushed to
  * the end (via `ms-auto`) when the link fills its width (e.g. a sidebar), and
  * sits inline when the link is auto-width (e.g. a horizontal navbar).
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ExternalLink } from '@lucide/astro'
@@ -21,6 +19,7 @@ export const navLinkClass =
 export const navLinkIdle = 'text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral'
 export const navLinkActive = 'bg-neutral text-neutral'
 
+/** @composable */
 interface Props extends HTMLAttributes<'a'> {
   href: string
   active?: boolean

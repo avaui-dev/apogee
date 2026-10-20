@@ -13,8 +13,6 @@
  *   <Icon icon={Camera} label="Take photo" strokeWidth={2.5} class="text-primary" />
  *   <Icon icon={ChevronDown} />              // decorative
  *   <Icon><svg …/></Icon>                    // raw SVG fallback
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import type { IconComponent as IconType } from '../utils/icon.ts'
@@ -27,6 +25,7 @@ const tones = {
   warning: 'text-warning',
   inherit: 'text-current',
 } as const
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'svg'>, 'size'> {
   /** A Lucide icon component. Omit to pass a raw <svg> as the slot. */
   icon?: IconType
@@ -37,7 +36,7 @@ interface Props extends Omit<HTMLAttributes<'svg'>, 'size'> {
   strokeWidth?: number | string
   absoluteStrokeWidth?: boolean
   /** A token name maps to its text colour; any other string passes to the SVG as-is. */
-  color?: keyof typeof tones | (string & {})
+  color?: 'primary' | 'neutral' | 'neutral-faded' | 'critical' | 'positive' | 'warning' | 'inherit' | (string & {})
   /** Let the glyph keep its own aspect ratio instead of a square box. @category layout */
   autoWidth?: boolean
   class?: string

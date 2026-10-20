@@ -20,7 +20,7 @@ interface Props extends HTMLAttributes<'footer'> {
   columns?: { heading: string; links: { label: string; href: string }[] }[]
   /** @category content */ copyright?: string
   /** Icon links on the bottom row; or fill the `social` slot with your own brand SVG links. @shape { label: string, href: string, icon: 'mail'|'globe'|'rss'|'at-sign'|'share'|'message' }[] @category content */
-  social?: { label: string; href: string; icon: keyof typeof icons }[]
+  social?: { label: string; href: string; icon: 'mail' | 'globe' | 'rss' | 'at-sign' | 'share' | 'message' }[]
   /** Name of the link nav in `simple`. @category content */ navLabel?: string
   /** @category layout */ layout?: 'simple' | 'columns'
   class?: string

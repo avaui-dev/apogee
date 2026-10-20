@@ -3,10 +3,9 @@
  * Blockquote — a pull quote with optional attribution. Zero JS.
  *
  *   <Blockquote cite="Ada Lovelace">The Analytical Engine …</Blockquote>
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'blockquote'> {
   /** Attribution shown below the quote. */
   cite?: string

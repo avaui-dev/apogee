@@ -4,10 +4,9 @@
  * opposite of whatever surrounds it). Light and dark are pure CSS; inverted is
  * resolved by a ten-line island at page load (and again after setTheme()).
  * Without JS an inverted region renders in its parent's mode.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** @category layout */
   mode: 'light' | 'dark' | 'inverted'
@@ -36,4 +35,6 @@ const Tag = as
     attributes: true,
     attributeFilter: ['data-theme'],
   })
+  // With no data-theme the page follows the OS, so an OS switch flips inverted regions too.
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => resolveInverted(document))
 </script>

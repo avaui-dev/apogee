@@ -12,7 +12,7 @@ const glyphs = {
   simple: { up: ArrowUp, down: ArrowDown },
   trend: { up: TrendingUp, down: TrendingDown },
   modern: { up: ArrowUpRight, down: ArrowDownRight },
-} as const
+} as const satisfies Record<NonNullable<Props['changeStyle']>, unknown>
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -22,7 +22,7 @@ interface Props extends HTMLAttributes<'div'> {
   change?: string | undefined
   trend?: 'up' | 'down' | undefined
   /** How the change reads. @category layout */
-  changeStyle?: keyof typeof glyphs | undefined
+  changeStyle?: 'simple' | 'trend' | 'modern' | undefined
   /** Text after the change, e.g. "vs last month". @category content */
   comparison?: string | undefined
   /** @category layout */

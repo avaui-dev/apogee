@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { canonical, resolveDeps, copyInto, copySkin } from './lib.mjs'
+import { canonical, resolveDeps, copyInto, copySkin, fileStatus, sha } from './lib.mjs'
 
 const index = {
   components: {
@@ -133,4 +133,51 @@ test('copyInto keeps blocks under blocks/ and rewrites the components hop', () =
   const body = readFileSync(join(dest, 'blocks', 'banner', 'Slim.astro'), 'utf8')
   assert.match(body, /'\.\.\/\.\.\/sections\/Banner\/Banner\.astro'/)
   assert.match(body, /'\.\.\/\.\.\/Link\/Link\.astro'/)
+})
+
+test('add site-layout writes the layout to src/layouts/, where Astro and AVA look', async () => {
+  const { execFileSync } = await import('node:child_process')
+  const project = mkdtempSync(join(tmpdir(), 'apogee-'))
+  execFileSync(process.execPath, [new URL('./index.mjs', import.meta.url).pathname, 'add', 'site-layout'], { cwd: project, encoding: 'utf8' })
+  const body = readFileSync(join(project, 'src', 'layouts', 'SiteLayout.astro'), 'utf8')
+  assert.match(body, /@seo title/)
+  assert.equal(existsSync(join(project, 'src', 'components', 'apogee', 'layouts')), false)
+})
+
+test('fileStatus tells your edits from package changes using the recorded hash', () => {
+  const [old, mine, pkg] = ['a', 'b', 'c']
+  assert.equal(fileStatus(pkg, sha(old), pkg), 'current')
+  assert.equal(fileStatus(old, sha(old), pkg), 'outdated') // package moved, you didn't
+  assert.equal(fileStatus(mine, sha(pkg), pkg), 'edited') // you moved, package didn't
+  assert.equal(fileStatus(mine, sha(old), pkg), 'conflict') // both moved
+  assert.equal(fileStatus(mine, undefined, pkg), 'unknown') // no record
+  assert.equal(fileStatus(pkg, undefined, pkg), 'current')
+})
+
+test('add records hashes; diff and update leave your edits alone and apply package changes', async () => {
+  const { execFileSync } = await import('node:child_process')
+  const cli = (...args) => execFileSync(process.execPath, [new URL('./index.mjs', import.meta.url).pathname, ...args], { cwd: project, encoding: 'utf8' })
+  const project = mkdtempSync(join(tmpdir(), 'apogee-'))
+  cli('add', 'badge')
+  const file = join(project, 'src', 'components', 'apogee', 'Badge', 'Badge.astro')
+  const pkg = readFileSync(file, 'utf8')
+  const cfgPath = join(project, 'apogee.json')
+  const cfg = JSON.parse(readFileSync(cfgPath, 'utf8'))
+  assert.equal(cfg.installed['src/components/apogee/Badge/Badge.astro'], sha(pkg))
+  assert.match(cli('diff', 'badge'), /current\s+src\/components\/apogee\/Badge\/Badge\.astro/)
+
+  // You edit the file: diff says edited, update keeps it.
+  writeFileSync(file, pkg + '<!-- mine -->\n')
+  assert.match(cli('diff', 'badge'), /edited\s+src\/components\/apogee\/Badge\/Badge\.astro/)
+  cli('update', 'badge')
+  assert.match(readFileSync(file, 'utf8'), /<!-- mine -->/)
+
+  // An older copy you never touched (recorded hash matches): update brings it up to date.
+  writeFileSync(file, 'old version\n')
+  cfg.installed['src/components/apogee/Badge/Badge.astro'] = sha('old version\n')
+  writeFileSync(cfgPath, JSON.stringify(cfg))
+  assert.match(cli('diff', 'badge'), /outdated/)
+  cli('update', 'badge')
+  assert.equal(readFileSync(file, 'utf8'), pkg)
+  assert.equal(JSON.parse(readFileSync(cfgPath, 'utf8')).installed['src/components/apogee/Badge/Badge.astro'], sha(pkg))
 })

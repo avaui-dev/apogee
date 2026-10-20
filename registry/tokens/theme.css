@@ -9,7 +9,18 @@
  * readable primary text, `text-on-primary` is text on the fill.
  */
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* Dark is a data-theme="dark" subtree, or, when <html> has no data-theme, the OS
+   setting (minus any data-theme="light" subtree). */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme]) *):not(:where([data-theme="light"], [data-theme="light"] *)) {
+      @slot;
+    }
+  }
+}
 
 /* Progressive enhancement. <html> ships class="no-js"; a head script swaps it to
    "js" before paint. Gate a JS-only affordance with `no-js:hidden` (or the `js:`
@@ -95,6 +106,7 @@
   --background-page-faded: oklch(0.98 0.0016 213.5);
   --background-inverted: oklch(0.24 0.0153 213.5);
   --on-inverted: oklch(1 0 213.5);
+  /* hues {"primary":"blue-700","critical":"red-600","warning":"amber-400","positive":"green-700","neutral":"mist"} */
   /* @generated colors light end */
 
   /* Native widgets (date pickers, scrollbars, autofill) follow the theme. */
@@ -171,6 +183,75 @@
   --shadow-outline: 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-raised: 0 8px 16px -4px rgb(0 0 0 / 0.5), 0 2px 4px -1px rgb(0 0 0 / 0.4);
   --shadow-overlay: 0 20px 32px -8px rgb(0 0 0 / 0.6), 0 8px 12px -4px rgb(0 0 0 / 0.45), 0 1px 3px rgb(0 0 0 / 0.4);
+}
+
+/* No data-theme on <html>: follow the OS, without JS. `npm run build:tokens`
+   copies the dark rule above into this block; edit that rule, not these lines. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* @generated system dark start */
+    --background-primary: oklch(0.488 0.1944 264.376);
+    --background-primary-faded: oklch(0.24 0.0198 264.376);
+    --background-primary-highlighted: oklch(0.5392 0.1944 264.376);
+    --background-primary-faded-highlighted: oklch(0.488 0.1944 264.376 / 0.08);
+    --border-primary: oklch(0.588 0.1944 264.376);
+    --border-primary-faded: oklch(0.3 0.0198 264.376);
+    --foreground-primary: oklch(0.75 0.2066 264.376);
+    --on-primary: oklch(1 0 0);
+    --background-critical: oklch(0.5769 0.196 27.325);
+    --background-critical-faded: oklch(0.24 0.02 27.325);
+    --background-critical-highlighted: oklch(0.5192 0.196 27.325);
+    --background-critical-faded-highlighted: oklch(0.5769 0.196 27.325 / 0.08);
+    --border-critical: oklch(0.6769 0.196 27.325);
+    --border-critical-faded: oklch(0.3 0.02 27.325);
+    --foreground-critical: oklch(0.75 0.2083 27.325);
+    --on-critical: oklch(1 0 0);
+    --background-warning: oklch(0.7889 0.1512 84.429);
+    --background-warning-faded: oklch(0.24 0.0154 84.429);
+    --background-warning-highlighted: oklch(0.71 0.1512 84.429);
+    --background-warning-faded-highlighted: oklch(0.7889 0.1512 84.429 / 0.08);
+    --border-warning: oklch(0.8889 0.1512 84.429);
+    --border-warning-faded: oklch(0.3 0.0154 84.429);
+    --foreground-warning: oklch(0.75 0.1606 84.429);
+    --on-warning: oklch(0 0 0);
+    --background-positive: oklch(0.519 0.1232 150.069);
+    --background-positive-faded: oklch(0.24 0.0126 150.069);
+    --background-positive-highlighted: oklch(0.4671 0.1232 150.069);
+    --background-positive-faded-highlighted: oklch(0.519 0.1232 150.069 / 0.08);
+    --border-positive: oklch(0.619 0.1232 150.069);
+    --border-positive-faded: oklch(0.3 0.0126 150.069);
+    --foreground-positive: oklch(0.75 0.1309 150.069);
+    --on-positive: oklch(1 0 0);
+    --background-neutral: oklch(0.32 0.0038 213.5);
+    --background-neutral-faded: oklch(0.8 0.0134 213.5 / 0.1);
+    --background-neutral-highlighted: oklch(0.3608 0.0038 213.5);
+    --background-neutral-faded-highlighted: oklch(0.8 0.0134 213.5 / 0.16);
+    --border-neutral: oklch(0.95 0.004 213.5 / 0.12);
+    --border-neutral-faded: oklch(0.95 0.004 213.5 / 0.08);
+    --foreground-neutral: oklch(0.96 0.0032 213.5);
+    --on-neutral: oklch(1 0 0);
+    --foreground-neutral-faded: oklch(0.74 0.0162 213.5);
+    --background-disabled: oklch(0.28 0.0169 213.5);
+    --background-disabled-faded: oklch(0.225 0.0146 213.5);
+    --border-disabled: oklch(0.95 0.004 213.5 / 0.06);
+    --foreground-disabled: oklch(0.45 0.0208 213.5);
+    --background-elevation-base: oklch(0.2 0.0134 213.5);
+    --background-elevation-raised: oklch(0.22 0.0144 213.5);
+    --background-elevation-overlay: oklch(0.24 0.0153 213.5);
+    --background-page: oklch(0.16 0.0113 213.5);
+    --background-page-faded: oklch(0.18 0.0124 213.5);
+    --background-inverted: oklch(0.96 0.0032 213.5);
+    --on-inverted: oklch(0.16 0.0113 213.5);
+
+    color-scheme: dark;
+    --overlay: oklch(0 0 0 / 0.65);
+    --press-overlay: oklch(1 0 0 / 0.1);
+    /* Dark surfaces lift by lightness; the shadow is a deeper black than in light mode so it still reads on a dark page. */
+    --shadow-outline: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-raised: 0 8px 16px -4px rgb(0 0 0 / 0.5), 0 2px 4px -1px rgb(0 0 0 / 0.4);
+    --shadow-overlay: 0 20px 32px -8px rgb(0 0 0 / 0.6), 0 8px 12px -4px rgb(0 0 0 / 0.45), 0 1px 3px rgb(0 0 0 / 0.4);
+    /* @generated system dark end */
+  }
 }
 
 /*

@@ -5,12 +5,11 @@
  * fills it with `color`; `glass` is a frosted pane over whatever sits behind
  * it. It reads as one image, named by its last four digits. It fills the
  * width it is given; the type scales with it. Zero JS.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Nfc } from '@lucide/astro'
 
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** @category layout */
   variant?: 'solid' | 'glass'

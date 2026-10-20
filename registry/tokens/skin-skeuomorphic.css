@@ -21,3 +21,14 @@
   --shadow-field: inset 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-surface: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.4), 0 2px 6px -2px rgb(0 0 0 / 0.4);
 }
+/* No data-theme on <html>: the dark values follow the OS (same values as above). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme])[data-skin='skeuomorphic'],
+  :root:not([data-theme]) [data-skin='skeuomorphic'] {
+    --shadow-control: inset 0 0 0 1px rgb(255 255 255 / 0.1), inset 0 -2px 0 0 rgb(0 0 0 / 0.3), inset 0 1px 0 0 rgb(255 255 255 / 0.12), 0 1px 2px rgb(0 0 0 / 0.35);
+    --highlight-control: rgb(255 255 255 / 0.12);
+    --gradient-control: linear-gradient(to bottom, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 60%);
+    --shadow-field: inset 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow-surface: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.4), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+  }
+}

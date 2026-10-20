@@ -7,8 +7,8 @@ const STORAGE = 'apogee-theme'
 export function getTheme(): ThemeMode {
   const t = document.documentElement.dataset.theme
   if (t === 'dark' || t === 'light') return t
-  // No attribute: the stylesheet renders light (there is no prefers-color-scheme block).
-  return 'light'
+  // No attribute: the stylesheet follows the OS.
+  return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
 export function setTheme(mode: ThemeMode, opts: { persist?: boolean | undefined } = {}): void {

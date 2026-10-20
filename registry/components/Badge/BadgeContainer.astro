@@ -10,12 +10,12 @@ import type { HTMLAttributes } from 'astro/types'
 const places = {
   'top-end': '-top-1 -end-1',
   'bottom-end': '-bottom-1 -end-1',
-} as const
+} as const satisfies Record<NonNullable<Props['position']>, string>
 
 /** @composable */
 interface Props extends HTMLAttributes<'span'> {
   /** @category layout */
-  position?: keyof typeof places
+  position?: 'top-end' | 'bottom-end'
   /** Push the badge outward so it sits on the edge of a round element. @category layout */
   overlap?: boolean
   class?: string

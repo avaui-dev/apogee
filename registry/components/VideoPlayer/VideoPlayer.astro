@@ -5,12 +5,11 @@
  * over to them (seek, volume, captions, full screen). Without JS the native
  * controls show from the start and the play button is hidden. `captions`
  * adds a WebVTT track; `title` names the button and the video.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Play } from '@lucide/astro'
 
+/** @composable */
 interface Props extends HTMLAttributes<'figure'> {
   /** The video file (MP4 or WebM). */
   src: string

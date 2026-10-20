@@ -2,10 +2,12 @@
 /**
  * ButtonGroup — joins adjacent Buttons into a single control, collapsing the
  * inner corners and overlapping borders.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/**
+ * @composable
+ * @children Button
+ */
 interface Props extends HTMLAttributes<'fieldset'> {
   /** Accessible label for the group. */
   label?: string

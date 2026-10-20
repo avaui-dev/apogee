@@ -4,10 +4,9 @@
  * Optional `media` slot renders at the top (or at the start with
  * `mediaPosition="start"`), inset 4px from the edge with matching corners; `header` and `footer` slots are bordered regions
  * above and below the padded body. Set `href` to make the whole card a link.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** Makes the whole card a link. @category content */
   href?: string

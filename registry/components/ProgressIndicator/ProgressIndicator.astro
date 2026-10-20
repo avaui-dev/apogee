@@ -7,7 +7,7 @@
  */
 import type { HTMLAttributes } from 'astro/types'
 
-const fills = { primary: 'bg-primary', neutral: 'bg-inverted', critical: 'bg-critical', positive: 'bg-positive', warning: 'bg-warning' } as const
+const fills = { primary: 'bg-primary', neutral: 'bg-inverted', critical: 'bg-critical', positive: 'bg-positive', warning: 'bg-warning' } as const satisfies Record<NonNullable<Props['color']>, string>
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -16,7 +16,7 @@ interface Props extends HTMLAttributes<'div'> {
   /** The step in progress, 1-based (clamped to 0..total); segments fill up to and including it. @category content */
   current: number
   /** @category layout */
-  color?: keyof typeof fills
+  color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
   /** Segments fill up to the current step; dots mark only the current one (a window of seven when there are more). @category layout */
   variant?: 'segments' | 'dots'
   /** Accessible name, e.g. "Onboarding progress". @category content */

@@ -5,14 +5,13 @@
  * root, bubbling) when it reaches zero. Screen readers and no-JS visitors get
  * the end date as text instead ("Ends Dec 31, 2026, 11:59 PM UTC"), so nothing
  * announces every second.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
 type Unit = 'days' | 'hours' | 'minutes' | 'seconds'
 const SECONDS: Record<Unit, number> = { days: 86400, hours: 3600, minutes: 60, seconds: 1 }
 
+/** @composable */
 interface Props extends HTMLAttributes<'span'> {
   /** The end, as an ISO date-time ("2026-12-31T23:59:59Z"). */
   to: string

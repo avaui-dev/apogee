@@ -15,7 +15,7 @@ const colors = {
   critical: 'var(--background-critical)',
   positive: 'var(--background-positive)',
   warning: 'var(--background-warning)',
-} as const
+} as const satisfies Record<NonNullable<Props['color']>, string>
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {
@@ -27,7 +27,7 @@ interface Props extends HTMLAttributes<'div'> {
   /** Star size. @category layout */
   size?: 'small' | 'medium' | 'large'
   /** Hue of a filled star. @category layout */
-  color?: keyof typeof colors
+  color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
   'aria-label'?: string
   class?: string
 }

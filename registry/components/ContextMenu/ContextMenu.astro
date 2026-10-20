@@ -6,12 +6,11 @@
  * and resize close it. Wrap the target in the default slot and put
  * `DropdownItem`s in the `menu` slot. Without JS the target's normal
  * right-click menu is left untouched.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import { panelClass, panelSurface, menuClass } from '../utils/panel.ts'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   class?: string
 }

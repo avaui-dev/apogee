@@ -18,8 +18,8 @@ import Text from '../../components/Text/Text.astro'
 import { uid } from '../../components/utils/uid.ts'
 import type { Align, Background, Media, Spacing } from '../_shared/spine.ts'
 
-const icons = { check: Check, zap: Zap, shield: Shield, globe: Globe, sparkles: Sparkles, layers: Layers, lock: Lock, rocket: Rocket, gauge: Gauge, heart: Heart } as const
-type IconName = keyof typeof icons
+const icons = { check: Check, zap: Zap, shield: Shield, globe: Globe, sparkles: Sparkles, layers: Layers, lock: Lock, rocket: Rocket, gauge: Gauge, heart: Heart } as const satisfies Record<IconName, unknown>
+type IconName = 'check' | 'zap' | 'shield' | 'globe' | 'sparkles' | 'layers' | 'lock' | 'rocket' | 'gauge' | 'heart'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {

@@ -95,6 +95,25 @@ test('writeTheme fills empty marker blocks and replaces filled ones', async () =
   assert.equal(readFileSync(file, 'utf8'), once) // idempotent
 })
 
+test('writeTheme mirrors the whole dark rule into the system-dark block', async () => {
+  const { writeTheme } = await import('./build-tokens.mjs')
+  const { mkdtempSync, writeFileSync, readFileSync } = await import('node:fs')
+  const { tmpdir } = await import('node:os')
+  const { join } = await import('node:path')
+  const file = join(mkdtempSync(join(tmpdir(), 'apogee-tokens-')), 'theme.css')
+  writeFileSync(file, `:root {\n  /* @generated colors light start */\n  /* @generated colors light end */\n}\n[data-theme="dark"] {\n  /* @generated colors dark start */\n  /* @generated colors dark end */\n\n  color-scheme: dark;\n  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.5);\n}\n@media (prefers-color-scheme: dark) {\n  :root:not([data-theme]) {\n    /* @generated system dark start */\n    /* @generated system dark end */\n  }\n}\n`)
+  writeTheme(file, hues)
+  const css = readFileSync(file, 'utf8')
+  const system = css.match(/system dark start \*\/\n([\s\S]*?)\n    \/\* @generated system dark end/)[1]
+  const dark = css.match(/colors dark start \*\/\n([\s\S]*?)\n  \/\* @generated colors dark end/)[1]
+  // every generated dark declaration and the hand-written ones, re-indented, no nested markers
+  for (const line of dark.split('\n')) assert.ok(system.includes(`  ${line}`), line)
+  assert.match(system, /\n    color-scheme: dark;\n    --shadow-raised: 0 1px 2px rgb\(0 0 0 \/ 0\.5\);$/)
+  assert.doesNotMatch(system, /@generated colors/)
+  writeTheme(file, hues)
+  assert.equal(readFileSync(file, 'utf8'), css) // idempotent
+})
+
 test('every on-colour also clears 4.5 against its hovered fill, in both modes', () => {
   for (const [name, input] of Object.entries(hues)) {
     const { light, dark } = generateHue(name, input)
@@ -123,4 +142,20 @@ test('CLI writes the theme file given as an argument', async () => {
   writeFileSync(theme, '/* @generated colors light start */\n  /* @generated colors light end */\n/* @generated colors dark start */\n  /* @generated colors dark end */\n')
   execFileSync(process.execPath, [new URL('./build-tokens.mjs', import.meta.url).pathname, theme])
   assert.match(readFileSync(theme, 'utf8'), /--background-primary: oklch/)
+})
+
+test('writeTheme records its hue inputs in the file, and readHues gets them back', async () => {
+  const { writeTheme, readHues } = await import('./build-tokens.mjs')
+  const { mkdtempSync, writeFileSync, readFileSync } = await import('node:fs')
+  const { tmpdir } = await import('node:os')
+  const { join } = await import('node:path')
+  const file = join(mkdtempSync(join(tmpdir(), 'apogee-tokens-')), 'theme.css')
+  writeFileSync(file, `:root {\n  /* @generated colors light start */\n  /* @generated colors light end */\n}\n[data-theme="dark"] {\n  /* @generated colors dark start */\n  /* @generated colors dark end */\n}\n`)
+  assert.equal(readHues(readFileSync(file, 'utf8')), null)
+  const custom = { ...hues, primary: { l: 0.55, c: 0.2, h: 30 }, neutral: 'stone' }
+  writeTheme(file, custom)
+  const css = readFileSync(file, 'utf8')
+  assert.deepEqual(readHues(css), custom)
+  writeTheme(file, readHues(css))
+  assert.equal(readFileSync(file, 'utf8'), css) // regenerating from the record changes nothing
 })

@@ -7,11 +7,13 @@
  * Home/End, typeahead, and cascading checkboxes (a parent checks its
  * descendants; a partly checked parent shows as indeterminate). Without JS it
  * stays an honest nested list with no tree role.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
+/**
+ * @composable
+ * @children TreeItem
+ */
 interface Props extends HTMLAttributes<'ul'> {
   /** Accessible name of the tree. @category content */
   label: string

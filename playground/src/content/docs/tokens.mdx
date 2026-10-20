@@ -81,7 +81,9 @@ node node_modules/@ava-ui/apogee/scripts/check-contrast.mjs src/styles/apogee.cs
 ```
 
 (`hues.mjs` is a copy of the package's file with your values; `apogee.css` is
-the tokens file `init` wrote.) Never edit the lines between the `@generated`
+the tokens file `init` wrote.) Every build records its inputs on one line at the
+end of the light block, `/* hues {…} */`. Leave out `./hues.mjs` and the script
+regenerates from that line, so you can edit the values there instead. Never edit the lines between the `@generated`
 markers by hand; the next build overwrites them. The generator derives the dark theme, the faded tints, the
 hover steps and the on-colours, and the contrast gate measures every pair it
 produces, in both themes, with alpha composited over the page.

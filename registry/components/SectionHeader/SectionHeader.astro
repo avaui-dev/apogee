@@ -13,7 +13,7 @@ import Eyebrow from '../Eyebrow/Eyebrow.astro'
 import Heading from '../Heading/Heading.astro'
 import Text from '../Text/Text.astro'
 
-const eyebrows = { page: 'primary', 'neutral-faded': 'primary', 'primary-faded': 'primary', primary: 'inherit', inverted: 'inherit' } as const
+const eyebrows = { page: 'primary', 'neutral-faded': 'primary', 'primary-faded': 'primary', primary: 'inherit', inverted: 'inherit' } as const satisfies Record<NonNullable<Props['background']>, string>
 const descriptions = { page: 'text-neutral-faded', 'neutral-faded': 'text-neutral-faded', 'primary-faded': 'text-neutral-faded', primary: 'opacity-85', inverted: 'opacity-85' } as const
 const levels = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4' } as const
 
@@ -30,7 +30,7 @@ interface Props extends HTMLAttributes<'div'> {
   /** @category layout */
   align?: 'start' | 'center' | undefined
   /** The section background, to pick readable colours. @category layout */
-  background?: keyof typeof eyebrows | undefined
+  background?: 'page' | 'neutral-faded' | 'primary-faded' | 'primary' | 'inverted' | undefined
   /** `small` is the in-app size; `large` uses the display size (Hero). @category layout */
   size?: 'small' | 'medium' | 'large' | undefined
   /** A rule under the header. @category layout */

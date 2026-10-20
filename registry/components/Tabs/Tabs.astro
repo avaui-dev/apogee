@@ -20,8 +20,6 @@
  * (beside it when vertical), for feature sections.
  * `orientation="vertical"` stacks the list beside the panels (Up/Down move);
  * `activation="manual"` moves focus with the arrows and selects on Enter/Space.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import type { IconComponent } from '../utils/icon.ts'
@@ -36,7 +34,7 @@ const lists = {
   'pills-raised': 'gap-0.5 rounded-md bg-neutral-faded p-0.5',
   primary: 'gap-1',
   feature: 'flex-col gap-6 md:flex-row md:gap-8',
-} as const
+} as const satisfies Record<NonNullable<Props['variant']>, string>
 const tabStyles = {
   bordered: 'border-b-2 border-transparent selected:border-primary selected:text-neutral',
   borderless: 'border-b-2 border-transparent selected:border-primary selected:text-neutral',
@@ -56,7 +54,7 @@ const sizes = {
   small: 'px-2.5 py-1.5 text-xs',
   medium: 'px-3 py-2 text-sm',
   large: 'px-4 py-2.5 text-base',
-} as const
+} as const satisfies Record<NonNullable<Props['size']>, string>
 
 export interface TabItem {
   label: string
@@ -70,14 +68,15 @@ export interface TabItem {
   /** A line under the label, for `variant="feature"`. */
   description?: string
 }
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   tabs: (string | TabItem)[]
   /** Value of the tab shown first. Defaults to the first enabled tab. */
   value?: string
   /** @category layout */
-  variant?: keyof typeof lists
+  variant?: 'bordered' | 'borderless' | 'pills' | 'pills-raised' | 'primary' | 'feature'
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium' | 'large'
   /** @category layout */
   orientation?: 'horizontal' | 'vertical'
   /** Tabs share the list width equally. @category layout */

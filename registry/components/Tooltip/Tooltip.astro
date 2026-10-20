@@ -9,12 +9,11 @@
  * plain CSS `:hover` / `:focus-within` bubble above the trigger.
  * Wrap a focusable trigger so keyboard users get it; the island moves
  * `aria-describedby` onto that element.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 import { panelStyle, type Placement } from '../utils/panel.ts'
+/** @composable */
 interface Props extends HTMLAttributes<'span'> {
   text: string
   /** A second, muted line under the text. @category content */

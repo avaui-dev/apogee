@@ -7,7 +7,7 @@ export const buttonSizes = {
   medium: 'h-9 px-3 text-sm gap-2 rounded-md [&>svg]:size-4 data-icon-only:w-9 data-icon-only:px-0',
   large: 'h-12 px-4 text-base gap-2 rounded-md [&>svg]:size-4 data-icon-only:w-12 data-icon-only:px-0',
   xlarge: 'h-14 px-5 text-lg gap-2.5 rounded-md [&>svg]:size-5 data-icon-only:w-14 data-icon-only:px-0',
-} as const
+} as const satisfies Record<ButtonSize, string>
 // `variant="link"`: text-sized, no box.
 export const linkSizes = {
   small: 'text-xs gap-1 [&>svg]:size-3.5',
@@ -55,7 +55,7 @@ export const buttonStyles = {
     positive: 'text-positive underline-offset-4 hover:underline',
     warning: 'text-warning underline-offset-4 hover:underline',
   },
-} as const
+} as const satisfies Record<ButtonVariant, Record<ButtonColor, string>>
 // `highlighted`: the variant's hover fill made permanent (an active filter, a menu that is open).
 export const highlightedStyles = {
   solid: {
@@ -88,9 +88,9 @@ export const highlightedStyles = {
   },
   link: { primary: 'underline', neutral: 'underline', critical: 'underline', positive: 'underline', warning: 'underline' },
 } as const
-export type ButtonColor = keyof typeof buttonStyles.solid
-export type ButtonVariant = keyof typeof buttonStyles
-export type ButtonSize = keyof typeof buttonSizes
+export type ButtonColor = 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
+export type ButtonVariant = 'solid' | 'faded' | 'outline' | 'ghost' | 'link'
+export type ButtonSize = 'small' | 'medium' | 'large' | 'xlarge'
 
 // ToggleButton pressed state, `aria-pressed:`-prefixed so it beats the resting
 // variant (and its hover) without a specificity fight.
@@ -109,5 +109,5 @@ export const pressedStyles = {
     positive: 'aria-pressed:bg-positive-faded aria-pressed:text-positive aria-pressed:hover:bg-positive-faded-highlighted aria-pressed:[&>svg]:opacity-100 aria-pressed:shadow-(--shadow-control)',
     warning: 'aria-pressed:bg-warning-faded aria-pressed:text-warning aria-pressed:hover:bg-warning-faded-highlighted aria-pressed:[&>svg]:opacity-100 aria-pressed:shadow-(--shadow-control)',
   },
-} as const
-export type PressedVariant = keyof typeof pressedStyles
+} as const satisfies Record<PressedVariant, unknown>
+export type PressedVariant = 'solid' | 'faded'

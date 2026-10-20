@@ -56,12 +56,12 @@ export const itemSizes = {
   small: 'gap-1.5 px-2 py-1 text-xs [&_svg]:size-3.5',
   medium: 'gap-2 px-2 py-1.5 text-sm [&_svg]:size-4',
   large: 'gap-2.5 px-3 py-2 text-base [&_svg]:size-5',
-} as const
+} as const satisfies Record<ItemSize, string>
 export const itemColors = {
   neutral: 'text-neutral hover:bg-neutral-faded-highlighted focus-visible:bg-neutral-faded-highlighted',
   primary: 'text-primary hover:bg-primary-faded focus-visible:bg-primary-faded',
   critical: 'text-critical hover:bg-critical-faded focus-visible:bg-critical-faded',
-} as const
+} as const satisfies Record<ItemColor, string>
 export const itemSelected = { neutral: 'bg-neutral-faded', primary: 'bg-primary-faded', critical: 'bg-critical-faded' } as const
-export type ItemSize = keyof typeof itemSizes
-export type ItemColor = keyof typeof itemColors
+export type ItemSize = 'small' | 'medium' | 'large'
+export type ItemColor = 'neutral' | 'primary' | 'critical'

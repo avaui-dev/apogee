@@ -7,12 +7,11 @@
  * three-dot indicator instead of text.
  *
  * Slots: `avatar`, default (text), `reply`, `preview`, `attachment`, `reactions`.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { Check, CheckCheck, CircleAlert } from '@lucide/astro'
 
+/** @composable */
 interface Props extends HTMLAttributes<'li'> {
   /** @category content */
   name?: string

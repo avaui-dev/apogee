@@ -2,11 +2,10 @@
 /**
  * Switch — a toggle. A real `<input type="checkbox" role="switch">` (visually
  * hidden) drives a CSS track + thumb, so it's zero-JS and fully accessible.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
+/** @composable */
 interface Props extends HTMLAttributes<'input'> {
   id?: string
   label?: string

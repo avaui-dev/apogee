@@ -7,8 +7,6 @@
  * `<time>` element and an `href` that makes the title a link. A named slot
  * `item-<index>` replaces an item's description with rich content (a quoted
  * comment, a row of badges, an attachment).
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import Avatar from '../Avatar/Avatar.astro'
@@ -22,6 +20,7 @@ interface Item {
   href?: string
   avatar?: { src?: string; alt?: string; name?: string; status?: 'online' | 'offline' }
 }
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   items: Item[]
   /** The connector between markers. @category layout */

@@ -1,0 +1,60 @@
+---
+/**
+ * SiteLayout — the page shell: `<html>`, `<head>`, `<body>`. Writes the SEO tags
+ * from its props, swaps `no-js` for `js` before paint, and restores a stored
+ * colour mode (with none, the page follows the system setting). Import your
+ * global stylesheet here; fonts, icons and analytics go in the `head` slot.
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'html'> {
+  /** Shown in the browser tab and in search results. @seo title @category content */
+  title: string
+  /** One or two sentences for search results and link previews. @seo description @category content */
+  description?: string
+  /** Link-preview image, 1200×630. An absolute URL, or a path resolved against `site`. @seo socialImage @category content */
+  socialImage?: string
+  /** The page's preferred URL. Defaults to this page on `site`. @seo canonical @category content */
+  canonical?: string
+  /** Open Graph type. @seo type @category content */
+  type?: 'website' | 'article'
+  /** Keeps the page out of search results (`noindex`). @seo excludeFromSearch @category content */
+  excludeFromSearch?: boolean
+  /** A fixed colour mode. Unset follows the visitor's stored choice, else the system. @category layout */
+  theme?: 'light' | 'dark'
+}
+
+const { title, description, socialImage, canonical, type = 'website', excludeFromSearch = false, theme, lang = 'en', class: className, ...rest } = Astro.props
+const site = Astro.site
+const canonicalUrl = canonical ?? (site ? new URL(Astro.url.pathname, site).href : undefined)
+const image = socialImage && site ? new URL(socialImage, site).href : socialImage
+---
+
+<!doctype html>
+<html lang={lang} class:list={['no-js', className]} data-theme={theme} {...rest}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content={theme ?? 'light dark'} />
+    <script is:inline>
+      document.documentElement.classList.replace('no-js', 'js')
+      if (!document.documentElement.dataset.theme) {
+        try { const t = localStorage.getItem('apogee-theme'); if (t) document.documentElement.dataset.theme = t } catch {}
+      }
+    </script>
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    {excludeFromSearch && <meta name="robots" content="noindex" />}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content={type} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {image && <meta property="og:image" content={image} />}
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh bg-page text-neutral">
+    <slot />
+  </body>
+</html>

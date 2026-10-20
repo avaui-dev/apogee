@@ -4,20 +4,19 @@
  * to `completedText` when `completed` turns true ("Generating…" → "Done").
  * Zero JS: the shimmer is a background-clip gradient animation; flip
  * `data-completed` on the root to finish it.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
-const sizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
-const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold' } as const
+const sizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const satisfies Record<NonNullable<Props['size']>, string>
+const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold' } as const satisfies Record<NonNullable<Props['weight']>, string>
+/** @composable */
 interface Props extends HTMLAttributes<'span'> {
   completed?: boolean
   /** @category content */
   completedText?: string
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium' | 'large'
   /** @category layout */
-  weight?: keyof typeof weights
+  weight?: 'regular' | 'medium' | 'semibold'
   class?: string
 }
 const { completed = false, completedText, size = 'medium', weight = 'medium', class: className, ...rest } = Astro.props

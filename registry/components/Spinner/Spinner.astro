@@ -18,7 +18,7 @@ const tones = {
   critical: 'text-critical',
   positive: 'text-positive',
   warning: 'text-warning',
-} as const
+} as const satisfies Record<NonNullable<Props['color']>, string>
 
 /** @composable */
 interface Props extends Omit<ComponentProps<typeof LoaderCircle>, 'size'> {
@@ -26,7 +26,7 @@ interface Props extends Omit<ComponentProps<typeof LoaderCircle>, 'size'> {
   /** Accessible label. Omit when a parent already announces loading. */
   label?: string
   /** @category layout */
-  color?: keyof typeof tones
+  color?: 'inherit' | 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
   class?: string
 }
 

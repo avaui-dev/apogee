@@ -6,10 +6,12 @@
  * stop, arrows and Home/End move focus. Dispatches `apogee:toggle-group-change`
  * with `detail: { value: string[] }` — each pressed button's `value`, or its
  * index. A button's hidden input (`name` + `value`) follows its pressed state.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/**
+ * @composable
+ * @children ToggleButton
+ */
 interface Props extends Omit<HTMLAttributes<'fieldset'>, 'type'> {
   type?: 'single' | 'multiple'
   /** Disables every button inside (native fieldset behaviour, no JS). */

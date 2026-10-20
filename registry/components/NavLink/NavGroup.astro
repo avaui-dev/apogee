@@ -5,13 +5,12 @@
  * chevron that flips open). Opens on load when a child link is the current
  * page (`aria-current="page"` in the rendered children), or with `open`.
  * Zero JS.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronDown } from '@lucide/astro'
 import { navLinkClass, navLinkIdle } from './NavLink.astro'
 
+/** @composable */
 interface Props extends HTMLAttributes<'details'> {
   /** @category content */
   label: string

@@ -1,10 +1,9 @@
 ---
 /**
  * Container — centers content at a max width with side gutters.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   as?: string
   /** Max width: 48 / 64 / 80 / 90rem, or none. @category layout */

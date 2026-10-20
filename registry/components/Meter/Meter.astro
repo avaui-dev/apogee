@@ -4,10 +4,9 @@
  * score, capacity). The value colours by the low/high thresholds
  * (primary → warning → critical). Zero JS. Use Progress for task progress; Meter
  * for a static measurement.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   value: number
   min?: number

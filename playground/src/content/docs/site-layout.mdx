@@ -1,0 +1,54 @@
+---
+title: Site layout
+description: The page shell, with html, head and body. It writes the SEO tags, runs the no-js swap before paint and restores a stored colour mode.
+group: Getting started
+order: 5
+---
+
+`SiteLayout` wraps every page: `<html>`, `<head>`, `<body>`. It renders the SEO
+tags from its props, swaps `no-js` for `js` before paint, and restores a colour
+mode the visitor picked. With nothing stored, the page follows the system setting.
+
+## Add
+
+```sh
+npx @ava-ui/apogee add site-layout
+```
+
+It lands in `src/layouts/SiteLayout.astro`, not in the components folder. Open it
+and import your global stylesheet in the frontmatter.
+
+## Usage
+
+```astro
+---
+import SiteLayout from '../layouts/SiteLayout.astro'
+---
+
+<SiteLayout title="Pricing — Example" description="Plans for teams of every size.">
+  <link slot="head" rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <main>…</main>
+</SiteLayout>
+```
+
+## API
+
+| Prop | Type | Default | Notes |
+|------|------|---------|-------|
+| `title` | `string` | required | Browser tab and search results; also `og:title`. |
+| `description` | `string` | — | `description` and `og:description`. |
+| `socialImage` | `string` | — | `og:image`. A path resolves against `site` in `astro.config`. |
+| `canonical` | `string` | this page on `site` | `<link rel="canonical">` and `og:url`. Omitted when there's no `site`. |
+| `type` | `'website' \| 'article'` | `'website'` | `og:type`. |
+| `excludeFromSearch` | `boolean` | `false` | Adds `<meta name="robots" content="noindex">`. |
+| `theme` | `'light' \| 'dark'` | — | Fixes the mode for the page. Unset: the stored choice, else the system. |
+| `lang` | `string` | `'en'` | Any other `<html>` attribute passes through, including `dir="rtl"`. |
+
+Slots: `head` (fonts, icons, analytics), default (the page).
+
+## AVA
+
+Each SEO prop carries an `@seo` tag (`@seo title`, `@seo socialImage`, …), so the
+AVA editor adopts this layout as the site's SEO convention and edits those props
+per page. It doesn't scaffold a second `<head>`. AVA reads layouts from `src/layouts/`,
+so keep the file there.

@@ -6,14 +6,13 @@
  * (inside the bar's width when the Navbar is `floating`). Inside the phone
  * menu the same content is a disclosure row (`<details>`). Zero JS; the
  * chevron turns while open.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { ChevronDown } from '@lucide/astro'
 import { uid } from '../utils/uid.ts'
 import { panelStyle, panelClass, panelSurface } from '../utils/panel.ts'
 
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   /** The button's text. @category content */
   label: string

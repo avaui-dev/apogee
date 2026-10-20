@@ -3,10 +3,9 @@
  * IconToggle — two icons in one slot-sized box; `on` picks which shows, with
  * a scale/fade swap. A display component: ToggleButton flips `data-on` on any
  * IconToggle inside it, or set `data-on` yourself.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/** @composable */
 interface Props extends HTMLAttributes<'span'> {
   on?: boolean
   /** Accessible label (role="img"). Omit when the parent control is labelled. */

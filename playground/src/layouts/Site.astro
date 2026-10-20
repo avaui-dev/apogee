@@ -7,6 +7,7 @@ import Button from '../../../registry/components/Button/Button.astro'
 import FooterSection from '../../../registry/sections/FooterSection/FooterSection.astro'
 import { footerColumns, social } from '../components/demo-data'
 import BrandHead from '../components/BrandHead.astro'
+import SiteLayout from '../../../registry/layouts/SiteLayout.astro'
 
 interface Props {
   title: string
@@ -23,29 +24,17 @@ const links = [
 ]
 ---
 
-<!doctype html>
-<html lang="en" class="no-js">
-  <head>
-    <meta charset="utf-8" />
-    <script is:inline>
-      document.documentElement.classList.replace('no-js', 'js')
-      try { const t = localStorage.getItem('apogee-theme'); if (t) document.documentElement.dataset.theme = t } catch {}
-    </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <BrandHead />
-    <title>{title} — Apogee showcase</title>
-  </head>
-  <body class="min-h-dvh bg-page text-neutral">
-    <Navbar>
-      <a slot="brand" href="/showcase/home" class="font-semibold tracking-tight">Example</a>
-      {links.map((l) => <NavLink href={l.href} active={path.startsWith(l.href)}>{l.label}</NavLink>)}
-      <Button slot="actions" size="small" href="/showcase/pricing">Get started</Button>
-    </Navbar>
-    <main>
-      <slot />
-    </main>
-    <FooterSection columns={footerColumns} copyright="© 2026 Example, Inc." social={social}>
-      <span slot="brand" class="font-semibold tracking-tight">Example</span>
-    </FooterSection>
-  </body>
-</html>
+<SiteLayout title={`${title} — Apogee showcase`}>
+  <BrandHead slot="head" />
+  <Navbar>
+    <a slot="brand" href="/showcase/home" class="font-semibold tracking-tight">Example</a>
+    {links.map((l) => <NavLink href={l.href} active={path.startsWith(l.href)}>{l.label}</NavLink>)}
+    <Button slot="actions" size="small" href="/showcase/pricing">Get started</Button>
+  </Navbar>
+  <main>
+    <slot />
+  </main>
+  <FooterSection columns={footerColumns} copyright="© 2026 Example, Inc." social={social}>
+    <span slot="brand" class="font-semibold tracking-tight">Example</span>
+  </FooterSection>
+</SiteLayout>

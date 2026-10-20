@@ -2,12 +2,11 @@
 /**
  * DropdownItem — a menu item. A link when `href` is set, otherwise a button.
  * Slots: `start` (icon), default (label), `end` (shortcut, badge).
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { itemBase, itemSizes, itemColors, itemSelected, type ItemSize, type ItemColor } from '../utils/panel.ts'
 import { Check } from '@lucide/astro'
+/** @composable */
 interface Props extends HTMLAttributes<'button'> {
   href?: string
   color?: ItemColor

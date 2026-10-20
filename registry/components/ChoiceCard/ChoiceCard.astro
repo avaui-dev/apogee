@@ -4,15 +4,14 @@
  * radio or checkbox, so the whole card selects, arrows move between radios
  * that share a `name`, and the form posts the value. Zero JS. Slots: `start`
  * (icon or avatar), default (title), `description`, `end`.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 import { uid } from '../utils/uid.ts'
 
-const sizes = { small: 'gap-2.5 p-3 text-sm', medium: 'gap-3 p-4 text-sm' } as const
+const sizes = { small: 'gap-2.5 p-3 text-sm', medium: 'gap-3 p-4 text-sm' } as const satisfies Record<NonNullable<Props['size']>, string>
 const indicatorSizes = { small: 'size-4', medium: 'size-4' } as const
 
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'label'>, 'title'> {
   /** The native control inside. @category layout */
   type?: 'radio' | 'checkbox'
@@ -30,7 +29,7 @@ interface Props extends Omit<HTMLAttributes<'label'>, 'title'> {
   /** @category layout */
   indicatorPosition?: 'start' | 'end'
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium'
   id?: string
   class?: string
 }

@@ -16,6 +16,8 @@ Tailwind v4.
 npx @ava-ui/apogee init                 # design tokens + config + setup steps
 npx @ava-ui/apogee add button dialog    # copies components (+ their deps)
 npx @ava-ui/apogee list                 # all available components
+npx @ava-ui/apogee diff                 # your copies vs the package, line by line
+npx @ava-ui/apogee update               # take package changes for files you haven't edited
 ```
 
 `add` resolves dependencies for you — `add data-grid` also pulls in `Checkbox`,

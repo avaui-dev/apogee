@@ -15004,6 +15004,16 @@
       ],
       "dependencies": [],
       "usesJs": false
+    },
+    "SiteLayout": {
+      "name": "SiteLayout",
+      "kind": "layout",
+      "files": [
+        "layouts/SiteLayout.astro"
+      ],
+      "registryDependencies": [],
+      "dependencies": [],
+      "usesJs": false
     }
   }
 }

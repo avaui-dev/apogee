@@ -1,8 +1,6 @@
 ---
 /**
  * Eyebrow — a small label above a heading.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
@@ -14,19 +12,20 @@ const colors = {
   positive: 'text-positive',
   warning: 'text-warning',
   inherit: 'text-inherit',
-} as const
+} as const satisfies Record<NonNullable<Props['color']>, string>
 
-const sizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const
-const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold' } as const
+const sizes = { small: 'text-xs', medium: 'text-sm', large: 'text-base' } as const satisfies Record<NonNullable<Props['size']>, string>
+const weights = { regular: 'font-normal', medium: 'font-medium', semibold: 'font-semibold' } as const satisfies Record<NonNullable<Props['weight']>, string>
 
+/** @composable */
 interface Props extends Omit<HTMLAttributes<'span'>, 'as'> {
   as?: 'p' | 'span' | 'div'
   /** @category layout */
-  color?: keyof typeof colors
+  color?: 'primary' | 'neutral' | 'neutral-faded' | 'critical' | 'positive' | 'warning' | 'inherit'
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium' | 'large'
   /** @category layout */
-  weight?: keyof typeof weights
+  weight?: 'regular' | 'medium' | 'semibold'
   /** All caps with letter-spacing; false keeps the text as written. @category layout */
   uppercase?: boolean
   class?: string

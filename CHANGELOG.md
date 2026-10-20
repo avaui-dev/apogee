@@ -7,16 +7,24 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **`apogee diff` and `apogee update`.** `add` now records a hash of each file it writes in `apogee.json`. `diff` lists every installed file as current, outdated, edited, conflict or unknown and shows the changed lines. `update` takes package changes only for files you haven't edited; `--overwrite` also replaces edited ones.
+- **The tokens file records its hue inputs.** `build:tokens` writes `/* hues {…} */` at the end of the light block. Run `build-tokens.mjs src/styles/apogee.css` without a hues file and it regenerates from that line; `readHues(css)` returns it for tools such as AVA.
+- **SiteLayout:** the page shell (`<html>`, `<head>`, `<body>`). It writes title, description, canonical, Open Graph and `noindex` tags from props, swaps `no-js` for `js` before paint, and restores a stored colour mode. `apogee add site-layout` writes it to `src/layouts/`. Its SEO props carry `@seo` tags, so AVA adopts it instead of scaffolding its own head.
+- **Dark mode follows the system, without JS.** With no `data-theme` on `<html>`, the page uses the dark tokens when the OS is dark: `build:tokens` copies the dark rule under `@media (prefers-color-scheme: dark)`. The `dark:` variant, the skeuomorphic skin and `getTheme()` follow it; a `data-theme` attribute still wins. The head script is now only needed to restore a stored choice.
+- **Content models for AVA:** `@children` on Accordion (AccordionItem), List (`li`), RadioGroup (Radio), CheckboxGroup (Checkbox), ButtonGroup (Button), ToggleButtonGroup (ToggleButton), AvatarGroup (Avatar), TreeView (TreeItem) and DropdownSection (DropdownItem, DropdownSub), so AVA's editor allows only those as direct children.
 - **Hero blocks (34 new, orders 45–88):** framed splits, editorial and photo-led heroes, card walls, coverflow, product tiles, prompt boxes, dashboards, gifting and more. Gradients mix the brand hue into the page colour or sit on a band that is always dark, so each works in light and dark mode. `apogee add hero/<name>` copies one.
 - **Footer blocks (23 new, orders 41–63):** image banners, giant wordmarks, ruled grids, newsletter and contact footers and brand-colour bands, all in the brand tokens and working in light and dark. `apogee add footers/<name>` copies one.
 - **Docs overviews show what is inside:** every category overview is a three-column grid of cards that lead with a 4:3 picture of the page, block or component, light or dark to match the docs. `npm run thumbs` in `playground/` regenerates the pictures from the dev server.
 
 ### Fixed
 
+- **AVA can open 56 more components.** Their `@composable` tag sat in the file header, where AVA doesn't look; it now sits on `interface Props`. `npm run check:kit` fails if a kit tag ends up anywhere else.
 - **Button** and **ToggleButton** `rounded` now gives fully round ends; the size's corner radius used to win.
 
 ### Changed
 
+- **The CLI prints colour only to a terminal**, so piped output is plain text.
+- **Prop unions are written out** (`size?: 'small' | 'medium' | 'large'`) instead of derived with `keyof typeof` from the class table, so tools that read source without running TypeScript (AVA's props panel) see the options. Each table now `satisfies` its union, so the build fails if the two drift apart.
 - **WorldMap** draws each region on its own grid from Natural Earth 50m countries: only that continent's land, framed by where it actually is, with the same number of columns as every other region, so dots match in size. Regions no longer cut off land (Arctic islands, Indonesia, New Guinea) or show neighbours; where land runs on past a frame (Russia east of Europe, the Aleutians), its dots fade out. Each region scales longitude to its middle latitude, so shapes come out true instead of stretched sideways, and a cell counts as land if any of nine points across it is, so narrow land (Italy, Greece, islands) keeps its dots. Europe is framed 25°W–45°E, 34°–72°N and includes Turkey and Cyprus; North America leaves Greenland to the world map. The world map is finer (2° dots). `scripts/build-world-map.mjs` regenerates the data.
 
 ## [0.6.0] — 2026-10-16

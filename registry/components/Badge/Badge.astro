@@ -27,22 +27,22 @@ const styles = {
     positive: 'border border-positive text-positive',
     warning: 'border border-warning text-warning',
   },
-} as const
+} as const satisfies Record<NonNullable<Props['variant']>, Record<NonNullable<Props['color']>, string>>
 // The side that holds an icon pads less, so the glyph sits optically inside the pill.
 const sizes = {
   small: 'h-5 px-1.5 text-[11px] gap-1 has-[>[data-slot=start]]:ps-1 has-[>[data-slot=end]]:pe-1',
   medium: 'h-6 px-2 text-xs gap-1 has-[>[data-slot=start]]:ps-1.5 has-[>[data-slot=end]]:pe-1.5',
   large: 'h-7 px-2.5 text-sm gap-1.5 has-[>[data-slot=start]]:ps-2 has-[>[data-slot=end]]:pe-2',
-} as const
+} as const satisfies Record<NonNullable<Props['size']>, string>
 
 /** @composable */
 interface Props extends HTMLAttributes<'span'> {
   /** Hue. @category layout */
-  color?: keyof typeof styles.solid
+  color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
   /** Fill style. @category layout */
-  variant?: keyof typeof styles
+  variant?: 'solid' | 'faded' | 'outline'
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium' | 'large'
   /** Fully round ends. @category layout */
   rounded?: boolean
   /** Stronger fill for an active filter or a selected state. @category layout */

@@ -7,14 +7,14 @@ export const fieldSizes = {
   medium: 'h-9 px-3 text-sm max-md:text-base pointer-coarse:text-base rounded-md',
   large: 'h-12 px-4 text-base rounded-md',
   xlarge: 'h-14 px-5 text-lg rounded-md',
-} as const
+} as const satisfies Record<FieldSize, string>
 
 export const fieldVariants = {
   outline: 'border border-neutral bg-page shadow-[var(--shadow-outline),var(--shadow-field)]',
   faded: 'border border-transparent bg-neutral-faded',
   ghost: 'border border-transparent bg-transparent',
   headless: 'border-0 bg-transparent p-0 h-auto rounded-none',
-} as const
+} as const satisfies Record<FieldVariant, string>
 
 export const fieldBase =
   'w-full text-neutral placeholder:text-neutral-faded transition-colors scroll-py-3 autofill:rounded-[inherit] ' +
@@ -22,5 +22,5 @@ export const fieldBase =
   'disabled:cursor-not-allowed disabled:bg-disabled disabled:text-disabled disabled:border-disabled ' +
   'aria-[invalid=true]:border-critical'
 
-export type FieldSize = keyof typeof fieldSizes
-export type FieldVariant = keyof typeof fieldVariants
+export type FieldSize = 'small' | 'medium' | 'large' | 'xlarge'
+export type FieldVariant = 'outline' | 'faded' | 'ghost' | 'headless'

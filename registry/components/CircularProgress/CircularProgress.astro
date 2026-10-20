@@ -3,22 +3,21 @@
  * CircularProgress — a determinate ring (or half ring) with the value drawn as
  * an SVG stroke. `pathLength="100"` makes the percentage the dash offset, so
  * there is no trigonometry and no JS. Put the value text in the default slot.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
 
-const sizes = { small: 'w-8', medium: 'w-12', large: 'w-16', xlarge: 'w-24' } as const
+const sizes = { small: 'w-8', medium: 'w-12', large: 'w-16', xlarge: 'w-24' } as const satisfies Record<NonNullable<Props['size']>, string>
 const labelSizes = { small: 'text-[10px]', medium: 'text-xs', large: 'text-sm', xlarge: 'text-lg' } as const
-const thicknesses = { thin: 6, regular: 8, thick: 10 } as const
+const thicknesses = { thin: 6, regular: 8, thick: 10 } as const satisfies Record<NonNullable<Props['thickness']>, unknown>
 const strokes = {
   primary: 'stroke-primary',
   neutral: 'stroke-neutral',
   critical: 'stroke-critical',
   positive: 'stroke-positive',
   warning: 'stroke-warning',
-} as const
+} as const satisfies Record<NonNullable<Props['color']>, string>
 
+/** @composable */
 interface Props extends HTMLAttributes<'div'> {
   value?: number
   min?: number
@@ -26,11 +25,11 @@ interface Props extends HTMLAttributes<'div'> {
   /** Accessible name. @category content */
   label?: string
   /** @category layout */
-  size?: keyof typeof sizes
+  size?: 'small' | 'medium' | 'large' | 'xlarge'
   /** Ring stroke. @category layout */
-  thickness?: keyof typeof thicknesses
+  thickness?: 'thin' | 'regular' | 'thick'
   /** Ring hue. @category layout */
-  color?: keyof typeof strokes
+  color?: 'primary' | 'neutral' | 'critical' | 'positive' | 'warning'
   /** A full ring or the top half. @category layout */
   shape?: 'circle' | 'half'
   class?: string

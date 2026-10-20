@@ -15,7 +15,7 @@ import Tooltip from '../Tooltip/Tooltip.astro'
 import { maps } from './land.ts'
 
 type Pin = { label: string; lat: number; lon: number; detail?: string | undefined; href?: string | undefined }
-type Region = keyof typeof maps
+type Region = 'world' | 'north-america' | 'south-america' | 'europe' | 'africa' | 'asia' | 'oceania'
 
 /** @composable */
 interface Props extends HTMLAttributes<'div'> {

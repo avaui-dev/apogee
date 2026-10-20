@@ -4,10 +4,12 @@
  * (opening one closes the others), give every item the same `group` name.
  * `variant="plain"` drops the outer border and keeps the dividers, for FAQ
  * lists that sit straight on a section.
- *
- * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
+/**
+ * @composable
+ * @children AccordionItem
+ */
 interface Props extends HTMLAttributes<'div'> {
   /** `outline`: a bordered box. `plain`: dividers only. @category layout */
   variant?: 'outline' | 'plain'

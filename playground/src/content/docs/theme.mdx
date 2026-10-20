@@ -107,15 +107,14 @@ flips both ways.
 
 ## Page mode and the toggle
 
-The page mode lives on `<html data-theme>`. Set it before paint with a head
-script (stored choice, else the system setting), then switch it with the
-helpers in `utils/theme.ts`. [Dark mode](/docs/dark-mode) covers the script and the helpers in full.
+The page mode lives on `<html data-theme>`. With no attribute the page follows
+the system setting. To restore a stored choice, set it before paint with a head
+script, then switch it with the helpers in `utils/theme.ts`. [Dark mode](/docs/dark-mode) covers the script and the helpers in full.
 
 ```html
 <script is:inline>
   const t = localStorage.getItem('apogee-theme')
-  document.documentElement.dataset.theme =
-    t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  if (t) document.documentElement.dataset.theme = t
 </script>
 ```
 
