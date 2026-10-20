@@ -3,6 +3,16 @@
 All notable changes to Apogee are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](https://semver.org).
 
+## [0.8.0] — 2026-10-20
+
+### Added
+
+- **Anonymous CLI telemetry.** Each `init`, `add`, `list`, `diff` and `update` sends one event to PostHog (EU): the command, the component names or counts, and CLI, Node and OS versions, under a random ID kept in `~/.config/apogee/telemetry.json`. No person profiles, no IP addresses. Off with `APOGEE_TELEMETRY=0` or `DO_NOT_TRACK=1`, and always off in CI. The first run prints a notice; see the Telemetry docs page.
+
+### Changed
+
+- Docs: **Site layout** and **Telemetry** get their own sidebar icons.
+
 ## [0.7.0] — 2026-10-20
 
 **Upgrading:** a page with no `data-theme` on `<html>` now follows the visitor's system setting, so it turns dark for visitors whose OS is dark. To keep a page light, set `data-theme="light"` on `<html>` (or pass `theme="light"` to SiteLayout). To get the system-dark block and the new `dark:` variant, replace your tokens file with the package's `registry/tokens/theme.css`, then, if you changed the brand colours, regenerate it from your hues file: `node node_modules/@ava-ui/apogee/scripts/build-tokens.mjs src/styles/apogee.css ./hues.mjs`. The head script is now only needed to restore a stored choice.
@@ -487,6 +497,7 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.8.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.8.0
 [0.7.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.7.0
 [0.6.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.6.0
 [0.5.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.5.0

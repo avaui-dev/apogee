@@ -20,6 +20,9 @@ npx @ava-ui/apogee diff                 # your copies vs the package, line by li
 npx @ava-ui/apogee update               # take package changes for files you haven't edited
 ```
 
+The CLI sends an anonymous usage event per command (the command, component names,
+versions). Turn it off with `APOGEE_TELEMETRY=0`. Details: [Telemetry](https://apogee.avaui.dev/docs/telemetry).
+
 `add` resolves dependencies for you — `add data-grid` also pulls in `Checkbox`,
 and prints the npm packages to install (e.g. `@lucide/astro`). Files land in
 `src/components/apogee/` (configurable in `apogee.json`); you own them.

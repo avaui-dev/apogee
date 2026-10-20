@@ -3,7 +3,10 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { canonical, resolveDeps, copyInto, copySkin, fileStatus, sha } from './lib.mjs'
+// The CLI runs below are tests, not usage: keep them out of telemetry.
+process.env.APOGEE_TELEMETRY = '0'
+
+import { canonical, resolveDeps, copyInto, copySkin, fileStatus, sha, telemetryOff, telemetryEvent } from './lib.mjs'
 
 const index = {
   components: {
@@ -180,4 +183,23 @@ test('add records hashes; diff and update leave your edits alone and apply packa
   cli('update', 'badge')
   assert.equal(readFileSync(file, 'utf8'), pkg)
   assert.equal(JSON.parse(readFileSync(cfgPath, 'utf8')).installed['src/components/apogee/Badge/Badge.astro'], sha(pkg))
+})
+
+test('telemetry is off with APOGEE_TELEMETRY=0, DO_NOT_TRACK or in CI', () => {
+  assert.equal(telemetryOff({}), false)
+  for (const v of ['0', 'false', 'off', 'OFF']) assert.equal(telemetryOff({ APOGEE_TELEMETRY: v }), true, v)
+  assert.equal(telemetryOff({ APOGEE_TELEMETRY: '1' }), false)
+  assert.equal(telemetryOff({ DO_NOT_TRACK: '1' }), true)
+  assert.equal(telemetryOff({ DO_NOT_TRACK: '0' }), false)
+  assert.equal(telemetryOff({ CI: 'true' }), true)
+})
+
+test('a telemetry event is anonymous and carries only the command, its details and versions', () => {
+  const e = telemetryEvent({ key: 'phc_x', id: 'abc', command: 'add', props: { items: ['button'] }, version: '0.7.0' })
+  assert.equal(e.api_key, 'phc_x')
+  assert.equal(e.event, 'cli add')
+  assert.equal(e.distinct_id, 'abc')
+  assert.equal(e.properties.$process_person_profile, false)
+  assert.deepEqual(Object.keys(e.properties).sort(), ['$process_person_profile', 'cli_version', 'items', 'node_version', 'os'])
+  assert.match(e.properties.node_version, /^\d+$/)
 })

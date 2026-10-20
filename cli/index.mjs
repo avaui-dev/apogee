@@ -8,18 +8,24 @@
 // Dependency-free: Node built-ins only.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, mkdtempSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { tmpdir, homedir } from 'node:os'
+import { randomUUID } from 'node:crypto'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve, join, relative } from 'node:path'
 import { parseArgs } from 'node:util'
-import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin, rendered, destOf, sha, fileStatus } from './lib.mjs'
+import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin, rendered, destOf, sha, fileStatus, telemetryOff, telemetryEvent } from './lib.mjs'
 
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const registryDir = join(pkgRoot, 'registry')
 const index = JSON.parse(readFileSync(join(registryDir, 'index.json'), 'utf8'))
 
 const CONFIG = 'apogee.json'
+const VERSION = JSON.parse(readFileSync(join(pkgRoot, 'package.json'), 'utf8')).version
+// PostHog project "Apogee CLI" (AVA UI org, EU cloud). A project key can only send
+// events, never read them, so it is safe to ship. An empty key sends nothing.
+const POSTHOG_KEY = 'phc_ujwx92m25QmL2tSRhkwiTmj7eZmujr65bLkN6fp42FTJ'
+const POSTHOG_URL = 'https://eu.i.posthog.com/i/v0/e/'
 const DEFAULTS = { componentsDir: 'src/components/apogee', tokens: 'src/styles/apogee.css' }
 
 // --- tiny output helpers ---
@@ -56,6 +62,33 @@ const recordWrites = (cfg, paths) => {
 
 // Layouts go to src/layouts/ (Astro's convention, and where AVA looks), not the components dir.
 const rootFor = (relFile, cfg) => (relFile.startsWith('layouts/') ? join(process.cwd(), 'src') : join(process.cwd(), cfg.componentsDir))
+
+// One anonymous event per command. Never throws and never waits more than 1.5s.
+async function track(command, props) {
+  if (!POSTHOG_KEY || telemetryOff(process.env)) return
+  const dir = join(process.env.XDG_CONFIG_HOME || join(homedir(), '.config'), 'apogee')
+  const file = join(dir, 'telemetry.json')
+  let id
+  try {
+    id = JSON.parse(readFileSync(file, 'utf8')).id
+  } catch {}
+  if (!id) {
+    id = randomUUID()
+    try {
+      mkdirSync(dir, { recursive: true })
+      writeFileSync(file, JSON.stringify({ id }) + '\n')
+    } catch {}
+    console.error(dim('\nApogee sends anonymous usage data (the command, component names, versions). Turn it off with APOGEE_TELEMETRY=0. https://apogee.avaui.dev/docs/telemetry'))
+  }
+  try {
+    await fetch(POSTHOG_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(telemetryEvent({ key: POSTHOG_KEY, id, command, props, version: VERSION })),
+      signal: AbortSignal.timeout(1500),
+    })
+  } catch {}
+}
 
 const canonical = (input) => canonicalIn(index, input)
 const resolveDeps = (names) => resolveDepsIn(index, names)
@@ -106,6 +139,7 @@ function cmdInit(opts) {
   say(dim(`     @source "./${config.componentsDir}";`))
   say(`  3. Add components:`)
   say(dim(`     npx @ava-ui/apogee add button`))
+  return { skin: opts.skin ?? null }
 }
 
 function cmdAdd(names, opts) {
@@ -149,6 +183,7 @@ function cmdAdd(names, opts) {
     say(`\n${bold('Install peer packages:')}`)
     say(dim(`  npm i ${[...npmDeps].join(' ')}`))
   }
+  return { items: resolved, files: added.length }
 }
 
 // Every installed file of the named entries (all entries when none are named), with its status.
@@ -181,6 +216,12 @@ const NOTE = {
 
 function cmdDiff(names) {
   const { rows } = statuses(names)
+  const counts = Object.fromEntries(Object.keys(NOTE).map((k) => [k, rows.filter((r) => r.status === k).length]))
+  showDiff(rows)
+  return counts
+}
+
+function showDiff(rows) {
   for (const r of rows) say(`${(r.status === 'current' ? dim : yellow)(r.status.padEnd(9))} ${r.rel}`)
   const changed = rows.filter((r) => r.status !== 'current')
   if (!changed.length) return say(`\n${green('✓')} every file matches the package.`)
@@ -210,6 +251,7 @@ function cmdUpdate(names, opts) {
   for (const r of take) say(dim(`  ↑ ${r.rel}`))
   const kept = rows.filter((r) => !take.includes(r) && r.status !== 'current')
   for (const r of kept) say(`${yellow('•')} kept ${r.rel} ${dim(`(${r.status}: ${NOTE[r.status]})`)}`)
+  return { updated: take.length, kept: kept.length }
 }
 
 function cmdList() {
@@ -271,10 +313,7 @@ const { values, positionals } = parseArgs({
 })
 
 const [cmd, ...rest] = positionals
+const commands = { init: () => cmdInit(values), add: () => cmdAdd(rest, values), list: () => cmdList(), diff: () => cmdDiff(rest), update: () => cmdUpdate(rest, values) }
 if (values.help || !cmd) help()
-else if (cmd === 'init') cmdInit(values)
-else if (cmd === 'add') cmdAdd(rest, values)
-else if (cmd === 'list') cmdList()
-else if (cmd === 'diff') cmdDiff(rest)
-else if (cmd === 'update') cmdUpdate(rest, values)
-else die(`unknown command: ${bold(cmd)}. Run \`apogee --help\`.`)
+else if (!commands[cmd]) die(`unknown command: ${bold(cmd)}. Run \`apogee --help\`.`)
+else await track(cmd, commands[cmd]() ?? {})

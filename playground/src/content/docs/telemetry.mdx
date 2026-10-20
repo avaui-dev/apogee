@@ -1,0 +1,55 @@
+---
+title: Telemetry
+description: What the apogee CLI sends, what it never sends, and how to turn it off.
+group: Getting started
+order: 6
+---
+
+The `apogee` CLI sends one anonymous event each time you run `init`, `add`,
+`list`, `diff` or `update`. We use it to see which components people add and
+which Node versions to support. The first run prints a one-line notice.
+
+## Turn it off
+
+Set either variable in your shell or CI:
+
+```sh
+APOGEE_TELEMETRY=0
+DO_NOT_TRACK=1
+```
+
+The CLI also sends nothing when `CI` is set, so build machines don't count.
+
+## What an event contains
+
+```json
+{
+  "event": "cli add",
+  "distinct_id": "746572fd-8069-471f-9f34-f51ecd519b94",
+  "properties": {
+    "cli_version": "0.7.0",
+    "node_version": "22",
+    "os": "darwin",
+    "items": ["Badge"],
+    "files": 2
+  }
+}
+```
+
+- `distinct_id` is a random ID the CLI creates once and keeps in
+  `~/.config/apogee/telemetry.json`. Delete the file to get a new one.
+- The command adds its own details: `add` sends the component names you asked
+  for and how many files it wrote; `diff` and `update` send counts per status;
+  `init` sends the skin name if you chose one.
+
+## What it never sends
+
+No names, emails, file paths, project names, file contents or environment
+variables. The events go to PostHog's EU cloud with
+`$process_person_profile: false`, so PostHog builds no profile of you, and the
+project discards IP addresses.
+
+## When it sends
+
+After the command finishes. The request gives up after 1.5 seconds and never
+fails the command, so a slow or blocked network only means no event.

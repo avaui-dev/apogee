@@ -72,3 +72,25 @@ export const copySkin = (registryDir, name, tokensPath) => {
   writeFileSync(dest, readFileSync(src, 'utf8'))
   return dest
 }
+
+// Anonymous usage events (see docs/telemetry). Off with APOGEE_TELEMETRY=0, with
+// DO_NOT_TRACK set, and in CI, where runs would only count build machines.
+export const telemetryOff = (env) =>
+  ['0', 'false', 'off'].includes(String(env.APOGEE_TELEMETRY ?? '').toLowerCase()) ||
+  (!!env.DO_NOT_TRACK && env.DO_NOT_TRACK !== '0') ||
+  !!env.CI
+
+// One PostHog capture payload. `$process_person_profile: false` keeps it anonymous:
+// PostHog builds no person profile, so a random id is all that ties runs together.
+export const telemetryEvent = ({ key, id, command, props = {}, version }) => ({
+  api_key: key,
+  event: `cli ${command}`,
+  distinct_id: id,
+  properties: {
+    $process_person_profile: false,
+    cli_version: version,
+    node_version: process.versions.node.split('.')[0],
+    os: process.platform,
+    ...props,
+  },
+})

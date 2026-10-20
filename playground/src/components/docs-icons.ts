@@ -1,5 +1,7 @@
 // One small icon per docs page, keyed by the page id. Unknown ids fall back to Box.
 import {
+  AppWindowMac,
+  ChartLine,
   Puzzle,
   Building2,
   LibraryBig,
@@ -25,7 +27,7 @@ import {
 
 export const docsIcons: Record<string, typeof Box> = {
   accessibility: Accessibility, accordion: ChevronsDownUp, actionable: MousePointerClick, alert: TriangleAlert, 'aspect-ratio': Ratio,
-  'avatar-group': Users, avatar: User, badge: BadgeCheck, blockquote: Quote, box: Box, breadcrumbs: ChevronRight, 'browser-support': Globe,
+  'avatar-group': Users, avatar: User, badge: BadgeCheck, blockquote: Quote, box: Box, breadcrumbs: ChevronRight, 'browser-support': Globe, 'site-layout': AppWindowMac, telemetry: ChartLine,
   'button-group': SquareStack, button: RectangleHorizontal, card: LayoutPanelTop, carousel: GalleryHorizontal, 'checkbox-group': ListChecks,
   checkbox: SquareCheck, code: Code, collapsible: ChevronDown, 'color-picker': Palette, color: Palette, combobox: Search,
   'command-palette': Command, container: Frame, 'content-wrapper': AlignCenter, content: FileText, 'context-menu': MousePointer2,
