@@ -11,27 +11,44 @@ import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Badge from '../../components/Badge/Badge.astro'
+import { type Action } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
-  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
-  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
-  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
-  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
-  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** The label over the app buttons. @category content */
+  appsLabel?: string | null
+  /** App store buttons; icons cycle phone, download. @category content */
+  apps?: Action[] | null
+}
+
+const appIcons = [Smartphone, Download]
+
+const {
+  brand = 'Example',
+  columns = [
+    { heading: 'Product', links: [{ label: 'Overview', href: '#' }, { label: 'Features', href: '#' }, { label: 'Solutions', href: '#', badge: 'New' }, { label: 'Tutorials', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Releases', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'About us', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Press', href: '#' }, { label: 'News', href: '#' }, { label: 'Media kit', href: '#' }, { label: 'Contact', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'Newsletter', href: '#' }, { label: 'Events', href: '#' }, { label: 'Help centre', href: '#' }, { label: 'Tutorials', href: '#' }, { label: 'Support', href: '#' }] },
+    { heading: 'Community', links: [{ label: 'Forum', href: '#' }, { label: 'Meetups', href: '#' }, { label: 'Changelog', href: '#' }, { label: 'Status', href: '#' }, { label: 'Partners', href: '#' }, { label: 'Developers', href: '#' }] },
+    { heading: 'Legal', links: [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }, { label: 'Licences', href: '#' }, { label: 'Settings', href: '#' }, { label: 'Contact', href: '#' }] },
+  ],
+  copyright = '© 2026 Example. All rights reserved.',
+  appsLabel = 'Get the app',
+  apps = [{ label: 'Download for iOS', href: '#' }, { label: 'Get it on Android', href: '#' }],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="medium">
   <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-6">
     <div class="grid grid-cols-2 gap-8 col-span-2 md:col-span-3 lg:col-span-5 lg:grid-cols-5">
-      {columns.filter((c) => c.heading !== 'Use cases').map((c) => (
+      {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="text-sm font-semibold text-neutral">{c.heading}</p>
           <ul class="mt-4 flex list-none flex-col gap-3 p-0">
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
-                <Link href="#" color="primary" underline="hover" class="font-semibold">{l.label}</Link>
+                <Link href={l.href} color="primary" underline="hover" class="font-semibold">{l.label}</Link>
                 {l.badge && <Badge size="small" variant="faded" color="primary">{l.badge}</Badge>}
               </li>
             ))}
@@ -40,15 +57,12 @@ const columns = [
       ))}
     </div>
     <div class="col-span-2 md:col-span-1"><div class="flex flex-col gap-4">
-      <p class="text-sm font-semibold text-neutral-faded">Get the app</p>
-      <div class="flex flex-col gap-3">
-        <Button href="#" variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />Download for iOS</Button>
-        <Button href="#" variant="outline" color="neutral"><Download slot="start" aria-hidden="true" />Get it on Android</Button>
-      </div>
+      {appsLabel && <p class="text-sm font-semibold text-neutral-faded">{appsLabel}</p>}
+      {apps && <div class="flex flex-col gap-3">{apps.map((a, i) => { const Icon = appIcons[i % appIcons.length]!; return <Button href={a.href} variant="outline" color="neutral"><Icon slot="start" aria-hidden="true" />{a.label}</Button> })}</div>}
     </div></div>
   </div>
   <div class="mt-12 md:mt-16 flex flex-col gap-6 border-t border-neutral pt-8 md:flex-row md:items-center md:justify-between">
-    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
-    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+    {copyright && <p class="text-neutral-faded ">{copyright}</p>}
   </div>
 </Section>

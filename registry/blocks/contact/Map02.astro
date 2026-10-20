@@ -5,44 +5,54 @@
  * @block contact
  * @order 8
  */
-import { LifeBuoy, MessagesSquare, Phone } from '@lucide/astro'
+import { LifeBuoy, Mail, MapPin, MessageCircle, MessagesSquare, Phone } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
 import WorldMap from '../../components/WorldMap/WorldMap.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const methods = [
-  { icon: LifeBuoy, title: 'Chat to support', description: "We're here to help.", link: { label: 'support@example.com', href: 'mailto:support@example.com' } },
-  { icon: MessagesSquare, title: 'Chat to sales', description: "Speak to our friendly team.", link: { label: 'sales@example.com', href: 'mailto:sales@example.com' } },
-  { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
-]
-const pins = [
-  { label: 'Melbourne', detail: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
-  { label: 'Sydney', detail: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
-  { label: 'Byron Bay', detail: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
-  { label: 'London', detail: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
-  { label: 'San Francisco', detail: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
-  { label: 'Stockholm', detail: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
-  { label: 'New York', detail: '100 Broadway, New York, NY 10005 US', lat: 40.7081, lon: -74.011 },
-  { label: 'Tokyo', detail: '1-1 Marunouchi, Chiyoda City, Tokyo JP', lat: 35.6812, lon: 139.7671 },
-  { label: 'Cape Town', detail: '100 Long Street, Cape Town 8001 ZA', lat: -33.9213, lon: 18.418 },
-]
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const
 
-interface Props {
+/** @composable */
+interface Props extends ContactContent {
   /** 1 when the block opens a page; its items move one level down with it. */
   headingLevel?: 1 | 2
 }
-const { headingLevel = 2 } = Astro.props
+const {
+  headingLevel = 2,
+  eyebrow = 'Contact us',
+  heading = "We'd love to hear from you",
+  description = 'Our friendly team is always here to chat.',
+  details = [
+    { icon: 'life-buoy', label: 'Chat to support', description: "We're here to help.", value: 'support@example.com', href: 'mailto:support@example.com' },
+    { icon: 'messages-square', label: 'Chat to sales', description: 'Speak to our friendly team.', value: 'sales@example.com', href: 'mailto:sales@example.com' },
+    { icon: 'phone', label: 'Phone', description: 'Mon–Fri from 8am to 5pm.', value: '+1 (555) 000-0000', href: 'tel:+15550000000' },
+  ],
+  locations = [
+    { name: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
+    { name: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
+    { name: 'Byron Bay', address: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
+    { name: 'London', address: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
+    { name: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
+    { name: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
+    { name: 'New York', address: '100 Broadway, New York, NY 10005 US', lat: 40.7081, lon: -74.011 },
+    { name: 'Tokyo', address: '1-1 Marunouchi, Chiyoda City, Tokyo JP', lat: 35.6812, lon: 139.7671 },
+    { name: 'Cape Town', address: '100 Long Street, Cape Town 8001 ZA', lat: -33.9213, lon: 18.418 },
+  ],
+} = Astro.props
 const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="large">
-  <SectionHeader headingLevel={headingLevel} eyebrow="Contact us" heading="We'd love to hear from you" description="Our friendly team is always here to chat." align="center" class="mb-16" />
-  <WorldMap pins={pins} label="Our offices" class="mb-16 max-lg:hidden" />
-  <ul class="list-none p-0 grid gap-6 md:grid-cols-3">
-    {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} variant="card" headingLevel={itemLevel}><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
-    ))}
-  </ul>
+  <SectionHeader headingLevel={headingLevel} eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} align="center" class="mb-16" />
+  {locations && <WorldMap pins={locations.map((l) => ({ label: l.name, detail: l.address, lat: l.lat, lon: l.lon }))} label="Our offices" class="mb-16 max-lg:hidden" />}
+  {details && <ul class="list-none p-0 grid gap-6 md:grid-cols-3">
+    {details.map((d) => {
+      const Icon = icons[d.icon]
+      return <li><ContactMethod title={d.label} description={d.description} link={d.href ? { label: d.value, href: d.href } : undefined} variant="card" headingLevel={itemLevel}><FeaturedIcon slot="icon" theme="outline" color="neutral"><Icon /></FeaturedIcon>{!d.href && <p>{d.value}</p>}</ContactMethod></li>
+    })}
+  </ul>}
 </Section>

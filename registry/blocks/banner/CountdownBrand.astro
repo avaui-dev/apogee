@@ -7,8 +7,23 @@
  */
 import Banner from '../../sections/Banner/Banner.astro'
 import Countdown from '../../components/Countdown/Countdown.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { BannerContent } from '../../sections/_shared/banner.ts'
+
+/** @composable */
+interface Props extends BannerContent {
+  /** When the offer ends, as an ISO date-time. @category content */
+  endsAt?: string
+}
+
+const {
+  heading = '30% off annual plans ends soon',
+  description = 'Lock in your price today.',
+  endsAt = '2026-12-31T23:59:59Z',
+  closeLabel,
+} = Astro.props
 ---
 
-<Banner background="primary" align="center" inline heading="30% off annual plans ends soon" description="Lock in your price today.">
-  <Countdown slot="actions" to="2026-12-31T23:59:59Z" />
+<Banner background="primary" align="center" inline heading={plain(heading)} description={description ? plain(description) : undefined} closeLabel={closeLabel}>
+  <Countdown slot="actions" to={endsAt} />
 </Banner>

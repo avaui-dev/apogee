@@ -10,16 +10,32 @@ import Button from '../../components/Button/Button.astro'
 import Input from '../../components/Input/Input.astro'
 import Link from '../../components/Link/Link.astro'
 import Marquee from '../../components/Marquee/Marquee.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const claims = ['Grown and harvested close to home', '4,000+ five-star reviews', 'Small farms, slow growing']
-const columns = [
-  { heading: 'The fine print', links: ['Contact us', 'Terms of service', 'Manage your account', 'Refunds', 'Shipping', 'Accessibility statement', 'Get the app'] },
-  { heading: 'Helpful links', links: ['Your account', 'Contact us', 'Questions', 'Returns', 'Blog', 'Rewards'] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** The claims scrolling along the top strip. @category content */
+  claims?: string[] | null
+}
+
+const {
+  brand = 'Pastureland',
+  tagline = 'We aren’t just a shop, and we aren’t a courier either. We work with small family farms that do things the slow way, because we believe in food that does you good.',
+  newsletterHeading = 'Join the family',
+  newsletterDescription = 'Save 10% on your first order and hear first about new products and restocks.',
+  submitLabel = 'Sign up',
+  columns = [
+    { heading: 'The fine print', links: [{ label: 'Contact us', href: '#' }, { label: 'Terms of service', href: '#' }, { label: 'Manage your account', href: '#' }, { label: 'Refunds', href: '#' }, { label: 'Shipping', href: '#' }, { label: 'Accessibility statement', href: '#' }, { label: 'Get the app', href: '#' }] },
+    { heading: 'Helpful links', links: [{ label: 'Your account', href: '#' }, { label: 'Contact us', href: '#' }, { label: 'Questions', href: '#' }, { label: 'Returns', href: '#' }, { label: 'Blog', href: '#' }, { label: 'Rewards', href: '#' }] },
+  ],
+  copyright = '© 2026 Pastureland.',
+  claims = ['Grown and harvested close to home', '4,000+ five-star reviews', 'Small farms, slow growing'],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="none" container={false} class="overflow-hidden bg-primary-faded">
-  <div data-theme="dark" class="bg-page py-4 text-neutral">
+  {claims && <div data-theme="dark" class="bg-page py-4 text-neutral">
     <Marquee label="What we stand for">
       {claims.map((c) => (
         <span class="flex items-center gap-8 px-8 font-mono text-sm uppercase tracking-wider">
@@ -27,31 +43,31 @@ const columns = [
         </span>
       ))}
     </Marquee>
-  </div>
+  </div>}
 
   <div class="px-gutter pt-12">
     <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1.4fr]">
       <div>
         <p class="text-2xl tracking-tight">Our mission</p>
-        <p class="mt-4 max-w-sm text-neutral-faded">We aren’t just a shop, and we aren’t a courier either. We work with small family farms that do things the slow way, because we believe in food that does you good.</p>
+        {tagline && <p class="mt-4 max-w-sm text-neutral-faded">{plain(tagline)}</p>}
       </div>
       {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="text-2xl tracking-tight">{c.heading}</p>
           <ul class="mt-4 flex list-none flex-col gap-2 p-0">
-            {c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}
+            {c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}
           </ul>
         </nav>
       ))}
       <form class="flex flex-col gap-4" onsubmit="return false">
-        <p class="text-3xl tracking-tight">Join the family</p>
-        <p class="text-neutral-faded">Save 10% on your first order and hear first about new products and restocks.</p>
+        {newsletterHeading && <p class="text-3xl tracking-tight">{newsletterHeading}</p>}
+        {newsletterDescription && <p class="text-neutral-faded">{newsletterDescription}</p>}
         <Input type="email" name="email" placeholder="Your email" aria-label="Email" autocomplete="email" size="large" />
-        <Button type="submit" size="large" rounded fullWidth class="uppercase tracking-widest">Sign up</Button>
+        <Button type="submit" size="large" rounded fullWidth class="uppercase tracking-widest">{submitLabel}</Button>
       </form>
     </div>
 
-    <div class="@container mt-12"><p class="whitespace-nowrap text-[20cqi] font-bold leading-none tracking-tighter text-primary" aria-hidden="true">Pastureland</p></div>
-    <p class="py-6 text-xs text-neutral-faded">© 2026 Pastureland.</p>
+    <div class="@container mt-12"><p class="whitespace-nowrap text-[20cqi] font-bold leading-none tracking-tighter text-primary" aria-hidden="true">{brand}</p></div>
+    {copyright && <p class="py-6 text-xs text-neutral-faded">{copyright}</p>}
   </div>
 </Section>

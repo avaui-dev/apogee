@@ -11,45 +11,45 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { PricingContent } from '../../sections/_shared/pricing.ts'
 
+/** @composable */
+interface Props extends PricingContent {}
+
+const {
+  eyebrow = 'Upgrade',
+  heading = 'Pricing plans that scale',
+  description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.',
+  items = [
+    { name: 'Basic plan', price: '$10', period: 'mth', description: 'Billed annually.', features: ['Access to basic features', 'Basic reporting and analytics', 'Up to 10 individual users', '20 GB individual data', 'Basic chat and email support'], action: { label: 'Get started', href: '#' } },
+    { name: 'Business plan', price: '$20', period: 'mth', description: 'Billed annually.', features: ['200+ integrations', 'Advanced reporting', 'Up to 20 individual users', '40 GB individual data', 'Priority chat and email support'], action: { label: 'Get started', href: '#' } },
+  ],
+} = Astro.props
+const icons = [Zap, Layers2]
 ---
 
 <Section spacing="large">
   <div class="grid gap-12 xl:grid-cols-[minmax(0,28rem)_1fr] xl:gap-16">
-    <SectionHeader eyebrow="Upgrade" heading="Pricing plans that scale" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="medium" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="medium" />
     <div class="grid items-start gap-12 md:gap-8 md:grid-cols-2">
-      <div class="relative mt-6 flex flex-col items-center gap-8 rounded-2xl bg-neutral-faded px-6 pt-12 pb-8 text-center md:px-8">
-      <div class="absolute -top-6 start-1/2 -translate-x-1/2 rtl:translate-x-1/2"><FeaturedIcon theme="outline" color="neutral" size="large"><Zap /></FeaturedIcon></div>
-      <div class="flex flex-col items-center gap-2">
-        <Heading as="h3" size="h5">Basic plan</Heading>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$10</span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Billed annually.</p>
-      </div>
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded self-stretch text-start">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Access to basic features</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Basic reporting and analytics</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Up to 10 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>20 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Basic chat and email support</span></li>
-      </ul>
-      <Button href="#" size="large" fullWidth class="mt-auto">Get started</Button>
-    </div>
+    {items.map((plan, i) => {
+      const Icon = icons[i % icons.length]!
+      return (
     <div class="relative mt-6 flex flex-col items-center gap-8 rounded-2xl bg-neutral-faded px-6 pt-12 pb-8 text-center md:px-8">
-      <div class="absolute -top-6 start-1/2 -translate-x-1/2 rtl:translate-x-1/2"><FeaturedIcon theme="outline" color="neutral" size="large"><Layers2 /></FeaturedIcon></div>
+      <div class="absolute -top-6 start-1/2 -translate-x-1/2 rtl:translate-x-1/2"><FeaturedIcon theme="outline" color="neutral" size="large"><Icon /></FeaturedIcon></div>
       <div class="flex flex-col items-center gap-2">
-        <Heading as="h3" size="h5">Business plan</Heading>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$20</span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Billed annually.</p>
+        <Heading as="h3" size="h5">{plan.name}</Heading>
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">{plan.price}</span>{plan.period && <span class="text-neutral-faded">/{plan.period}</span>}</p>
+        <p class="text-neutral-faded">{plan.description}</p>
       </div>
       <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded self-stretch text-start">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>200+ integrations</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Advanced reporting</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Up to 20 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>40 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Priority chat and email support</span></li>
+        {plan.features.map((f) => <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>{f}</span></li>)}
       </ul>
-      <Button href="#" size="large" fullWidth class="mt-auto">Get started</Button>
+      <Button href={plan.action.href} size="large" fullWidth class="mt-auto">{plan.action.label}</Button>
     </div>
+      )
+    })}
     </div>
   </div>
 </Section>

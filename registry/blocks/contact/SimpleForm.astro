@@ -8,15 +8,26 @@
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactForm from '../../components/ContactForm/ContactForm.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-interface Props {
+/** @composable */
+interface Props extends ContactContent {
   /** 1 when the block opens a page; its items move one level down with it. */
   headingLevel?: 1 | 2
 }
-const { headingLevel = 2 } = Astro.props
+const {
+  headingLevel = 2,
+  eyebrow = 'Contact us',
+  heading = 'Get in touch',
+  description = "We'd love to hear from you. Please fill out this form.",
+  action,
+  method,
+  submitLabel = 'Send message',
+} = Astro.props
 ---
 
 <Section spacing="large" containerWidth="small">
-  <SectionHeader headingLevel={headingLevel} eyebrow="Contact us" heading="Get in touch" description="We'd love to hear from you. Please fill out this form." align="center" class="mb-12" />
-  <div class="mx-auto w-full max-w-lg"><ContactForm /></div>
+  <SectionHeader headingLevel={headingLevel} eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} align="center" class="mb-12" />
+  <div class="mx-auto w-full max-w-lg"><ContactForm action={action} method={method} submitLabel={submitLabel} /></div>
 </Section>

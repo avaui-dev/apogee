@@ -9,16 +9,28 @@ import { Orbit } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Link from '../../components/Link/Link.astro'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'Example',
+  columns = [{ heading: 'Footer', links: [{ label: 'Overview', href: '#' }, { label: 'Features', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Help', href: '#' }, { label: 'Privacy', href: '#' }] }],
+  navLabel = 'Footer',
+  copyright = '© 2026 Example. All rights reserved.',
+  legal = [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }],
+} = Astro.props
+const flat = columns.flatMap((c) => c.links)
 ---
 
 <Section as="footer" spacing="medium">
   <div class="flex flex-col items-center gap-8">
-    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
-    <nav aria-label="Footer" class=""><ul class="grid list-none grid-cols-2 gap-x-8 gap-y-3 p-0 sm:flex sm:flex-wrap"><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Overview</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Features</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Pricing</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Careers</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Help</Link></li><li><Link href="#" color="neutral" underline="hover" class="font-semibold">Privacy</Link></li></ul></nav>
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+    {flat.length > 0 && <nav aria-label={navLabel} class=""><ul class="grid list-none grid-cols-2 gap-x-8 gap-y-3 p-0 sm:flex sm:flex-wrap">{flat.map((l) => <li><Link href={l.href} color="neutral" underline="hover" class="font-semibold">{l.label}</Link></li>)}</ul></nav>}
   </div>
   <div class="mt-12 md:mt-16 flex flex-col-reverse gap-6 border-t border-neutral pt-8 md:flex-row md:items-center md:justify-between">
-    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
-    <nav aria-label="Legal"><ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 text-neutral-faded"><li><Link href="#" color="inherit" underline="hover">Terms</Link></li><li><Link href="#" color="inherit" underline="hover">Privacy</Link></li><li><Link href="#" color="inherit" underline="hover">Cookies</Link></li></ul></nav>
+    {copyright && <p class="text-neutral-faded ">{copyright}</p>}
+    {legal && <nav aria-label="Legal"><ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 text-neutral-faded">{legal.map((l) => <li><Link href={l.href} color="inherit" underline="hover">{l.label}</Link></li>)}</ul></nav>}
   </div>
 </Section>

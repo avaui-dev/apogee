@@ -11,23 +11,37 @@ import Button from '../../components/Button/Button.astro'
 import Input from '../../components/Input/Input.astro'
 import Link from '../../components/Link/Link.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { NewsletterContent } from '../../sections/_shared/newsletter.ts'
 
+/** @composable */
+interface Props extends NewsletterContent {}
+
+const {
+  eyebrow,
+  heading = 'We\'ll send you a nice letter once a week',
+  description = 'No spam. Just the latest releases and tips, interesting articles and interviews.',
+  submitLabel = 'Subscribe',
+  media = { src: '/mockups/app-desktop-light.jpg', srcDark: '/mockups/app-desktop-dark.jpg', alt: 'The dashboard overview in a browser' },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid grid-cols-[minmax(0,1fr)] overflow-hidden rounded-2xl bg-neutral-faded md:rounded-3xl lg:grid-cols-2">
     <div class="flex flex-col items-start gap-8 px-6 pt-10 pb-12 sm:p-12 md:gap-12 lg:p-16">
-      <SectionHeader heading="We'll send you a nice letter once a week" description="No spam. Just the latest releases and tips, interesting articles and interviews." size="large" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" />
       <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
-        <Button type="submit" size="large">Subscribe</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">Read about our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>
     </div>
+    {media && (
     <div class="h-52 min-w-0 overflow-hidden ps-6 pt-6 sm:h-90 sm:ps-12 sm:pt-12 md:h-120">
-      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="w-[48rem] max-w-none" />
+      <DeviceFrame device="browser" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height} class="w-[48rem] max-w-none" />
     </div>
+    )}
   </div>
 </Section>

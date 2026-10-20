@@ -12,57 +12,83 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { accentRuns, plain } from '../../sections/_shared/spine.ts'
+import type { PricingContent } from '../../sections/_shared/pricing.ts'
 
+/** @composable */
+interface Props extends PricingContent {
+  /** The feature rows beside the plan card; icons cycle in order. @shape { title, description } @category content */
+  highlights?: { title: string; description: string }[]
+  /** The small label over each features list. @category content */
+  featuresLabel?: string | null
+  /** The line under that label, one per plan in order; *asterisks* bold a part. @category content */
+  featuresIntros?: string[]
+}
+
+const {
+  eyebrow = 'Upgrade',
+  heading = 'Unlock more features',
+  description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.',
+  highlights = [
+    { title: 'Share team inboxes', description: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page.' },
+    { title: 'Deliver instant answers', description: 'One customer service platform that keeps everything your customers need in one place.' },
+    { title: 'Manage your team with reports', description: 'Measure what matters with reports you can filter, export and drill into in a couple of clicks.' },
+  ],
+  items = [
+    { name: 'Basic plan', price: '$10', period: 'month', description: 'Our most popular plan for small teams.', features: ['Access to basic features', 'Attend events', 'Basic reporting and analytics', 'Automatic updates', 'Up to 10 individual users', 'Back up your account', '20 GB individual data', 'Audit log and notes', 'Basic chat support', 'Feature requests'], action: { label: 'Get started', href: '#' }, badge: 'Popular' },
+  ],
+  featuresLabel = 'Features',
+  featuresIntros = ['Everything in our *free* plan, plus:'],
+} = Astro.props
+const icons = [MessagesSquare, Zap, ChartColumn]
+// '$10' → '$' (set small) and '10'.
+const split = (price: string) => price.match(/^(\D*)(.*)$/)!.slice(1) as [string, string]
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader eyebrow="Upgrade" heading="Unlock more features" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="medium" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="medium" />
     <div class="grid items-center gap-12 xl:grid-cols-2 xl:gap-16">
       <ul class="flex list-none flex-col gap-10 p-0">
+        {highlights.map((h, i) => {
+          const Icon = icons[i % icons.length]!
+          return (
         <li class="flex gap-4">
-          <FeaturedIcon theme="outline" color="neutral" size="large" class="shrink-0"><MessagesSquare /></FeaturedIcon>
-          <div class="flex flex-col gap-1 pt-2"><Heading as="h3" size="h6">Share team inboxes</Heading><p class="text-neutral-faded">Whether your team is 2 people or 200, shared inboxes keep everyone on the same page.</p></div>
+          <FeaturedIcon theme="outline" color="neutral" size="large" class="shrink-0"><Icon /></FeaturedIcon>
+          <div class="flex flex-col gap-1 pt-2"><Heading as="h3" size="h6">{h.title}</Heading><p class="text-neutral-faded">{h.description}</p></div>
         </li>
-        <li class="flex gap-4">
-          <FeaturedIcon theme="outline" color="neutral" size="large" class="shrink-0"><Zap /></FeaturedIcon>
-          <div class="flex flex-col gap-1 pt-2"><Heading as="h3" size="h6">Deliver instant answers</Heading><p class="text-neutral-faded">One customer service platform that keeps everything your customers need in one place.</p></div>
-        </li>
-        <li class="flex gap-4">
-          <FeaturedIcon theme="outline" color="neutral" size="large" class="shrink-0"><ChartColumn /></FeaturedIcon>
-          <div class="flex flex-col gap-1 pt-2"><Heading as="h3" size="h6">Manage your team with reports</Heading><p class="text-neutral-faded">Measure what matters with reports you can filter, export and drill into in a couple of clicks.</p></div>
-        </li>
+          )
+        })}
       </ul>
+      {items.map((plan, i) => {
+        const intro = featuresIntros[i]
+        const [currency, amount] = split(plan.price)
+        return (
       <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
       <div class="flex flex-col-reverse gap-6 p-6 md:flex-row md:justify-between md:p-8">
         <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-2"><Heading as="h3" size="h5">Basic plan</Heading><Badge color="primary" rounded>Popular</Badge></div>
-          <p class="text-neutral-faded">Our most popular plan for small teams.</p>
+          <div class="flex items-center gap-2"><Heading as="h3" size="h5">{plan.name}</Heading>{(plan.badge || plan.featured) && <Badge color="primary" rounded>{plan.badge ?? 'Popular'}</Badge>}</div>
+          <p class="text-neutral-faded">{plan.description}</p>
         </div>
-        <p class="flex items-start gap-1"><span class="mt-2 text-2xl font-semibold">$</span><span class="text-6xl font-semibold tracking-tight tabular-nums">10</span><span class="self-end pb-2 text-neutral-faded">per month</span></p>
+        <p class="flex items-start gap-1">{currency && <span class="mt-2 text-2xl font-semibold">{currency}</span>}<span class="text-6xl font-semibold tracking-tight tabular-nums">{amount}</span>{plan.period && <span class="self-end pb-2 text-neutral-faded">per {plan.period}</span>}</p>
       </div>
       <div class="flex flex-col gap-6 border-t border-neutral p-6 md:p-8">
+        {(featuresLabel || intro) && (
         <div class="flex flex-col gap-1">
-          <p class="font-semibold">Features</p>
-          <p class="text-neutral-faded">Everything in our <strong class="font-semibold text-neutral">free</strong> plan, plus:</p>
+          {featuresLabel && <p class="font-semibold">{featuresLabel}</p>}
+          {intro && <p class="text-neutral-faded">{accentRuns(intro).map((r) => (r.accent ? <strong class="font-semibold text-neutral">{r.text}</strong> : r.text))}</p>}
         </div>
+        )}
       <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded md:grid md:grid-cols-2 md:gap-x-8">
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Access to basic features</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Attend events</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Basic reporting and analytics</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Automatic updates</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Up to 10 individual users</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Back up your account</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>20 GB individual data</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Audit log and notes</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Basic chat support</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Feature requests</span></li>
+        {plan.features.map((f) => <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>{f}</span></li>)}
       </ul>
       </div>
       <div class="border-t border-neutral p-6 md:px-8">
-        <Button href="#" size="large" fullWidth>Get started</Button>
+        <Button href={plan.action.href} size="large" fullWidth>{plan.action.label}</Button>
       </div>
     </div>
+        )
+      })}
     </div>
   </div>
 </Section>

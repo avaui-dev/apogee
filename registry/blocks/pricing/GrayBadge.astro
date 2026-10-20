@@ -11,82 +11,65 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Divider from '../../components/Divider/Divider.astro'
+import { plain, type Action } from '../../sections/_shared/spine.ts'
+import type { PricingContent } from '../../sections/_shared/pricing.ts'
 
+/** @composable */
+interface Props extends PricingContent {
+  /** The solid button under the heading. @category content */
+  primaryAction?: Action | null
+  /** The outline button under the heading. @category content */
+  secondaryAction?: Action | null
+  /** The outline button on every plan card. @category content */
+  salesAction?: Action | null
+}
+
+const {
+  eyebrow = 'Pricing',
+  heading = 'Simple, transparent pricing',
+  description = 'We believe good tools should be open to every company, whatever its size.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Chat to sales', href: '#' },
+  items = [
+    { name: 'Basic plan', price: '$10', period: 'mth', description: 'Our most popular plan.', features: ['Access to all basic features', 'Basic reporting and analytics', 'Up to 10 individual users', '20 GB individual data', 'Basic chat and email support'], action: { label: 'Get started', href: '#' } },
+    { name: 'Business plan', price: '$20', period: 'mth', description: 'Growing teams up to 20 users.', features: ['200+ integrations', 'Advanced reporting and analytics', 'Up to 20 individual users', '40 GB individual data', 'Priority chat and email support'], action: { label: 'Get started', href: '#' } },
+    { name: 'Enterprise plan', price: '$40', period: 'mth', description: 'Advanced features and unlimited users.', features: ['Advanced custom fields', 'Audit log and data history', 'Unlimited individual users', 'Unlimited individual data', 'Personalised and priority service'], action: { label: 'Get started', href: '#' } },
+  ],
+  salesAction = { label: 'Chat to sales', href: '#' },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
     <div class="flex flex-col items-center gap-8">
-      <SectionHeader eyebrow="Pricing" heading="Simple, transparent pricing" description="We believe good tools should be open to every company, whatever its size." size="large" align="center" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-col-reverse gap-3 sm:flex-row">
-        <Button href="#" size="large" variant="outline" color="neutral">Chat to sales</Button>
-        <Button href="#" size="large">Get started</Button>
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
       </div>
+      )}
     </div>
     <div class="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
+    {items.map((plan) => (
     <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
       <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
-        <Badge color="primary" size="large" rounded>Basic plan</Badge>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$10</span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Our most popular plan.</p>
+        <Badge color="primary" size="large" rounded>{plan.name}</Badge>
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">{plan.price}</span>{plan.period && <span class="text-neutral-faded">/{plan.period}</span>}</p>
+        <p class="text-neutral-faded">{plan.description}</p>
         <div class="flex flex-col gap-3 mt-4 self-stretch">
-        <Button href="#" size="large" fullWidth>Get started</Button>
-        <Button href="#" size="large" variant="outline" color="neutral" fullWidth>Chat to sales</Button>
+        <Button href={plan.action.href} size="large" fullWidth>{plan.action.label}</Button>
+        {salesAction && <Button href={salesAction.href} size="large" variant="outline" color="neutral" fullWidth>{salesAction.label}</Button>}
       </div>
       </div>
       <div class="flex-1 px-6 py-8 md:px-8">
         <Divider class="mb-8" />
       <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Access to all basic features</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Basic reporting and analytics</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Up to 10 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>20 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Basic chat and email support</span></li>
+        {plan.features.map((f) => <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>{f}</span></li>)}
       </ul>
       </div>
     </div>
-    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
-      <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
-        <Badge color="primary" size="large" rounded>Business plan</Badge>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$20</span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Growing teams up to 20 users.</p>
-        <div class="flex flex-col gap-3 mt-4 self-stretch">
-        <Button href="#" size="large" fullWidth>Get started</Button>
-        <Button href="#" size="large" variant="outline" color="neutral" fullWidth>Chat to sales</Button>
-      </div>
-      </div>
-      <div class="flex-1 px-6 py-8 md:px-8">
-        <Divider class="mb-8" />
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>200+ integrations</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Advanced reporting and analytics</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Up to 20 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>40 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Priority chat and email support</span></li>
-      </ul>
-      </div>
-    </div>
-    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
-      <div class="flex flex-col items-center gap-4 px-6 pt-8 text-center md:px-8 md:pt-10">
-        <Badge color="primary" size="large" rounded>Enterprise plan</Badge>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums">$40</span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Advanced features and unlimited users.</p>
-        <div class="flex flex-col gap-3 mt-4 self-stretch">
-        <Button href="#" size="large" fullWidth>Get started</Button>
-        <Button href="#" size="large" variant="outline" color="neutral" fullWidth>Chat to sales</Button>
-      </div>
-      </div>
-      <div class="flex-1 px-6 py-8 md:px-8">
-        <Divider class="mb-8" />
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Advanced custom fields</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Audit log and data history</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Unlimited individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Unlimited individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-positive" aria-hidden="true" /><span>Personalised and priority service</span></li>
-      </ul>
-      </div>
-    </div>
+    ))}
   </div>
   </div>
 </Section>

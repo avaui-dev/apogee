@@ -10,37 +10,45 @@ import Avatar from '../../components/Avatar/Avatar.astro'
 import Rating from '../../components/Rating/Rating.astro'
 import Carousel from '../../components/Carousel/Carousel.astro'
 import Image from '../../components/Image/Image.astro'
+import type { Media } from '../../sections/_shared/spine.ts'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {
+  /** Up to five customer photos for the collage (decorative, hidden from screen readers). @category content */
+  images?: Media[]
+}
+
+const photo = (id: number) => ({ src: `https://picsum.photos/id/${id}/600/600`, alt: '', width: 600, height: 600 })
+const {
+  label = 'Testimonials',
+  items = [
+    { quote: 'We shipped our redesign in three weeks instead of three months.', name: 'Amara Nwosu', role: 'Head of Operations, Lumen', avatar: 'https://picsum.photos/id/1027/192/192', rating: 5 },
+    { quote: 'Every page we build now looks like it belongs together.', name: 'Daniel Reyes', role: 'Engineering Lead, Quanta', avatar: 'https://picsum.photos/id/91/192/192', rating: 5 },
+    { quote: 'Support answered in minutes, and the fix was live the same afternoon.', name: 'Sofia Marchetti', role: 'Product Designer, Fieldwork', avatar: 'https://picsum.photos/id/832/192/192', rating: 5 },
+  ],
+  images = [photo(1027), photo(91), photo(832), photo(856), photo(823)],
+} = Astro.props
+// The collage layout: one grid cell per photo, in order.
+const cells = ['row-start-3 col-start-3 row-end-7 col-end-7', 'row-start-1 col-start-7 row-end-7 col-end-11', 'row-start-7 col-start-1 row-end-10 col-end-5', 'row-start-7 col-start-5 row-end-13 col-end-9', 'row-start-7 col-start-9 row-end-10 col-end-13']
 ---
 
 <Section spacing="large" class="overflow-hidden">
   <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="min-w-0">
-      <Carousel label="Testimonials" visibleItems={{ base: 1 }} controlsPosition="below">
+      <Carousel label={label} visibleItems={{ base: 1 }} controlsPosition="below">
+        {items.map((t) => (
         <figure class="flex flex-col gap-8">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“We shipped our redesign in three weeks instead of three months.”</p></blockquote>
-          <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Amara Nwosu</span><span class="text-sm text-neutral-faded">Head of Operations, Lumen</span></span></figcaption>
+          {t.rating != null && <Rating value={t.rating} readonly size="small" color="warning" aria-label={`Rated ${t.rating} out of 5`} />}
+          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“{t.quote}”</p></blockquote>
+          <figcaption class="flex items-center gap-3"><Avatar src={t.avatar} name={t.name} alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">{t.name}</span>{t.role && <span class="text-sm text-neutral-faded">{t.role}</span>}</span></figcaption>
         </figure>
-        <figure class="flex flex-col gap-8">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Every page we build now looks like it belongs together.”</p></blockquote>
-          <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/91/192/192" name="Daniel Reyes" alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Daniel Reyes</span><span class="text-sm text-neutral-faded">Engineering Lead, Quanta</span></span></figcaption>
-        </figure>
-        <figure class="flex flex-col gap-8">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
-          <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/832/192/192" name="Sofia Marchetti" alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Sofia Marchetti</span><span class="text-sm text-neutral-faded">Product Designer, Fieldwork</span></span></figcaption>
-        </figure>
+        ))}
       </Carousel>
     </div>
     <div class="-mx-[25%] overflow-hidden sm:-mx-[10%] md:mx-0">
       <div class="grid h-122 grid-cols-12 grid-rows-12 gap-2 sm:h-124 md:gap-4" aria-hidden="true">
-        <Image src="https://picsum.photos/id/1027/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-3 col-start-3 row-end-7 col-end-7" />
-        <Image src="https://picsum.photos/id/91/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-1 col-start-7 row-end-7 col-end-11" />
-        <Image src="https://picsum.photos/id/832/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-7 col-start-1 row-end-10 col-end-5" />
-        <Image src="https://picsum.photos/id/856/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-7 col-start-5 row-end-13 col-end-9" />
-        <Image src="https://picsum.photos/id/823/600/600" alt="" width={600} height={600} fit="cover" class="size-full row-start-7 col-start-9 row-end-10 col-end-13" />
+        {images.slice(0, cells.length).map((m, i) => <Image src={m.src} alt="" width={m.width} height={m.height} fit="cover" class={`size-full ${cells[i]}`} />)}
       </div>
     </div>
   </div>

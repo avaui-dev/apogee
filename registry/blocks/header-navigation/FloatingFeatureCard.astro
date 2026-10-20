@@ -5,7 +5,7 @@
  * @block header-navigation
  * @order 9
  */
-import { Book, BookOpen, Box, CirclePlay, Code, FileCode, Layers, LifeBuoy, Mic, Orbit, Sparkles } from '@lucide/astro'
+import { Book, CirclePlay, FileCode, Orbit, Sparkles } from '@lucide/astro'
 import Navbar from '../../components/Navbar/Navbar.astro'
 import NavLink from '../../components/NavLink/NavLink.astro'
 import NavDropdown from '../../components/NavDropdown/NavDropdown.astro'
@@ -14,109 +14,79 @@ import Button from '../../components/Button/Button.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Image from '../../components/Image/Image.astro'
+import type { Action, Media } from '../../sections/_shared/spine.ts'
+import type { NavGroup, NavigationContent } from '../../sections/_shared/navigation.ts'
 
-type Item = { icon: typeof Orbit; title: string; text: string; badge?: string }
-const resources: Item[] = [
-  { icon: Book, title: 'Blog', text: 'The latest industry news and guides, written by our team.' },
-  { icon: Sparkles, title: 'Customer stories', text: 'How teams use the product to grow faster.' },
-  { icon: CirclePlay, title: 'Video tutorials', text: 'Get up and running on new features with short guides.' },
-  { icon: FileCode, title: 'Documentation', text: 'In-depth articles on our tools and technologies.' },
-  { icon: LifeBuoy, title: 'Help and support', text: 'Need help with something? Our team is here around the clock.' },
-  { icon: Code, title: 'API reference', text: 'Reference docs and helpful guides for our API.' },
-  { icon: Box, title: 'Setup 101', text: 'Get up and running fast with our starter guide.' },
-  { icon: Mic, title: 'Mic', text: 'Interviews and talk about the industry and the latest tech.' },
-  { icon: BookOpen, title: 'University', text: 'Free video courses and in-depth articles to master your craft.' },
-  { icon: Layers, title: 'Changelog', text: 'The latest updates and releases from our team.' },
-]
+const icons = [Book, Sparkles, CirclePlay, FileCode]
+const groups: NavGroup[] = [{ items: [
+  { label: 'Blog', href: '#', description: 'The latest industry news and guides, written by our team.' },
+  { label: 'Customer stories', href: '#', description: 'How teams use the product to grow faster.' },
+  { label: 'Video tutorials', href: '#', description: 'Get up and running on new features with short guides.' },
+  { label: 'Documentation', href: '#', description: 'In-depth articles on our tools and technologies.' },
+] }]
 
-interface Props {
+/** @composable */
+interface Props extends NavigationContent {
   /** The bar's fill: the page, a grey band or the brand colour. */
   background?: 'page' | 'neutral-faded' | 'primary' | undefined
   /** `dark` sets the bar in the dark theme on a light page. */
   theme?: 'dark' | undefined
+  /** The card beside each menu's links. @category content */
+  card?: { media: Media; heading: string; description?: string; action?: Action } | null
 }
-const { background, theme } = Astro.props
+const {
+  brand = 'Example',
+  links = [
+    { label: 'Products', groups },
+    { label: 'Services', groups },
+    { label: 'Pricing', href: '#' },
+    { label: 'Resources', groups },
+    { label: 'About', href: '#' },
+  ],
+  primaryAction = { label: 'Sign up', href: '#' },
+  secondaryAction = { label: 'Log in', href: '#' },
+  card = {
+    media: { src: 'https://picsum.photos/seed/apogee-nav-update/560/320', alt: '' },
+    heading: "We've just released an update",
+    description: 'The new dashboard view is here. Pages now load up to three times faster.',
+    action: { label: 'Read the changelog', href: '#' },
+  },
+  background,
+  theme,
+} = Astro.props
 ---
 
 <Navbar floating background={background} data-theme={theme}>
-  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
-  <NavDropdown label="Products" width="44rem">
+  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+  {links.map((l) => 'groups' in l ? (
+  <NavDropdown label={l.label} width="44rem">
     <div class="grid md:grid-cols-[minmax(0,1fr)_18rem]">
           <div class="p-2"><ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(0, 4).map((i) => (
+            {l.groups.flatMap((g) => g.items).map((i, n) => {
+              const Icon = icons[n % icons.length]!
+              return (
               <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                <Link href={i.href} color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <Icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
                   <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.label}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    {i.description && <span class="line-clamp-2 text-sm text-neutral-faded">{i.description}</span>}
                   </span>
                 </Link>
               </li>
-            ))}
+            )})}
           </ul></div>
-          <div class="border-neutral p-3 md:border-s"><div class="flex flex-col gap-4 rounded-xl bg-neutral-faded p-4">
-          <Image src="https://picsum.photos/seed/apogee-nav-update/560/320" alt="" width={560} height={320} fit="cover" radius="lg" class="h-40 w-full" />
+          {card && <div class="border-neutral p-3 md:border-s"><div class="flex flex-col gap-4 rounded-xl bg-neutral-faded p-4">
+          <Image src={card.media.src} alt={card.media.alt} width={560} height={320} fit="cover" radius="lg" class="h-40 w-full" />
           <div class="flex flex-col gap-1">
-            <p class="font-semibold">We've just released an update</p>
-            <p class="text-sm text-neutral-faded">The new dashboard view is here. Pages now load up to three times faster.</p>
+            <p class="font-semibold">{card.heading}</p>
+            {card.description && <p class="text-sm text-neutral-faded">{card.description}</p>}
           </div>
-          <Link href="#" class="text-sm font-semibold">Read the changelog</Link>
-        </div></div>
+          {card.action && <Link href={card.action.href} class="text-sm font-semibold">{card.action.label}</Link>}
+        </div></div>}
         </div>
   </NavDropdown>
-  <NavDropdown label="Services" width="44rem">
-    <div class="grid md:grid-cols-[minmax(0,1fr)_18rem]">
-          <div class="p-2"><ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(0, 4).map((i) => (
-              <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul></div>
-          <div class="border-neutral p-3 md:border-s"><div class="flex flex-col gap-4 rounded-xl bg-neutral-faded p-4">
-          <Image src="https://picsum.photos/seed/apogee-nav-update/560/320" alt="" width={560} height={320} fit="cover" radius="lg" class="h-40 w-full" />
-          <div class="flex flex-col gap-1">
-            <p class="font-semibold">We've just released an update</p>
-            <p class="text-sm text-neutral-faded">The new dashboard view is here. Pages now load up to three times faster.</p>
-          </div>
-          <Link href="#" class="text-sm font-semibold">Read the changelog</Link>
-        </div></div>
-        </div>
-  </NavDropdown>
-  <NavLink href="#">Pricing</NavLink>
-  <NavDropdown label="Resources" width="44rem">
-    <div class="grid md:grid-cols-[minmax(0,1fr)_18rem]">
-          <div class="p-2"><ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(0, 4).map((i) => (
-              <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul></div>
-          <div class="border-neutral p-3 md:border-s"><div class="flex flex-col gap-4 rounded-xl bg-neutral-faded p-4">
-          <Image src="https://picsum.photos/seed/apogee-nav-update/560/320" alt="" width={560} height={320} fit="cover" radius="lg" class="h-40 w-full" />
-          <div class="flex flex-col gap-1">
-            <p class="font-semibold">We've just released an update</p>
-            <p class="text-sm text-neutral-faded">The new dashboard view is here. Pages now load up to three times faster.</p>
-          </div>
-          <Link href="#" class="text-sm font-semibold">Read the changelog</Link>
-        </div></div>
-        </div>
-  </NavDropdown>
-  <NavLink href="#">About</NavLink>
-  <Button slot="actions" href="#" variant="outline" color="neutral" size="small">Log in</Button>
-  <Button slot="actions" href="#" size="small">Sign up</Button>
+  ) : <NavLink href={l.href}>{l.label}</NavLink>)}
+  {secondaryAction && <Button slot="actions" href={secondaryAction.href} variant="outline" color="neutral" size="small">{secondaryAction.label}</Button>}
+  {primaryAction && <Button slot="actions" href={primaryAction.href} size="small">{primaryAction.label}</Button>}
 </Navbar>

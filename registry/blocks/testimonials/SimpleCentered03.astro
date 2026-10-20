@@ -9,32 +9,38 @@ import { Atom, Hexagon, Mountain, Sprout, Waves } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import Tabs from '../../components/Tabs/Tabs.astro'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {
+  /** Which quote's tab is open first (0-based). @category layout */
+  selected?: number
+}
+
+const {
+  label = 'Customers',
+  items = [
+    { quote: 'We shipped our redesign in three weeks instead of three months. The team still talks about it.', name: 'Amara Nwosu', role: 'Head of Operations, Lumen', avatar: 'https://picsum.photos/id/1027/192/192', company: 'Lumen' },
+    { quote: 'Every page we build now looks like it belongs together. Our designers finally trust what ships.', name: 'Daniel Reyes', role: 'Engineering Lead, Quanta', avatar: 'https://picsum.photos/id/91/192/192', company: 'Quanta' },
+    { quote: 'Support answered in minutes, and the fix was live the same afternoon.', name: 'Sofia Marchetti', role: 'Product Designer, Fieldwork', avatar: 'https://picsum.photos/id/832/192/192', company: 'Fieldwork' },
+    { quote: 'It replaced four tools and a spreadsheet nobody wanted to open.', name: 'Kenji Watanabe', role: 'Founder, Northpeak', avatar: 'https://picsum.photos/id/856/192/192', company: 'Northpeak' },
+    { quote: 'Onboarding took a day. Our new hires were shipping by the end of their first week.', name: 'Leah Goldberg', role: 'Customer Success Lead, Arcwave', avatar: 'https://picsum.photos/id/823/192/192', company: 'Arcwave' },
+  ],
+  selected = 2,
+} = Astro.props
+// Tab icons are design: they cycle by position, the tab text is the company (or the person).
+const icons = [Hexagon, Atom, Sprout, Mountain, Waves]
 ---
 
 <Section spacing="large">
   <div class="mx-auto max-w-4xl">
-    <Tabs label="Customers" tabs={[{ label: 'Lumen', icon: Hexagon, value: 'lumen' }, { label: 'Quanta', icon: Atom, value: 'quanta' }, { label: 'Fieldwork', icon: Sprout, value: 'fieldwork' }, { label: 'Northpeak', icon: Mountain, value: 'northpeak' }, { label: 'Arcwave', icon: Waves, value: 'arcwave' }]} value="fieldwork" class="[&_[role=tablist]]:justify-center">
-      <figure slot="panel-lumen" class="flex flex-col items-center gap-8 pt-10 text-center">
-        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
-        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Amara Nwosu</span><span class="text-sm text-neutral-faded">Head of Operations, Lumen</span></span></figcaption>
+    <Tabs label={label} tabs={items.map((t, i) => ({ label: t.company ?? t.name, icon: icons[i % icons.length]!, value: String(i) }))} value={String(selected)} class="[&_[role=tablist]]:justify-center">
+      {items.map((t, i) => (
+      <figure slot={`panel-${i}`} class="flex flex-col items-center gap-8 pt-10 text-center">
+        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“{t.quote}”</p></blockquote>
+        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src={t.avatar} name={t.name} alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">{t.name}</span>{t.role && <span class="text-sm text-neutral-faded">{t.role}</span>}</span></figcaption>
       </figure>
-      <figure slot="panel-quanta" class="flex flex-col items-center gap-8 pt-10 text-center">
-        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
-        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/91/192/192" name="Daniel Reyes" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Daniel Reyes</span><span class="text-sm text-neutral-faded">Engineering Lead, Quanta</span></span></figcaption>
-      </figure>
-      <figure slot="panel-fieldwork" class="flex flex-col items-center gap-8 pt-10 text-center">
-        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
-        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/832/192/192" name="Sofia Marchetti" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Sofia Marchetti</span><span class="text-sm text-neutral-faded">Product Designer, Fieldwork</span></span></figcaption>
-      </figure>
-      <figure slot="panel-northpeak" class="flex flex-col items-center gap-8 pt-10 text-center">
-        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“It replaced four tools and a spreadsheet nobody wanted to open.”</p></blockquote>
-        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/856/192/192" name="Kenji Watanabe" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Kenji Watanabe</span><span class="text-sm text-neutral-faded">Founder, Northpeak</span></span></figcaption>
-      </figure>
-      <figure slot="panel-arcwave" class="flex flex-col items-center gap-8 pt-10 text-center">
-        <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Onboarding took a day. Our new hires were shipping by the end of their first week.”</p></blockquote>
-        <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/823/192/192" name="Leah Goldberg" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Leah Goldberg</span><span class="text-sm text-neutral-faded">Customer Success Lead, Arcwave</span></span></figcaption>
-      </figure>
+      ))}
     </Tabs>
   </div>
 </Section>

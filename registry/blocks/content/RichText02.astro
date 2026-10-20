@@ -7,9 +7,17 @@
  */
 import Section from '../../components/Section/Section.astro'
 import Prose from '../../components/Prose/Prose.astro'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  label = 'Policy',
+} = Astro.props
 ---
 
-<Section spacing="large" containerWidth="small" aria-label="Policy">
+<Section spacing="large" containerWidth="small" aria-label={label}>
   <Prose>
     <p class="lead">These terms apply to everyone who uses the service. Read them once; we keep them short.</p>
     <h2>What we provide</h2>

@@ -9,16 +9,27 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Container from '../../components/Container/Container.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { FeaturesContent } from '../../sections/_shared/features.ts'
 
+/** @composable */
+interface Props extends FeaturesContent {}
+
+const {
+  eyebrow = 'Features',
+  heading = 'Dashboards your team will read',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  media = { src: '/mockups/app-desktop-light.jpg', srcDark: '/mockups/app-desktop-dark.jpg', alt: 'The dashboard overview in a browser' },
+} = Astro.props
 ---
 
 <Section spacing="none" container={false}>
   <div class="bg-neutral-faded pt-section-lg pb-24 md:pb-40">
-    <Container><SectionHeader eyebrow="Features" heading="Dashboards your team will read" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" /></Container>
+    <Container><SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} align="center" /></Container>
   </div>
   <Container class="-mt-16 pb-section-lg md:-mt-28">
-    <div class="max-h-105 overflow-hidden rounded-xl mask-b-from-70% md:max-h-140">
-      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" />
-    </div>
+    {media && <div class="max-h-105 overflow-hidden rounded-xl mask-b-from-70% md:max-h-140">
+      <DeviceFrame device="browser" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height} class="" />
+    </div>}
   </Container>
 </Section>

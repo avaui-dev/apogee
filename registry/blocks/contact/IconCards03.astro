@@ -5,30 +5,44 @@
  * @block contact
  * @order 20
  */
-import { MapPin, MessagesSquare, Phone } from '@lucide/astro'
+import { LifeBuoy, Mail, MapPin, MessageCircle, MessagesSquare, Phone } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Image from '../../components/Image/Image.astro'
 import Badge from '../../components/Badge/Badge.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const methods = [
-  { icon: MessagesSquare, title: 'Chat to sales', description: "Speak to our friendly team.", link: { label: 'sales@example.com', href: 'mailto:sales@example.com' } },
-  { icon: MapPin, title: 'Visit us', description: "Visit our office HQ.", link: { label: 'View on the map', href: '#map' } },
-  { icon: Phone, title: 'Call us', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
-]
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const
+
+/** @composable */
+interface Props extends ContactContent {}
+
+const {
+  eyebrow = 'Contact us',
+  heading = "We'd love to hear from you",
+  description = 'Our friendly team is always here to chat.',
+  details = [
+    { icon: 'messages-square', label: 'Chat to sales', description: 'Speak to our friendly team.', value: 'sales@example.com', href: 'mailto:sales@example.com' },
+    { icon: 'map-pin', label: 'Visit us', description: 'Visit our office HQ.', value: 'View on the map', href: '#map' },
+    { icon: 'phone', label: 'Call us', description: 'Mon–Fri from 8am to 5pm.', value: '+1 (555) 000-0000', href: 'tel:+15550000000' },
+  ],
+  media = { src: 'https://picsum.photos/seed/apogee-contact-4/1600/700', alt: '', width: 1600, height: 700 },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-4 text-center">
-    <Badge color="primary" rounded>Contact us</Badge>
-    <SectionHeader heading="We'd love to hear from you" description="Our friendly team is always here to chat." align="center" />
+    {eyebrow && <Badge color="primary" rounded>{eyebrow}</Badge>}
+    <SectionHeader heading={plain(heading)} description={description ?? undefined} align="center" />
   </div>
-  <Image src="https://picsum.photos/seed/apogee-contact-4/1600/700" alt="" width={1600} height={700} fit="cover" radius="xl" class="mb-16 aspect-[16/7] w-full" />
-  <ul class="list-none p-0 grid gap-6 md:grid-cols-3">
-    {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} variant="card"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
-    ))}
-  </ul>
+  {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" class="mb-16 aspect-[16/7] w-full" />}
+  {details && <ul class="list-none p-0 grid gap-6 md:grid-cols-3">
+    {details.map((d) => {
+      const Icon = icons[d.icon]
+      return <li><ContactMethod title={d.label} description={d.description} link={d.href ? { label: d.value, href: d.href } : undefined} variant="card"><FeaturedIcon slot="icon" theme="outline" color="neutral"><Icon /></FeaturedIcon>{!d.href && <p>{d.value}</p>}</ContactMethod></li>
+    })}
+  </ul>}
 </Section>

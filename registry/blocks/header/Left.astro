@@ -7,15 +7,14 @@
  */
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { PageHeaderContent } from '../../sections/_shared/header.ts'
 
-interface Props {
-  eyebrow?: string
-  heading?: string
-  description?: string
-}
+/** @composable */
+interface Props extends PageHeaderContent {}
 const { eyebrow = 'About us', heading = 'About the company', description = 'Learn more about the company and the team behind it.' } = Astro.props
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow={eyebrow} heading={heading} description={description} headingLevel={1} size="large" />
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} headingLevel={1} size="large" />
 </Section>

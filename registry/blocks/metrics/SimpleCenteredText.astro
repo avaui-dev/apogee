@@ -9,28 +9,36 @@ import { Zap } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { MetricsContent } from '../../sections/_shared/metrics.ts'
 
+/** @composable */
+interface Props extends MetricsContent {}
+
+const {
+  heading = 'Build something great',
+  description = 'Everything you need to build modern interfaces and great products.',
+  items = [
+    { value: '400+', label: 'Projects completed' },
+    { value: '600%', label: 'Return on investment' },
+    { value: '10k', label: 'Global downloads' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
     <div class="flex flex-col items-center gap-4 md:gap-6">
       <FeaturedIcon theme="light" color="primary" size="xlarge"><Zap /></FeaturedIcon>
-      <SectionHeader heading="Build something great" description="Everything you need to build modern interfaces and great products." size="large" align="center" />
+      <SectionHeader heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
     </div>
     <dl class="mx-auto flex w-full max-w-3xl flex-col gap-8 md:flex-row md:gap-0 [&>*]:flex-1 md:[&>*+*]:border-s md:[&>*+*]:border-neutral">
-      <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Projects completed</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">400+</dd>
-          </div>
+      {items.map((s) => (
         <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Return on investment</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">600%</dd>
-          </div>
-        <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Global downloads</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">10k</dd>
-          </div>
+          <dt class="order-2 text-lg font-semibold">{s.label}</dt>
+          <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">{s.value}</dd>
+        </div>
+      ))}
     </dl>
   </div>
 </Section>

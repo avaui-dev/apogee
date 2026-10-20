@@ -9,28 +9,35 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Image from '../../components/Image/Image.astro'
 import Heading from '../../components/Heading/Heading.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const stores = [
-  { city: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
-  { city: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
-  { city: 'Byron Bay', address: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
-  { city: 'London', address: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
-  { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
-  { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
-]
+
+/** @composable */
+interface Props extends ContactContent {}
+
+const {
+  eyebrow = 'Contact us',
+  heading = 'Chat to our friendly team',
+  description = 'Our friendly team would love to hear from you.',
+  locations = [
+    { name: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
+    { name: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large" background="neutral-faded" class="pb-0">
   <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
-    <SectionHeader eyebrow="Contact us" heading="Chat to our friendly team" description="Our friendly team would love to hear from you." />
-    <ul class="list-none p-0 grid gap-8 sm:grid-cols-2">
-    {stores.slice(0, 2).map((s) => (
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} />
+    {locations && <ul class="list-none p-0 grid gap-8 sm:grid-cols-2">
+    {locations.map((s) => (
       <li class="flex flex-col gap-1">
-        <Heading as="h3" size="h6">{s.city}</Heading>
+        <Heading as="h3" size="h6">{s.name}</Heading>
         <p class="apogee-store-address">{s.address}</p>
       </li>
     ))}
-  </ul>
+  </ul>}
   </div>
   <Image src="https://picsum.photos/seed/apogee-contact-3/1600/700" alt="" width={1600} height={700} fit="cover" radius="xl" class="relative -mb-24 mt-16 aspect-[16/7] w-full md:-mb-32" />
 </Section>

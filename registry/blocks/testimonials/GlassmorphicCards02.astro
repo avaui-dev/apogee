@@ -11,47 +11,46 @@ import Button from '../../components/Button/Button.astro'
 import Carousel from '../../components/Carousel/Carousel.astro'
 import Image from '../../components/Image/Image.astro'
 import Rating from '../../components/Rating/Rating.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {}
+
+// A quote is optional on these cards: an empty `quote` shows the person only.
+const {
+  eyebrow,
+  heading = 'What our customers say',
+  description = 'Hear from the teams building with us every day.',
+  primaryAction = { label: 'Create account', href: '#' },
+  secondaryAction = { label: 'Our customers', href: '#' },
+  label = 'Testimonials',
+  items = [
+    { quote: '', name: 'Amara Nwosu', role: 'Head of Operations, Lumen', avatar: 'https://picsum.photos/id/1027/800/1000', rating: 5, industry: 'Retail and commerce' },
+    { quote: 'Clear, calm and fast to work with.', name: 'Daniel Reyes', role: 'Engineering Lead, Quanta', avatar: 'https://picsum.photos/id/91/800/1000', industry: 'Retail and commerce' },
+    { quote: '', name: 'Sofia Marchetti', role: 'Product Designer, Fieldwork', avatar: 'https://picsum.photos/id/832/800/1000', rating: 5, industry: 'Retail and commerce' },
+    { quote: '', name: 'Kenji Watanabe', role: 'Founder, Northpeak', avatar: 'https://picsum.photos/id/856/800/1000', rating: 5, industry: 'Retail and commerce' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader heading="What our customers say" description="Hear from the teams building with us every day." size="large">
-      <Fragment slot="actions"><div class="flex flex-col-reverse gap-3 sm:flex-row"><Button href="#" size="large" variant="outline" color="neutral">Our customers</Button><Button href="#" size="large">Create account</Button></div></Fragment>
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large">
+      {(primaryAction || secondaryAction) && <Fragment slot="actions"><div class="flex flex-col-reverse gap-3 sm:flex-row">{secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}{primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}</div></Fragment>}
     </SectionHeader>
-    <Carousel label="Testimonials" itemWidth="min(22.5rem, 80vw)" controlsPosition="below" gap={6}>
+    <Carousel label={label} itemWidth="min(22.5rem, 80vw)" controlsPosition="below" gap={6}>
+      {items.map((t) => (
       <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/1027/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+        {t.avatar && <div class="absolute inset-0 -z-10"><Image src={t.avatar} alt="" width={800} height={1000} fit="cover" class="size-full" /></div>}
         <figcaption class="flex flex-col gap-3 border-t border-neutral bg-page/80 p-5 backdrop-blur-md">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <span class="text-xl font-semibold md:text-2xl">Amara Nwosu</span>
-          <span class="text-sm"><span class="font-semibold">Head of Operations, Lumen</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
+          {t.quote && <blockquote class="text-xl font-semibold"><p>“{t.quote}”</p></blockquote>}
+          {t.rating != null && <Rating value={t.rating} readonly size="small" color="warning" aria-label={`Rated ${t.rating} out of 5`} />}
+          <span class="text-xl font-semibold md:text-2xl">{t.name}</span>
+          {(t.role || t.industry) && <span class="text-sm">{t.role && <span class="font-semibold">{t.role}</span>}{t.role && t.industry && <br />}{t.industry && <span class="text-neutral-faded">{t.industry}</span>}</span>}
         </figcaption>
       </figure>
-      <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/91/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <figcaption class="flex flex-col gap-3 border-t border-neutral bg-page/80 p-5 backdrop-blur-md">
-          <blockquote class="text-xl font-semibold"><p>“Clear, calm and fast to work with.”</p></blockquote>
-          <span class="text-xl font-semibold md:text-2xl">Daniel Reyes</span>
-          <span class="text-sm"><span class="font-semibold">Engineering Lead, Quanta</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
-        </figcaption>
-      </figure>
-      <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/832/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <figcaption class="flex flex-col gap-3 border-t border-neutral bg-page/80 p-5 backdrop-blur-md">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <span class="text-xl font-semibold md:text-2xl">Sofia Marchetti</span>
-          <span class="text-sm"><span class="font-semibold">Product Designer, Fieldwork</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
-        </figcaption>
-      </figure>
-      <figure class="relative isolate flex h-96 flex-col justify-end overflow-hidden md:h-120">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/856/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <figcaption class="flex flex-col gap-3 border-t border-neutral bg-page/80 p-5 backdrop-blur-md">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <span class="text-xl font-semibold md:text-2xl">Kenji Watanabe</span>
-          <span class="text-sm"><span class="font-semibold">Founder, Northpeak</span><br /><span class="text-neutral-faded">Retail and commerce</span></span>
-        </figcaption>
-      </figure>
+      ))}
     </Carousel>
   </div>
 </Section>

@@ -11,18 +11,27 @@ import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'Example',
+  submitLabel = 'Subscribe',
+  copyright = '© 2026 Example. All rights reserved.',
+} = Astro.props
 ---
 
 <Section as="footer" spacing="small">
   <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
     <div class="flex flex-col gap-4 ">
       <form method="post" class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="sm:w-64" />
-        <Button type="submit">Subscribe</Button>
+        <Button type="submit">{submitLabel}</Button>
       </form>
     </div>
   </div>
-  <p class="text-neutral-faded mt-8 md:text-end">© 2026 Example. All rights reserved.</p>
+  {copyright && <p class="text-neutral-faded mt-8 md:text-end">{copyright}</p>}
 </Section>

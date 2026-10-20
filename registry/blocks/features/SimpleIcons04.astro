@@ -5,34 +5,43 @@
  * @block features
  * @order 8
  */
-import { ChartLine, Command, MessageCircle, MessageCircleHeart, MessagesSquare, Zap } from '@lucide/astro'
+import { Zap } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { FeaturesContent } from '../../sections/_shared/features.ts'
 
-const features = [
-  { icon: MessagesSquare, title: 'Share team inboxes', text: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.' },
-  { icon: Zap, title: 'Deliver instant answers', text: 'One place for support, so customers get what they need without waiting on a reply.' },
-  { icon: ChartLine, title: 'Manage your team with reports', text: 'Measure what matters. Filter, export and drill down on the data in a couple of clicks.' },
-  { icon: MessageCircle, title: 'Connect with customers', text: 'Solve a problem or close a sale in real time with chat, and fall back to email when no one is free.' },
-  { icon: Command, title: 'Connect the tools you already use', text: 'Over 100 integrations make your day-to-day work faster and familiar, plus a full set of developer tools.' },
-  { icon: MessageCircleHeart, title: 'Our people make the difference', text: "We're an extension of your support team, and our help is free. Chat to us any time, day or night." },
-]
+/** @composable */
+interface Props extends FeaturesContent {}
+
+const {
+  heading = "Everything you need, nothing you don't",
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users.',
+  items = [
+    { title: 'Share team inboxes', description: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.' },
+    { title: 'Deliver instant answers', description: 'One place for support, so customers get what they need without waiting on a reply.' },
+    { title: 'Manage your team with reports', description: 'Measure what matters. Filter, export and drill down on the data in a couple of clicks.' },
+    { title: 'Connect with customers', description: 'Solve a problem or close a sale in real time with chat, and fall back to email when no one is free.' },
+    { title: 'Connect the tools you already use', description: 'Over 100 integrations make your day-to-day work faster and familiar, plus a full set of developer tools.' },
+    { title: 'Our people make the difference', description: "We're an extension of your support team, and our help is free. Chat to us any time, day or night." },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid gap-12 lg:grid-cols-3 lg:gap-16">
     <div class="flex flex-col items-start gap-5">
       <FeaturedIcon theme="outline" color="neutral" size="xlarge"><Zap /></FeaturedIcon>
-      <Heading as="h2" size="h2">Everything you need, nothing you don't</Heading>
-      <p class="text-lg text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users.</p>
+      <Heading as="h2" size="h2">{plain(heading)}</Heading>
+      {description && <p class="text-lg text-neutral-faded">{description}</p>}
     </div>
     <ul class="grid list-none p-0 gap-x-8 gap-y-10 md:gap-y-16 sm:grid-cols-2 sm:grid-flow-col sm:grid-rows-3 lg:col-span-2">
-    {features.slice(0, 6).map((f) => (
+    {items.map((f) => (
       <li class="flex flex-col gap-2">
         <div class="flex flex-col gap-2">
             <Heading as="h3" size="h6">{f.title}</Heading>
-            <p class="text-neutral-faded">{f.text}</p>
+            <p class="text-neutral-faded">{f.description}</p>
           </div>
       </li>
     ))}

@@ -9,13 +9,32 @@ import { BadgeCheck } from '@lucide/astro'
 import Banner from '../../sections/Banner/Banner.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { accentRuns, plain } from '../../sections/_shared/spine.ts'
+import type { BannerContent } from '../../sections/_shared/banner.ts'
+
+/** @composable */
+interface Props extends BannerContent {
+  /** The button that declines. @category content */
+  declineLabel?: string
+  /** The button that accepts. @category content */
+  acceptLabel?: string
+}
+
+const {
+  heading = 'We use cookies to improve your experience',
+  description = 'Read our *cookie policy*.',
+  linkHref = '#',
+  declineLabel = 'Decline',
+  acceptLabel = 'Allow',
+  closeLabel,
+} = Astro.props
 ---
 
-<Banner layout="full-width" background="primary" inline heading="We use cookies to improve your experience">
+<Banner layout="full-width" background="primary" inline heading={plain(heading)} closeLabel={closeLabel}>
   <BadgeCheck slot="icon" class="size-5" aria-hidden="true" />
-  Read our <Link href="#" color="inherit">cookie policy</Link>.
+  <Fragment slot={description ? 'default' : 'none'}>{' '}{description && accentRuns(description).map((r) => (r.accent && linkHref ? <Link href={linkHref} color="inherit">{r.text}</Link> : r.text))}{" "}</Fragment>
   <div slot="actions" class="flex flex-col-reverse gap-2 sm:flex-row">
-    <Button size="small" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!">Decline</Button>
-    <Button size="small" color="neutral">Allow</Button>
+    <Button size="small" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!">{declineLabel}</Button>
+    <Button size="small" color="neutral">{acceptLabel}</Button>
   </div>
 </Banner>

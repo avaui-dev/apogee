@@ -9,18 +9,17 @@ import { Search as SearchIcon } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Input from '../../components/Input/Input.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { PageHeaderContent } from '../../sections/_shared/header.ts'
 
-interface Props {
-  eyebrow?: string
-  heading?: string
-  description?: string
-}
+/** @composable */
+interface Props extends PageHeaderContent {}
 const { eyebrow = 'Resources', heading = 'Support centre', description = 'Get help and support or learn how to use the newest features.' } = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-8 md:gap-12 items-start">
-    <SectionHeader eyebrow={eyebrow} heading={heading} description={description} headingLevel={1} size="large" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} headingLevel={1} size="large" />
     <form method="get" role="search" class="w-full sm:w-80">
       <Input type="search" name="q" placeholder="Search" aria-label="Search the help centre" size="large"><SearchIcon slot="start" /></Input>
     </form>

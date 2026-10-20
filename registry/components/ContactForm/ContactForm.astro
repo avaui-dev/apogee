@@ -19,14 +19,14 @@ import { uid } from '../utils/uid.ts'
 
 /** @composable */
 interface Props extends HTMLAttributes<'form'> {
-  /** Form target. @category content */ action?: string
-  /** @category content */ method?: 'get' | 'post'
+  /** Form target. @category content */ action?: string | undefined
+  /** @category content */ method?: 'get' | 'post' | undefined
   /** Show the phone field with a country code. @category layout */ phone?: boolean
   /** Country codes for the phone field; the first is selected. @category content */ countryCodes?: string[]
   /** A checklist of services under the message ("Website design", …). @category content */ services?: string[]
   /** Legend of the services checklist. @category content */ servicesLabel?: string
   /** Link of the privacy checkbox; omit to drop the checkbox. @category content */ privacyHref?: string
-  /** @category content */ submitLabel?: string
+  /** @category content */ submitLabel?: string | undefined
   /** Rows of the message box. @category layout */ rows?: number
   class?: string
 }

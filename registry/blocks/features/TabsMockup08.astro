@@ -9,25 +9,29 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
 import Tabs from '../../components/Tabs/Tabs.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { FeaturesContent } from '../../sections/_shared/features.ts'
 
-const tabs = [
-  { label: 'Track what matters', description: 'Revenue, active users, churn and open tickets on one screen.' },
-  { label: 'Know your customers', description: 'Every account with its plan, seats and status, searchable and sortable.' },
-  { label: 'Set it up your way', description: 'Profile, language and notifications, saved in one place.' },
-]
+/** @composable */
+interface Props extends FeaturesContent {}
+
+const {
+  eyebrow = 'Features',
+  heading = 'Built for every step of the work',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  items = [
+    { title: 'Track what matters', description: 'Revenue, active users, churn and open tickets on one screen.', media: { src: '/mockups/app-desktop-light.jpg', srcDark: '/mockups/app-desktop-dark.jpg', alt: 'The dashboard overview in a browser' } },
+    { title: 'Know your customers', description: 'Every account with its plan, seats and status, searchable and sortable.', media: { src: '/mockups/app-customers-desktop-light.jpg', srcDark: '/mockups/app-customers-desktop-dark.jpg', alt: 'The customers table in a browser' } },
+    { title: 'Set it up your way', description: 'Profile, language and notifications, saved in one place.', media: { src: '/mockups/app-settings-desktop-light.jpg', srcDark: '/mockups/app-settings-desktop-dark.jpg', alt: 'The settings page in a browser' } },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Features" heading="Built for every step of the work" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." class="mb-12 md:mb-16" />
-  <Tabs variant="feature" orientation="vertical" tabs={tabs} label="Features" class="flex-col gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
-    <div slot="panel-0"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 bg-primary-faded! md:p-12">
-      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" />
-    </div></div>
-    <div slot="panel-1"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 bg-primary-faded! md:p-12">
-      <DeviceFrame device="browser" src="/mockups/app-customers-desktop-light.jpg" srcDark="/mockups/app-customers-desktop-dark.jpg" alt="The customers table in a browser" class="" />
-    </div></div>
-    <div slot="panel-2"><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 bg-primary-faded! md:p-12">
-      <DeviceFrame device="browser" src="/mockups/app-settings-desktop-light.jpg" srcDark="/mockups/app-settings-desktop-dark.jpg" alt="The settings page in a browser" class="" />
-    </div></div>
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} class="mb-12 md:mb-16" />
+  <Tabs variant="feature" orientation="vertical" tabs={items.map((f) => ({ label: f.title, description: f.description }))} label="Features" class="flex-col gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+    {items.map((f, i) => f.media && <div slot={`panel-${i}`}><div class="flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 bg-primary-faded! md:p-12">
+      <DeviceFrame device="browser" src={f.media.src} srcDark={f.media.srcDark} alt={f.media.alt} width={f.media.width} height={f.media.height} class="" />
+    </div></div>)}
   </Tabs>
 </Section>

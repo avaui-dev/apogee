@@ -7,8 +7,20 @@
  */
 import Banner from '../../sections/Banner/Banner.astro'
 import Link from '../../components/Link/Link.astro'
+import { accentRuns, plain } from '../../sections/_shared/spine.ts'
+import type { BannerContent } from '../../sections/_shared/banner.ts'
+
+/** @composable */
+interface Props extends BannerContent {}
+
+const {
+  heading = "We've just launched a new feature",
+  description = 'Check out the *new dashboard*.',
+  linkHref = '#',
+  closeLabel,
+} = Astro.props
 ---
 
-<Banner layout="full-width" align="center" inline heading="We've just launched a new feature">
-  Check out the <Link href="#" color="neutral">new dashboard</Link>.
+<Banner layout="full-width" align="center" inline heading={plain(heading)} closeLabel={closeLabel}>
+  <Fragment slot={description ? 'default' : 'none'}>{' '}{description && accentRuns(description).map((r) => (r.accent && linkHref ? <Link href={linkHref} color="neutral">{r.text}</Link> : r.text))}</Fragment>
 </Banner>

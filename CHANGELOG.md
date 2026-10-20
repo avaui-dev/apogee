@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Every block takes its copy as props.** The other 17 families (banner, blog, careers, contact, content, CTA, FAQ, features, footers, header, header navigation, metrics, newsletter, pricing, social proof, team, testimonials) follow the hero pattern: one content type per family in `sections/_shared/<family>.ts`, named after the matching section's props, with today's copy as defaults. They render as before.
 - **Hero blocks take their copy as props.** All 78 share one shape (`announcement`, `eyebrow`, `heading`, `description`, `primaryAction`, `secondaryAction`, `media`) with the sample copy as defaults, plus their own extras (`submitLabel`, `images`, …). Swap one hero block for another and the copy carries over; pass `null` to hide a part; wrap heading words in `*asterisks*` to accent them. They render exactly as before. `Media` gains an optional `srcDark`.
 - **`apogee diff` and `apogee update`.** `add` now records a hash of each file it writes in `apogee.json`. `diff` lists every installed file as current, outdated, edited, conflict or unknown and shows the changed lines. `update` takes package changes only for files you haven't edited; `--overwrite` also replaces edited ones.
 - **The tokens file records its hue inputs.** `build:tokens` writes `/* hues {…} */` at the end of the light block. Run `build-tokens.mjs src/styles/apogee.css` without a hues file and it regenerates from that line; `readHues(css)` returns it for tools such as AVA.
@@ -19,6 +20,9 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Fixed
 
+- Content article blocks' share links used one copy-pasted title; they now share the page's own heading.
+- Pricing comparison tables build the wide and phone layouts from one list, so they can't disagree.
+- `npm run check:strict` passes with 0 errors (BannerSection, Tabs, ContactForm and PostHeader accept an explicit `undefined` for optional props).
 - **AVA can open 56 more components.** Their `@composable` tag sat in the file header, where AVA doesn't look; it now sits on `interface Props`. `npm run check:kit` fails if a kit tag ends up anywhere else.
 - **Button** and **ToggleButton** `rounded` now gives fully round ends; the size's corner radius used to win.
 

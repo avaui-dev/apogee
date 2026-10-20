@@ -5,34 +5,56 @@
  * @block footers
  * @order 42
  */
-import { AtSign, Mail, MessageCircle, Rss, Users } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { socialIcons, type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  [{ heading: 'Solutions', links: ['Trading', 'Payments', 'Agents'] }, { heading: 'Ecosystem', links: ['Explore', 'Ecosystem fund'] }],
-  [{ heading: 'Developers', links: ['Documentation', 'Dashboard', 'Block explorer', 'Bug bounty'] }],
-  [{ heading: 'Resources', links: ['Vision', 'Jobs', 'Blog', 'Events', 'Brand guidelines'] }],
-]
-const social = [{ label: 'Email', icon: Mail }, { label: 'Community', icon: Users }, { label: 'Chat', icon: MessageCircle }, { label: 'Feed', icon: Rss }, { label: 'Profile', icon: AtSign }]
+/** @composable */
+interface Props extends FooterContent {
+  /** The live status line beside the dot. @category content */
+  status?: string | null
+}
+
+const {
+  tagline = 'Build what comes next on our network.',
+  columns = [
+    { heading: 'Solutions', links: [{ label: 'Trading', href: '#' }, { label: 'Payments', href: '#' }, { label: 'Agents', href: '#' }] },
+    { heading: 'Ecosystem', links: [{ label: 'Explore', href: '#' }, { label: 'Ecosystem fund', href: '#' }] },
+    { heading: 'Developers', links: [{ label: 'Documentation', href: '#' }, { label: 'Dashboard', href: '#' }, { label: 'Block explorer', href: '#' }, { label: 'Bug bounty', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Vision', href: '#' }, { label: 'Jobs', href: '#' }, { label: 'Blog', href: '#' }, { label: 'Events', href: '#' }, { label: 'Brand guidelines', href: '#' }] },
+  ],
+  copyright = '© 2026',
+  legal = [{ label: 'Terms of service', href: '#' }, { label: 'Privacy policy', href: '#' }],
+  social = [
+    { label: 'Email', href: '#', icon: 'mail' },
+    { label: 'Community', href: '#', icon: 'users' },
+    { label: 'Chat', href: '#', icon: 'message' },
+    { label: 'Feed', href: '#', icon: 'rss' },
+    { label: 'Profile', href: '#', icon: 'at-sign' },
+  ],
+  status = 'All systems operational',
+} = Astro.props
+// ponytail: the first two groups share a tile, the rest get one each; make this a prop if editors need other stacks.
+const stacks = [columns.slice(0, 2), ...columns.slice(2).map((c) => [c])]
 ---
 
 <Section as="footer" spacing="medium">
   <div class="grid gap-10 md:grid-cols-4">
     <div class="flex flex-col gap-3">
-      <p class="flex items-center gap-2 text-primary"><span class="size-2.5 rounded-full bg-primary ring-4 ring-primary-faded" aria-hidden="true"></span>All systems operational</p>
-      <p class="text-neutral-faded">Build what comes next on our network.</p>
-      <ul class="flex list-none gap-3 p-0">
-        {social.map((s) => <li><Link href="#" color="neutral" underline="none" aria-label={s.label} class="text-neutral-faded hover:text-neutral"><s.icon class="size-5" aria-hidden="true" /></Link></li>)}
-      </ul>
+      {status && <p class="flex items-center gap-2 text-primary"><span class="size-2.5 rounded-full bg-primary ring-4 ring-primary-faded" aria-hidden="true"></span>{status}</p>}
+      {tagline && <p class="text-neutral-faded">{plain(tagline)}</p>}
+      {social && <ul class="flex list-none gap-3 p-0">
+        {social.map((s) => { const Icon = socialIcons[s.icon]; return <li><Link href={s.href} color="neutral" underline="none" aria-label={s.label} class="text-neutral-faded hover:text-neutral"><Icon class="size-5" aria-hidden="true" /></Link></li> })}
+      </ul>}
     </div>
-    {columns.map((col) => (
+    {stacks.map((col) => (
       <div class="flex flex-col gap-8">
         {col.map((c) => (
           <nav aria-label={c.heading}>
             <p class="font-medium">{c.heading}</p>
             <ul class="mt-2 flex list-none flex-col gap-1.5 p-0">
-              {c.links.map((l) => <li><Link href="#" color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l}</Link></li>)}
+              {c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l.label}</Link></li>)}
             </ul>
           </nav>
         ))}
@@ -41,7 +63,7 @@ const social = [{ label: 'Email', icon: Mail }, { label: 'Community', icon: User
   </div>
 
   <div class="mt-12 flex flex-wrap items-center justify-between gap-4 text-sm text-neutral-faded">
-    <p>© 2026</p>
-    <ul class="flex list-none items-center gap-3 p-0"><li><Link href="#" color="neutral" underline="hover">Terms of service</Link></li><li aria-hidden="true">·</li><li><Link href="#" color="neutral" underline="hover">Privacy policy</Link></li></ul>
+    <p>{copyright}</p>
+    {legal && <ul class="flex list-none items-center gap-3 p-0">{legal.map((l, i) => <>{i > 0 && <li aria-hidden="true">·</li>}<li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li></>)}</ul>}
   </div>
 </Section>

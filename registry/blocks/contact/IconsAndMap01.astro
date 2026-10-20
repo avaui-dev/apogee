@@ -5,36 +5,43 @@
  * @block contact
  * @order 14
  */
-import { Mail, MapPin, Phone } from '@lucide/astro'
+import { LifeBuoy, Mail, MapPin, MessageCircle, MessagesSquare, Phone } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
 import MapEmbed from '../../components/MapEmbed/MapEmbed.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const methods = [
-  { icon: Mail, title: 'Email', description: "Our friendly team is here to help.", link: { label: 'hi@example.com', href: 'mailto:hi@example.com' } },
-  { icon: MapPin, title: 'Office', description: "Come say hello at our office HQ.", link: { label: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' } },
-  { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
-]
-const stores = [
-  { city: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
-  { city: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
-  { city: 'Byron Bay', address: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
-  { city: 'London', address: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
-  { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
-  { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
-]
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const
+
+/** @composable */
+interface Props extends ContactContent {}
+
+const {
+  eyebrow = 'Contact us',
+  heading = 'Get in touch',
+  description = 'Our friendly team would love to hear from you.',
+  details = [
+    { icon: 'mail', label: 'Email', description: 'Our friendly team is here to help.', value: 'hi@example.com', href: 'mailto:hi@example.com' },
+    { icon: 'map-pin', label: 'Office', description: 'Come say hello at our office HQ.', value: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' },
+    { icon: 'phone', label: 'Phone', description: 'Mon–Fri from 8am to 5pm.', value: '+1 (555) 000-0000', href: 'tel:+15550000000' },
+  ],
+  locations = [{ name: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 }],
+} = Astro.props
+const office = locations?.[0]
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Contact us" heading="Get in touch" description="Our friendly team would love to hear from you." class="mb-16" />
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} class="mb-16" />
   <div class="grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-    <ul class="list-none p-0 flex flex-col gap-10">
-    {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} inline><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
-    ))}
-  </ul>
-    <MapEmbed lat={stores[0]!.lat} lon={stores[0]!.lon} title={`Map of our ${stores[0]!.city} office`} class="min-h-96" />
+    {details && <ul class="list-none p-0 flex flex-col gap-10">
+    {details.map((d) => {
+      const Icon = icons[d.icon]
+      return <li><ContactMethod title={d.label} description={d.description} link={d.href ? { label: d.value, href: d.href } : undefined} inline><FeaturedIcon slot="icon" theme="outline" color="neutral"><Icon /></FeaturedIcon>{!d.href && <p>{d.value}</p>}</ContactMethod></li>
+    })}
+  </ul>}
+    {office && <MapEmbed lat={office.lat} lon={office.lon} title={`Map of our ${office.name} office`} class="min-h-96" />}
   </div>
 </Section>

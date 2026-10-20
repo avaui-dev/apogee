@@ -11,17 +11,33 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Image from '../../components/Image/Image.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { TeamContent } from '../../sections/_shared/team.ts'
 
+/** @composable */
+interface Props extends TeamContent {}
+
+const {
+  eyebrow,
+  heading = 'Board members',
+  description = "We're lucky to be backed by people who have built companies like ours.",
+  items = [
+    { name: 'Rosa Lindgren', role: 'Lindenhall Capital', avatar: 'https://picsum.photos/id/628/192/192', bio: 'Backed three developer-tool companies from seed to sale.', links: [{ label: "Rosa's social profile", href: '#' }, { label: "Rosa's work history", href: '#' }, { label: "Rosa's website", href: '#' }] },
+    { name: 'Malik Osei', role: 'Harbour Ventures', avatar: 'https://picsum.photos/id/669/192/192', bio: 'Ran engineering at two design-tool startups before investing.', links: [{ label: "Malik's social profile", href: '#' }, { label: "Malik's work history", href: '#' }, { label: "Malik's website", href: '#' }] },
+    { name: 'Clara Novak', role: 'Meridian Partners', avatar: 'https://picsum.photos/id/1005/192/192', bio: 'Advises founders on pricing and their first sales hires.', links: [{ label: "Clara's social profile", href: '#' }, { label: "Clara's work history", href: '#' }, { label: "Clara's website", href: '#' }] },
+    { name: 'Tomás Rivera', role: 'Field Fund', avatar: 'https://picsum.photos/id/660/192/192', bio: 'Built and sold an analytics company; now writes first cheques.', links: [{ label: "Tomás's social profile", href: '#' }, { label: "Tomás's work history", href: '#' }, { label: "Tomás's website", href: '#' }] },
+  ],
+} = Astro.props
+const icons = [AtSign, BriefcaseBusiness, Globe]
 ---
 
 <Section spacing="large" background="neutral-faded">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader heading="Board members" description="We're lucky to be backed by people who have built companies like ours." size="large" align="center" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
     <ul class="grid list-none p-0 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-      <li><div class="flex flex-col items-center gap-4 text-center"><Image src="https://picsum.photos/id/628/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center"><Heading as="h3" size="h6">Rosa Lindgren</Heading><p class="text-primary">Lindenhall Capital</p><p class="mt-2 text-neutral-faded">Backed three developer-tool companies from seed to sale.</p><ul class="flex list-none gap-4 p-0 mt-4"><li><Link href="#" color="neutral" underline="none" aria-label="Rosa's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Rosa's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Rosa's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul></div></div></li>
-      <li><div class="flex flex-col items-center gap-4 text-center"><Image src="https://picsum.photos/id/669/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center"><Heading as="h3" size="h6">Malik Osei</Heading><p class="text-primary">Harbour Ventures</p><p class="mt-2 text-neutral-faded">Ran engineering at two design-tool startups before investing.</p><ul class="flex list-none gap-4 p-0 mt-4"><li><Link href="#" color="neutral" underline="none" aria-label="Malik's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Malik's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Malik's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul></div></div></li>
-      <li><div class="flex flex-col items-center gap-4 text-center"><Image src="https://picsum.photos/id/1005/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center"><Heading as="h3" size="h6">Clara Novak</Heading><p class="text-primary">Meridian Partners</p><p class="mt-2 text-neutral-faded">Advises founders on pricing and their first sales hires.</p><ul class="flex list-none gap-4 p-0 mt-4"><li><Link href="#" color="neutral" underline="none" aria-label="Clara's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Clara's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Clara's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul></div></div></li>
-      <li><div class="flex flex-col items-center gap-4 text-center"><Image src="https://picsum.photos/id/660/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center"><Heading as="h3" size="h6">Tomás Rivera</Heading><p class="text-primary">Field Fund</p><p class="mt-2 text-neutral-faded">Built and sold an analytics company; now writes first cheques.</p><ul class="flex list-none gap-4 p-0 mt-4"><li><Link href="#" color="neutral" underline="none" aria-label="Tomás's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Tomás's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Tomás's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul></div></div></li>
+      {items.map((p) => (
+        <li><div class="flex flex-col items-center gap-4 text-center">{p.avatar && <Image src={p.avatar} alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" />}<div class="flex flex-col items-center"><Heading as="h3" size="h6">{p.name}</Heading><p class="text-primary">{p.role}</p>{p.bio && <p class="mt-2 text-neutral-faded">{p.bio}</p>}{p.links && <ul class="flex list-none gap-4 p-0 mt-4">{p.links.map((l, j) => { const Icon = icons[j % icons.length]!; return <li><Link href={l.href} color="neutral" underline="none" aria-label={l.label} class="text-neutral-faded hover:text-neutral"><Icon class="size-5" aria-hidden="true" /></Link></li> })}</ul>}</div></div></li>
+      ))}
     </ul>
   </div>
 </Section>

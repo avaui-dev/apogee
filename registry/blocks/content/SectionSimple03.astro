@@ -8,10 +8,21 @@
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Prose from '../../components/Prose/Prose.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  eyebrow = 'Features',
+  heading = 'Beautiful analytics to grow smarter',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users.',
+} = Astro.props
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Features" heading="Beautiful analytics to grow smarter" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users." class="mb-12 max-w-3xl" />
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} class="mb-12 max-w-3xl" />
   <div class="grid gap-8 md:grid-cols-2 md:gap-16">
     <Prose>
       <p>Most teams start a design system after the third button that looks almost, but not quite, like the other two. The cost is rarely the button; it is the conversation every time someone has to choose.</p>

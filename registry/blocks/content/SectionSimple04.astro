@@ -7,9 +7,17 @@
  */
 import Section from '../../components/Section/Section.astro'
 import Prose from '../../components/Prose/Prose.astro'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  label = 'About our process',
+} = Astro.props
 ---
 
-<Section spacing="large" aria-label="About our process">
+<Section spacing="large" aria-label={label}>
   <div class="grid gap-8 md:grid-cols-2 md:gap-16">
     <Prose>
       <p>Most teams start a design system after the third button that looks almost, but not quite, like the other two. The cost is rarely the button; it is the conversation every time someone has to choose.</p>

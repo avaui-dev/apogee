@@ -11,10 +11,26 @@ import Prose from '../../components/Prose/Prose.astro'
 import Image from '../../components/Image/Image.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  eyebrow = 'Product',
+  heading = 'Writing release notes people read',
+  description = 'Lead with what changed for the reader, not what changed in the code.',
+  author = { name: 'Ada Lovelace', role: 'Design Lead' },
+  date = '2026-01-20',
+  readingTime,
+  media = { src: 'https://picsum.photos/seed/apogee-content-4/1600/900', alt: '', width: 1600, height: 900 },
+  topics = ['Design', 'Research', 'Process'],
+} = Astro.props
 ---
 
 <article>
-  <PostHeader layout="centered" eyebrow="Product" heading="Writing release notes people read" description="Lead with what changed for the reader, not what changed in the code." author={{ name: 'Ada Lovelace', role: 'Design Lead' }} date="2026-01-20" headingLevel={1} media={{ src: 'https://picsum.photos/seed/apogee-content-4/1600/900', alt: '', width: 1600, height: 900 }} />
+  <PostHeader layout="centered" eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} author={author ?? undefined} date={date} readingTime={readingTime ?? undefined} headingLevel={1} media={media ?? undefined} />
   <Section spacing="none" containerWidth="small" class="pb-section">
     <Prose>
       <p class="lead">A design system is the shared language a team speaks when it builds a product: the parts, the rules for using them and the reasons behind the rules.</p>
@@ -45,10 +61,12 @@ import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
       </div>
     </Prose>
     <footer class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 sm:flex-row sm:items-center sm:justify-between">
+    {topics && (
     <ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Topics">
-      {['Design', 'Research', 'Process'].map((t) => <li><Badge color="neutral" rounded>{t}</Badge></li>)}
+      {topics.map((t) => <li><Badge color="neutral" rounded>{t}</Badge></li>)}
     </ul>
-    <ShareLinks title="What makes a design system work" />
+    )}
+    <ShareLinks title={plain(heading)} />
   </footer>
   </Section>
 </article>

@@ -72,7 +72,7 @@ export interface TabItem {
 interface Props extends Omit<HTMLAttributes<'div'>, 'size'> {
   tabs: (string | TabItem)[]
   /** Value of the tab shown first. Defaults to the first enabled tab. */
-  value?: string
+  value?: string | undefined
   /** @category layout */
   variant?: 'bordered' | 'borderless' | 'pills' | 'pills-raised' | 'primary' | 'feature'
   /** @category layout */

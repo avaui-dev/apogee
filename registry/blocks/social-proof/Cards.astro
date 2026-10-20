@@ -7,21 +7,27 @@
  */
 import { Atom, Circle, Hexagon, Mountain, Sprout, Sun, Waves, Wind } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { SocialProofContent } from '../../sections/_shared/social-proof.ts'
 
+/** @composable */
+interface Props extends SocialProofContent {}
+
+const {
+  heading = 'Trusted by 4,000+ companies',
+  label = 'Customers',
+  logos = ['Lumen', 'Quanta', 'Fieldwork', 'Northpeak', 'Arcwave', 'Kitestring', 'Ovalis', 'Brightline'],
+} = Astro.props
+const logoIcons = [Hexagon, Atom, Sprout, Mountain, Waves, Wind, Circle, Sun]
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-8 lg:gap-10">
-    <p class="text-center font-medium text-neutral-faded">Trusted by 4,000+ companies</p>
-    <ul aria-label="Customers" class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Hexagon class="size-7 md:size-8" aria-hidden="true" />Lumen</span></li>
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Atom class="size-7 md:size-8" aria-hidden="true" />Quanta</span></li>
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Sprout class="size-7 md:size-8" aria-hidden="true" />Fieldwork</span></li>
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Mountain class="size-7 md:size-8" aria-hidden="true" />Northpeak</span></li>
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Waves class="size-7 md:size-8" aria-hidden="true" />Arcwave</span></li>
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Wind class="size-7 md:size-8" aria-hidden="true" />Kitestring</span></li>
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Circle class="size-7 md:size-8" aria-hidden="true" />Ovalis</span></li>
-      <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Sun class="size-7 md:size-8" aria-hidden="true" />Brightline</span></li>
-    </ul>
+    {heading && <p class="text-center font-medium text-neutral-faded">{plain(heading)}</p>}
+    {logos && (
+      <ul aria-label={label} class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        {logos.map((name, i) => { const Mark = logoIcons[i % logoIcons.length]!; return <li class="flex h-28 items-center justify-center rounded-xl px-4 py-10 md:h-42 md:px-8 md:py-16 bg-neutral-faded"><span class="flex items-center gap-2 text-lg font-semibold md:text-xl text-neutral"><Mark class="size-7 md:size-8" aria-hidden="true" />{name}</span></li> })}
+      </ul>
+    )}
   </div>
 </Section>

@@ -11,26 +11,44 @@ import Heading from '../../components/Heading/Heading.astro'
 import Image from '../../components/Image/Image.astro'
 import Button from '../../components/Button/Button.astro'
 import Carousel from '../../components/Carousel/Carousel.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { TeamContent } from '../../sections/_shared/team.ts'
 
+/** @composable */
+interface Props extends TeamContent {}
+
+const {
+  eyebrow,
+  heading = "We're a fast-growing team",
+  description = "We're always looking for passionate, curious people to join us.",
+  label = 'Team',
+  primaryAction = { label: 'Open positions', href: '#' },
+  secondaryAction = { label: 'About us', href: '#' },
+  items = [
+    { name: 'Maya Okafor', role: 'Founder and CEO', avatar: 'https://picsum.photos/id/1027/600/600', bio: 'Started the company after ten years building tools for small teams.' },
+    { name: 'Tomas Lindqvist', role: 'Engineering Manager', avatar: 'https://picsum.photos/id/856/600/600', bio: 'Keeps the team shipping and the pager quiet.' },
+    { name: 'Priya Raman', role: 'Product Manager', avatar: 'https://picsum.photos/id/832/600/600', bio: 'Turns customer calls into roadmaps people can read.' },
+    { name: 'Jonah Weiss', role: 'Frontend Developer', avatar: 'https://picsum.photos/id/91/600/600', bio: 'Cares about fast pages and buttons that feel right.' },
+    { name: 'Lucía Ortega', role: 'Backend Developer', avatar: 'https://picsum.photos/id/64/600/600', bio: 'Builds the APIs and keeps the data honest.' },
+    { name: 'Samir Haddad', role: 'Product Designer', avatar: 'https://picsum.photos/id/375/600/600', bio: 'Sketches first, then sweats the last pixel.' },
+    { name: 'Hana Kobayashi', role: 'UX Researcher', avatar: 'https://picsum.photos/id/823/600/600', bio: 'Talks to customers so the rest of us can listen.' },
+    { name: 'Eli Brennan', role: 'Customer Success', avatar: 'https://picsum.photos/id/836/600/600', bio: 'Answers every question as if it were the first.' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader heading="We're a fast-growing team" description="We're always looking for passionate, curious people to join us." size="large">
-      <Fragment slot="actions"><div class="flex flex-col gap-3 sm:flex-row-reverse sm:justify-end">
-        <Button href="#" size="large">Open positions</Button>
-        <Button href="#" size="large" variant="outline" color="neutral">About us</Button>
-      </div></Fragment>
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large">
+      {(primaryAction || secondaryAction) && <Fragment slot="actions"><div class="flex flex-col gap-3 sm:flex-row-reverse sm:justify-end">
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+      </div></Fragment>}
     </SectionHeader>
-    <Carousel label="Team" itemWidth="17.5rem" controlsPosition="below" gap={8}>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/1027/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Maya Okafor</Heading><p class="text-primary">Founder and CEO</p><p class="mt-2 text-neutral-faded">Started the company after ten years building tools for small teams.</p></div></div>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/856/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Tomas Lindqvist</Heading><p class="text-primary">Engineering Manager</p><p class="mt-2 text-neutral-faded">Keeps the team shipping and the pager quiet.</p></div></div>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/832/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Priya Raman</Heading><p class="text-primary">Product Manager</p><p class="mt-2 text-neutral-faded">Turns customer calls into roadmaps people can read.</p></div></div>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/91/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Jonah Weiss</Heading><p class="text-primary">Frontend Developer</p><p class="mt-2 text-neutral-faded">Cares about fast pages and buttons that feel right.</p></div></div>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/64/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Lucía Ortega</Heading><p class="text-primary">Backend Developer</p><p class="mt-2 text-neutral-faded">Builds the APIs and keeps the data honest.</p></div></div>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/375/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Samir Haddad</Heading><p class="text-primary">Product Designer</p><p class="mt-2 text-neutral-faded">Sketches first, then sweats the last pixel.</p></div></div>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/823/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Hana Kobayashi</Heading><p class="text-primary">UX Researcher</p><p class="mt-2 text-neutral-faded">Talks to customers so the rest of us can listen.</p></div></div>
-      <div class="flex flex-col gap-5"><Image src="https://picsum.photos/id/836/600/600" alt="" width={600} height={600} fit="cover" class="aspect-square w-full" /><div class="flex flex-col"><Heading as="h3" size="h6">Eli Brennan</Heading><p class="text-primary">Customer Success</p><p class="mt-2 text-neutral-faded">Answers every question as if it were the first.</p></div></div>
+    <Carousel label={label} itemWidth="17.5rem" controlsPosition="below" gap={8}>
+      {items.map((p) => (
+        <div class="flex flex-col gap-5">{p.avatar && <Image src={p.avatar} alt="" width={600} height={600} fit="cover" class="aspect-square w-full" />}<div class="flex flex-col"><Heading as="h3" size="h6">{p.name}</Heading><p class="text-primary">{p.role}</p>{p.bio && <p class="mt-2 text-neutral-faded">{p.bio}</p>}</div></div>
+      ))}
     </Carousel>
   </div>
 </Section>

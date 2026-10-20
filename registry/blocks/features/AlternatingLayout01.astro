@@ -11,56 +11,48 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { FeaturesContent, FeatureItem } from '../../sections/_shared/features.ts'
 
+const icons = [MessagesSquare, Zap, ChartLine]
+
+/** @composable */
+interface Props extends FeaturesContent {
+  /** The rows; `bullets` are the checked points under each, `media` its screenshot. @category content */
+  items?: (FeatureItem & { bullets?: string[] })[]
+}
+
+const {
+  eyebrow = 'Features',
+  heading = 'Everything you need to ship faster',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  items = [
+    { title: 'Share team inboxes', description: 'Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.', bullets: ['Leverage automation to move fast', 'Always give customers a human to chat to', 'Automate support and close leads faster'], media: { src: '/mockups/app-desktop-light.jpg', srcDark: '/mockups/app-desktop-dark.jpg', alt: 'The dashboard overview in a browser' } },
+    { title: 'Deliver instant answers', description: 'One place for support, so customers get what they need without waiting on a reply.', bullets: ['Keep customers in the loop with live chat', 'Embed help articles right on your website', 'Customers never leave the page to find an answer'], media: { src: '/mockups/app-customers-desktop-light.jpg', srcDark: '/mockups/app-customers-desktop-dark.jpg', alt: 'The customers table in a browser' } },
+    { title: 'Manage your team with reports', description: 'Measure what matters. Filter, export and drill down on the data in a couple of clicks.', bullets: ['Filter, export and drill down on the data', 'Save, schedule and send reports to your inbox', 'Connect the tools you already use'], media: { src: '/mockups/app-settings-desktop-light.jpg', srcDark: '/mockups/app-settings-desktop-dark.jpg', alt: 'The settings page in a browser' } },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Features" heading="Everything you need to ship faster" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." align="center" class="mb-12 md:mb-16" />
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} align="center" class="mb-12 md:mb-16" />
   <div class="flex flex-col gap-16 md:gap-24">
+    {items.map((f, i) => { const Icon = icons[i % icons.length]!; return (
     <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
-      <div class="flex max-w-xl flex-col gap-8">
+      <div class:list={['flex max-w-xl flex-col gap-8', i % 2 === 1 && 'lg:order-last']}>
         <div class="flex flex-col items-start gap-4">
-          <FeaturedIcon theme="light" color="primary" size="large"><MessagesSquare /></FeaturedIcon>
-          <Heading as="h3" size="h4">Share team inboxes</Heading>
-          <p class="text-lg text-neutral-faded">Whether your team is 2 people or 200, shared inboxes keep everyone on the same page and in the loop.</p>
+          <FeaturedIcon theme="light" color="primary" size="large"><Icon /></FeaturedIcon>
+          <Heading as="h3" size="h4">{f.title}</Heading>
+          <p class="text-lg text-neutral-faded">{f.description}</p>
         </div>
+        {f.bullets && (
         <ul class="flex list-none flex-col gap-4 p-0">
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Leverage automation to move fast</span></li>
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Always give customers a human to chat to</span></li>
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Automate support and close leads faster</span></li>
+          {f.bullets.map((b) => <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">{b}</span></li>)}
         </ul>
+        )}
       </div>
-      <DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="lg:max-w-none" />
+      {f.media && <DeviceFrame device="browser" src={f.media.src} srcDark={f.media.srcDark} alt={f.media.alt} width={f.media.width} height={f.media.height} class="lg:max-w-none" />}
     </div>
-    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
-      <div class="flex max-w-xl flex-col gap-8 lg:order-last">
-        <div class="flex flex-col items-start gap-4">
-          <FeaturedIcon theme="light" color="primary" size="large"><Zap /></FeaturedIcon>
-          <Heading as="h3" size="h4">Deliver instant answers</Heading>
-          <p class="text-lg text-neutral-faded">One place for support, so customers get what they need without waiting on a reply.</p>
-        </div>
-        <ul class="flex list-none flex-col gap-4 p-0">
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Keep customers in the loop with live chat</span></li>
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Embed help articles right on your website</span></li>
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Customers never leave the page to find an answer</span></li>
-        </ul>
-      </div>
-      <DeviceFrame device="browser" src="/mockups/app-customers-desktop-light.jpg" srcDark="/mockups/app-customers-desktop-dark.jpg" alt="The customers table in a browser" class="lg:max-w-none" />
-    </div>
-    <div class="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
-      <div class="flex max-w-xl flex-col gap-8">
-        <div class="flex flex-col items-start gap-4">
-          <FeaturedIcon theme="light" color="primary" size="large"><ChartLine /></FeaturedIcon>
-          <Heading as="h3" size="h4">Manage your team with reports</Heading>
-          <p class="text-lg text-neutral-faded">Measure what matters. Filter, export and drill down on the data in a couple of clicks.</p>
-        </div>
-        <ul class="flex list-none flex-col gap-4 p-0">
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Filter, export and drill down on the data</span></li>
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Save, schedule and send reports to your inbox</span></li>
-          <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span class="text-neutral-faded">Connect the tools you already use</span></li>
-        </ul>
-      </div>
-      <DeviceFrame device="browser" src="/mockups/app-settings-desktop-light.jpg" srcDark="/mockups/app-settings-desktop-dark.jpg" alt="The settings page in a browser" class="lg:max-w-none" />
-    </div>
+    )})}
   </div>
 </Section>

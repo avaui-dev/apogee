@@ -9,17 +9,27 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
 import Tabs from '../../components/Tabs/Tabs.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { FeaturesContent } from '../../sections/_shared/features.ts'
 
-const tabs = [
-  { label: 'Track what matters', description: 'Revenue, active users, churn and open tickets on one screen.' },
-  { label: 'Know your customers', description: 'Every account with its plan, seats and status, searchable and sortable.' },
-  { label: 'Set it up your way', description: 'Profile, language and notifications, saved in one place.' },
-]
+/** @composable */
+interface Props extends FeaturesContent {}
+
+const {
+  eyebrow = 'Features',
+  heading = 'Built for every step of the work',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  items = [
+    { title: 'Track what matters', description: 'Revenue, active users, churn and open tickets on one screen.' },
+    { title: 'Know your customers', description: 'Every account with its plan, seats and status, searchable and sortable.' },
+    { title: 'Set it up your way', description: 'Profile, language and notifications, saved in one place.' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Features" heading="Built for every step of the work" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups." class="mb-12 md:mb-16" />
-  <Tabs variant="feature" orientation="vertical" tabs={tabs} label="Features" class="flex-col gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} class="mb-12 md:mb-16" />
+  <Tabs variant="feature" orientation="vertical" tabs={items.map((f) => ({ label: f.title, description: f.description }))} label="Features" class="flex-col gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
     <div slot="panel-0"><div class="relative pb-10 ps-10 md:pb-16 md:ps-16"><DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" /><div class="absolute start-0 bottom-0 w-24 md:w-36"><DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="" /></div></div></div>
     <div slot="panel-1"><div class="relative pb-10 ps-10 md:pb-16 md:ps-16"><DeviceFrame device="browser" src="/mockups/app-customers-desktop-light.jpg" srcDark="/mockups/app-customers-desktop-dark.jpg" alt="The customers table in a browser" class="" /><div class="absolute start-0 bottom-0 w-24 md:w-36"><DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customers table on a phone" class="" /></div></div></div>
     <div slot="panel-2"><div class="relative pb-10 ps-10 md:pb-16 md:ps-16"><DeviceFrame device="browser" src="/mockups/app-settings-desktop-light.jpg" srcDark="/mockups/app-settings-desktop-dark.jpg" alt="The settings page in a browser" class="" /><div class="absolute start-0 bottom-0 w-24 md:w-36"><DeviceFrame device="phone" src="/mockups/app-settings-phone-light.jpg" srcDark="/mockups/app-settings-phone-dark.jpg" alt="The settings page on a phone" class="" /></div></div></div>

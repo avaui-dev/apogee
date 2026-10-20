@@ -8,16 +8,25 @@
 import Section from '../../components/Section/Section.astro'
 import Image from '../../components/Image/Image.astro'
 import Rating from '../../components/Rating/Rating.astro'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {}
+
+const {
+  items = [{ quote: 'Every page we build now looks like it belongs together. Our designers finally trust what ships.', name: 'Daniel Reyes', role: 'Engineering Lead, Quanta', avatar: 'https://picsum.photos/id/91/656/656', rating: 5 }],
+} = Astro.props
 ---
 
 <Section spacing="large">
+  {items.slice(0, 1).map((t) => (
   <figure class="grid items-center gap-8 lg:grid-cols-[auto_1fr] lg:gap-24">
-    <Image src="https://picsum.photos/id/91/656/656" alt="" width={656} height={656} fit="cover" radius="xl" class="size-50 md:size-82" />
+    {t.avatar && <Image src={t.avatar} alt="" width={656} height={656} fit="cover" radius="xl" class="size-50 md:size-82" />}
     <div class="flex flex-col gap-6 md:gap-8">
-      <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-      <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
-      <figcaption class="flex flex-col gap-1"><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">— Daniel Reyes</span><span class="text-sm text-neutral-faded">Engineering Lead, Quanta</span></span></figcaption>
+      {t.rating != null && <Rating value={t.rating} readonly size="small" color="warning" aria-label={`Rated ${t.rating} out of 5`} />}
+      <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“{t.quote}”</p></blockquote>
+      <figcaption class="flex flex-col gap-1"><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">— {t.name}</span>{t.role && <span class="text-sm text-neutral-faded">{t.role}</span>}</span></figcaption>
     </div>
   </figure>
+  ))}
 </Section>

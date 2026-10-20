@@ -6,26 +6,29 @@
  * @order 5
  */
 import Section from '../../components/Section/Section.astro'
+import type { MetricsContent } from '../../sections/_shared/metrics.ts'
 
+/** @composable */
+interface Props extends MetricsContent {}
+
+const {
+  label = 'Key figures',
+  items = [
+    { value: '400+', label: 'Projects completed' },
+    { value: '600%', label: 'Return on investment' },
+    { value: '10k', label: 'Global downloads' },
+    { value: '200+', label: 'Five-star reviews' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
-  <dl aria-label="Key figures" class="grid gap-x-4 gap-y-8 md:grid-cols-2 md:border-y md:py-16 lg:grid-cols-4 border-neutral">
+  <dl aria-label={label} class="grid gap-x-4 gap-y-8 md:grid-cols-2 md:border-y md:py-16 lg:grid-cols-4 border-neutral">
+    {items.map((s) => (
       <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Projects completed</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">400+</dd>
-          </div>
-        <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Return on investment</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">600%</dd>
-          </div>
-        <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Global downloads</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">10k</dd>
-          </div>
-        <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Five-star reviews</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">200+</dd>
-          </div>
-    </dl>
+        <dt class="order-2 text-lg font-semibold">{s.label}</dt>
+        <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">{s.value}</dd>
+      </div>
+    ))}
+  </dl>
 </Section>

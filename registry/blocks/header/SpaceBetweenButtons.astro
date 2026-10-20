@@ -10,25 +10,32 @@ import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Text from '../../components/Text/Text.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { PageHeaderContent } from '../../sections/_shared/header.ts'
 
-interface Props {
-  eyebrow?: string
-  heading?: string
-  description?: string
-}
-const { eyebrow = 'Pricing', heading = 'Plans that fit your scale', description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.' } = Astro.props
+/** @composable */
+interface Props extends PageHeaderContent {}
+const {
+  eyebrow = 'Pricing',
+  heading = 'Plans that fit your scale',
+  description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Chat to sales', href: '#' },
+} = Astro.props
 ---
 
 <Section spacing="large">
-  <Eyebrow as="p" color="primary">{eyebrow}</Eyebrow>
+  {eyebrow && <Eyebrow as="p" color="primary">{eyebrow}</Eyebrow>}
   <div class="mt-3 grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-x-16">
-    <Heading as="h1" size="display" class="text-balance">{heading}</Heading>
-    <Text size="large" class="text-neutral-faded lg:mt-3">{description}</Text>
+    <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+    {description && <Text size="large" class="text-neutral-faded lg:mt-3">{description}</Text>}
   </div>
-  <div class="mt-8">
-    <div class="flex flex-col-reverse gap-3 sm:flex-row">
-      <Button href="#" size="large" variant="outline" color="neutral">Chat to sales</Button>
-      <Button href="#" size="large">Get started</Button>
+  {(primaryAction || secondaryAction) && (
+    <div class="mt-8">
+      <div class="flex flex-col-reverse gap-3 sm:flex-row">
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+      </div>
     </div>
-  </div>
+  )}
 </Section>

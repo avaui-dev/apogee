@@ -5,28 +5,46 @@
  * @block footers
  * @order 62
  */
-import { ArrowRight, AtSign, Camera, MessageCircle, Users } from '@lucide/astro'
+import { ArrowRight } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { accentRuns } from '../../sections/_shared/spine.ts'
+import { socialIcons, type FooterContent } from '../../sections/_shared/footers.ts'
 
-const social = [[Camera, 'Photos'], [Users, 'Community'], [AtSign, 'Updates'], [MessageCircle, 'Chat']] as const
-const columns = [
-  { heading: 'Company', links: ['About', 'Work', 'Privacy policy', 'Terms and conditions'] },
-  { heading: 'Services', links: ['Crafted websites', 'Website redesign', 'Online shops', 'Content-managed sites'] },
-  { heading: 'Resources', links: ['Blog', 'Templates', 'Cookies', 'Questions'] },
-  { heading: 'Contact', links: ['hello@vantage.studio', '+44 20 7946 0388', 'Based in Bristol', 'Working worldwide'] },
-]
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  heading = 'Create bold. *Deliver better.*',
+  primaryAction = { label: 'See our work', href: '#' },
+  secondaryAction = { label: 'Get in touch', href: '#' },
+  columns = [
+    { heading: 'Company', links: [{ label: 'About', href: '#' }, { label: 'Work', href: '#' }, { label: 'Privacy policy', href: '#' }, { label: 'Terms and conditions', href: '#' }] },
+    { heading: 'Services', links: [{ label: 'Crafted websites', href: '#' }, { label: 'Website redesign', href: '#' }, { label: 'Online shops', href: '#' }, { label: 'Content-managed sites', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'Templates', href: '#' }, { label: 'Cookies', href: '#' }, { label: 'Questions', href: '#' }] },
+    { heading: 'Contact', links: [{ label: 'hello@vantage.studio', href: '#' }, { label: '+44 20 7946 0388', href: '#' }, { label: 'Based in Bristol', href: '#' }, { label: 'Working worldwide', href: '#' }] },
+  ],
+  copyright = '© 2026 Vantage. All rights reserved.',
+  social = [
+    { label: 'Photos', href: '#', icon: 'camera' },
+    { label: 'Community', href: '#', icon: 'users' },
+    { label: 'Updates', href: '#', icon: 'at-sign' },
+    { label: 'Chat', href: '#', icon: 'message' },
+  ],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="none" container={false} theme="dark" class="overflow-hidden">
   <div class="flex flex-col items-center gap-6 px-gutter pt-(--spacing-section-lg) text-center">
-    <Heading as="h2" size="display" class="font-semibold tracking-tight">Create bold. <span class="block">Deliver better.</span></Heading>
+    {heading && <Heading as="h2" size="display" class="font-semibold tracking-tight">{accentRuns(heading).map((r) => (r.accent ? <span class="block">{r.text}</span> : r.text))}</Heading>}
+    {(primaryAction || secondaryAction) && (
     <div class="flex gap-3">
-      <Button href="#" rounded variant="faded" color="neutral">See our work</Button>
-      <Button href="#" rounded color="neutral" variant="outline">Get in touch</Button>
+      {primaryAction && <Button href={primaryAction.href} rounded variant="faded" color="neutral">{primaryAction.label}</Button>}
+      {secondaryAction && <Button href={secondaryAction.href} rounded color="neutral" variant="outline">{secondaryAction.label}</Button>}
     </div>
+    )}
   </div>
 
   <!-- The mark: two slanted strokes, sharp at the top and blurring into a glow at the bottom. -->
@@ -35,20 +53,20 @@ const columns = [
     <div class="absolute inset-x-[20%] bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_oklab,var(--foreground-neutral)_45%,transparent),transparent_70%)] blur-2xl"></div>
   </div>
 
-  <div class="relative border-y border-neutral-faded">
+  {social && <div class="relative border-y border-neutral-faded">
     <ul class="mx-auto grid max-w-6xl list-none grid-cols-2 border-neutral-faded p-0 md:grid-cols-4">
-      {social.map(([Icon, l]) => <li class="border-e border-neutral-faded first:border-s"><Link href="#" color="neutral" underline="none" class="flex items-center justify-between px-5 py-4 text-sm backdrop-blur-sm hover:bg-neutral-faded"><span class="inline-flex items-center gap-2"><Icon class="size-4" aria-hidden="true" />{l}</span><ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></li>)}
+      {social.map((s) => { const Icon = socialIcons[s.icon]; return <li class="border-e border-neutral-faded first:border-s"><Link href={s.href} color="neutral" underline="none" class="flex items-center justify-between px-5 py-4 text-sm backdrop-blur-sm hover:bg-neutral-faded"><span class="inline-flex items-center gap-2"><Icon class="size-4" aria-hidden="true" />{s.label}</span><ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link></li> })}
     </ul>
-  </div>
+  </div>}
   <div class="border-b border-neutral-faded">
     <div class="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-4">
       {columns.map((c) => (
         <nav aria-label={c.heading} class="border-e border-neutral-faded px-5 py-10 first:border-s">
           <p class="text-sm text-neutral-faded">{c.heading}</p>
-          <ul class="mt-4 flex list-none flex-col gap-2.5 p-0 text-sm">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+          <ul class="mt-4 flex list-none flex-col gap-2.5 p-0 text-sm">{c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}</ul>
         </nav>
       ))}
     </div>
   </div>
-  <p class="py-6 text-center text-xs text-neutral-faded">© 2026 Vantage. All rights reserved.</p>
+  {copyright && <p class="py-6 text-center text-xs text-neutral-faded">{copyright}</p>}
 </Section>

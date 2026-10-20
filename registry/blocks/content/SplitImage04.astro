@@ -11,10 +11,27 @@ import Prose from '../../components/Prose/Prose.astro'
 import Image from '../../components/Image/Image.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  eyebrow,
+  heading = 'Building your first internal API',
+  description = 'The shape of a small API that teams can grow without rewriting.',
+  author = { name: 'Grace Hopper', role: 'Staff Engineer' },
+  date = '2026-01-20',
+  readingTime = '7 min read',
+  media = { src: 'https://picsum.photos/seed/apogee-content-22/1600/1000', alt: '', width: 1600, height: 1000 },
+} = Astro.props
+// ponytail: the demo footer byline differs from the header's; a page that passes `author` sets both.
+const footerAuthor = Astro.props.author === undefined ? { name: 'Ada Lovelace', role: 'Design Lead' } : author
 ---
 
 <article>
-  <PostHeader layout="split" heading="Building your first internal API" description="The shape of a small API that teams can grow without rewriting." author={{ name: 'Grace Hopper', role: 'Staff Engineer' }} date="2026-01-20" readingTime="7 min read" headingLevel={1} media={{ src: 'https://picsum.photos/seed/apogee-content-22/1600/1000', alt: '', width: 1600, height: 1000 }} />
+  <PostHeader layout="split" eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} author={author ?? undefined} date={date} readingTime={readingTime ?? undefined} headingLevel={1} media={media ?? undefined} />
   <Section spacing="none" containerWidth="small" class="pb-section">
     <Prose>
       <p class="lead">A design system is the shared language a team speaks when it builds a product: the parts, the rules for using them and the reasons behind the rules.</p>
@@ -45,14 +62,16 @@ import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
       </div>
     </Prose>
     <footer class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 sm:flex-row sm:items-center sm:justify-between">
+    {footerAuthor && (
     <div class="flex items-center gap-3">
-      <Avatar name="Ada Lovelace" size="large" />
+      <Avatar name={footerAuthor.name} size="large" />
       <div>
-        <p class="font-semibold">Ada Lovelace</p>
-        <p class="text-neutral-faded">Design Lead</p>
+        <p class="font-semibold">{footerAuthor.name}</p>
+        {footerAuthor.role && <p class="text-neutral-faded">{footerAuthor.role}</p>}
       </div>
     </div>
-    <ShareLinks title="What makes a design system work" />
+    )}
+    <ShareLinks title={plain(heading)} />
   </footer>
   </Section>
 </article>

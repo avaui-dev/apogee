@@ -13,33 +13,48 @@ import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Link from '../../components/Link/Link.astro'
 import Image from '../../components/Image/Image.astro'
 
-const faqs = [
-  { icon: Heart, question: 'Is there a free trial available?', answer: 'Yes, you can try us for free for 30 days. If you want, we will give you a free 30-minute onboarding call to get you up and running.' },
-  { icon: ArrowLeftRight, question: 'Can I change my plan later?', answer: 'Of course. Our pricing scales with your company. Chat to our friendly team to find a solution that works for you.' },
-  { icon: CalendarX, question: 'What is your cancellation policy?', answer: 'We understand that things change. You can cancel your plan at any time and we will refund you the difference already paid.' },
-  { icon: FileText, question: 'Can other info be added to an invoice?', answer: 'Yes. Add your company details, a purchase order number or a note in your billing settings, and every invoice carries them.' },
-  { icon: CreditCard, question: 'How does billing work?', answer: 'Plans are per workspace, not per account. You can upgrade one workspace and still have any number of free workspaces.' },
-  { icon: Mail, question: 'How do I change my account email?', answer: 'You can change the email address associated with your account by going to your account settings from a laptop or desktop.' },
-]
+import { plain, accentRuns, type Media } from '../../sections/_shared/spine.ts'
+import type { FAQContent } from '../../sections/_shared/faq.ts'
+
+/** @composable */
+interface Props extends FAQContent {
+  /** The photo beside the questions. @category content */
+  media?: Media | null
+}
+
+const icons = [Heart, ArrowLeftRight, CalendarX, FileText, CreditCard, Mail]
+const {
+  eyebrow = 'Support',
+  heading = 'Frequently asked questions',
+  description = "Can't find the answer you're looking for? Please *chat to our friendly team*.",
+  items = [
+    { question: 'Is there a free trial available?', answer: 'Yes, you can try us for free for 30 days. If you want, we will give you a free 30-minute onboarding call to get you up and running.' },
+    { question: 'Can I change my plan later?', answer: 'Of course. Our pricing scales with your company. Chat to our friendly team to find a solution that works for you.' },
+    { question: 'What is your cancellation policy?', answer: 'We understand that things change. You can cancel your plan at any time and we will refund you the difference already paid.' },
+    { question: 'Can other info be added to an invoice?', answer: 'Yes. Add your company details, a purchase order number or a note in your billing settings, and every invoice carries them.' },
+  ],
+  primaryAction = { label: 'Get in touch', href: '#' },
+  media = { src: 'https://picsum.photos/seed/apogee-faq-1/1200/1400', alt: '', width: 1200, height: 1400 },
+} = Astro.props
 ---
 
 <Section spacing="large" background="primary">
   <div class="mb-16 flex flex-col gap-4">
-    <SectionHeader eyebrow="Support" heading="Frequently asked questions" background="primary" />
-    <p class="opacity-85">Can't find the answer you're looking for? Please <Link href="#" color="inherit">chat to our friendly team</Link>.</p>
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} background="primary" />
+    {description && <p class="opacity-85">{accentRuns(description).map((r) => (r.accent && primaryAction ? <Link href={primaryAction.href} color="inherit">{r.text}</Link> : r.text))}</p>}
   </div>
   <div class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
     <ul class="grid list-none gap-x-8 gap-y-12 p-0 sm:grid-cols-2">
-    {faqs.slice(0, 4).map((f) => (
+    {items.map((f, i) => { const Icon = icons[i % icons.length]!; return (
       <li class="flex flex-col gap-4 items-start">
-        <FeaturedIcon theme="light" color="primary"><f.icon /></FeaturedIcon>
+        <FeaturedIcon theme="light" color="primary"><Icon /></FeaturedIcon>
         <div class="flex flex-col gap-2">
           <Heading as="h3" size="h6">{f.question}</Heading>
           <p class="opacity-85">{f.answer}</p>
         </div>
       </li>
-    ))}
+    )})}
   </ul>
-    <Image src="https://picsum.photos/seed/apogee-faq-1/1200/1400" alt="" width={1200} height={1400} fit="cover" radius="xl" class="aspect-[6/7] w-full max-lg:hidden" />
+    {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" class="aspect-[6/7] w-full max-lg:hidden" />}
   </div>
 </Section>

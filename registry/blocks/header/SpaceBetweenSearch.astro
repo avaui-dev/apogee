@@ -11,20 +11,19 @@ import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Text from '../../components/Text/Text.astro'
 import Input from '../../components/Input/Input.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { PageHeaderContent } from '../../sections/_shared/header.ts'
 
-interface Props {
-  eyebrow?: string
-  heading?: string
-  description?: string
-}
+/** @composable */
+interface Props extends PageHeaderContent {}
 const { eyebrow = 'Resources', heading = 'Support centre', description = 'Get help and support or learn how to use the newest features.' } = Astro.props
 ---
 
 <Section spacing="large">
-  <Eyebrow as="p" color="primary">{eyebrow}</Eyebrow>
+  {eyebrow && <Eyebrow as="p" color="primary">{eyebrow}</Eyebrow>}
   <div class="mt-3 grid gap-4 md:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] lg:gap-x-16">
-    <Heading as="h1" size="display" class="text-balance">{heading}</Heading>
-    <Text size="large" class="text-neutral-faded lg:mt-3">{description}</Text>
+    <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+    {description && <Text size="large" class="text-neutral-faded lg:mt-3">{description}</Text>}
   </div>
   <div class="mt-8">
     <form method="get" role="search" class="w-full sm:w-80">

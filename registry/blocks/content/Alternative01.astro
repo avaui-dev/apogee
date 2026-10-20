@@ -11,26 +11,44 @@ import Image from '../../components/Image/Image.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Heading from '../../components/Heading/Heading.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+import { formatDate } from '../../sections/_shared/date.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  eyebrow = 'Customer success',
+  heading = 'How small teams win big accounts',
+  description = 'What we learned from the customers who stayed, and the ones who left.',
+  media = { src: 'https://picsum.photos/seed/apogee-content-25/1200/1000', alt: '', width: 1200, height: 1000 },
+  date = '2026-01-20',
+  author = { name: 'Ada Lovelace', role: 'Design Lead' },
+  topics = ['Design', 'Research', 'Process'],
+} = Astro.props
 ---
 
 <article>
   <Section spacing="large">
     <div class="grid items-center gap-12 lg:grid-cols-2">
-      <Image src="https://picsum.photos/seed/apogee-content-25/1200/1000" alt="" width={1200} height={1000} fit="cover" radius="xl" class="aspect-[6/5] w-full max-lg:order-last" />
+      {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" class="aspect-[6/5] w-full max-lg:order-last" />}
       <header class="flex flex-col items-start gap-4">
         <div class="flex items-center gap-3 text-sm">
-          <Badge color="primary" rounded>Customer success</Badge>
-          <time datetime="2026-01-20" class="text-neutral-faded">Jan 20, 2026</time>
+          {eyebrow && <Badge color="primary" rounded>{eyebrow}</Badge>}
+          <time datetime={date} class="text-neutral-faded">{formatDate(date, 'en', 'short')}</time>
         </div>
-        <Heading as="h1" size="h1">How small teams win big accounts</Heading>
-        <p class="text-lg text-neutral-faded">What we learned from the customers who stayed, and the ones who left.</p>
+        <Heading as="h1" size="h1">{plain(heading)}</Heading>
+        {description && <p class="text-lg text-neutral-faded">{description}</p>}
+    {author && (
     <div class="flex items-center gap-3">
-      <Avatar name="Ada Lovelace" size="large" />
+      <Avatar name={author.name} size="large" />
       <div>
-        <p class="font-semibold">Ada Lovelace</p>
-        <p class="text-neutral-faded">Design Lead</p>
+        <p class="font-semibold">{author.name}</p>
+        {author.role && <p class="text-neutral-faded">{author.role}</p>}
       </div>
     </div>
+    )}
       </header>
     </div>
   </Section>
@@ -64,9 +82,11 @@ import Heading from '../../components/Heading/Heading.astro'
       </div>
     </Prose>
     <footer class="mt-12 border-t border-neutral pt-8">
+    {topics && (
     <ul class="flex list-none flex-wrap gap-2 p-0" aria-label="Topics">
-      {['Design', 'Research', 'Process'].map((t) => <li><Badge color="neutral" rounded>{t}</Badge></li>)}
+      {topics.map((t) => <li><Badge color="neutral" rounded>{t}</Badge></li>)}
     </ul>
+    )}
     </footer>
   </Section>
 </article>

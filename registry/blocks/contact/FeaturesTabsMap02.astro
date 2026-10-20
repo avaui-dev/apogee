@@ -9,28 +9,36 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import MapEmbed from '../../components/MapEmbed/MapEmbed.astro'
 import Tabs from '../../components/Tabs/Tabs.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const stores = [
-  { city: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
-  { city: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
-  { city: 'Byron Bay', address: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
-  { city: 'London', address: '100 Oxford Street, London W1D 1LL UK', lat: 51.5154, lon: -0.141 },
-  { city: 'San Francisco', address: '100 Market Street, San Francisco, CA 94105 US', lat: 37.7936, lon: -122.395 },
-  { city: 'Stockholm', address: 'Drottninggatan 100, 111 60 Stockholm SE', lat: 59.3326, lon: 18.0649 },
-]
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
+/** @composable */
+interface Props extends ContactContent {}
+
+const {
+  eyebrow = 'Locations',
+  heading = 'Visit our stores',
+  description = 'Find us at these locations.',
+  locations = [
+    { name: 'Melbourne', address: '100 Flinders Street, Melbourne VIC 3000 AU', lat: -37.8183, lon: 144.9671 },
+    { name: 'Sydney', address: '100 George Street, Sydney NSW 2000 AU', lat: -33.8615, lon: 151.2073 },
+    { name: 'Byron Bay', address: '50 Jonson Street, Byron Bay NSW 2481 AU', lat: -28.6431, lon: 153.6139 },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Locations" heading="Visit our stores" description="Find us at these locations." class="mb-12" />
-  <Tabs tabs={stores.slice(0, 3).map((s) => ({ label: s.city, value: slug(s.city) }))} orientation="vertical" variant="bordered" class="max-lg:flex-col">
-    {stores.slice(0, 3).map((s) => (
-      <div slot={`panel-${slug(s.city)}`} class="flex flex-col gap-4">
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} class="mb-12" />
+  {locations && <Tabs tabs={locations.map((s) => ({ label: s.name, value: slug(s.name) }))} orientation="vertical" variant="bordered" class="max-lg:flex-col">
+    {locations.map((s) => (
+      <div slot={`panel-${slug(s.name)}`} class="flex flex-col gap-4">
         <p class="apogee-store-address">{s.address}</p>
-        <MapEmbed lat={s.lat} lon={s.lon} title={`Map of our ${s.city} store`} class="h-96 md:h-[30rem]" />
+        <MapEmbed lat={s.lat} lon={s.lon} title={`Map of our ${s.name} store`} class="h-96 md:h-[30rem]" />
       </div>
     ))}
-  </Tabs>
+  </Tabs>}
 </Section>
 
 <style>

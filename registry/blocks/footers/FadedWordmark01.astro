@@ -5,17 +5,37 @@
  * @block footers
  * @order 51
  */
-import { AtSign, Bot, Loader, MessageCircle, ShieldCheck, Sparkles, Video, Users } from '@lucide/astro'
+import { Bot, Loader, MessageCircle, ShieldCheck, Sparkles } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Link from '../../components/Link/Link.astro'
+import { socialIcons, type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Platform', links: ['Overview', 'Security', 'Request a demo'] },
-  { heading: 'Use cases', links: ['Automation and workflows', 'Supplier management', 'Forecasts and budgets', 'Policy and approvals', 'Sustainability', 'Meetings'] },
-  { heading: 'Industries', links: ['Professional services', 'Technology', 'Life sciences'] },
-  { heading: 'Resources', links: ['Blog', 'White papers', 'Free tools', 'Webinars'] },
-  { heading: 'Company', links: ['About us', 'Community', 'Careers', 'Legal'] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** Certification names, each in a round seal. @category content */
+  certifications?: string[] | null
+  /** The line over the assistant links. @category content */
+  assistantPrompt?: string | null
+}
+
+const {
+  brand = 'Clearview',
+  columns = [
+    { heading: 'Platform', links: [{ label: 'Overview', href: '#' }, { label: 'Security', href: '#' }, { label: 'Request a demo', href: '#' }] },
+    { heading: 'Use cases', links: [{ label: 'Automation and workflows', href: '#' }, { label: 'Supplier management', href: '#' }, { label: 'Forecasts and budgets', href: '#' }, { label: 'Policy and approvals', href: '#' }, { label: 'Sustainability', href: '#' }, { label: 'Meetings', href: '#' }] },
+    { heading: 'Industries', links: [{ label: 'Professional services', href: '#' }, { label: 'Technology', href: '#' }, { label: 'Life sciences', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'White papers', href: '#' }, { label: 'Free tools', href: '#' }, { label: 'Webinars', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'About us', href: '#' }, { label: 'Community', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Legal', href: '#' }] },
+  ],
+  copyright = '© 2026 Clearview. All rights reserved.',
+  social = [
+    { label: 'Community', href: '#', icon: 'users' },
+    { label: 'Updates', href: '#', icon: 'at-sign' },
+    { label: 'Videos', href: '#', icon: 'video' },
+  ],
+  certifications = ['ISO 27001', 'GDPR'],
+  assistantPrompt = 'Ask an assistant to sum us up',
+} = Astro.props
 ---
 
 <Section as="footer" spacing="none" container={false} class="overflow-hidden" style="background: linear-gradient(to bottom, color-mix(in oklab, var(--background-primary) 6%, var(--background-page)), color-mix(in oklab, var(--background-primary) 14%, var(--background-page)))">
@@ -24,27 +44,27 @@ const columns = [
       {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="text-sm text-neutral-faded">{c.heading}</p>
-          <ul class="mt-3 flex list-none flex-col gap-3 p-0">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+          <ul class="mt-3 flex list-none flex-col gap-3 p-0">{c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}</ul>
         </nav>
       ))}
-      <ul class="flex list-none gap-3 p-0 lg:justify-self-end" aria-label="Certifications">
-        {['ISO 27001', 'GDPR'].map((c) => <li class="grid size-14 place-items-center rounded-full border-2 border-neutral text-center text-[0.5625rem] font-bold leading-tight"><ShieldCheck class="size-4" aria-hidden="true" />{c}</li>)}
-      </ul>
+      {certifications && <ul class="flex list-none gap-3 p-0 lg:justify-self-end" aria-label="Certifications">
+        {certifications.map((c) => <li class="grid size-14 place-items-center rounded-full border-2 border-neutral text-center text-[0.5625rem] font-bold leading-tight"><ShieldCheck class="size-4" aria-hidden="true" />{c}</li>)}
+      </ul>}
     </div>
 
     <div class="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-neutral-faded pt-8 text-sm text-neutral-faded">
       <div class="flex flex-col gap-3">
-        <p>Ask an assistant to sum us up</p>
+        {assistantPrompt && <p>{assistantPrompt}</p>}
         <ul class="flex list-none gap-3 p-0 text-neutral">{[Sparkles, Bot, MessageCircle, Loader].map((Icon, i) => <li><Link href="#" color="neutral" underline="none" aria-label={`Assistant ${i + 1}`}><Icon class="size-4" aria-hidden="true" /></Link></li>)}</ul>
       </div>
       <div class="flex flex-col items-end gap-3">
-        <p>© 2026 Clearview. All rights reserved.</p>
-        <ul class="flex list-none gap-4 p-0 text-neutral">{[[Users, 'Community'], [AtSign, 'Updates'], [Video, 'Videos']].map(([Icon, l]) => <li><Link href="#" color="neutral" underline="none" aria-label={l as string}><Icon class="size-5" aria-hidden="true" /></Link></li>)}</ul>
+        {copyright && <p>{copyright}</p>}
+        {social && <ul class="flex list-none gap-4 p-0 text-neutral">{social.map((s) => { const Icon = socialIcons[s.icon]; return <li><Link href={s.href} color="neutral" underline="none" aria-label={s.label}><Icon class="size-5" aria-hidden="true" /></Link></li> })}</ul>}
       </div>
     </div>
 
   </div>
   <div class="@container mt-16 px-gutter">
-    <p class="flex items-center gap-[0.15em] whitespace-nowrap text-[18.3cqi] font-bold leading-[0.85] tracking-tight text-[color-mix(in_oklab,var(--background-primary)_22%,var(--background-page))] [margin-bottom:-0.12em]" aria-hidden="true"><Loader class="size-[0.9em] shrink-0" stroke-width="2.5" />Clearview</p>
+    <p class="flex items-center gap-[0.15em] whitespace-nowrap text-[18.3cqi] font-bold leading-[0.85] tracking-tight text-[color-mix(in_oklab,var(--background-primary)_22%,var(--background-page))] [margin-bottom:-0.12em]" aria-hidden="true"><Loader class="size-[0.9em] shrink-0" stroke-width="2.5" />{brand}</p>
   </div>
 </Section>

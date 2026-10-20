@@ -7,11 +7,13 @@
  */
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
-import JobCard, { type Job } from '../../components/JobCard/JobCard.astro'
+import JobCard from '../../components/JobCard/JobCard.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { type CareersContent, type Job } from '../../sections/_shared/careers.ts'
 import Select from '../../components/Select/Select.astro'
 import Heading from '../../components/Heading/Heading.astro'
 
-const jobs: Job[] = [
+const demoJobs: Job[] = [
   {
     title: 'Product Designer',
     href: '#',
@@ -43,26 +45,6 @@ const jobs: Job[] = [
     badge: { label: 'Customer success', color: 'positive' },
   },
   {
-    title: 'Account Executive',
-    href: '#',
-    description: "Work with teams who are choosing their next design system.",
-    department: 'Sales',
-    location: 'London, UK',
-    type: 'Full-time',
-    salary: '90k – 120k',
-    badge: { label: 'Sales', color: 'warning' },
-  },
-  {
-    title: 'Content Marketing Lead',
-    href: '#',
-    description: "Write and plan the guides, notes and case studies people share.",
-    department: 'Marketing',
-    location: 'Remote',
-    type: 'Part-time',
-    salary: '60k – 80k',
-    badge: { label: 'Marketing', color: 'primary' },
-  },
-  {
     title: 'UX Researcher',
     href: '#',
     description: "Talk to the people who use what we build and bring what you learn back.",
@@ -73,15 +55,29 @@ const jobs: Job[] = [
     badge: { label: 'Design', color: 'primary' },
   },
 ]
-const intros: Record<string, string> = { Design: 'Open positions in our design team.', 'Software Development': 'Open positions in our software team.', 'Customer Success': 'Open positions in our customer success team.' }
-const groups = ['Design', 'Software Development', 'Customer Success'].map((department) => ({ department, intro: intros[department], jobs: jobs.filter((job) => job.department === department) }))
+
+/** @composable */
+interface Props extends CareersContent {
+  /** A line under each department heading, keyed by department. @shape { [department: string]: string } @category content */
+  intros?: Record<string, string> | null
+}
+
+const {
+  eyebrow = "We're hiring!",
+  heading = 'Join our team',
+  description = 'Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work.',
+  items = demoJobs,
+  intros = { Design: 'Open positions in our design team.', 'Software Development': 'Open positions in our software team.', 'Customer Success': 'Open positions in our customer success team.' },
+} = Astro.props
+// Jobs grouped by department, in order of first appearance.
+const groups = [...new Set(items.flatMap((job) => job.department ?? []))].map((department) => ({ department, intro: intros?.[department], jobs: items.filter((job) => job.department === department) }))
 
 ---
 
 <Section spacing="large">
   <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
     <div class="flex flex-col gap-8">
-      <SectionHeader eyebrow="We're hiring!" heading="Join our team" description="Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work." class="" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} class="" />
       <Select label="Location" name="location" class="sm:w-56">
         <option selected>Worldwide</option>
         <option>Europe</option>
@@ -94,7 +90,7 @@ const groups = ['Design', 'Software Development', 'Customer Success'].map((depar
       {groups.map((g) => (
         <li>
           <Heading as="h3" size="h5">{g.department}</Heading>
-          <p class="mt-1 text-neutral-faded">{g.intro}</p>
+          {g.intro && <p class="mt-1 text-neutral-faded">{g.intro}</p>}
           <ul class="mt-5 flex list-none flex-col gap-4 p-0">
             {g.jobs.map((job) => <li><JobCard job={{ ...job, department: undefined }} variant="card" headingLevel={4} /></li>)}
           </ul>

@@ -14,10 +14,37 @@ import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
 import Card from '../../components/Card/Card.astro'
 import Input from '../../components/Input/Input.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {
+  /** The newsletter card in the sidebar. @category content */
+  formHeading?: string
+  /** @category content */
+  formDescription?: string | null
+  /** The sign-up form's submit button. @category content */
+  submitLabel?: string
+}
+
+const {
+  eyebrow = 'Leadership',
+  heading = 'Leadership lessons from a year of remote teams',
+  description = 'Rituals, writing and trust: what held a distributed team together.',
+  author = { name: 'Alan Turing', role: 'Engineering Manager' },
+  date = '2026-01-20',
+  readingTime = '9 min read',
+  media = { src: 'https://picsum.photos/seed/apogee-content-7/1600/900', alt: '', width: 1600, height: 900 },
+  formHeading = 'Weekly newsletter',
+  formDescription = 'No spam. Just the latest releases and tips, articles and interviews, every week.',
+  submitLabel = 'Subscribe',
+} = Astro.props
+// ponytail: the demo footer byline differs from the header's; a page that passes `author` sets both.
+const footerAuthor = Astro.props.author === undefined ? { name: 'Ada Lovelace', role: 'Design Lead' } : author
 ---
 
 <article>
-  <PostHeader layout="centered" eyebrow="Leadership" heading="Leadership lessons from a year of remote teams" description="Rituals, writing and trust: what held a distributed team together." author={{ name: 'Alan Turing', role: 'Engineering Manager' }} date="2026-01-20" readingTime="9 min read" headingLevel={1} media={{ src: 'https://picsum.photos/seed/apogee-content-7/1600/900', alt: '', width: 1600, height: 900 }} />
+  <PostHeader layout="centered" eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} author={author ?? undefined} date={date} readingTime={readingTime ?? undefined} headingLevel={1} media={media ?? undefined} />
   <Section spacing="none" class="pb-section">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
       <div class="min-w-0">
@@ -50,24 +77,26 @@ import Button from '../../components/Button/Button.astro'
       </div>
     </Prose>
         <footer class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 sm:flex-row sm:items-center sm:justify-between">
+    {footerAuthor && (
     <div class="flex items-center gap-3">
-      <Avatar name="Ada Lovelace" size="large" />
+      <Avatar name={footerAuthor.name} size="large" />
       <div>
-        <p class="font-semibold">Ada Lovelace</p>
-        <p class="text-neutral-faded">Design Lead</p>
+        <p class="font-semibold">{footerAuthor.name}</p>
+        {footerAuthor.role && <p class="text-neutral-faded">{footerAuthor.role}</p>}
       </div>
     </div>
-    <ShareLinks title="What makes a design system work" />
+    )}
+    <ShareLinks title={plain(heading)} />
   </footer>
       </div>
       <aside class="max-lg:hidden" aria-label="Newsletter">
         <div class="sticky top-[calc(var(--navbar-height)+2rem)]">
       <Card padding="large" class="bg-neutral-faded">
-        <h2 class="text-lg font-semibold">Weekly newsletter</h2>
-        <p class="mt-2 text-sm text-neutral-faded">No spam. Just the latest releases and tips, articles and interviews, every week.</p>
+        <h2 class="text-lg font-semibold">{formHeading}</h2>
+        {formDescription && <p class="mt-2 text-sm text-neutral-faded">{formDescription}</p>}
         <form method="post" class="mt-6 flex flex-col gap-3">
           <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required />
-          <Button type="submit">Subscribe</Button>
+          <Button type="submit">{submitLabel}</Button>
         </form>
       </Card>
         </div>

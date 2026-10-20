@@ -10,13 +10,24 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Prose from '../../components/Prose/Prose.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  eyebrow,
+  heading = 'Beautiful analytics to grow smarter',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users.',
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="flex flex-col items-start gap-6">
       <FeaturedIcon theme="outline" color="neutral" size="large"><Zap /></FeaturedIcon>
-      <SectionHeader heading="Beautiful analytics to grow smarter" description="Powerful, self-serve product and growth analytics to help you convert, engage and retain more users." />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} />
     </div>
     <Prose>
       <h3>We share a single source of truth</h3>

@@ -9,21 +9,36 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { TeamContent } from '../../sections/_shared/team.ts'
 
+/** @composable */
+interface Props extends TeamContent {}
+
+const {
+  eyebrow = "We're hiring!",
+  heading = 'Meet our team',
+  description = 'We hire diverse, passionate people and build a culture that lets everyone do their best work.',
+  items = [
+    { name: 'Maya Okafor', role: 'Founder and CEO', avatar: 'https://picsum.photos/id/1027/192/192' },
+    { name: 'Tomas Lindqvist', role: 'Engineering Manager', avatar: 'https://picsum.photos/id/856/192/192' },
+    { name: 'Priya Raman', role: 'Product Manager', avatar: 'https://picsum.photos/id/832/192/192' },
+    { name: 'Jonah Weiss', role: 'Frontend Developer', avatar: 'https://picsum.photos/id/91/192/192' },
+    { name: 'Lucía Ortega', role: 'Backend Developer', avatar: 'https://picsum.photos/id/64/192/192' },
+    { name: 'Samir Haddad', role: 'Product Designer', avatar: 'https://picsum.photos/id/375/192/192' },
+    { name: 'Hana Kobayashi', role: 'UX Researcher', avatar: 'https://picsum.photos/id/823/192/192' },
+    { name: 'Eli Brennan', role: 'Customer Success', avatar: 'https://picsum.photos/id/836/192/192' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader eyebrow="We're hiring!" heading="Meet our team" description="We hire diverse, passionate people and build a culture that lets everyone do their best work." size="large" align="center" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
     <ul class="grid list-none p-0 gap-x-8 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/1027/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Maya Okafor</Heading><p class="text-primary">Founder and CEO</p></div></div></li>
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/856/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Tomas Lindqvist</Heading><p class="text-primary">Engineering Manager</p></div></div></li>
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/832/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Priya Raman</Heading><p class="text-primary">Product Manager</p></div></div></li>
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/91/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Jonah Weiss</Heading><p class="text-primary">Frontend Developer</p></div></div></li>
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/64/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Lucía Ortega</Heading><p class="text-primary">Backend Developer</p></div></div></li>
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/375/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Samir Haddad</Heading><p class="text-primary">Product Designer</p></div></div></li>
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/823/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Hana Kobayashi</Heading><p class="text-primary">UX Researcher</p></div></div></li>
-      <li><div class="flex flex-col items-center gap-4"><Image src="https://picsum.photos/id/836/192/192" alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" /><div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">Eli Brennan</Heading><p class="text-primary">Customer Success</p></div></div></li>
+      {items.map((p) => (
+        <li><div class="flex flex-col items-center gap-4">{p.avatar && <Image src={p.avatar} alt="" width={192} height={192} fit="cover" radius="full" outline class="size-20 md:size-24" />}<div class="flex flex-col items-center text-center"><Heading as="h3" size="h6">{p.name}</Heading><p class="text-primary">{p.role}</p></div></div></li>
+      ))}
     </ul>
   </div>
 </Section>

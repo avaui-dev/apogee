@@ -5,49 +5,52 @@
  * @block features
  * @order 41
  */
-import { ArrowRight, BookOpen, Bug, Calendar, CreditCard, FileText, Folder, GitBranch, HardDrive, LifeBuoy, Mail, MessageCircle, MessagesSquare, PenTool, Ticket, Users, Workflow } from '@lucide/astro'
+import { ArrowRight, Bug, FileText, Folder, HardDrive, LifeBuoy, MessagesSquare } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Link from '../../components/Link/Link.astro'
 import Badge from '../../components/Badge/Badge.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { FeaturesContent } from '../../sections/_shared/features.ts'
 
-const tools = [
-  { name: 'Docs', icon: FileText },
-  { name: 'Chat', icon: MessagesSquare },
-  { name: 'Drive', icon: HardDrive },
-  { name: 'Help desk', icon: LifeBuoy },
-  { name: 'Issues', icon: Bug },
-  { name: 'Files', icon: Folder },
-  { name: 'Payments', icon: CreditCard },
-  { name: 'Automations', icon: Workflow },
-  { name: 'Design', icon: PenTool },
-  { name: 'Wiki', icon: BookOpen },
-  { name: 'Email', icon: Mail },
-  { name: 'Tickets', icon: Ticket },
-  { name: 'Calendar', icon: Calendar },
-  { name: 'Messages', icon: MessageCircle },
-  { name: 'Community', icon: Users },
-  { name: 'Code', icon: GitBranch },
-]
+const icons = [FileText, MessagesSquare, HardDrive, LifeBuoy, Bug, Folder]
+
+/** @composable */
+interface Props extends FeaturesContent {}
+
+const {
+  eyebrow = 'Integrations',
+  heading = 'Get more value from your tools',
+  description = "Connect your tools, connect your teams. With over 100 apps already in our directory, your team's favourite tools are a click away.",
+  items = [
+    { title: 'Docs integration', description: 'Work faster by connecting docs straight to your workspace.', href: '#' },
+    { title: 'Chat integration', description: 'Work faster by connecting chat straight to your workspace.', href: '#' },
+    { title: 'Drive integration', description: 'Work faster by connecting drive straight to your workspace.', href: '#' },
+    { title: 'Help desk integration', description: 'Work faster by connecting help desk straight to your workspace.', href: '#' },
+    { title: 'Issues integration', description: 'Work faster by connecting issues straight to your workspace.', href: '#' },
+    { title: 'Files integration', description: 'Work faster by connecting files straight to your workspace.', href: '#' },
+  ],
+  linkLabel = 'View integration',
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-4 items-center mb-12 md:mb-16">
-    <Badge color="primary" variant="faded" rounded>Integrations</Badge>
-    <SectionHeader heading="Get more value from your tools" description="Connect your tools, connect your teams. With over 100 apps already in our directory, your team's favourite tools are a click away." align="center" />
+    {eyebrow && <Badge color="primary" variant="faded" rounded>{eyebrow}</Badge>}
+    <SectionHeader heading={plain(heading)} description={description ?? undefined} align="center" />
   </div>
   <ul class="grid list-none gap-x-8 gap-y-12 p-0 sm:grid-cols-2 lg:grid-cols-3">
-    {tools.slice(0, 6).map((t) => (
+    {items.map((f, i) => { const Icon = icons[i % icons.length]!; return (
       <li class="flex flex-col items-center gap-4 text-center">
-        <FeaturedIcon theme="outline" color="neutral" size="xlarge" label={t.name} class=""><t.icon /></FeaturedIcon>
+        <FeaturedIcon theme="outline" color="neutral" size="xlarge" class=""><Icon /></FeaturedIcon>
         <div class="flex flex-col gap-2">
-          <Heading as="h3" size="h6">{t.name} integration</Heading>
-          <p class="text-neutral-faded">{`Work faster by connecting ${t.name.toLowerCase()} straight to your workspace.`}</p>
+          <Heading as="h3" size="h6">{f.title}</Heading>
+          <p class="text-neutral-faded">{f.description}</p>
         </div>
-        <Link href="#" color="primary" underline="none" class="inline-flex items-center gap-1.5 font-semibold">View integration<span class="sr-only"> about {t.name}</span><ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link>
+        {f.href && <Link href={f.href} color="primary" underline="none" class="inline-flex items-center gap-1.5 font-semibold">{f.linkLabel ?? linkLabel}<span class="sr-only"> about {f.title}</span><ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" /></Link>}
       </li>
-    ))}
+    )})}
   </ul>
 </Section>

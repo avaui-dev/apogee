@@ -11,23 +11,39 @@ import Heading from '../../components/Heading/Heading.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'Example',
+  heading = "Let's get started on something great",
+  description = 'Join over 4,000 startups already growing with us.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'View demo', href: '#' },
+  copyright = '© 2026 Example. All rights reserved.',
+  legal = [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="large" background="primary">
   <div class="flex flex-col items-center gap-8">
-    <FeaturedIcon theme="solid" color="neutral" size="large" label="Example"><Orbit /></FeaturedIcon>
+    <FeaturedIcon theme="solid" color="neutral" size="large" label={brand}><Orbit /></FeaturedIcon>
     <div class="flex flex-col gap-3 items-center text-center">
-      <Heading as="h2" size="h3">Let's get started on something great</Heading>
-      <p class="text-lg opacity-85">Join over 4,000 startups already growing with us.</p>
+      {heading && <Heading as="h2" size="h3">{plain(heading)}</Heading>}
+      {description && <p class="text-lg opacity-85">{description}</p>}
     </div>
+    {(primaryAction || secondaryAction) && (
     <div class="flex flex-col-reverse gap-3 sm:flex-row">
-      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!"><CirclePlay slot="start" aria-hidden="true" />View demo</Button>
-      <Button href="#" size="large" color="neutral">Get started</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+      {primaryAction && <Button href={primaryAction.href} size="large" color="neutral">{primaryAction.label}</Button>}
     </div>
+    )}
   </div>
   <div class="mt-12 md:mt-16 flex flex-col-reverse gap-6 border-t border-current/25 pt-8 md:flex-row md:items-center md:justify-between">
-    <p class="opacity-85 ">© 2026 Example. All rights reserved.</p>
-    <nav aria-label="Legal"><ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 opacity-85"><li><Link href="#" color="inherit" underline="hover">Terms</Link></li><li><Link href="#" color="inherit" underline="hover">Privacy</Link></li><li><Link href="#" color="inherit" underline="hover">Cookies</Link></li></ul></nav>
+    {copyright && <p class="opacity-85 ">{copyright}</p>}
+    {legal && <nav aria-label="Legal"><ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 opacity-85">{legal.map((l) => <li><Link href={l.href} color="inherit" underline="hover">{l.label}</Link></li>)}</ul></nav>}
   </div>
 </Section>

@@ -10,20 +10,38 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain, srcUrl, type Action, type Media } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Platform', links: ['Consolidate', 'Build', 'Control', 'Scale', 'Integrations', 'Security'] },
-  { heading: 'Solutions', links: ['Aerospace and defence', 'Chemicals', 'Energy and commodities', 'Engineering', 'Shipping', 'Telecoms'] },
-  { heading: 'Company', links: ['About', 'Careers', 'Terms of service', 'Cookie policy'] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** The banner photo behind the heading. @category content */
+  media?: Media | null
+  /** The text link at the end of the bottom bar. @category content */
+  socialLink?: Action | null
+}
+
+const {
+  brand = 'Northwave',
+  heading = 'Bring AI into the core of your operations',
+  primaryAction = { label: 'Request a demo', href: '#' },
+  columns = [
+    { heading: 'Platform', links: [{ label: 'Consolidate', href: '#' }, { label: 'Build', href: '#' }, { label: 'Control', href: '#' }, { label: 'Scale', href: '#' }, { label: 'Integrations', href: '#' }, { label: 'Security', href: '#' }] },
+    { heading: 'Solutions', links: [{ label: 'Aerospace and defence', href: '#' }, { label: 'Chemicals', href: '#' }, { label: 'Energy and commodities', href: '#' }, { label: 'Engineering', href: '#' }, { label: 'Shipping', href: '#' }, { label: 'Telecoms', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'About', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Terms of service', href: '#' }, { label: 'Cookie policy', href: '#' }] },
+  ],
+  copyright = '© 2026 Northwave',
+  media = { src: 'https://picsum.photos/id/1018/1800/700', alt: '' },
+  socialLink = { label: 'Social', href: '#' },
+} = Astro.props
 ---
 
 <Section as="footer" spacing="small" containerWidth="full" theme="dark">
   <div class="relative isolate flex min-h-80 flex-col justify-between gap-10 overflow-hidden rounded-md p-8 md:min-h-96 md:p-10">
-    <img src="https://picsum.photos/id/1018/1800/700" alt="" loading="lazy" class="absolute inset-0 -z-10 size-full object-cover" />
+    {media && <img src={srcUrl(media.src)} alt={media.alt} loading="lazy" class="absolute inset-0 -z-10 size-full object-cover" />}
     <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--background-page)_80%,transparent),transparent_70%)]" aria-hidden="true"></div>
-    <Heading as="h2" size="h1" class="max-w-xl font-normal text-balance">Bring AI into the core of your operations</Heading>
-    <Button href="#" size="large" color="neutral" variant="outline" class="self-start rounded-none!">Request a demo</Button>
+    {heading && <Heading as="h2" size="h1" class="max-w-xl font-normal text-balance">{plain(heading)}</Heading>}
+    {primaryAction && <Button href={primaryAction.href} size="large" color="neutral" variant="outline" class="self-start rounded-none!">{primaryAction.label}</Button>}
   </div>
 
   <div class="grid grid-cols-2 gap-10 px-2 py-16 md:grid-cols-4 md:px-8 md:py-24">
@@ -31,7 +49,7 @@ const columns = [
       <nav aria-label={c.heading}>
         <p class="font-mono text-xs uppercase tracking-widest text-neutral-faded">{c.heading}</p>
         <ul class="mt-6 flex list-none flex-col gap-3 p-0">
-          {c.links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}
+          {c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}
         </ul>
       </nav>
     ))}
@@ -41,8 +59,8 @@ const columns = [
   <div class="relative grid grid-cols-[1fr_auto_1fr] items-center gap-4 border-y border-neutral-faded px-4 py-6 font-mono text-xs uppercase tracking-widest text-neutral-faded md:px-8">
     <span class="absolute -top-3 start-0 h-3 border-s border-neutral-faded" aria-hidden="true"></span>
     <span class="absolute -top-3 end-0 h-3 border-e border-neutral-faded" aria-hidden="true"></span>
-    <p>© 2026 Northwave</p>
-    <Link href="/" color="inherit" underline="none" aria-label="Northwave home"><Orbit class="size-6 text-neutral" aria-hidden="true" /></Link>
-    <Link href="#" color="inherit" underline="hover" class="justify-self-end">Social</Link>
+    <p>{copyright}</p>
+    <Link href="/" color="inherit" underline="none" aria-label={`${brand} home`}><Orbit class="size-6 text-neutral" aria-hidden="true" /></Link>
+    {socialLink && <Link href={socialLink.href} color="inherit" underline="hover" class="justify-self-end">{socialLink.label}</Link>}
   </div>
 </Section>

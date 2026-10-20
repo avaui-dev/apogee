@@ -7,10 +7,12 @@
  */
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
-import JobCard, { type Job } from '../../components/JobCard/JobCard.astro'
+import JobCard from '../../components/JobCard/JobCard.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { slug, type CareersContent, type Job } from '../../sections/_shared/careers.ts'
 import Tabs from '../../components/Tabs/Tabs.astro'
 
-const jobs: Job[] = [
+const demoJobs: Job[] = [
   {
     title: 'Product Designer',
     href: '#',
@@ -72,18 +74,33 @@ const jobs: Job[] = [
     badge: { label: 'Design', color: 'primary' },
   },
 ]
-const departments = ['View all', ...new Set(jobs.map((job) => job.department!))]
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
+/** @composable */
+interface Props extends CareersContent {}
+
+const {
+  eyebrow = "We're hiring!",
+  heading = 'Open positions',
+  description = 'Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work.',
+  items = demoJobs,
+  categories = [{ label: 'View all', value: 'view-all' }, ...[...new Set(items.flatMap((job) => job.department ?? []))].map((d) => ({ label: d, value: slug(d) }))],
+} = Astro.props
 
 ---
 
 <Section spacing="large" containerWidth="medium">
-  <SectionHeader eyebrow="We're hiring!" heading="Open positions" description="Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work." align="center" class="mb-12" />
-  <Tabs tabs={departments.map((d) => ({ label: d, value: slug(d) }))} variant="pills-raised" class="[&_.apogee-tabs-list]:mx-auto [&_.apogee-tabs-list]:w-fit [&_.apogee-tabs-list]:max-w-full">
-    {departments.map((d) => (
-      <ul slot={`panel-${slug(d)}`} class="mt-8 flex list-none flex-col gap-6 p-0">
-        {jobs.filter((job) => d === 'View all' || job.department === d).map((job) => <li><JobCard job={job} variant="card" /></li>)}
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} align="center" class="mb-12" />
+  {categories ? (
+  <Tabs tabs={categories} variant="pills-raised" class="[&_.apogee-tabs-list]:mx-auto [&_.apogee-tabs-list]:w-fit [&_.apogee-tabs-list]:max-w-full">
+    {categories.map((c, i) => (
+      <ul slot={`panel-${c.value}`} class="mt-8 flex list-none flex-col gap-6 p-0">
+        {items.filter((job) => i === 0 || slug(job.department ?? '') === c.value).map((job) => <li><JobCard job={job} variant="card" /></li>)}
       </ul>
     ))}
   </Tabs>
+  ) : (
+    <ul class="mt-8 flex list-none flex-col gap-6 p-0">
+      {items.map((job) => <li><JobCard job={job} variant="card" /></li>)}
+    </ul>
+  )}
 </Section>

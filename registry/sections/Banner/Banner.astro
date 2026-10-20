@@ -32,7 +32,7 @@ interface Props extends Omit<HTMLAttributes<'div'>, 'id'> {
   /** Heading and description on one line from `lg`. @category layout */ inline?: boolean
   /** `floating` only: pinned to the bottom of the viewport. @category layout */ fixed?: boolean
   /** Show the close button. */ dismissible?: boolean
-  /** @category content */ closeLabel?: string
+  /** @category content */ closeLabel?: string | undefined
   id?: string
   class?: string
 }

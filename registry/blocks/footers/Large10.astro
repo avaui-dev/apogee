@@ -5,55 +5,70 @@
  * @block footers
  * @order 10
  */
-import { AtSign, Globe, Mail, MessageCircle, Orbit, Rss } from '@lucide/astro'
+import { Orbit } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Badge from '../../components/Badge/Badge.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { socialIcons, type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
-  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
-  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
-  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
-  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
-  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
-]
-const social = [
-  { label: 'Email', icon: Mail },
-  { label: 'Blog feed', icon: Rss },
-  { label: 'Community', icon: MessageCircle },
-  { label: 'Website', icon: Globe },
-  { label: 'Contact', icon: AtSign },
-]
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'Example',
+  tagline = 'Design calm, accessible websites your whole team can edit.',
+  heading = 'Ready to get started?',
+  description = 'Join over 4,000 startups already growing with us.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Learn more', href: '#' },
+  columns = [
+    { heading: 'Product', links: [{ label: 'Overview', href: '#' }, { label: 'Features', href: '#' }, { label: 'Solutions', href: '#', badge: 'New' }, { label: 'Tutorials', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Releases', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'About us', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Press', href: '#' }, { label: 'News', href: '#' }, { label: 'Media kit', href: '#' }, { label: 'Contact', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'Newsletter', href: '#' }, { label: 'Events', href: '#' }, { label: 'Help centre', href: '#' }, { label: 'Tutorials', href: '#' }, { label: 'Support', href: '#' }] },
+    { heading: 'Community', links: [{ label: 'Forum', href: '#' }, { label: 'Meetups', href: '#' }, { label: 'Changelog', href: '#' }, { label: 'Status', href: '#' }, { label: 'Partners', href: '#' }, { label: 'Developers', href: '#' }] },
+    { heading: 'Legal', links: [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }, { label: 'Licences', href: '#' }, { label: 'Settings', href: '#' }, { label: 'Contact', href: '#' }] },
+  ],
+  copyright = '© 2026 Example. All rights reserved.',
+  social = [
+    { label: 'Email', href: '#', icon: 'mail' },
+    { label: 'Blog feed', href: '#', icon: 'rss' },
+    { label: 'Community', href: '#', icon: 'message' },
+    { label: 'Website', href: '#', icon: 'globe' },
+    { label: 'Contact', href: '#', icon: 'at-sign' },
+  ],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="medium">
   <div class="flex flex-col gap-8 border-b border-neutral pb-12 md:pb-16 lg:flex-row lg:items-center lg:justify-between">
     <div class="flex flex-col gap-3 items-start">
-      <Heading as="h2" size="h3">Ready to get started?</Heading>
-      <p class="text-lg text-neutral-faded">Join over 4,000 startups already growing with us.</p>
+      {heading && <Heading as="h2" size="h3">{plain(heading)}</Heading>}
+      {description && <p class="text-lg text-neutral-faded">{description}</p>}
     </div>
+    {(primaryAction || secondaryAction) && (
     <div class="flex flex-col-reverse gap-3 sm:flex-row">
-      <Button href="#" size="large" variant="outline" color="neutral">Learn more</Button>
-      <Button href="#" size="large">Get started</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+      {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
     </div>
+    )}
   </div>
   <div class="mt-12 md:mt-16"><div class="grid gap-12 lg:gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
     <div class="flex flex-col gap-6">
-      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
-      <p class="max-w-xs text-neutral-faded">Design calm, accessible websites your whole team can edit.</p>
+      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+      {tagline && <p class="max-w-xs text-neutral-faded">{plain(tagline)}</p>}
     </div>
     <div class="grid grid-cols-2 gap-8 md:grid-cols-5">
-      {columns.filter((c) => c.heading !== 'Use cases').map((c) => (
+      {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="text-sm font-semibold text-neutral-faded">{c.heading}</p>
           <ul class="mt-4 flex list-none flex-col gap-3 p-0">
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
-                <Link href="#" color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
+                <Link href={l.href} color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
                 {l.badge && <Badge size="small" variant="faded" color="primary">{l.badge}</Badge>}
               </li>
             ))}
@@ -63,11 +78,7 @@ const social = [
     </div>
   </div></div>
   <div class="mt-12 md:mt-16 flex flex-col-reverse gap-6 border-t border-neutral pt-8 md:flex-row md:items-center md:justify-between">
-    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
-    <ul class="flex list-none flex-wrap gap-6 p-0 text-neutral-faded">
-        {social.map((s) => (
-          <li><Link href="#" color="inherit" underline="none" aria-label={s.label} class="flex"><s.icon class="size-6" aria-hidden="true" /></Link></li>
-        ))}
-      </ul>
+    {copyright && <p class="text-neutral-faded ">{copyright}</p>}
+    {social && <ul class="flex list-none flex-wrap gap-6 p-0 text-neutral-faded">{social.map((s) => { const Icon = socialIcons[s.icon]; return <li><Link href={s.href} color="inherit" underline="none" aria-label={s.label} class="flex"><Icon class="size-6" aria-hidden="true" /></Link></li> })}</ul>}
   </div>
 </Section>

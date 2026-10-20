@@ -10,20 +10,34 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { accentRuns, srcUrl, type Media } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Product', links: ['Live demo', 'All features', 'Changelog', 'Pricing'] },
-  { heading: 'Docs', links: ['Get started', 'Add the tracker', 'Install guides', 'Command line', 'Import your data'] },
-  { heading: 'Support', links: ['Contact', 'Questions', 'Charges', 'Billing and usage'] },
-  { heading: 'Legal', links: ['Privacy', 'Terms', 'Data protection', 'Processing agreement'] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** The wide picture along the bottom. @category content */
+  media?: Media | null
+}
+
+const {
+  heading = 'Find out what your traffic is really worth. *Free for 15 days, no card needed.*',
+  primaryAction = { label: 'Try free for 15 days', href: '#' },
+  columns = [
+    { heading: 'Product', links: [{ label: 'Live demo', href: '#' }, { label: 'All features', href: '#' }, { label: 'Changelog', href: '#' }, { label: 'Pricing', href: '#' }] },
+    { heading: 'Docs', links: [{ label: 'Get started', href: '#' }, { label: 'Add the tracker', href: '#' }, { label: 'Install guides', href: '#' }, { label: 'Command line', href: '#' }, { label: 'Import your data', href: '#' }] },
+    { heading: 'Support', links: [{ label: 'Contact', href: '#' }, { label: 'Questions', href: '#' }, { label: 'Charges', href: '#' }, { label: 'Billing and usage', href: '#' }] },
+    { heading: 'Legal', links: [{ label: 'Privacy', href: '#' }, { label: 'Terms', href: '#' }, { label: 'Data protection', href: '#' }, { label: 'Processing agreement', href: '#' }] },
+  ],
+  copyright = '© 2026 Harbourline. All rights reserved. Made on the coast.',
+  media = { src: 'https://picsum.photos/id/1036/2000/800', alt: '' },
+} = Astro.props
 ---
 
 <Section as="footer" spacing="none" container={false} class="overflow-hidden">
   <div class="mx-auto max-w-6xl px-gutter pt-(--spacing-section-lg)">
     <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-      <Heading as="h2" size="h2" class="font-normal">Find out what your traffic is really worth. <span class="block text-neutral-faded">Free for 15 days, no card needed.</span></Heading>
-      <Button href="#" size="large" class="shrink-0">Try free for 15 days</Button>
+      {heading && <Heading as="h2" size="h2" class="font-normal">{accentRuns(heading).map((r) => (r.accent ? <span class="block text-neutral-faded">{r.text}</span> : r.text))}</Heading>}
+      {primaryAction && <Button href={primaryAction.href} size="large" class="shrink-0">{primaryAction.label}</Button>}
     </div>
     <div class="mt-24 grid gap-10 md:grid-cols-[1fr_2fr]">
       <Globe class="size-8 text-neutral-faded" aria-hidden="true" />
@@ -31,15 +45,15 @@ const columns = [
         {columns.map((c) => (
           <nav aria-label={c.heading}>
             <p class="font-medium">{c.heading}</p>
-            <ul class="mt-3 flex list-none flex-col gap-1.5 p-0">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l}</Link></li>)}</ul>
+            <ul class="mt-3 flex list-none flex-col gap-1.5 p-0">{c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l.label}</Link></li>)}</ul>
           </nav>
         ))}
       </div>
     </div>
   </div>
 
-  <div class="-mt-8">
-    <img src="https://picsum.photos/id/1036/2000/800" alt="" loading="lazy" class="aspect-[5/2] w-full object-cover mask-t-from-60%" />
-  </div>
-  <p class="mx-auto max-w-6xl px-gutter py-6 text-xs text-neutral-faded">© 2026 Harbourline. All rights reserved. Made on the coast.</p>
+  {media && <div class="-mt-8">
+    <img src={srcUrl(media.src)} alt={media.alt} loading="lazy" class="aspect-[5/2] w-full object-cover mask-t-from-60%" />
+  </div>}
+  {copyright && <p class="mx-auto max-w-6xl px-gutter py-6 text-xs text-neutral-faded">{copyright}</p>}
 </Section>

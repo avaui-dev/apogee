@@ -10,43 +10,38 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import Rating from '../../components/Rating/Rating.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {}
+
+const {
+  eyebrow,
+  heading = 'What our customers say',
+  description = 'Hear from the teams building with us every day.',
+  items = [
+    { quote: 'We shipped our redesign in three weeks instead of three months. The team still talks about it.', name: 'Amara Nwosu', role: '@amaran', avatar: 'https://picsum.photos/id/1027/192/192', rating: 5 },
+    { quote: 'Every page we build now looks like it belongs together. Our designers finally trust what ships.', name: 'Daniel Reyes', role: '@danielr', avatar: 'https://picsum.photos/id/91/192/192', rating: 5 },
+    { quote: 'Support answered in minutes, and the fix was live the same afternoon.', name: 'Sofia Marchetti', role: '@sofiam', avatar: 'https://picsum.photos/id/832/192/192', rating: 5 },
+    { quote: 'Every page we build now looks like it belongs together. Our designers finally trust what ships.', name: 'Kenji Watanabe', role: '@kenjiw', avatar: 'https://picsum.photos/id/856/192/192', rating: 5 },
+    { quote: 'Support answered in minutes, and the fix was live the same afternoon.', name: 'Leah Goldberg', role: '@leahg', avatar: 'https://picsum.photos/id/823/192/192', rating: 5 },
+    { quote: 'It replaced four tools and a spreadsheet nobody wanted to open.', name: 'Omar Haddad', role: '@omarh', avatar: 'https://picsum.photos/id/375/192/192', rating: 5 },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader heading="What our customers say" description="Hear from the teams building with us every day." size="large" align="center" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
     <div class="grid gap-6 lg:grid-cols-3">
+    {items.map((t) => (
     <figure class="flex flex-col gap-6 rounded-xl p-6 lg:p-8 bg-neutral-faded">
-      <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-      <blockquote class="flex-1 font-medium"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
-      <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Amara Nwosu<BadgeCheck class="size-4 text-primary" aria-label="Verified" /></span><span class="text-sm text-neutral-faded">@amaran</span></span></figcaption>
+      {t.rating != null && <Rating value={t.rating} readonly size="small" color="warning" aria-label={`Rated ${t.rating} out of 5`} />}
+      <blockquote class="flex-1 font-medium"><p>“{t.quote}”</p></blockquote>
+      <figcaption class="flex items-center gap-3"><Avatar src={t.avatar} name={t.name} alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">{t.name}<BadgeCheck class="size-4 text-primary" aria-label="Verified" /></span>{t.role && <span class="text-sm text-neutral-faded">{t.role}</span>}</span></figcaption>
     </figure>
-    <figure class="flex flex-col gap-6 rounded-xl p-6 lg:p-8 bg-neutral-faded">
-      <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-      <blockquote class="flex-1 font-medium"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
-      <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/91/192/192" name="Daniel Reyes" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Daniel Reyes<BadgeCheck class="size-4 text-primary" aria-label="Verified" /></span><span class="text-sm text-neutral-faded">@danielr</span></span></figcaption>
-    </figure>
-    <figure class="flex flex-col gap-6 rounded-xl p-6 lg:p-8 bg-neutral-faded">
-      <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-      <blockquote class="flex-1 font-medium"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
-      <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/832/192/192" name="Sofia Marchetti" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Sofia Marchetti<BadgeCheck class="size-4 text-primary" aria-label="Verified" /></span><span class="text-sm text-neutral-faded">@sofiam</span></span></figcaption>
-    </figure>
-    <figure class="flex flex-col gap-6 rounded-xl p-6 lg:p-8 bg-neutral-faded">
-      <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-      <blockquote class="flex-1 font-medium"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
-      <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/856/192/192" name="Kenji Watanabe" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Kenji Watanabe<BadgeCheck class="size-4 text-primary" aria-label="Verified" /></span><span class="text-sm text-neutral-faded">@kenjiw</span></span></figcaption>
-    </figure>
-    <figure class="flex flex-col gap-6 rounded-xl p-6 lg:p-8 bg-neutral-faded">
-      <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-      <blockquote class="flex-1 font-medium"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
-      <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/823/192/192" name="Leah Goldberg" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Leah Goldberg<BadgeCheck class="size-4 text-primary" aria-label="Verified" /></span><span class="text-sm text-neutral-faded">@leahg</span></span></figcaption>
-    </figure>
-    <figure class="flex flex-col gap-6 rounded-xl p-6 lg:p-8 bg-neutral-faded">
-      <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-      <blockquote class="flex-1 font-medium"><p>“It replaced four tools and a spreadsheet nobody wanted to open.”</p></blockquote>
-      <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/375/192/192" name="Omar Haddad" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Omar Haddad<BadgeCheck class="size-4 text-primary" aria-label="Verified" /></span><span class="text-sm text-neutral-faded">@omarh</span></span></figcaption>
-    </figure>
+    ))}
     </div>
   </div>
 </Section>

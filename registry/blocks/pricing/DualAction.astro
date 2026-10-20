@@ -12,94 +12,74 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
+import { accentRuns, plain, type Action } from '../../sections/_shared/spine.ts'
+import type { PricingContent } from '../../sections/_shared/pricing.ts'
 
-interface Props {
+/** @composable */
+interface Props extends PricingContent {
   /** 1 when the block opens a page; its items move one level down with it. */
   headingLevel?: 1 | 2
+  /** The outline button on every plan card. @category content */
+  salesAction?: Action | null
+  /** The small label over each features list. @category content */
+  featuresLabel?: string | null
+  /** The line under that label, one per plan in order; *asterisks* bold a part. @category content */
+  featuresIntros?: string[]
 }
-const { headingLevel = 2 } = Astro.props
+
+const {
+  headingLevel = 2,
+  eyebrow = 'Pricing',
+  heading = 'Simple, transparent pricing',
+  description = 'We believe good tools should be open to every company, whatever its size.',
+  periodLabel = 'Billing period',
+  periods = { monthly: 'Monthly billing', annual: 'Annual billing' },
+  items = [
+    { name: 'Basic plan', price: '$10', annualPrice: '$9', period: 'month', description: 'Our most popular plan.', features: ['Access to basic features', 'Basic reporting and analytics', 'Up to 10 individual users', '20 GB individual data', 'Basic chat and email support'], action: { label: 'Get started', href: '#' }, badge: 'Popular' },
+    { name: 'Business plan', price: '$20', annualPrice: '$15', period: 'month', description: 'Growing teams up to 20 users.', features: ['200+ integrations', 'Advanced reporting and analytics', 'Up to 20 individual users', '40 GB individual data', 'Priority chat and email support'], action: { label: 'Get started', href: '#' } },
+    { name: 'Enterprise plan', price: '$40', annualPrice: '$39', period: 'month', description: 'Advanced features and unlimited users.', features: ['Advanced custom fields', 'Audit log and data history', 'Unlimited individual users', 'Unlimited individual data', 'Personalised and priority service'], action: { label: 'Get started', href: '#' } },
+  ],
+  salesAction = { label: 'Chat to sales', href: '#' },
+  featuresLabel = 'Features',
+  featuresIntros = ['Everything in *our free plan*, plus:', 'Everything in *Basic*, plus:', 'Everything in *Business*, plus:'],
+} = Astro.props
 const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
 <Section spacing="large">
   <div class="group/pricing flex flex-col gap-12 md:gap-16">
     <div class="flex flex-col items-stretch gap-8 sm:items-center md:gap-12">
-      <SectionHeader headingLevel={headingLevel} eyebrow="Pricing" heading="Simple, transparent pricing" description="We believe good tools should be open to every company, whatever its size." size="large" align="center" />
-      <SegmentedControl name="billing" options={[{ label: 'Monthly billing', value: 'monthly' }, { label: 'Annual billing', value: 'annual' }]} value="monthly" aria-label="Billing period" size="large" />
+      <SectionHeader headingLevel={headingLevel} eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
+      <SegmentedControl name="billing" options={[{ label: periods.monthly, value: 'monthly' }, { label: periods.annual, value: 'annual' }]} value="monthly" aria-label={periodLabel} size="large" />
     </div>
     <div class="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3 items-end">
+    {items.map((plan, i) => {
+      const intro = featuresIntros[i]
+      return (
     <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
       <div class="flex flex-col gap-4 p-6 md:p-8">
-        <div class="flex items-center justify-between gap-2"><Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h6" class="text-neutral-faded">Basic plan</Heading><Badge color="primary" rounded>Popular</Badge></div>
-        <p class="flex items-baseline gap-1"><span class="text-5xl font-semibold tracking-tight tabular-nums md:text-6xl"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$10</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$9</span></span><span class="text-neutral-faded">per month</span></p>
-        <p class="text-neutral-faded">Our most popular plan.</p>
+        <div class="flex items-center justify-between gap-2"><Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h6" class="text-neutral-faded">{plan.name}</Heading>{(plan.badge || plan.featured) && <Badge color="primary" rounded>{plan.badge ?? 'Popular'}</Badge>}</div>
+        <p class="flex items-baseline gap-1"><span class="text-5xl font-semibold tracking-tight tabular-nums md:text-6xl"><span class="group-has-[[value=annual]:checked]/pricing:hidden">{plan.price}</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">{plan.annualPrice ?? plan.price}</span></span>{plan.period && <span class="text-neutral-faded">per {plan.period}</span>}</p>
+        <p class="text-neutral-faded">{plan.description}</p>
         <div class="flex flex-col gap-3 mt-4">
-        <Button href="#" size="large" fullWidth>Get started</Button>
-        <Button href="#" size="large" variant="outline" color="neutral" fullWidth>Chat to sales</Button>
+        <Button href={plan.action.href} size="large" fullWidth>{plan.action.label}</Button>
+        {salesAction && <Button href={salesAction.href} size="large" variant="outline" color="neutral" fullWidth>{salesAction.label}</Button>}
       </div>
       </div>
       <div class="flex flex-1 flex-col gap-6 border-t border-neutral bg-neutral-faded p-6 md:p-8">
+        {(featuresLabel || intro) && (
         <div class="flex flex-col gap-1">
-          <p class="text-sm font-semibold uppercase tracking-wide">Features</p>
-          <p class="text-neutral-faded">Everything in <strong class="font-semibold text-neutral">our free plan</strong>, plus:</p>
+          {featuresLabel && <p class="text-sm font-semibold uppercase tracking-wide">{featuresLabel}</p>}
+          {intro && <p class="text-neutral-faded">{accentRuns(intro).map((r) => (r.accent ? <strong class="font-semibold text-neutral">{r.text}</strong> : r.text))}</p>}
         </div>
+        )}
       <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Access to basic features</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Basic reporting and analytics</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Up to 10 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>20 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Basic chat and email support</span></li>
+        {plan.features.map((f) => <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>{f}</span></li>)}
       </ul>
       </div>
     </div>
-    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
-      <div class="flex flex-col gap-4 p-6 md:p-8">
-        <div class="flex items-center justify-between gap-2"><Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h6" class="text-neutral-faded">Business plan</Heading></div>
-        <p class="flex items-baseline gap-1"><span class="text-5xl font-semibold tracking-tight tabular-nums md:text-6xl"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$20</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$15</span></span><span class="text-neutral-faded">per month</span></p>
-        <p class="text-neutral-faded">Growing teams up to 20 users.</p>
-        <div class="flex flex-col gap-3 mt-4">
-        <Button href="#" size="large" fullWidth>Get started</Button>
-        <Button href="#" size="large" variant="outline" color="neutral" fullWidth>Chat to sales</Button>
-      </div>
-      </div>
-      <div class="flex flex-1 flex-col gap-6 border-t border-neutral bg-neutral-faded p-6 md:p-8">
-        <div class="flex flex-col gap-1">
-          <p class="text-sm font-semibold uppercase tracking-wide">Features</p>
-          <p class="text-neutral-faded">Everything in <strong class="font-semibold text-neutral">Basic</strong>, plus:</p>
-        </div>
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>200+ integrations</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Advanced reporting and analytics</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Up to 20 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>40 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Priority chat and email support</span></li>
-      </ul>
-      </div>
-    </div>
-    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
-      <div class="flex flex-col gap-4 p-6 md:p-8">
-        <div class="flex items-center justify-between gap-2"><Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h6" class="text-neutral-faded">Enterprise plan</Heading></div>
-        <p class="flex items-baseline gap-1"><span class="text-5xl font-semibold tracking-tight tabular-nums md:text-6xl"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$40</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$39</span></span><span class="text-neutral-faded">per month</span></p>
-        <p class="text-neutral-faded">Advanced features and unlimited users.</p>
-        <div class="flex flex-col gap-3 mt-4">
-        <Button href="#" size="large" fullWidth>Get started</Button>
-        <Button href="#" size="large" variant="outline" color="neutral" fullWidth>Chat to sales</Button>
-      </div>
-      </div>
-      <div class="flex flex-1 flex-col gap-6 border-t border-neutral bg-neutral-faded p-6 md:p-8">
-        <div class="flex flex-col gap-1">
-          <p class="text-sm font-semibold uppercase tracking-wide">Features</p>
-          <p class="text-neutral-faded">Everything in <strong class="font-semibold text-neutral">Business</strong>, plus:</p>
-        </div>
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Advanced custom fields</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Audit log and data history</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Unlimited individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Unlimited individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Personalised and priority service</span></li>
-      </ul>
-      </div>
-    </div>
+      )
+    })}
   </div>
   </div>
 </Section>

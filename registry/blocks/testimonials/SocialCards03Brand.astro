@@ -9,58 +9,46 @@ import { Atom, BadgeCheck, Hexagon, Mountain, Sprout, Waves, Wind } from '@lucid
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {}
+
+const {
+  eyebrow,
+  heading = 'What our customers say',
+  description = 'Hear from the teams building with us every day.',
+  items = [
+    { quote: 'We shipped our redesign in three weeks instead of three months. The team still talks about it.', name: 'Amara Nwosu', role: 'Head of Operations, Lumen', avatar: 'https://picsum.photos/id/1027/192/192', company: 'Lumen' },
+    { quote: 'Every page we build now looks like it belongs together. Our designers finally trust what ships.', name: 'Daniel Reyes', role: 'Engineering Lead, Quanta', avatar: 'https://picsum.photos/id/91/192/192', company: 'Quanta' },
+    { quote: 'Support answered in minutes, and the fix was live the same afternoon.', name: 'Sofia Marchetti', role: 'Product Designer, Fieldwork', avatar: 'https://picsum.photos/id/832/192/192', company: 'Fieldwork' },
+    { quote: 'We tried building our own component library twice. This time we started from parts that were already accessible and tested, and spent our time on the product instead of on focus rings and contrast checks.', name: 'Kenji Watanabe', role: 'Founder, Northpeak', avatar: 'https://picsum.photos/id/856/192/192', company: 'Northpeak' },
+    { quote: 'The reports used to take a whole afternoon to put together. Now they are ready before our Monday meeting, and everyone reads the same numbers.', name: 'Leah Goldberg', role: 'Customer Success Lead, Arcwave', avatar: 'https://picsum.photos/id/823/192/192', company: 'Arcwave' },
+    { quote: 'What sold us was the detail: keyboard support everywhere, dark mode that just works, and docs that answer the question you actually have.', name: 'Omar Haddad', role: 'CTO, Kitestring', avatar: 'https://picsum.photos/id/375/192/192', company: 'Kitestring' },
+    { quote: 'It replaced four tools and a spreadsheet nobody wanted to open.', name: 'Ines Duarte', role: 'Marketing Director, Lumen', avatar: 'https://picsum.photos/id/64/192/192', company: 'Lumen' },
+    { quote: 'Onboarding took a day. Our new hires were shipping by the end of their first week.', name: 'Tobias Brandt', role: 'Frontend Developer, Quanta', avatar: 'https://picsum.photos/id/669/192/192', company: 'Quanta' },
+    { quote: 'We shipped our redesign in three weeks instead of three months. The team still talks about it.', name: 'Priya Nair', role: 'Head of Design, Fieldwork', avatar: 'https://picsum.photos/id/836/192/192', company: 'Fieldwork' },
+  ],
+} = Astro.props
+// Company logo icons are design: they cycle by position, the text is the company.
+const icons = [Hexagon, Atom, Sprout, Mountain, Waves, Wind]
 ---
 
 <Section spacing="large" background="primary">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader heading="What our customers say" description="Hear from the teams building with us every day." size="large" align="center" background="primary" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" background="primary" />
     <div class="-mx-4 -mt-4 max-h-[61rem] gap-6 overflow-hidden px-4 pt-4 mask-b-from-70% md:columns-2 lg:columns-3">
+      {items.map((t, i) => {
+        const Icon = icons[i % icons.length]!
+        return (
       <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Hexagon class="size-7" aria-hidden="true" />Lumen</span>
-        <blockquote class="opacity-85"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Amara Nwosu<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Head of Operations, Lumen</span></span></figcaption>
+        {t.company && <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Icon class="size-7" aria-hidden="true" />{t.company}</span>}
+        <blockquote class="opacity-85"><p>“{t.quote}”</p></blockquote>
+        <figcaption class="flex items-center gap-3"><Avatar src={t.avatar} name={t.name} alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">{t.name}<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span>{t.role && <span class="text-sm opacity-85">{t.role}</span>}</span></figcaption>
       </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Atom class="size-7" aria-hidden="true" />Quanta</span>
-        <blockquote class="opacity-85"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/91/192/192" name="Daniel Reyes" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Daniel Reyes<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Engineering Lead, Quanta</span></span></figcaption>
-      </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Sprout class="size-7" aria-hidden="true" />Fieldwork</span>
-        <blockquote class="opacity-85"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/832/192/192" name="Sofia Marchetti" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Sofia Marchetti<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Product Designer, Fieldwork</span></span></figcaption>
-      </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Mountain class="size-7" aria-hidden="true" />Northpeak</span>
-        <blockquote class="opacity-85"><p>“We tried building our own component library twice. This time we started from parts that were already accessible and tested, and spent our time on the product instead of on focus rings and contrast checks.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/856/192/192" name="Kenji Watanabe" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Kenji Watanabe<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Founder, Northpeak</span></span></figcaption>
-      </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Waves class="size-7" aria-hidden="true" />Arcwave</span>
-        <blockquote class="opacity-85"><p>“The reports used to take a whole afternoon to put together. Now they are ready before our Monday meeting, and everyone reads the same numbers.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/823/192/192" name="Leah Goldberg" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Leah Goldberg<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Customer Success Lead, Arcwave</span></span></figcaption>
-      </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Wind class="size-7" aria-hidden="true" />Kitestring</span>
-        <blockquote class="opacity-85"><p>“What sold us was the detail: keyboard support everywhere, dark mode that just works, and docs that answer the question you actually have.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/375/192/192" name="Omar Haddad" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Omar Haddad<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">CTO, Kitestring</span></span></figcaption>
-      </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Hexagon class="size-7" aria-hidden="true" />Lumen</span>
-        <blockquote class="opacity-85"><p>“It replaced four tools and a spreadsheet nobody wanted to open.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/64/192/192" name="Ines Duarte" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Ines Duarte<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Marketing Director, Lumen</span></span></figcaption>
-      </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Atom class="size-7" aria-hidden="true" />Quanta</span>
-        <blockquote class="opacity-85"><p>“Onboarding took a day. Our new hires were shipping by the end of their first week.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/669/192/192" name="Tobias Brandt" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Tobias Brandt<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Frontend Developer, Quanta</span></span></figcaption>
-      </figure>
-      <figure class="mb-6 flex break-inside-avoid flex-col gap-6 rounded-xl p-6 lg:p-8 bg-page/10">
-        <span class="flex items-center gap-2 text-lg font-semibold opacity-85"><Sprout class="size-7" aria-hidden="true" />Fieldwork</span>
-        <blockquote class="opacity-85"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
-        <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/836/192/192" name="Priya Nair" alt="" size="large" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Priya Nair<BadgeCheck class="size-4 text-inherit" aria-label="Verified" /></span><span class="text-sm opacity-85">Head of Design, Fieldwork</span></span></figcaption>
-      </figure>
+        )
+      })}
     </div>
   </div>
 </Section>

@@ -10,23 +10,45 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { CTAContent } from '../../sections/_shared/cta.ts'
+
+/** @composable */
+interface Props extends CTAContent {
+  /** The checked lines under the description. @category content */
+  features?: string[] | null
+}
+
+const {
+  eyebrow,
+  heading = 'Join 4,000+ startups growing with us',
+  description = 'Start your 30-day free trial today.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Learn more', href: '#' },
+  media = { src: 'https://picsum.photos/seed/apogee-cta-1/1200/1000', alt: '', width: 1200, height: 1000 },
+  features = ['30-day free trial', 'Personalised onboarding', 'Access to all features'],
+} = Astro.props
 
 ---
 
 <Section spacing="none" container={false}>
   <div class="grid lg:grid-cols-2">
     <div class="flex flex-col justify-center gap-8 px-gutter py-section lg:px-16">
-      <SectionHeader heading="Join 4,000+ startups growing with us" description="Start your 30-day free trial today." />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} />
+      {features && (
       <ul class="flex list-none flex-col gap-4 p-0">
-      {['30-day free trial', 'Personalised onboarding', 'Access to all features'].map((c) => (
+      {features.map((c) => (
         <li class="flex items-center gap-3"><span class="grid size-7 shrink-0 place-items-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span>{c}</li>
       ))}
     </ul>
+      )}
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-col-reverse gap-3 sm:flex-row ">
-      <Button href="#" size="large" variant="outline" color="neutral">Learn more</Button>
-      <Button href="#" size="large">Get started</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+      {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
     </div>
+      )}
     </div>
-    <Image src="https://picsum.photos/seed/apogee-cta-1/1200/1000" alt="" width={1200} height={1000} fit="cover" class="min-h-80 size-full max-lg:aspect-[6/5]" />
+    {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" class="min-h-80 size-full max-lg:aspect-[6/5]" />}
   </div>
 </Section>

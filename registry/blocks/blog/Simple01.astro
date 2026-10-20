@@ -8,7 +8,9 @@
 import { Search as SearchIcon } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
-import PostCard, { type Post } from '../../components/PostCard/PostCard.astro'
+import PostCard from '../../components/PostCard/PostCard.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { toCard, type BlogContent, type Post } from '../../sections/_shared/blog.ts'
 import Grid from '../../components/Grid/Grid.astro'
 import Tabs from '../../components/Tabs/Tabs.astro'
 import Select from '../../components/Select/Select.astro'
@@ -18,11 +20,11 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Card from '../../components/Card/Card.astro'
 
-const posts: Post[] = [
+const demoPosts: Post[] = [
   {
     title: 'Designing review sessions people look forward to',
     href: '#',
-    summary: 'How to run critiques that sharpen the work instead of draining the room.',
+    excerpt: 'How to run critiques that sharpen the work instead of draining the room.',
     date: '2026-01-20',
     readingTime: '8 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-1/960/640', alt: '', width: 960, height: 640 },
@@ -33,7 +35,7 @@ const posts: Post[] = [
   {
     title: 'Migrating to a typed component library',
     href: '#',
-    summary: 'What changed when we moved two hundred screens onto one set of typed parts.',
+    excerpt: 'What changed when we moved two hundred screens onto one set of typed parts.',
     date: '2026-01-19',
     readingTime: '6 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-2/960/640', alt: '', width: 960, height: 640 },
@@ -44,7 +46,7 @@ const posts: Post[] = [
   {
     title: 'Building your first internal API',
     href: '#',
-    summary: 'The shape of a small API that teams can grow without rewriting.',
+    excerpt: 'The shape of a small API that teams can grow without rewriting.',
     date: '2026-01-18',
     readingTime: '7 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-3/960/640', alt: '', width: 960, height: 640 },
@@ -55,7 +57,7 @@ const posts: Post[] = [
   {
     title: 'A field guide to product discovery',
     href: '#',
-    summary: 'Questions that turn a vague request into something you can build.',
+    excerpt: 'Questions that turn a vague request into something you can build.',
     date: '2026-01-16',
     readingTime: '5 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-4/960/640', alt: '', width: 960, height: 640 },
@@ -66,7 +68,7 @@ const posts: Post[] = [
   {
     title: 'Writing release notes people read',
     href: '#',
-    summary: 'Lead with what changed for the reader, not what changed in the code.',
+    excerpt: 'Lead with what changed for the reader, not what changed in the code.',
     date: '2026-01-15',
     readingTime: '4 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-5/960/640', alt: '', width: 960, height: 640 },
@@ -77,7 +79,7 @@ const posts: Post[] = [
   {
     title: 'Leadership lessons from a year of remote teams',
     href: '#',
-    summary: 'Rituals, writing and trust: what held a distributed team together.',
+    excerpt: 'Rituals, writing and trust: what held a distributed team together.',
     date: '2026-01-14',
     readingTime: '9 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-6/960/640', alt: '', width: 960, height: 640 },
@@ -88,7 +90,7 @@ const posts: Post[] = [
   {
     title: 'Accessible colour, measured',
     href: '#',
-    summary: 'Why our build fails when a colour pair misses AA, and how we fixed the misses.',
+    excerpt: 'Why our build fails when a colour pair misses AA, and how we fixed the misses.',
     date: '2026-01-12',
     readingTime: '6 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-7/960/640', alt: '', width: 960, height: 640 },
@@ -99,7 +101,7 @@ const posts: Post[] = [
   {
     title: 'Shipping on Fridays without fear',
     href: '#',
-    summary: 'Small changes, feature flags and a rollback you have practised.',
+    excerpt: 'Small changes, feature flags and a rollback you have practised.',
     date: '2026-01-10',
     readingTime: '5 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-8/960/640', alt: '', width: 960, height: 640 },
@@ -108,7 +110,7 @@ const posts: Post[] = [
     tags: [{ name: 'Engineering', href: '#', color: 'primary' }, { name: 'Delivery', href: '#', color: 'warning' }],
   },
 ]
-const categories = [
+const demoCategories = [
   { label: 'View all', value: 'all', href: '#' },
   { label: 'Design', value: 'design', href: '#design' },
   { label: 'Product', value: 'product', href: '#product' },
@@ -117,13 +119,35 @@ const categories = [
   { label: 'Marketing', value: 'marketing', href: '#marketing' },
 ]
 
+/** @composable */
+interface Props extends BlogContent {
+  /** The newsletter card in the grid. @category content */
+  formHeading?: string
+  /** @category content */
+  formDescription?: string | null
+  /** The sign-up form's submit button. @category content */
+  submitLabel?: string
+}
+
+const {
+  eyebrow = 'Our blog',
+  heading = 'The latest writings from our team',
+  description = 'The latest industry news, interviews, technologies and resources.',
+  items = demoPosts,
+  locale = Astro.currentLocale ?? 'en',
+  categories = demoCategories,
+  formHeading = 'Weekly newsletter',
+  formDescription = 'No spam. Just the latest releases and tips, interesting articles, and interviews in your inbox every week.',
+  submitLabel = 'Subscribe',
+} = Astro.props
+
 ---
 
 <Section spacing="large">
-  <SectionHeader eyebrow="Our blog" heading="The latest writings from our team" description="The latest industry news, interviews, technologies and resources." align="center" headingLevel={1} class="mb-8" />
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} align="center" headingLevel={1} class="mb-8" />
   <div class="mx-auto mb-16 max-w-sm"><Input type="search" name="q" placeholder="Search" aria-label="Search posts"><SearchIcon slot="start" /></Input></div>
   <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-    <Tabs label="Categories" value="all" tabs={categories} class="min-w-0" />
+    {categories && <Tabs label="Categories" value={categories[0]?.value} tabs={categories} class="min-w-0" />}
     <Select aria-label="Sort by" class="sm:w-48">
       <option>Most recent</option>
       <option>Most popular</option>
@@ -131,21 +155,21 @@ const categories = [
     </Select>
   </div>
   <Grid as="ul" cols={{ base: 1, md: 2, lg: 3 }} gap={8} class="list-none p-0">
-    {posts.slice(0, 3).map((post) => <li><PostCard post={post} headingLevel={2} class="h-full" /></li>)}
+    {items.slice(0, 3).map((post) => <li><PostCard post={toCard(post)} locale={locale} headingLevel={2} class="h-full" /></li>)}
     <li>
       <Card padding="large" class="h-full bg-neutral-faded">
-        <h2 class="text-xl font-semibold">Weekly newsletter</h2>
-        <p class="mt-2 text-neutral-faded">No spam. Just the latest releases and tips, interesting articles, and interviews in your inbox every week.</p>
+        <h2 class="text-xl font-semibold">{formHeading}</h2>
+        {formDescription && <p class="mt-2 text-neutral-faded">{formDescription}</p>}
         <div class="mt-6"><form method="post" class="flex w-full flex-col gap-2 sm:max-w-md">
       <div class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
-        <Button type="submit">Subscribe</Button>
+        <Button type="submit">{submitLabel}</Button>
       </div>
       <p class="text-sm opacity-85">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form></div>
       </Card>
     </li>
-    {posts.slice(3).map((post) => <li><PostCard post={post} headingLevel={2} class="h-full" /></li>)}
+    {items.slice(3).map((post) => <li><PostCard post={toCard(post)} locale={locale} headingLevel={2} class="h-full" /></li>)}
   </Grid>
   <Pagination currentPage={1} totalPages={10} getHref={(p) => `?page=${p}`} labels class="mt-12 justify-between border-t border-neutral pt-5" />
 </Section>

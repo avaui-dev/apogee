@@ -5,25 +5,43 @@
  * @block footers
  * @order 56
  */
-import { AtSign, Camera, Hexagon, Users } from '@lucide/astro'
+import { Hexagon } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { socialIcons, type FooterContent } from '../../sections/_shared/footers.ts'
+
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'Brickwell',
+  heading = 'Have something worth shaping? Let’s build it properly.',
+  description = 'Launching a product, growing a brand, trying out an AI idea or untangling a complex digital experience: we would love to hear what you are working on.',
+  primaryAction = { label: 'Get in touch', href: '#' },
+  copyright = '©Brickwell Ltd | Company number 0861008',
+  social = [
+    { label: 'Community', href: '#', icon: 'users' },
+    { label: 'Photos', href: '#', icon: 'camera' },
+    { label: 'Updates', href: '#', icon: 'at-sign' },
+  ],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="large" containerWidth="full" data-surface="primary" class="bg-page text-neutral">
   <div class="grid gap-12 md:grid-cols-2">
     <Hexagon class="size-20 rotate-90" stroke-width="5" aria-hidden="true" />
     <div class="flex flex-col items-start gap-6">
-      <Heading as="h2" size="h1" class="text-balance">Have something worth shaping? Let’s build it properly.</Heading>
-      <p class="max-w-xl text-lg">Launching a product, growing a brand, trying out an AI idea or untangling a complex digital experience: we would love to hear what you are working on.</p>
-      <Button href="#" size="large" class="font-mono uppercase tracking-[0.2em]">Get in touch</Button>
+      {heading && <Heading as="h2" size="h1" class="text-balance">{plain(heading)}</Heading>}
+      {description && <p class="max-w-xl text-lg">{description}</p>}
+      {primaryAction && <Button href={primaryAction.href} size="large" class="font-mono uppercase tracking-[0.2em]">{primaryAction.label}</Button>}
     </div>
   </div>
-  <p class="mt-20 flex items-start text-[clamp(4rem,0.5rem+14vw,15rem)] font-medium leading-[0.85] tracking-tighter" aria-hidden="true">Brickwell<span class="mt-[0.1em] text-[0.25em] tracking-normal">™</span></p>
+  <p class="mt-20 flex items-start text-[clamp(4rem,0.5rem+14vw,15rem)] font-medium leading-[0.85] tracking-tighter" aria-hidden="true">{brand}<span class="mt-[0.1em] text-[0.25em] tracking-normal">™</span></p>
   <div class="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-neutral pt-4 font-mono text-sm tracking-wide">
-    <p>©Brickwell Ltd | Company number 0861008</p>
-    <ul class="flex list-none gap-3 p-0">{[[Users, 'Community'], [Camera, 'Photos'], [AtSign, 'Updates']].map(([Icon, l]) => <li><Link href="#" color="inherit" underline="none" aria-label={l as string}><Icon class="size-5" aria-hidden="true" /></Link></li>)}</ul>
+    {copyright && <p>{copyright}</p>}
+    {social && <ul class="flex list-none gap-3 p-0">{social.map((s) => { const Icon = socialIcons[s.icon]; return <li><Link href={s.href} color="inherit" underline="none" aria-label={s.label}><Icon class="size-5" aria-hidden="true" /></Link></li> })}</ul>}
   </div>
 </Section>

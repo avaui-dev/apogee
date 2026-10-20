@@ -7,18 +7,20 @@
  */
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
-import PostCard, { type Post } from '../../components/PostCard/PostCard.astro'
+import PostCard from '../../components/PostCard/PostCard.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { toCard, type BlogContent, type Post } from '../../sections/_shared/blog.ts'
 import Grid from '../../components/Grid/Grid.astro'
 import Pagination from '../../components/Pagination/Pagination.astro'
 import Input from '../../components/Input/Input.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 
-const posts: Post[] = [
+const demoPosts: Post[] = [
   {
     title: 'Designing review sessions people look forward to',
     href: '#',
-    summary: 'How to run critiques that sharpen the work instead of draining the room.',
+    excerpt: 'How to run critiques that sharpen the work instead of draining the room.',
     date: '2026-01-20',
     readingTime: '8 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-1/960/640', alt: '', width: 960, height: 640 },
@@ -29,7 +31,7 @@ const posts: Post[] = [
   {
     title: 'Migrating to a typed component library',
     href: '#',
-    summary: 'What changed when we moved two hundred screens onto one set of typed parts.',
+    excerpt: 'What changed when we moved two hundred screens onto one set of typed parts.',
     date: '2026-01-19',
     readingTime: '6 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-2/960/640', alt: '', width: 960, height: 640 },
@@ -40,7 +42,7 @@ const posts: Post[] = [
   {
     title: 'Building your first internal API',
     href: '#',
-    summary: 'The shape of a small API that teams can grow without rewriting.',
+    excerpt: 'The shape of a small API that teams can grow without rewriting.',
     date: '2026-01-18',
     readingTime: '7 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-3/960/640', alt: '', width: 960, height: 640 },
@@ -51,7 +53,7 @@ const posts: Post[] = [
   {
     title: 'A field guide to product discovery',
     href: '#',
-    summary: 'Questions that turn a vague request into something you can build.',
+    excerpt: 'Questions that turn a vague request into something you can build.',
     date: '2026-01-16',
     readingTime: '5 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-4/960/640', alt: '', width: 960, height: 640 },
@@ -62,7 +64,7 @@ const posts: Post[] = [
   {
     title: 'Writing release notes people read',
     href: '#',
-    summary: 'Lead with what changed for the reader, not what changed in the code.',
+    excerpt: 'Lead with what changed for the reader, not what changed in the code.',
     date: '2026-01-15',
     readingTime: '4 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-5/960/640', alt: '', width: 960, height: 640 },
@@ -73,7 +75,7 @@ const posts: Post[] = [
   {
     title: 'Leadership lessons from a year of remote teams',
     href: '#',
-    summary: 'Rituals, writing and trust: what held a distributed team together.',
+    excerpt: 'Rituals, writing and trust: what held a distributed team together.',
     date: '2026-01-14',
     readingTime: '9 min read',
     image: { src: 'https://picsum.photos/seed/apogee-blog-6/960/640', alt: '', width: 960, height: 640 },
@@ -82,15 +84,30 @@ const posts: Post[] = [
     tags: [{ name: 'Leadership', href: '#', color: 'primary' }, { name: 'Remote', href: '#', color: 'neutral' }],
   },
 ]
+/** @composable */
+interface Props extends BlogContent {
+  /** The sign-up form's submit button. @category content */
+  submitLabel?: string
+}
+
+const {
+  eyebrow = 'Our blog',
+  heading = 'Resource library',
+  description = 'Subscribe to learn about new product features, the latest in technology, solutions, and updates.',
+  items = demoPosts,
+  locale = Astro.currentLocale ?? 'en',
+  submitLabel = 'Subscribe',
+} = Astro.props
+
 ---
 
 <Section spacing="large" background="neutral-faded">
-  <SectionHeader eyebrow="Our blog" heading="Resource library" description="Subscribe to learn about new product features, the latest in technology, solutions, and updates." headingLevel={1}>
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} headingLevel={1}>
     <div slot="actions" class="w-full sm:w-auto">
       <form method="post" class="flex w-full flex-col gap-2 sm:max-w-md">
       <div class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
-        <Button type="submit">Subscribe</Button>
+        <Button type="submit">{submitLabel}</Button>
       </div>
       <p class="text-sm opacity-85">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>
@@ -99,8 +116,8 @@ const posts: Post[] = [
 </Section>
 <Section spacing="large">
   <Grid as="ul" cols={{ base: 1, md: 2, lg: 3 }} gap={8} class="list-none p-0">
-    {posts.slice(0).map((post) => (
-      <li><PostCard post={post} rounded={false} headingLevel={2} class="h-full" /></li>
+    {items.slice(0).map((post) => (
+      <li><PostCard post={toCard(post)} locale={locale} rounded={false} headingLevel={2} class="h-full" /></li>
     ))}
   </Grid>
   <Pagination currentPage={1} totalPages={10} getHref={(p) => `?page=${p}`} labels class="mt-12 justify-between border-t border-neutral pt-5" />

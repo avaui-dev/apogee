@@ -5,23 +5,40 @@
  * @block contact
  * @order 31
  */
-import { AtSign, Globe, MapPin, MessageCircle, Phone, Rss, Users, Video } from '@lucide/astro'
+import { AtSign, Globe, LifeBuoy, Mail, MapPin, MessageCircle, MessagesSquare, Phone, Rss, Users, Video } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactForm from '../../components/ContactForm/ContactForm.astro'
 import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const methods = [
-  { icon: MessageCircle, title: 'Live chat', description: "Our friendly team is here to help.", link: { label: 'Start new chat', href: '#chat' } },
-  { icon: MapPin, title: 'Office', description: "Come say hello at our office HQ.", link: { label: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' } },
-  { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
-]
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const
 
-interface Props {
+/** @composable */
+interface Props extends ContactContent {
   /** 1 when the block opens a page; its items move one level down with it. */
   headingLevel?: 1 | 2
+  /** The heading over the form. @category content */
+  formHeading?: string
+  /** @category content */
+  formDescription?: string | null
 }
-const { headingLevel = 2 } = Astro.props
+const {
+  headingLevel = 2,
+  heading = 'Get in touch',
+  description = "We'd love to hear from you.",
+  details = [
+    { icon: 'message-circle', label: 'Live chat', description: 'Our friendly team is here to help.', value: 'Start new chat', href: '#chat' },
+    { icon: 'map-pin', label: 'Office', description: 'Come say hello at our office HQ.', value: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' },
+    { icon: 'phone', label: 'Phone', description: 'Mon–Fri from 8am to 5pm.', value: '+1 (555) 000-0000', href: 'tel:+15550000000' },
+  ],
+  formHeading = 'Level up your brand',
+  formDescription = 'You can reach us anytime via hi@example.com.',
+  action,
+  method,
+  submitLabel = 'Send message',
+} = Astro.props
 const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
 ---
 
@@ -29,12 +46,13 @@ const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
   <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
     <aside class="flex flex-col justify-between gap-12 bg-primary px-gutter py-section text-on-primary max-lg:hidden lg:px-12" aria-label="Contact details">
       <div>
-        <SectionHeader headingLevel={headingLevel} heading="Get in touch" description="We'd love to hear from you." background="primary" class="mb-12" />
-        <ul class="list-none p-0 flex flex-col gap-8">
-    {methods.map((m) => (
-      <li><ContactMethod headingLevel={itemLevel} title={m.title} description={m.description} link={m.link} inline><m.icon slot="icon" class="size-6" aria-hidden="true" /></ContactMethod></li>
-    ))}
-  </ul>
+        <SectionHeader headingLevel={headingLevel} heading={plain(heading)} description={description ?? undefined} background="primary" class="mb-12" />
+        {details && <ul class="list-none p-0 flex flex-col gap-8">
+    {details.map((d) => {
+      const Icon = icons[d.icon]
+      return <li><ContactMethod headingLevel={itemLevel} title={d.label} description={d.description} link={d.href ? { label: d.value, href: d.href } : undefined} inline><Icon slot="icon" class="size-6" aria-hidden="true" />{!d.href && <p>{d.value}</p>}</ContactMethod></li>
+    })}
+  </ul>}
       </div>
       <ul class="flex list-none gap-4 p-0" aria-label="Elsewhere">
         {[
@@ -50,8 +68,8 @@ const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
     </aside>
     <div class="px-gutter py-section lg:px-16">
       <div class="mx-auto max-w-xl">
-        <SectionHeader heading="Level up your brand" description="You can reach us anytime via hi@example.com." class="mb-12" />
-        <ContactForm services={['Website design', 'Content creation', 'UX design', 'Strategy & consulting', 'User research', 'Other']} />
+        <SectionHeader heading={plain(formHeading)} description={formDescription ?? undefined} class="mb-12" />
+        <ContactForm services={['Website design', 'Content creation', 'UX design', 'Strategy & consulting', 'User research', 'Other']} action={action} method={method} submitLabel={submitLabel} />
       </div>
     </div>
   </div>

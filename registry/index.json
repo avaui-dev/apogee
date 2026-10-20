@@ -1807,11 +1807,30 @@
       "name": "_shared",
       "kind": "section",
       "files": [
+        "sections/_shared/banner.ts",
+        "sections/_shared/blog.ts",
+        "sections/_shared/careers.ts",
+        "sections/_shared/contact.ts",
+        "sections/_shared/content.ts",
+        "sections/_shared/cta.ts",
         "sections/_shared/date.ts",
-        "sections/_shared/spine.ts"
+        "sections/_shared/faq.ts",
+        "sections/_shared/features.ts",
+        "sections/_shared/footers.ts",
+        "sections/_shared/header.ts",
+        "sections/_shared/metrics.ts",
+        "sections/_shared/navigation.ts",
+        "sections/_shared/newsletter.ts",
+        "sections/_shared/pricing.ts",
+        "sections/_shared/social-proof.ts",
+        "sections/_shared/spine.ts",
+        "sections/_shared/team.ts",
+        "sections/_shared/testimonials.ts"
       ],
       "registryDependencies": [],
-      "dependencies": [],
+      "dependencies": [
+        "@lucide/astro"
+      ],
       "usesJs": false
     },
     "about/about-page-01": {
@@ -5050,7 +5069,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Countdown"
+        "Countdown",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5066,7 +5086,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Countdown"
+        "Countdown",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5082,7 +5103,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Countdown"
+        "Countdown",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5098,7 +5120,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Countdown"
+        "Countdown",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5115,7 +5138,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5134,7 +5158,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5153,7 +5178,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5172,7 +5198,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5191,7 +5218,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "FeaturedIcon"
+        "FeaturedIcon",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5210,7 +5238,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "FeaturedIcon"
+        "FeaturedIcon",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5229,7 +5258,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "FeaturedIcon"
+        "FeaturedIcon",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5248,7 +5278,8 @@
       "registryDependencies": [
         "Banner",
         "Button",
-        "FeaturedIcon"
+        "FeaturedIcon",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5266,7 +5297,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5282,7 +5314,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5298,7 +5331,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5314,7 +5348,8 @@
       ],
       "registryDependencies": [
         "Banner",
-        "Link"
+        "Link",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5332,7 +5367,8 @@
         "Banner",
         "Button",
         "FeaturedIcon",
-        "Input"
+        "Input",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5352,7 +5388,8 @@
         "Banner",
         "Button",
         "FeaturedIcon",
-        "Input"
+        "Input",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5372,7 +5409,8 @@
         "Banner",
         "Button",
         "FeaturedIcon",
-        "Input"
+        "Input",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5392,7 +5430,8 @@
         "Banner",
         "Button",
         "FeaturedIcon",
-        "Input"
+        "Input",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5416,7 +5455,8 @@
         "Pagination",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5439,7 +5479,8 @@
         "Pagination",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5461,7 +5502,8 @@
         "PostCard",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5484,7 +5526,8 @@
         "Pagination",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5503,7 +5546,8 @@
         "Carousel",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5522,7 +5566,8 @@
         "Carousel",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5543,7 +5588,8 @@
         "Section",
         "SectionHeader",
         "Select",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5564,7 +5610,8 @@
         "PostCard",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5588,7 +5635,8 @@
         "Pagination",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5610,7 +5658,8 @@
         "Pagination",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5633,7 +5682,8 @@
         "PostCard",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5657,7 +5707,8 @@
         "Section",
         "SectionHeader",
         "Select",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5684,7 +5735,8 @@
         "Section",
         "SectionHeader",
         "Select",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -5708,7 +5760,8 @@
         "Pagination",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5730,7 +5783,8 @@
         "Pagination",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5751,7 +5805,8 @@
         "Link",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5775,7 +5830,8 @@
         "Section",
         "SectionHeader",
         "Select",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5799,7 +5855,8 @@
         "Section",
         "SectionHeader",
         "Select",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5818,7 +5875,8 @@
         "Grid",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5837,7 +5895,8 @@
         "Grid",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5856,7 +5915,8 @@
         "Grid",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5874,7 +5934,8 @@
         "Button",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5892,7 +5953,8 @@
         "Button",
         "PostCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5910,7 +5972,8 @@
         "JobCard",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5928,7 +5991,8 @@
         "JobCard",
         "Section",
         "SectionHeader",
-        "Select"
+        "Select",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5948,7 +6012,8 @@
         "Image",
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5967,7 +6032,8 @@
         "JobCard",
         "Section",
         "SectionHeader",
-        "Select"
+        "Select",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -5984,7 +6050,8 @@
       "registryDependencies": [
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6001,7 +6068,8 @@
       "registryDependencies": [
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6018,7 +6086,8 @@
       "registryDependencies": [
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6035,7 +6104,8 @@
       "registryDependencies": [
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6052,7 +6122,8 @@
       "registryDependencies": [
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6069,7 +6140,8 @@
       "registryDependencies": [
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6087,7 +6159,8 @@
         "Image",
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6105,7 +6178,8 @@
         "Image",
         "JobCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6123,7 +6197,8 @@
         "Heading",
         "MapEmbed",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6142,7 +6217,8 @@
         "MapEmbed",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6160,7 +6236,8 @@
         "MapEmbed",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6178,7 +6255,8 @@
         "ContactForm",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6197,7 +6275,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6215,7 +6294,8 @@
         "ContactForm",
         "MapEmbed",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6233,7 +6313,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6253,7 +6334,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6275,7 +6357,8 @@
         "FeaturedIcon",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6296,7 +6379,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6317,7 +6401,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6337,7 +6422,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6355,7 +6441,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6374,7 +6461,8 @@
         "FeaturedIcon",
         "MapEmbed",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6395,7 +6483,8 @@
         "FeaturedIcon",
         "MapEmbed",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6415,7 +6504,8 @@
         "Heading",
         "MapEmbed",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6433,7 +6523,8 @@
         "Heading",
         "MapEmbed",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6452,7 +6543,8 @@
         "FeaturedIcon",
         "MapEmbed",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6473,7 +6565,8 @@
         "FeaturedIcon",
         "Section",
         "SectionHeader",
-        "WorldMap"
+        "WorldMap",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6492,7 +6585,8 @@
       "registryDependencies": [
         "ContactForm",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6509,7 +6603,8 @@
       "registryDependencies": [
         "ContactForm",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6527,7 +6622,8 @@
         "ContactForm",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6546,7 +6642,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6564,7 +6661,8 @@
         "ContactForm",
         "ContactMethod",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6584,7 +6682,8 @@
         "ContactForm",
         "ContactMethod",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6603,7 +6702,8 @@
       "registryDependencies": [
         "ContactMethod",
         "FeaturedIcon",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6622,7 +6722,8 @@
       "registryDependencies": [
         "ContactMethod",
         "FeaturedIcon",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6642,7 +6743,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6662,7 +6764,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6682,7 +6785,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6702,7 +6806,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6721,7 +6826,8 @@
       "registryDependencies": [
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6738,7 +6844,8 @@
       "registryDependencies": [
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6756,7 +6863,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6776,7 +6884,8 @@
         "ContactMethod",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6798,7 +6907,8 @@
         "FeaturedIcon",
         "Section",
         "SectionHeader",
-        "WorldMap"
+        "WorldMap",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -6820,7 +6930,8 @@
         "Heading",
         "Image",
         "Prose",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6841,7 +6952,8 @@
         "Heading",
         "Image",
         "Prose",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6861,7 +6973,8 @@
         "PostHeader",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6881,7 +6994,8 @@
         "PostHeader",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6901,7 +7015,8 @@
         "PostHeader",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6924,7 +7039,8 @@
         "PostHeader",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6944,7 +7060,8 @@
         "PostHeader",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6963,7 +7080,8 @@
         "Image",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6979,7 +7097,8 @@
       ],
       "registryDependencies": [
         "Prose",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -6997,7 +7116,8 @@
         "FeaturedIcon",
         "Prose",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7016,7 +7136,8 @@
       "registryDependencies": [
         "Prose",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7033,7 +7154,8 @@
       "registryDependencies": [
         "Prose",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7049,7 +7171,8 @@
       ],
       "registryDependencies": [
         "Prose",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7066,7 +7189,8 @@
       "registryDependencies": [
         "Avatar",
         "Blockquote",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7085,7 +7209,8 @@
         "Image",
         "Prose",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7105,7 +7230,8 @@
         "Prose",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7123,7 +7249,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7141,7 +7268,8 @@
         "Heading",
         "Prose",
         "Section",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7161,7 +7289,8 @@
         "Prose",
         "Section",
         "ShareLinks",
-        "TableOfContents"
+        "TableOfContents",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7181,7 +7310,8 @@
         "Image",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7205,7 +7335,8 @@
         "Prose",
         "Section",
         "ShareLinks",
-        "TableOfContents"
+        "TableOfContents",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7225,7 +7356,8 @@
         "PostHeader",
         "Prose",
         "Section",
-        "ShareLinks"
+        "ShareLinks",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7243,7 +7375,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7261,7 +7394,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7278,7 +7412,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7295,7 +7430,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7312,7 +7448,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7329,7 +7466,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7347,7 +7485,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7367,7 +7506,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7387,7 +7527,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7407,7 +7548,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7427,7 +7569,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7447,7 +7590,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7465,7 +7609,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7483,7 +7628,8 @@
         "Button",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7500,7 +7646,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7517,7 +7664,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7534,7 +7682,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7551,7 +7700,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7568,7 +7718,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7587,7 +7738,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7606,7 +7758,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7625,7 +7778,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7645,7 +7799,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7665,7 +7820,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7683,7 +7839,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7701,7 +7858,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7721,7 +7879,8 @@
         "Image",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7743,7 +7902,8 @@
         "Image",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7763,7 +7923,8 @@
         "Image",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7785,7 +7946,8 @@
         "Image",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7805,7 +7967,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7825,7 +7988,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7842,7 +8006,8 @@
       "registryDependencies": [
         "Accordion",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7859,7 +8024,8 @@
       "registryDependencies": [
         "Accordion",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7877,7 +8043,8 @@
         "Accordion",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7895,7 +8062,8 @@
         "Accordion",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7913,7 +8081,8 @@
         "Accordion",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7931,7 +8100,8 @@
         "Accordion",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -7951,7 +8121,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7973,7 +8144,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -7995,7 +8167,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8017,7 +8190,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8039,7 +8213,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8061,7 +8236,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8082,7 +8258,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8101,7 +8278,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8120,7 +8298,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8142,7 +8321,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8163,7 +8343,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8184,7 +8365,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8207,7 +8389,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8230,7 +8413,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8251,7 +8435,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8271,7 +8456,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8292,7 +8478,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8314,7 +8501,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8336,7 +8524,8 @@
         "Heading",
         "Section",
         "SectionHeader",
-        "VideoPlayer"
+        "VideoPlayer",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8358,7 +8547,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8379,7 +8569,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8401,7 +8592,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8423,7 +8615,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8444,7 +8637,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8465,7 +8659,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8487,7 +8682,8 @@
         "Link",
         "PaymentCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8509,7 +8705,8 @@
         "Link",
         "PaymentCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8531,7 +8728,8 @@
         "Link",
         "PaymentCard",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8552,7 +8750,8 @@
         "Button",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8572,7 +8771,8 @@
         "Button",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8594,7 +8794,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8614,7 +8815,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8633,7 +8835,8 @@
       "registryDependencies": [
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8651,7 +8854,8 @@
         "Container",
         "DeviceFrame",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8668,7 +8872,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Heading",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8687,7 +8892,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Heading",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8707,7 +8913,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8727,7 +8934,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8748,7 +8956,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8769,7 +8978,8 @@
         "Heading",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8788,7 +8998,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Heading",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8807,7 +9018,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Heading",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -8828,7 +9040,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8847,7 +9060,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8866,7 +9080,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8886,7 +9101,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8904,7 +9120,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8922,7 +9139,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8940,7 +9158,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8958,7 +9177,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8976,7 +9196,8 @@
         "DeviceFrame",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -8994,7 +9215,8 @@
         "PaymentCard",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -9012,7 +9234,8 @@
         "PaymentCard",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -9030,7 +9253,8 @@
         "PaymentCard",
         "Section",
         "SectionHeader",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -9047,7 +9271,8 @@
       "registryDependencies": [
         "Button",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9067,7 +9292,8 @@
         "Button",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9087,7 +9313,8 @@
         "Button",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9106,7 +9333,8 @@
       "registryDependencies": [
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9126,7 +9354,8 @@
         "Button",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9144,7 +9373,8 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9162,7 +9392,8 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -9179,7 +9410,8 @@
       "registryDependencies": [
         "Button",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9199,7 +9431,8 @@
         "Button",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9219,7 +9452,8 @@
         "Button",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9239,7 +9473,8 @@
         "Button",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9259,7 +9494,8 @@
         "Badge",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9279,7 +9515,8 @@
         "Badge",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9300,7 +9537,8 @@
         "FeaturedIcon",
         "Link",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9321,7 +9559,8 @@
         "FeaturedIcon",
         "Link",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9342,7 +9581,8 @@
         "Button",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9363,7 +9603,8 @@
         "Button",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9386,7 +9627,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9409,7 +9651,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9433,7 +9676,8 @@
         "Heading",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9457,7 +9701,8 @@
         "Heading",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9481,7 +9726,8 @@
         "Input",
         "Link",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9505,7 +9751,8 @@
         "Input",
         "Link",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9525,7 +9772,8 @@
         "Button",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9545,7 +9793,8 @@
         "Button",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9566,7 +9815,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9587,7 +9837,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9609,7 +9860,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9631,7 +9883,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9653,7 +9906,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9675,7 +9929,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9696,7 +9951,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9717,7 +9973,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9741,7 +9998,8 @@
         "Heading",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9764,7 +10022,8 @@
         "Heading",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9785,7 +10044,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9806,7 +10066,8 @@
         "FeaturedIcon",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9826,7 +10087,8 @@
         "Badge",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9846,7 +10108,8 @@
         "Badge",
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9865,7 +10128,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9884,7 +10148,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9905,7 +10170,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9926,7 +10192,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9946,7 +10213,8 @@
         "Button",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -9964,7 +10232,8 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -9981,11 +10250,10 @@
       "registryDependencies": [
         "Button",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
-      "dependencies": [
-        "@lucide/astro"
-      ],
+      "dependencies": [],
       "usesJs": false
     },
     "footers/pixel-ground-01": {
@@ -10002,7 +10270,8 @@
         "Button",
         "Heading",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10020,7 +10289,8 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10038,7 +10308,8 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10057,7 +10328,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10076,7 +10348,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10095,7 +10368,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10114,7 +10388,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10133,7 +10408,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10152,7 +10428,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10173,7 +10450,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10194,7 +10472,8 @@
         "FeaturedIcon",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10212,11 +10491,10 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
-      "dependencies": [
-        "@lucide/astro"
-      ],
+      "dependencies": [],
       "usesJs": false
     },
     "footers/split-wordmark-01": {
@@ -10230,7 +10508,8 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10248,11 +10527,10 @@
       ],
       "registryDependencies": [
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
-      "dependencies": [
-        "@lucide/astro"
-      ],
+      "dependencies": [],
       "usesJs": false
     },
     "footers/tagline-columns-01": {
@@ -10267,7 +10545,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10288,7 +10567,8 @@
         "Heading",
         "Input",
         "Link",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10309,7 +10589,8 @@
         "Input",
         "Link",
         "Marquee",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10325,7 +10606,8 @@
       ],
       "registryDependencies": [
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10341,7 +10623,8 @@
       ],
       "registryDependencies": [
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10358,7 +10641,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10375,7 +10659,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10394,7 +10679,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10413,7 +10699,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10430,7 +10717,8 @@
       "registryDependencies": [
         "Input",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10449,7 +10737,8 @@
       "registryDependencies": [
         "Input",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10468,7 +10757,8 @@
       "registryDependencies": [
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10485,7 +10775,8 @@
       "registryDependencies": [
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10501,7 +10792,8 @@
       ],
       "registryDependencies": [
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10517,7 +10809,8 @@
       ],
       "registryDependencies": [
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10534,7 +10827,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10551,7 +10845,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10570,7 +10865,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10589,7 +10885,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10606,7 +10903,8 @@
       "registryDependencies": [
         "Input",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10625,7 +10923,8 @@
       "registryDependencies": [
         "Input",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10644,7 +10943,8 @@
       "registryDependencies": [
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10661,7 +10961,8 @@
       "registryDependencies": [
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10679,7 +10980,8 @@
         "Eyebrow",
         "Heading",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10697,7 +10999,8 @@
         "Eyebrow",
         "Heading",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10716,7 +11019,8 @@
         "Eyebrow",
         "Heading",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10735,7 +11039,8 @@
         "Eyebrow",
         "Heading",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10756,7 +11061,8 @@
         "Input",
         "Link",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10777,7 +11083,8 @@
         "Input",
         "Link",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10796,7 +11103,8 @@
         "Heading",
         "Input",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10817,7 +11125,8 @@
         "Heading",
         "Input",
         "Section",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10838,7 +11147,8 @@
         "Heading",
         "Section",
         "SegmentedControl",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10857,7 +11167,8 @@
         "Heading",
         "Section",
         "SegmentedControl",
-        "Text"
+        "Text",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -10878,7 +11189,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10901,7 +11213,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10925,7 +11238,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10949,7 +11263,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10972,7 +11287,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -10995,7 +11311,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11018,7 +11335,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11041,7 +11359,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11064,7 +11383,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11087,7 +11407,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11111,7 +11432,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11134,7 +11456,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11157,7 +11480,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11180,7 +11504,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11204,7 +11529,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11227,7 +11553,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11250,7 +11577,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11274,7 +11602,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11297,7 +11626,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -11321,7 +11651,8 @@
         "Link",
         "NavDropdown",
         "NavLink",
-        "Navbar"
+        "Navbar",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13026,7 +13357,8 @@
       ],
       "registryDependencies": [
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13042,7 +13374,8 @@
       ],
       "registryDependencies": [
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13060,7 +13393,8 @@
         "Badge",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13078,7 +13412,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13095,7 +13430,8 @@
         "blocks/metrics/MinimalCenteredText.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13110,7 +13446,8 @@
         "blocks/metrics/MinimalCenteredTextBrand.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13128,7 +13465,8 @@
         "FeaturedIcon",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13148,7 +13486,8 @@
         "FeaturedIcon",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13167,7 +13506,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13186,7 +13526,8 @@
       "registryDependencies": [
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13205,7 +13546,8 @@
       "registryDependencies": [
         "Button",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13225,7 +13567,8 @@
         "Button",
         "FeaturedIcon",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13244,7 +13587,8 @@
       "registryDependencies": [
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13261,7 +13605,8 @@
       "registryDependencies": [
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13278,7 +13623,8 @@
       "registryDependencies": [
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13295,7 +13641,8 @@
       "registryDependencies": [
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13314,7 +13661,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13333,7 +13681,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13352,7 +13701,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13371,7 +13721,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13391,7 +13742,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13412,7 +13764,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13432,7 +13785,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13453,7 +13807,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13474,7 +13829,8 @@
         "Link",
         "List",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13496,7 +13852,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13516,7 +13873,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13536,7 +13894,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13555,7 +13914,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13574,7 +13934,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13593,7 +13954,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13612,7 +13974,8 @@
         "Input",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -13633,7 +13996,8 @@
         "Heading",
         "Section",
         "SectionHeader",
-        "Switch"
+        "Switch",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13655,7 +14019,8 @@
         "Heading",
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13676,7 +14041,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13696,7 +14062,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13717,7 +14084,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13739,7 +14107,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13760,7 +14129,8 @@
         "Button",
         "Divider",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13782,7 +14152,8 @@
         "Section",
         "SectionHeader",
         "Table",
-        "Tooltip"
+        "Tooltip",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13804,7 +14175,8 @@
         "Section",
         "SectionHeader",
         "Table",
-        "Tooltip"
+        "Tooltip",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13826,7 +14198,8 @@
         "Heading",
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13846,7 +14219,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13868,7 +14242,8 @@
         "Divider",
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13890,7 +14265,8 @@
         "Divider",
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13911,7 +14287,8 @@
         "Heading",
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13931,7 +14308,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13952,7 +14330,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13972,7 +14351,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -13993,7 +14373,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14014,7 +14395,8 @@
         "Button",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14036,7 +14418,8 @@
         "Heading",
         "Section",
         "SectionHeader",
-        "SegmentedControl"
+        "SegmentedControl",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14057,7 +14440,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14078,7 +14462,8 @@
         "FeaturedIcon",
         "Heading",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14095,7 +14480,8 @@
         "blocks/social-proof/Card.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14112,7 +14498,8 @@
         "blocks/social-proof/CardBrand.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14129,7 +14516,8 @@
         "blocks/social-proof/Cards.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14146,7 +14534,8 @@
         "blocks/social-proof/CardsBrand.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14163,7 +14552,8 @@
         "blocks/social-proof/FullWidth.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14180,7 +14570,8 @@
         "blocks/social-proof/FullWidthBrand.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14197,7 +14588,8 @@
         "blocks/social-proof/FullWidthDual.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14214,7 +14606,8 @@
         "blocks/social-proof/FullWidthDualBrand.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14232,7 +14625,8 @@
       ],
       "registryDependencies": [
         "Marquee",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14250,7 +14644,8 @@
       ],
       "registryDependencies": [
         "Marquee",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14267,7 +14662,8 @@
         "blocks/social-proof/PressMentions.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14282,7 +14678,8 @@
         "blocks/social-proof/PressMentionsBrand.astro"
       ],
       "registryDependencies": [
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14301,7 +14698,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14322,7 +14720,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14341,7 +14740,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14360,7 +14760,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14382,7 +14783,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14402,7 +14804,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14422,7 +14825,8 @@
         "Button",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14442,7 +14846,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14464,7 +14869,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14486,7 +14892,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14509,7 +14916,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14529,7 +14937,8 @@
         "Heading",
         "Image",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14548,7 +14957,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14570,7 +14980,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14592,7 +15003,8 @@
         "Image",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14613,7 +15025,8 @@
         "Carousel",
         "Image",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14629,7 +15042,8 @@
       ],
       "registryDependencies": [
         "Avatar",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14645,7 +15059,8 @@
       ],
       "registryDependencies": [
         "Avatar",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14663,7 +15078,8 @@
         "Carousel",
         "Rating",
         "Section",
-        "VideoPlayer"
+        "VideoPlayer",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14681,7 +15097,8 @@
         "Carousel",
         "Rating",
         "Section",
-        "VideoPlayer"
+        "VideoPlayer",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14700,7 +15117,8 @@
         "Carousel",
         "Link",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14722,7 +15140,8 @@
         "Image",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14742,7 +15161,8 @@
         "Image",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14761,7 +15181,8 @@
         "Image",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14781,7 +15202,8 @@
         "Avatar",
         "Carousel",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14799,7 +15221,8 @@
         "Avatar",
         "Carousel",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14815,7 +15238,8 @@
       ],
       "registryDependencies": [
         "Avatar",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14833,7 +15257,8 @@
       ],
       "registryDependencies": [
         "Avatar",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14852,7 +15277,8 @@
       "registryDependencies": [
         "Avatar",
         "Section",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14871,7 +15297,8 @@
       "registryDependencies": [
         "Avatar",
         "Section",
-        "Tabs"
+        "Tabs",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14890,7 +15317,8 @@
       "registryDependencies": [
         "Image",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14907,7 +15335,8 @@
       "registryDependencies": [
         "Image",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -14924,7 +15353,8 @@
       "registryDependencies": [
         "Avatar",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14943,7 +15373,8 @@
       "registryDependencies": [
         "Avatar",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14963,7 +15394,8 @@
         "Avatar",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -14983,7 +15415,8 @@
         "Avatar",
         "Rating",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -15002,7 +15435,8 @@
       "registryDependencies": [
         "Avatar",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -15021,7 +15455,8 @@
       "registryDependencies": [
         "Avatar",
         "Section",
-        "SectionHeader"
+        "SectionHeader",
+        "_shared"
       ],
       "dependencies": [
         "@lucide/astro"
@@ -15041,7 +15476,8 @@
         "Carousel",
         "Image",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -15059,7 +15495,8 @@
         "Carousel",
         "Image",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false
@@ -15078,7 +15515,8 @@
         "Carousel",
         "Image",
         "Rating",
-        "Section"
+        "Section",
+        "_shared"
       ],
       "dependencies": [],
       "usesJs": false

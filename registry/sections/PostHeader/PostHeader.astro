@@ -16,14 +16,14 @@ import { formatDate } from '../_shared/date.ts'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'header'>, 'id'> {
-  /** Category or kicker. @category content */ eyebrow?: string
+  /** Category or kicker. @category content */ eyebrow?: string | undefined
   /** @category content */ heading: string
-  /** @category content */ description?: string
-  /** @shape { name: string, avatar?: string, role?: string } @category content */ author?: { name: string; avatar?: string; role?: string }
+  /** @category content */ description?: string | undefined
+  /** @shape { name: string, avatar?: string, role?: string } @category content */ author?: { name: string; avatar?: string; role?: string } | undefined
   /** ISO date string. @category content */ date: string
-  /** e.g. "6 min read". @category content */ readingTime?: string
+  /** e.g. "6 min read". @category content */ readingTime?: string | undefined
   /** Date locale; defaults to the page locale. @category content */ locale?: string
-  /** Cover image below the text (`centered`) or beside it (`split`). @category content */ media?: Media
+  /** Cover image below the text (`centered`) or beside it (`split`). @category content */ media?: Media | undefined
   /** @category layout */ layout?: 'centered' | 'split'
   /** @category layout */ background?: Background
   /** @category layout */ spacing?: Spacing

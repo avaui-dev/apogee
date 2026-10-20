@@ -12,23 +12,36 @@ import Input from '../../components/Input/Input.astro'
 import Link from '../../components/Link/Link.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { NewsletterContent } from '../../sections/_shared/newsletter.ts'
 
+/** @composable */
+interface Props extends NewsletterContent {}
+
+const {
+  eyebrow,
+  heading = 'Be the first to know when we launch',
+  description = 'We\'re still building. Subscribe for updates and 20% off when we launch. No spam, we promise!',
+  submitLabel = 'Subscribe',
+  media = { src: '/mockups/app-phone-light.jpg', srcDark: '/mockups/app-phone-dark.jpg', alt: 'The dashboard overview on a phone' },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="flex flex-col items-start gap-8 md:gap-12">
-      <SectionHeader heading="Be the first to know when we launch" description="We're still building. Subscribe for updates and 20% off when we launch. No spam, we promise!" size="large" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" />
       <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
-        <Button type="submit" size="large">Subscribe</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>
     </div>
+    {media && (
     <div class="relative flex min-h-90 items-start justify-center overflow-hidden rounded-2xl bg-neutral-faded pt-8 md:min-h-140 md:pt-16 lg:justify-end lg:pe-12">
-      <DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="w-60 md:w-64" />
+      <DeviceFrame device="phone" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height} class="w-60 md:w-64" />
       <ul class="flex list-none flex-col gap-3 p-0 max-lg:hidden absolute bottom-8 start-8" aria-hidden="true">
           {[['Ada Lovelace', 'followed you'], ['Alan Turing', 'gave your post kudos'], ['Grace Hopper', 'joined your team']].map(([n, t]) => (
             <li class="flex w-64 items-center gap-3 rounded-xl bg-elevation-raised/90 p-3 shadow-raised ring-1 ring-neutral backdrop-blur-lg">
@@ -38,5 +51,6 @@ import Avatar from '../../components/Avatar/Avatar.astro'
           ))}
         </ul>
     </div>
+    )}
   </div>
 </Section>

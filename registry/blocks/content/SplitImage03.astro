@@ -15,10 +15,41 @@ import TableOfContents from '../../components/TableOfContents/TableOfContents.as
 import Card from '../../components/Card/Card.astro'
 import Input from '../../components/Input/Input.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { Author, ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {
+  /** The people listed in the sidebar. @shape { name: string, role?: string }[] @category content */
+  contributors?: Author[] | null
+  /** The line above the contributors. @category content */
+  contributorsLabel?: string
+  /** The newsletter card in the sidebar. @category content */
+  formHeading?: string
+  /** @category content */
+  formDescription?: string | null
+  /** The sign-up form's submit button. @category content */
+  submitLabel?: string
+}
+
+const {
+  eyebrow = 'Engineering',
+  heading = 'Migrating to a typed component library',
+  description = 'What changed when we moved two hundred screens onto one set of typed parts.',
+  author,
+  date = '2026-01-20',
+  readingTime = '6 min read',
+  media = { src: 'https://picsum.photos/seed/apogee-content-19/1200/1000', alt: '', width: 1200, height: 1000 },
+  contributorsLabel = 'Contributors',
+  contributors = [{ name: 'Ada Lovelace', role: 'Design Lead' }, { name: 'Alan Turing', role: 'Engineer' }, { name: 'Grace Hopper', role: 'Product Manager' }],
+  formHeading = 'Weekly newsletter',
+  formDescription = 'No spam. Just the latest releases and tips, articles and interviews, every week.',
+  submitLabel = 'Subscribe',
+} = Astro.props
 ---
 
 <article>
-  <PostHeader layout="split" eyebrow="Engineering" heading="Migrating to a typed component library" description="What changed when we moved two hundred screens onto one set of typed parts." date="2026-01-20" readingTime="6 min read" headingLevel={1} media={{ src: 'https://picsum.photos/seed/apogee-content-19/1200/1000', alt: '', width: 1200, height: 1000 }} />
+  <PostHeader layout="split" eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} author={author ?? undefined} date={date} readingTime={readingTime ?? undefined} headingLevel={1} media={media ?? undefined} />
   <Section spacing="none" class="pb-section">
     <div class="grid gap-12 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-16">
       <aside class="max-lg:hidden" aria-label="About this article">
@@ -29,26 +60,28 @@ import Button from '../../components/Button/Button.astro'
         { label: 'Other resources', href: '#other-resources' },
         { label: 'Conclusion', href: '#conclusion' },
       ]} current="#introduction" />
+      {contributors && (
       <div class="flex flex-col gap-4">
-        <p class="text-sm font-semibold text-primary">Contributors</p>
+        <p class="text-sm font-semibold text-primary">{contributorsLabel}</p>
         <ul class="flex list-none flex-col gap-4 p-0">
-          {[{ name: 'Ada Lovelace', role: 'Design Lead' }, { name: 'Alan Turing', role: 'Engineer' }, { name: 'Grace Hopper', role: 'Product Manager' }].map((c) => (
+          {contributors.map((c) => (
             <li class="flex items-center gap-3">
               <Avatar name={c.name} />
-              <div class="text-sm"><p class="font-semibold">{c.name}</p><p class="text-neutral-faded">{c.role}</p></div>
+              <div class="text-sm"><p class="font-semibold">{c.name}</p>{c.role && <p class="text-neutral-faded">{c.role}</p>}</div>
             </li>
           ))}
         </ul>
       </div>
+      )}
       <Card padding="large" class="bg-neutral-faded">
-        <h2 class="text-lg font-semibold">Weekly newsletter</h2>
-        <p class="mt-2 text-sm text-neutral-faded">No spam. Just the latest releases and tips, articles and interviews, every week.</p>
+        <h2 class="text-lg font-semibold">{formHeading}</h2>
+        {formDescription && <p class="mt-2 text-sm text-neutral-faded">{formDescription}</p>}
         <form method="post" class="mt-6 flex flex-col gap-3">
           <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required />
-          <Button type="submit">Subscribe</Button>
+          <Button type="submit">{submitLabel}</Button>
         </form>
       </Card>
-          <ShareLinks iconOnly size="small" title="Migrating to a typed component library" />
+          <ShareLinks iconOnly size="small" title={plain(heading)} />
         </div>
       </aside>
       <div class="min-w-0 max-w-3xl">

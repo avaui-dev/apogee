@@ -8,17 +8,31 @@
 import Section from '../../components/Section/Section.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import Blockquote from '../../components/Blockquote/Blockquote.astro'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {
+  /** The quote, without quote marks. @category content */
+  quote?: string
+}
+
+const {
+  quote = 'We stopped arguing about buttons and started arguing about the product. That was the point.',
+  author = { name: 'Ada Lovelace', role: 'Design Lead, Oakmere' },
+} = Astro.props
 ---
 
 <Section spacing="large" containerWidth="medium">
   <figure class="m-0 flex flex-col items-center gap-8 text-center">
-    <Blockquote class="border-0 p-0 text-2xl font-medium text-balance md:text-4xl">“We stopped arguing about buttons and started arguing about the product. That was the point.”</Blockquote>
+    <Blockquote class="border-0 p-0 text-2xl font-medium text-balance md:text-4xl">“{quote}”</Blockquote>
+    {author && (
     <figcaption class="flex flex-col items-center gap-3">
-      <Avatar name="Ada Lovelace" size="xlarge" />
+      <Avatar name={author.name} size="xlarge" />
       <div>
-        <p class="font-semibold">Ada Lovelace</p>
-        <p class="text-neutral-faded">Design Lead, Oakmere</p>
+        <p class="font-semibold">{author.name}</p>
+        {author.role && <p class="text-neutral-faded">{author.role}</p>}
       </div>
     </figcaption>
+    )}
   </figure>
 </Section>

@@ -10,25 +10,43 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const links = ['Home', 'Careers', 'About us', 'Contact', 'Solutions', 'Updates']
+/** @composable */
+interface Props extends FooterContent {
+  /** The small line opposite the copyright. @category content */
+  credit?: string | null
+}
+
+const {
+  brand = 'alkane labs',
+  tagline = 'Alkane Labs builds instruments and runs services that speed up materials discovery for carbon capture and gas separation.',
+  heading = 'Speed up your materials research',
+  description = 'We can help. Tell us what you want to measure in our contact form.',
+  primaryAction = { label: 'Contact us', href: '#' },
+  columns = [{ heading: 'Footer', links: [{ label: 'Home', href: '#' }, { label: 'Careers', href: '#' }, { label: 'About us', href: '#' }, { label: 'Contact', href: '#' }, { label: 'Solutions', href: '#' }, { label: 'Updates', href: '#' }] }],
+  copyright = '© 2026 Alkane Labs, Inc. All rights reserved.',
+  credit = 'Made with care',
+} = Astro.props
+const flat = columns.flatMap((c) => c.links)
 ---
 
 <Section as="footer" spacing="medium" containerWidth="full" theme="dark" class="bg-neutral-faded">
   <div class="flex flex-col items-start gap-4 border-b border-neutral-faded pb-40">
-    <Heading as="h2" size="h1" class="max-w-xl text-balance">Speed up your materials research</Heading>
-    <p class="max-w-sm">We can help. Tell us what you want to measure in our contact form.</p>
-    <Button href="#" rounded>Contact us<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+    {heading && <Heading as="h2" size="h1" class="max-w-xl text-balance">{plain(heading)}</Heading>}
+    {description && <p class="max-w-sm">{description}</p>}
+    {primaryAction && <Button href={primaryAction.href} rounded>{primaryAction.label}<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>}
   </div>
 
   <div class="mt-40 grid gap-10 md:grid-cols-[1fr_auto]">
-    <p class="max-w-xl text-xl">Alkane Labs builds instruments and runs services that speed up materials discovery for carbon capture and gas separation.</p>
-    <ul class="grid list-none grid-cols-3 gap-x-8 gap-y-3 p-0">{links.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul>
+    {tagline && <p class="max-w-xl text-xl">{plain(tagline)}</p>}
+    <ul class="grid list-none grid-cols-3 gap-x-8 gap-y-3 p-0">{flat.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}</ul>
   </div>
 
-  <p class="mt-24 pb-[0.15em] text-center text-[clamp(4rem,0.5rem+14vw,14rem)] leading-[0.8] tracking-tight" aria-hidden="true">alkane labs</p>
+  <p class="mt-24 pb-[0.15em] text-center text-[clamp(4rem,0.5rem+14vw,14rem)] leading-[0.8] tracking-tight" aria-hidden="true">{brand}</p>
   <div class="mt-16 flex flex-wrap justify-between gap-4 text-sm">
-    <p>© 2026 Alkane Labs, Inc. All rights reserved.</p>
-    <p class="text-neutral-faded">Made with care</p>
+    {copyright && <p>{copyright}</p>}
+    {credit && <p class="text-neutral-faded">{credit}</p>}
   </div>
 </Section>

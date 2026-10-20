@@ -10,44 +10,52 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { MetricsContent } from '../../sections/_shared/metrics.ts'
 
+/** @composable */
+interface Props extends MetricsContent {}
+
+const {
+  eyebrow = 'Launch faster',
+  heading = 'Build something great',
+  description = 'Everything you need to build modern interfaces and great products.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Demo', href: '#' },
+  items = [
+    { value: '400+', label: 'Projects completed', description: "We've helped build over 400 projects with teams of every size." },
+    { value: '600%', label: 'Return on investment', description: "Customers report an average return of about 600%." },
+    { value: '10k', label: 'Global downloads', description: "Our starter kit has been downloaded over 10k times." },
+  ],
+  media = { src: 'https://picsum.photos/seed/apogee-metrics-2/1600/900', alt: '', width: 1600, height: 900 },
+} = Astro.props
 ---
 
 <Section spacing="none" container={false}>
   <div class="bg-primary pt-section-lg pb-28 text-on-primary md:pb-40">
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 md:gap-12 md:px-8">
-      <SectionHeader eyebrow="Launch faster" heading="Build something great" description="Everything you need to build modern interfaces and great products." size="large" align="center" background="primary" />
-      <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row-reverse">
-        <Button href="#" size="large" color="neutral">Get started</Button>
-        <Button href="#" size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
-      </div>
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" background="primary" />
+      {(primaryAction || secondaryAction) && (
+        <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row-reverse">
+          {primaryAction && <Button href={primaryAction.href} size="large" color="neutral">{primaryAction.label}</Button>}
+          {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        </div>
+      )}
     </div>
   </div>
   <div class="mx-auto -mt-16 max-w-7xl px-4 pb-section-lg md:-mt-24 md:px-8">
     <div class="relative isolate overflow-hidden rounded-2xl px-6 py-8 md:p-16">
-      <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/seed/apogee-metrics-2/1600/900" alt="" width={1600} height={900} fit="cover" class="size-full" /></div>
+      {media && <div class="absolute inset-0 -z-10"><Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" class="size-full" /></div>}
       <dl class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <div class="rounded-2xl bg-page/85 p-6 shadow-raised ring-1 ring-inset ring-neutral backdrop-blur-lg">
-          <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Projects completed</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">400+</dd>
-            <dd class="order-3 text-neutral-faded">We've helped build over 400 projects with teams of every size.</dd>
+        {items.map((s) => (
+          <div class="rounded-2xl bg-page/85 p-6 shadow-raised ring-1 ring-inset ring-neutral backdrop-blur-lg">
+            <div class="flex flex-col gap-3 items-center text-center">
+              <dt class="order-2 text-lg font-semibold">{s.label}</dt>
+              <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">{s.value}</dd>
+              {s.description && <dd class="order-3 text-neutral-faded">{s.description}</dd>}
+            </div>
           </div>
-        </div>
-        <div class="rounded-2xl bg-page/85 p-6 shadow-raised ring-1 ring-inset ring-neutral backdrop-blur-lg">
-          <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Return on investment</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">600%</dd>
-            <dd class="order-3 text-neutral-faded">Customers report an average return of about 600%.</dd>
-          </div>
-        </div>
-        <div class="rounded-2xl bg-page/85 p-6 shadow-raised ring-1 ring-inset ring-neutral backdrop-blur-lg">
-          <div class="flex flex-col gap-3 items-center text-center">
-            <dt class="order-2 text-lg font-semibold">Global downloads</dt>
-            <dd class="order-1 text-5xl font-semibold tracking-tight tabular-nums md:text-6xl text-primary">10k</dd>
-            <dd class="order-3 text-neutral-faded">Our starter kit has been downloaded over 10k times.</dd>
-          </div>
-        </div>
+        ))}
       </dl>
     </div>
   </div>

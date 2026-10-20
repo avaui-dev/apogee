@@ -10,12 +10,24 @@ import Banner from '../../sections/Banner/Banner.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Input from '../../components/Input/Input.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { BannerContent } from '../../sections/_shared/banner.ts'
+
+/** @composable */
+interface Props extends BannerContent {}
+
+const {
+  heading = 'Stay up to date with the latest news',
+  description = 'New components, guides and releases, once a month.',
+  submitLabel = 'Subscribe',
+  closeLabel,
+} = Astro.props
 ---
 
-<Banner background="primary" heading="Stay up to date with the latest news" description="New components, guides and releases, once a month.">
+<Banner background="primary" heading={plain(heading)} description={description ? plain(description) : undefined} closeLabel={closeLabel}>
   <FeaturedIcon slot="icon" theme="light" color="primary" class="max-md:hidden"><Mail /></FeaturedIcon>
   <form slot="actions" method="post" class="flex flex-col gap-3 sm:flex-row md:w-96">
     <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
-    <Button type="submit" color="neutral">Subscribe</Button>
+    <Button type="submit" color="neutral">{submitLabel}</Button>
   </form>
 </Banner>

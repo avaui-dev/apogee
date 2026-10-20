@@ -5,7 +5,7 @@
  * @block footers
  * @order 12
  */
-import { AtSign, ChevronRight, Globe, Mail, MessageCircle, Orbit, Rss } from '@lucide/astro'
+import { ChevronRight, Orbit } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
@@ -14,35 +14,51 @@ import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import { plain, type Action } from '../../sections/_shared/spine.ts'
+import { socialIcons, type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
-  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
-  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
-  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
-  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
-  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
-]
-const social = [
-  { label: 'Email', icon: Mail },
-  { label: 'Blog feed', icon: Rss },
-  { label: 'Community', icon: MessageCircle },
-  { label: 'Website', icon: Globe },
-  { label: 'Contact', icon: AtSign },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** The pill link with avatars. @category content */
+  joinLink?: Action | null
+}
+
+const {
+  brand = 'Example',
+  tagline = 'Design calm, accessible websites your whole team can edit.',
+  newsletterHeading = 'Get notified when we launch',
+  newsletterDescription = 'The latest news, announcements and articles, in your inbox.',
+  submitLabel = 'Subscribe',
+  columns = [
+    { heading: 'Product', links: [{ label: 'Overview', href: '#' }, { label: 'Features', href: '#' }, { label: 'Solutions', href: '#', badge: 'New' }, { label: 'Tutorials', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Releases', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'About us', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Press', href: '#' }, { label: 'News', href: '#' }, { label: 'Media kit', href: '#' }, { label: 'Contact', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'Newsletter', href: '#' }, { label: 'Events', href: '#' }, { label: 'Help centre', href: '#' }, { label: 'Tutorials', href: '#' }, { label: 'Support', href: '#' }] },
+    { heading: 'Community', links: [{ label: 'Forum', href: '#' }, { label: 'Meetups', href: '#' }, { label: 'Changelog', href: '#' }, { label: 'Status', href: '#' }, { label: 'Partners', href: '#' }, { label: 'Developers', href: '#' }] },
+    { heading: 'Legal', links: [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }, { label: 'Licences', href: '#' }, { label: 'Settings', href: '#' }, { label: 'Contact', href: '#' }] },
+  ],
+  copyright = '© 2026 Example. All rights reserved.',
+  social = [
+    { label: 'Email', href: '#', icon: 'mail' },
+    { label: 'Blog feed', href: '#', icon: 'rss' },
+    { label: 'Community', href: '#', icon: 'message' },
+    { label: 'Website', href: '#', icon: 'globe' },
+    { label: 'Contact', href: '#', icon: 'at-sign' },
+  ],
+  joinLink = { label: 'Join 2,000+ companies', href: '#' },
+} = Astro.props
 ---
 
 <footer>
   <Section as="div" spacing="medium" background="neutral-faded">
     <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
       <div class="flex flex-col gap-3 items-start">
-      <Heading as="h2" size="h2">Get notified when we launch</Heading>
-      <p class="text-lg text-neutral-faded">The latest news, announcements and articles, in your inbox.</p>
+      {newsletterHeading && <Heading as="h2" size="h2">{newsletterHeading}</Heading>}
+      {newsletterDescription && <p class="text-lg text-neutral-faded">{newsletterDescription}</p>}
     </div>
       <div class="flex flex-col gap-4 ">
       <form method="post" class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="sm:w-64" />
-        <Button type="submit">Subscribe</Button>
+        <Button type="submit">{submitLabel}</Button>
       </form>
     </div>
     </div>
@@ -50,22 +66,22 @@ const social = [
   <Section as="div" spacing="small">
     <div class="grid gap-12 lg:gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
     <div class="flex flex-col gap-6">
-      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
-      <p class="max-w-xs text-neutral-faded">Design calm, accessible websites your whole team can edit.</p>
-      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-3 self-start rounded-full py-1 ps-1 pe-3 text-sm font-semibold ring-1 ring-neutral">
+      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+      {tagline && <p class="max-w-xs text-neutral-faded">{plain(tagline)}</p>}
+      {joinLink && <Link href={joinLink.href} color="inherit" underline="none" class="inline-flex items-center gap-3 self-start rounded-full py-1 ps-1 pe-3 text-sm font-semibold ring-1 ring-neutral">
         <span aria-hidden="true"><AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }]} size="small" /></span>
-        Join 2,000+ companies
+        {joinLink.label}
         <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
-      </Link>
+      </Link>}
     </div>
     <div class="grid grid-cols-2 gap-8 md:grid-cols-5">
-      {columns.filter((c) => c.heading !== 'Use cases').map((c) => (
+      {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="text-sm font-semibold text-neutral-faded">{c.heading}</p>
           <ul class="mt-4 flex list-none flex-col gap-3 p-0">
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
-                <Link href="#" color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
+                <Link href={l.href} color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
                 {l.badge && <Badge size="small" variant="faded" color="primary">{l.badge}</Badge>}
               </li>
             ))}
@@ -75,12 +91,8 @@ const social = [
     </div>
   </div>
     <div class="mt-12 md:mt-16 flex flex-col-reverse gap-6 border-t border-neutral pt-8 md:flex-row md:items-center md:justify-between">
-    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
-    <ul class="flex list-none flex-wrap gap-6 p-0 text-neutral-faded">
-        {social.map((s) => (
-          <li><Link href="#" color="inherit" underline="none" aria-label={s.label} class="flex"><s.icon class="size-6" aria-hidden="true" /></Link></li>
-        ))}
-      </ul>
+    {copyright && <p class="text-neutral-faded ">{copyright}</p>}
+    {social && <ul class="flex list-none flex-wrap gap-6 p-0 text-neutral-faded">{social.map((s) => { const Icon = socialIcons[s.icon]; return <li><Link href={s.href} color="inherit" underline="none" aria-label={s.label} class="flex"><Icon class="size-6" aria-hidden="true" /></Link></li> })}</ul>}
   </div>
   </Section>
 </footer>

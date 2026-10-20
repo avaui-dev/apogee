@@ -12,75 +12,55 @@ import Heading from '../../components/Heading/Heading.astro'
 import Image from '../../components/Image/Image.astro'
 import Link from '../../components/Link/Link.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { TeamContent } from '../../sections/_shared/team.ts'
 
+/** @composable */
+interface Props extends TeamContent {}
+
+const {
+  eyebrow = 'Join our team',
+  heading = "We're just getting started",
+  description = 'We hire diverse, passionate people and build a culture that lets everyone do their best work.',
+  primaryAction = { label: "We're hiring!", href: '#' },
+  secondaryAction = { label: 'Read our principles', href: '#' },
+  items = [
+    { name: 'Maya Okafor', role: 'Founder and CEO', avatar: 'https://picsum.photos/id/1027/800/1000', bio: 'Started the company after ten years building tools for small teams.', links: [{ label: "Maya's social profile", href: '#' }, { label: "Maya's work history", href: '#' }, { label: "Maya's website", href: '#' }] },
+    { name: 'Tomas Lindqvist', role: 'Engineering Manager', avatar: 'https://picsum.photos/id/856/800/1000', bio: 'Keeps the team shipping and the pager quiet.', links: [{ label: "Tomas's social profile", href: '#' }, { label: "Tomas's work history", href: '#' }, { label: "Tomas's website", href: '#' }] },
+    { name: 'Priya Raman', role: 'Product Manager', avatar: 'https://picsum.photos/id/832/800/1000', bio: 'Turns customer calls into roadmaps people can read.', links: [{ label: "Priya's social profile", href: '#' }, { label: "Priya's work history", href: '#' }, { label: "Priya's website", href: '#' }] },
+    { name: 'Jonah Weiss', role: 'Frontend Developer', avatar: 'https://picsum.photos/id/91/800/1000', bio: 'Cares about fast pages and buttons that feel right.', links: [{ label: "Jonah's social profile", href: '#' }, { label: "Jonah's work history", href: '#' }, { label: "Jonah's website", href: '#' }] },
+    { name: 'Lucía Ortega', role: 'Backend Developer', avatar: 'https://picsum.photos/id/64/800/1000', bio: 'Builds the APIs and keeps the data honest.', links: [{ label: "Lucía's social profile", href: '#' }, { label: "Lucía's work history", href: '#' }, { label: "Lucía's website", href: '#' }] },
+    { name: 'Samir Haddad', role: 'Product Designer', avatar: 'https://picsum.photos/id/375/800/1000', bio: 'Sketches first, then sweats the last pixel.', links: [{ label: "Samir's social profile", href: '#' }, { label: "Samir's work history", href: '#' }, { label: "Samir's website", href: '#' }] },
+    { name: 'Hana Kobayashi', role: 'UX Researcher', avatar: 'https://picsum.photos/id/823/800/1000', bio: 'Talks to customers so the rest of us can listen.', links: [{ label: "Hana's social profile", href: '#' }, { label: "Hana's work history", href: '#' }, { label: "Hana's website", href: '#' }] },
+    { name: 'Eli Brennan', role: 'Customer Success', avatar: 'https://picsum.photos/id/836/800/1000', bio: 'Answers every question as if it were the first.', links: [{ label: "Eli's social profile", href: '#' }, { label: "Eli's work history", href: '#' }, { label: "Eli's website", href: '#' }] },
+  ],
+} = Astro.props
+const icons = [AtSign, BriefcaseBusiness, Globe]
+// ponytail: mosaic tiles by position (big tiles show bio and links on large screens); cycles past eight people.
+const tiles = ['lg:col-span-2 lg:row-span-2', 'small', 'small', 'lg:row-span-2', 'small', 'small', 'lg:col-span-2 lg:row-span-2', 'small']
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
     <div class="flex flex-col gap-8 items-center">
-      <SectionHeader eyebrow="Join our team" heading="We're just getting started" description="We hire diverse, passionate people and build a culture that lets everyone do their best work." size="large" align="center" />
-      <div class="flex flex-col gap-3 sm:flex-row-reverse sm:justify-center">
-        <Button href="#" size="large">We're hiring!</Button>
-        <Button href="#" size="large" variant="outline" color="neutral">Read our principles</Button>
-      </div>
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
+      {(primaryAction || secondaryAction) && (
+        <div class="flex flex-col gap-3 sm:flex-row-reverse sm:justify-center">
+          {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+          {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+        </div>
+      )}
     </div>
     <ul class="grid list-none p-0 auto-rows-[27rem] gap-6 sm:grid-cols-2 lg:auto-rows-[22.5rem] lg:grid-cols-3">
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl lg:col-span-2 lg:row-span-2">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/1027/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
+      {items.map((p, i) => { const tile = tiles[i % tiles.length]!; const small = tile === 'small'; return (
+      <li class:list={['relative isolate flex flex-col justify-end overflow-hidden rounded-2xl', !small && tile]}>
+        <div class="absolute inset-0 -z-10">{p.avatar && <Image src={p.avatar} alt="" width={800} height={1000} fit="cover" class="size-full" />}</div>
         <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Maya Okafor</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">Founder and CEO</p><p class="mt-2 text-sm text-neutral-faded md:text-base">Started the company after ten years building tools for small teams.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5"><li><Link href="#" color="neutral" underline="none" aria-label="Maya's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Maya's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Maya's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
+          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">{p.name}</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
+          <p class="font-semibold">{p.role}</p>{p.bio && <p class:list={['mt-2 text-sm text-neutral-faded md:text-base', small && 'lg:hidden']}>{p.bio}</p>}{p.links && <ul class:list={['flex list-none gap-4 p-0 mt-4 gap-5', small && 'lg:hidden']}>{p.links.map((l, j) => { const Icon = icons[j % icons.length]!; return <li><Link href={l.href} color="neutral" underline="none" aria-label={l.label} class="text-neutral-faded hover:text-neutral"><Icon class="size-5" aria-hidden="true" /></Link></li> })}</ul>}
         </div>
       </li>
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl ">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/856/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Tomas Lindqvist</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">Engineering Manager</p><p class="mt-2 lg:hidden text-sm text-neutral-faded md:text-base">Keeps the team shipping and the pager quiet.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5 lg:hidden"><li><Link href="#" color="neutral" underline="none" aria-label="Tomas's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Tomas's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Tomas's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
-        </div>
-      </li>
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl ">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/832/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Priya Raman</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">Product Manager</p><p class="mt-2 lg:hidden text-sm text-neutral-faded md:text-base">Turns customer calls into roadmaps people can read.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5 lg:hidden"><li><Link href="#" color="neutral" underline="none" aria-label="Priya's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Priya's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Priya's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
-        </div>
-      </li>
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl lg:row-span-2">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/91/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Jonah Weiss</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">Frontend Developer</p><p class="mt-2 text-sm text-neutral-faded md:text-base">Cares about fast pages and buttons that feel right.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5"><li><Link href="#" color="neutral" underline="none" aria-label="Jonah's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Jonah's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Jonah's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
-        </div>
-      </li>
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl ">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/64/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Lucía Ortega</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">Backend Developer</p><p class="mt-2 lg:hidden text-sm text-neutral-faded md:text-base">Builds the APIs and keeps the data honest.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5 lg:hidden"><li><Link href="#" color="neutral" underline="none" aria-label="Lucía's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Lucía's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Lucía's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
-        </div>
-      </li>
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl ">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/375/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Samir Haddad</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">Product Designer</p><p class="mt-2 lg:hidden text-sm text-neutral-faded md:text-base">Sketches first, then sweats the last pixel.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5 lg:hidden"><li><Link href="#" color="neutral" underline="none" aria-label="Samir's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Samir's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Samir's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
-        </div>
-      </li>
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl lg:col-span-2 lg:row-span-2">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/823/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Hana Kobayashi</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">UX Researcher</p><p class="mt-2 text-sm text-neutral-faded md:text-base">Talks to customers so the rest of us can listen.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5"><li><Link href="#" color="neutral" underline="none" aria-label="Hana's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Hana's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Hana's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
-        </div>
-      </li>
-      <li class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl ">
-        <div class="absolute inset-0 -z-10"><Image src="https://picsum.photos/id/836/800/1000" alt="" width={800} height={1000} fit="cover" class="size-full" /></div>
-        <div class="m-3 rounded-xl bg-page/80 px-4 pt-5 pb-6 ring-1 ring-inset ring-neutral backdrop-blur-md md:m-4 md:px-5">
-          <div class="flex items-start justify-between gap-2"><Heading as="h3" size="h5">Eli Brennan</Heading><ArrowUpRight class="size-6 shrink-0" aria-hidden="true" /></div>
-          <p class="font-semibold">Customer Success</p><p class="mt-2 lg:hidden text-sm text-neutral-faded md:text-base">Answers every question as if it were the first.</p><ul class="flex list-none gap-4 p-0 mt-4 gap-5 lg:hidden"><li><Link href="#" color="neutral" underline="none" aria-label="Eli's social profile" class="text-neutral-faded hover:text-neutral"><AtSign class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Eli's work history" class="text-neutral-faded hover:text-neutral"><BriefcaseBusiness class="size-5" aria-hidden="true" /></Link></li><li><Link href="#" color="neutral" underline="none" aria-label="Eli's website" class="text-neutral-faded hover:text-neutral"><Globe class="size-5" aria-hidden="true" /></Link></li></ul>
-        </div>
-      </li>
+      ) })}
     </ul>
   </div>
 </Section>

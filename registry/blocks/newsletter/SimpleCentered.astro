@@ -10,16 +10,27 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Input from '../../components/Input/Input.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { NewsletterContent } from '../../sections/_shared/newsletter.ts'
 
+/** @composable */
+interface Props extends NewsletterContent {}
+
+const {
+  eyebrow,
+  heading = 'Sign up for our newsletter',
+  description = 'Be the first to know about releases and industry news and insights.',
+  submitLabel = 'Subscribe',
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col items-center gap-8">
-    <SectionHeader heading="Sign up for our newsletter" description="Be the first to know about releases and industry news and insights." size="large" align="center" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
     <form method="post" class="flex w-full max-w-md flex-col gap-2 mx-auto text-center">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
-        <Button type="submit" size="large">Subscribe</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>

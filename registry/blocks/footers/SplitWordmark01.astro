@@ -8,27 +8,37 @@
 import { Sparkle } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  ['Roadmap', 'Terms', 'Privacy', 'Media', 'Walkthrough'].map((l) => ({ label: l, href: '#' })),
-  [{ label: 'hello@setfield.studio', href: '#' }, { label: 'Photos', href: '#' }, { label: 'Updates', href: '#' }],
-  [{ label: '12 Harbour Place', href: '' }, { label: '15 Mill Street', href: '' }, { label: 'Portmere 3056', href: '' }],
-]
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'Set Field',
+  tagline = 'Setfield works on land that has been cared for by others long before us. We respect their continuing connection to land, water and community, and honour the knowledge they hold.',
+  columns = [
+    { heading: 'Studio', links: [{ label: 'Roadmap', href: '#' }, { label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Media', href: '#' }, { label: 'Walkthrough', href: '#' }] },
+    { heading: 'Contact', links: [{ label: 'hello@setfield.studio', href: '#' }, { label: 'Photos', href: '#' }, { label: 'Updates', href: '#' }] },
+    { heading: 'Address', links: [{ label: '12 Harbour Place', href: '' }, { label: '15 Mill Street', href: '' }, { label: 'Portmere 3056', href: '' }] },
+  ],
+  copyright = '© 2026 Setfield, all rights reserved',
+} = Astro.props
 ---
 
 <Section as="footer" spacing="none" container={false} data-surface="primary" class="bg-page text-neutral">
-  <p class="flex flex-wrap justify-between gap-x-8 px-gutter pb-40 pt-6 text-[clamp(4rem,1rem+10vw,10rem)] font-normal leading-none tracking-tight md:pb-56" aria-hidden="true"><span>Set</span><span>Field</span></p>
+  <p class="flex flex-wrap justify-between gap-x-8 px-gutter pb-40 pt-6 text-[clamp(4rem,1rem+10vw,10rem)] font-normal leading-none tracking-tight md:pb-56" aria-hidden="true">{brand.split(' ').map((w) => <span>{w}</span>)}</p>
   <div class="border-t border-neutral px-gutter pb-6 pt-4">
-    <p class="max-w-4xl text-lg leading-snug md:text-xl">Setfield works on land that has been cared for by others long before us. We respect their continuing connection to land, water and community, and honour the knowledge they hold.</p>
+    {tagline && <p class="max-w-4xl text-lg leading-snug md:text-xl">{plain(tagline)}</p>}
     <div class="mt-8 grid gap-6 font-mono text-xs uppercase tracking-wider sm:grid-cols-3">
       {columns.map((c) => (
         <ul class="flex list-none flex-col gap-1.5 p-0">
-          {c.map((l) => <li>{l.href ? <Link href={l.href} color="inherit" underline="hover">{l.label}</Link> : l.label}</li>)}
+          {c.links.map((l) => <li>{l.href ? <Link href={l.href} color="inherit" underline="hover">{l.label}</Link> : l.label}</li>)}
         </ul>
       ))}
     </div>
     <div class="mt-10 flex items-end justify-between font-mono text-xs uppercase tracking-wider">
-      <p>© 2026 Setfield, all rights reserved</p>
+      <p>{copyright}</p>
       <Sparkle class="size-6" aria-hidden="true" />
     </div>
   </div>

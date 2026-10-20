@@ -5,45 +5,60 @@
  * @block footers
  * @order 48
  */
-import { AtSign, Camera, Video } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { accentRuns } from '../../sections/_shared/spine.ts'
+import { socialIcons, type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Navigation', links: ['Shop', 'Questions', 'About us', 'Learn', 'Find us near you'] },
-  { heading: 'Support', links: ['Contact us', 'Shipping and returns', 'Customer support', 'Privacy policy', 'Affiliates'] },
-]
-const social = [{ label: 'Photos', icon: Camera }, { label: 'Videos', icon: Video }, { label: 'Updates', icon: AtSign }]
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'woofly',
+  tagline = 'Happier, healthier dogs.*One bowl at a time!*',
+  newsletterHeading = 'Get the latest from us',
+  submitLabel = 'Subscribe',
+  columns = [
+    { heading: 'Navigation', links: [{ label: 'Shop', href: '#' }, { label: 'Questions', href: '#' }, { label: 'About us', href: '#' }, { label: 'Learn', href: '#' }, { label: 'Find us near you', href: '#' }] },
+    { heading: 'Support', links: [{ label: 'Contact us', href: '#' }, { label: 'Shipping and returns', href: '#' }, { label: 'Customer support', href: '#' }, { label: 'Privacy policy', href: '#' }, { label: 'Affiliates', href: '#' }] },
+  ],
+  copyright = '© 2026 Woofly',
+  social = [
+    { label: 'Photos', href: '#', icon: 'camera' },
+    { label: 'Videos', href: '#', icon: 'video' },
+    { label: 'Updates', href: '#', icon: 'at-sign' },
+  ],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="small" containerWidth="full">
   <div data-surface="primary" class="overflow-hidden rounded-e-3xl rounded-s-[10rem] bg-page px-8 pt-12 text-neutral md:rounded-s-[16rem] md:ps-40">
     <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1.6fr]">
       <div class="flex flex-col gap-2">
-        <p class="text-xl font-bold leading-tight">Happier, healthier dogs.<span class="block">One bowl at a time!</span></p>
-        <p class="text-sm text-neutral-faded">© 2026 Woofly</p>
+        {tagline && <p class="text-xl font-bold leading-tight">{accentRuns(tagline).map((r) => (r.accent ? <span class="block">{r.text}</span> : r.text))}</p>}
+        {copyright && <p class="text-sm text-neutral-faded">{copyright}</p>}
       </div>
       {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="text-sm font-semibold uppercase tracking-wide">{c.heading}</p>
-          <ul class="mt-3 flex list-none flex-col gap-1.5 p-0 text-sm">{c.links.map((l) => <li><Link href="#" color="inherit" underline="hover">{l}</Link></li>)}</ul>
+          <ul class="mt-3 flex list-none flex-col gap-1.5 p-0 text-sm">{c.links.map((l) => <li><Link href={l.href} color="inherit" underline="hover">{l.label}</Link></li>)}</ul>
         </nav>
       ))}
       <div class="flex flex-col gap-6">
         <form class="flex flex-col gap-3" onsubmit="return false">
-          <label for="pill-wordmark-email" class="text-sm font-semibold uppercase tracking-wide">Get the latest from us</label>
+          <label for="pill-wordmark-email" class:list={['text-sm font-semibold uppercase tracking-wide', !newsletterHeading && 'sr-only']}>{newsletterHeading ?? 'Email'}</label>
           <span class="flex items-center rounded-full border border-neutral p-1 ps-4">
             <input id="pill-wordmark-email" type="email" placeholder="Email address" autocomplete="email" class="min-w-0 flex-1 bg-transparent outline-none placeholder:text-neutral-faded" />
-            <Button type="submit" rounded>Subscribe</Button>
+            <Button type="submit" rounded>{submitLabel}</Button>
           </span>
         </form>
-        <div class="flex flex-col gap-3">
+        {social && <div class="flex flex-col gap-3">
           <p class="text-sm font-semibold uppercase tracking-wide">Follow us</p>
-          <ul class="flex list-none gap-2 p-0">{social.map((s) => <li><Link href="#" color="inherit" underline="none" aria-label={s.label} class="grid size-10 place-items-center rounded-full! bg-neutral-faded hover:bg-neutral-faded-highlighted"><s.icon class="size-4" aria-hidden="true" /></Link></li>)}</ul>
-        </div>
+          <ul class="flex list-none gap-2 p-0">{social.map((s) => { const Icon = socialIcons[s.icon]; return <li><Link href={s.href} color="inherit" underline="none" aria-label={s.label} class="grid size-10 place-items-center rounded-full! bg-neutral-faded hover:bg-neutral-faded-highlighted"><Icon class="size-4" aria-hidden="true" /></Link></li> })}</ul>
+        </div>}
       </div>
     </div>
-    <p class="mt-8 pb-[0.12em] text-end text-[clamp(5rem,1rem+16vw,16rem)] font-black leading-[0.8] tracking-tighter" aria-hidden="true">woofly</p>
+    <p class="mt-8 pb-[0.12em] text-end text-[clamp(5rem,1rem+16vw,16rem)] font-black leading-[0.8] tracking-tighter" aria-hidden="true">{brand}</p>
   </div>
 </Section>

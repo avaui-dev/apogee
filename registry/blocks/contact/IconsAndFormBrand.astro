@@ -5,29 +5,45 @@
  * @block contact
  * @order 30
  */
-import { Mail, MapPin, MessageCircle, Phone } from '@lucide/astro'
+import { LifeBuoy, Mail, MapPin, MessageCircle, MessagesSquare, Phone } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactForm from '../../components/ContactForm/ContactForm.astro'
 import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const methods = [
-  { icon: Mail, title: 'Email', description: "Our friendly team is here to help.", link: { label: 'hi@example.com', href: 'mailto:hi@example.com' } },
-  { icon: MessageCircle, title: 'Live chat', description: "Our friendly team is here to help.", link: { label: 'Start new chat', href: '#chat' } },
-  { icon: MapPin, title: 'Office', description: "Come say hello at our office HQ.", link: { label: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' } },
-  { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
-]
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const
+
+/** @composable */
+interface Props extends ContactContent {}
+
+const {
+  eyebrow = 'Contact us',
+  heading = 'Chat to our friendly team',
+  description = "We'd love to hear from you. Please fill out this form or shoot us an email.",
+  details = [
+    { icon: 'mail', label: 'Email', description: 'Our friendly team is here to help.', value: 'hi@example.com', href: 'mailto:hi@example.com' },
+    { icon: 'message-circle', label: 'Live chat', description: 'Our friendly team is here to help.', value: 'Start new chat', href: '#chat' },
+    { icon: 'map-pin', label: 'Office', description: 'Come say hello at our office HQ.', value: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' },
+    { icon: 'phone', label: 'Phone', description: 'Mon–Fri from 8am to 5pm.', value: '+1 (555) 000-0000', href: 'tel:+15550000000' },
+  ],
+  action,
+  method,
+  submitLabel = 'Send message',
+} = Astro.props
 ---
 
 <Section spacing="large" background="primary">
-  <SectionHeader eyebrow="Contact us" heading="Chat to our friendly team" description="We'd love to hear from you. Please fill out this form or shoot us an email." background="primary" class="mb-16" />
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} background="primary" class="mb-16" />
   <div class="grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
-    <ul class="list-none p-0 grid gap-10 sm:grid-cols-2 lg:grid-cols-1">
-    {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} inline><FeaturedIcon slot="icon" theme="light" color="primary"><m.icon /></FeaturedIcon></ContactMethod></li>
-    ))}
-  </ul>
-    <div class="rounded-2xl bg-page p-6 text-neutral sm:p-8"><ContactForm /></div>
+    {details && <ul class="list-none p-0 grid gap-10 sm:grid-cols-2 lg:grid-cols-1">
+    {details.map((d) => {
+      const Icon = icons[d.icon]
+      return <li><ContactMethod title={d.label} description={d.description} link={d.href ? { label: d.value, href: d.href } : undefined} inline><FeaturedIcon slot="icon" theme="light" color="primary"><Icon /></FeaturedIcon>{!d.href && <p>{d.value}</p>}</ContactMethod></li>
+    })}
+  </ul>}
+    <div class="rounded-2xl bg-page p-6 text-neutral sm:p-8"><ContactForm action={action} method={method} submitLabel={submitLabel} /></div>
   </div>
 </Section>

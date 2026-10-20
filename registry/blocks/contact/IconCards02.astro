@@ -5,27 +5,40 @@
  * @block contact
  * @order 15
  */
-import { LifeBuoy, MapPin, MessagesSquare, Phone } from '@lucide/astro'
+import { LifeBuoy, Mail, MapPin, MessageCircle, MessagesSquare, Phone } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const methods = [
-  { icon: MessagesSquare, title: 'Chat to sales', description: "Speak to our friendly team.", link: { label: 'sales@example.com', href: 'mailto:sales@example.com' } },
-  { icon: LifeBuoy, title: 'Chat to support', description: "We're here to help.", link: { label: 'support@example.com', href: 'mailto:support@example.com' } },
-  { icon: MapPin, title: 'Visit us', description: "Visit our office HQ.", link: { label: 'View on the map', href: '#map' } },
-  { icon: Phone, title: 'Call us', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
-]
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const
+
+/** @composable */
+interface Props extends ContactContent {}
+
+const {
+  eyebrow = 'Contact us',
+  heading = 'Get in touch',
+  description = 'Our friendly team would love to hear from you.',
+  details = [
+    { icon: 'messages-square', label: 'Chat to sales', description: 'Speak to our friendly team.', value: 'sales@example.com', href: 'mailto:sales@example.com' },
+    { icon: 'life-buoy', label: 'Chat to support', description: "We're here to help.", value: 'support@example.com', href: 'mailto:support@example.com' },
+    { icon: 'map-pin', label: 'Visit us', description: 'Visit our office HQ.', value: 'View on the map', href: '#map' },
+    { icon: 'phone', label: 'Call us', description: 'Mon–Fri from 8am to 5pm.', value: '+1 (555) 000-0000', href: 'tel:+15550000000' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
-    <SectionHeader eyebrow="Contact us" heading="Get in touch" description="Our friendly team would love to hear from you." />
-    <ul class="list-none p-0 grid gap-6 sm:grid-cols-2">
-    {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} variant="card"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
-    ))}
-  </ul>
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} />
+    {details && <ul class="list-none p-0 grid gap-6 sm:grid-cols-2">
+    {details.map((d) => {
+      const Icon = icons[d.icon]
+      return <li><ContactMethod title={d.label} description={d.description} link={d.href ? { label: d.value, href: d.href } : undefined} variant="card"><FeaturedIcon slot="icon" theme="outline" color="neutral"><Icon /></FeaturedIcon>{!d.href && <p>{d.value}</p>}</ContactMethod></li>
+    })}
+  </ul>}
   </div>
 </Section>

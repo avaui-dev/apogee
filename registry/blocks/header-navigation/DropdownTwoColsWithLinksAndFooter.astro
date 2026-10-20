@@ -5,7 +5,7 @@
  * @block header-navigation
  * @order 7
  */
-import { Book, BookOpen, Box, CirclePlay, Code, FileCode, Layers, LifeBuoy, Mic, Orbit, Sparkles } from '@lucide/astro'
+import { Book, BookOpen, CirclePlay, Code, FileCode, LifeBuoy, Orbit, Sparkles } from '@lucide/astro'
 import Navbar from '../../components/Navbar/Navbar.astro'
 import NavLink from '../../components/NavLink/NavLink.astro'
 import NavDropdown from '../../components/NavDropdown/NavDropdown.astro'
@@ -13,173 +13,112 @@ import Link from '../../components/Link/Link.astro'
 import Button from '../../components/Button/Button.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Badge from '../../components/Badge/Badge.astro'
+import type { Action } from '../../sections/_shared/spine.ts'
+import type { NavGroup, NavigationContent } from '../../sections/_shared/navigation.ts'
 
-type Item = { icon: typeof Orbit; title: string; text: string; badge?: string }
-const resources: Item[] = [
-  { icon: Book, title: 'Blog', text: 'The latest industry news and guides, written by our team.' },
-  { icon: Sparkles, title: 'Customer stories', text: 'How teams use the product to grow faster.' },
-  { icon: CirclePlay, title: 'Video tutorials', text: 'Get up and running on new features with short guides.' },
-  { icon: FileCode, title: 'Documentation', text: 'In-depth articles on our tools and technologies.' },
-  { icon: LifeBuoy, title: 'Help and support', text: 'Need help with something? Our team is here around the clock.' },
-  { icon: Code, title: 'API reference', text: 'Reference docs and helpful guides for our API.' },
-  { icon: Box, title: 'Setup 101', text: 'Get up and running fast with our starter guide.' },
-  { icon: Mic, title: 'Mic', text: 'Interviews and talk about the industry and the latest tech.' },
-  { icon: BookOpen, title: 'University', text: 'Free video courses and in-depth articles to master your craft.' },
-  { icon: Layers, title: 'Changelog', text: 'The latest updates and releases from our team.' },
+// One icon set per column, cycling by position.
+const icons = [
+  [Book, Sparkles, CirclePlay],
+  [FileCode, LifeBuoy, Code],
 ]
-const getStarted = ['Getting started', 'Setup 101', 'Community', 'Changelog', 'Tutorials', 'Status']
+// A menu's first group is the intro column of quick links; the rest are columns.
+const groups: NavGroup[] = [
+  { heading: 'Resources', items: [
+    { label: 'Getting started', href: '#' },
+    { label: 'Setup 101', href: '#' },
+    { label: 'Community', href: '#' },
+    { label: 'Changelog', href: '#' },
+    { label: 'Tutorials', href: '#' },
+    { label: 'Status', href: '#' },
+  ] },
+  { heading: 'Resources', items: [
+    { label: 'Blog', href: '#', description: 'The latest industry news and guides, written by our team.' },
+    { label: 'Customer stories', href: '#', description: 'How teams use the product to grow faster.' },
+    { label: 'Video tutorials', href: '#', description: 'Get up and running on new features with short guides.' },
+  ] },
+  { heading: 'Support', items: [
+    { label: 'Documentation', href: '#', description: 'In-depth articles on our tools and technologies.' },
+    { label: 'Help and support', href: '#', description: 'Need help with something? Our team is here around the clock.' },
+    { label: 'API reference', href: '#', description: 'Reference docs and helpful guides for our API.' },
+  ] },
+]
 
-interface Props {
+/** @composable */
+interface Props extends NavigationContent {
   /** The bar's fill: the page, a grey band or the brand colour. */
   background?: 'page' | 'neutral-faded' | 'primary' | undefined
   /** `dark` sets the bar in the dark theme on a light page. */
   theme?: 'dark' | undefined
+  /** The line under the intro column's heading. @category content */
+  introDescription?: string | null
+  /** The solid button under each menu. @category content */
+  footerPrimaryAction?: Action | null
+  /** The outline button under each menu. @category content */
+  footerSecondaryAction?: Action | null
 }
-const { background, theme } = Astro.props
+const {
+  brand = 'Example',
+  links = [
+    { label: 'Products', groups },
+    { label: 'Services', groups },
+    { label: 'Pricing', href: '#' },
+    { label: 'Resources', groups },
+    { label: 'About', href: '#' },
+  ],
+  primaryAction = { label: 'Sign up', href: '#' },
+  secondaryAction = { label: 'Log in', href: '#' },
+  introDescription = 'Get started and learn more about our products.',
+  footerPrimaryAction = { label: 'View all resources', href: '#' },
+  footerSecondaryAction = { label: 'Documentation', href: '#' },
+  background,
+  theme,
+} = Astro.props
 ---
 
 <Navbar background={background} data-theme={theme}>
-  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
-  <NavDropdown label="Products" width="52rem">
+  <Link slot="brand" href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold"><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+  {links.map((l) => {
+    if (!('groups' in l)) return <NavLink href={l.href}>{l.label}</NavLink>
+    const [intro, ...cols] = l.groups
+    return (
+  <NavDropdown label={l.label} width="52rem">
     <div class="grid gap-6 p-4 md:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)]">
-          <div class="flex flex-col gap-4 px-3">
-            <div class="flex flex-col gap-1"><p class="font-semibold">Resources</p><p class="text-sm text-neutral-faded">Get started and learn more about our products.</p></div>
+          {intro && <div class="flex flex-col gap-4 px-3">
+            {(intro.heading || introDescription) && <div class="flex flex-col gap-1">{intro.heading && <p class="font-semibold">{intro.heading}</p>}{introDescription && <p class="text-sm text-neutral-faded">{introDescription}</p>}</div>}
             <ul class="flex list-none flex-col gap-3 p-0 text-sm font-semibold">
-              {getStarted.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}
+              {intro.items.map((s) => <li><Link href={s.href} color="neutral" underline="hover">{s.label}</Link></li>)}
             </ul>
-          </div>
-          <div class="flex flex-col gap-2">
-          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
+          </div>}
+            {cols.map((g, gi) => {
+              const set = icons[gi % icons.length]!
+              return (
+            <div class="flex flex-col gap-2">
+          {g.heading && <p class="px-3 text-sm font-semibold text-primary">{g.heading}</p>}
           <ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(0, 3).map((i) => (
+            {g.items.map((i, n) => {
+              const Icon = set[n % set.length]!
+              return (
               <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                <Link href={i.href} color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
+                  <Icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
                   <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
+                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.label}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
+                    {i.description && <span class="line-clamp-2 text-sm text-neutral-faded">{i.description}</span>}
                   </span>
                 </Link>
               </li>
-            ))}
+            )})}
           </ul>
         </div>
-          <div class="flex flex-col gap-2">
-          <p class="px-3 text-sm font-semibold text-primary">Support</p>
-          <ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(3, 6).map((i) => (
-              <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+            )})}
         </div>
-        </div>
-        <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
-          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
-          <Button href="#" size="small">View all resources</Button>
-        </div>
+        {(footerPrimaryAction || footerSecondaryAction) && <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
+          {footerSecondaryAction && <Button href={footerSecondaryAction.href} variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />{footerSecondaryAction.label}</Button>}
+          {footerPrimaryAction && <Button href={footerPrimaryAction.href} size="small">{footerPrimaryAction.label}</Button>}
+        </div>}
   </NavDropdown>
-  <NavDropdown label="Services" width="52rem">
-    <div class="grid gap-6 p-4 md:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)]">
-          <div class="flex flex-col gap-4 px-3">
-            <div class="flex flex-col gap-1"><p class="font-semibold">Resources</p><p class="text-sm text-neutral-faded">Get started and learn more about our products.</p></div>
-            <ul class="flex list-none flex-col gap-3 p-0 text-sm font-semibold">
-              {getStarted.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}
-            </ul>
-          </div>
-          <div class="flex flex-col gap-2">
-          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
-          <ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(0, 3).map((i) => (
-              <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-          <div class="flex flex-col gap-2">
-          <p class="px-3 text-sm font-semibold text-primary">Support</p>
-          <ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(3, 6).map((i) => (
-              <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        </div>
-        <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
-          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
-          <Button href="#" size="small">View all resources</Button>
-        </div>
-  </NavDropdown>
-  <NavLink href="#">Pricing</NavLink>
-  <NavDropdown label="Resources" width="52rem">
-    <div class="grid gap-6 p-4 md:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)]">
-          <div class="flex flex-col gap-4 px-3">
-            <div class="flex flex-col gap-1"><p class="font-semibold">Resources</p><p class="text-sm text-neutral-faded">Get started and learn more about our products.</p></div>
-            <ul class="flex list-none flex-col gap-3 p-0 text-sm font-semibold">
-              {getStarted.map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}
-            </ul>
-          </div>
-          <div class="flex flex-col gap-2">
-          <p class="px-3 text-sm font-semibold text-primary">Resources</p>
-          <ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(0, 3).map((i) => (
-              <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-          <div class="flex flex-col gap-2">
-          <p class="px-3 text-sm font-semibold text-primary">Support</p>
-          <ul class="list-none p-0 flex flex-col gap-0.5">
-            {resources.slice(3, 6).map((i) => (
-              <li>
-                <Link href="#" color="inherit" underline="none" class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-neutral-faded">
-                  <i.icon class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                  <span class="flex flex-col gap-1">
-                    <span class="flex flex-wrap items-center gap-2 font-semibold">{i.title}{i.badge && <Badge size="small" color={i.badge === 'New' ? 'neutral' : 'positive'} variant="faded">{i.badge}</Badge>}</span>
-                    <span class="line-clamp-2 text-sm text-neutral-faded">{i.text}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        </div>
-        <div class="flex flex-col gap-3 border-t border-neutral bg-neutral-faded px-4 py-3 sm:flex-row sm:justify-end md:px-6">
-          <Button href="#" variant="outline" color="neutral" size="small"><BookOpen slot="start" aria-hidden="true" />Documentation</Button>
-          <Button href="#" size="small">View all resources</Button>
-        </div>
-  </NavDropdown>
-  <NavLink href="#">About</NavLink>
-  <Button slot="actions" href="#" variant="outline" color="neutral" size="small">Log in</Button>
-  <Button slot="actions" href="#" size="small">Sign up</Button>
+    )
+  })}
+  {secondaryAction && <Button slot="actions" href={secondaryAction.href} variant="outline" color="neutral" size="small">{secondaryAction.label}</Button>}
+  {primaryAction && <Button slot="actions" href={primaryAction.href} size="small">{primaryAction.label}</Button>}
 </Navbar>

@@ -6,18 +6,26 @@
  * @order 6
  */
 import Section from '../../components/Section/Section.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { SocialProofContent } from '../../sections/_shared/social-proof.ts'
 
+/** @composable */
+interface Props extends SocialProofContent {}
+
+const {
+  heading = "We've been mentioned in the press",
+  label = 'Press mentions',
+  logos = ['The Morning Ledger', 'Northline Times', 'Signal Weekly', 'The Field Report', 'Metro Wire'],
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-8">
-    <p class="text-center font-medium text-neutral-faded">We've been mentioned in the press</p>
-    <ul aria-label="Press mentions" class="flex flex-col items-center gap-x-8 gap-y-4 md:flex-row md:flex-wrap md:justify-center xl:gap-x-12">
-      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl text-neutral">The Morning Ledger</li>
-      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl text-neutral">Northline Times</li>
-      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl text-neutral">Signal Weekly</li>
-      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl text-neutral">The Field Report</li>
-      <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl text-neutral">Metro Wire</li>
-    </ul>
+    {heading && <p class="text-center font-medium text-neutral-faded">{plain(heading)}</p>}
+    {logos && (
+      <ul aria-label={label} class="flex flex-col items-center gap-x-8 gap-y-4 md:flex-row md:flex-wrap md:justify-center xl:gap-x-12">
+        {logos.map((name) => <li class="font-serif text-2xl font-semibold tracking-tight italic md:text-3xl text-neutral">{name}</li>)}
+      </ul>
+    )}
   </div>
 </Section>

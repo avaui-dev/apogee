@@ -9,33 +9,48 @@ import { Brain, Smartphone } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain, type Action } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Apps', links: ['Ad resizer', 'Background remover', 'Colourways', 'Material swap', 'Object remover'] },
-  { heading: 'Models', links: ['Model 4.0', 'Model 3.0', 'Image edit', 'Custom models'] },
-  { heading: 'Product', links: ['Home', 'API', 'Pricing', 'Enterprise', 'Careers', 'Blog'] },
-  { heading: 'Social', links: ['Updates', 'Videos', 'Photos', 'Community'] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** App buttons under the line. @category content */
+  apps?: Action[] | null
+}
+
+const {
+  brand = 'Imagery',
+  tagline = 'One platform for the work from prompt to production.',
+  columns = [
+    { heading: 'Apps', links: [{ label: 'Ad resizer', href: '#' }, { label: 'Background remover', href: '#' }, { label: 'Colourways', href: '#' }, { label: 'Material swap', href: '#' }, { label: 'Object remover', href: '#' }] },
+    { heading: 'Models', links: [{ label: 'Model 4.0', href: '#' }, { label: 'Model 3.0', href: '#' }, { label: 'Image edit', href: '#' }, { label: 'Custom models', href: '#' }] },
+    { heading: 'Product', links: [{ label: 'Home', href: '#' }, { label: 'API', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Enterprise', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Blog', href: '#' }] },
+    { heading: 'Social', links: [{ label: 'Updates', href: '#' }, { label: 'Videos', href: '#' }, { label: 'Photos', href: '#' }, { label: 'Community', href: '#' }] },
+  ],
+  copyright = '© 2026 Imagery, Inc. All rights reserved.',
+  legal = [{ label: 'Terms of service', href: '#' }, { label: 'privacy policy', href: '#' }],
+  apps = [{ label: 'Phone app', href: '#' }],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="none" container={false} class="overflow-hidden" style="background: linear-gradient(to bottom, var(--background-page) 40%, color-mix(in oklab, var(--background-primary) 10%, var(--background-page)) 70%, color-mix(in oklab, var(--background-primary) 45%, var(--background-page)))">
   <div class="mx-auto max-w-6xl px-gutter pt-(--spacing-section-lg)">
     <div class="grid gap-12 lg:grid-cols-[1.5fr_repeat(4,1fr)]">
       <div class="flex flex-col items-start gap-4">
-        <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-2xl"><Brain class="size-7" aria-hidden="true" />Imagery</Link>
-        <p class="max-w-56 text-neutral-faded">One platform for the work from prompt to production.</p>
-        <Button href="#" rounded variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />Phone app</Button>
+        <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-2xl"><Brain class="size-7" aria-hidden="true" />{brand}</Link>
+        {tagline && <p class="max-w-56 text-neutral-faded">{plain(tagline)}</p>}
+        {apps && apps.map((a) => <Button href={a.href} rounded variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />{a.label}</Button>)}
       </div>
       {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="font-medium">{c.heading}</p>
-          <ul class="mt-3 flex list-none flex-col gap-2 p-0">{c.links.map((l) => <li><Link href="#" color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l}</Link></li>)}</ul>
+          <ul class="mt-3 flex list-none flex-col gap-2 p-0">{c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover" class="text-neutral-faded hover:text-neutral">{l.label}</Link></li>)}</ul>
         </nav>
       ))}
     </div>
-    <p class="mt-16 border-t border-neutral-faded pt-12 text-neutral-faded">© 2026 Imagery, Inc. All rights reserved. <Link href="#" color="neutral">Terms of service</Link> and <Link href="#" color="neutral">privacy policy</Link>.</p>
+    <p class="mt-16 border-t border-neutral-faded pt-12 text-neutral-faded">{copyright}{legal && legal.length > 0 && <> {legal.map((l, i) => <>{i > 0 && ' and '}<Link href={l.href} color="neutral">{l.label}</Link></>)}.</>}</p>
   </div>
   <div class="@container mt-12 px-gutter">
-    <p class="whitespace-nowrap text-[29.6cqi] font-medium leading-[0.8] tracking-tight text-[color-mix(in_oklab,var(--background-primary)_30%,var(--background-page))] [margin-bottom:-0.2em]" aria-hidden="true">Imagery</p>
+    <p class="whitespace-nowrap text-[29.6cqi] font-medium leading-[0.8] tracking-tight text-[color-mix(in_oklab,var(--background-primary)_30%,var(--background-page))] [margin-bottom:-0.2em]" aria-hidden="true">{brand}</p>
   </div>
 </Section>

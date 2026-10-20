@@ -12,82 +12,75 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
+import { accentRuns, plain } from '../../sections/_shared/spine.ts'
+import type { PricingContent } from '../../sections/_shared/pricing.ts'
 
-interface Props {
+/** @composable */
+interface Props extends PricingContent {
   /** 1 when the block opens a page; its items move one level down with it. */
   headingLevel?: 1 | 2
+  /** The small label over each features list. @category content */
+  featuresLabel?: string | null
+  /** The line under that label, one per plan in order; *asterisks* bold a part. @category content */
+  featuresIntros?: string[]
 }
-const { headingLevel = 2 } = Astro.props
+
+const {
+  headingLevel = 2,
+  eyebrow = 'Pricing',
+  heading = 'Plans that fit your scale',
+  description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.',
+  periodLabel = 'Billing period',
+  periods = { monthly: 'Monthly', annual: 'Annual (save 20%)' },
+  items = [
+    { name: 'Basic plan', price: '$10', annualPrice: '$9', period: 'month', description: 'Our most popular plan for small teams.', features: ['Access to basic features', 'Attend events', 'Basic reporting and analytics', 'Automatic updates', 'Up to 10 individual users', 'Back up your account', '20 GB individual data', 'Audit log and notes', 'Basic chat support', 'Feature requests'], action: { label: 'Get started', href: '#' } },
+    { name: 'Business plan', price: '$20', annualPrice: '$15', period: 'month', description: 'Advanced features and reporting.', features: ['200+ integrations', 'Advanced custom fields', 'Advanced reporting', 'Audit log and data history', 'Up to 20 individual users', 'Back up your account', '40 GB individual data', 'Personalised service', 'Priority chat support', 'And much more'], action: { label: 'Get started', href: '#' }, badge: 'Popular' },
+  ],
+  featuresLabel = 'Features',
+  featuresIntros = ['Everything in our *free* plan, plus:', 'Everything in our *Basic* plan, plus:'],
+} = Astro.props
 const itemLevel = headingLevel === 1 ? (2 as const) : (3 as const)
+// '$10' → '$' (set small) and '10'; the monthly price's currency serves both.
+const split = (price: string) => price.match(/^(\D*)(.*)$/)!.slice(1) as [string, string]
 ---
 
 <Section spacing="large">
   <div class="group/pricing flex flex-col gap-12 md:gap-16">
     <div class="flex flex-col items-stretch gap-8 sm:items-center md:gap-12">
-      <SectionHeader headingLevel={headingLevel} eyebrow="Pricing" heading="Plans that fit your scale" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" />
-      <SegmentedControl name="billing" options={[{ label: 'Monthly', value: 'monthly' }, { label: 'Annual (save 20%)', value: 'annual' }]} value="monthly" aria-label="Billing period" size="large" />
+      <SectionHeader headingLevel={headingLevel} eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
+      <SegmentedControl name="billing" options={[{ label: periods.monthly, value: 'monthly' }, { label: periods.annual, value: 'annual' }]} value="monthly" aria-label={periodLabel} size="large" />
     </div>
     <div class="mx-auto grid w-full max-w-xl gap-8 xl:max-w-none xl:grid-cols-2">
+    {items.map((plan, i) => {
+      const intro = featuresIntros[i]
+      const [currency, amount] = split(plan.price)
+      const annual = split(plan.annualPrice ?? plan.price)[1]
+      return (
     <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
       <div class="flex flex-col-reverse gap-6 p-6 md:flex-row md:justify-between md:p-8">
         <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-2"><Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5">Basic plan</Heading></div>
-          <p class="text-neutral-faded">Our most popular plan for small teams.</p>
+          <div class="flex items-center gap-2"><Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5">{plan.name}</Heading>{(plan.badge || plan.featured) && <Badge color="primary" rounded>{plan.badge ?? 'Popular'}</Badge>}</div>
+          <p class="text-neutral-faded">{plan.description}</p>
         </div>
-        <p class="flex items-start gap-1"><span class="mt-2 text-2xl font-semibold">$</span><span class="text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">10</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">9</span></span><span class="self-end pb-2 text-neutral-faded">per month</span></p>
+        <p class="flex items-start gap-1">{currency && <span class="mt-2 text-2xl font-semibold">{currency}</span>}<span class="text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">{amount}</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">{annual}</span></span>{plan.period && <span class="self-end pb-2 text-neutral-faded">per {plan.period}</span>}</p>
       </div>
       <div class="flex flex-col gap-6 border-t border-neutral p-6 md:p-8">
+        {(featuresLabel || intro) && (
         <div class="flex flex-col gap-1">
-          <p class="font-semibold">Features</p>
-          <p class="text-neutral-faded">Everything in our <strong class="font-semibold text-neutral">free</strong> plan, plus:</p>
+          {featuresLabel && <p class="font-semibold">{featuresLabel}</p>}
+          {intro && <p class="text-neutral-faded">{accentRuns(intro).map((r) => (r.accent ? <strong class="font-semibold text-neutral">{r.text}</strong> : r.text))}</p>}
         </div>
+        )}
       <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded md:grid md:grid-cols-2 md:gap-x-8">
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Access to basic features</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Attend events</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Basic reporting and analytics</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Automatic updates</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Up to 10 individual users</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Back up your account</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>20 GB individual data</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Audit log and notes</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Basic chat support</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Feature requests</span></li>
+        {plan.features.map((f) => <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>{f}</span></li>)}
       </ul>
       </div>
       <div class="border-t border-neutral p-6 md:px-8">
-        <Button href="#" size="large" fullWidth>Get started</Button>
+        <Button href={plan.action.href} size="large" fullWidth>{plan.action.label}</Button>
       </div>
     </div>
-    <div class="flex flex-col overflow-hidden rounded-2xl bg-elevation-raised shadow-raised ring-1 ring-neutral">
-      <div class="flex flex-col-reverse gap-6 p-6 md:flex-row md:justify-between md:p-8">
-        <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-2"><Heading as={itemLevel === 2 ? 'h2' : 'h3'} size="h5">Business plan</Heading><Badge color="primary" rounded>Popular</Badge></div>
-          <p class="text-neutral-faded">Advanced features and reporting.</p>
-        </div>
-        <p class="flex items-start gap-1"><span class="mt-2 text-2xl font-semibold">$</span><span class="text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">20</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">15</span></span><span class="self-end pb-2 text-neutral-faded">per month</span></p>
-      </div>
-      <div class="flex flex-col gap-6 border-t border-neutral p-6 md:p-8">
-        <div class="flex flex-col gap-1">
-          <p class="font-semibold">Features</p>
-          <p class="text-neutral-faded">Everything in our <strong class="font-semibold text-neutral">Basic</strong> plan, plus:</p>
-        </div>
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded md:grid md:grid-cols-2 md:gap-x-8">
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>200+ integrations</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Advanced custom fields</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Advanced reporting</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Audit log and data history</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Up to 20 individual users</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Back up your account</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>40 GB individual data</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Personalised service</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>Priority chat support</span></li>
-        <li class="flex gap-3"><span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-positive-faded text-positive"><Check class="size-4" aria-hidden="true" /></span><span>And much more</span></li>
-      </ul>
-      </div>
-      <div class="border-t border-neutral p-6 md:px-8">
-        <Button href="#" size="large" fullWidth>Get started</Button>
-      </div>
-    </div>
+      )
+    })}
     </div>
   </div>
 </Section>

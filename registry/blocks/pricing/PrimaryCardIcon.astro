@@ -12,64 +12,51 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { PricingContent } from '../../sections/_shared/pricing.ts'
 
+/** @composable */
+interface Props extends PricingContent {}
+
+const {
+  eyebrow,
+  heading = 'Pricing plans',
+  description = 'Simple, transparent pricing that grows with you. Try any plan free for 30 days.',
+  periodLabel = 'Billing period',
+  periods = { monthly: 'Monthly billing', annual: 'Annual billing' },
+  items = [
+    { name: 'Basic plan', price: '$10', annualPrice: '$9', period: 'mth', description: 'Billed annually.', features: ['Access to all basic features', 'Basic reporting and analytics', 'Up to 10 individual users', '20 GB individual data', 'Basic chat and email support'], action: { label: 'Get started', href: '#' } },
+    { name: 'Business plan', price: '$20', annualPrice: '$15', period: 'mth', description: 'Billed annually.', features: ['200+ integrations', 'Advanced reporting and analytics', 'Up to 20 individual users', '40 GB individual data', 'Priority chat and email support'], action: { label: 'Get started', href: '#' } },
+    { name: 'Enterprise plan', price: '$40', annualPrice: '$39', period: 'mth', description: 'Billed annually.', features: ['Advanced custom fields', 'Audit log and data history', 'Unlimited individual users', 'Unlimited individual data', 'Personalised and priority service'], action: { label: 'Get started', href: '#' } },
+  ],
+} = Astro.props
+const icons = [Zap, Layers2, Layers3]
 ---
 
 <Section spacing="large">
   <div class="group/pricing flex flex-col gap-12 md:gap-16">
     <div class="flex flex-col items-stretch gap-8 sm:items-center md:gap-12">
-      <SectionHeader heading="Pricing plans" description="Simple, transparent pricing that grows with you. Try any plan free for 30 days." size="large" align="center" />
-      <SegmentedControl name="billing" options={[{ label: 'Monthly billing', value: 'monthly' }, { label: 'Annual billing', value: 'annual' }]} value="monthly" aria-label="Billing period" size="large" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" />
+      <SegmentedControl name="billing" options={[{ label: periods.monthly, value: 'monthly' }, { label: periods.annual, value: 'annual' }]} value="monthly" aria-label={periodLabel} size="large" />
     </div>
     <div class="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3 items-end">
+    {items.map((plan, i) => {
+      const Icon = icons[i % icons.length]!
+      return (
     <div class="flex flex-col gap-8 bg-primary-faded px-6 py-8 md:px-8 md:py-10">
       <div class="flex flex-col items-center gap-3 text-center">
-        <FeaturedIcon theme="solid" color="primary" size="large"><Zap /></FeaturedIcon>
-        <Heading as="h3" size="h5" class="text-primary">Basic plan</Heading>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$10</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$9</span></span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Billed annually.</p>
+        <FeaturedIcon theme="solid" color="primary" size="large"><Icon /></FeaturedIcon>
+        <Heading as="h3" size="h5" class="text-primary">{plan.name}</Heading>
+        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">{plan.price}</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">{plan.annualPrice ?? plan.price}</span></span>{plan.period && <span class="text-neutral-faded">/{plan.period}</span>}</p>
+        <p class="text-neutral-faded">{plan.description}</p>
       </div>
       <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded flex-1">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Access to all basic features</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Basic reporting and analytics</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Up to 10 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>20 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Basic chat and email support</span></li>
+        {plan.features.map((f) => <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>{f}</span></li>)}
       </ul>
-      <Button href="#" size="large" fullWidth>Get started</Button>
+      <Button href={plan.action.href} size="large" fullWidth>{plan.action.label}</Button>
     </div>
-    <div class="flex flex-col gap-8 bg-primary-faded px-6 py-8 md:px-8 md:py-10">
-      <div class="flex flex-col items-center gap-3 text-center">
-        <FeaturedIcon theme="solid" color="primary" size="large"><Layers2 /></FeaturedIcon>
-        <Heading as="h3" size="h5" class="text-primary">Business plan</Heading>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$20</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$15</span></span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Billed annually.</p>
-      </div>
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded flex-1">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>200+ integrations</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Advanced reporting and analytics</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Up to 20 individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>40 GB individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Priority chat and email support</span></li>
-      </ul>
-      <Button href="#" size="large" fullWidth>Get started</Button>
-    </div>
-    <div class="flex flex-col gap-8 bg-primary-faded px-6 py-8 md:px-8 md:py-10">
-      <div class="flex flex-col items-center gap-3 text-center">
-        <FeaturedIcon theme="solid" color="primary" size="large"><Layers3 /></FeaturedIcon>
-        <Heading as="h3" size="h5" class="text-primary">Enterprise plan</Heading>
-        <p class="flex items-baseline justify-center gap-1"><span class="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums"><span class="group-has-[[value=annual]:checked]/pricing:hidden">$40</span><span class="hidden group-has-[[value=annual]:checked]/pricing:inline">$39</span></span><span class="text-neutral-faded">/mth</span></p>
-        <p class="text-neutral-faded">Billed annually.</p>
-      </div>
-      <ul class="flex list-none flex-col gap-4 p-0 text-neutral-faded flex-1">
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Advanced custom fields</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Audit log and data history</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Unlimited individual users</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Unlimited individual data</span></li>
-        <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" /><span>Personalised and priority service</span></li>
-      </ul>
-      <Button href="#" size="large" fullWidth>Get started</Button>
-    </div>
+      )
+    })}
   </div>
   </div>
 </Section>

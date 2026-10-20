@@ -11,24 +11,42 @@ import Button from '../../components/Button/Button.astro'
 import Input from '../../components/Input/Input.astro'
 import Link from '../../components/Link/Link.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain, type Media } from '../../sections/_shared/spine.ts'
+import type { NewsletterContent } from '../../sections/_shared/newsletter.ts'
 
+/** @composable */
+interface Props extends NewsletterContent {
+  /** The phone behind the main one. @category content */
+  secondaryMedia?: Media | null
+}
+
+const {
+  eyebrow,
+  heading = 'Be the first to know when we launch',
+  description = 'We\'re still building. Subscribe for updates and 20% off when we launch. No spam, we promise!',
+  submitLabel = 'Subscribe',
+  media = { src: '/mockups/app-phone-light.jpg', srcDark: '/mockups/app-phone-dark.jpg', alt: 'The dashboard overview on a phone' },
+  secondaryMedia = { src: '/mockups/app-customers-phone-light.jpg', srcDark: '/mockups/app-customers-phone-dark.jpg', alt: 'The customer list on a phone' },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="flex flex-col items-start gap-8 md:gap-12">
-      <SectionHeader heading="Be the first to know when we launch" description="We're still building. Subscribe for updates and 20% off when we launch. No spam, we promise!" size="large" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" />
       <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
-        <Button type="submit" size="large">Subscribe</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>
     </div>
+    {media && (
     <div class="relative flex min-h-90 justify-center gap-0 overflow-hidden rounded-2xl bg-neutral-faded pt-8 md:min-h-128 md:pt-12">
-      <DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customer list on a phone" class="relative mt-12 w-52 -me-8 md:w-60" />
-      <DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="relative w-52 md:w-60" />
+      {secondaryMedia && <DeviceFrame device="phone" src={secondaryMedia.src} srcDark={secondaryMedia.srcDark} alt={secondaryMedia.alt} width={secondaryMedia.width} height={secondaryMedia.height} class="relative mt-12 w-52 -me-8 md:w-60" />}
+      <DeviceFrame device="phone" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height} class="relative w-52 md:w-60" />
     </div>
+    )}
   </div>
 </Section>

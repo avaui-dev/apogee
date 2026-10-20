@@ -5,24 +5,35 @@
  * @block contact
  * @order 9
  */
-import { Mail, MapPin, Phone } from '@lucide/astro'
+import { LifeBuoy, Mail, MapPin, MessageCircle, MessagesSquare, Phone } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import ContactMethod from '../../components/ContactMethod/ContactMethod.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContactContent } from '../../sections/_shared/contact.ts'
 
-const methods = [
-  { icon: Mail, title: 'Email', description: "Our friendly team is here to help.", link: { label: 'hi@example.com', href: 'mailto:hi@example.com' } },
-  { icon: MapPin, title: 'Office', description: "Come say hello at our office HQ.", link: { label: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' } },
-  { icon: Phone, title: 'Phone', description: "Mon–Fri from 8am to 5pm.", link: { label: '+1 (555) 000-0000', href: 'tel:+15550000000' } },
-]
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const
+
+/** @composable */
+interface Props extends ContactContent {}
+
+const {
+  heading = 'Ways to get in touch',
+  details = [
+    { icon: 'mail', label: 'Email', description: 'Our friendly team is here to help.', value: 'hi@example.com', href: 'mailto:hi@example.com' },
+    { icon: 'map-pin', label: 'Office', description: 'Come say hello at our office HQ.', value: '100 Flinders Street, Melbourne VIC 3000 AU', href: '#map' },
+    { icon: 'phone', label: 'Phone', description: 'Mon–Fri from 8am to 5pm.', value: '+1 (555) 000-0000', href: 'tel:+15550000000' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="large" aria-label="Contact">
   {/* The block has no visible heading; this one keeps the items one level under it. */}
-  <h2 class="sr-only">Ways to get in touch</h2>
-  <ul class="list-none p-0 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-    {methods.map((m) => (
-      <li><ContactMethod title={m.title} description={m.description} link={m.link} align="center"><FeaturedIcon slot="icon" theme="outline" color="neutral"><m.icon /></FeaturedIcon></ContactMethod></li>
-    ))}
-  </ul>
+  <h2 class="sr-only">{plain(heading)}</h2>
+  {details && <ul class="list-none p-0 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    {details.map((d) => {
+      const Icon = icons[d.icon]
+      return <li><ContactMethod title={d.label} description={d.description} link={d.href ? { label: d.value, href: d.href } : undefined} align="center"><FeaturedIcon slot="icon" theme="outline" color="neutral"><Icon /></FeaturedIcon>{!d.href && <p>{d.value}</p>}</ContactMethod></li>
+    })}
+  </ul>}
 </Section>

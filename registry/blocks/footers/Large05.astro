@@ -14,34 +14,50 @@ import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import { type Action } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
-  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
-  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
-  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
-  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
-  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** The pill link with avatars. @category content */
+  joinLink?: Action | null
+}
+
+const {
+  brand = 'Example',
+  newsletterHeading = 'Join our newsletter',
+  newsletterDescription = "We'll send you one short letter a week. No spam.",
+  submitLabel = 'Subscribe',
+  columns = [
+    { heading: 'Product', links: [{ label: 'Overview', href: '#' }, { label: 'Features', href: '#' }, { label: 'Solutions', href: '#', badge: 'New' }, { label: 'Tutorials', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Releases', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'About us', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Press', href: '#' }, { label: 'News', href: '#' }, { label: 'Media kit', href: '#' }, { label: 'Contact', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'Newsletter', href: '#' }, { label: 'Events', href: '#' }, { label: 'Help centre', href: '#' }, { label: 'Tutorials', href: '#' }, { label: 'Support', href: '#' }] },
+    { heading: 'Use cases', links: [{ label: 'Startups', href: '#' }, { label: 'Enterprise', href: '#' }, { label: 'Government', href: '#' }, { label: 'SaaS centre', href: '#' }, { label: 'Marketplaces', href: '#' }, { label: 'Ecommerce', href: '#' }] },
+    { heading: 'Community', links: [{ label: 'Forum', href: '#' }, { label: 'Meetups', href: '#' }, { label: 'Changelog', href: '#' }, { label: 'Status', href: '#' }, { label: 'Partners', href: '#' }, { label: 'Developers', href: '#' }] },
+    { heading: 'Legal', links: [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }, { label: 'Licences', href: '#' }, { label: 'Settings', href: '#' }, { label: 'Contact', href: '#' }] },
+  ],
+  copyright = '© 2026 Example. All rights reserved.',
+  joinLink = { label: 'Join 2,000+ companies', href: '#' },
+} = Astro.props
 ---
 
 <Section as="footer" spacing="medium">
   <div class="flex flex-col gap-8 border-b border-neutral pb-12 md:pb-16 lg:flex-row lg:items-center lg:justify-between">
     <div class="flex flex-col gap-5">
       <div class="flex flex-col gap-3 items-start">
-      <Heading as="h2" size="h5">Join our newsletter</Heading>
-      <p class="text-lg text-neutral-faded">We'll send you one short letter a week. No spam.</p>
+      {newsletterHeading && <Heading as="h2" size="h5">{newsletterHeading}</Heading>}
+      {newsletterDescription && <p class="text-lg text-neutral-faded">{newsletterDescription}</p>}
     </div>
-      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-3 self-start rounded-full py-1 ps-1 pe-3 text-sm font-semibold ring-1 ring-neutral">
+      {joinLink && <Link href={joinLink.href} color="inherit" underline="none" class="inline-flex items-center gap-3 self-start rounded-full py-1 ps-1 pe-3 text-sm font-semibold ring-1 ring-neutral">
         <span aria-hidden="true"><AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }]} size="small" /></span>
-        Join 2,000+ companies
+        {joinLink.label}
         <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
-      </Link>
+      </Link>}
     </div>
     <div class="flex flex-col gap-4 ">
       <form method="post" class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="sm:w-64" />
-        <Button type="submit">Subscribe</Button>
+        <Button type="submit">{submitLabel}</Button>
       </form>
     </div>
   </div>
@@ -52,7 +68,7 @@ const columns = [
           <ul class="mt-4 flex list-none flex-col gap-3 p-0">
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
-                <Link href="#" color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
+                <Link href={l.href} color="neutral" underline="hover" class="font-semibold">{l.label}</Link>
                 {l.badge && <Badge size="small" variant="faded" color="primary">{l.badge}</Badge>}
               </li>
             ))}
@@ -61,7 +77,7 @@ const columns = [
       ))}
     </div>
   <div class="mt-12 md:mt-16 flex flex-col gap-6 border-t border-neutral pt-8 md:flex-row md:items-center md:justify-between">
-    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>Example</Link>
-    <p class="text-neutral-faded ">© 2026 Example. All rights reserved.</p>
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="primary" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+    {copyright && <p class="text-neutral-faded ">{copyright}</p>}
   </div>
 </Section>

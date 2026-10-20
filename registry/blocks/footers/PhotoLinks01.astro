@@ -7,42 +7,71 @@
  */
 import Section from '../../components/Section/Section.astro'
 import Link from '../../components/Link/Link.astro'
+import { type Action } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const promises = [
-  ['Free shipping', 'on orders over $200 at home.'],
-  ['Made locally', 'with fabrics from mills we know by name.'],
-  ['Sign up', 'and get 10% off your first order.'],
-  ['Secure payments', 'with every major card and wallet.'],
-]
-const photos = [['Shop all', 1005], ['Journal', 1018], ['Materials', 1031], ['Support', 1048], ['About', 1062], ['Contact', 1067]] as const
+/** @composable */
+interface Props extends FooterContent {
+  /** The row of short promises along the top. @category content */
+  promises?: { title: string; description: string }[] | null
+  /** Photo links with captions; `src` is the photo. @category content */
+  photos?: (Action & { src: string })[] | null
+}
+
+const {
+  brand = 'Hollis Ward',
+  newsletterHeading = 'Newsletter',
+  newsletterDescription = 'Sign up and get 10% off your first order.',
+  submitLabel = 'Submit',
+  columns = [
+    { heading: 'Support', links: [{ label: 'Legal', href: '#' }, { label: 'Questions', href: '#' }, { label: 'Contact', href: '#' }, { label: 'Book a fitting', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'Contact', href: '#' }, { label: 'About', href: '#' }, { label: 'Journal', href: '#' }] },
+  ],
+  copyright = '© 2026 Hollis Ward',
+  legal = [{ label: 'Terms and privacy', href: '#' }, { label: 'Credits', href: '#' }],
+  promises = [
+    { title: 'Free shipping', description: 'on orders over $200 at home.' },
+    { title: 'Made locally', description: 'with fabrics from mills we know by name.' },
+    { title: 'Sign up', description: 'and get 10% off your first order.' },
+    { title: 'Secure payments', description: 'with every major card and wallet.' },
+  ],
+  photos = [
+    { label: 'Shop all', href: '#', src: 'https://picsum.photos/id/1005/320/400?grayscale' },
+    { label: 'Journal', href: '#', src: 'https://picsum.photos/id/1018/320/400?grayscale' },
+    { label: 'Materials', href: '#', src: 'https://picsum.photos/id/1031/320/400?grayscale' },
+    { label: 'Support', href: '#', src: 'https://picsum.photos/id/1048/320/400?grayscale' },
+    { label: 'About', href: '#', src: 'https://picsum.photos/id/1062/320/400?grayscale' },
+    { label: 'Contact', href: '#', src: 'https://picsum.photos/id/1067/320/400?grayscale' },
+  ],
+} = Astro.props
 ---
 
 <Section as="footer" spacing="medium" containerWidth="full" class="text-sm">
-  <ul class="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4">
-    {promises.map(([t, d]) => <li class="grid grid-cols-[8rem_1fr] gap-3"><span class="uppercase">{t}</span><span class="text-neutral-faded">{d}</span></li>)}
-  </ul>
+  {promises && <ul class="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4">
+    {promises.map((p) => <li class="grid grid-cols-[8rem_1fr] gap-3"><span class="uppercase">{p.title}</span><span class="text-neutral-faded">{p.description}</span></li>)}
+  </ul>}
 
-  <ul class="mx-auto mt-16 grid max-w-5xl list-none grid-cols-3 gap-3 p-0 md:grid-cols-6">
-    {photos.map(([label, id]) => (
-      <li><Link href="#" color="neutral" underline="hover" class="group flex flex-col gap-2">
-        <img src={`https://picsum.photos/id/${id}/320/400?grayscale`} alt="" loading="lazy" class="aspect-4/5 w-full object-cover opacity-80 transition-opacity duration-(--duration-fast) group-hover:opacity-100" />{label}
+  {photos && <ul class="mx-auto mt-16 grid max-w-5xl list-none grid-cols-3 gap-3 p-0 md:grid-cols-6">
+    {photos.map((p) => (
+      <li><Link href={p.href} color="neutral" underline="hover" class="group flex flex-col gap-2">
+        <img src={p.src} alt="" loading="lazy" class="aspect-4/5 w-full object-cover opacity-80 transition-opacity duration-(--duration-fast) group-hover:opacity-100" />{p.label}
       </Link></li>
     ))}
-  </ul>
+  </ul>}
 
   <div class="mt-16 grid items-start gap-10 md:grid-cols-2 lg:grid-cols-[1fr_1fr_auto_1fr_1fr]">
-    <nav aria-label="Support" class="grid grid-cols-[5rem_1fr] gap-3"><span class="uppercase">Support</span><ul class="flex list-none flex-col p-0">{['Legal', 'Questions', 'Contact', 'Book a fitting'].map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul></nav>
+    {columns.slice(0, 1).map((c) => <nav aria-label={c.heading} class="grid grid-cols-[5rem_1fr] gap-3"><span class="uppercase">{c.heading}</span><ul class="flex list-none flex-col p-0">{c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}</ul></nav>)}
     <form class="flex max-w-xs flex-col gap-1" onsubmit="return false">
-      <span class="uppercase">Newsletter</span>
-      <span class="text-neutral-faded">Sign up and get 10% off your first order.</span>
+      {newsletterHeading && <span class="uppercase">{newsletterHeading}</span>}
+      {newsletterDescription && <span class="text-neutral-faded">{newsletterDescription}</span>}
       <span class="mt-2 flex items-end gap-3">
         <label for="photo-links-email" class="sr-only">Email</label>
         <input id="photo-links-email" type="email" placeholder="Email" autocomplete="email" class="min-w-0 flex-1 border-b border-neutral bg-transparent py-1 outline-none placeholder:text-neutral-faded focus-visible:border-primary" />
-        <button type="submit" class="underline underline-offset-4">Submit</button>
+        <button type="submit" class="underline underline-offset-4">{submitLabel}</button>
       </span>
     </form>
-    <p class="text-3xl tracking-tight md:col-span-2 lg:col-span-1 lg:justify-self-center">Hollis Ward</p>
-    <nav aria-label="Company" class="grid grid-cols-[5rem_1fr] gap-3"><span class="uppercase">Company</span><ul class="flex list-none flex-col p-0">{['Contact', 'About', 'Journal'].map((l) => <li><Link href="#" color="neutral" underline="hover">{l}</Link></li>)}</ul></nav>
-    <div class="flex flex-col gap-6"><ul class="flex list-none flex-col p-0"><li>Currency: <Link href="#" color="neutral">USD</Link></li><li><Link href="#" color="neutral" underline="hover">Terms and privacy</Link></li><li><Link href="#" color="neutral" underline="hover">Credits</Link></li></ul><p class="text-neutral-faded">© 2026 Hollis Ward</p></div>
+    <p class="text-3xl tracking-tight md:col-span-2 lg:col-span-1 lg:justify-self-center">{brand}</p>
+    {columns.slice(1).map((c) => <nav aria-label={c.heading} class="grid grid-cols-[5rem_1fr] gap-3"><span class="uppercase">{c.heading}</span><ul class="flex list-none flex-col p-0">{c.links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}</ul></nav>)}
+    <div class="flex flex-col gap-6"><ul class="flex list-none flex-col p-0"><li>Currency: <Link href="#" color="neutral">USD</Link></li>{legal && legal.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}</ul>{copyright && <p class="text-neutral-faded">{copyright}</p>}</div>
   </div>
 </Section>

@@ -7,10 +7,12 @@
  */
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
-import JobCard, { type Job } from '../../components/JobCard/JobCard.astro'
+import JobCard from '../../components/JobCard/JobCard.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { CareersContent, Job } from '../../sections/_shared/careers.ts'
 import Image from '../../components/Image/Image.astro'
 
-const jobs: Job[] = [
+const demoJobs: Job[] = [
   {
     title: 'Product Designer',
     href: '#',
@@ -51,37 +53,28 @@ const jobs: Job[] = [
     salary: '90k – 120k',
     badge: { label: 'Sales', color: 'warning' },
   },
-  {
-    title: 'Content Marketing Lead',
-    href: '#',
-    description: "Write and plan the guides, notes and case studies people share.",
-    department: 'Marketing',
-    location: 'Remote',
-    type: 'Part-time',
-    salary: '60k – 80k',
-    badge: { label: 'Marketing', color: 'primary' },
-  },
-  {
-    title: 'UX Researcher',
-    href: '#',
-    description: "Talk to the people who use what we build and bring what you learn back.",
-    department: 'Design',
-    location: 'Remote',
-    type: 'Contract',
-    salary: '75k – 95k',
-    badge: { label: 'Design', color: 'primary' },
-  },
 ]
+
+/** @composable */
+interface Props extends CareersContent {}
+
+const {
+  eyebrow = "We're hiring!",
+  heading = 'Open positions',
+  description = 'Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work.',
+  items = demoJobs,
+  media = { src: 'https://picsum.photos/seed/apogee-careers-3/1200/1400', alt: '', width: 1200, height: 1400 },
+} = Astro.props
 ---
 
 <Section spacing="large" background="primary">
   <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
     <div>
-      <SectionHeader eyebrow="We're hiring!" heading="Open positions" description="Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work." background="primary" class="mb-12" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} background="primary" class="mb-12" />
       <ul class="list-none p-0 flex flex-col gap-8">
-    {jobs.slice(0, 4).map((job) => <li><JobCard job={job} /></li>)}
+    {items.map((job) => <li><JobCard job={job} /></li>)}
   </ul>
     </div>
-    <Image src="https://picsum.photos/seed/apogee-careers-3/1200/1400" alt="" width={1200} height={1400} fit="cover" radius="xl" class="aspect-[6/7] w-full max-lg:hidden" />
+    {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" class="aspect-[6/7] w-full max-lg:hidden" />}
   </div>
 </Section>

@@ -7,9 +7,11 @@
  */
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
-import JobCard, { type Job } from '../../components/JobCard/JobCard.astro'
+import JobCard from '../../components/JobCard/JobCard.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { CareersContent, Job } from '../../sections/_shared/careers.ts'
 
-const jobs: Job[] = [
+const demoJobs: Job[] = [
   {
     title: 'Product Designer',
     href: '#',
@@ -60,22 +62,22 @@ const jobs: Job[] = [
     salary: '60k – 80k',
     badge: { label: 'Marketing', color: 'primary' },
   },
-  {
-    title: 'UX Researcher',
-    href: '#',
-    description: "Talk to the people who use what we build and bring what you learn back.",
-    department: 'Design',
-    location: 'Remote',
-    type: 'Contract',
-    salary: '75k – 95k',
-    badge: { label: 'Design', color: 'primary' },
-  },
 ]
+
+/** @composable */
+interface Props extends CareersContent {}
+
+const {
+  eyebrow = "We're hiring!",
+  heading = 'Open positions',
+  description = 'Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work.',
+  items = demoJobs,
+} = Astro.props
 ---
 
 <Section spacing="large" containerWidth="small">
-  <SectionHeader eyebrow="We're hiring!" heading="Open positions" description="Our philosophy is simple: hire a team of diverse, passionate people and foster a culture that empowers you to do your best work." align="center" class="mb-12" />
+  <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} align="center" class="mb-12" />
   <ul class="list-none p-0 flex flex-col gap-8">
-    {jobs.slice(0, 5).map((job) => <li><JobCard job={job} /></li>)}
+    {items.map((job) => <li><JobCard job={job} /></li>)}
   </ul>
 </Section>

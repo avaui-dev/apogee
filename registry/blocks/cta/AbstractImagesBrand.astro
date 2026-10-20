@@ -9,26 +9,50 @@ import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain, type Media } from '../../sections/_shared/spine.ts'
+import type { CTAContent } from '../../sections/_shared/cta.ts'
+
+/** @composable */
+interface Props extends CTAContent {
+  /** The collage; up to five images. @category content */
+  images?: Media[] | null
+}
+
+const {
+  eyebrow,
+  heading = 'No long-term contracts. No catches.',
+  description = 'Start your 30-day free trial today.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Learn more', href: '#' },
+  images = ['a1', 'a2', 'a3', 'a4', 'a5'].map((seed) => ({ src: `https://picsum.photos/seed/apogee-cta-${seed}/800/800`, alt: '', width: 800, height: 800 })),
+} = Astro.props
+
+// The collage cells, one per image.
+const cells = [
+  'col-span-5 row-span-5 col-start-1 row-start-2',
+  'col-span-6 row-span-6 col-start-7 row-start-1',
+  'col-span-5 row-span-6 col-start-2 row-start-8',
+  'col-span-4 row-span-4 col-start-8 row-start-8',
+  'col-span-3 row-span-3 col-start-5 row-start-6',
+]
 
 ---
 
 <Section spacing="large" background="primary">
   <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="flex flex-col gap-8">
-      <SectionHeader heading="No long-term contracts. No catches." description="Start your 30-day free trial today." background="primary" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} background="primary" />
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-col-reverse gap-3 sm:flex-row ">
-      <Button href="#" size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!">Learn more</Button>
-      <Button href="#" size="large" color="neutral">Get started</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit! shadow-none!">{secondaryAction.label}</Button>}
+      {primaryAction && <Button href={primaryAction.href} size="large" color="neutral">{primaryAction.label}</Button>}
     </div>
+      )}
     </div>
+    {images && (
     <div class="grid aspect-square grid-cols-12 grid-rows-12 gap-4">
-      {[
-        ['col-span-5 row-span-5 col-start-1 row-start-2', 'a1'],
-        ['col-span-6 row-span-6 col-start-7 row-start-1', 'a2'],
-        ['col-span-5 row-span-6 col-start-2 row-start-8', 'a3'],
-        ['col-span-4 row-span-4 col-start-8 row-start-8', 'a4'],
-        ['col-span-3 row-span-3 col-start-5 row-start-6', 'a5'],
-      ].map(([cls, seed]) => <Image src={`https://picsum.photos/seed/apogee-cta-${seed}/800/800`} alt="" width={800} height={800} fit="cover" radius="xl" class={`size-full ${cls}`} />)}
+      {images.slice(0, cells.length).map((m, i) => <Image src={m.src} alt={m.alt} width={m.width} height={m.height} fit="cover" radius="xl" class={`size-full ${cells[i]}`} />)}
     </div>
+    )}
   </div>
 </Section>

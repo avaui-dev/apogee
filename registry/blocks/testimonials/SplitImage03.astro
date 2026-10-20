@@ -10,36 +10,41 @@ import Avatar from '../../components/Avatar/Avatar.astro'
 import Rating from '../../components/Rating/Rating.astro'
 import Carousel from '../../components/Carousel/Carousel.astro'
 import Image from '../../components/Image/Image.astro'
+import type { Media } from '../../sections/_shared/spine.ts'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {
+  /** The photo beside the quotes. @category content */
+  media?: Media | null
+}
+
+const {
+  label = 'Testimonials',
+  items = [
+    { quote: 'We shipped our redesign in three weeks instead of three months. The team still talks about it.', name: 'Amara Nwosu', role: 'Head of Operations, Lumen', avatar: 'https://picsum.photos/id/1027/192/192', rating: 5 },
+    { quote: 'Every page we build now looks like it belongs together. Our designers finally trust what ships.', name: 'Daniel Reyes', role: 'Engineering Lead, Quanta', avatar: 'https://picsum.photos/id/91/192/192', rating: 5 },
+    { quote: 'Support answered in minutes, and the fix was live the same afternoon.', name: 'Sofia Marchetti', role: 'Product Designer, Fieldwork', avatar: 'https://picsum.photos/id/832/192/192', rating: 5 },
+  ],
+  media = { src: 'https://picsum.photos/id/375/960/1440', alt: '', width: 960, height: 1440 },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="min-w-0">
-      <Carousel label="Testimonials" visibleItems={{ base: 1 }} controlsPosition="below">
+      <Carousel label={label} visibleItems={{ base: 1 }} controlsPosition="below">
+      {items.map((t) => (
       <div class="grid items-center gap-12 ">
         <figure class="flex flex-col gap-8">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl line-clamp-5"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
-          <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Amara Nwosu</span><span class="text-sm text-neutral-faded">Head of Operations, Lumen</span></span></figcaption>
+          {t.rating != null && <Rating value={t.rating} readonly size="small" color="warning" aria-label={`Rated ${t.rating} out of 5`} />}
+          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl line-clamp-5"><p>“{t.quote}”</p></blockquote>
+          <figcaption class="flex items-center gap-3"><Avatar src={t.avatar} name={t.name} alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">{t.name}</span>{t.role && <span class="text-sm text-neutral-faded">{t.role}</span>}</span></figcaption>
         </figure>
       </div>
-      <div class="grid items-center gap-12 ">
-        <figure class="flex flex-col gap-8">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl line-clamp-5"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
-          <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/91/192/192" name="Daniel Reyes" alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Daniel Reyes</span><span class="text-sm text-neutral-faded">Engineering Lead, Quanta</span></span></figcaption>
-        </figure>
-      </div>
-      <div class="grid items-center gap-12 ">
-        <figure class="flex flex-col gap-8">
-          <Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" />
-          <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl line-clamp-5"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
-          <figcaption class="flex items-center gap-3"><Avatar src="https://picsum.photos/id/832/192/192" name="Sofia Marchetti" alt="" size="xlarge" border /><span class="flex flex-col"><span class="flex items-center gap-1 font-semibold">Sofia Marchetti</span><span class="text-sm text-neutral-faded">Product Designer, Fieldwork</span></span></figcaption>
-        </figure>
-      </div>
+      ))}
       </Carousel>
     </div>
-    <Image src="https://picsum.photos/id/375/960/1440" alt="" width={960} height={1440} fit="cover" class="h-96 w-full lg:h-180" />
+    {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" class="h-96 w-full lg:h-180" />}
   </div>
 </Section>

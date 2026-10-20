@@ -13,35 +13,56 @@ import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
 import Button from '../../components/Button/Button.astro'
 
-const faqs = [
-  { icon: Heart, question: 'Is there a free trial available?', answer: 'Yes, you can try us for free for 30 days. If you want, we will give you a free 30-minute onboarding call to get you up and running.' },
-  { icon: ArrowLeftRight, question: 'Can I change my plan later?', answer: 'Of course. Our pricing scales with your company. Chat to our friendly team to find a solution that works for you.' },
-  { icon: CalendarX, question: 'What is your cancellation policy?', answer: 'We understand that things change. You can cancel your plan at any time and we will refund you the difference already paid.' },
-  { icon: FileText, question: 'Can other info be added to an invoice?', answer: 'Yes. Add your company details, a purchase order number or a note in your billing settings, and every invoice carries them.' },
-  { icon: CreditCard, question: 'How does billing work?', answer: 'Plans are per workspace, not per account. You can upgrade one workspace and still have any number of free workspaces.' },
-  { icon: Mail, question: 'How do I change my account email?', answer: 'You can change the email address associated with your account by going to your account settings from a laptop or desktop.' },
-]
+import { plain } from '../../sections/_shared/spine.ts'
+import type { FAQContent } from '../../sections/_shared/faq.ts'
+
+/** @composable */
+interface Props extends FAQContent {
+  /** The heading on the get-in-touch panel. @category content */
+  contactHeading?: string | null
+  /** The line on the get-in-touch panel. @category content */
+  contactDescription?: string | null
+}
+
+const icons = [Heart, ArrowLeftRight, CalendarX, FileText, CreditCard, Mail]
+const {
+  heading = 'Frequently asked questions',
+  description = 'Everything you need to know about the product and billing.',
+  items = [
+    { question: 'Is there a free trial available?', answer: 'Yes, you can try us for free for 30 days. If you want, we will give you a free 30-minute onboarding call to get you up and running.' },
+    { question: 'Can I change my plan later?', answer: 'Of course. Our pricing scales with your company. Chat to our friendly team to find a solution that works for you.' },
+    { question: 'What is your cancellation policy?', answer: 'We understand that things change. You can cancel your plan at any time and we will refund you the difference already paid.' },
+    { question: 'Can other info be added to an invoice?', answer: 'Yes. Add your company details, a purchase order number or a note in your billing settings, and every invoice carries them.' },
+    { question: 'How does billing work?', answer: 'Plans are per workspace, not per account. You can upgrade one workspace and still have any number of free workspaces.' },
+    { question: 'How do I change my account email?', answer: 'You can change the email address associated with your account by going to your account settings from a laptop or desktop.' },
+  ],
+  primaryAction = { label: 'Get in touch', href: '#' },
+  contactHeading = 'Still have questions?',
+  contactDescription = "Can't find the answer you're looking for? Please chat to our friendly team.",
+} = Astro.props
 ---
 
 <Section spacing="large" background="primary">
-  <SectionHeader heading="Frequently asked questions" description="Everything you need to know about the product and billing." align="center" background="primary" class="mb-16" />
+  <SectionHeader heading={plain(heading)} description={description ? plain(description) : undefined} align="center" background="primary" class="mb-16" />
   <ul class="grid list-none gap-x-8 gap-y-12 p-0 md:grid-cols-2 lg:grid-cols-3">
-    {faqs.slice(0, 6).map((f) => (
+    {items.map((f, i) => { const Icon = icons[i % icons.length]!; return (
       <li class="flex flex-col gap-4 items-center text-center">
-        <FeaturedIcon theme="light" color="primary"><f.icon /></FeaturedIcon>
+        <FeaturedIcon theme="light" color="primary"><Icon /></FeaturedIcon>
         <div class="flex flex-col gap-2">
           <Heading as="h3" size="h6">{f.question}</Heading>
           <p class="opacity-85">{f.answer}</p>
         </div>
       </li>
-    ))}
+    )})}
   </ul>
+  {(contactHeading || contactDescription || primaryAction) && (
   <div class="mt-16 flex flex-col items-center gap-6 rounded-2xl bg-page text-neutral p-8 text-center">
     <AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }]} size="large" />
     <div class="flex flex-col gap-2">
-      <Heading as="h3" size="h5">Still have questions?</Heading>
-      <p class="text-neutral-faded">Can't find the answer you're looking for? Please chat to our friendly team.</p>
+      {contactHeading && <Heading as="h3" size="h5">{contactHeading}</Heading>}
+      {contactDescription && <p class="text-neutral-faded">{contactDescription}</p>}
     </div>
-    <Button href="#">Get in touch</Button>
+    {primaryAction && <Button href={primaryAction.href}>{primaryAction.label}</Button>}
   </div>
+  )}
 </Section>

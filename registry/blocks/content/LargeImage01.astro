@@ -11,10 +11,25 @@ import Prose from '../../components/Prose/Prose.astro'
 import Image from '../../components/Image/Image.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  eyebrow = 'Design',
+  heading = 'What makes a design system work',
+  description = 'How shared parts, written rules and a strict build change the conversations a team has.',
+  date = '2026-01-20',
+  readingTime = '8 min read',
+  media = { src: 'https://picsum.photos/seed/apogee-content-1/1600/900', alt: '', width: 1600, height: 900 },
+  author = { name: 'Ada Lovelace', role: 'Design Lead' },
+} = Astro.props
 ---
 
 <article>
-  <PostHeader layout="centered" eyebrow="Design" heading="What makes a design system work" description="How shared parts, written rules and a strict build change the conversations a team has." date="2026-01-20" readingTime="8 min read" headingLevel={1} media={{ src: 'https://picsum.photos/seed/apogee-content-1/1600/900', alt: '', width: 1600, height: 900 }} />
+  <PostHeader layout="centered" eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} date={date} readingTime={readingTime ?? undefined} headingLevel={1} media={media ?? undefined} />
   <Section spacing="none" containerWidth="small" class="pb-section">
     <Prose>
       <p class="lead">A design system is the shared language a team speaks when it builds a product: the parts, the rules for using them and the reasons behind the rules.</p>
@@ -45,14 +60,16 @@ import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
       </div>
     </Prose>
     <footer class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 sm:flex-row sm:items-center sm:justify-between">
+    {author && (
     <div class="flex items-center gap-3">
-      <Avatar name="Ada Lovelace" size="large" />
+      <Avatar name={author.name} size="large" />
       <div>
-        <p class="font-semibold">Ada Lovelace</p>
-        <p class="text-neutral-faded">Design Lead</p>
+        <p class="font-semibold">{author.name}</p>
+        {author.role && <p class="text-neutral-faded">{author.role}</p>}
       </div>
     </div>
-    <ShareLinks title="What makes a design system work" />
+    )}
+    <ShareLinks title={plain(heading)} />
   </footer>
   </Section>
 </article>

@@ -7,12 +7,14 @@
  */
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
-import JobCard, { type Job } from '../../components/JobCard/JobCard.astro'
+import JobCard from '../../components/JobCard/JobCard.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import { type CareersContent, type Job } from '../../sections/_shared/careers.ts'
 import Image from '../../components/Image/Image.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Heading from '../../components/Heading/Heading.astro'
 
-const jobs: Job[] = [
+const demoJobs: Job[] = [
   {
     title: 'Product Designer',
     href: '#',
@@ -44,26 +46,6 @@ const jobs: Job[] = [
     badge: { label: 'Customer success', color: 'positive' },
   },
   {
-    title: 'Account Executive',
-    href: '#',
-    description: "Work with teams who are choosing their next design system.",
-    department: 'Sales',
-    location: 'London, UK',
-    type: 'Full-time',
-    salary: '90k – 120k',
-    badge: { label: 'Sales', color: 'warning' },
-  },
-  {
-    title: 'Content Marketing Lead',
-    href: '#',
-    description: "Write and plan the guides, notes and case studies people share.",
-    department: 'Marketing',
-    location: 'Remote',
-    type: 'Part-time',
-    salary: '60k – 80k',
-    badge: { label: 'Marketing', color: 'primary' },
-  },
-  {
     title: 'UX Researcher',
     href: '#',
     description: "Talk to the people who use what we build and bring what you learn back.",
@@ -74,17 +56,28 @@ const jobs: Job[] = [
     badge: { label: 'Design', color: 'primary' },
   },
 ]
-const intros: Record<string, string> = { Design: 'Open positions in our design team.', 'Software Development': 'Open positions in our software team.', 'Customer Success': 'Open positions in our customer success team.' }
-const groups = ['Design', 'Software Development', 'Customer Success'].map((department) => ({ department, intro: intros[department], jobs: jobs.filter((job) => job.department === department) }))
+
+/** @composable */
+interface Props extends CareersContent {}
+
+const {
+  eyebrow = 'Careers',
+  heading = "We're looking for talented people",
+  description = "We're a remote team spread all across the world. Join us!",
+  items = demoJobs,
+  media = { src: 'https://picsum.photos/seed/apogee-careers-2/1600/700', alt: '', width: 1600, height: 700 },
+} = Astro.props
+// Jobs grouped by department, in order of first appearance.
+const groups = [...new Set(items.flatMap((job) => job.department ?? []))].map((department) => ({ department, jobs: items.filter((job) => job.department === department) }))
 
 ---
 
 <Section spacing="large">
   <div class="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
-    <Badge color="primary" rounded>Careers</Badge>
-    <SectionHeader heading="We're looking for talented people" description="We're a remote team spread all across the world. Join us!" align="center" />
+    {eyebrow && <Badge color="primary" rounded>{eyebrow}</Badge>}
+    <SectionHeader heading={plain(heading)} description={description ?? undefined} align="center" />
   </div>
-  <Image src="https://picsum.photos/seed/apogee-careers-2/1600/700" alt="" width={1600} height={700} fit="cover" radius="xl" class="mt-12 h-60 w-full md:mt-16 md:h-[35rem]" />
+  {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" class="mt-12 h-60 w-full md:mt-16 md:h-[35rem]" />}
   <ul class="mx-auto mt-12 flex max-w-3xl list-none flex-col gap-12 p-0 md:mt-16 md:gap-16">
     {groups.map((g) => (
       <li>

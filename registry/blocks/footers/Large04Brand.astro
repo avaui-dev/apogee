@@ -13,36 +13,49 @@ import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
+import { plain, type Action } from '../../sections/_shared/spine.ts'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
-  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
-  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
-  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
-  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
-  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
-]
+/** @composable */
+interface Props extends FooterContent {
+  /** The pill link with avatars. @category content */
+  joinLink?: Action | null
+}
+
+const {
+  brand = 'Example',
+  tagline = 'Design calm, accessible websites your whole team can edit.',
+  newsletterHeading = 'Stay up to date',
+  submitLabel = 'Subscribe',
+  columns = [
+    { heading: 'Product', links: [{ label: 'Overview', href: '#' }, { label: 'Features', href: '#' }, { label: 'Solutions', href: '#', badge: 'New' }, { label: 'Tutorials', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Releases', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'Newsletter', href: '#' }, { label: 'Events', href: '#' }, { label: 'Help centre', href: '#' }, { label: 'Tutorials', href: '#' }, { label: 'Support', href: '#' }] },
+  ],
+  copyright = '© 2026 Example. All rights reserved.',
+  legal = [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }],
+  joinLink = { label: 'Join 2,000+ companies', href: '#' },
+} = Astro.props
 ---
 
 <Section as="footer" spacing="medium" background="primary">
   <div class="grid gap-12 lg:gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
     <div class="flex flex-col gap-6">
-      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="neutral" size="small"><Orbit /></FeaturedIcon>Example</Link>
-      <p class="max-w-xs opacity-85">Design calm, accessible websites your whole team can edit.</p>
-      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-3 self-start rounded-full py-1 ps-1 pe-3 text-sm font-semibold ring-1 ring-current/25">
+      <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="neutral" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+      {tagline && <p class="max-w-xs opacity-85">{plain(tagline)}</p>}
+      {joinLink && <Link href={joinLink.href} color="inherit" underline="none" class="inline-flex items-center gap-3 self-start rounded-full py-1 ps-1 pe-3 text-sm font-semibold ring-1 ring-current/25">
         <span aria-hidden="true"><AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }]} size="small" /></span>
-        Join 2,000+ companies
+        {joinLink.label}
         <ChevronRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
-      </Link>
+      </Link>}
     </div>
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"><div class="contents">
-      {columns.filter((c) => c.heading === 'Product' || c.heading === 'Resources').map((c) => (
+      {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="text-sm font-semibold opacity-85">{c.heading}</p>
           <ul class="mt-4 flex list-none flex-col gap-3 p-0">
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
-                <Link href="#" color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
+                <Link href={l.href} color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
                 {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit!">{l.badge}</Badge>}
               </li>
             ))}
@@ -50,15 +63,15 @@ const columns = [
         </nav>
       ))}
     </div><div class="flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
-      <p class="text-sm font-semibold">Stay up to date</p>
+      {newsletterHeading && <p class="text-sm font-semibold">{newsletterHeading}</p>}
       <form method="post" class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="sm:w-64" />
-        <Button type="submit" color="neutral">Subscribe</Button>
+        <Button type="submit" color="neutral">{submitLabel}</Button>
       </form>
     </div></div>
   </div>
   <div class="mt-12 md:mt-16 flex flex-col-reverse gap-6 border-t border-current/25 pt-8 md:flex-row md:items-center md:justify-between">
-    <p class="opacity-85 ">© 2026 Example. All rights reserved.</p>
-    <nav aria-label="Legal"><ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 opacity-85"><li><Link href="#" color="inherit" underline="hover">Terms</Link></li><li><Link href="#" color="inherit" underline="hover">Privacy</Link></li><li><Link href="#" color="inherit" underline="hover">Cookies</Link></li></ul></nav>
+    {copyright && <p class="opacity-85 ">{copyright}</p>}
+    {legal && <nav aria-label="Legal"><ul class="flex list-none flex-wrap gap-x-6 gap-y-2 p-0 opacity-85">{legal.map((l) => <li><Link href={l.href} color="inherit" underline="hover">{l.label}</Link></li>)}</ul></nav>}
   </div>
 </Section>

@@ -7,13 +7,22 @@
  */
 import Section from '../../components/Section/Section.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
+import type { TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {}
+
+const {
+  items = [{ quote: 'We shipped our redesign in three weeks instead of three months. The team still talks about it.', name: 'Amara Nwosu', role: 'Head of Operations, Lumen', avatar: 'https://picsum.photos/id/1027/192/192', industry: 'Retail and commerce' }],
+} = Astro.props
 ---
 
 <Section spacing="large">
+  {items.slice(0, 1).map((t) => (
   <figure class="flex flex-col items-center gap-8 rounded-2xl px-6 py-10 text-center md:px-8 md:py-12 lg:p-16 bg-neutral-faded">
-    <p class="text-sm font-semibold text-primary">Retail and commerce</p>
-    <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
-    <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src="https://picsum.photos/id/1027/192/192" name="Amara Nwosu" alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">Amara Nwosu</span><span class="text-sm text-neutral-faded">Head of Operations, Lumen</span></span></figcaption>
+    {t.industry && <p class="text-sm font-semibold text-primary">{t.industry}</p>}
+    <blockquote class="text-2xl font-medium tracking-tight text-balance md:text-4xl"><p>“{t.quote}”</p></blockquote>
+    <figcaption class="flex flex-col items-center gap-3 text-center"><Avatar src={t.avatar} name={t.name} alt="" size="large" border /><span class="flex flex-col items-center"><span class="flex items-center gap-1 font-semibold">{t.name}</span>{t.role && <span class="text-sm text-neutral-faded">{t.role}</span>}</span></figcaption>
   </figure>
+  ))}
 </Section>

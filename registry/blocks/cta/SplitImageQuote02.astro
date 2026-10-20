@@ -11,28 +11,49 @@ import Button from '../../components/Button/Button.astro'
 import Image from '../../components/Image/Image.astro'
 import Carousel from '../../components/Carousel/Carousel.astro'
 import Rating from '../../components/Rating/Rating.astro'
+import { plain, type Media } from '../../sections/_shared/spine.ts'
+import type { CTAContent } from '../../sections/_shared/cta.ts'
 
-const reviews = [
-  { quote: 'We shipped our redesign in half the time, and the reviews are about the product now, not the buttons.', name: 'Ada Lovelace', role: 'Design Lead', company: 'Northpeak', seed: 'apogee-cta-q1' },
-  { quote: 'The team finally speaks one language. New people ship on their first day.', name: 'Alan Turing', role: 'Engineering Manager', company: 'Quanta', seed: 'apogee-cta-q2' },
-  { quote: 'Accessibility stopped being an audit at the end. It is in every part we use.', name: 'Grace Hopper', role: 'Product Manager', company: 'Fieldwork', seed: 'apogee-cta-q3' },
-]
+type Testimonial = { quote: string; name: string; role: string; company: string; image: Media }
+
+/** @composable */
+interface Props extends CTAContent {
+  /** The slides of the testimonial carousel. @category content */
+  testimonials?: Testimonial[] | null
+}
+
+const {
+  eyebrow,
+  heading = 'Join 4,000+ startups growing with us',
+  description = 'Start your 30-day free trial today.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Learn more', href: '#' },
+  testimonials = [
+    { quote: 'We shipped our redesign in half the time, and the reviews are about the product now, not the buttons.', name: 'Ada Lovelace', role: 'Design Lead', company: 'Northpeak', image: { src: 'https://picsum.photos/seed/apogee-cta-q1/1200/1400', alt: '', width: 1200, height: 1400 } },
+    { quote: 'The team finally speaks one language. New people ship on their first day.', name: 'Alan Turing', role: 'Engineering Manager', company: 'Quanta', image: { src: 'https://picsum.photos/seed/apogee-cta-q2/1200/1400', alt: '', width: 1200, height: 1400 } },
+    { quote: 'Accessibility stopped being an audit at the end. It is in every part we use.', name: 'Grace Hopper', role: 'Product Manager', company: 'Fieldwork', image: { src: 'https://picsum.photos/seed/apogee-cta-q3/1200/1400', alt: '', width: 1200, height: 1400 } },
+  ],
+} = Astro.props
+
 ---
 
 <Section spacing="large">
   <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
     <div class="flex flex-col justify-center gap-8">
-      <SectionHeader heading="Join 4,000+ startups growing with us" description="Start your 30-day free trial today." />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} />
       
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-col-reverse gap-3 sm:flex-row ">
-      <Button href="#" size="large" variant="outline" color="neutral">Learn more</Button>
-      <Button href="#" size="large">Get started</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+      {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
     </div>
+      )}
     </div>
+    {testimonials && (
     <Carousel label="What customers say" visibleItems={1} controlsVariant="overlay" class="min-w-0">
-      {reviews.map((r) => (
+      {testimonials.map((r) => (
         <figure class="relative m-0 overflow-hidden rounded-2xl">
-          <Image src={`https://picsum.photos/seed/${r.seed}/1200/1400`} alt="" width={1200} height={1400} fit="cover" class="aspect-[6/7] w-full" />
+          <Image src={r.image.src} alt={r.image.alt} width={r.image.width} height={r.image.height} fit="cover" class="aspect-[6/7] w-full" />
           <figcaption class="absolute inset-x-0 bottom-0 flex flex-col gap-4 bg-inverted/40 p-6 text-on-inverted backdrop-blur-md md:p-8">
             <Rating value={5} readonly aria-label="Rated 5 out of 5" />
             <blockquote class="m-0 text-xl font-semibold text-balance md:text-2xl">“{r.quote}”</blockquote>
@@ -41,5 +62,6 @@ const reviews = [
         </figure>
       ))}
     </Carousel>
+    )}
   </div>
 </Section>

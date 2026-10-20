@@ -10,22 +10,29 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { PageHeaderContent } from '../../sections/_shared/header.ts'
 
-interface Props {
-  eyebrow?: string
-  heading?: string
-  description?: string
+/** @composable */
+interface Props extends PageHeaderContent {
+  /** The email form button. @category content */
+  submitLabel?: string
 }
-const { eyebrow = 'Resources', heading = 'The Larkspur blog', description = 'The latest industry news, technologies and resources from our team.' } = Astro.props
+const {
+  eyebrow = 'Resources',
+  heading = 'The Larkspur blog',
+  description = 'The latest industry news, technologies and resources from our team.',
+  submitLabel = 'Get started',
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-8 md:gap-12 items-stretch sm:items-center">
-    <SectionHeader eyebrow={eyebrow} heading={heading} description={description} headingLevel={1} size="large" align="center" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} headingLevel={1} size="large" align="center" />
     <form method="post" class="flex w-full max-w-md flex-col gap-2 text-center">
       <div class="flex flex-col gap-3 sm:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
-        <Button type="submit" size="large">Get started</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>

@@ -30,7 +30,7 @@ const marks = [
   { Icon: Scale, arc: 1, deg: 158 },
   { Icon: FileCheck, arc: 2, deg: 40 },
 ].map((p) => {
-  const r = arcs[p.arc], a = (p.deg * Math.PI) / 180
+  const r = arcs[p.arc]!, a = (p.deg * Math.PI) / 180
   return { ...p, x: ((500 - Math.cos(a) * r) / 1000) * 100, y: ((500 - Math.sin(a) * r) / 500) * 100 }
 })
 ---

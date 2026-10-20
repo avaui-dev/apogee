@@ -10,16 +10,27 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Input from '../../components/Input/Input.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { NewsletterContent } from '../../sections/_shared/newsletter.ts'
 
+/** @composable */
+interface Props extends NewsletterContent {}
+
+const {
+  eyebrow,
+  heading = 'Join 2,000+ subscribers',
+  description = 'Stay in the loop with everything you need to know.',
+  submitLabel = 'Subscribe',
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-8 rounded-2xl px-6 py-10 lg:flex-row lg:items-start lg:justify-between lg:gap-16 lg:p-16 bg-primary text-on-primary">
-    <SectionHeader heading="Join 2,000+ subscribers" description="Stay in the loop with everything you need to know." size="large" background="primary" />
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" background="primary" />
     <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
-        <Button type="submit" size="large" color="neutral">Subscribe</Button>
+        <Button type="submit" size="large" color="neutral">{submitLabel}</Button>
       </div>
       <p class="text-sm opacity-85">Read about our <Link href="#" color="inherit">privacy policy</Link>.</p>
     </form>

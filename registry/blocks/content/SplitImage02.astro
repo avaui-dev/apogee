@@ -11,17 +11,32 @@ import Image from '../../components/Image/Image.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import ShareLinks from '../../components/ShareLinks/ShareLinks.astro'
 import Heading from '../../components/Heading/Heading.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { ContentContent } from '../../sections/_shared/content.ts'
+import { formatDate } from '../../sections/_shared/date.ts'
+
+/** @composable */
+interface Props extends ContentContent {}
+
+const {
+  heading = 'A field guide to product discovery',
+  description = 'Questions that turn a vague request into something you can build.',
+  date = '2026-01-20',
+  readingTime = '8 min read',
+  media = { src: 'https://picsum.photos/seed/apogee-content-16/1200/900', alt: '', width: 1200, height: 900 },
+  author = { name: 'Ada Lovelace', role: 'Design Lead' },
+} = Astro.props
 ---
 
 <article>
   <Section spacing="large">
     <div class="grid items-center gap-12 lg:grid-cols-2">
       <header class="flex flex-col gap-4">
-        <p class="text-sm font-semibold text-primary"><time datetime="2026-01-20">Jan 20, 2026</time> <span aria-hidden="true">•</span> 8 min read</p>
-        <Heading as="h1" size="h1">A field guide to product discovery</Heading>
-        <p class="text-lg text-neutral-faded">Questions that turn a vague request into something you can build.</p>
+        <p class="text-sm font-semibold text-primary"><time datetime={date}>{formatDate(date, 'en', 'short')}</time>{readingTime && <> <span aria-hidden="true">•</span> {readingTime}</>}</p>
+        <Heading as="h1" size="h1">{plain(heading)}</Heading>
+        {description && <p class="text-lg text-neutral-faded">{description}</p>}
       </header>
-      <div class="rounded-2xl bg-neutral-faded p-8 md:p-12"><Image src="https://picsum.photos/seed/apogee-content-16/1200/900" alt="" width={1200} height={900} fit="cover" radius="xl" class="aspect-[4/3] w-full" /></div>
+      {media && <div class="rounded-2xl bg-neutral-faded p-8 md:p-12"><Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" class="aspect-[4/3] w-full" /></div>}
     </div>
   </Section>
   <Section spacing="none" containerWidth="small" class="pb-section">
@@ -54,14 +69,16 @@ import Heading from '../../components/Heading/Heading.astro'
       </div>
     </Prose>
     <footer class="mt-12 flex flex-col gap-6 border-t border-neutral pt-8 sm:flex-row sm:items-center sm:justify-between">
+    {author && (
     <div class="flex items-center gap-3">
-      <Avatar name="Ada Lovelace" size="large" />
+      <Avatar name={author.name} size="large" />
       <div>
-        <p class="font-semibold">Ada Lovelace</p>
-        <p class="text-neutral-faded">Design Lead</p>
+        <p class="font-semibold">{author.name}</p>
+        {author.role && <p class="text-neutral-faded">{author.role}</p>}
       </div>
     </div>
-    <ShareLinks title="What makes a design system work" />
+    )}
+    <ShareLinks title={plain(heading)} />
   </footer>
   </Section>
 </article>

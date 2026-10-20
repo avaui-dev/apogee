@@ -10,15 +10,23 @@ import Section from '../../components/Section/Section.astro'
 import FeaturedIcon from '../../components/FeaturedIcon/FeaturedIcon.astro'
 import Link from '../../components/Link/Link.astro'
 import Badge from '../../components/Badge/Badge.astro'
+import { type FooterContent } from '../../sections/_shared/footers.ts'
 
-const columns = [
-  { heading: 'Product', links: [{ label: 'Overview' }, { label: 'Features' }, { label: 'Solutions', badge: 'New' }, { label: 'Tutorials' }, { label: 'Pricing' }, { label: 'Releases' }] },
-  { heading: 'Company', links: [{ label: 'About us' }, { label: 'Careers' }, { label: 'Press' }, { label: 'News' }, { label: 'Media kit' }, { label: 'Contact' }] },
-  { heading: 'Resources', links: [{ label: 'Blog' }, { label: 'Newsletter' }, { label: 'Events' }, { label: 'Help centre' }, { label: 'Tutorials' }, { label: 'Support' }] },
-  { heading: 'Use cases', links: [{ label: 'Startups' }, { label: 'Enterprise' }, { label: 'Government' }, { label: 'SaaS centre' }, { label: 'Marketplaces' }, { label: 'Ecommerce' }] },
-  { heading: 'Community', links: [{ label: 'Forum' }, { label: 'Meetups' }, { label: 'Changelog' }, { label: 'Status' }, { label: 'Partners' }, { label: 'Developers' }] },
-  { heading: 'Legal', links: [{ label: 'Terms' }, { label: 'Privacy' }, { label: 'Cookies' }, { label: 'Licences' }, { label: 'Settings' }, { label: 'Contact' }] },
-]
+/** @composable */
+interface Props extends FooterContent {}
+
+const {
+  brand = 'Example',
+  columns = [
+    { heading: 'Product', links: [{ label: 'Overview', href: '#' }, { label: 'Features', href: '#' }, { label: 'Solutions', href: '#', badge: 'New' }, { label: 'Tutorials', href: '#' }, { label: 'Pricing', href: '#' }, { label: 'Releases', href: '#' }] },
+    { heading: 'Company', links: [{ label: 'About us', href: '#' }, { label: 'Careers', href: '#' }, { label: 'Press', href: '#' }, { label: 'News', href: '#' }, { label: 'Media kit', href: '#' }, { label: 'Contact', href: '#' }] },
+    { heading: 'Resources', links: [{ label: 'Blog', href: '#' }, { label: 'Newsletter', href: '#' }, { label: 'Events', href: '#' }, { label: 'Help centre', href: '#' }, { label: 'Tutorials', href: '#' }, { label: 'Support', href: '#' }] },
+    { heading: 'Use cases', links: [{ label: 'Startups', href: '#' }, { label: 'Enterprise', href: '#' }, { label: 'Government', href: '#' }, { label: 'SaaS centre', href: '#' }, { label: 'Marketplaces', href: '#' }, { label: 'Ecommerce', href: '#' }] },
+    { heading: 'Community', links: [{ label: 'Forum', href: '#' }, { label: 'Meetups', href: '#' }, { label: 'Changelog', href: '#' }, { label: 'Status', href: '#' }, { label: 'Partners', href: '#' }, { label: 'Developers', href: '#' }] },
+    { heading: 'Legal', links: [{ label: 'Terms', href: '#' }, { label: 'Privacy', href: '#' }, { label: 'Cookies', href: '#' }, { label: 'Licences', href: '#' }, { label: 'Settings', href: '#' }, { label: 'Contact', href: '#' }] },
+  ],
+  copyright = '© 2026 Example. All rights reserved.',
+} = Astro.props
 ---
 
 <Section as="footer" spacing="medium" background="primary">
@@ -29,7 +37,7 @@ const columns = [
           <ul class="mt-4 flex list-none flex-col gap-3 p-0">
             {c.links.map((l) => (
               <li class="flex items-center gap-2">
-                <Link href="#" color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
+                <Link href={l.href} color="inherit" underline="hover" class="font-semibold">{l.label}</Link>
                 {l.badge && <Badge size="small" variant="outline" color="neutral" class="border-current! bg-transparent! text-inherit!">{l.badge}</Badge>}
               </li>
             ))}
@@ -38,7 +46,7 @@ const columns = [
       ))}
     </div>
   <div class="mt-12 md:mt-16 flex flex-col gap-6 border-t border-current/25 pt-8 md:flex-row md:items-center md:justify-between">
-    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="neutral" size="small"><Orbit /></FeaturedIcon>Example</Link>
-    <p class="opacity-85 ">© 2026 Example. All rights reserved.</p>
+    <Link href="/" color="inherit" underline="none" class="inline-flex items-center gap-2 text-lg font-semibold "><FeaturedIcon theme="solid" color="neutral" size="small"><Orbit /></FeaturedIcon>{brand}</Link>
+    {copyright && <p class="opacity-85 ">{copyright}</p>}
   </div>
 </Section>

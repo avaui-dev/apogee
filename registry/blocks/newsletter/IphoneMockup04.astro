@@ -12,21 +12,34 @@ import Input from '../../components/Input/Input.astro'
 import Link from '../../components/Link/Link.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { NewsletterContent } from '../../sections/_shared/newsletter.ts'
 
+/** @composable */
+interface Props extends NewsletterContent {}
+
+const {
+  eyebrow,
+  heading = 'Be the first to know when we launch our new platform',
+  description = 'We\'re still building. Subscribe for updates and 20% off when we launch. No spam, we promise!',
+  submitLabel = 'Subscribe',
+  media = { src: '/mockups/app-phone-light.jpg', srcDark: '/mockups/app-phone-dark.jpg', alt: 'The dashboard overview on a phone' },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid overflow-hidden rounded-2xl bg-primary text-on-primary md:rounded-3xl lg:min-h-120 lg:grid-cols-2">
     <div class="flex flex-col items-start gap-8 px-6 pt-10 pb-12 md:p-12 md:gap-12 lg:p-16">
-      <SectionHeader heading="Be the first to know when we launch our new platform" description="We're still building. Subscribe for updates and 20% off when we launch. No spam, we promise!" size="large" background="primary" />
+      <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" background="primary" />
       <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required size="large" class="flex-1 text-start" />
-        <Button type="submit" size="large" color="neutral">Subscribe</Button>
+        <Button type="submit" size="large" color="neutral">{submitLabel}</Button>
       </div>
       <p class="text-sm opacity-85">We care about your data in our <Link href="#" color="inherit">privacy policy</Link>.</p>
     </form>
     </div>
+    {media && (
     <div class="relative flex items-end justify-center gap-6 px-6 lg:items-center">
       <ul class="flex list-none flex-col gap-3 p-0 max-lg:hidden text-neutral" aria-hidden="true">
           {[['Ada Lovelace', 'followed you'], ['Alan Turing', 'gave your post kudos'], ['Grace Hopper', 'joined your team']].map(([n, t]) => (
@@ -36,7 +49,8 @@ import Avatar from '../../components/Avatar/Avatar.astro'
             </li>
           ))}
         </ul>
-      <DeviceFrame device="phone" src="/mockups/app-phone-light.jpg" srcDark="/mockups/app-phone-dark.jpg" alt="The dashboard overview on a phone" class="w-56 translate-y-8 md:w-64" />
+      <DeviceFrame device="phone" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height} class="w-56 translate-y-8 md:w-64" />
     </div>
+    )}
   </div>
 </Section>

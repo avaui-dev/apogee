@@ -11,47 +11,56 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Button from '../../components/Button/Button.astro'
 import Carousel from '../../components/Carousel/Carousel.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain } from '../../sections/_shared/spine.ts'
+import type { Testimonial, TestimonialsContent } from '../../sections/_shared/testimonials.ts'
 
+/** @composable */
+interface Props extends TestimonialsContent {
+  /** Each panel shows the company (or the person) and the quote; `href` links to its case study. @category content */
+  items?: (Testimonial & { href?: string })[]
+  /** The case-study link text. @category content */
+  linkLabel?: string
+}
+
+const {
+  eyebrow,
+  heading = 'What our customers say',
+  description = 'Hear from the teams building with us every day.',
+  primaryAction = { label: 'Create account', href: '#' },
+  secondaryAction = { label: 'Our customers', href: '#' },
+  label = 'Case studies',
+  items = [
+    { quote: 'We shipped our redesign in three weeks instead of three months. The team still talks about it.', name: 'Amara Nwosu', role: 'Head of Operations, Lumen', company: 'Lumen', href: '#' },
+    { quote: 'Every page we build now looks like it belongs together. Our designers finally trust what ships.', name: 'Daniel Reyes', role: 'Engineering Lead, Quanta', company: 'Quanta', href: '#' },
+    { quote: 'Support answered in minutes, and the fix was live the same afternoon.', name: 'Sofia Marchetti', role: 'Product Designer, Fieldwork', company: 'Fieldwork', href: '#' },
+    { quote: 'It replaced four tools and a spreadsheet nobody wanted to open.', name: 'Kenji Watanabe', role: 'Founder, Northpeak', company: 'Northpeak', href: '#' },
+  ],
+  linkLabel = 'Read case study',
+} = Astro.props
+// Panel colours and logo icons are design: they cycle by position.
+const fills = ['bg-primary text-on-primary', 'bg-positive text-on-positive', 'bg-inverted text-on-inverted', 'bg-neutral text-on-neutral']
+const icons = [Hexagon, Atom, Sprout, Mountain]
 ---
 
 <Section spacing="large">
   <div class="flex flex-col gap-12 md:gap-16">
-    <SectionHeader heading="What our customers say" description="Hear from the teams building with us every day." size="large">
-      <Fragment slot="actions"><div class="flex flex-col-reverse gap-3 sm:flex-row"><Button href="#" size="large" variant="outline" color="neutral">Our customers</Button><Button href="#" size="large">Create account</Button></div></Fragment>
+    <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large">
+      {(primaryAction || secondaryAction) && <Fragment slot="actions"><div class="flex flex-col-reverse gap-3 sm:flex-row">{secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}{primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}</div></Fragment>}
     </SectionHeader>
-    <Carousel label="Case studies" itemWidth="min(24rem, 80vw)" controlsPosition="below" gap={6}>
-      <figure class="relative flex h-118 flex-col justify-between p-6 md:h-126 bg-primary text-on-primary">
-        <span class="flex items-center gap-2 text-lg font-semibold "><Hexagon class="size-7" aria-hidden="true" />Lumen</span>
+    <Carousel label={label} itemWidth="min(24rem, 80vw)" controlsPosition="below" gap={6}>
+      {items.map((t, i) => {
+        const Icon = icons[i % icons.length]!
+        return (
+      <figure class={`relative flex h-118 flex-col justify-between p-6 md:h-126 ${fills[i % fills.length]}`}>
+        <span class="flex items-center gap-2 text-lg font-semibold "><Icon class="size-7" aria-hidden="true" />{t.company ?? t.name}</span>
         <div class="flex flex-col gap-4 rounded-xl bg-page/90 p-5 text-neutral backdrop-blur-md">
-          <p class="text-2xl font-semibold">Lumen</p>
-          <blockquote class="text-lg"><p>“We shipped our redesign in three weeks instead of three months. The team still talks about it.”</p></blockquote>
-          <Link href="#" color="primary" class="inline-flex items-center gap-1 font-semibold">Read case study<ArrowUpRight class="size-5" aria-hidden="true" /></Link>
+          <p class="text-2xl font-semibold">{t.company ?? t.name}</p>
+          <blockquote class="text-lg"><p>“{t.quote}”</p></blockquote>
+          {t.href && <Link href={t.href} color="primary" class="inline-flex items-center gap-1 font-semibold">{linkLabel}<ArrowUpRight class="size-5" aria-hidden="true" /></Link>}
         </div>
       </figure>
-      <figure class="relative flex h-118 flex-col justify-between p-6 md:h-126 bg-positive text-on-positive">
-        <span class="flex items-center gap-2 text-lg font-semibold "><Atom class="size-7" aria-hidden="true" />Quanta</span>
-        <div class="flex flex-col gap-4 rounded-xl bg-page/90 p-5 text-neutral backdrop-blur-md">
-          <p class="text-2xl font-semibold">Quanta</p>
-          <blockquote class="text-lg"><p>“Every page we build now looks like it belongs together. Our designers finally trust what ships.”</p></blockquote>
-          <Link href="#" color="primary" class="inline-flex items-center gap-1 font-semibold">Read case study<ArrowUpRight class="size-5" aria-hidden="true" /></Link>
-        </div>
-      </figure>
-      <figure class="relative flex h-118 flex-col justify-between p-6 md:h-126 bg-inverted text-on-inverted">
-        <span class="flex items-center gap-2 text-lg font-semibold "><Sprout class="size-7" aria-hidden="true" />Fieldwork</span>
-        <div class="flex flex-col gap-4 rounded-xl bg-page/90 p-5 text-neutral backdrop-blur-md">
-          <p class="text-2xl font-semibold">Fieldwork</p>
-          <blockquote class="text-lg"><p>“Support answered in minutes, and the fix was live the same afternoon.”</p></blockquote>
-          <Link href="#" color="primary" class="inline-flex items-center gap-1 font-semibold">Read case study<ArrowUpRight class="size-5" aria-hidden="true" /></Link>
-        </div>
-      </figure>
-      <figure class="relative flex h-118 flex-col justify-between p-6 md:h-126 bg-neutral text-on-neutral">
-        <span class="flex items-center gap-2 text-lg font-semibold "><Mountain class="size-7" aria-hidden="true" />Northpeak</span>
-        <div class="flex flex-col gap-4 rounded-xl bg-page/90 p-5 text-neutral backdrop-blur-md">
-          <p class="text-2xl font-semibold">Northpeak</p>
-          <blockquote class="text-lg"><p>“It replaced four tools and a spreadsheet nobody wanted to open.”</p></blockquote>
-          <Link href="#" color="primary" class="inline-flex items-center gap-1 font-semibold">Read case study<ArrowUpRight class="size-5" aria-hidden="true" /></Link>
-        </div>
-      </figure>
+        )
+      })}
     </Carousel>
   </div>
 </Section>
