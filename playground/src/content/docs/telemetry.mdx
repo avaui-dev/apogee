@@ -27,7 +27,8 @@ The CLI also sends nothing when `CI` is set, so build machines don't count.
   "event": "cli add",
   "distinct_id": "746572fd-8069-471f-9f34-f51ecd519b94",
   "properties": {
-    "cli_version": "0.7.0",
+    "$geoip_disable": true,
+    "cli_version": "0.8.1",
     "node_version": "22",
     "os": "darwin",
     "items": ["Badge"],
@@ -46,8 +47,9 @@ The CLI also sends nothing when `CI` is set, so build machines don't count.
 
 No names, emails, file paths, project names, file contents or environment
 variables. The events go to PostHog's EU cloud with
-`$process_person_profile: false`, so PostHog builds no profile of you, and the
-project discards IP addresses.
+`$process_person_profile: false`, so PostHog builds no profile of you. The
+project discards IP addresses and has PostHog's location lookup switched off, so
+no country, city or coordinates are stored either.
 
 ## When it sends
 

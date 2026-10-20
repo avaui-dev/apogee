@@ -200,6 +200,7 @@ test('a telemetry event is anonymous and carries only the command, its details a
   assert.equal(e.event, 'cli add')
   assert.equal(e.distinct_id, 'abc')
   assert.equal(e.properties.$process_person_profile, false)
-  assert.deepEqual(Object.keys(e.properties).sort(), ['$process_person_profile', 'cli_version', 'items', 'node_version', 'os'])
+  assert.equal(e.properties.$geoip_disable, true) // no location looked up from the IP
+  assert.deepEqual(Object.keys(e.properties).sort(), ['$geoip_disable', '$process_person_profile', 'cli_version', 'items', 'node_version', 'os'])
   assert.match(e.properties.node_version, /^\d+$/)
 })

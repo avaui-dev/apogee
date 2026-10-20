@@ -3,6 +3,13 @@
 All notable changes to Apogee are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](https://semver.org).
 
+## [0.8.1] — 2026-10-20
+
+### Fixed
+
+- **Telemetry stores no location.** Each event now asks PostHog to skip its IP-based location lookup (`$geoip_disable`), and the lookup is switched off for the project, so no country, city or coordinates are kept. The Telemetry docs page says so.
+- Releases now also run `npm run check:kit` before publishing.
+
 ## [0.8.0] — 2026-10-20
 
 ### Added
@@ -497,6 +504,7 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.8.1]: https://github.com/avaui-dev/apogee/releases/tag/v0.8.1
 [0.8.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.8.0
 [0.7.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.7.0
 [0.6.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.6.0

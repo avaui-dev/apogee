@@ -82,12 +82,14 @@ export const telemetryOff = (env) =>
 
 // One PostHog capture payload. `$process_person_profile: false` keeps it anonymous:
 // PostHog builds no person profile, so a random id is all that ties runs together.
+// `$geoip_disable` skips the location lookup PostHog would otherwise run on the IP.
 export const telemetryEvent = ({ key, id, command, props = {}, version }) => ({
   api_key: key,
   event: `cli ${command}`,
   distinct_id: id,
   properties: {
     $process_person_profile: false,
+    $geoip_disable: true,
     cli_version: version,
     node_version: process.versions.node.split('.')[0],
     os: process.platform,
