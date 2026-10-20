@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Added
 
+- **Hero blocks take their copy as props.** All 78 share one shape (`announcement`, `eyebrow`, `heading`, `description`, `primaryAction`, `secondaryAction`, `media`) with the sample copy as defaults, plus their own extras (`submitLabel`, `images`, …). Swap one hero block for another and the copy carries over; pass `null` to hide a part; wrap heading words in `*asterisks*` to accent them. They render exactly as before. `Media` gains an optional `srcDark`.
 - **`apogee diff` and `apogee update`.** `add` now records a hash of each file it writes in `apogee.json`. `diff` lists every installed file as current, outdated, edited, conflict or unknown and shows the changed lines. `update` takes package changes only for files you haven't edited; `--overwrite` also replaces edited ones.
 - **The tokens file records its hue inputs.** `build:tokens` writes `/* hues {…} */` at the end of the light block. Run `build-tokens.mjs src/styles/apogee.css` without a hues file and it regenerates from that line; `readHues(css)` returns it for tools such as AVA.
 - **SiteLayout:** the page shell (`<html>`, `<head>`, `<body>`). It writes title, description, canonical, Open Graph and `noindex` tags from props, swaps `no-js` for `js` before paint, and restores a stored colour mode. `apogee add site-layout` writes it to `src/layouts/`. Its SEO props carry `@seo` tags, so AVA adopts it instead of scaffolding its own head.
@@ -23,6 +24,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ### Changed
 
+- **Image** and **DeviceFrame** accept `width`/`height` of `undefined` explicitly (strict TypeScript), so an optional size can be passed straight through.
 - **The CLI prints colour only to a terminal**, so piped output is plain text.
 - **Prop unions are written out** (`size?: 'small' | 'medium' | 'large'`) instead of derived with `keyof typeof` from the class table, so tools that read source without running TypeScript (AVA's props panel) see the options. Each table now `satisfies` its union, so the build fails if the two drift apart.
 - **WorldMap** draws each region on its own grid from Natural Earth 50m countries: only that continent's land, framed by where it actually is, with the same number of columns as every other region, so dots match in size. Regions no longer cut off land (Arctic islands, Indonesia, New Guinea) or show neighbours; where land runs on past a frame (Russia east of Europe, the Aleutians), its dots fade out. Each region scales longitude to its middle latitude, so shapes come out true instead of stretched sideways, and a cell counts as land if any of nine points across it is, so narrow land (Italy, Greece, islands) keeps its dots. Europe is framed 25°W–45°E, 34°–72°N and includes Turkey and Cyprus; North America leaves Greenland to the world map. The world map is finer (2° dots). `scripts/build-world-map.mjs` regenerates the data.

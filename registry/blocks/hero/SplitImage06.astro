@@ -12,7 +12,20 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The email form's button. @category content */
+  submitLabel?: string
+}
+
+const {
+  heading = 'Customer service software for customer-first teams',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  submitLabel = 'Get started',
+  media = { src: 'https://picsum.photos/seed/apogee-hero-6/1000/1250', alt: '', width: 1000, height: 1250 },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -22,18 +35,18 @@ import Image from '../../components/Image/Image.astro'
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">Customer service software for customer-first teams</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
       <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input size="large" type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
-        <Button type="submit" size="large">Get started</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>
     </div>
-    <Image src="https://picsum.photos/seed/apogee-hero-6/1000/1250" alt="" width={1000} height={1250} fit="cover" loading="eager" class="aspect-[4/5] w-full rounded-xl rounded-se-[6rem] rounded-es-[6rem]" />
+    {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" loading="eager" class="aspect-[4/5] w-full rounded-xl rounded-se-[6rem] rounded-es-[6rem]" />}
   </div>
   </Container>
 </Section>

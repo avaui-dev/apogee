@@ -11,7 +11,18 @@ import Container from '../../components/Container/Container.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  eyebrow = 'Super. Simple. Banking.',
+  heading = 'Simple banking that works like magic.',
+  description = 'A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.',
+  primaryAction = { label: 'Sign up', href: '#' },
+  secondaryAction = { label: 'Demo', href: '#' },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -19,14 +30,16 @@ import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
   <Container class="relative">
     <div class="flex flex-col gap-8 md:gap-12 items-center text-center">
     <div class="flex flex-col gap-4 md:gap-6 items-center text-center">
-      <p class="text-sm font-semibold text-primary">Super. Simple. Banking.</p>
-      <Heading as="h1" size="display" class="text-balance">Simple banking that works like magic.</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+      {eyebrow && <p class="text-sm font-semibold text-primary">{eyebrow}</p>}
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
-    <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-center ">
-      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
-      <Button href="#" size="large">Sign up</Button>
-    </div>
+    {(primaryAction || secondaryAction) && (
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-center ">
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+      </div>
+    )}
   </div>
     <div class="mx-auto mt-12 h-72 max-w-4xl md:h-96"><div class="relative mx-auto h-full w-full max-w-2xl">
         <div class="absolute w-56 md:w-72 start-[5%] top-[15%] -rotate-[30deg]"><PaymentCard color="neutral" last4="1234" /></div>

@@ -8,18 +8,29 @@
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain, srcUrl, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  eyebrow = 'Couples work',
+  heading = 'A return to honesty, to presence, to the quiet ways we connect. Not fixing what is broken, but remembering what is real.',
+  secondaryAction = { label: 'Learn more', href: '#' },
+  media = { src: 'https://picsum.photos/id/1027/2000/1200?grayscale', alt: '' },
+} = Astro.props
 ---
 
 <!-- Always dark: light text on a photo tinted with the primary hue. -->
 <Section spacing="small" containerWidth="full" theme="dark">
   <div class="relative isolate flex aspect-[4/5] flex-col items-start gap-6 overflow-hidden rounded-xl p-6 sm:aspect-16/10 md:p-12 lg:aspect-2/1">
     <!-- A greyscale photo multiplied with the primary fill reads as a one-colour print. -->
-    <img src="https://picsum.photos/id/1027/2000/1200?grayscale" alt="" loading="eager" class="absolute inset-0 -z-20 size-full object-cover" />
+    {media && <img src={srcUrl(media.src)} alt={media.alt} loading="eager" class="absolute inset-0 -z-20 size-full object-cover" />}
     <div class="absolute inset-0 -z-10 bg-primary mix-blend-multiply" aria-hidden="true"></div>
     <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,color-mix(in_oklab,var(--background-page)_60%,transparent),transparent_60%)]" aria-hidden="true"></div>
 
-    <p class="flex items-center gap-3 text-sm font-medium"><span class="flex" aria-hidden="true"><span class="size-5 rounded-full bg-(--foreground-neutral)"></span><span class="-ms-2 size-5 rounded-full border-2 border-(--foreground-neutral)"></span></span>Couples work</p>
-    <Heading as="h1" size="h2" class="max-w-3xl font-normal text-balance">A return to honesty, to presence, to the quiet ways we connect. Not fixing what is broken, but remembering what is real.</Heading>
-    <Button href="#" size="large" rounded variant="outline" color="neutral" class="bg-transparent! px-8">Learn more</Button>
+    {eyebrow && <p class="flex items-center gap-3 text-sm font-medium"><span class="flex" aria-hidden="true"><span class="size-5 rounded-full bg-(--foreground-neutral)"></span><span class="-ms-2 size-5 rounded-full border-2 border-(--foreground-neutral)"></span></span>{eyebrow}</p>}
+    <Heading as="h1" size="h2" class="max-w-3xl font-normal text-balance">{plain(heading)}</Heading>
+    {secondaryAction && <Button href={secondaryAction.href} size="large" rounded variant="outline" color="neutral" class="bg-transparent! px-8">{secondaryAction.label}</Button>}
   </div>
 </Section>

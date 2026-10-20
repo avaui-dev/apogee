@@ -9,17 +9,31 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The screenshot; `srcDark` swaps in when the page is dark. @category content */
+  media?: Media | null
+}
+
+const {
+  heading = 'Show your designs in motion',
+  description = 'Pick a template, drop in images or clips, tune the timing and export a video. All in the browser, nothing to install.',
+  primaryAction = { label: 'Try it free', href: '#' },
+  media = { src: '/mockups/app-desktop-light.jpg', srcDark: '/mockups/app-desktop-dark.jpg', alt: 'The editor with templates, a preview and settings' },
+} = Astro.props
 ---
 
 <Section spacing="none" container={false} class="overflow-hidden">
   <div class="flex flex-col items-center gap-6 px-gutter pt-(--spacing-section-lg) text-center">
-    <Heading as="h1" size="display" class="max-w-4xl text-balance">Show your designs in motion</Heading>
-    <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Pick a template, drop in images or clips, tune the timing and export a video. All in the browser, nothing to install.</p>
-    <Button href="#" size="large" rounded class="px-8">Try it free</Button>
+    <Heading as="h1" size="display" class="max-w-4xl text-balance">{plain(heading)}</Heading>
+    {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
+    {primaryAction && <Button href={primaryAction.href} size="large" rounded class="px-8">{primaryAction.label}</Button>}
   </div>
 
   <div class="relative mt-16 md:mt-20">
-    <div class="relative mx-auto max-w-5xl px-gutter"><DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The editor with templates, a preview and settings" /></div>
+    <div class="relative mx-auto max-w-5xl px-gutter">{media && <DeviceFrame device="browser" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height}  />}</div>
     <!-- Two hills rise over the screenshot's base; the primary tint mixes into the page so they follow the theme. -->
     <svg class="pointer-events-none relative -mt-[18%] block w-full" viewBox="0 0 1440 420" preserveAspectRatio="none" aria-hidden="true">
       <defs>

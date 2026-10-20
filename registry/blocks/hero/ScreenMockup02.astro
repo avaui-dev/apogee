@@ -11,6 +11,7 @@ import Container from '../../components/Container/Container.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
 
 const logos = [
   { name: 'Lumen', icon: Hexagon },
@@ -20,6 +21,23 @@ const logos = [
   { name: 'Arcwave', icon: Waves },
   { name: 'Kitestring', icon: Wind },
 ]
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The line above the customer logos. @category content */
+  trustedBy?: string | null
+  /** The screenshot; `srcDark` swaps in when the page is dark. @category content */
+  media?: Media | null
+}
+
+const {
+  heading = 'Beautiful analytics to grow smarter',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  primaryAction = { label: 'Sign up', href: '#' },
+  secondaryAction = { label: 'Demo', href: '#' },
+  trustedBy = 'Trusted by 4,000+ companies',
+  media = { src: '/mockups/app-customers-desktop-light.jpg', srcDark: '/mockups/app-customers-desktop-dark.jpg', alt: 'The customers table in a browser' },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} background="neutral-faded" class="overflow-hidden">
@@ -29,21 +47,23 @@ const logos = [
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">Beautiful analytics to grow smarter</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-col-reverse gap-3 sm:flex-row ">
-      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
-      <Button href="#" size="large">Sign up</Button>
-    </div>
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+      </div>
+    )}
       <div class="flex flex-col gap-4">
-      <p class="text-sm font-medium text-neutral-faded">Trusted by 4,000+ companies</p>
+      {trustedBy && <p class="text-sm font-medium text-neutral-faded">{trustedBy}</p>}
       <ul class="flex list-none flex-wrap items-center gap-x-8 gap-y-4 p-0" aria-label="Customers">
         {logos.map((l) => <li class="flex items-center gap-2 text-lg font-semibold text-neutral-faded"><l.icon class="size-6" aria-hidden="true" />{l.name}</li>)}
       </ul>
     </div>
     </div>
-    <DeviceFrame device="browser" src="/mockups/app-customers-desktop-light.jpg" srcDark="/mockups/app-customers-desktop-dark.jpg" alt="The customers table in a browser" class="" />
+    {media && <DeviceFrame device="browser" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height} class="" />}
   </div>
   </Container>
 </Section>

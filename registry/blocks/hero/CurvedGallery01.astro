@@ -7,21 +7,40 @@
  */
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
+import { plain, srcUrl, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** Four photos: start side, centre, end side top, end side bottom. @category content */
+  images?: Media[]
+}
+
+const {
+  heading = 'How we got here',
+  description = 'A group of curious people spread across the world, building the future of product research together.',
+  images = [
+    { src: 'https://picsum.photos/id/1005/600/700', alt: '' },
+    { src: 'https://picsum.photos/id/1062/1600/900', alt: '' },
+    { src: 'https://picsum.photos/id/1011/600/500', alt: '' },
+    { src: 'https://picsum.photos/id/1012/600/700', alt: '' },
+  ],
+} = Astro.props
+const [start, centre, endTop, endBottom] = images
 ---
 
 <Section spacing="none" container={false} class="overflow-hidden">
   <div class="mx-auto flex max-w-2xl flex-col items-center gap-6 px-gutter pt-(--spacing-section-lg) text-center">
-    <Heading as="h1" size="display" class="text-balance">How we got here</Heading>
-    <p class="text-lg md:text-xl text-neutral-faded">A group of curious people spread across the world, building the future of product research together.</p>
+    <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+    {description && <p class="text-lg md:text-xl text-neutral-faded">{description}</p>}
   </div>
 
   <div class="relative mt-12 grid grid-cols-[1fr_minmax(0,3fr)_1fr] items-end gap-3 md:mt-16 md:gap-4" aria-hidden="true">
     <!-- Side photos: a big curve on the inner top corner, cut off by the page edge. -->
-    <img src="https://picsum.photos/id/1005/600/700" alt="" class="aspect-5/6 w-full rounded-se-[100%_60%] object-cover" />
-    <img src="https://picsum.photos/id/1062/1600/900" alt="" class="aspect-16/9 w-full object-cover" />
+    {start && <img src={srcUrl(start.src)} alt={start.alt} class="aspect-5/6 w-full rounded-se-[100%_60%] object-cover" />}
+    {centre && <img src={srcUrl(centre.src)} alt={centre.alt} class="aspect-16/9 w-full object-cover" />}
     <div class="flex flex-col gap-3 md:gap-4">
-      <img src="https://picsum.photos/id/1011/600/500" alt="" class="aspect-6/5 w-full rounded-es-[100%_70%] object-cover" />
-      <img src="https://picsum.photos/id/1012/600/700" alt="" class="aspect-5/6 w-full rounded-ss-[100%_60%] object-cover" />
+      {endTop && <img src={srcUrl(endTop.src)} alt={endTop.alt} class="aspect-6/5 w-full rounded-es-[100%_70%] object-cover" />}
+      {endBottom && <img src={srcUrl(endBottom.src)} alt={endBottom.alt} class="aspect-5/6 w-full rounded-ss-[100%_60%] object-cover" />}
     </div>
   </div>
 </Section>

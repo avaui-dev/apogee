@@ -26,8 +26,8 @@ interface Props extends HTMLAttributes<'figure'> {
   /** A dark-mode screenshot, shown when the page is dark. */ srcDark?: ImageMetadata | string | undefined
   /** What the screenshot shows; empty when it only decorates. @category content */ alt?: string
   /** Text in the browser's address bar. @category content */ address?: string
-  /** Screenshot size in pixels, for the space reserved before it loads. */ width?: number
-  /** */ height?: number
+  /** Screenshot size in pixels, for the space reserved before it loads. */ width?: number | undefined
+  /** */ height?: number | undefined
   class?: string
 }
 

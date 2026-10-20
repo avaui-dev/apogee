@@ -9,6 +9,18 @@ import { Sparkle } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain, accentRuns, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {}
+
+// ponytail: description reuses the *accent* syntax for its italic aside.
+const {
+  heading = 'All your locations, in one place at last',
+  description = 'A *(carefully)* designed way to scout, book and share film locations with your whole crew.',
+  primaryAction = { label: 'create a free account', href: '#' },
+  secondaryAction = { label: 'book a demo', href: '#' },
+} = Astro.props
 ---
 
 <!-- Always dark: a night sky made of primary washes over the dark page. -->
@@ -19,12 +31,14 @@ import Button from '../../components/Button/Button.astro'
       <span class="absolute end-[28%] top-[8%] h-40 w-px rotate-[25deg] bg-[linear-gradient(to_bottom,transparent,color-mix(in_oklab,var(--foreground-primary)_60%,transparent))]" aria-hidden="true"></span>
       <div class="flex max-w-xl flex-col items-center gap-8 text-center">
         <Sparkle class="size-10" stroke-width="1.25" aria-hidden="true" />
-        <Heading as="h1" size="h1" class="font-normal text-balance">All your locations, in one place at last</Heading>
-        <p class="mt-6 font-mono text-sm leading-relaxed">A <em>(carefully)</em> designed way to scout, book and share film locations with your whole crew.</p>
+        <Heading as="h1" size="h1" class="font-normal text-balance">{plain(heading)}</Heading>
+        {description && <p class="mt-6 font-mono text-sm leading-relaxed">{accentRuns(description).map((r) => (r.accent ? <em>{r.text}</em> : r.text))}</p>}
+        {(primaryAction || secondaryAction) && (
         <div class="flex flex-wrap justify-center gap-1">
-          <Button href="#" size="small" color="neutral" variant="faded" class="font-mono">create a free account</Button>
-          <Button href="#" size="small" color="neutral" variant="faded" class="font-mono">book a demo</Button>
+          {primaryAction && <Button href={primaryAction.href} size="small" color="neutral" variant="faded" class="font-mono">{primaryAction.label}</Button>}
+          {secondaryAction && <Button href={secondaryAction.href} size="small" color="neutral" variant="faded" class="font-mono">{secondaryAction.label}</Button>}
         </div>
+        )}
       </div>
     </div>
   </div>

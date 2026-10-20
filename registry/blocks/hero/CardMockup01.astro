@@ -13,7 +13,18 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  announcement = { badge: "What's new?", label: 'Instantly issue virtual cards', href: '#' },
+  heading = 'No more banking headaches',
+  description = 'A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.',
+  primaryAction = { label: 'Sign up', href: '#' },
+  secondaryAction = { label: 'Demo', href: '#' },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -21,16 +32,20 @@ import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
   <Container class="relative">
     <div class="flex flex-col gap-8 md:gap-12 items-center text-center">
     <div class="flex flex-col gap-4 md:gap-6 items-center text-center">
-      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-center rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
-      <Badge color="primary" rounded>What's new?</Badge>Instantly issue virtual cards<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
-    </Link>
-      <Heading as="h1" size="display" class="text-balance">No more banking headaches</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+      {announcement && (
+        <Link href={announcement.href} color="inherit" underline="none" class="inline-flex items-center gap-2 self-center rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+          {announcement.badge && <Badge color="primary" rounded>{announcement.badge}</Badge>}{announcement.label}<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+        </Link>
+      )}
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
-    <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-center ">
-      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
-      <Button href="#" size="large">Sign up</Button>
-    </div>
+    {(primaryAction || secondaryAction) && (
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-center ">
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+      </div>
+    )}
   </div>
     <div class="mt-16 md:mt-20"><div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 mx-auto h-80 max-w-3xl md:h-112">
       <div class="relative h-full w-full max-w-md">

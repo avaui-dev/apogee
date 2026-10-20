@@ -48,7 +48,7 @@ const walk = (d) =>
     e.isDirectory() ? walk(join(d, e.name)) : e.name.endsWith('.astro') ? [join(d, e.name)] : [],
   )
 
-const files = ['components', 'sections'].flatMap((d) => walk(join(root, 'registry', d)))
+const files = ['components', 'sections', 'blocks'].flatMap((d) => walk(join(root, 'registry', d)))
 let bad = 0
 const models = []
 for (const f of files) {

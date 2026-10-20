@@ -11,10 +11,25 @@ import Heading from '../../components/Heading/Heading.astro'
 import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
 const steps = [['Brief', Map], ['Sitemap', Map], ['Wireframe', LayoutTemplate], ['Design', Brush]] as const
 // A cube face: a grid drawn with two repeating lines over a primary shade.
 const face = (mix: number) => `background: linear-gradient(var(--foreground-neutral) 1px, transparent 1px) 0 0 / 10% 10%, linear-gradient(90deg, var(--foreground-neutral) 1px, transparent 1px) 0 0 / 10% 10%, color-mix(in oklab, var(--background-primary) ${mix}%, var(--background-page))`
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The prompt form's submit button. @category content */
+  submitLabel?: string
+}
+
+const {
+  eyebrow = 'Trusted by 1M+ freelancers and agencies',
+  heading = 'Build a marketing site you’d actually publish',
+  description = 'Start with a brief. We draft the sitemap, the wireframes and a site you’d be happy to ship. The AI does the work; you make the calls.',
+  secondaryAction = { label: 'Try an example', href: '#' },
+  submitLabel = 'Generate site',
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -26,9 +41,9 @@ const face = (mix: number) => `background: linear-gradient(var(--foreground-neut
   ))}
 
   <div class="relative mx-auto flex max-w-2xl flex-col items-center gap-6 px-gutter text-center">
-    <Eyebrow class="font-mono">Trusted by 1M+ freelancers and agencies</Eyebrow>
-    <Heading as="h1" size="display" class="font-normal text-balance">Build a marketing site you’d actually publish</Heading>
-    <p class="text-lg text-neutral-faded">Start with a brief. We draft the sitemap, the wireframes and a site you’d be happy to ship. The AI does the work; you make the calls.</p>
+    {eyebrow && <Eyebrow class="font-mono">{eyebrow}</Eyebrow>}
+    <Heading as="h1" size="display" class="font-normal text-balance">{plain(heading)}</Heading>
+    {description && <p class="text-lg text-neutral-faded">{description}</p>}
     <form class="flex w-full flex-col gap-4 rounded-xl border border-neutral-faded bg-page p-4 text-start shadow-lg" onsubmit="return false">
       <label for="prompt-cubes-brief" class="sr-only">Your brief</label>
       <textarea id="prompt-cubes-brief" rows="3" placeholder="Drop in your notes, a brief or a URL…" class="w-full resize-none bg-transparent outline-none placeholder:text-neutral-faded"></textarea>
@@ -37,11 +52,11 @@ const face = (mix: number) => `background: linear-gradient(var(--foreground-neut
         <span class="flex flex-wrap gap-2">
           <Button size="small" variant="outline" color="neutral"><Globe slot="start" aria-hidden="true" />Publish</Button>
           <Button size="small" variant="outline" color="neutral"><Upload slot="start" aria-hidden="true" />Export</Button>
-          <Button size="small" type="submit">Generate site</Button>
+          <Button size="small" type="submit">{submitLabel}</Button>
         </span>
       </div>
     </form>
-    <Link href="#" color="neutral" class="text-sm decoration-dotted">Try an example</Link>
+    {secondaryAction && <Link href={secondaryAction.href} color="neutral" class="text-sm decoration-dotted">{secondaryAction.label}</Link>}
   </div>
 
   <div class="relative mx-auto mt-16 max-w-5xl px-gutter" aria-hidden="true">

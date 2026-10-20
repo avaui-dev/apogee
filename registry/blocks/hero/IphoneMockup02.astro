@@ -11,7 +11,17 @@ import Container from '../../components/Container/Container.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  heading = 'The ads tracking app for marketers',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  primaryAction = { label: 'Download for iOS', href: '#' },
+  secondaryAction = { label: 'Get it on Android', href: '#' },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} background="neutral-faded" class="overflow-hidden">
@@ -21,13 +31,15 @@ import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">The ads tracking app for marketers</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-wrap gap-3">
-      <Button href="#" size="large" variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />Download for iOS</Button>
-      <Button href="#" size="large" variant="outline" color="neutral"><Download slot="start" aria-hidden="true" />Get it on Android</Button>
+      {primaryAction && <Button href={primaryAction.href} size="large" variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />{primaryAction.label}</Button>}
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><Download slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
     </div>
+      )}
     </div>
     <div class="relative flex justify-center lg:block"><DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="max-lg:hidden w-[85%]" /><div class="w-64 lg:absolute lg:end-0 lg:-bottom-12 lg:w-56"><DeviceFrame device="phone" src="/mockups/app-customers-phone-light.jpg" srcDark="/mockups/app-customers-phone-dark.jpg" alt="The customers table on a phone" class="" /></div></div>
   </div>

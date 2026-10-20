@@ -9,6 +9,20 @@ import { ArrowRight, ChevronLeft, ChevronRight, Mail } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { accentRuns, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The button inside the email field. @category content */
+  submitLabel?: string
+}
+
+const {
+  heading = 'Company gifting for *sales teams*',
+  description = 'One place to send thoughtful, branded gifts at scale.',
+  submitLabel = 'Book a demo',
+  secondaryAction = { label: 'Sign in', href: '#' },
+} = Astro.props
 
 const tabs = ['The dashboard', 'Gift tracking', 'Branded experience', 'Gift options', 'Gift calendar']
 ---
@@ -18,16 +32,16 @@ const tabs = ['The dashboard', 'Gift tracking', 'Branded experience', 'Gift opti
     <img src="https://picsum.photos/id/292/400/320" alt="" class="absolute -start-6 top-[45%] hidden w-48 -rotate-6 rounded-xl object-cover shadow-2xl lg:block" />
     <img src="https://picsum.photos/id/312/360/360" alt="" class="absolute -end-4 top-[25%] hidden w-44 rotate-12 rounded-xl object-cover shadow-2xl lg:block" />
 
-    <Heading as="h1" size="display" class="font-normal tracking-tight text-[clamp(2.75rem,1rem+6vw,6rem)]!">Company gifting for <span class="block italic">sales teams</span></Heading>
-    <p class="max-w-md text-lg text-neutral-faded">One place to send thoughtful, branded gifts at scale.</p>
+    <Heading as="h1" size="display" class="font-normal tracking-tight text-[clamp(2.75rem,1rem+6vw,6rem)]!">{accentRuns(heading).map((r) => (r.accent ? <span class="block italic">{r.text}</span> : r.text))}</Heading>
+    {description && <p class="max-w-md text-lg text-neutral-faded">{description}</p>}
     <form class="flex w-full max-w-xl flex-col gap-3 sm:flex-row" onsubmit="return false">
       <label class="flex flex-1 items-center gap-2 rounded-full border border-neutral-faded bg-page p-1.5 ps-4 shadow-lg">
         <Mail class="size-4 shrink-0 text-neutral-faded" aria-hidden="true" />
         <span class="sr-only">Work email</span>
         <input type="email" placeholder="Work email" autocomplete="email" class="min-w-0 flex-1 bg-transparent outline-none placeholder:text-neutral-faded" />
-        <Button type="submit" rounded>Book a demo<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+        <Button type="submit" rounded>{submitLabel}<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
       </label>
-      <Button href="#" size="large" rounded variant="outline" color="neutral">Sign in</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" rounded variant="outline" color="neutral">{secondaryAction.label}</Button>}
     </form>
 
     <p class="mt-12 text-sm italic text-neutral-faded">See it in action</p>

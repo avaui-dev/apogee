@@ -8,21 +8,43 @@
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain, srcUrl, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The tall photo beside the main one (hidden on phones). @category content */
+  sideMedia?: Media | null
+  /** The line over the tall photo. @category content */
+  sideCaption?: string | null
+}
+
+const {
+  heading = 'A culture-first social, content and creator studio',
+  description = 'A creative team for beauty and wellness brands: strategy, social, production and web, all under one roof.',
+  primaryAction = { label: 'See our work', href: '#' },
+  media = { src: 'https://picsum.photos/id/1080/1600/1000', alt: '' },
+  sideMedia = { src: 'https://picsum.photos/id/312/600/1000', alt: '' },
+  sideCaption = 'Sunday reset, done right',
+} = Astro.props
 ---
 
 <Section spacing="large" containerWidth="full" data-surface="primary" class="bg-page text-neutral">
   <div class="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center">
-    <Heading as="h1" size="display" class="font-normal text-balance">A culture-first social, content and creator studio</Heading>
-    <p class="max-w-3xl text-lg md:text-xl text-neutral-faded">A creative team for beauty and wellness brands: strategy, social, production and web, all under one roof.</p>
+    <Heading as="h1" size="display" class="font-normal text-balance">{plain(heading)}</Heading>
+    {description && <p class="max-w-3xl text-lg md:text-xl text-neutral-faded">{description}</p>}
   </div>
   <div class="mt-12 grid gap-4 md:mt-16 md:grid-cols-[3fr_1fr]">
-    <div class="relative aspect-16/10 overflow-hidden rounded-3xl">
-      <img src="https://picsum.photos/id/1080/1600/1000" alt="" loading="eager" class="absolute inset-0 size-full object-cover" />
-      <span class="absolute bottom-6 start-6"><Button href="#" size="large" rounded class="px-8">See our work</Button></span>
-    </div>
-    <div class="relative hidden overflow-hidden rounded-3xl md:block">
-      <img src="https://picsum.photos/id/312/600/1000" alt="" class="absolute inset-0 size-full object-cover" />
-      <p data-theme="dark" class="absolute inset-x-0 top-1/2 text-center font-semibold text-neutral [text-shadow:0_1px_3px_var(--background-page)]">Sunday reset, done right</p>
-    </div>
+    {media && (
+      <div class="relative aspect-16/10 overflow-hidden rounded-3xl">
+        <img src={srcUrl(media.src)} alt={media.alt} width={media.width} height={media.height} loading="eager" class="absolute inset-0 size-full object-cover" />
+        {primaryAction && <span class="absolute bottom-6 start-6"><Button href={primaryAction.href} size="large" rounded class="px-8">{primaryAction.label}</Button></span>}
+      </div>
+    )}
+    {sideMedia && (
+      <div class="relative hidden overflow-hidden rounded-3xl md:block">
+        <img src={srcUrl(sideMedia.src)} alt={sideMedia.alt} width={sideMedia.width} height={sideMedia.height} class="absolute inset-0 size-full object-cover" />
+        {sideCaption && <p data-theme="dark" class="absolute inset-x-0 top-1/2 text-center font-semibold text-neutral [text-shadow:0_1px_3px_var(--background-page)]">{sideCaption}</p>}
+      </div>
+    )}
   </div>
 </Section>

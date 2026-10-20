@@ -8,23 +8,40 @@
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
 
-const facts = [
-  ['30+', 'More than thirty awards for work that ties brand, product and code together.'],
-  ['9', 'Nine years of doing the slow, careful work it takes to get good at this.'],
-  ['3', 'Named studio of the year three times, and still building the web we want to use.'],
-]
+/** @composable */
+interface Props extends HeroContent {
+  /** Two photos: the tall one, then the wide one. @category content */
+  images?: Media[]
+  /** Numbered facts under the wide photo. @category content */
+  facts?: { value: string; text: string }[]
+}
+
+const {
+  heading = 'We design for people. That is the whole job, every time.',
+  images = [
+    { src: 'https://picsum.photos/id/64/1000/1400', alt: '', width: 1000, height: 1400 },
+    { src: 'https://picsum.photos/id/91/1200/800', alt: '', width: 1200, height: 800 },
+  ],
+  facts = [
+    { value: '30+', text: 'More than thirty awards for work that ties brand, product and code together.' },
+    { value: '9', text: 'Nine years of doing the slow, careful work it takes to get good at this.' },
+    { value: '3', text: 'Named studio of the year three times, and still building the web we want to use.' },
+  ],
+} = Astro.props
+const [tall, wide] = images
 ---
 
 <Section spacing="medium" containerWidth="full">
-  <Heading as="h1" size="display" class="indent-[18%] text-[clamp(2.75rem,1rem+6vw,7.5rem)]! leading-[0.95] tracking-tighter text-balance">We design for people. That is the whole job, every time.</Heading>
+  <Heading as="h1" size="display" class="indent-[18%] text-[clamp(2.75rem,1rem+6vw,7.5rem)]! leading-[0.95] tracking-tighter text-balance">{plain(heading)}</Heading>
   <div class="mt-10 grid gap-2 md:mt-14 md:grid-cols-2 md:grid-rows-[auto_1fr]">
-    <Image src="https://picsum.photos/id/64/1000/1400" alt="" width={1000} height={1400} fit="cover" loading="eager" class="aspect-5/7 w-full md:row-span-2" />
-    <Image src="https://picsum.photos/id/91/1200/800" alt="" width={1200} height={800} fit="cover" loading="eager" class="aspect-3/2 w-full" />
+    {tall && <Image src={tall.src} alt={tall.alt} width={tall.width} height={tall.height} fit="cover" loading="eager" class="aspect-5/7 w-full md:row-span-2" />}
+    {wide && <Image src={wide.src} alt={wide.alt} width={wide.width} height={wide.height} fit="cover" loading="eager" class="aspect-3/2 w-full" />}
     <dl class="flex flex-col gap-6 self-start py-6 md:ms-auto md:max-w-md">
-      {facts.map(([n, text]) => (
+      {facts.map(({ value, text }) => (
         <div class="grid grid-cols-[4rem_1fr] gap-4 text-lg font-semibold leading-snug">
-          <dt class="text-end tabular-nums">({n})</dt>
+          <dt class="text-end tabular-nums">({value})</dt>
           <dd>{text}</dd>
         </div>
       ))}

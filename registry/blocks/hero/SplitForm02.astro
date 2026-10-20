@@ -12,7 +12,28 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 import Card from '../../components/Card/Card.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The checklist under the description. @category content */
+  features?: string[] | null
+  /** @category content */
+  formHeading?: string
+  /** @category content */
+  formDescription?: string | null
+  /** @category content */
+  submitLabel?: string
+}
+
+const {
+  heading = 'Customer service, simplified',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  features = ['30-day free trial', 'Personal onboarding', 'Every feature included'],
+  formHeading = 'Create an account',
+  formDescription = 'Start your 30-day free trial.',
+  submitLabel = 'Get started',
+} = Astro.props
 ---
 
 <Section spacing="large">
@@ -20,22 +41,22 @@ import Card from '../../components/Card/Card.astro'
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">Customer service, simplified</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
-      <ul class="flex list-none flex-col gap-4 p-0 "><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />30-day free trial</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Personal onboarding</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Every feature included</li></ul>
+      {features && <ul class="flex list-none flex-col gap-4 p-0 ">{features.map((f) => <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />{f}</li>)}</ul>}
     </div>
     <div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 max-md:bg-transparent! max-md:p-0!">
       <Card padding="large" class="w-full max-w-md justify-self-center">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-1">
-          <Heading as="h2" size="h4">Create an account</Heading>
-          <p class="text-neutral-faded">Start your 30-day free trial.</p>
+          <Heading as="h2" size="h4">{formHeading}</Heading>
+          {formDescription && <p class="text-neutral-faded">{formDescription}</p>}
         </div>
         <form method="post" class="flex flex-col gap-4">
           <Input size="large" label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
           <Input size="large" label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
-          <Button type="submit" size="large" fullWidth>Get started</Button>
+          <Button type="submit" size="large" fullWidth>{submitLabel}</Button>
           <Button href="#" variant="outline" color="neutral" size="large" fullWidth><KeyRound slot="start" aria-hidden="true" />Sign up with SSO</Button>
         </form>
         <p class="text-center text-sm text-neutral-faded">Already have an account? <Link href="#">Log in</Link></p>

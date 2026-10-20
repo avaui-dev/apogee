@@ -11,28 +11,52 @@ import Heading from '../../components/Heading/Heading.astro'
 import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
 import Button from '../../components/Button/Button.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain, srcUrl, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The quote card: the quote (without quote marks), who said it, their role, a short company mark and a portrait. @category content */
+  testimonial?: { quote: string; name: string; role: string; mark?: string; avatar?: Media } | null
+}
+
+const {
+  eyebrow = 'AI for wholesale sales and operations',
+  heading = 'Wholesale shouldn’t run on manual fixes',
+  description = 'One place for rep orders, online, EDI and marketplace sales. Agents take the repetitive work off your team, so revenue grows without the overhead.',
+  secondaryAction = { label: 'Book a demo', href: '#' },
+  testimonial = {
+    quote: 'Faster ordering, tools we can shape to fit, and support that answers. We save money and grow quicker than before.',
+    name: 'Mara Lindqvist',
+    role: 'CEO, Oakline Home',
+    mark: 'OH',
+    avatar: { src: 'https://picsum.photos/id/1005/400/480', alt: '', width: 400, height: 480 },
+  },
+  media = { src: 'https://picsum.photos/id/1031/1200/1600', alt: '' },
+} = Astro.props
 ---
 
 <Section spacing="none" container={false}>
   <div class="grid lg:min-h-[52rem] lg:grid-cols-2">
     <div class="flex flex-col gap-8 px-gutter py-16 lg:py-20">
-      <Eyebrow color="neutral" class="self-start border-b border-neutral pb-1 font-mono">AI for wholesale sales and operations</Eyebrow>
-      <Heading as="h1" size="display" class="text-balance">Wholesale shouldn’t run on manual fixes</Heading>
-      <p class="max-w-xl text-lg text-neutral-faded">One place for rep orders, online, EDI and marketplace sales. Agents take the repetitive work off your team, so revenue grows without the overhead.</p>
-      <Button href="#" size="large" color="neutral" variant="outline" class="self-start rounded-none! px-8">Book a demo<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+      {eyebrow && <Eyebrow color="neutral" class="self-start border-b border-neutral pb-1 font-mono">{eyebrow}</Eyebrow>}
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-xl text-lg text-neutral-faded">{description}</p>}
+      {secondaryAction && <Button href={secondaryAction.href} size="large" color="neutral" variant="outline" class="self-start rounded-none! px-8">{secondaryAction.label}<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>}
 
-      <figure class="mt-auto flex flex-col gap-6 bg-primary-faded p-6 sm:flex-row md:p-8">
-        <Image src="https://picsum.photos/id/1005/400/480" alt="" width={400} height={480} fit="cover" class="aspect-5/6 w-28 shrink-0 sm:w-36" />
-        <div class="flex flex-col gap-5">
-          <blockquote class="text-lg leading-snug">“Faster ordering, tools we can shape to fit, and support that answers. We save money and grow quicker than before.”</blockquote>
-          <figcaption class="flex flex-wrap items-center justify-between gap-4">
-            <span class="inline-flex divide-x divide-neutral-faded border border-neutral-faded text-sm uppercase rtl:divide-x-reverse"><span class="px-3 py-1.5">Mara Lindqvist</span><span class="px-3 py-1.5 text-neutral-faded">CEO, Oakline Home</span></span>
-            <span class="text-lg font-semibold tracking-tight text-neutral-faded">OH</span>
-          </figcaption>
-        </div>
-      </figure>
+      {testimonial && (
+        <figure class="mt-auto flex flex-col gap-6 bg-primary-faded p-6 sm:flex-row md:p-8">
+          {testimonial.avatar && <Image src={testimonial.avatar.src} alt={testimonial.avatar.alt} width={testimonial.avatar.width} height={testimonial.avatar.height} fit="cover" class="aspect-5/6 w-28 shrink-0 sm:w-36" />}
+          <div class="flex flex-col gap-5">
+            <blockquote class="text-lg leading-snug">“{testimonial.quote}”</blockquote>
+            <figcaption class="flex flex-wrap items-center justify-between gap-4">
+              <span class="inline-flex divide-x divide-neutral-faded border border-neutral-faded text-sm uppercase rtl:divide-x-reverse"><span class="px-3 py-1.5">{testimonial.name}</span><span class="px-3 py-1.5 text-neutral-faded">{testimonial.role}</span></span>
+              {testimonial.mark && <span class="text-lg font-semibold tracking-tight text-neutral-faded">{testimonial.mark}</span>}
+            </figcaption>
+          </div>
+        </figure>
+      )}
     </div>
 
-    <img src="https://picsum.photos/id/1031/1200/1600" alt="" loading="eager" class="h-full min-h-[32rem] w-full object-cover" />
+    {media && <img src={srcUrl(media.src)} alt={media.alt} width={media.width} height={media.height} loading="eager" class="h-full min-h-[32rem] w-full object-cover" />}
   </div>
 </Section>

@@ -13,27 +13,43 @@ import Link from '../../components/Link/Link.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Input from '../../components/Input/Input.astro'
 import Image from '../../components/Image/Image.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The email form's button. @category content */
+  submitLabel?: string
+}
+
+const {
+  announcement = { badge: "We're hiring!", label: 'Join our remote team', href: '#' },
+  heading = 'People who care about your growth',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  submitLabel = 'Get started',
+  media = { src: 'https://picsum.photos/seed/apogee-hero-1/1200/1200', alt: '', width: 1200, height: 1200 },
+} = Astro.props
 ---
 
 <Section spacing="large">
   <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
-      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
-      <Badge color="primary" rounded>We're hiring!</Badge>Join our remote team<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
-    </Link>
-      <Heading as="h1" size="display" class="text-balance">People who care about your growth</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      {announcement && (
+        <Link href={announcement.href} color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+          {announcement.badge && <Badge color="primary" rounded>{announcement.badge}</Badge>}{announcement.label}<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+        </Link>
+      )}
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
       <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input size="large" type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
-        <Button type="submit" size="large">Get started</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>
     </div>
-    <Image src="https://picsum.photos/seed/apogee-hero-1/1200/1200" alt="" width={1200} height={1200} fit="cover" radius="xl" loading="eager" class="aspect-square w-full" />
+    {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" loading="eager" class="aspect-square w-full" />}
   </div>
 </Section>

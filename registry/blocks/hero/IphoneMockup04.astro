@@ -14,7 +14,21 @@ import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
 import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import Rating from '../../components/Rating/Rating.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The line under the stars. @category content */
+  reviews?: string | null
+}
+
+const {
+  heading = 'Growth tracking made easy',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  primaryAction = { label: 'Sign up', href: '#' },
+  secondaryAction = { label: 'Demo', href: '#' },
+  reviews = 'from 200+ reviews',
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -24,18 +38,20 @@ import Rating from '../../components/Rating/Rating.astro'
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">Growth tracking made easy</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-col-reverse gap-3 sm:flex-row ">
-      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
-      <Button href="#" size="large">Sign up</Button>
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+      {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
     </div>
+      )}
       <div class="flex items-center gap-4">
       <AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }, { name: 'Margaret Hamilton' }]} size="medium" />
       <div class="flex flex-col gap-1">
         <div class="flex items-center gap-2"><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /><span class="font-semibold">5.0</span></div>
-        <p class="text-sm text-neutral-faded">from 200+ reviews</p>
+        {reviews && <p class="text-sm text-neutral-faded">{reviews}</p>}
       </div>
     </div>
     </div>

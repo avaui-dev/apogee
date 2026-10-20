@@ -11,7 +11,21 @@ import Container from '../../components/Container/Container.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The screenshot; `srcDark` swaps in when the page is dark. @category content */
+  media?: Media | null
+}
+
+const {
+  heading = 'Beautiful analytics to grow smarter',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  primaryAction = { label: 'Sign up', href: '#' },
+  secondaryAction = { label: 'Demo', href: '#' },
+  media = { src: '/mockups/app-desktop-light.jpg', srcDark: '/mockups/app-desktop-dark.jpg', alt: 'The dashboard overview in a browser' },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} background="neutral-faded" class="overflow-hidden">
@@ -20,14 +34,16 @@ import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
     <div class="flex flex-col gap-8 md:gap-12 items-center text-center">
     <div class="flex flex-col gap-4 md:gap-6 items-center text-center">
       
-      <Heading as="h1" size="display" class="text-balance">Beautiful analytics to grow smarter</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
-    <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-center ">
-      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Demo</Button>
-      <Button href="#" size="large">Sign up</Button>
-    </div>
+    {(primaryAction || secondaryAction) && (
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-center ">
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+      </div>
+    )}
   </div>
-    <div class="mt-16 md:mt-20"><div class="mx-auto max-h-100 max-w-5xl overflow-hidden mask-b-from-70%"><DeviceFrame device="browser" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard overview in a browser" class="" /></div></div>
+    <div class="mt-16 md:mt-20"><div class="mx-auto max-h-100 max-w-5xl overflow-hidden mask-b-from-70%">{media && <DeviceFrame device="browser" src={media.src} srcDark={media.srcDark} alt={media.alt} width={media.width} height={media.height} class="" />}</div></div>
   </Container>
 </Section>

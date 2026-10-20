@@ -14,7 +14,28 @@ import Input from '../../components/Input/Input.astro'
 import Card from '../../components/Card/Card.astro'
 import AvatarGroup from '../../components/AvatarGroup/AvatarGroup.astro'
 import Rating from '../../components/Rating/Rating.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The line under the stars. @category content */
+  reviews?: string | null
+  /** @category content */
+  formHeading?: string
+  /** @category content */
+  formDescription?: string | null
+  /** @category content */
+  submitLabel?: string
+}
+
+const {
+  heading = 'Customer service, simplified',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  reviews = 'from 200+ reviews',
+  formHeading = 'Create an account',
+  formDescription = 'Start your 30-day free trial.',
+  submitLabel = 'Get started',
+} = Astro.props
 ---
 
 <Section spacing="large">
@@ -22,14 +43,14 @@ import Rating from '../../components/Rating/Rating.astro'
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">Customer service, simplified</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
       <div class="flex items-center gap-4">
       <AvatarGroup items={[{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }, { name: 'Grace Hopper' }, { name: 'Katherine Johnson' }, { name: 'Margaret Hamilton' }]} size="medium" />
       <div class="flex flex-col gap-1">
         <div class="flex items-center gap-2"><Rating value={5} readonly size="small" color="warning" aria-label="Rated 5 out of 5" /><span class="font-semibold">5.0</span></div>
-        <p class="text-sm text-neutral-faded">from 200+ reviews</p>
+        {reviews && <p class="text-sm text-neutral-faded">{reviews}</p>}
       </div>
     </div>
     </div>
@@ -37,13 +58,13 @@ import Rating from '../../components/Rating/Rating.astro'
       <Card padding="large" class="w-full max-w-md justify-self-center">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-1">
-          <Heading as="h2" size="h4">Create an account</Heading>
-          <p class="text-neutral-faded">Start your 30-day free trial.</p>
+          <Heading as="h2" size="h4">{formHeading}</Heading>
+          {formDescription && <p class="text-neutral-faded">{formDescription}</p>}
         </div>
         <form method="post" class="flex flex-col gap-4">
           <Input size="large" label="Name" name="name" placeholder="Enter your name" autocomplete="name" required />
           <Input size="large" label="Email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
-          <Button type="submit" size="large" fullWidth>Get started</Button>
+          <Button type="submit" size="large" fullWidth>{submitLabel}</Button>
           <Button href="#" variant="outline" color="neutral" size="large" fullWidth><KeyRound slot="start" aria-hidden="true" />Sign up with SSO</Button>
         </form>
         <p class="text-center text-sm text-neutral-faded">Already have an account? <Link href="#">Log in</Link></p>

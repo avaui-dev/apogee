@@ -9,35 +9,50 @@ import { ArrowUpRight } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Link from '../../components/Link/Link.astro'
+import { srcUrl, accentRuns, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The twelve side cards: six on the start side, then six on the end side, each half from the centre outward. @category content */
+  images?: Media[]
+}
+
+const {
+  eyebrow = '<.00 SELECTED>',
+  heading = '*Making sense of taste*The judgement layer for AI',
+  primaryAction = { label: 'Join our team', href: '#' },
+  media = { src: 'https://picsum.photos/id/96/600/600', alt: '' },
+  images = [10, 20, 26, 29, 36, 42, 48, 54, 60, 65, 70, 76].map((id) => ({ src: `https://picsum.photos/id/${id}/300/400`, alt: '' })),
+} = Astro.props
 // Six cards each side; they turn more and shrink the further they sit from the centre.
 const side = [1, 2, 3, 4, 5, 6]
-const ids = [10, 20, 26, 29, 36, 42, 48, 54, 60, 65, 70, 76]
 const hex = 'polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%)'
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
   <div class="flex flex-col items-center gap-16 md:gap-24">
-    <p class="font-mono text-sm text-neutral-faded" aria-hidden="true">&lt;.00 SELECTED&gt;</p>
+    {eyebrow && <p class="font-mono text-sm text-neutral-faded" aria-hidden="true">{eyebrow}</p>}
 
     <div class="flex items-center justify-center [perspective:500px]" aria-hidden="true">
-      {side.toReversed().map((n) => (
-        <img src={`https://picsum.photos/id/${ids[n - 1]}/300/400`} alt="" class="-mx-3 aspect-3/4 w-16 rounded-2xl object-cover shadow-lg sm:w-24 md:-mx-4 md:w-32 max-sm:[&:nth-child(-n+3)]:hidden" style={`transform: rotateY(${40 + n * 4}deg) scale(${1 - n * 0.05})`} />
-      ))}
+      {side.toReversed().map((n) => { const m = images[n - 1]; return m && (
+        <img src={srcUrl(m.src)} alt={m.alt} class="-mx-3 aspect-3/4 w-16 rounded-2xl object-cover shadow-lg sm:w-24 md:-mx-4 md:w-32 max-sm:[&:nth-child(-n+3)]:hidden" style={`transform: rotateY(${40 + n * 4}deg) scale(${1 - n * 0.05})`} />
+      ) })}
       <div class="relative z-10 mx-2 grid aspect-[1.15] w-48 shrink-0 place-items-center bg-primary-faded p-6 sm:w-64 md:w-80" style={`clip-path: ${hex}`}>
-        <img src="https://picsum.photos/id/96/600/600" alt="" class="aspect-square w-3/5 rounded-xl border-4 border-(--foreground-neutral) object-cover" />
+        {media && <img src={srcUrl(media.src)} alt={media.alt} class="aspect-square w-3/5 rounded-xl border-4 border-(--foreground-neutral) object-cover" />}
       </div>
-      {side.map((n) => (
-        <img src={`https://picsum.photos/id/${ids[n + 5]}/300/400`} alt="" class="-mx-3 aspect-3/4 w-16 rounded-2xl object-cover shadow-lg sm:w-24 md:-mx-4 md:w-32 max-sm:[&:nth-last-child(-n+3)]:hidden" style={`transform: rotateY(-${40 + n * 4}deg) scale(${1 - n * 0.05})`} />
-      ))}
+      {side.map((n) => { const m = images[n + 5]; return m && (
+        <img src={srcUrl(m.src)} alt={m.alt} class="-mx-3 aspect-3/4 w-16 rounded-2xl object-cover shadow-lg sm:w-24 md:-mx-4 md:w-32 max-sm:[&:nth-last-child(-n+3)]:hidden" style={`transform: rotateY(-${40 + n * 4}deg) scale(${1 - n * 0.05})`} />
+      ) })}
     </div>
 
     <div class="flex flex-col items-center gap-10 px-gutter text-center">
-      <Heading as="h1" size="h1" class="font-normal text-balance"><span class="block text-neutral-faded">Making sense of taste</span>The judgement layer for AI</Heading>
-      <Link href="#" color="inherit" underline="none" class="group inline-flex items-center gap-4 font-mono">
-        Join our team
+      <Heading as="h1" size="h1" class="font-normal text-balance">{accentRuns(heading).map((r) => (r.accent ? <span class="block text-neutral-faded">{r.text}</span> : r.text))}</Heading>
+      {primaryAction && (
+      <Link href={primaryAction.href} color="inherit" underline="none" class="group inline-flex items-center gap-4 font-mono">
+        {primaryAction.label}
         <span class="grid size-14 place-items-center bg-neutral-faded transition-colors duration-(--duration-fast) group-hover:bg-primary group-hover:text-on-primary motion-reduce:transition-none" style={`clip-path: ${hex}`}><ArrowUpRight class="size-4" aria-hidden="true" /></span>
       </Link>
+      )}
     </div>
   </div>
 </Section>

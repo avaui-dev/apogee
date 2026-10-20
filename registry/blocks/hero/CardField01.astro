@@ -9,6 +9,17 @@ import { ArrowRight } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { accentRuns, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  heading = 'New ads that win, every week. *Picked by designers.*',
+  description = 'Ad creatives made with AI and chosen by senior designers. Stills, video and motion for fast-growing brands, tested every week.',
+  primaryAction = { label: 'Book a demo', href: '#' },
+  secondaryAction = { label: 'See how it works', href: '#' },
+} = Astro.props
 
 // Cards fill a 6 × 5 grid edge to edge, 4px apart.
 const cols = 6
@@ -30,12 +41,14 @@ const cards = ids.map((id, i) => ({ id, c: i % cols, r: Math.floor(i / cols) }))
     <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,var(--background-page)_30%,transparent_65%)]" aria-hidden="true"></div>
 
     <div class="absolute inset-x-0 bottom-0 flex flex-col gap-6 px-gutter pb-16 md:pb-24">
-      <Heading as="h1" size="display" class="max-w-3xl text-balance">New ads that win, every week. <span class="text-neutral-faded">Picked by designers.</span></Heading>
-      <p class="max-w-xl text-lg md:text-xl text-neutral-faded">Ad creatives made with AI and chosen by senior designers. Stills, video and motion for fast-growing brands, tested every week.</p>
-      <div class="flex flex-col gap-3 sm:flex-row">
-        <Button href="#" size="large" rounded><ArrowRight slot="start" class="rtl:-scale-x-100" aria-hidden="true" />Book a demo</Button>
-        <Button href="#" size="large" rounded variant="ghost" color="neutral">See how it works</Button>
-      </div>
+      <Heading as="h1" size="display" class="max-w-3xl text-balance">{accentRuns(heading).map((r) => (r.accent ? <span class="text-neutral-faded">{r.text}</span> : r.text))}</Heading>
+      {description && <p class="max-w-xl text-lg md:text-xl text-neutral-faded">{description}</p>}
+      {(primaryAction || secondaryAction) && (
+        <div class="flex flex-col gap-3 sm:flex-row">
+          {primaryAction && <Button href={primaryAction.href} size="large" rounded><ArrowRight slot="start" class="rtl:-scale-x-100" aria-hidden="true" />{primaryAction.label}</Button>}
+          {secondaryAction && <Button href={secondaryAction.href} size="large" rounded variant="ghost" color="neutral">{secondaryAction.label}</Button>}
+        </div>
+      )}
     </div>
   </div>
 </Section>

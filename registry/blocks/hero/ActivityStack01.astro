@@ -9,6 +9,22 @@ import { ArrowUp, Bell, Clock, FileText, Mic, Phone, Play, Sparkles } from '@luc
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The video card under the hero: a title, a short line under it and where it links. @category content */
+  videoLink?: { label: string; caption: string; href: string } | null
+}
+
+const {
+  eyebrow = 'Late quotes still convert',
+  heading = 'New customers don’t leave a message.',
+  description = 'Someone who wants a quote after dinner won’t wait until office hours. We answer, take down the details and book the visit that used to die in voicemail.',
+  primaryAction = { label: 'Get started', href: '#' },
+  secondaryAction = { label: 'Try it live', href: '#' },
+  videoLink = { label: 'How the phone line works for small teams', caption: 'Watch it in action', href: '#' },
+} = Astro.props
 
 const cards = [
   { icon: Sparkles, title: 'Contact enriched', body: 'Found a profile and an email address' },
@@ -20,13 +36,15 @@ const cards = [
 <Section spacing="large">
   <div class="grid items-center gap-12 lg:grid-cols-2">
     <div class="flex flex-col items-start gap-6">
-      <span class="inline-flex items-center gap-1.5 rounded-full border border-neutral-faded px-3 py-1 text-sm"><Clock class="size-4" aria-hidden="true" />Late quotes still convert</span>
-      <Heading as="h1" size="display" class="font-normal text-balance">New customers don’t leave a message.</Heading>
-      <p class="max-w-xl text-lg text-neutral-faded">Someone who wants a quote after dinner won’t wait until office hours. We answer, take down the details and book the visit that used to die in voicemail.</p>
-      <div class="flex flex-wrap gap-3">
-        <Button href="#" size="large" rounded>Get started</Button>
-        <Button href="#" size="large" rounded variant="outline" color="neutral"><Phone slot="start" aria-hidden="true" />Try it live</Button>
-      </div>
+      {eyebrow && <span class="inline-flex items-center gap-1.5 rounded-full border border-neutral-faded px-3 py-1 text-sm"><Clock class="size-4" aria-hidden="true" />{eyebrow}</span>}
+      <Heading as="h1" size="display" class="font-normal text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-xl text-lg text-neutral-faded">{description}</p>}
+      {(primaryAction || secondaryAction) && (
+        <div class="flex flex-wrap gap-3">
+          {primaryAction && <Button href={primaryAction.href} size="large" rounded>{primaryAction.label}</Button>}
+          {secondaryAction && <Button href={secondaryAction.href} size="large" rounded variant="outline" color="neutral"><Phone slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        </div>
+      )}
     </div>
 
     <ul class="flex flex-col gap-3 mask-y-from-80%" aria-label="What happened after one call">
@@ -41,10 +59,12 @@ const cards = [
   </div>
 
   <div class="mt-16 flex flex-col items-center gap-16">
-    <a href="#" class="flex w-full max-w-lg items-center gap-4 rounded-2xl border border-neutral-faded p-2 pe-4">
-      <span class="grid size-16 shrink-0 place-items-center rounded-xl bg-neutral-faded"><Play class="size-5" aria-hidden="true" /></span>
-      <span class="flex flex-col"><span class="font-medium">How the phone line works for small teams</span><span class="text-sm text-neutral-faded">Watch it in action</span></span>
-    </a>
+    {videoLink && (
+      <a href={videoLink.href} class="flex w-full max-w-lg items-center gap-4 rounded-2xl border border-neutral-faded p-2 pe-4">
+        <span class="grid size-16 shrink-0 place-items-center rounded-xl bg-neutral-faded"><Play class="size-5" aria-hidden="true" /></span>
+        <span class="flex flex-col"><span class="font-medium">{videoLink.label}</span><span class="text-sm text-neutral-faded">{videoLink.caption}</span></span>
+      </a>
+    )}
     <form class="flex w-full max-w-md items-center gap-2 rounded-full border border-neutral-faded bg-page p-1.5 shadow-lg" onsubmit="return false">
       <label for="activity-stack-ask" class="sr-only">Ask a question</label>
       <input id="activity-stack-ask" type="text" placeholder="Ask anything about us" class="min-w-0 flex-1 bg-transparent px-3 outline-none placeholder:text-neutral-faded" />

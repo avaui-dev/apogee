@@ -7,21 +7,35 @@
  */
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
-const cards = [
-  { kicker: 'The personality', title: 'Brand', text: 'Designers and writers who make the looks your customers fall for, and the next ones they will.', tone: 'bg-primary text-on-primary', tilt: 'md:-rotate-[8deg] md:translate-y-6' },
-  { kicker: 'The connection', title: 'Social', text: 'We turn followers into fans and scrolls into sales. The team is online at odd hours so your brand stays current.', tone: 'bg-primary-faded text-primary', tilt: '' },
-  { kicker: 'The look', title: 'Production', text: 'Stylists, photographers, film crews and 3D artists who know the picture is everything.', tone: 'bg-inverted text-on-inverted', tilt: '' },
-  { kicker: 'The conversion', title: 'Interactive', text: 'Where brand becomes business: sites and apps that turn all that work into sales.', tone: 'bg-neutral text-neutral', tilt: 'md:rotate-[8deg] md:translate-y-6' },
-]
+/** @composable */
+interface Props extends HeroContent {
+  /** The fanned cards; fills and tilts follow the card's position. @category content */
+  cards?: { kicker: string; title: string; text: string }[]
+}
+
+const {
+  heading = 'Helping brands show up as themselves, at the speed of culture',
+  cards = [
+    { kicker: 'The personality', title: 'Brand', text: 'Designers and writers who make the looks your customers fall for, and the next ones they will.' },
+    { kicker: 'The connection', title: 'Social', text: 'We turn followers into fans and scrolls into sales. The team is online at odd hours so your brand stays current.' },
+    { kicker: 'The look', title: 'Production', text: 'Stylists, photographers, film crews and 3D artists who know the picture is everything.' },
+    { kicker: 'The conversion', title: 'Interactive', text: 'Where brand becomes business: sites and apps that turn all that work into sales.' },
+  ],
+} = Astro.props
+
+// ponytail: tuned for four cards; a fifth repeats the fills and the outer two tilt.
+const tones = ['bg-primary text-on-primary', 'bg-primary-faded text-primary', 'bg-inverted text-on-inverted', 'bg-neutral text-neutral']
+const tilt = (i: number) => (i === 0 ? 'md:-rotate-[8deg] md:translate-y-6' : i === cards.length - 1 ? 'md:rotate-[8deg] md:translate-y-6' : '')
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
-  <Heading as="h1" size="display" class="mx-auto max-w-4xl px-gutter text-center font-normal text-balance">Helping brands show up as themselves, at the speed of culture</Heading>
+  <Heading as="h1" size="display" class="mx-auto max-w-4xl px-gutter text-center font-normal text-balance">{plain(heading)}</Heading>
 
   <ul class="mt-12 flex snap-x snap-mandatory gap-3 overflow-x-auto px-gutter pb-6 md:mt-16 md:justify-center md:overflow-visible md:pb-10">
-    {cards.map((c) => (
-      <li class:list={['flex aspect-3/5 w-64 shrink-0 snap-center flex-col gap-3 rounded-2xl p-6 shadow-lg md:w-[22%] md:max-w-72 md:p-8', c.tone, c.tilt]}>
+    {cards.map((c, i) => (
+      <li class:list={['flex aspect-3/5 w-64 shrink-0 snap-center flex-col gap-3 rounded-2xl p-6 shadow-lg md:w-[22%] md:max-w-72 md:p-8', tones[i % tones.length], tilt(i)]}>
         <span class="text-xs uppercase tracking-wide opacity-80">{c.kicker}</span>
         <span class="text-3xl">{c.title}</span>
         <span class="mt-8 text-lg leading-snug">{c.text}</span>

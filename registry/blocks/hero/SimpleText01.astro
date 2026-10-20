@@ -11,7 +11,18 @@ import Container from '../../components/Container/Container.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Image from '../../components/Image/Image.astro'
+import { accentRuns, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  heading = 'We design *digital experiences* that make people happy',
+  description = "We're a full-service design and development studio. We help teams build websites people enjoy using.",
+  primaryAction = { label: 'Get in touch', href: '#' },
+  secondaryAction = { label: 'Showreel', href: '#' },
+  media = { src: 'https://picsum.photos/seed/apogee-hero-40/1600/800', alt: '', width: 1600, height: 800 },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -19,14 +30,16 @@ import Image from '../../components/Image/Image.astro'
   <Container class="relative">
     <div class="flex flex-col gap-8 md:gap-12">
     <div class="flex flex-col gap-4 md:gap-6">
-      <Heading as="h1" size="display" class="max-w-4xl text-balance">We design <span class="underline decoration-4 underline-offset-8 decoration-primary">digital experiences</span> that make people happy</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">We're a full-service design and development studio. We help teams build websites people enjoy using.</p>
+      <Heading as="h1" size="display" class="max-w-4xl text-balance">{accentRuns(heading).map((r) => (r.accent ? <span class="underline decoration-4 underline-offset-8 decoration-primary">{r.text}</span> : r.text))}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
-    <div class="flex flex-col-reverse gap-3 sm:flex-row ">
-      <Button href="#" size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />Showreel</Button>
-      <Button href="#" size="large">Get in touch</Button>
-    </div>
+    {(primaryAction || secondaryAction) && (
+      <div class="flex flex-col-reverse gap-3 sm:flex-row ">
+        {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><CirclePlay slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+      </div>
+    )}
   </div>
-  <Image src="https://picsum.photos/seed/apogee-hero-40/1600/800" alt="" width={1600} height={800} fit="cover" radius="xl" loading="eager" class="mt-12 h-60 w-full md:mt-16 md:h-129" />
+  {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="xl" loading="eager" class="mt-12 h-60 w-full md:mt-16 md:h-129" />}
   </Container>
 </Section>

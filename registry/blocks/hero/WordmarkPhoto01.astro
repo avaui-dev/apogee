@@ -10,30 +10,49 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Image from '../../components/Image/Image.astro'
 import Marquee from '../../components/Marquee/Marquee.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
-const claims = ['Real ingredients', 'Vet approved', 'Small batches', 'No fillers', 'Taste tested', 'Made fresh']
+/** @composable */
+interface Props extends HeroContent {
+  /** The giant word across the bottom. @category content */
+  wordmark?: string | null
+  /** The scrolling strip under the card. @category content */
+  claims?: string[] | null
+}
+
+// `heading` is three stacked lines; separate them with \n.
+const {
+  heading = 'Real food.\nMade for dogs.\nBetter every day.',
+  description = 'Fresh, gently cooked meals with the extras dogs need for good digestion, strong joints and a shiny coat.',
+  primaryAction = { label: 'Shop meals', href: '#' },
+  media = { src: 'https://picsum.photos/id/237/2000/1400', alt: '', width: 2000, height: 1400 },
+  wordmark = 'woofly',
+  claims = ['Real ingredients', 'Vet approved', 'Small batches', 'No fillers', 'Taste tested', 'Made fresh'],
+} = Astro.props
 ---
 
 <Section spacing="small" containerWidth="full">
   <!-- Always dark: the text sits on a photo. -->
   <div data-theme="dark" class="relative isolate flex min-h-[44rem] flex-col justify-between overflow-hidden rounded-2xl text-neutral md:min-h-[52rem]">
-    <Image src="https://picsum.photos/id/237/2000/1400" alt="" width={2000} height={1400} fit="cover" loading="eager" class="absolute inset-0 -z-10 size-full" />
+    {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" loading="eager" class="absolute inset-0 -z-10 size-full" />}
     <div class="absolute inset-0 -z-10 bg-[color-mix(in_oklab,var(--background-page)_55%,transparent)]" aria-hidden="true"></div>
 
     <div class="grid gap-8 px-6 pt-16 md:grid-cols-2 md:gap-16 md:px-12 md:pt-28">
-      <Heading as="h1" size="h1" class="flex flex-col md:items-end md:text-end"><span>Real food.</span><span>Made for dogs.</span><span>Better every day.</span></Heading>
+      <Heading as="h1" size="h1" class="flex flex-col md:items-end md:text-end">{plain(heading).split('\n').map((line) => <span>{line}</span>)}</Heading>
       <div class="flex max-w-md flex-col items-start gap-6">
-        <p class="text-lg">Fresh, gently cooked meals with the extras dogs need for good digestion, strong joints and a shiny coat.</p>
-        <Button href="#" size="large" rounded>Shop meals</Button>
+        {description && <p class="text-lg">{description}</p>}
+        {primaryAction && <Button href={primaryAction.href} size="large" rounded>{primaryAction.label}</Button>}
       </div>
     </div>
 
-    <p class="px-4 pb-[0.2em] text-center text-[clamp(5rem,0rem+22vw,22rem)] font-black leading-none tracking-tighter" aria-hidden="true">woofly</p>
+    {wordmark && <p class="px-4 pb-[0.2em] text-center text-[clamp(5rem,0rem+22vw,22rem)] font-black leading-none tracking-tighter" aria-hidden="true">{wordmark}</p>}
   </div>
 
-  <div class="mt-2 rounded-full bg-neutral-faded py-2">
-    <Marquee label="What goes into every meal">
-      {claims.map((c, i) => <span class:list={['px-4 text-sm', i % 2 === 0 ? 'font-semibold' : 'text-neutral-faded']}>{c}</span>)}
-    </Marquee>
-  </div>
+  {claims && (
+    <div class="mt-2 rounded-full bg-neutral-faded py-2">
+      <Marquee label="What goes into every meal">
+        {claims.map((c, i) => <span class:list={['px-4 text-sm', i % 2 === 0 ? 'font-semibold' : 'text-neutral-faded']}>{c}</span>)}
+      </Marquee>
+    </div>
+  )}
 </Section>

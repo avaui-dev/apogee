@@ -12,6 +12,17 @@ import Eyebrow from '../../components/Eyebrow/Eyebrow.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Skeleton from '../../components/Skeleton/Skeleton.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  eyebrow = 'For freight teams',
+  heading = 'Freight moves your business, and quietly eats your margin',
+  description = 'Carrier bills are dense and most teams check only a few. Our agents match every line to the contract, settle the exceptions and send clean results to your books, with a record you can audit.',
+  primaryAction = { label: 'Request a demo', href: '#' },
+} = Astro.props
 
 const insights = ['Document summary', 'Extraction summary', 'Charges check', 'Audit record']
 const rows = [
@@ -25,10 +36,10 @@ const rows = [
 
 <Section spacing="large" container={false} class="overflow-hidden" style="background: radial-gradient(ellipse 40% 35% at 100% 35%, color-mix(in oklab, var(--background-primary) 12%, var(--background-page)), transparent), radial-gradient(ellipse 35% 30% at 0% 50%, color-mix(in oklab, var(--background-primary) 10%, var(--background-page)), transparent), linear-gradient(to bottom, var(--background-page) 25%, color-mix(in oklab, var(--background-primary) 10%, var(--background-page)))">
   <div class="mx-auto flex max-w-3xl flex-col items-center gap-8 px-gutter text-center">
-    <Eyebrow color="neutral" class="flex items-center gap-2 font-mono"><span class="size-2 bg-primary" aria-hidden="true"></span>For freight teams</Eyebrow>
-    <Heading as="h1" size="display" class="font-normal text-balance">Freight moves your business, and quietly eats your margin</Heading>
-    <p class="text-lg md:text-xl text-neutral-faded">Carrier bills are dense and most teams check only a few. Our agents match every line to the contract, settle the exceptions and send clean results to your books, with a record you can audit.</p>
-    <Button href="#" size="large" class="rounded-none! px-8 font-mono uppercase tracking-wider">Request a demo</Button>
+    {eyebrow && <Eyebrow color="neutral" class="flex items-center gap-2 font-mono"><span class="size-2 bg-primary" aria-hidden="true"></span>{eyebrow}</Eyebrow>}
+    <Heading as="h1" size="display" class="font-normal text-balance">{plain(heading)}</Heading>
+    {description && <p class="text-lg md:text-xl text-neutral-faded">{description}</p>}
+    {primaryAction && <Button href={primaryAction.href} size="large" class="rounded-none! px-8 font-mono uppercase tracking-wider">{primaryAction.label}</Button>}
   </div>
 
   <div class="relative mx-auto mt-16 grid max-w-5xl gap-4 px-gutter text-sm md:mt-20 md:grid-cols-2 md:ps-24" aria-hidden="true">

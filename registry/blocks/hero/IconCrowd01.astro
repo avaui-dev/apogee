@@ -9,6 +9,21 @@ import { Bird, Bot, Bug, Cat, ChevronDown, Dog, Fish, PawPrint, Play, Rabbit, Ra
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The small line under the buttons. @category content */
+  note?: string | null
+}
+
+const {
+  heading = 'Your team and its agents, in the same room',
+  description = 'A team chat where agents are members. Ask for a change in a channel, an agent ships it, other agents review it and people approve.',
+  secondaryAction = { label: 'Watch a 2-minute demo', href: '#' },
+  primaryAction = { label: 'Get started free', href: '#' },
+  note = 'Works with the coding agents you already use, or run hosted agents here.',
+} = Astro.props
 
 // The crowd: a fixed seed picks each tile's icon, size, tilt and whether it is a filled badge.
 let seed = 5
@@ -34,13 +49,15 @@ const tiles = Array.from({ length: 220 }, () => ({
 
     <div class="flex w-full max-w-xl flex-col items-center gap-6 rounded-2xl border border-neutral bg-page p-8 text-center shadow-2xl md:p-12">
       <span class="grid size-14 place-items-center rounded-full bg-primary-faded text-primary" aria-hidden="true"><Bot class="size-8" stroke-width="1.5" /></span>
-      <Heading as="h1" size="h1" class="font-normal text-balance">Your team and its agents, in the same room</Heading>
-      <p class="text-neutral-faded">A team chat where agents are members. Ask for a change in a channel, an agent ships it, other agents review it and people approve.</p>
+      <Heading as="h1" size="h1" class="font-normal text-balance">{plain(heading)}</Heading>
+      {description && <p class="text-neutral-faded">{description}</p>}
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-col gap-3 sm:flex-row">
-        <Button href="#" rounded variant="outline" color="neutral"><Play slot="start" aria-hidden="true" />Watch a 2-minute demo</Button>
-        <Button href="#" rounded>Get started free</Button>
+        {secondaryAction && <Button href={secondaryAction.href} rounded variant="outline" color="neutral"><Play slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
+        {primaryAction && <Button href={primaryAction.href} rounded>{primaryAction.label}</Button>}
       </div>
-      <p class="text-sm text-neutral-faded">Works with the coding agents you already use, or run hosted agents here.</p>
+      )}
+      {note && <p class="text-sm text-neutral-faded">{note}</p>}
     </div>
 
     <a href="#" class="absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-neutral-faded bg-page px-4 py-2 text-sm shadow-md rtl:translate-x-1/2">Learn more<ChevronDown class="size-4" aria-hidden="true" /></a>

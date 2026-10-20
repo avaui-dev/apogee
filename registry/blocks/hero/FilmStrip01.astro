@@ -8,8 +8,18 @@
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Link from '../../components/Link/Link.astro'
+import { srcUrl, accentRuns, type HeroContent } from '../../sections/_shared/spine.ts'
 
-const src = 'https://picsum.photos/id/292/1800/1100'
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  heading = 'A drink for *easy evenings*',
+  primaryAction = { label: 'Buy a case', href: '#' },
+  secondaryAction = { label: 'Find a stockist', href: '#' },
+  media = { src: 'https://picsum.photos/id/292/1800/1100', alt: '' },
+} = Astro.props
+const src = media && (srcUrl(media.src))
 ---
 
 <!-- Always dark: a strip of film, light text on the photo. -->
@@ -17,18 +27,20 @@ const src = 'https://picsum.photos/id/292/1800/1100'
   <div class="relative flex flex-col gap-3 overflow-hidden px-3 md:px-24">
     <!-- Sprocket notch on the start edge. -->
     <span class="absolute start-0 top-1/2 hidden h-48 w-10 -translate-y-1/2 rounded-e-2xl border border-neutral-faded bg-page md:block" aria-hidden="true"></span>
-    <div class="h-10 overflow-hidden rounded-b-3xl md:h-16" aria-hidden="true"><img src={src} alt="" class="size-full object-cover object-bottom opacity-60" /></div>
+    <div class="h-10 overflow-hidden rounded-b-3xl md:h-16" aria-hidden="true">{media && <img src={src} alt="" class="size-full object-cover object-bottom opacity-60" />}</div>
     <div class="relative isolate grid aspect-[4/5] place-items-center overflow-hidden rounded-3xl sm:aspect-16/10">
-      <img src={src} alt="" loading="eager" class="absolute inset-0 -z-10 size-full object-cover" />
+      {media && <img src={src} alt={media.alt} loading="eager" class="absolute inset-0 -z-10 size-full object-cover" />}
       <div class="absolute inset-0 -z-10 bg-[color-mix(in_oklab,var(--background-page)_45%,transparent)]" aria-hidden="true"></div>
       <div class="flex flex-col items-center gap-12 px-6 text-center md:gap-20">
-        <Heading as="h1" size="display" class="text-balance">A drink for <span class="font-light italic">easy evenings</span></Heading>
+        <Heading as="h1" size="display" class="text-balance">{accentRuns(heading).map((r) => (r.accent ? <span class="font-light italic">{r.text}</span> : r.text))}</Heading>
+        {(primaryAction || secondaryAction) && (
         <div class="flex flex-wrap justify-center gap-x-16 gap-y-4 text-xl md:text-2xl">
-          <Link href="#" color="inherit" class="decoration-dotted underline-offset-8">Buy a case</Link>
-          <Link href="#" color="inherit" class="decoration-dotted underline-offset-8">Find a stockist</Link>
+          {primaryAction && <Link href={primaryAction.href} color="inherit" class="decoration-dotted underline-offset-8">{primaryAction.label}</Link>}
+          {secondaryAction && <Link href={secondaryAction.href} color="inherit" class="decoration-dotted underline-offset-8">{secondaryAction.label}</Link>}
         </div>
+        )}
       </div>
     </div>
-    <div class="h-10 overflow-hidden rounded-t-3xl md:h-16" aria-hidden="true"><img src={src} alt="" class="size-full object-cover object-top opacity-60" /></div>
+    <div class="h-10 overflow-hidden rounded-t-3xl md:h-16" aria-hidden="true">{media && <img src={src} alt="" class="size-full object-cover object-top opacity-60" />}</div>
   </div>
 </Section>

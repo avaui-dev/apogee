@@ -10,6 +10,18 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  announcement = { label: 'New: share a look, remix a link', href: '#' },
+  heading = 'Backgrounds nobody else has, in seconds',
+  description = 'Mix gradients, glass and grain into backgrounds and loops of your own.',
+  primaryAction = { label: 'Open the studio', href: '#' },
+  secondaryAction = { label: 'Browse looks', href: '#' },
+} = Astro.props
 
 // Swatches are CSS patterns on the primary and neutral tokens, so they follow the theme.
 const p = 'var(--background-primary)', pf = 'var(--background-primary-faded)', n = 'var(--foreground-neutral)', bg = 'var(--background-page)'
@@ -46,15 +58,17 @@ const swatches = [
 
     <div class="absolute inset-x-0 bottom-0 flex flex-col gap-8 px-gutter pb-16 md:flex-row md:items-end md:justify-between">
       <div class="flex flex-col items-start gap-6">
-        <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 rounded-full! border border-neutral-faded bg-page px-3 py-1 text-sm"><Sparkles class="size-4" aria-hidden="true" />New: share a look, remix a link</Link>
-        <Heading as="h1" size="display" class="max-w-3xl text-balance">Backgrounds nobody else has, in seconds</Heading>
+        {announcement && <Link href={announcement.href} color="inherit" underline="none" class="inline-flex items-center gap-2 rounded-full! border border-neutral-faded bg-page px-3 py-1 text-sm"><Sparkles class="size-4" aria-hidden="true" />{announcement.label}</Link>}
+        <Heading as="h1" size="display" class="max-w-3xl text-balance">{plain(heading)}</Heading>
       </div>
       <div class="flex max-w-sm flex-col gap-6">
-        <p class="text-lg text-neutral-faded">Mix gradients, glass and grain into backgrounds and loops of your own.</p>
-        <div class="flex flex-wrap gap-3">
-          <Button href="#" size="large">Open the studio<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
-          <Button href="#" size="large" variant="outline" color="neutral">Browse looks</Button>
-        </div>
+        {description && <p class="text-lg text-neutral-faded">{description}</p>}
+        {(primaryAction || secondaryAction) && (
+          <div class="flex flex-wrap gap-3">
+            {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>}
+            {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral">{secondaryAction.label}</Button>}
+          </div>
+        )}
       </div>
     </div>
   </div>

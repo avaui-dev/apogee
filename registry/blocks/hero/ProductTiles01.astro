@@ -11,6 +11,21 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Link from '../../components/Link/Link.astro'
+import { accentRuns, type Announcement, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** The pill above the heading; `detail` is the quieter text after the label. @category content */
+  announcement?: (Announcement & { detail?: string }) | null
+}
+
+const {
+  announcement = { badge: 'New', label: 'Meet Model 4.6', detail: 'Our newest model', href: '#' },
+  heading = 'Frontier models for everything you *hear*.',
+  description = 'Reasoning, code, voice, images and video, trained on one of the largest clusters in the world.',
+  primaryAction = { label: 'Get API access', href: '#' },
+  secondaryAction = { label: 'Read the docs', href: '#' },
+} = Astro.props
 
 const chat = [
   ['bot', 'Shorter blue light scatters more off the air than longer red light.'],
@@ -30,15 +45,19 @@ const code = [
 
 <Section spacing="large">
   <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-    <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 rounded-full! border border-neutral-faded py-1 ps-1 pe-2 text-sm">
-      <Badge size="small" rounded variant="outline" color="primary">New</Badge><span class="font-medium">Meet Model 4.6</span><span class="text-neutral-faded">· Our newest model</span><Play class="size-3.5 text-neutral-faded" aria-hidden="true" />
+    {announcement && (
+    <Link href={announcement.href} color="inherit" underline="none" class="inline-flex items-center gap-2 rounded-full! border border-neutral-faded py-1 ps-1 pe-2 text-sm">
+      {announcement.badge && <Badge size="small" rounded variant="outline" color="primary">{announcement.badge}</Badge>}<span class="font-medium">{announcement.label}</span>{announcement.detail && <span class="text-neutral-faded">· {announcement.detail}</span>}<Play class="size-3.5 text-neutral-faded" aria-hidden="true" />
     </Link>
-    <Heading as="h1" size="display" class="text-balance">Frontier models for everything you <span class="underline decoration-primary decoration-4 underline-offset-[0.2em]">hear</span>.</Heading>
-    <p class="text-lg md:text-xl text-neutral-faded">Reasoning, code, voice, images and video, trained on one of the largest clusters in the world.</p>
+    )}
+    <Heading as="h1" size="display" class="text-balance">{accentRuns(heading).map((r) => (r.accent ? <span class="underline decoration-primary decoration-4 underline-offset-[0.2em]">{r.text}</span> : r.text))}</Heading>
+    {description && <p class="text-lg md:text-xl text-neutral-faded">{description}</p>}
+    {(primaryAction || secondaryAction) && (
     <div class="flex flex-col gap-3 sm:flex-row">
-      <Button href="#" size="large" rounded>Get API access<ChevronRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
-      <Button href="#" size="large" rounded variant="outline" color="neutral">Read the docs</Button>
+      {primaryAction && <Button href={primaryAction.href} size="large" rounded>{primaryAction.label}<ChevronRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>}
+      {secondaryAction && <Button href={secondaryAction.href} size="large" rounded variant="outline" color="neutral">{secondaryAction.label}</Button>}
     </div>
+    )}
   </div>
 
   <ul class="mt-16 grid gap-4 text-sm md:mt-20 lg:grid-cols-3">

@@ -7,12 +7,22 @@
  */
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
+import { srcUrl, accentRuns, type HeroContent, type Media } from '../../sections/_shared/spine.ts'
 
-const photos = [
-  { id: 1048, turned: true },
-  { id: 1031, turned: false },
-  { id: 1067, turned: false },
-]
+/** @composable */
+interface Props extends HeroContent {
+  /** The mounted photos; the first is turned on its side. @category content */
+  images?: Media[] | null
+}
+
+const {
+  heading = 'Garment district, seen from above *Midtown, 1931*',
+  images = [
+    { src: 'https://picsum.photos/id/1048/600/900?grayscale', alt: '' },
+    { src: 'https://picsum.photos/id/1031/600/900?grayscale', alt: '' },
+    { src: 'https://picsum.photos/id/1067/600/900?grayscale', alt: '' },
+  ],
+} = Astro.props
 ---
 
 <Section spacing="none" container={false}>
@@ -20,16 +30,18 @@ const photos = [
   <div class="bg-inverted p-3 md:p-5">
     <div class="relative flex flex-col items-center gap-10 bg-[color-mix(in_oklab,var(--background-primary)_12%,var(--background-page))] px-4 py-12 md:gap-16 md:px-12 md:py-20">
       <p class="absolute end-6 top-4 rotate-[-4deg] font-mono text-lg text-neutral-faded tabular-nums md:text-2xl" aria-hidden="true">1276/83<br /><span class="ms-6">B4-5</span></p>
-      <Heading as="h1" size="h2" class="max-w-3xl text-center font-normal uppercase tracking-[0.3em] text-balance">Garment district, seen from above <span class="mt-2 block text-neutral-faded">Midtown, 1931</span></Heading>
-      <ul class="grid w-full max-w-6xl gap-6 sm:grid-cols-3 md:gap-10">
-        {photos.map((p) => (
-          <li class="bg-page p-3 shadow-sm md:p-5">
-            <div class="aspect-2/3 overflow-hidden">
-              <img src={`https://picsum.photos/id/${p.id}/600/900?grayscale`} alt="" loading="eager" class:list={['size-full object-cover', p.turned && 'origin-center rotate-90 scale-150']} />
-            </div>
-          </li>
-        ))}
-      </ul>
+      <Heading as="h1" size="h2" class="max-w-3xl text-center font-normal uppercase tracking-[0.3em] text-balance">{accentRuns(heading).map((r) => (r.accent ? <span class="mt-2 block text-neutral-faded">{r.text}</span> : r.text))}</Heading>
+      {images && (
+        <ul class="grid w-full max-w-6xl gap-6 sm:grid-cols-3 md:gap-10">
+          {images.map((p, i) => (
+            <li class="bg-page p-3 shadow-sm md:p-5">
+              <div class="aspect-2/3 overflow-hidden">
+                <img src={srcUrl(p.src)} alt={p.alt} width={p.width} height={p.height} loading="eager" class:list={['size-full object-cover', i === 0 && 'origin-center rotate-90 scale-150']} />
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   </div>
 </Section>

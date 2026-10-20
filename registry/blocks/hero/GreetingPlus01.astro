@@ -9,8 +9,18 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Image from '../../components/Image/Image.astro'
 import Link from '../../components/Link/Link.astro'
+import { accentRuns, type HeroContent } from '../../sections/_shared/spine.ts'
 
-const greetings = ['Hello', 'Salut', 'Hola', 'Ciao']
+/** @composable */
+interface Props extends HeroContent {
+  /** The large stacked words beside the heading. @category content */
+  greetings?: string[]
+}
+
+const {
+  heading = 'A design and technology studio for people building what comes next. *Ready when you are.*',
+  greetings = ['Hello', 'Salut', 'Hola', 'Ciao'],
+} = Astro.props
 const links = ['Home', 'About', 'Work', 'Careers', 'Contact']
 ---
 
@@ -22,7 +32,7 @@ const links = ['Home', 'About', 'Work', 'Careers', 'Contact']
     <p class="relative text-end">© 2026</p>
 
     <div class="relative col-span-2 flex flex-col justify-center gap-10 md:col-span-4 md:grid md:grid-cols-4 md:gap-6">
-      <Heading as="h1" size="h3" class="max-w-md text-balance md:col-span-2 md:self-center lg:col-span-1 lg:text-2xl">A design and technology studio for people building what comes next. <span class="text-neutral-faded">Ready when you are.</span></Heading>
+      <Heading as="h1" size="h3" class="max-w-md text-balance md:col-span-2 md:self-center lg:col-span-1 lg:text-2xl">{accentRuns(heading).map((r) => (r.accent ? <span class="text-neutral-faded">{r.text}</span> : r.text))}</Heading>
       <p class="text-[clamp(4rem,2rem+9vw,10rem)] font-bold leading-[0.85] tracking-tighter md:col-span-2 md:col-start-3 lg:col-start-2" aria-hidden="true">
         {greetings.map((g) => <span class="block">{g}</span>)}
       </p>

@@ -11,7 +11,19 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The form's submit button. @category content */
+  submitLabel?: string
+}
+
+const {
+  heading = 'Grow your users. Smarter.',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  submitLabel = 'Get started',
+} = Astro.props
 ---
 
 <Section spacing="large">
@@ -20,13 +32,13 @@ import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">Grow your users. Smarter.</Heading>
-      <p class="max-w-2xl text-lg md:text-xl opacity-85">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl opacity-85">{description}</p>}
     </div>
       <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input size="large" type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
-        <Button type="submit" size="large" color="neutral">Get started</Button>
+        <Button type="submit" size="large" color="neutral">{submitLabel}</Button>
       </div>
       <p class="text-sm opacity-85">We care about your data in our <Link href="#" color="inherit">privacy policy</Link>.</p>
     </form>

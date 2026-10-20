@@ -11,6 +11,24 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Rating from '../../components/Rating/Rating.astro'
+import { accentRuns, type Action, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** A short line with a link, under the description. @category content */
+  note?: { text: string; link: Action } | null
+  /** The line under the stars. @category content */
+  reviews?: string | null
+}
+
+const {
+  heading = 'Send the perfect gift, *instantly.*',
+  description = 'Send gift cards and almost anything else online for birthdays, weddings and more. Delivered anywhere, any time.',
+  note = { text: 'Sending for work?', link: { label: 'See the team plan →', href: '#' } },
+  primaryAction = { label: 'Start gifting', href: '#' },
+  secondaryAction = { label: 'Get the app', href: '#' },
+  reviews = '5 stars, loved by millions',
+} = Astro.props
 ---
 
 <Section spacing="medium" container={false} class="overflow-hidden">
@@ -32,14 +50,16 @@ import Rating from '../../components/Rating/Rating.astro'
     </div>
 
     <div class="relative flex flex-col items-center gap-6 pb-12 pt-20 text-center md:pt-28">
-      <Heading as="h1" size="display" class="max-w-2xl font-medium leading-[0.95] tracking-tight text-[clamp(3rem,1rem+5.5vw,6rem)]!">Send the perfect gift, <span class="text-primary">instantly.</span></Heading>
-      <p class="max-w-xl text-lg text-neutral-faded">Send gift cards and almost anything else online for birthdays, weddings and more. Delivered anywhere, any time.</p>
-      <p class="text-neutral-faded">Sending for work? <Link href="#" color="neutral">See the team plan →</Link></p>
+      <Heading as="h1" size="display" class="max-w-2xl font-medium leading-[0.95] tracking-tight text-[clamp(3rem,1rem+5.5vw,6rem)]!">{accentRuns(heading).map((r) => (r.accent ? <span class="text-primary">{r.text}</span> : r.text))}</Heading>
+      {description && <p class="max-w-xl text-lg text-neutral-faded">{description}</p>}
+      {note && <p class="text-neutral-faded">{note.text} <Link href={note.link.href} color="neutral">{note.link.label}</Link></p>}
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-wrap justify-center gap-3">
-        <Button href="#" size="large" rounded>Start gifting</Button>
-        <Button href="#" size="large" rounded color="neutral" variant="outline">Get the app<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>
+        {primaryAction && <Button href={primaryAction.href} size="large" rounded>{primaryAction.label}</Button>}
+        {secondaryAction && <Button href={secondaryAction.href} size="large" rounded color="neutral" variant="outline">{secondaryAction.label}<ArrowRight slot="end" class="rtl:-scale-x-100" aria-hidden="true" /></Button>}
       </div>
-      <div class="flex flex-col items-center gap-1 text-sm text-neutral-faded"><Rating value={5} readonly size="small" color="primary" aria-label="Rated 5 out of 5" />5 stars, loved by millions</div>
+      )}
+      {reviews && <div class="flex flex-col items-center gap-1 text-sm text-neutral-faded"><Rating value={5} readonly size="small" color="primary" aria-label="Rated 5 out of 5" />{reviews}</div>}
     </div>
   </div>
 </Section>

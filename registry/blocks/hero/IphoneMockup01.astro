@@ -13,7 +13,18 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  announcement = { badge: 'New feature', label: 'Personal coaching in the app', href: '#' },
+  heading = 'Portfolio tracking made easy',
+  description = 'Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.',
+  primaryAction = { label: 'Download for iOS', href: '#' },
+  secondaryAction = { label: 'Get it on Android', href: '#' },
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -22,16 +33,20 @@ import DeviceFrame from '../../components/DeviceFrame/DeviceFrame.astro'
     <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
     <div class="flex flex-col gap-8 md:gap-12">
       <div class="flex flex-col gap-4 md:gap-6 items-start">
-      <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
-      <Badge color="primary" rounded>New feature</Badge>Personal coaching in the app<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
+      {announcement && (
+      <Link href={announcement.href} color="inherit" underline="none" class="inline-flex items-center gap-2 self-start rounded-full py-1 ps-1 pe-3 text-sm font-medium bg-primary-faded text-primary">
+      {announcement.badge && <Badge color="primary" rounded>{announcement.badge}</Badge>}{announcement.label}<ArrowRight class="size-4 rtl:-scale-x-100" aria-hidden="true" />
     </Link>
-      <Heading as="h1" size="display" class="text-balance">Portfolio tracking made easy</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">Powerful, self-serve product and growth analytics to help you convert, engage and retain more users. Trusted by over 4,000 startups.</p>
+      )}
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
+      {(primaryAction || secondaryAction) && (
       <div class="flex flex-wrap gap-3">
-      <Button href="#" size="large" variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />Download for iOS</Button>
-      <Button href="#" size="large" variant="outline" color="neutral"><Download slot="start" aria-hidden="true" />Get it on Android</Button>
+      {primaryAction && <Button href={primaryAction.href} size="large" variant="outline" color="neutral"><Smartphone slot="start" aria-hidden="true" />{primaryAction.label}</Button>}
+      {secondaryAction && <Button href={secondaryAction.href} size="large" variant="outline" color="neutral"><Download slot="start" aria-hidden="true" />{secondaryAction.label}</Button>}
     </div>
+      )}
     </div>
     <div class="relative flex justify-center ">
       <span class="absolute inset-x-0 top-1/2 mx-auto aspect-square w-full max-w-md -translate-y-1/2 rounded-full bg-neutral-faded" aria-hidden="true"></span>

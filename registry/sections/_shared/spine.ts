@@ -5,7 +5,11 @@ export type Background = 'page' | 'neutral-faded' | 'primary-faded' | 'primary' 
 export type Spacing = 'small' | 'medium' | 'large'
 export type HeadingLevel = 1 | 2 | 3 | 4
 export type Action = { label: string; href: string }
-export type Media = { src: ImageMetadata | string; alt: string; width?: number; height?: number }
+// `srcDark` is an optional dark-mode version (a screenshot in a DeviceFrame swaps to it).
+export type Media = { src: ImageMetadata | string; srcDark?: ImageMetadata | string; alt: string; width?: number; height?: number }
+
+// A plain <img> needs a URL; an imported image (ImageMetadata) carries it in `.src`.
+export const srcUrl = (src: ImageMetadata | string) => (typeof src === 'string' ? src : src.src)
 
 // What goes on each background. Solid fills set the on-colour on the Section,
 // so headings and body inherit it; eyebrow and buttons need explicit choices.
@@ -21,3 +25,30 @@ export const onBackground = {
 } as const
 
 export const sectionSpacing = { small: 'small', medium: 'medium', large: 'large' } as const
+
+// Hero blocks share one content shape, so swapping one hero block for another
+// keeps the copy. Each block defaults every field to its demo copy, ignores the
+// fields it has no place for, and hides a part passed as `null`.
+export type Announcement = { label: string; href: string; badge?: string }
+export type HeroContent = {
+  /** A pill link above the heading; `badge` is the tag inside it. @category content */
+  announcement?: Announcement | null
+  /** @category content */
+  eyebrow?: string | null
+  /** Wrap words in *asterisks* to accent them; each block styles the accent its own way. @category content */
+  heading?: string
+  /** @category content */
+  description?: string | null
+  /** The solid button. @category content */
+  primaryAction?: Action | null
+  /** The outline button. @category content */
+  secondaryAction?: Action | null
+  /** The hero image. @category content */
+  media?: Media | null
+}
+
+// A heading in a block with no accent style: drop the *asterisks*.
+export const plain = (text: string) => text.replaceAll('*', '')
+
+// "We design *digital experiences* that…" → plain and accented runs.
+export const accentRuns = (text: string) => text.split('*').map((text, i) => ({ text, accent: i % 2 === 1 }))

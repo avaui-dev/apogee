@@ -13,7 +13,22 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import Input from '../../components/Input/Input.astro'
 import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
 
+/** @composable */
+interface Props extends HeroContent {
+  /** The form's submit button. @category content */
+  submitLabel?: string
+  /** The checklist beside the heading. @category content */
+  features?: string[] | null
+}
+
+const {
+  heading = 'Simple, transparent business credit cards',
+  description = 'A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.',
+  submitLabel = 'Get started',
+  features = ['No annual fees', 'Cards for every team member', 'Spending limits you control'],
+} = Astro.props
 ---
 
 <Section spacing="large" container={false} class="overflow-hidden">
@@ -23,18 +38,18 @@ import PaymentCard from '../../components/PaymentCard/PaymentCard.astro'
     <div class="flex flex-col gap-8 md:gap-12">
     <div class="flex flex-col gap-4 md:gap-6 items-start">
       
-      <Heading as="h1" size="display" class="text-balance">Simple, transparent business credit cards</Heading>
-      <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">A new kind of business account: cards, payments and reports in one place. Start with a 30-day free trial.</p>
+      <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl text-neutral-faded">{description}</p>}
     </div>
     <form method="post" class="flex w-full max-w-md flex-col gap-2">
       <div class="flex flex-col gap-3 md:flex-row">
         <Input size="large" type="email" name="email" placeholder="Enter your email" aria-label="Email" autocomplete="email" required class="flex-1" />
-        <Button type="submit" size="large">Get started</Button>
+        <Button type="submit" size="large">{submitLabel}</Button>
       </div>
       <p class="text-sm text-neutral-faded">We care about your data in our <Link href="#" color="neutral">privacy policy</Link>.</p>
     </form>
   </div>
-    <ul class="flex list-none flex-col gap-4 p-0 max-lg:hidden"><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />No annual fees</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Cards for every team member</li><li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />Spending limits you control</li></ul>
+    {features && <ul class="flex list-none flex-col gap-4 p-0 max-lg:hidden">{features.map((f) => <li class="flex gap-3"><CircleCheck class="size-6 shrink-0 text-primary" aria-hidden="true" />{f}</li>)}</ul>}
   </div>
   <div class="relative flex items-center justify-center overflow-hidden rounded-3xl bg-neutral-faded p-6 md:p-10 mt-12 h-96 md:mt-16 md:h-120">
       <div class="relative h-full w-full max-w-lg">

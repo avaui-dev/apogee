@@ -10,35 +10,64 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
+import { plain, srcUrl, type Action, type HeroContent } from '../../sections/_shared/spine.ts'
 
-const menu = ['How it works', 'Why us', 'Pricing', 'Personal', 'Docs']
-const backers = ['Show', 'Bido', 'Pally', 'Orgo', 'Metonym', 'Papaya', 'Rose Labs', 'Axra']
+/** @composable */
+interface Props extends HeroContent {
+  /** The name at the top of the stacked menu. @category content */
+  brand?: string | null
+  /** The stacked menu links. @category content */
+  menu?: Action[] | null
+  /** The backers row: its label and the names after it. @category content */
+  backers?: { label: string; names: string[] } | null
+}
+
+const {
+  heading = 'Let agents buy things',
+  description = 'A card for AI agents',
+  primaryAction = { label: 'Talk to a human', href: '#' },
+  secondaryAction = { label: 'Set up for agents', href: '#' },
+  media = { src: 'https://picsum.photos/id/1005/1200/1400', alt: '' },
+  brand = 'Cardwell',
+  menu = [
+    { label: 'How it works', href: '#' },
+    { label: 'Why us', href: '#' },
+    { label: 'Pricing', href: '#' },
+    { label: 'Personal', href: '#' },
+    { label: 'Docs', href: '#' },
+  ],
+  backers = { label: 'Backed by', names: ['Show', 'Bido', 'Pally', 'Orgo', 'Metonym', 'Papaya', 'Rose Labs', 'Axra'] },
+} = Astro.props
 ---
 
 <!-- The brand surface: the page becomes the primary fill, text takes the on-primary ink. -->
 <Section spacing="none" container={false} data-surface="primary" class="overflow-hidden bg-page text-neutral">
   <div class="relative isolate flex min-h-[44rem] flex-col justify-between px-gutter py-8 md:min-h-[52rem]">
-    <img src="https://picsum.photos/id/1005/1200/1400" alt="" loading="eager" class="absolute inset-y-0 start-[8%] -z-10 h-full w-[60%] object-cover opacity-90 mix-blend-luminosity mask-x-from-70% mask-b-from-80% max-md:w-full max-md:start-0 max-md:opacity-40" />
+    {media && <img src={srcUrl(media.src)} alt={media.alt} width={media.width} height={media.height} loading="eager" class="absolute inset-y-0 start-[8%] -z-10 h-full w-[60%] object-cover opacity-90 mix-blend-luminosity mask-x-from-70% mask-b-from-80% max-md:w-full max-md:start-0 max-md:opacity-40" />}
 
     <div class="flex items-start justify-between gap-6">
       <nav aria-label="Main" class="flex flex-col gap-4">
-        <span class="text-xl font-medium">Cardwell</span>
-        <ul class="flex flex-col gap-3 font-mono text-xs uppercase tracking-[0.2em]">
-          {menu.map((m) => <li><Link href="#" color="inherit" underline="hover">{m}</Link></li>)}
-        </ul>
+        {brand && <span class="text-xl font-medium">{brand}</span>}
+        {menu && (
+          <ul class="flex flex-col gap-3 font-mono text-xs uppercase tracking-[0.2em]">
+            {menu.map((m) => <li><Link href={m.href} color="inherit" underline="hover">{m.label}</Link></li>)}
+          </ul>
+        )}
       </nav>
-      <div class="flex flex-col items-end gap-3">
-        <Button href="#" size="large" class="rounded-none! px-8 font-mono uppercase tracking-[0.2em] shadow-[0_0_2rem_color-mix(in_oklab,var(--foreground-neutral)_50%,transparent)]">Talk to a human</Button>
-        <Link href="#" color="inherit" underline="none" class="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.2em] text-neutral-faded">Set up for agents<ArrowUpRight class="size-3" aria-hidden="true" /></Link>
-      </div>
+      {(primaryAction || secondaryAction) && (
+        <div class="flex flex-col items-end gap-3">
+          {primaryAction && <Button href={primaryAction.href} size="large" class="rounded-none! px-8 font-mono uppercase tracking-[0.2em] shadow-[0_0_2rem_color-mix(in_oklab,var(--foreground-neutral)_50%,transparent)]">{primaryAction.label}</Button>}
+          {secondaryAction && <Link href={secondaryAction.href} color="inherit" underline="none" class="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.2em] text-neutral-faded">{secondaryAction.label}<ArrowUpRight class="size-3" aria-hidden="true" /></Link>}
+        </div>
+      )}
     </div>
 
-    <Heading as="h1" size="display" class="max-w-5xl self-end text-end font-mono font-bold uppercase leading-[0.9] tracking-tight text-[clamp(3rem,0.5rem+8vw,8.5rem)]!">Let agents buy things</Heading>
+    <Heading as="h1" size="display" class="max-w-5xl self-end text-end font-mono font-bold uppercase leading-[0.9] tracking-tight text-[clamp(3rem,0.5rem+8vw,8.5rem)]!">{plain(heading)}</Heading>
 
     <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-neutral pb-4 font-mono text-xs uppercase tracking-[0.2em]">
-      <span class="text-neutral-faded">Backed by</span>
-      {backers.map((b) => <span>{b}</span>)}
-      <span class="ms-auto text-neutral-faded">A card for AI agents</span>
+      {backers && <span class="text-neutral-faded">{backers.label}</span>}
+      {backers && backers.names.map((b) => <span>{b}</span>)}
+      {description && <span class="ms-auto text-neutral-faded">{description}</span>}
     </div>
   </div>
 </Section>

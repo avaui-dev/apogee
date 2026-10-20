@@ -11,6 +11,16 @@ import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Select from '../../components/Select/Select.astro'
 import Image from '../../components/Image/Image.astro'
+import { accentRuns, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  heading = '*Keep every freight lane moving* with agents that act on what they see',
+  primaryAction = { label: 'Request a demo', href: '#' },
+  media = { src: 'https://picsum.photos/id/1048/1200/800', alt: '', width: 1200, height: 800 },
+} = Astro.props
 
 const stats = [
   ['Sources', '312 carrier feeds'],
@@ -28,8 +38,8 @@ const industries = ['Logistics', 'Energy', 'Manufacturing', 'Healthcare']
     <div class="pointer-events-none absolute inset-y-6 start-1/2 hidden w-3 -translate-x-1/2 border-s border-neutral-faded bg-[repeating-linear-gradient(to_bottom,var(--border-neutral)_0_1px,transparent_1px_5.5rem)] bg-size-[0.75rem_100%] bg-no-repeat lg:block rtl:translate-x-1/2" aria-hidden="true"></div>
 
     <div class="flex flex-col gap-10 py-12 md:py-16 lg:pe-16">
-      <Heading as="h1" size="display" class="text-balance"><span class="text-neutral-faded">Keep every freight lane moving</span> with agents that act on what they see</Heading>
-      <Button href="#" size="large" class="self-start">Request a demo</Button>
+      <Heading as="h1" size="display" class="text-balance">{accentRuns(heading).map((r) => (r.accent ? <span class="text-neutral-faded">{r.text}</span> : r.text))}</Heading>
+      {primaryAction && <Button href={primaryAction.href} size="large" class="self-start">{primaryAction.label}</Button>}
       <div class="mt-auto flex max-w-lg border border-neutral-faded bg-page">
         <label for="framed-split-industry" class="flex shrink-0 items-center border-e border-neutral-faded px-4 font-mono text-sm uppercase tracking-wide text-neutral-faded">Industry</label>
         <Select id="framed-split-industry" name="industry" variant="ghost" size="large" class="min-w-0 flex-1">
@@ -57,7 +67,7 @@ const industries = ['Logistics', 'Energy', 'Manufacturing', 'Healthcare']
         <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 font-mono text-xs uppercase tabular-nums">
           {stats.map(([term, value]) => <><dt class="text-neutral-faded">{term}:</dt><dd class="text-primary">{value}</dd></>)}
         </dl>
-        <Image src="https://picsum.photos/id/1048/1200/800" alt="" width={1200} height={800} fit="cover" radius="md" loading="eager" class="aspect-3/2 w-full" />
+        {media && <Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" radius="md" loading="eager" class="aspect-3/2 w-full" />}
       </div>
     </div>
   </div>

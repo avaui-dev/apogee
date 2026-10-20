@@ -9,33 +9,48 @@ import { Banknote, CreditCard, Globe, Workflow } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
+import { plain, srcUrl, type HeroContent } from '../../sections/_shared/spine.ts'
 
-const features = [
-  { icon: Banknote, text: 'Open accounts in two currencies' },
-  { icon: CreditCard, text: 'Spend on company cards, earn up to 2% back' },
-  { icon: Globe, text: 'Bank across borders in one place' },
-  { icon: Workflow, text: 'Automate bills, expenses and the books' },
-]
+/** @composable */
+interface Props extends HeroContent {
+  /** The feature columns under the button; each gets the next icon. @category content */
+  features?: string[] | null
+}
+
+const {
+  eyebrow = 'One account for a global business',
+  heading = 'Run payments.\nOne global account.',
+  description = 'Your business moves fast and your money needs to keep up. Accounts in two currencies from 150+ countries, with payments, exchange, cards and operations in one place.',
+  primaryAction = { label: 'Open an account', href: '#' },
+  media = { src: 'https://picsum.photos/id/180/500/500', alt: '' },
+  features = ['Open accounts in two currencies', 'Spend on company cards, earn up to 2% back', 'Bank across borders in one place', 'Automate bills, expenses and the books'],
+} = Astro.props
+// The heading splits at its line break: the first line tilts on the start side of the photo, the rest on the end side.
+const [headStart, headEnd] = plain(heading).split('\n')
+
+const featureIcons = [Banknote, CreditCard, Globe, Workflow]
 ---
 
 <Section spacing="none" container={false} class="overflow-hidden">
   <!-- Sky: a primary wash with soft cloud shapes, cut by a wide page-coloured curve. -->
   <div class="relative h-[22rem] md:h-[26rem]" style="background: radial-gradient(ellipse 30% 25% at 20% 30%, color-mix(in oklab, var(--background-page) 55%, transparent), transparent), radial-gradient(ellipse 35% 25% at 75% 20%, color-mix(in oklab, var(--background-page) 45%, transparent), transparent), linear-gradient(to bottom, color-mix(in oklab, var(--background-primary) 35%, var(--background-page)), color-mix(in oklab, var(--background-primary) 15%, var(--background-page)))">
-    <p class="pt-24 text-center text-sm font-medium md:pt-28">One account for a global business</p>
+    {eyebrow && <p class="pt-24 text-center text-sm font-medium md:pt-28">{eyebrow}</p>}
     <div class="absolute inset-x-[-25%] bottom-0 h-40 rounded-[50%_50%_0_0/100%_100%_0_0] bg-page md:h-56"></div>
   </div>
 
   <div class="relative -mt-48 flex flex-col items-center px-gutter md:-mt-60">
     <Heading as="h1" size="display" class="grid w-full max-w-6xl items-center gap-4 text-center font-semibold tracking-tight md:grid-cols-[1fr_auto_1fr] md:gap-8">
-      <span class="md:-rotate-3 md:justify-self-end">Run payments.</span>
-      <img src="https://picsum.photos/id/180/500/500" alt="" class="mx-auto aspect-square w-44 rotate-3 rounded-3xl object-cover shadow-2xl md:w-60" />
-      <span class="md:rotate-3 md:justify-self-start">One global account.</span>
+      <span class="md:-rotate-3 md:justify-self-end">{headStart}</span>
+      {media && <img src={srcUrl(media.src)} alt={media.alt} width={media.width} height={media.height} class="mx-auto aspect-square w-44 rotate-3 rounded-3xl object-cover shadow-2xl md:w-60" />}
+      {headEnd && <span class="md:rotate-3 md:justify-self-start">{headEnd}</span>}
     </Heading>
-    <p class="mt-12 max-w-md text-center">Your business moves fast and your money needs to keep up. Accounts in two currencies from 150+ countries, with payments, exchange, cards and operations in one place.</p>
-    <Button href="#" size="large" rounded class="mt-6">Open an account</Button>
+    {description && <p class="mt-12 max-w-md text-center">{description}</p>}
+    {primaryAction && <Button href={primaryAction.href} size="large" rounded class="mt-6">{primaryAction.label}</Button>}
 
-    <ul class="mt-20 grid w-full max-w-6xl grid-cols-2 gap-8 pb-(--spacing-section-lg) text-center md:grid-cols-4">
-      {features.map((f) => <li class="flex flex-col items-center gap-3 font-medium"><f.icon class="size-6 text-primary" aria-hidden="true" />{f.text}</li>)}
-    </ul>
+    {features && (
+      <ul class="mt-20 grid w-full max-w-6xl grid-cols-2 gap-8 pb-(--spacing-section-lg) text-center md:grid-cols-4">
+        {features.map((text, i) => { const Icon = featureIcons[i % featureIcons.length]!; return <li class="flex flex-col items-center gap-3 font-medium"><Icon class="size-6 text-primary" aria-hidden="true" />{text}</li> })}
+      </ul>
+    )}
   </div>
 </Section>

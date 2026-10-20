@@ -10,6 +10,17 @@ import Section from '../../components/Section/Section.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {}
+
+const {
+  heading = 'See what your footage knows',
+  description = 'Every moment, every play, every decision is already on video. Finding it used to take days. Now it takes a question.',
+  primaryAction = { label: 'Try it now', href: '#' },
+  secondaryAction = { label: 'Talk to sales', href: '#' },
+} = Astro.props
 
 // Three streams along gentle curves; thumbnails get bigger and brighter toward the end.
 const ids = [10, 11, 15, 16, 17, 18, 19, 20, 22, 24, 27, 28, 29, 33, 34, 37, 39, 40, 42, 43, 47, 49, 50, 54]
@@ -35,12 +46,14 @@ const thumbs = streams.flatMap((s, si) => Array.from({ length: 11 }, (_, i) => {
     <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--background-page)_25%,transparent_65%)] rtl:bg-[linear-gradient(to_left,var(--background-page)_25%,transparent_65%)]" aria-hidden="true"></div>
 
     <div class="relative flex max-w-3xl flex-col gap-6 px-gutter pt-40 md:pt-56">
-      <Heading as="h1" size="display" class="font-normal text-balance">See what your footage knows</Heading>
-      <p class="max-w-2xl text-lg md:text-xl">Every moment, every play, every decision is already on video. Finding it used to take days. Now it takes a question.</p>
-      <div class="mt-2 flex flex-wrap gap-3">
-        <Button href="#" size="xlarge" rounded>Try it now<ArrowUpRight slot="end" aria-hidden="true" /></Button>
-        <Button href="#" size="xlarge" rounded variant="outline" color="neutral">Talk to sales</Button>
-      </div>
+      <Heading as="h1" size="display" class="font-normal text-balance">{plain(heading)}</Heading>
+      {description && <p class="max-w-2xl text-lg md:text-xl">{description}</p>}
+      {(primaryAction || secondaryAction) && (
+        <div class="mt-2 flex flex-wrap gap-3">
+          {primaryAction && <Button href={primaryAction.href} size="xlarge" rounded>{primaryAction.label}<ArrowUpRight slot="end" aria-hidden="true" /></Button>}
+          {secondaryAction && <Button href={secondaryAction.href} size="xlarge" rounded variant="outline" color="neutral">{secondaryAction.label}</Button>}
+        </div>
+      )}
     </div>
 
     <a href="#" class="relative mx-gutter mt-16 flex max-w-sm flex-col gap-4 rounded-2xl border border-neutral-faded bg-neutral-faded p-4 backdrop-blur-md md:absolute md:bottom-8 md:end-8 md:mx-0 md:mt-0">

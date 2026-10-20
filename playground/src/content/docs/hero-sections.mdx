@@ -8,6 +8,9 @@ related: [section, heading, button, device-frame]
 ---
 
 import DocsIndex from '../../components/DocsIndex.astro'
+import Preview from '../../components/Preview.astro'
+import SimpleText01 from '../../../../registry/blocks/hero/SimpleText01.astro'
+import CardMockup01 from '../../../../registry/blocks/hero/CardMockup01.astro'
 
 Each example is a block: a [Section](/docs/section) with the page's `h1`,
 supporting text and actions, next to an image, a sign-up form, a
@@ -16,5 +19,40 @@ supporting text and actions, next to an image, a sign-up form, a
 ```sh
 npx @ava-ui/apogee add hero/split-image-01
 ```
+
+## Copy is props
+
+Every hero block takes the same content props, with its sample copy as the
+defaults: `announcement` (`{ badge?, label, href }`), `eyebrow`, `heading`,
+`description`, `primaryAction` and `secondaryAction` (`{ label, href }`) and
+`media` (`{ src, srcDark?, alt, width?, height? }`). A block ignores the ones it
+has no place for, so you can swap one hero block for another and keep the copy.
+Some blocks add their own, such as `submitLabel` or `images`.
+
+- Wrap words of the heading in `*asterisks*` to accent them. Each block styles
+  the accent its own way (underlined, faded, italic); a block without an accent
+  style drops the asterisks.
+- Pass `null` to hide a part: `announcement={null}`, `secondaryAction={null}`.
+
+The same props in two blocks:
+
+<Preview block code={`<SimpleText01
+  heading="Ship pages *your team* can edit"
+  description="Blocks that take their copy as props, so an editor changes words, not code."
+  primaryAction={{ label: 'Start free', href: '#' }}
+  secondaryAction={null}
+/>`}>
+  <SimpleText01 heading="Ship pages *your team* can edit" description="Blocks that take their copy as props, so an editor changes words, not code." primaryAction={{ label: 'Start free', href: '#' }} secondaryAction={null} />
+</Preview>
+
+<Preview block code={`<CardMockup01
+  heading="Ship pages *your team* can edit"
+  description="Blocks that take their copy as props, so an editor changes words, not code."
+  primaryAction={{ label: 'Start free', href: '#' }}
+  secondaryAction={null}
+  announcement={null}
+/>`}>
+  <CardMockup01 heading="Ship pages *your team* can edit" description="Blocks that take their copy as props, so an editor changes words, not code." primaryAction={{ label: 'Start free', href: '#' }} secondaryAction={null} announcement={null} />
+</Preview>
 
 <DocsIndex group="Hero sections" self="hero-sections" />

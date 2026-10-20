@@ -11,6 +11,21 @@ import Heading from '../../components/Heading/Heading.astro'
 import Button from '../../components/Button/Button.astro'
 import Badge from '../../components/Badge/Badge.astro'
 import Divider from '../../components/Divider/Divider.astro'
+import { plain, type HeroContent } from '../../sections/_shared/spine.ts'
+
+/** @composable */
+interface Props extends HeroContent {
+  /** Names in the logo row; each gets the next placeholder mark. @category content */
+  logos?: string[] | null
+}
+
+const {
+  heading = 'Marketing that pays its way',
+  description = 'An assistant that finds your buyers, makes the ads and runs the campaigns around the clock. You set the rules; every spend is measured on revenue.',
+  primaryAction = { label: 'Book a demo', href: '#' },
+  secondaryAction = { label: 'See it in action', href: '#' },
+  logos = ['Lumen', 'Quanta', 'Fieldwork', 'Northpeak', 'Arcwave', 'Kitestring'],
+} = Astro.props
 
 const nav = [
   { label: 'Home', icon: Home, active: true },
@@ -29,26 +44,22 @@ const projects = [
   { name: 'Ad refresh for new buyers', meta: 'Updated 2 hours ago' },
   { name: 'Weekly spend review', meta: 'Updated 3 hours ago' },
 ]
-const logos = [
-  { name: 'Lumen', icon: Hexagon },
-  { name: 'Quanta', icon: Atom },
-  { name: 'Fieldwork', icon: Sprout },
-  { name: 'Northpeak', icon: Mountain },
-  { name: 'Arcwave', icon: Waves },
-  { name: 'Kitestring', icon: Wind },
-]
+// ponytail: placeholder marks cycle through the logo names; swap for real logo images when a site has them.
+const logoIcons = [Hexagon, Atom, Sprout, Mountain, Waves, Wind]
 ---
 
 <Section spacing="large">
   <div class="grid items-end gap-6 lg:grid-cols-2 lg:gap-16">
-    <Heading as="h1" size="display" class="text-balance">Marketing that pays its way</Heading>
-    <p class="max-w-xl text-lg md:text-xl text-neutral-faded lg:justify-self-end">An assistant that finds your buyers, makes the ads and runs the campaigns around the clock. You set the rules; every spend is measured on revenue.</p>
+    <Heading as="h1" size="display" class="text-balance">{plain(heading)}</Heading>
+    {description && <p class="max-w-xl text-lg md:text-xl text-neutral-faded lg:justify-self-end">{description}</p>}
   </div>
   <Divider class="my-8" />
-  <div class="flex flex-col gap-3 sm:flex-row">
-    <Button href="#" size="large" rounded><ArrowRight slot="start" class="rtl:-scale-x-100" aria-hidden="true" />Book a demo</Button>
-    <Button href="#" size="large" rounded variant="outline" color="neutral">See it in action</Button>
-  </div>
+  {(primaryAction || secondaryAction) && (
+    <div class="flex flex-col gap-3 sm:flex-row">
+      {primaryAction && <Button href={primaryAction.href} size="large" rounded><ArrowRight slot="start" class="rtl:-scale-x-100" aria-hidden="true" />{primaryAction.label}</Button>}
+      {secondaryAction && <Button href={secondaryAction.href} size="large" rounded variant="outline" color="neutral">{secondaryAction.label}</Button>}
+    </div>
+  )}
 
   <!-- Soft panel: the primary hue mixed into the page in a few washes, so it follows the theme. -->
   <div class="mt-10 rounded-2xl p-3 sm:p-6 md:p-12" style="background: radial-gradient(ellipse at 15% 10%, color-mix(in oklab, var(--background-primary) 8%, var(--background-page)), transparent 60%), radial-gradient(ellipse at 90% 70%, color-mix(in oklab, var(--background-primary) 40%, var(--background-page)), transparent 70%), color-mix(in oklab, var(--background-primary) 22%, var(--background-page))" aria-hidden="true">
@@ -95,7 +106,9 @@ const logos = [
     </div>
   </div>
 
-  <ul class="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
-    {logos.map((l) => <li class="flex items-center gap-2 text-lg font-semibold text-neutral-faded"><l.icon class="size-6" aria-hidden="true" />{l.name}</li>)}
-  </ul>
+  {logos && (
+    <ul class="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
+      {logos.map((name, i) => { const Mark = logoIcons[i % logoIcons.length]!; return <li class="flex items-center gap-2 text-lg font-semibold text-neutral-faded"><Mark class="size-6" aria-hidden="true" />{name}</li> })}
+    </ul>
+  )}
 </Section>
