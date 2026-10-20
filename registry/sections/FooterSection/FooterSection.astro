@@ -6,21 +6,19 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
-import { Mail, Globe, Rss, AtSign, Share2, MessageCircle } from '@lucide/astro'
 import Footer from '../../components/Footer/Footer.astro'
 import Grid from '../../components/Grid/Grid.astro'
 import Link from '../../components/Link/Link.astro'
-
 // ponytail: the icon set ships no brand glyphs; for brand marks use the `social` slot with your own SVG links.
-const icons = { mail: Mail, globe: Globe, rss: Rss, 'at-sign': AtSign, share: Share2, message: MessageCircle } as const
+import { socialIcons as icons, type FooterColumn, type SocialLink } from '../_shared/footers.ts'
 
 /** @composable */
 interface Props extends HTMLAttributes<'footer'> {
   /** Link groups (`columns`) or one flat row of links (`simple`, the first column's links). @shape { heading: string, links: { label: string, href: string }[] }[] @category content */
-  columns?: { heading: string; links: { label: string; href: string }[] }[]
+  columns?: FooterColumn[]
   /** @category content */ copyright?: string
   /** Icon links on the bottom row; or fill the `social` slot with your own brand SVG links. @shape { label: string, href: string, icon: 'mail'|'globe'|'rss'|'at-sign'|'share'|'message' }[] @category content */
-  social?: { label: string; href: string; icon: 'mail' | 'globe' | 'rss' | 'at-sign' | 'share' | 'message' }[]
+  social?: SocialLink[]
   /** Name of the link nav in `simple`. @category content */ navLabel?: string
   /** @category layout */ layout?: 'simple' | 'columns'
   class?: string

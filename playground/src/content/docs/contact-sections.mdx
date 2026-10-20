@@ -22,4 +22,24 @@ npx @ava-ui/apogee add contact/simple-form
 Each block holds its sample data at the top (`methods`, `stores`, `pins`);
 replace it with yours, and point the form's `action` at your endpoint.
 
+## Copy is props
+
+Every block in this family takes the same content props (`ContactContent` in
+`sections/_shared/contact.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy. The [Contact](/docs/sections/contact) section takes the same names for the props they share.
+
+- `eyebrow`: The small label above the heading.
+- `heading`: The heading.
+- `description`: The line under the heading.
+- `details`: Ways to reach you: email, phone, chat, office.
+- `locations`: Offices or stores, shown as addresses, tabs or map pins.
+- `media`: The photo beside or above the content.
+- `action`: Form target.
+- `method`
+- `submitLabel`
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Contact sections" self="contact-sections" />

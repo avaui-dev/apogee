@@ -18,4 +18,19 @@ The floating versions sit the bar on a rounded pill.
 npx @ava-ui/apogee add header-navigation/dropdown-simple
 ```
 
+## Copy is props
+
+Every block in this family takes the same content props (`NavigationContent` in
+`sections/_shared/navigation.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy.
+
+- `brand`: The site name beside the logo.
+- `links`: The bar's entries in order: a link `{ label, href }` or a menu `{ label, groups }`.
+- `primaryAction`: The solid button.
+- `secondaryAction`: The outline button.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Header navigation sections" self="header-navigation-sections" />

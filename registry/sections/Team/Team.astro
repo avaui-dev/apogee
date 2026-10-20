@@ -12,6 +12,7 @@ import Avatar from '../../components/Avatar/Avatar.astro'
 import Link from '../../components/Link/Link.astro'
 import { uid } from '../../components/utils/uid.ts'
 import type { Align, Background, Spacing } from '../_shared/spine.ts'
+import type { TeamMember } from '../_shared/team.ts'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
@@ -20,7 +21,7 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** @category content */ description?: string
   /** Landmark name when there is no heading. @category content */ label?: string
   /** People. @shape { name: string, role: string, avatar?: string, bio?: string, links?: { label: string, href: string }[] } @category content */
-  items: { name: string; role: string; avatar?: string; bio?: string; links?: { label: string; href: string }[] }[]
+  items: TeamMember[]
   /** @category layout */ layout?: 'grid' | 'list'
   /** @category layout */ align?: Align
   /** @category layout */ background?: Background

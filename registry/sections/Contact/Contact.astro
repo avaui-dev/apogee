@@ -6,7 +6,7 @@
  * @composable
  */
 import type { HTMLAttributes } from 'astro/types'
-import { Mail, Phone, MapPin } from '@lucide/astro'
+import { Mail, Phone, MapPin, MessageCircle, MessagesSquare, LifeBuoy } from '@lucide/astro'
 import Section from '../../components/Section/Section.astro'
 import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Input from '../../components/Input/Input.astro'
@@ -15,8 +15,9 @@ import Button from '../../components/Button/Button.astro'
 import Link from '../../components/Link/Link.astro'
 import { uid } from '../../components/utils/uid.ts'
 import { onBackground, type Background, type Spacing } from '../_shared/spine.ts'
+import type { ContactDetail, ContactIcon } from '../_shared/contact.ts'
 
-const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin } as const
+const icons = { mail: Mail, phone: Phone, 'map-pin': MapPin, 'message-circle': MessageCircle, 'messages-square': MessagesSquare, 'life-buoy': LifeBuoy } as const satisfies Record<ContactIcon, unknown>
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
@@ -24,7 +25,7 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** @category content */ heading: string
   /** @category content */ description?: string
   /** Shown beside the form in `form-details`. @shape { icon: 'mail'|'phone'|'map-pin', label: string, value: string, href?: string } @category content */
-  details?: { icon: 'mail' | 'phone' | 'map-pin'; label: string; value: string; href?: string }[]
+  details?: ContactDetail[]
   /** Form target. @category content */ action?: string
   /** @category content */ method?: 'get' | 'post'
   /** Submit label. @category content */ submitLabel?: string

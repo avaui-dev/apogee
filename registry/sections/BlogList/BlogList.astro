@@ -10,9 +10,9 @@ import SectionHeader from '../../components/SectionHeader/SectionHeader.astro'
 import Grid from '../../components/Grid/Grid.astro'
 import PostCard, { type Post as Card } from '../../components/PostCard/PostCard.astro'
 import { uid } from '../../components/utils/uid.ts'
-import type { Align, Background, Media, Spacing } from '../_shared/spine.ts'
+import type { Align, Background, Spacing } from '../_shared/spine.ts'
+import type { Post } from '../_shared/blog.ts'
 
-type Post = { title: string; excerpt: string; href: string; image?: Media; date: string; author?: { name: string; avatar?: string } }
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {

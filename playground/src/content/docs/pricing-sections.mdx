@@ -25,4 +25,22 @@ Button, Badge and FeaturedIcon, or a comparison [Table](/docs/table).
 npx @ava-ui/apogee add pricing/simple-cards-01
 ```
 
+## Copy is props
+
+Every block in this family takes the same content props (`PricingContent` in
+`sections/_shared/pricing.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy. The [Pricing](/docs/sections/pricing) section takes the same names for the props they share.
+
+- `eyebrow`: The small label above the heading.
+- `heading`: The heading.
+- `description`: The line under the heading.
+- `label`: Landmark name when there is no heading.
+- `periodLabel`: Name of the billing switch.
+- `periods`: Labels for the billing switch.
+- `items`: Plans.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Pricing sections" self="pricing-sections" />

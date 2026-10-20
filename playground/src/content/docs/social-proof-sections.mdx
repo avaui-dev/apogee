@@ -19,4 +19,18 @@ motion and has a pause button.
 npx @ava-ui/apogee add social-proof/full-width
 ```
 
+## Copy is props
+
+Every block in this family takes the same content props (`SocialProofContent` in
+`sections/_shared/social-proof.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy.
+
+- `heading`: The line above the logos.
+- `label`: Accessible name of the logo list.
+- `logos`: Company or publication names, in order.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Social proof sections" self="social-proof-sections" />

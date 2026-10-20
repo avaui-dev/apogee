@@ -18,4 +18,23 @@ as pairs.
 npx @ava-ui/apogee add metrics/simple-centered-text
 ```
 
+## Copy is props
+
+Every block in this family takes the same content props (`MetricsContent` in
+`sections/_shared/metrics.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy. The [Stats](/docs/sections/stats) section takes the same names for the props they share.
+
+- `eyebrow`: The small label above the heading.
+- `heading`: The heading.
+- `description`: The line under the heading.
+- `label`: Landmark name when the block shows no heading.
+- `items`: The figures. Blocks without room for a line ignore `description`.
+- `primaryAction`: The solid button.
+- `secondaryAction`: The outline button.
+- `media`: The photo behind or beside the figures.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Metrics sections" self="metrics-sections" />

@@ -12,6 +12,7 @@ import Grid from '../../components/Grid/Grid.astro'
 import Avatar from '../../components/Avatar/Avatar.astro'
 import { uid } from '../../components/utils/uid.ts'
 import type { Align, Background, Spacing } from '../_shared/spine.ts'
+import type { Testimonial } from '../_shared/testimonials.ts'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
@@ -20,7 +21,7 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** @category content */ description?: string
   /** Landmark name when there is no heading. @category content */ label?: string
   /** Quotes. @shape { quote: string, name: string, role?: string, avatar?: string } @category content */
-  items: { quote: string; name: string; role?: string; avatar?: string }[]
+  items: Testimonial[]
   /** @category layout */ layout?: 'single' | 'grid'
   /** @category layout */ align?: Align
   /** @category layout */ background?: Background

@@ -1584,11 +1584,10 @@
       "registryDependencies": [
         "Footer",
         "Grid",
-        "Link"
+        "Link",
+        "_shared"
       ],
-      "dependencies": [
-        "@lucide/astro"
-      ],
+      "dependencies": [],
       "usesJs": false
     },
     "Hero": {

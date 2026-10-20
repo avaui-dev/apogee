@@ -16,7 +16,8 @@ import Badge from '../../components/Badge/Badge.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import SegmentedControl from '../../components/SegmentedControl/SegmentedControl.astro'
 import { uid } from '../../components/utils/uid.ts'
-import { onBackground, type Action, type Align, type Background, type Spacing } from '../_shared/spine.ts'
+import { onBackground, type Align, type Background, type Spacing } from '../_shared/spine.ts'
+import type { PricingPlan } from '../_shared/pricing.ts'
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
@@ -26,7 +27,7 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** Landmark name when there is no heading. @category content */ label?: string
   /** Name of the billing switch. @category content */ periodLabel?: string
   /** Plans. @shape { name, price, annualPrice?, period?, annualPeriod?, description, features: string[], action: { label, href }, featured?: boolean, badge?: string } @category content */
-  items: { name: string; price: string; annualPrice?: string; period?: string; annualPeriod?: string; description: string; features: string[]; action: Action; featured?: boolean; badge?: string }[]
+  items: PricingPlan[]
   /** @category layout */ layout?: 'tiers' | 'tiers-toggle'
   /** Labels for the toggle. @category content */ periods?: { monthly: string; annual: string }
   /** @category layout */ align?: Align

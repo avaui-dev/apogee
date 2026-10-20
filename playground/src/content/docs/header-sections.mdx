@@ -18,4 +18,23 @@ field or a [SegmentedControl](/docs/segmented-control).
 npx @ava-ui/apogee add header/centered
 ```
 
+## Copy is props
+
+Every block in this family takes the same content props (`PageHeaderContent` in
+`sections/_shared/header.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy. The [PageHeader](/docs/sections/page-header) section takes the same names for the props they share.
+
+- `breadcrumbs`
+- `eyebrow`: The small label above the heading.
+- `heading`: The heading.
+- `description`: The line under the heading.
+- `primaryAction`: The solid button.
+- `secondaryAction`: The outline button.
+- `tabs`: Tab links under the title.
+- `tabsLabel`: Name of the tabs nav.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Header sections" self="header-sections" />

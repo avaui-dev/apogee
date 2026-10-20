@@ -20,4 +20,22 @@ customers' own words.
 npx @ava-ui/apogee add testimonials/simple-centered-01
 ```
 
+## Copy is props
+
+Every block in this family takes the same content props (`TestimonialsContent` in
+`sections/_shared/testimonials.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy. The [Testimonials](/docs/sections/testimonials) section takes the same names for the props they share.
+
+- `eyebrow`: The small label above the heading.
+- `heading`: The heading.
+- `description`: The line under the heading.
+- `label`: Accessible name for the quote carousel or tabs.
+- `items`: Quotes. Single-quote blocks show the first.
+- `primaryAction`: The solid button beside the heading.
+- `secondaryAction`: The outline button beside the heading.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Testimonials sections" self="testimonials-sections" />

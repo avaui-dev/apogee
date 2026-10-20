@@ -20,4 +20,21 @@ npx @ava-ui/apogee add careers/simple-01
 Each block holds a sample `jobs` array at the top; replace it with yours (a
 content collection, or your applicant tracking system's feed).
 
+## Copy is props
+
+Every block in this family takes the same content props (`CareersContent` in
+`sections/_shared/careers.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy.
+
+- `eyebrow`: The small label above the heading.
+- `heading`: The heading.
+- `description`: The line under the heading.
+- `items`: Open positions.
+- `categories`: Department filter tabs; defaults to "View all" plus each department in `items`.
+- `media`: The photo beside or above the list.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Careers sections" self="careers-sections" />

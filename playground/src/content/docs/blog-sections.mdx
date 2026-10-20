@@ -33,4 +33,23 @@ const posts = (await getCollection('blog')).map((p) => ({
 ---
 ```
 
+## Copy is props
+
+Every block in this family takes the same content props (`BlogContent` in
+`sections/_shared/blog.ts`), with its sample copy as the defaults. A block
+ignores the props it has no place for, so you can swap one block for another and
+keep the copy. The [BlogList](/docs/sections/blog-list) section takes the same names for the props they share.
+
+- `eyebrow`: The small label above the heading.
+- `heading`: The heading.
+- `description`: The line under the heading.
+- `items`: Posts. `date` is an ISO date string.
+- `locale`: Date locale; defaults to the page locale.
+- `categories`: The category filter.
+- `primaryAction`: The solid button, e.g. View all posts.
+- `secondaryAction`: The outline button, e.g. Load more.
+
+- Pass `null` to hide an optional part, such as `description={null}`.
+- Some blocks add props of their own; the top of each block's file lists them.
+
 <DocsIndex group="Blog sections" self="blog-sections" />

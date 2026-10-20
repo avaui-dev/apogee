@@ -3,7 +3,9 @@
 All notable changes to Apogee are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](https://semver.org).
 
-## [Unreleased]
+## [0.7.0] — 2026-10-20
+
+**Upgrading:** a page with no `data-theme` on `<html>` now follows the visitor's system setting, so it turns dark for visitors whose OS is dark. To keep a page light, set `data-theme="light"` on `<html>` (or pass `theme="light"` to SiteLayout). To get the system-dark block and the new `dark:` variant, replace your tokens file with the package's `registry/tokens/theme.css`, then, if you changed the brand colours, regenerate it from your hues file: `node node_modules/@ava-ui/apogee/scripts/build-tokens.mjs src/styles/apogee.css ./hues.mjs`. The head script is now only needed to restore a stored choice.
 
 ### Added
 
@@ -22,12 +24,14 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 - Content article blocks' share links used one copy-pasted title; they now share the page's own heading.
 - Pricing comparison tables build the wide and phone layouts from one list, so they can't disagree.
-- `npm run check:strict` passes with 0 errors (BannerSection, Tabs, ContactForm and PostHeader accept an explicit `undefined` for optional props).
+- `npm run check:strict` passes with 0 errors (Banner, Tabs, ContactForm and PostHeader accept an explicit `undefined` for optional props).
 - **AVA can open 56 more components.** Their `@composable` tag sat in the file header, where AVA doesn't look; it now sits on `interface Props`. `npm run check:kit` fails if a kit tag ends up anywhere else.
 - **Button** and **ToggleButton** `rounded` now gives fully round ends; the size's corner radius used to win.
 
 ### Changed
 
+- **Sections share their block family's item types.** Contact, FooterSection, Testimonials, BlogList, Pricing, Features, Stats, FAQ and Team accept the same list items as their blocks. Contact gains the `message-circle`, `messages-square` and `life-buoy` icons; FooterSection gains `users`, `camera`, `video` and `code`.
+- **Docs: every block family's overview lists its shared props** under "Copy is props", and each block page links there.
 - **Image** and **DeviceFrame** accept `width`/`height` of `undefined` explicitly (strict TypeScript), so an optional size can be passed straight through.
 - **The CLI prints colour only to a terminal**, so piped output is plain text.
 - **Prop unions are written out** (`size?: 'small' | 'medium' | 'large'`) instead of derived with `keyof typeof` from the class table, so tools that read source without running TypeScript (AVA's props panel) see the options. Each table now `satisfies` its union, so the build fails if the two drift apart.
@@ -483,6 +487,7 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.7.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.7.0
 [0.6.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.6.0
 [0.5.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.5.0
 [0.4.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.4.0

@@ -16,10 +16,10 @@ import Link from '../../components/Link/Link.astro'
 import Heading from '../../components/Heading/Heading.astro'
 import Text from '../../components/Text/Text.astro'
 import { uid } from '../../components/utils/uid.ts'
-import type { Align, Background, Media, Spacing } from '../_shared/spine.ts'
+import type { Align, Background, Spacing } from '../_shared/spine.ts'
+import type { FeatureIcon, FeatureItem } from '../_shared/features.ts'
 
-const icons = { check: Check, zap: Zap, shield: Shield, globe: Globe, sparkles: Sparkles, layers: Layers, lock: Lock, rocket: Rocket, gauge: Gauge, heart: Heart } as const satisfies Record<IconName, unknown>
-type IconName = 'check' | 'zap' | 'shield' | 'globe' | 'sparkles' | 'layers' | 'lock' | 'rocket' | 'gauge' | 'heart'
+const icons = { check: Check, zap: Zap, shield: Shield, globe: Globe, sparkles: Sparkles, layers: Layers, lock: Lock, rocket: Rocket, gauge: Gauge, heart: Heart } as const satisfies Record<FeatureIcon, unknown>
 
 /** @composable */
 interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
@@ -28,7 +28,7 @@ interface Props extends Omit<HTMLAttributes<'section'>, 'id'> {
   /** @category content */ description?: string
   /** Landmark name when there is no heading. @category content */ label?: string
   /** Features. @shape { icon?: 'check'|'zap'|'shield'|'globe'|'sparkles'|'layers'|'lock'|'rocket'|'gauge'|'heart', title: string, description: string, href?: string, linkLabel?: string, media?: { src, alt } } @category content */
-  items: { icon?: IconName; title: string; description: string; href?: string; linkLabel?: string; media?: Media }[]
+  items: FeatureItem[]
   /** Text of item links without their own `linkLabel`. @category content */ linkLabel?: string
   /** @category layout */ layout?: 'grid' | 'alternating' | 'list'
   /** @category layout */ align?: Align
