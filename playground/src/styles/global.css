@@ -224,6 +224,49 @@ html {
   }
 }
 
+/* Docs sidebar: list items fade out under the sticky search and at the bottom edge. Where the
+   browser supports scroll-driven animations, the top fade shows only once the list has scrolled
+   and the bottom fade goes once it reaches the end. */
+.docs-nav-search::after,
+.docs-nav-end {
+  content: "";
+  pointer-events: none;
+  height: 3rem;
+}
+.docs-nav-search::after {
+  position: absolute;
+  inset-inline: 0;
+  /* Below the group heading that sticks under the search (40px), so the heading stays crisp. */
+  top: calc(100% + 2.5rem);
+  background: linear-gradient(var(--docs-nav-bg, var(--background-page)), transparent);
+  opacity: 0;
+}
+.docs-nav-end {
+  position: sticky;
+  bottom: 0;
+  flex-shrink: 0;
+  margin-top: -3rem;
+  background: linear-gradient(transparent, var(--docs-nav-bg, var(--background-page)));
+}
+@supports (animation-timeline: scroll()) {
+  .docs-nav-search::after {
+    animation: docs-fade-in linear both;
+    animation-timeline: scroll();
+    animation-range: 0 3rem;
+  }
+  .docs-nav-end {
+    animation: docs-fade-out linear both;
+    animation-timeline: scroll();
+    animation-range: calc(100% - 3rem) 100%;
+  }
+}
+@keyframes docs-fade-in {
+  to { opacity: 1; }
+}
+@keyframes docs-fade-out {
+  to { opacity: 0; }
+}
+
 /* Docs: the floating previous/next pill fades in once the reader scrolls (DocsLayout's script). */
 .docs-pager {
   opacity: 0;

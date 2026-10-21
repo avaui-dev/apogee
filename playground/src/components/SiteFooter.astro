@@ -1,35 +1,18 @@
 ---
 /**
- * DocsFooter — one quiet row under every docs page: license and project links.
- * The landing page has its own, larger footer in apogee-site.
+ * SiteFooter — the footer on every apogee.avaui.dev page: brand, link columns, copyright and credit.
+ * The live site (apogee-site) replaces this file with a copy that adds its Legal column and newsletter.
  */
-import Footer from '../../../registry/components/Footer/Footer.astro'
-import Link from '../../../registry/components/Link/Link.astro'
+import FooterSection from '../../../registry/sections/FooterSection/FooterSection.astro'
+import Logo from './Logo.astro'
 import SiteCredit from './SiteCredit.astro'
-
-const links = [
-  { label: 'GitHub', href: 'https://github.com/avaui-dev/apogee' },
-  { label: 'npm', href: 'https://www.npmjs.com/package/@ava-ui/apogee' },
-  { label: 'Changelog', href: 'https://github.com/avaui-dev/apogee/blob/main/CHANGELOG.md' },
-  { label: 'Report an issue', href: 'https://github.com/avaui-dev/apogee/issues/new/choose' },
-  { label: 'Telemetry', href: '/docs/telemetry' },
-]
+import { footerColumns } from './footer-columns'
 ---
 
-<Footer class="[&>div]:py-6">
-  <div class="flex flex-col gap-3 text-sm text-neutral-faded sm:flex-row sm:items-center sm:justify-between">
-    <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
-      <p>© 2026 AVA UI. MIT license.</p>
-      <SiteCredit />
-    </div>
-    <nav aria-label="Project">
-      <ul class="flex flex-wrap gap-x-5 gap-y-2">
-        {links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}
-        {/* The live site's legal pages. /privacy exists only there, so these stay hidden unless its
-            Analytics script runs (apogee-site Analytics.astro un-hides [data-site-only]). */}
-        <li data-site-only hidden><Link href="/privacy" color="neutral" underline="hover">Privacy</Link></li>
-        <li data-site-only hidden><Link href="/privacy#cookies" color="neutral" underline="hover">Cookie settings</Link></li>
-      </ul>
-    </nav>
+<FooterSection columns={footerColumns} copyright="© 2026 AVA UI. MIT license." class="bg-page-faded">
+  <div slot="brand" class="flex flex-col items-start gap-3">
+    <Logo />
+    <p class="max-w-56 text-sm text-neutral-faded">The AVA design system for Astro.</p>
   </div>
-</Footer>
+  <SiteCredit slot="social" />
+</FooterSection>

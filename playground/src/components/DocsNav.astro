@@ -37,7 +37,7 @@ const groups = [
 ---
 
 <nav aria-label="Docs" class:list={['docs-nav flex flex-col gap-1', className]}>
-  <div class="sticky top-0 z-[2] flex gap-2 bg-[var(--docs-nav-bg,var(--background-page))] pt-8 pb-3 max-md:pt-4">
+  <div class="docs-nav-search sticky top-0 z-[2] flex gap-2 bg-[var(--docs-nav-bg,var(--background-page))] pt-8 pb-3 max-md:pt-4">
     <button
       type="button"
       data-command-open="docsearch"
@@ -79,6 +79,7 @@ const groups = [
       </>
     ))
   }
+  <div class="docs-nav-end" aria-hidden="true"></div>
 </nav>
 <script is:inline>
   // Before paint: re-apply the groups the reader opened or closed. The group holding the
