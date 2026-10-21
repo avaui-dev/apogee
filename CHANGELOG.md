@@ -3,6 +3,25 @@
 All notable changes to Apogee are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](https://semver.org).
 
+## [Unreleased]
+
+## [0.9.0] — 2026-10-21
+
+### Added
+
+- **`apogee create <dir>`** makes a new site in one command: the latest Astro and Tailwind (through `create-astro`), Lucide, the Apogee tokens wired into the stylesheet, and a starter page with `SiteLayout` and a Button.
+
+### Changed
+
+- **`apogee init` adds Apogee to your stylesheet.** It finds the CSS file that imports Tailwind and adds the tokens import and an `@source` for the components folder. Without one, it prints the steps as before.
+
+- **Navbar** and **Footer** use the page gutter (`px-gutter`) instead of `px-4 sm:px-6`, so their content lines up with every `Container` and section on wide screens (it sat 8px further out). Same for the seven header-navigation blocks' menu panels and three metrics and pricing blocks. Run `apogee update` to take it.
+
+### Fixed
+
+- **DeviceFrame** showed both the light and the dark screenshot in light mode since 0.7.0: Tailwind can't build `not-dark:` from the system-following `dark` variant. The dark image now uses `hidden dark:block`. Run `apogee update device-frame` to take the fix.
+- **Tooltip** without JavaScript always showed its bubble above the trigger. A `bottom` placement now shows it below. Run `apogee update tooltip` to take the fix.
+
 ## [0.8.2] — 2026-10-20
 
 ### Changed
