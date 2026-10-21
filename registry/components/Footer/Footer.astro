@@ -14,7 +14,7 @@ const hasBottom = Astro.slots.has('bottom')
 ---
 
 <footer class:list={['border-t border-neutral', className]} {...rest}>
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+  <div class="mx-auto max-w-7xl px-gutter py-12">
     <slot />
     {
       hasBottom && (

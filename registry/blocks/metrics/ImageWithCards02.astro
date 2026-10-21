@@ -33,7 +33,7 @@ const {
 
 <Section spacing="none" container={false}>
   <div class="bg-primary pt-section-lg pb-28 text-on-primary md:pb-40">
-    <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 md:gap-12 md:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-gutter md:gap-12">
       <SectionHeader eyebrow={eyebrow ?? undefined} heading={plain(heading)} description={description ?? undefined} size="large" align="center" background="primary" />
       {(primaryAction || secondaryAction) && (
         <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row-reverse">
@@ -43,7 +43,7 @@ const {
       )}
     </div>
   </div>
-  <div class="mx-auto -mt-16 max-w-7xl px-4 pb-section-lg md:-mt-24 md:px-8">
+  <div class="mx-auto -mt-16 max-w-7xl px-gutter pb-section-lg md:-mt-24">
     <div class="relative isolate overflow-hidden rounded-2xl px-6 py-8 md:p-16">
       {media && <div class="absolute inset-0 -z-10"><Image src={media.src} alt={media.alt} width={media.width} height={media.height} fit="cover" class="size-full" /></div>}
       <dl class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

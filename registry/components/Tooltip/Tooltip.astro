@@ -122,7 +122,8 @@ const anchor = `--${id}`
   .apogee-tooltip-arrow[data-placement^='end']:dir(rtl)::after {
     translate: -50% -50%;
   }
-  /* No-JS fallback: a plain bubble above the trigger, shown by :hover / :focus-within. */
+  /* No-JS fallback: a plain bubble above the trigger (below for a bottom placement),
+     shown by :hover / :focus-within. */
   :global(html.no-js) .apogee-tooltip {
     position: relative;
   }
@@ -134,6 +135,10 @@ const anchor = `--${id}`
     margin: 0 0 0.375rem;
     width: max-content;
     opacity: 0;
+  }
+  :global(html.no-js) .apogee-tooltip-panel[data-placement^='bottom'] {
+    inset: 100% auto auto 50%;
+    margin: 0.375rem 0 0;
   }
   :global(html.no-js) .apogee-tooltip:is(:hover, :focus-within) .apogee-tooltip-panel {
     opacity: 1;

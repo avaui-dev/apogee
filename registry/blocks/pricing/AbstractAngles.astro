@@ -42,7 +42,7 @@ const icons = [Zap, Layers2, Layers3]
 <Section spacing="none" container={false}>
   <div class="group/pricing">
     <div class="bg-primary-faded pt-section-lg pb-32 md:pb-48">
-      <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 md:px-8">
+      <div class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-gutter">
         {eyebrow && <Badge color="primary" size="large" rounded>{eyebrow}</Badge>}
         <SectionHeader headingLevel={headingLevel} heading={plain(heading)} description={description ?? undefined} size="large" align="center" class="-mt-4" />
         <Switch name="billing" value="annual" label={periods.annual} />
@@ -50,7 +50,7 @@ const icons = [Zap, Layers2, Layers3]
     </div>
     <div class="relative">
       <div class="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(135deg,var(--border-neutral)_0_1px,transparent_1px_24px)] mask-b-from-50%" aria-hidden="true"></div>
-      <div class="relative mx-auto -mt-16 max-w-7xl px-4 pb-section-lg md:-mt-24 md:px-8">
+      <div class="relative mx-auto -mt-16 max-w-7xl px-gutter pb-section-lg md:-mt-24">
       <div class="grid gap-4 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
     {items.map((plan, i) => {
       const Icon = icons[i % icons.length]!

@@ -78,7 +78,7 @@ const {
     const videos = l.groups.at(-1)
     return (
   <NavDropdown label={l.label} fullWidth>
-    <div class="mx-auto max-w-7xl px-4 py-6 md:py-8 sm:px-6">
+    <div class="mx-auto max-w-7xl px-gutter py-6 md:py-8">
         <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
           <div class="grid gap-4 sm:grid-cols-2">
             {l.groups.slice(0, -1).map((g, gi) => {

@@ -36,7 +36,7 @@ const { device = 'phone', src, srcDark, alt = '', address = 'app.example.com', w
 const sizes = { phone: [786, 1596], tablet: [1180, 796], browser: [1440, 900] } as const
 const w = width ?? sizes[device][0]
 const h = height ?? sizes[device][1]
-const shot = 'block size-full object-cover object-top'
+const shot = 'size-full object-cover object-top'
 // The status bar the phone and tablet draw above the content (time and status icons).
 const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
 ---
@@ -73,8 +73,8 @@ const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
           </div>
           <div class="relative aspect-[393/798] overflow-hidden">
             <slot>
-              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
-              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
+              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
+              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
             </slot>
             <span class="absolute start-1/2 bottom-[1.9cqw] h-[1.2cqw] w-[31.8cqw] -translate-x-1/2 rounded-full bg-inverted/80 rtl:translate-x-1/2" aria-hidden="true" />
           </div>
@@ -96,8 +96,8 @@ const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
           </div>
           <div class="relative aspect-[1180/796] overflow-hidden">
             <slot>
-              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
-              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
+              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
+              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
             </slot>
             <span class="absolute start-1/2 bottom-[0.5cqw] h-[0.4cqw] w-[12cqw] -translate-x-1/2 rounded-full bg-inverted/80 rtl:translate-x-1/2" aria-hidden="true" />
           </div>
@@ -114,8 +114,8 @@ const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
         </div>
         <div class="relative aspect-[16/10] overflow-hidden rounded-[0.9cqw] bg-page ring-1 ring-(--border-neutral-faded)">
           <slot>
-            {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, srcDark && 'dark:hidden']} />}
-            {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'not-dark:hidden']} />}
+            {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
+            {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
           </slot>
         </div>
       </>

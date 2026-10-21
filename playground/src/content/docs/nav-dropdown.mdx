@@ -95,7 +95,7 @@ Full width, and full width in a floating Navbar:
       <Navbar>
         <a slot="brand" href="#" class="text-lg font-semibold">Example</a>
         <NavDropdown label="Resources" fullWidth>
-          <ul class="mx-auto grid max-w-7xl list-none gap-2 p-4 sm:grid-cols-3 sm:px-6">
+          <ul class="mx-auto grid max-w-7xl list-none gap-2 px-gutter py-4 sm:grid-cols-3">
             {links.map(([t, d]) => <li><a href="#" class="flex flex-col rounded-lg p-3 hover:bg-neutral-faded"><span class="font-semibold">{t}</span><span class="text-sm text-neutral-faded">{d}</span></a></li>)}
           </ul>
         </NavDropdown>
