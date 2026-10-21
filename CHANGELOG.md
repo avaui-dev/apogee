@@ -8,6 +8,7 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 ### Added
 
 - **DeviceFrame** `address=""` hides the browser's address pill, for a clean window.
+- **DeviceFrame** `loading="eager"` for a frame above the fold, so a hero screenshot isn't lazy-loaded (Astro's audit flags it).
 
 ### Changed
 

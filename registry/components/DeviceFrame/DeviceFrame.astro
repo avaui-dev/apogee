@@ -26,12 +26,13 @@ interface Props extends HTMLAttributes<'figure'> {
   /** A dark-mode screenshot, shown when the page is dark. */ srcDark?: ImageMetadata | string | undefined
   /** What the screenshot shows; empty when it only decorates. @category content */ alt?: string
   /** Text in the browser's address bar; empty hides the address pill. @category content */ address?: string
+  /** `eager` for a frame above the fold (a hero), so the screenshot isn't held back. */ loading?: 'lazy' | 'eager'
   /** Screenshot size in pixels, for the space reserved before it loads. */ width?: number | undefined
   /** */ height?: number | undefined
   class?: string
 }
 
-const { device = 'phone', src, srcDark, alt = '', address = 'app.example.com', width, height, class: className, ...rest } = Astro.props
+const { device = 'phone', src, srcDark, alt = '', address = 'app.example.com', loading = 'lazy', width, height, class: className, ...rest } = Astro.props
 // Default screenshot sizes match each content area's shape (phone at 2x).
 const sizes = { phone: [786, 1596], tablet: [1180, 796], browser: [1440, 900] } as const
 const w = width ?? sizes[device][0]
@@ -73,8 +74,8 @@ const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
           </div>
           <div class="relative aspect-[393/798] overflow-hidden">
             <slot>
-              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
-              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
+              {src && <Image src={src} alt={alt} loading={loading} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
+              {srcDark && <Image src={srcDark} alt={alt} loading={loading} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
             </slot>
             <span class="absolute start-1/2 bottom-[1.9cqw] h-[1.2cqw] w-[31.8cqw] -translate-x-1/2 rounded-full bg-inverted/80 rtl:translate-x-1/2" aria-hidden="true" />
           </div>
@@ -96,8 +97,8 @@ const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
           </div>
           <div class="relative aspect-[1180/796] overflow-hidden">
             <slot>
-              {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
-              {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
+              {src && <Image src={src} alt={alt} loading={loading} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
+              {srcDark && <Image src={srcDark} alt={alt} loading={loading} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
             </slot>
             <span class="absolute start-1/2 bottom-[0.5cqw] h-[0.4cqw] w-[12cqw] -translate-x-1/2 rounded-full bg-inverted/80 rtl:translate-x-1/2" aria-hidden="true" />
           </div>
@@ -114,8 +115,8 @@ const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
         </div>
         <div class="relative aspect-[16/10] overflow-hidden rounded-[0.9cqw] bg-page ring-1 ring-(--border-neutral-faded)">
           <slot>
-            {src && <Image src={src} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
-            {srcDark && <Image src={srcDark} alt={alt} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
+            {src && <Image src={src} alt={alt} loading={loading} width={w} height={h} fit="cover" class:list={[shot, 'block', srcDark && 'dark:hidden']} />}
+            {srcDark && <Image src={srcDark} alt={alt} loading={loading} width={w} height={h} fit="cover" class:list={[shot, 'hidden dark:block']} />}
           </slot>
         </div>
       </>

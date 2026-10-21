@@ -40,6 +40,7 @@ import shot from '../assets/app.png'
 | `srcDark` | `ImageMetadata \| string` | — | A dark-mode screenshot, shown when the page is dark. |
 | `alt` | `string` | `''` | What the screenshot shows; empty when it only decorates. |
 | `address` | `string` | `'app.example.com'` | The browser's address bar text. `""` hides the address pill for a clean window. |
+| `loading` | `'lazy' \| 'eager'` | `'lazy'` | `eager` for a frame above the fold, such as in a hero. |
 | `width` / `height` | `number` | phone 786 × 1596, tablet 1180 × 796, browser 1440 × 900 | Screenshot size in pixels, for the space reserved before it loads. |
 | `class` | `string` | — | Size it with a width (`w-64`, `max-w-3xl`); everything else scales with it. |
 
