@@ -5,6 +5,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-10-21
+
 ### Added
 
 - **CommandPalette `src`**: the URL of a JSON array of commands, fetched the first time the palette opens. A palette with hundreds of commands no longer weighs down every page.
@@ -547,6 +549,9 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.10.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.10.0
+[0.9.1]: https://github.com/avaui-dev/apogee/releases/tag/v0.9.1
+[0.9.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.9.0
 [0.8.1]: https://github.com/avaui-dev/apogee/releases/tag/v0.8.1
 [0.8.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.8.0
 [0.7.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.7.0
