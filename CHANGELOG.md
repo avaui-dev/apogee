@@ -5,6 +5,10 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+### Changed
+
+- **npm listing**: a description that says what Apogee is, and `accessibility` / `a11y` keywords, which also list it under Accessibility in Astro's integrations library.
+
 ## [0.10.0] — 2026-10-21
 
 ### Added

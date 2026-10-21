@@ -1,7 +1,7 @@
 {
   "name": "@ava-ui/apogee",
   "version": "0.10.0",
-  "description": "Apogee — the AVA design system for Astro. Atomic components, sections, and patterns, native to Astro: minimal JS, accessible, ready to compose.",
+  "description": "Accessible Astro components, sections and pages you copy into your project and own. Tailwind v4, zero JS by default, MIT.",
   "type": "module",
   "bin": {
     "apogee": "cli/index.mjs"
@@ -34,6 +34,8 @@
     "astro-component",
     "withastro",
     "design-system",
+    "accessibility",
+    "a11y",
     "component-library",
     "ui",
     "ava",
