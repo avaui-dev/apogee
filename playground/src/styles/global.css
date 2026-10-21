@@ -156,6 +156,74 @@ html {
   }
 }
 
+/* Docs sidebar: one element for every width (DocsLayout). From md it's a sticky column, so these
+   rules override the popover's own hiding and positioning. Below md it's a native popover drawer
+   opened by the "Docs menu" button; it works without JS. */
+.docs-sidebar {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: inherit;
+}
+@media (min-width: 48rem) {
+  .docs-sidebar {
+    display: block;
+    position: sticky;
+    inset: auto;
+    top: 4rem;
+    flex-shrink: 0;
+    width: 16rem;
+    max-height: calc(100dvh - 4rem);
+    margin: 0;
+    padding: 0 0.5rem 0 0;
+    border: 0;
+    background: var(--background-page);
+  }
+}
+@media (max-width: 47.99rem) {
+  .docs-sidebar {
+    --docs-nav-bg: var(--background-elevation-raised);
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(20rem, 85vw);
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0 1rem;
+    border: 0;
+    border-inline-end: 1px solid var(--border-neutral);
+    background: var(--background-elevation-raised);
+    box-shadow: var(--shadow-overlay);
+    translate: -100% 0;
+    transition:
+      translate var(--duration-medium) var(--ease-decelerate),
+      overlay var(--duration-medium) allow-discrete,
+      display var(--duration-medium) allow-discrete;
+  }
+  .docs-sidebar:dir(rtl) {
+    inset: 0 0 0 auto;
+    translate: 100% 0;
+  }
+  .docs-sidebar:popover-open {
+    translate: 0 0;
+  }
+  @starting-style {
+    .docs-sidebar:popover-open {
+      translate: -100% 0;
+    }
+    .docs-sidebar:popover-open:dir(rtl) {
+      translate: 100% 0;
+    }
+  }
+  .docs-sidebar::backdrop {
+    background: var(--overlay);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .docs-sidebar {
+    transition: none;
+  }
+}
+
 /* Docs: the floating previous/next pill fades in once the reader scrolls (DocsLayout's script). */
 .docs-pager {
   opacity: 0;

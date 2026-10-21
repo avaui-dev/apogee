@@ -11,7 +11,6 @@ import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
 import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
 import { Sun, Moon, Search } from '@lucide/astro'
 import Logo from './Logo.astro'
-import { docsNav } from './docs-nav.ts'
 
 interface Props {
   class?: string | undefined
@@ -26,7 +25,6 @@ const links = [
 ]
 // Exact match, except Docs, which stays current across the docs the other links don't name.
 const current = links.find((l) => l.href === path)?.href ?? (path.startsWith('/docs') ? '/docs' : null)
-const commands = (await docsNav()).flatMap((g) => g.items.map((i) => ({ label: i.title, href: i.href, group: g.group })))
 ---
 
 <Navbar class:list={['md:[&_.apogee-navbar-menu]:flex-1 md:[&_.apogee-navbar-menu]:justify-end', className]}>
@@ -55,7 +53,8 @@ const commands = (await docsNav()).flatMap((g) => g.items.map((i) => ({ label: i
   </div>
 </Navbar>
 
-<CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
+{/* The 840 docs pages load from /search.json on first open, so they stay out of every page. */}
+<CommandPalette id="docsearch" commands={[]} src="/search.json" placeholder="Search components…" />
 
 <script>
   // Navbar renders its tools twice (mobile panel + desktop), so bind every copy.

@@ -2,7 +2,6 @@
 import '../styles/global.css'
 import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
 import Prose from '../../../registry/components/Prose/Prose.astro'
-import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import Button from '../../../registry/components/Button/Button.astro'
 import { BookOpenText, ChevronLeft, ChevronRight } from '@lucide/astro'
 import DocsCard from '../components/DocsCard.astro'
@@ -68,12 +67,13 @@ const updated = modified && new Date(modified).toLocaleDateString('en', { year: 
     <SiteHeader class="docs-chrome-nav" />
     {/* Phones: the docs menu button, in a bar that sticks under the navbar. */}
     <div class="docs-chrome-bar sticky top-[65px] z-20 border-b border-neutral bg-page px-4 py-2 md:hidden">
-      <Button command="show-modal" commandfor="docs-mobile-nav" variant="outline" color="neutral" fullWidth><BookOpenText slot="start" />Docs menu</Button>
+      <Button popovertarget="docs-sidebar" variant="outline" color="neutral" fullWidth><BookOpenText slot="start" />Docs menu</Button>
     </div>
 
     <div class="mx-auto flex w-full max-w-7xl gap-8 px-gutter">
-      <aside class="hidden w-64 shrink-0 md:block">
-        <DocsNav nav={nav} class="sticky top-16 bg-page max-h-[calc(100dvh-4rem)] overflow-y-auto pb-8 pe-2" />
+      {/* One sidebar for every width: a sticky column from md, a drawer (native popover) below. */}
+      <aside id="docs-sidebar" popover class="docs-sidebar">
+        <DocsNav nav={nav} drawer="docs-sidebar" class="pb-8" />
       </aside>
 
       <main class="min-w-0 flex-1 py-10">
@@ -159,9 +159,6 @@ const updated = modified && new Date(modified).toLocaleDateString('en', { year: 
 
     <DocsFooter />
 
-    <Dialog id="docs-mobile-nav" position="start" title="Docs menu" class="md:hidden">
-      <DocsNav nav={nav} class="[--docs-nav-bg:var(--background-elevation-raised)]" />
-    </Dialog>
 
     {/* A small previous/next pill that floats at the bottom once the reader has scrolled, until
         the full pagination at the end of the page comes into view. Hidden without JS. */}
@@ -225,7 +222,7 @@ const updated = modified && new Date(modified).toLocaleDateString('en', { year: 
         }
       }
 
-      // Sidebar groups: a click on a group header saves its new state for every copy of the nav.
+      // Sidebar groups: a click on a group header saves its new state.
       document.addEventListener('click', (e) => {
         const summary = (e.target as Element).closest('[data-docs-group] > summary')
         const group = summary?.parentElement as HTMLDetailsElement | null | undefined
@@ -235,17 +232,11 @@ const updated = modified && new Date(modified).toLocaleDateString('en', { year: 
         try { saved = JSON.parse(localStorage.getItem('apogee-docs-groups') || '{}') } catch {}
         saved[group.dataset.docsGroup!] = open
         try { localStorage.setItem('apogee-docs-groups', JSON.stringify(saved)) } catch {}
-        for (const twin of document.querySelectorAll<HTMLDetailsElement>(`[data-docs-group="${group.dataset.docsGroup}"]`)) {
-          if (twin !== group) twin.open = open
-        }
       })
 
-      // Sidebar scroll: keep the reader's position across page loads (desktop aside and the
-      // mobile menu each keep their own). No saved position: only bring the current link into view.
-      const scrollers = [
-        { key: 'apogee-docs-scroll', el: document.querySelector<HTMLElement>('aside .docs-nav') },
-        { key: 'apogee-docs-scroll-mobile', el: document.querySelector<HTMLElement>('#docs-mobile-nav .docs-nav')?.closest<HTMLElement>('.apogee-dialog-body, dialog') ?? null },
-      ]
+      // Sidebar scroll: keep the reader's position across page loads. No saved position: only
+      // bring the current link into view.
+      const scrollers = [{ key: 'apogee-docs-scroll', el: document.querySelector<HTMLElement>('#docs-sidebar') }]
       for (const { key, el } of scrollers) {
         if (!el) continue
         const restore = () => {
@@ -262,23 +253,26 @@ const updated = modified && new Date(modified).toLocaleDateString('en', { year: 
         }
         // While the menu opens, its focus scroll is not the reader's: don't save it.
         let opening = false
-        if (el.matches('dialog, .apogee-dialog-body')) {
-          // The menu is closed on load: restore when it opens, after the open's own focus scroll.
-          const dialog = el.closest('dialog')!
-          new MutationObserver(() => {
-            if (!dialog.open) return
-            opening = true
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-              restore()
-              opening = false
-            }))
-          }).observe(dialog, { attributes: true, attributeFilter: ['open'] })
-        } else restore()
+        restore()
+        // Phones: the drawer is hidden on load, so restore again when it opens.
+        el.addEventListener('toggle', (e) => {
+          if ((e as ToggleEvent).newState !== 'open') return
+          opening = true
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            restore()
+            opening = false
+          }))
+        })
         const save = () => opening || sessionStorage.setItem(key, String(el.scrollTop))
         el.addEventListener('scroll', save, { passive: true })
         // Scroll events land a moment late; a link click saves the position before the page goes.
         el.addEventListener('click', save)
       }
+
+      // A drawer left open while the window widens would float over the page: close it.
+      matchMedia('(min-width: 48rem)').addEventListener('change', (e) => {
+        if (e.matches) document.querySelector<HTMLElement>('#docs-sidebar')?.hidePopover()
+      })
 
       // Add a `#` anchor to each prose heading (progressive enhancement).
       for (const h of document.querySelectorAll<HTMLElement>(

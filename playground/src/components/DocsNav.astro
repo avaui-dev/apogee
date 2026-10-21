@@ -1,29 +1,43 @@
 ---
 /**
- * DocsNav — the docs sidebar (desktop aside and the mobile menu share it).
- * A search box sits on top; each group is a collapsible NavGroup with a count
- * and a heading that sticks while its items scroll. The group holding the
- * current page opens; any other group opens only after the reader opened it
- * (kept across pages in localStorage, applied before paint).
+ * DocsNav — the docs sidebar, rendered once per page: DocsLayout shows it as a sticky
+ * column from md and as a drawer below it. A search box sits on top; each group is a
+ * collapsible NavGroup with a count and a heading that sticks while its items scroll.
+ * Guides, foundations, components and the basic sections list every page. Section
+ * blocks and page families list one link each, to their overview, which stays active
+ * on every block of the family (the overview grid, the pager and search reach the rest).
+ * The group holding the current page opens; any other group opens only after the
+ * reader opened it (kept across pages in localStorage, applied before paint).
  */
-import { Box, Search } from '@lucide/astro'
+import { Box, Search, X } from '@lucide/astro'
 import NavLink from '../../../registry/components/NavLink/NavLink.astro'
 import NavGroup from '../../../registry/components/NavLink/NavGroup.astro'
 import Badge from '../../../registry/components/Badge/Badge.astro'
 import Divider from '../../../registry/components/Divider/Divider.astro'
 import { docsIcons } from './docs-icons'
 
+type Item = { title: string; href: string; id: string; js?: boolean | undefined; count?: number }
 interface Props {
-  nav: { group: string; items: { title: string; href: string; id: string; js?: boolean | undefined }[] }[]
+  nav: { group: string; items: Item[] }[]
+  /** The drawer's id, for its close button. */
+  drawer?: string | undefined
   class?: string | undefined
 }
 
-const { nav, class: className } = Astro.props
+const { nav, drawer, class: className } = Astro.props
 const key = (group: string) => group.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+const listed = ['Getting started', 'Foundations', 'Components', 'Basic sections']
+// A family is listed as its overview (its first page), titled with the family name.
+const family = (g: Props['nav'][number]) => ({ ...g.items[0]!, title: g.group.replace(/ (sections|pages)$/, ''), count: g.items.length - 1 })
+const groups = [
+  ...nav.filter((g) => listed.includes(g.group)),
+  { group: 'Section blocks', items: nav.filter((g) => !listed.includes(g.group) && g.group.endsWith(' sections')).map(family) },
+  { group: 'Pages', items: nav.filter((g) => g.group.endsWith(' pages')).map(family) },
+].filter((g) => g.items.length)
 ---
 
 <nav aria-label="Docs" class:list={['docs-nav flex flex-col gap-1', className]}>
-  <div class="sticky top-0 z-[2] bg-[var(--docs-nav-bg,var(--background-page))] pb-3 in-[aside]:pt-8">
+  <div class="sticky top-0 z-[2] flex gap-2 bg-[var(--docs-nav-bg,var(--background-page))] pt-8 pb-3 max-md:pt-4">
     <button
       type="button"
       data-command-open="docsearch"
@@ -33,20 +47,26 @@ const key = (group: string) => group.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       <span class="flex-1 text-start">Search the docs</span>
       <kbd class="hidden rounded border border-neutral px-1 text-xs sm:inline">⌘K</kbd>
     </button>
+    {drawer && (
+      <button type="button" popovertarget={drawer} popovertargetaction="hide" aria-label="Close the docs menu" class="press grid size-9 shrink-0 place-items-center rounded-md text-neutral-faded hover:bg-neutral-faded-highlighted hover:text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus md:hidden">
+        <X class="size-4" aria-hidden="true" />
+      </button>
+    )}
   </div>
   {
-    nav.map((g, gi) => (
+    groups.map((g, gi) => (
       <>
       {gi > 0 && <Divider color="neutral-faded" inset={2} class="shrink-0" />}
-      <NavGroup label={g.group} data-docs-group={key(g.group)} class="[&>.apogee-navgroup-list]:ps-0 [&>.apogee-navgroup-list]:pb-3 [&>summary]:sticky [&>summary]:top-12 in-[aside]:[&>summary]:top-20 [&>summary]:z-[1] [&>summary]:rounded-none! [&>summary]:bg-[var(--docs-nav-bg,var(--background-page))]! [&>summary]:px-2! [&>summary]:text-base! [&>summary]:font-semibold [&>summary]:text-neutral!">
+      <NavGroup label={g.group} data-docs-group={key(g.group)} class="[&>.apogee-navgroup-list]:ps-0 [&>.apogee-navgroup-list]:pb-3 [&>summary]:sticky [&>summary]:top-20 max-md:[&>summary]:top-16 [&>summary]:z-[1] [&>summary]:rounded-none! [&>summary]:bg-[var(--docs-nav-bg,var(--background-page))]! [&>summary]:px-2! [&>summary]:text-base! [&>summary]:font-semibold [&>summary]:text-neutral!">
         <Badge slot="end" size="small" color="neutral" data-docs-count>{g.items.length}</Badge>
         {g.items.map((i) => {
           // A category's items share its icon unless they have their own.
-          const Icon = docsIcons[i.id] ?? docsIcons[i.id.split('/')[0]] ?? Box
+          const Icon = docsIcons[i.id] ?? docsIcons[i.id.split('/')[0]!] ?? Box
           return (
-            <NavLink href={i.href} class="px-2! py-1.5!">
+            <NavLink href={i.href} match={i.count !== undefined ? 'prefix' : 'exact'} class="px-2! py-1.5!">
               <Icon slot="start" class="size-4 text-neutral-faded" aria-hidden="true" />
               {i.title}
+              {i.count !== undefined && <span slot="end" class="text-xs text-neutral-faded tabular-nums">{i.count}</span>}
               {i.js && (
                 <span slot="end" class="rounded bg-neutral-faded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-neutral" title="Uses JavaScript">
                   JS

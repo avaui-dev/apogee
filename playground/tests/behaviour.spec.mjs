@@ -2519,7 +2519,7 @@ test('docs sidebar keeps its scroll position across link clicks, on desktop and 
   await page.setViewportSize({ width: 1280, height: 700 })
   await page.goto('/docs/accordion')
   expect(await page.evaluate(() => scrollY)).toBe(0) // restoring the sidebar never scrolls the page
-  const nav = page.locator('aside .docs-nav')
+  const nav = page.locator('#docs-sidebar')
   // Scroll so the link the reader clicks is in view, partway down the list.
   const top = await nav.evaluate((el) => {
     const a = el.querySelector('a[href="/docs/avatar"]')
@@ -2530,15 +2530,15 @@ test('docs sidebar keeps its scroll position across link clicks, on desktop and 
   // A DOM click: Playwright's own click would first scroll the link into view.
   await nav.locator('a[href="/docs/avatar"]').evaluate((a) => a.click())
   await page.waitForURL('**/docs/avatar')
-  expect(await page.locator('aside .docs-nav').evaluate((el) => el.scrollTop)).toBe(top)
+  expect(await page.locator('#docs-sidebar').evaluate((el) => el.scrollTop)).toBe(top)
 
   await page.setViewportSize({ width: 390, height: 700 })
   // On a phone the docs menu opens from the floating "Docs menu" button.
   const openMenu = async () => {
-    await page.getByRole('button', { name: 'Docs menu' }).click()
+    await page.getByRole('button', { name: 'Docs menu', exact: true }).click()
   }
   await openMenu()
-  const body = page.locator('#docs-mobile-nav .apogee-dialog-body')
+  const body = page.locator('#docs-sidebar')
   // Let the menu finish opening (it restores its own position two frames in) before the "reader" scrolls.
   await page.waitForTimeout(200)
   const mtop = await body.evaluate((el) => {
@@ -2547,10 +2547,37 @@ test('docs sidebar keeps its scroll position across link clicks, on desktop and 
     return el.scrollTop
   })
   expect(mtop).toBeGreaterThan(0)
-  await page.locator('#docs-mobile-nav a[href="/docs/badge"]').evaluate((a) => a.click())
+  await page.locator('#docs-sidebar a[href="/docs/badge"]').evaluate((a) => a.click())
   await page.waitForURL('**/docs/badge')
   await openMenu()
-  await expect.poll(() => page.locator('#docs-mobile-nav .apogee-dialog-body').evaluate((el) => el.scrollTop)).toBe(mtop)
+  await expect.poll(() => page.locator('#docs-sidebar').evaluate((el) => el.scrollTop)).toBe(mtop)
+})
+
+test('site search loads every docs page from /search.json on first open', async ({ page }) => {
+  await page.goto('/docs/button')
+  await expect(page.locator('#docsearch .apogee-command-item')).toHaveCount(0) // not in the page
+  await page.keyboard.press('ControlOrMeta+k')
+  await page.locator('#docsearch input').fill('thumb streams')
+  const hit = page.locator('#docsearch .apogee-command-item:not([hidden])').first()
+  await expect(hit).toContainText('Thumb streams')
+  await page.keyboard.press('Enter')
+  await page.waitForURL('**/docs/hero-sections/thumb-streams-01')
+})
+
+test('docs sidebar is one element: a column on desktop, a drawer on phones', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 700 })
+  await page.goto('/docs/hero-sections/thumb-streams-01')
+  await expect(page.locator('nav[aria-label="Docs"]')).toHaveCount(1)
+  const sidebar = page.locator('#docs-sidebar')
+  await expect(sidebar).toBeHidden()
+  await page.getByRole('button', { name: 'Docs menu', exact: true }).click()
+  await expect(sidebar).toBeVisible()
+  // The family's overview link stands in for its blocks and stays current on them.
+  await expect(sidebar.locator('a[href="/docs/hero-sections"]')).toHaveAttribute('aria-current', 'page')
+  await page.getByRole('button', { name: 'Close the docs menu' }).click()
+  await expect(sidebar).toBeHidden()
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await expect(sidebar).toBeVisible()
 })
 
 // ---- Banner sections ----

@@ -1,7 +1,7 @@
 // Agent and crawler files, written after every build from the finished HTML, so any page
 // (docs, the landing page, pages added later) gets them without extra work:
 //   <page>.md       the page's <main> as Markdown; live previews become their source code
-//   llms.txt        index for agents (llmstxt.org), grouped like the docs sidebar
+//   llms.txt        index for agents (llmstxt.org), grouped like the docs sidebar (from search.json)
 //   llms-full.txt   guides, foundations, components and section/page overviews in one file
 //   sitemap.xml     every indexable page, lastmod from the page's article:modified_time
 // Skipped: /examples/* (the frames docs previews load) and pages marked noindex.
@@ -12,7 +12,7 @@ import { execFileSync } from 'node:child_process'
 import TurndownService from 'turndown'
 
 const SUMMARY = 'Accessible, responsive Astro components, sections and page blocks that you copy into your project and own. Tailwind v4, zero JS unless a component needs it.'
-const INTRO = 'Install: `npx @ava-ui/apogee init`, then `npx @ava-ui/apogee add <name>`. Source: https://github.com/avaui-dev/apogee. Every page below is also available as Markdown at the same URL plus `.md`.'
+const INTRO = 'New site: `npx @ava-ui/apogee create my-site`. Existing Astro + Tailwind project: `npx @ava-ui/apogee init`, then `npx @ava-ui/apogee add <name>`. Source: https://github.com/avaui-dev/apogee. Every page below is also available as Markdown at the same URL plus `.md`.'
 
 const td = new TurndownService({ headingStyle: 'atx', codeBlockStyle: 'fenced', bulletListMarker: '-' })
 td.remove(['script', 'style', 'svg', 'button', 'iframe', 'nav', 'form'])
@@ -77,14 +77,14 @@ export function generate(out, site) {
     pages.push(page)
   }
 
-  // Docs groups, in sidebar order, read from the built docs index.
+  // Docs groups and their pages, in sidebar order, from the site search index.
   const byUrl = new Map(pages.map((p) => [p.path, p]))
-  const nav = readFileSync(join(out, 'docs/index.html'), 'utf8')
-  const sidebar = nav.match(/<nav aria-label="Docs"[\s\S]*?<\/nav>/)?.[0] ?? ''
-  const groups = sidebar.split('data-docs-group="').slice(1).map((seg) => ({
-    name: attr(seg, /apogee-navlink-label[^>]*>([^<]+)</) ?? '',
-    pages: [...new Set([...seg.matchAll(/href="(\/docs[^"#]*)"/g)].map((h) => h[1].replace(/\/$/, '')))].map((h) => byUrl.get(h)).filter(Boolean),
-  }))
+  const groups = []
+  for (const { href, group } of JSON.parse(readFileSync(join(out, 'search.json'), 'utf8'))) {
+    if (groups.at(-1)?.name !== group) groups.push({ name: group, pages: [] })
+    const page = byUrl.get(href)
+    if (page) groups.at(-1).pages.push(page)
+  }
   // Guides, foundations and components in full; for section and page families, the overview.
   const full = (g) => ['Getting started', 'Foundations', 'Components'].includes(g.name)
   const line = (p) => `- [${p.title}](${p.md})${p.description ? `: ${p.description}` : ''}`
