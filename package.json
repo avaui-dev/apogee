@@ -1,6 +1,6 @@
 {
   "name": "@ava-ui/apogee",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Accessible Astro components, sections and pages you copy into your project and own. Tailwind v4, zero JS by default, MIT.",
   "type": "module",
   "bin": {

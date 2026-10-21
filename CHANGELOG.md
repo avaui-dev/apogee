@@ -5,6 +5,8 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-10-22
+
 ### Added
 
 - **DeviceFrame** `address=""` hides the browser's address pill, for a clean window.
@@ -558,6 +560,7 @@ First public release. Early — the API may still change before 1.0.
   real tokens and fails on any miss (runs on `prepublishOnly`).
 - **RTL support** — logical properties throughout; directional icons flip.
 
+[0.11.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.11.0
 [0.10.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.10.0
 [0.9.1]: https://github.com/avaui-dev/apogee/releases/tag/v0.9.1
 [0.9.0]: https://github.com/avaui-dev/apogee/releases/tag/v0.9.0
