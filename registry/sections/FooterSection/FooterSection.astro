@@ -1,7 +1,8 @@
 ---
 /**
  * FooterSection — a ready site footer on top of `Footer`: link columns or a
- * single row, a copyright line and social links.
+ * single row, a copyright line and social links. An optional `top` slot (a
+ * newsletter signup, say) sits above the links with a divider under it.
  *
  * @composable
  */
@@ -28,12 +29,17 @@ const { columns = [], copyright, social = [], navLabel = 'Footer', layout = 'col
 const hasBrand = Astro.slots.has('brand')
 const hasSocial = Astro.slots.has('social')
 const flat = columns.flatMap((c) => c.links)
+// From lg, one grid column per item (the brand plus each link column, up to 6), so a fifth
+// item sits in the row instead of wrapping under the brand. Tablets keep 4; with more than
+// four items the brand takes its own row there, so the link columns line up below it.
+const wide = Math.min(Math.max((hasBrand ? 1 : 0) + columns.length, 1), 6) as 1 | 2 | 3 | 4 | 5 | 6
 ---
 
 <Footer class={className} {...rest}>
+  {Astro.slots.has('top') && <div class="mb-10 border-b border-neutral pb-10"><slot name="top" /></div>}
   {layout === 'columns' ? (
-    <Grid cols={{ base: 2, md: 4 }} gap={8}>
-      {hasBrand && <div class="col-span-2 md:col-span-1"><slot name="brand" /></div>}
+    <Grid cols={{ base: 2, md: 4, lg: wide }} gap={8}>
+      {hasBrand && <div class={wide > 4 ? 'col-span-2 md:col-span-4 lg:col-span-1' : 'col-span-2 md:col-span-1'}><slot name="brand" /></div>}
       {columns.map((c) => (
         <nav aria-label={c.heading}>
           <p class="mb-3 text-sm font-semibold">{c.heading}</p>

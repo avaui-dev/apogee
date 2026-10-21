@@ -7,6 +7,8 @@ order: 15
 
 import Preview from '../../../components/Preview.astro'
 import FooterSection from '../../../../../registry/sections/FooterSection/FooterSection.astro'
+import Input from '../../../../../registry/components/Input/Input.astro'
+import Button from '../../../../../registry/components/Button/Button.astro'
 import { footerColumns, social } from '../../../components/demo-data'
 
 <Preview block code={`<FooterSection columns={[{ heading, links: [{ label, href }] }, …]} copyright="© 2026 Example" social={[{ label, href, icon }]}>
@@ -32,6 +34,7 @@ npx @ava-ui/apogee add footer-section
 | `social` | `{ label, href, icon }[]` | `[]` | content | Icons: `mail`, `globe`, `rss`, `at-sign`, `share`, `message`. The icon set has no brand marks; put your own SVG links in the `social` slot instead. |
 | `brand` slot | | | content | Logo or wordmark. |
 | `social` slot | | | content | Replaces the `social` list; your own `<a aria-label>` links with brand SVGs. |
+| `top` slot | | | content | Above the links, with a divider under it: a newsletter signup or a call to action. |
 | `navLabel` | `string` | `'Footer'` | content | Name of the link nav in `simple`. |
 | `layout` | `'simple' \| 'columns'` | `'columns'` | layout | |
 
@@ -40,6 +43,20 @@ npx @ava-ui/apogee add footer-section
 <Preview block code={`<FooterSection layout="simple" columns={…} copyright="…" social={…} />`}>
   <FooterSection layout="simple" columns={footerColumns} copyright="© 2026 Example, Inc." social={social}>
     <span slot="brand" class="font-semibold">Example</span>
+  </FooterSection>
+</Preview>
+
+## Top slot
+
+<Preview block code={`<FooterSection columns={…} copyright="…">
+  <div slot="top">…</div>
+</FooterSection>`}>
+  <FooterSection columns={footerColumns} copyright="© 2026 Example, Inc.">
+    <span slot="brand" class="font-semibold">Example</span>
+    <div slot="top" class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p class="font-semibold">Get product news by email</p>
+      <form class="flex gap-2"><Input type="email" name="email" aria-label="Email" placeholder="you@example.com" /><Button type="submit">Subscribe</Button></form>
+    </div>
   </FooterSection>
 </Preview>
 

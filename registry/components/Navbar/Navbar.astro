@@ -113,8 +113,10 @@ const actions = Astro.slots.has('actions') ? await Astro.slots.render('actions')
   // per style without JS; this keeps it exact (a secondary row, font size).
   island('.apogee-navbar', (bar) => {
     if (bar.closest('main')) return
-    const set = () => document.documentElement.style.setProperty('--navbar-height', `${bar.offsetHeight}px`)
-    new ResizeObserver(set).observe(bar)
-    set()
+    // The observer reports the size on its first run after layout, so loading forces no extra layout.
+    new ResizeObserver(([entry]) => {
+      const height = entry!.borderBoxSize[0]?.blockSize ?? bar.offsetHeight
+      document.documentElement.style.setProperty('--navbar-height', `${height}px`)
+    }).observe(bar)
   })
 </script>

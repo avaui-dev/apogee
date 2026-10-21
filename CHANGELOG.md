@@ -8,6 +8,12 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 ### Added
 
 - **CommandPalette `src`**: the URL of a JSON array of commands, fetched the first time the palette opens. A palette with hundreds of commands no longer weighs down every page.
+- **FooterSection `top` slot**: content above the links, such as a newsletter signup, with a divider under it.
+
+### Fixed
+
+- **Navbar** no longer forces a layout on page load when it measures its height (Lighthouse's "forced reflow"). Run `apogee update navbar` to take it.
+- **FooterSection** with four link columns put the fourth under the brand on desktop. From `lg` it now gives each column (and the brand) its own track, up to six. Run `apogee update footer-section` to take it.
 
 ## [0.9.1] — 2026-10-21
 
