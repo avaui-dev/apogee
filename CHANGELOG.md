@@ -5,6 +5,10 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+### Added
+
+- **CommandPalette `src`**: the URL of a JSON array of commands, fetched the first time the palette opens. A palette with hundreds of commands no longer weighs down every page.
+
 ## [0.9.1] — 2026-10-21
 
 ### Fixed

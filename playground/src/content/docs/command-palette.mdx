@@ -85,6 +85,7 @@ dialog doesn't spread `...rest`.
 | `commands` | `{ label; href?; group?; keywords?; id?; icon?; avatar?; description?; shortcut?; stacked? }[]` | — | The command list. Required. `icon` is a Lucide component; `avatar` is `{ src?, name? }`; `description` shows after the label, or under it with `stacked`; `shortcut` (e.g. `['alt', 'shift', 'n']`) renders key caps and runs the command from anywhere on the page. |
 | `placeholder` | `string` | `'Type a command or search…'` | Search input placeholder. |
 | `shortcut` | `string` | `'k'` | Key pressed with ⌘ / Ctrl to open. |
+| `src` | `string` | — | URL of a JSON array of more commands (`{ label, href?, group?, keywords?, description? }`), fetched the first time the palette opens and added after `commands`. |
 | `class` | `string` | — | Extra classes on the `<dialog>`. |
 
 Slots: `empty` replaces "No results." (an EmptyState fits); `footer` is a row of
@@ -113,6 +114,19 @@ ignored) or press ⌘⇧P / Ctrl+Shift+P anywhere on this page.
     <EmptyState slot="empty" variant="plain" size="small" title="Nothing matches"><SearchX slot="icon" /></EmptyState>
     <Fragment slot="footer"><span><Kbd>↑</Kbd> <Kbd>↓</Kbd> to move</span><span><Kbd>↵</Kbd> to select</span><span><Kbd>esc</Kbd> to close</span></Fragment>
   </CommandPalette>
+</Preview>
+
+## Long lists
+
+A palette with hundreds of commands makes every page heavy. Pass `src` instead:
+the palette fetches the JSON the first time it opens and builds those commands
+then. This page's palette loads all of these docs from `/search.json`. Commands
+from `src` take a label, link, group, keywords and description; icons, avatars
+and shortcuts stay with `commands`.
+
+<Preview code={`<CommandPalette id="docs-command" commands={[]} src="/search.json" />`}>
+  <button type="button" data-command-open="docs-command" class="rounded-md border border-neutral px-3 py-2 text-sm">Search every docs page</button>
+  <CommandPalette id="docs-command" shortcut="u" commands={[]} src="/search.json" placeholder="Search the docs…" />
 </Preview>
 
 ## States

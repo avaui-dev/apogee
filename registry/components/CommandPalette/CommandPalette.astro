@@ -15,6 +15,11 @@
  * `['alt', 'shift', 'n']`: it renders as key caps and runs the command from
  * anywhere on the page. Slots: `empty` (no results), `footer` (key hints).
  * Search ignores accents ("resume" finds "Résumé").
+ *
+ * For a long list, pass `src`: the URL of a JSON array of commands
+ * (`{ label, href?, group?, keywords?, description? }`). The palette fetches it
+ * the first time it opens and adds those commands after `commands`, so the page
+ * itself stays small.
  */
 import type { HTMLAttributes } from 'astro/types'
 import type { IconComponent } from '../utils/icon.ts'
@@ -47,6 +52,8 @@ interface Props extends HTMLAttributes<'div'> {
   placeholder?: string
   /** Key pressed with ⌘/Ctrl to open. */
   shortcut?: string
+  /** URL of a JSON array of more commands, fetched the first time the palette opens. */
+  src?: string
   class?: string
 }
 
@@ -55,8 +62,13 @@ const {
   commands,
   placeholder = 'Type a command or search…',
   shortcut = 'k',
+  src,
   class: className,
 } = Astro.props
+// Shared by the server-rendered commands and the template that `src` commands are built from.
+const sectionClass = 'apogee-command-section [&~&]:mt-2 [&~&]:border-t [&~&]:border-neutral [&~&]:pt-2'
+const headingClass = 'apogee-command-heading px-2 pt-1.5 pb-1.5 text-[0.6875rem] font-semibold tracking-wider text-neutral uppercase'
+const itemClass = 'apogee-command-item flex w-full items-center gap-2 rounded px-2 py-2 text-start text-sm text-neutral hover:bg-neutral-faded-highlighted aria-selected:bg-neutral-faded-highlighted [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-neutral-faded'
 
 // Group the commands, preserving first-seen order.
 const groups: { name: string; items: Command[] }[] = []
@@ -78,6 +90,7 @@ for (const c of commands) {
     className,
   ]}
   data-shortcut={shortcut}
+  data-src={src}
   closedby="any"
 >
   <div class="flex items-center gap-2 border-b border-neutral px-3">
@@ -97,19 +110,15 @@ for (const c of commands) {
   <div id={`${id}-list`} role="listbox" class="apogee-command-list max-h-80 overflow-auto p-2">
     {
       groups.map((g) => (
-        <div class="apogee-command-section [&~&]:mt-2 [&~&]:border-t [&~&]:border-neutral [&~&]:pt-2">
-          {g.name && (
-            <p class="px-2 pt-1.5 pb-1.5 text-[0.6875rem] font-semibold tracking-wider text-neutral uppercase">
-              {g.name}
-            </p>
-          )}
+        <div class={sectionClass}>
+          {g.name && <p class={headingClass}>{g.name}</p>}
           <div class="flex flex-col gap-0.5">
             {g.items.map((c) => (
               <button
                 type="button"
                 role="option"
                 aria-selected="false"
-                class="apogee-command-item flex w-full items-center gap-2 rounded px-2 py-2 text-start text-sm text-neutral hover:bg-neutral-faded-highlighted aria-selected:bg-neutral-faded-highlighted [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-neutral-faded"
+                class={itemClass}
                 data-label={c.label}
                 data-keywords={c.keywords ?? ''}
                 data-description={c.description ?? ''}
@@ -140,6 +149,20 @@ for (const c of commands) {
           </div>
         </div>
       ))
+    }
+    {
+      src && (
+        <template class="apogee-command-template">
+          <div class={sectionClass}>
+            <p class={headingClass} />
+            <div class="flex flex-col gap-0.5">
+              <button type="button" role="option" aria-selected="false" class={itemClass}>
+                <span class="min-w-0 flex-1 truncate" />
+              </button>
+            </div>
+          </div>
+        </template>
+      )
     }
     <div class="apogee-command-empty px-2 py-6 text-center text-sm text-neutral-faded" hidden>
       <slot name="empty">No results.</slot>
@@ -191,15 +214,54 @@ for (const c of commands) {
 
   island<HTMLDialogElement>('.apogee-command', (dialog) => {
     const input = dialog.querySelector<HTMLInputElement>('.apogee-command-input')
-    const items = [...dialog.querySelectorAll<HTMLElement>('.apogee-command-item')]
-    const sections = [...dialog.querySelectorAll<HTMLElement>('.apogee-command-section')]
+    const list = dialog.querySelector<HTMLElement>('.apogee-command-list')
     const empty = dialog.querySelector<HTMLElement>('.apogee-command-empty')
-    if (!input) return
+    if (!input || !list) return
+
+    let items: HTMLElement[] = []
+    let sections: HTMLElement[] = []
+    // Collect the options again after `src` adds some. Options need ids so the input can
+    // point at the highlighted one.
+    const index = () => {
+      items = [...dialog.querySelectorAll<HTMLElement>('.apogee-command-item')]
+      sections = [...dialog.querySelectorAll<HTMLElement>('.apogee-command-section')]
+      items.forEach((it, i) => (it.id ||= `${input.getAttribute('aria-controls')}-${i}`))
+    }
+    index()
+
+    // `src`: fetch the remaining commands once, on first open, and build them from the template.
+    type Remote = { label: string; href?: string; group?: string; keywords?: string; description?: string }
+    let loading: Promise<void> | undefined
+    const load = () =>
+      (loading ??= fetch(dialog.dataset.src!)
+        .then((r) => r.json() as Promise<Remote[]>)
+        .then((commands) => {
+          const tpl = dialog.querySelector<HTMLTemplateElement>('.apogee-command-template')!.content
+          const byGroup = new Map<string, HTMLElement>()
+          for (const c of commands) {
+            let box = byGroup.get(c.group ?? '')
+            if (!box) {
+              const section = tpl.firstElementChild!.cloneNode(true) as HTMLElement
+              const heading = section.querySelector('.apogee-command-heading')!
+              if (c.group) heading.textContent = c.group
+              else heading.remove()
+              box = section.querySelector<HTMLElement>('.apogee-command-item')!.parentElement!
+              box.replaceChildren()
+              byGroup.set(c.group ?? '', box)
+              list.insertBefore(section, empty)
+            }
+            const it = tpl.querySelector('.apogee-command-item')!.cloneNode(true) as HTMLElement
+            Object.assign(it.dataset, { label: c.label, keywords: c.keywords ?? '', description: c.description ?? '', href: c.href ?? '', id: '' })
+            it.firstElementChild!.textContent = c.description ? `${c.label} · ${c.description}` : c.label
+            box.append(it)
+          }
+          index()
+          if (dialog.open) filter()
+        })
+        .catch(() => {}))
 
     let active = -1
     const visible = () => items.filter((i) => !i.hidden)
-    // Options need ids so the input can point at the highlighted one.
-    items.forEach((it, i) => (it.id ||= `${input.getAttribute('aria-controls')}-${i}`))
 
     const setActive = (idx: number) => {
       const vis = visible()
@@ -242,6 +304,7 @@ for (const c of commands) {
       filter()
       dialog.showModal()
       input.focus()
+      if (dialog.dataset.src) load()
     }
 
     // Shortcut (mod + key) and any trigger with data-command-open.
@@ -291,7 +354,11 @@ for (const c of commands) {
         }
       }
     })
-    for (const it of items) it.addEventListener('click', () => activate(it))
+    // One listener for every option, including the ones `src` adds later.
+    list.addEventListener('click', (e) => {
+      const it = (e.target as Element).closest<HTMLElement>('.apogee-command-item')
+      if (it) activate(it)
+    })
 
     // Close on backdrop click (fallback for browsers without `closedby="any"`).
     // The content fills the dialog box, so a click on the dialog itself is the
