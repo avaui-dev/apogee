@@ -6,6 +6,7 @@ import Button from '../../../registry/components/Button/Button.astro'
 import { BookOpenText, ChevronLeft, ChevronRight } from '@lucide/astro'
 import DocsCard from '../components/DocsCard.astro'
 import DocsNav from '../components/DocsNav.astro'
+import Analytics from '../components/Analytics.astro'
 import BrandHead from '../components/BrandHead.astro'
 import SiteHeader from '../components/SiteHeader.astro'
 import DocsFooter from '../components/DocsFooter.astro'
@@ -158,6 +159,7 @@ const updated = modified && new Date(modified).toLocaleDateString('en', { year: 
     </div>
 
     <DocsFooter />
+    <Analytics />
 
 
     {/* A small previous/next pill that floats at the bottom once the reader has scrolled, until
