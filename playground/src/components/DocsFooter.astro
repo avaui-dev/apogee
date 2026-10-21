@@ -1,0 +1,31 @@
+---
+/**
+ * DocsFooter — one quiet row under every docs page: license and project links.
+ * The landing page has its own, larger footer in apogee-site.
+ */
+import Footer from '../../../registry/components/Footer/Footer.astro'
+import Link from '../../../registry/components/Link/Link.astro'
+import SiteCredit from './SiteCredit.astro'
+
+const links = [
+  { label: 'GitHub', href: 'https://github.com/avaui-dev/apogee' },
+  { label: 'npm', href: 'https://www.npmjs.com/package/@ava-ui/apogee' },
+  { label: 'Changelog', href: 'https://github.com/avaui-dev/apogee/blob/main/CHANGELOG.md' },
+  { label: 'Report an issue', href: 'https://github.com/avaui-dev/apogee/issues/new/choose' },
+  { label: 'Telemetry', href: '/docs/telemetry' },
+]
+---
+
+<Footer class="[&>div]:py-6">
+  <div class="flex flex-col gap-3 text-sm text-neutral-faded sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+      <p>© 2026 AVA UI. MIT license.</p>
+      <SiteCredit />
+    </div>
+    <nav aria-label="Project">
+      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+        {links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}
+      </ul>
+    </nav>
+  </div>
+</Footer>

@@ -1,0 +1,13 @@
+---
+/** SiteCredit — the maker's line both apogee.avaui.dev footers show next to the copyright. */
+import Link from '../../../registry/components/Link/Link.astro'
+---
+
+<p class="flex items-center gap-1.5">
+  Built by{' '}
+  <Link href="https://sof.ro/?ref=apogee" external color="neutral" underline="hover" class="inline-flex items-center gap-1">
+    {/* 80px source from sof.ro: sharp at 32px up to 2.5x screens. */}
+    <img src="/alex-sofronea.avif" alt="" width="24" height="24" loading="lazy" decoding="async" class="size-6 rounded-full" />
+    Alex Sofronea<span class="sr-only"> (opens in a new tab)</span>
+  </Link>
+</p>

@@ -66,7 +66,7 @@ test('rating stars have a 44px hit area on coarse pointers', async ({ browser })
 
 test('combobox commit dispatches input, change and apogee:combobox-select', async ({ page }) => {
   await page.goto('/docs/combobox')
-  const input = page.locator('[role="combobox"]').first()
+  const input = page.locator('main [role="combobox"]').first()
   await page.evaluate(() => {
     window.__ev = []
     for (const n of ['input', 'change', 'apogee:combobox-select']) document.addEventListener(n, () => window.__ev.push(n), true)
@@ -2111,10 +2111,10 @@ test('Dropdown under RTL: ArrowLeft opens a submenu, ArrowRight closes it', asyn
 })
 
 test('Menubar under RTL: ArrowLeft moves to the next menu', async ({ page }) => {
-  await page.goto('/extras')
+  await page.goto('/docs/menubar')
   await page.evaluate(() => {
     document.documentElement.dir = 'rtl'
-    const bar = [...document.querySelectorAll('[role="menubar"]')].find((m) => m.querySelectorAll('[aria-haspopup="menu"]').length >= 3)
+    const bar = [...document.querySelectorAll('[role="menubar"]')].find((m) => m.querySelectorAll('[aria-haspopup="menu"]').length >= 2)
     bar.dataset.test = 'rtl-bar'
   })
   const triggers = page.locator('[data-test="rtl-bar"] [aria-haspopup="menu"]')
@@ -2148,7 +2148,7 @@ test('CommandPalette: the input points at the highlighted option', async ({ page
 
 test('Combobox: ArrowDown after a no-match close highlights the first option', async ({ page }) => {
   await page.goto('/docs/combobox')
-  const input = page.locator('[role="combobox"]').first()
+  const input = page.locator('main [role="combobox"]').first()
   await input.click()
   await page.keyboard.type('zzzz')
   await page.keyboard.press('Escape')

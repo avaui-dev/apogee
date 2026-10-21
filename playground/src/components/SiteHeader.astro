@@ -1,0 +1,89 @@
+---
+/**
+ * SiteHeader — the navbar every apogee.avaui.dev page shares: the docs and the
+ * private landing page (apogee-site) both use it. Logo, page links, docs search
+ * (⌘K, any page), GitHub and the light/dark toggle.
+ */
+import Navbar from '../../../registry/components/Navbar/Navbar.astro'
+import NavLink from '../../../registry/components/NavLink/NavLink.astro'
+import Button from '../../../registry/components/Button/Button.astro'
+import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
+import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
+import { Sun, Moon, Search } from '@lucide/astro'
+import Logo from './Logo.astro'
+import { docsNav } from './docs-nav.ts'
+
+interface Props {
+  class?: string | undefined
+}
+const { class: className } = Astro.props
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/'
+const links = [
+  { label: 'Home', href: '/' },
+  { label: 'Docs', href: '/docs' },
+  { label: 'Components', href: '/docs/components' },
+  { label: 'Sections', href: '/docs/sections' },
+]
+// Exact match, except Docs, which stays current across the docs the other links don't name.
+const current = links.find((l) => l.href === path)?.href ?? (path.startsWith('/docs') ? '/docs' : null)
+const commands = (await docsNav()).flatMap((g) => g.items.map((i) => ({ label: i.title, href: i.href, group: g.group })))
+---
+
+<Navbar class:list={['md:[&_.apogee-navbar-menu]:flex-1 md:[&_.apogee-navbar-menu]:justify-end', className]}>
+  <a slot="brand" href="/" class="inline-flex rounded-sm text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><Logo /></a>
+  {links.map((l) => <NavLink href={l.href} active={l.href === current}>{l.label}</NavLink>)}
+  <div slot="tools" class="flex items-center gap-1">
+    <Tooltip text="Search the docs" placement="bottom">
+      <Button data-command-open="docsearch" variant="ghost" color="neutral" aria-label="Search the docs" class="gap-2 px-2">
+        <Search />
+        <kbd class="hidden rounded border border-neutral px-1 text-xs font-normal text-neutral-faded sm:inline">⌘K</kbd>
+      </Button>
+    </Tooltip>
+    <Tooltip text="Source on GitHub" placement="bottom">
+      <Button href="https://github.com/avaui-dev/apogee" variant="ghost" color="neutral" iconOnly aria-label="Source on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.47.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.58.24 2.75.12 3.04.74.82 1.19 1.85 1.19 3.11 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.2.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>
+        </svg>
+      </Button>
+    </Tooltip>
+    <Tooltip text="Light or dark theme" placement="bottom">
+      <Button data-theme-toggle variant="ghost" color="neutral" iconOnly aria-label="Light or dark theme">
+        <Sun class="hidden dark:block" />
+        <Moon class="dark:hidden" />
+      </Button>
+    </Tooltip>
+  </div>
+</Navbar>
+
+<CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
+
+<script>
+  // Navbar renders its tools twice (mobile panel + desktop), so bind every copy.
+  // With no stored choice the page follows the OS, so start from what's showing.
+  const toggleTheme = () => {
+    const el = document.documentElement
+    const now = el.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    const next = now === 'dark' ? 'light' : 'dark'
+    el.classList.add('apogee-no-transitions')
+    el.dataset.theme = next
+    localStorage.setItem('apogee-theme', next)
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('apogee-no-transitions')))
+  }
+  for (const b of document.querySelectorAll('[data-theme-toggle]')) b.addEventListener('click', toggleTheme)
+
+  // External links open in a new tab and tell the other site we sent the visitor.
+  // Component previews keep their own markup. Without JS the links still work, just without ?ref.
+  for (const a of document.querySelectorAll<HTMLAnchorElement>('a[href^="http"]')) {
+    if (a.origin === location.origin || a.closest('[data-preview], [data-page-preview]')) continue
+    const url = new URL(a.href)
+    url.searchParams.set('ref', 'apogee')
+    a.href = url.href
+    a.target = '_blank'
+    a.rel = 'noopener'
+    if (a.textContent?.includes('opens in a new tab')) continue
+    const note = document.createElement('span')
+    note.className = 'sr-only'
+    note.textContent = ' (opens in a new tab)'
+    a.append(note)
+  }
+</script>

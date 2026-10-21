@@ -1,0 +1,65 @@
+---
+/**
+ * PageActions — "Copy MD" plus a menu to view the page as Markdown or open it in
+ * ChatGPT, Perplexity or Claude. The Markdown copy is written at build by
+ * agent-files.mjs, so in `astro dev` Copy MD reports it can't copy.
+ * JS copies the Markdown; without JS the Copy button hides and the menu (native
+ * popover, plain links) still works.
+ */
+import Button from '../../../registry/components/Button/Button.astro'
+import Dropdown from '../../../registry/components/Dropdown/Dropdown.astro'
+import DropdownItem from '../../../registry/components/Dropdown/DropdownItem.astro'
+import { Copy, ChevronDown } from '@lucide/astro'
+import { brandIcons } from './brand-icons'
+
+const path = Astro.url.pathname.replace(/\/$/, '')
+const md = path ? `${path}.md` : '/index.md'
+const mdUrl = new URL(md, Astro.site ?? Astro.url).href
+const ask = encodeURIComponent(`Read ${mdUrl} so I can ask questions about it.`)
+const actions = [
+  { icon: 'markdown', label: 'View as Markdown', note: 'Open this page in Markdown', href: md },
+  { icon: 'chatgpt', label: 'Open in ChatGPT', note: 'Ask questions about this page', href: `https://chatgpt.com/?q=${ask}` },
+  { icon: 'perplexity', label: 'Open in Perplexity', note: 'Ask and get an instant answer', href: `https://www.perplexity.ai/search?q=${ask}` },
+  { icon: 'claude', label: 'Open in Claude', note: 'Ask questions about this page', href: `https://claude.ai/new?q=${ask}` },
+] as const
+---
+
+<div class="inline-flex shrink-0" data-page-actions data-md-skip data-md={md}>
+  <Button size="small" variant="faded" color="neutral" class="rounded-e-none no-js:hidden" data-copy-md>
+    <Copy slot="start" aria-hidden="true" />
+    <span data-copy-md-label>Copy MD</span>
+  </Button>
+  <Dropdown id="page-actions" label="Page actions" placement="bottom-end">
+    <Button slot="anchor" size="small" variant="faded" color="neutral" iconOnly popovertarget="page-actions" aria-haspopup="menu" aria-label="More page actions" class="js:rounded-s-none js:border-s js:border-(--border-neutral-faded)">
+      <ChevronDown />
+    </Button>
+    {actions.map((a) => (
+      <DropdownItem href={a.href} size="large" class="items-start">
+        <svg slot="start" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" aria-hidden="true" class="mt-0.5"><path d={brandIcons[a.icon]} /></svg>
+        <span class="flex flex-col">
+          <span class="text-sm font-medium text-neutral">{a.label}</span>
+          <span class="text-xs text-neutral-faded">{a.note}</span>
+        </span>
+      </DropdownItem>
+    ))}
+  </Dropdown>
+</div>
+
+<script>
+  import { copyText } from '../../../registry/components/utils/clipboard.ts'
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-page-actions]')) {
+    const btn = root.querySelector<HTMLButtonElement>('[data-copy-md]')!
+    const label = root.querySelector('[data-copy-md-label]')!
+    // Fetched up front: Safari only lets a click write to the clipboard straight away.
+    const markdown = fetch(root.dataset.md!).then((r) => (r.ok ? r.text() : null)).catch(() => null)
+    let timer: number | undefined
+    btn.addEventListener('click', async () => {
+      const text = await markdown
+      const ok = text !== null && (await copyText(text))
+      label.textContent = ok ? 'Copied' : 'Couldn’t copy'
+      clearTimeout(timer)
+      timer = window.setTimeout(() => (label.textContent = 'Copy MD'), 2000)
+    })
+  }
+</script>

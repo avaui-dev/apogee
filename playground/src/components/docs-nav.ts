@@ -1,0 +1,40 @@
+// The docs sidebar, in order: shared by the docs pages and the site header's search.
+import { getCollection } from 'astro:content'
+import registry from '../../../registry/index.json'
+
+// Component slugs whose component ships a JS island → get a "JS" badge in the nav.
+const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+const jsSlugs = new Set(
+  Object.values(registry.components as Record<string, { name: string; usesJs?: boolean }>)
+    .filter((c) => c.usesJs)
+    .map((c) => kebab(c.name)),
+)
+
+export async function docsNav() {
+  const GROUP_ORDER = ['Getting started', 'Foundations', 'Components', 'Basic sections', 'Banner sections', 'Blog sections', 'Careers sections', 'Contact sections', 'Content sections', 'CTA sections', 'FAQ sections', 'Features sections', 'Footer sections', 'Header navigation sections', 'Hero sections', 'Header sections', 'Metrics sections', 'Newsletter sections', 'Pricing sections', 'Social proof sections', 'Team sections', 'Testimonials sections', 'Log in pages', 'Sign up pages', 'Verification pages', 'Forgot password pages', '404 pages', 'About pages', 'Blog post pages', 'Blog pages', 'Contact pages', 'FAQ pages', 'Landing pages', 'Legal pages', 'Pricing pages', 'Team pages']
+  const all = await getCollection('docs')
+  const byGroup = new Map<string, typeof all>()
+  for (const d of all) {
+    const g = d.data.group
+    if (!byGroup.has(g)) byGroup.set(g, [])
+    byGroup.get(g)!.push(d)
+  }
+  const nav = [...byGroup.entries()]
+    .sort((a, b) => {
+      const ai = GROUP_ORDER.indexOf(a[0])
+      const bi = GROUP_ORDER.indexOf(b[0])
+      return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi) || a[0].localeCompare(b[0])
+    })
+    .map(([groupName, items]) => ({
+      group: groupName,
+      items: items
+        .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
+        .map((d) => ({
+          title: d.data.navTitle ?? d.data.title,
+          href: d.id === 'index' ? '/docs' : `/docs/${d.id}`,
+          id: d.id,
+          js: jsSlugs.has(d.id),
+        })),
+    }))
+  return nav
+}

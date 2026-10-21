@@ -2,13 +2,15 @@
 import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import tailwindcss from '@tailwindcss/vite'
+import agentFiles from './agent-files.mjs'
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://apogee.avaui.dev',
   redirects: { '/': '/docs' },
   // Bind to every interface so the docs open on a phone on the same network.
   server: { host: true },
-  integrations: [mdx()],
+  integrations: [mdx(), agentFiles()],
   vite: {
     plugins: [tailwindcss()],
   },

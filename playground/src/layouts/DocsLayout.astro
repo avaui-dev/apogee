@@ -1,18 +1,19 @@
 ---
 import '../styles/global.css'
-import Navbar from '../../../registry/components/Navbar/Navbar.astro'
-import NavLink from '../../../registry/components/NavLink/NavLink.astro'
 import Breadcrumbs from '../../../registry/components/Breadcrumbs/Breadcrumbs.astro'
 import Prose from '../../../registry/components/Prose/Prose.astro'
-import CommandPalette from '../../../registry/components/CommandPalette/CommandPalette.astro'
 import Dialog from '../../../registry/components/Dialog/Dialog.astro'
 import Button from '../../../registry/components/Button/Button.astro'
-import Tooltip from '../../../registry/components/Tooltip/Tooltip.astro'
-import { Sun, Moon, Layers, BookOpenText, ChevronLeft, ChevronRight } from '@lucide/astro'
+import { BookOpenText, ChevronLeft, ChevronRight } from '@lucide/astro'
 import DocsCard from '../components/DocsCard.astro'
 import DocsNav from '../components/DocsNav.astro'
 import BrandHead from '../components/BrandHead.astro'
-import Logo from '../components/Logo.astro'
+import SiteHeader from '../components/SiteHeader.astro'
+import DocsFooter from '../components/DocsFooter.astro'
+import PageActions from '../components/PageActions.astro'
+import PageMeta from '../components/PageMeta.astro'
+import SiteLayout from '../../../registry/layouts/SiteLayout.astro'
+import { ids, author } from '../components/schema'
 
 interface NavGroup {
   group: string
@@ -25,11 +26,12 @@ interface Props {
   nav?: NavGroup[] | undefined
   group?: string | undefined
   related?: { id: string; title: string; description?: string | undefined; href: string }[] | undefined
+  /** ISO date of the page's last change in git. */
+  modified?: string | undefined
 }
 
-const { title, description, headings = [], nav = [], group, related = [] } = Astro.props
+const { title, description, headings = [], nav = [], group, related = [], modified } = Astro.props
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3)
-const commands = nav.flatMap((g) => g.items.map((i) => ({ label: i.title, href: i.href, group: g.group })))
 
 // Prev/next across the flattened nav order.
 const norm = (p: string) => p.replace(/\/+$/, '') || '/'
@@ -39,65 +41,49 @@ const prev = idx > 0 ? flat[idx - 1] : null
 const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null
 // The group's first page is its overview; the breadcrumb links to it.
 const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
+const crumbs = [{ label: 'Docs', href: '/docs' }, ...(group && group !== title ? [{ label: group, ...(groupHref ? { href: groupHref } : {}) }] : []), { label: title }]
+
+// schema.org: this page as a TechArticle, and its breadcrumb trail.
+// No trailing slash, matching the sidebar links, the sitemap and the .md copies.
+const url = new URL(Astro.url.pathname.replace(/\/$/, ''), Astro.site ?? Astro.url).href
+const graph = [
+  { '@type': 'TechArticle', '@id': `${url}#article`, headline: title, description, url, inLanguage: 'en', dateModified: modified,
+    isPartOf: { '@id': ids.website }, publisher: { '@id': ids.org }, author },
+  { '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.label,
+    ...('href' in c && c.href ? { item: new URL(c.href, url).href } : i === crumbs.length - 1 ? { item: url } : {}) })) },
+]
+const updated = modified && new Date(modified).toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })
 ---
 
-<!doctype html>
-<html lang="en" class="no-js">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<SiteLayout title={`${title} — Apogee`} {...(description ? { description } : {})} socialImage="/og.png" type="article" canonical={url}>
+  <Fragment slot="head">
     <BrandHead />
-    <title>{title} — Apogee</title>
-    {description && <meta name="description" content={description} />}
+    <PageMeta modified={modified} graph={graph} />
     <script is:inline>
-      document.documentElement.classList.replace('no-js', 'js')
-      // Set theme before paint (stored choice, else system).
-      const s = localStorage.getItem('apogee-skin')
-      if (s) document.documentElement.dataset.skin = s
+      // Docs code blocks switch on data-theme, so set it before paint: stored choice, else system.
       const t = localStorage.getItem('apogee-theme')
-      document.documentElement.dataset.theme =
-        t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      document.documentElement.dataset.theme = t ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
     </script>
-  </head>
-  <body class="min-h-dvh bg-page text-neutral">
-    <Navbar class="docs-chrome-nav md:[&_.apogee-navbar-menu]:flex-1 md:[&_.apogee-navbar-menu]:justify-end">
-      <a slot="brand" href="/docs" class="inline-flex rounded-sm text-neutral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"><Logo /></a>
-      <NavLink href="/docs">Docs</NavLink>
-      <div slot="tools" class="flex items-center gap-1">
-        <Tooltip text="Source on GitHub" placement="bottom">
-          <Button href="https://github.com/avaui-dev/apogee" variant="ghost" color="neutral" iconOnly aria-label="Source on GitHub">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.47.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.58.24 2.75.12 3.04.74.82 1.19 1.85 1.19 3.11 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.2.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>
-            </svg>
-          </Button>
-        </Tooltip>
-        <Tooltip text="Skeuomorphic skin" placement="bottom">
-          <Button data-skin-toggle variant="ghost" color="neutral" iconOnly aria-label="Skeuomorphic skin" class="in-data-[skin=skeuomorphic]:text-primary"><Layers /></Button>
-        </Tooltip>
-        <Tooltip text="Light or dark theme" placement="bottom">
-          <Button data-theme-toggle variant="ghost" color="neutral" iconOnly aria-label="Light or dark theme">
-            <Sun class="hidden dark:block" />
-            <Moon class="dark:hidden" />
-          </Button>
-        </Tooltip>
-      </div>
-    </Navbar>
+  </Fragment>
+    <SiteHeader class="docs-chrome-nav" />
     {/* Phones: the docs menu button, in a bar that sticks under the navbar. */}
     <div class="docs-chrome-bar sticky top-[65px] z-20 border-b border-neutral bg-page px-4 py-2 md:hidden">
       <Button command="show-modal" commandfor="docs-mobile-nav" variant="outline" color="neutral" fullWidth><BookOpenText slot="start" />Docs menu</Button>
     </div>
 
-    <div class="mx-auto flex w-full max-w-7xl gap-8 px-4">
+    <div class="mx-auto flex w-full max-w-7xl gap-8 px-gutter">
       <aside class="hidden w-64 shrink-0 md:block">
         <DocsNav nav={nav} class="sticky top-16 bg-page max-h-[calc(100dvh-4rem)] overflow-y-auto pb-8 pe-2" />
       </aside>
 
       <main class="min-w-0 flex-1 py-10">
-        <Breadcrumbs
-          items={[{ label: 'Docs', href: '/docs' }, ...(group && group !== title ? [{ label: group, ...(groupHref ? { href: groupHref } : {}) }] : []), { label: title }]}
-        />
-        <h1 class="mt-4 text-3xl font-semibold tracking-tight">{title}</h1>
-        {description && <p class="mt-2 text-lg text-neutral-faded">{description}</p>}
+        <Breadcrumbs items={crumbs} />
+        <div class="mt-4 flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+          <h1 class="text-3xl font-semibold tracking-tight">{title}</h1>
+          <PageActions />
+        </div>
+        {description && <p class="mt-2 text-lg text-neutral-faded" data-md-skip>{description}</p>}
+        {updated && <p class="mt-2 text-sm text-neutral-faded" data-md-skip>Last updated <time datetime={modified}>{updated}</time></p>}
         <Prose class="mt-8">
           <slot />
         </Prose>
@@ -171,6 +157,8 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
       }
     </div>
 
+    <DocsFooter />
+
     <Dialog id="docs-mobile-nav" position="start" title="Docs menu" class="md:hidden">
       <DocsNav nav={nav} class="[--docs-nav-bg:var(--background-elevation-raised)]" />
     </Dialog>
@@ -195,29 +183,8 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
       )
     }
 
-    <CommandPalette id="docsearch" commands={commands} placeholder="Search components…" />
-
     <script>
   import { copyText } from '../../../registry/components/utils/clipboard.ts'
-      // Navbar renders its actions slot twice (mobile panel + desktop), so bind every copy.
-      const toggleTheme = () => {
-        const el = document.documentElement
-        const next = el.dataset.theme === 'dark' ? 'light' : 'dark'
-        el.classList.add('apogee-no-transitions')
-        el.dataset.theme = next
-        localStorage.setItem('apogee-theme', next)
-        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('apogee-no-transitions')))
-      }
-      for (const b of document.querySelectorAll('[data-theme-toggle]')) b.addEventListener('click', toggleTheme)
-      const toggleSkin = () => {
-        const el = document.documentElement
-        const on = el.dataset.skin !== 'skeuomorphic'
-        if (on) el.dataset.skin = 'skeuomorphic'
-        else delete el.dataset.skin
-        if (on) localStorage.setItem('apogee-skin', 'skeuomorphic')
-        else localStorage.removeItem('apogee-skin')
-      }
-      for (const b of document.querySelectorAll('[data-skin-toggle]')) b.addEventListener('click', toggleSkin)
 
       // Phones: the navbar and the docs menu bar slide away while the reader scrolls down and come
       // back on the first scroll up (CSS in global.css applies it below md). They stay while the
@@ -380,5 +347,4 @@ const groupHref = nav.find((g) => g.group === group)?.items[0]?.href
         }
       }
     </script>
-  </body>
-</html>
+</SiteLayout>

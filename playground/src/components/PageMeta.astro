@@ -1,0 +1,37 @@
+---
+/**
+ * PageMeta — head tags apogee.avaui.dev adds on top of SiteLayout's: site name,
+ * link-preview image details, the page's Markdown copy (written at build by
+ * agent-files.mjs), when it last changed, and schema.org JSON-LD.
+ */
+import { ids } from './schema'
+
+interface Props {
+  /** ISO date of the page's last real change. */
+  modified?: string | undefined
+  /** schema.org nodes for this page; Organization and WebSite are always added. */
+  graph?: Record<string, unknown>[] | undefined
+}
+const { modified, graph = [] } = Astro.props
+const site = (Astro.site?.href ?? '/').replace(/\/$/, '')
+const path = Astro.url.pathname.replace(/\/$/, '')
+const md = path ? `${path}.md` : '/index.md'
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': ids.org, name: 'AVA UI', url: 'https://avaui.dev', logo: `${site}/icon-512.png` },
+    { '@type': 'WebSite', '@id': ids.website, name: 'Apogee', url: `${site}/`, inLanguage: 'en', publisher: { '@id': ids.org } },
+    ...graph,
+  ],
+}
+---
+
+<meta property="og:site_name" content="Apogee" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Apogee, the AVA design system for Astro" />
+<link rel="alternate" type="text/markdown" href={md} />
+{modified && <meta property="article:modified_time" content={modified} />}
+{/* `<` escaped so a string in the data can't close the script tag. */}
+<script type="application/ld+json" set:html={JSON.stringify(ld).replace(/</g, '\\u003c')} />
