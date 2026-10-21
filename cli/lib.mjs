@@ -96,3 +96,13 @@ export const telemetryEvent = ({ key, id, command, props = {}, version }) => ({
     ...props,
   },
 })
+
+// A stylesheet with Apogee's lines added straight after its Tailwind import: the
+// tokens, the skin (if any), and an @source for the components dir. `paths` are
+// relative to the stylesheet. Null when there's no Tailwind import or it's done already.
+export const wireStyles = (css, paths) => {
+  const tw = css.match(/@import\s+["']tailwindcss["'];?/)
+  if (!tw || css.includes(paths.tokens)) return null
+  const lines = [`@import "${paths.tokens}";`, ...(paths.skin ? [`@import "${paths.skin}";`] : []), `@source "${paths.componentsDir}";`]
+  return css.replace(tw[0], `${tw[0]}\n${lines.join('\n')}`)
+}

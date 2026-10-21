@@ -6,7 +6,7 @@ import { join } from 'node:path'
 // The CLI runs below are tests, not usage: keep them out of telemetry.
 process.env.APOGEE_TELEMETRY = '0'
 
-import { canonical, resolveDeps, copyInto, copySkin, fileStatus, sha, telemetryOff, telemetryEvent } from './lib.mjs'
+import { canonical, resolveDeps, copyInto, copySkin, fileStatus, sha, telemetryOff, telemetryEvent, wireStyles } from './lib.mjs'
 
 const index = {
   components: {
@@ -203,4 +203,13 @@ test('a telemetry event is anonymous and carries only the command, its details a
   assert.equal(e.properties.$geoip_disable, true) // no location looked up from the IP
   assert.deepEqual(Object.keys(e.properties).sort(), ['$geoip_disable', '$process_person_profile', 'cli_version', 'items', 'node_version', 'os'])
   assert.match(e.properties.node_version, /^\d+$/)
+})
+
+test('wireStyles adds the Apogee lines after the Tailwind import, once', () => {
+  const paths = { tokens: './apogee.css', componentsDir: '../components/apogee' }
+  const out = wireStyles(`@import "tailwindcss";\nbody { margin: 0 }\n`, paths)
+  assert.equal(out, `@import "tailwindcss";\n@import "./apogee.css";\n@source "../components/apogee";\nbody { margin: 0 }\n`)
+  assert.equal(wireStyles(out, paths), null)
+  assert.equal(wireStyles('body {}', paths), null)
+  assert.match(wireStyles(`@import 'tailwindcss'`, { ...paths, skin: './apogee-skin-x.css' }), /tailwindcss'\n@import "\.\/apogee\.css";\n@import "\.\/apogee-skin-x\.css";/)
 })

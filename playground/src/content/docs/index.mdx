@@ -17,12 +17,26 @@ with **zero external JavaScript**, copied into your project so you own the code.
   <Button variant="outline" color="neutral">Docs</Button>
 </Preview>
 
-## Install
+## New project
 
-Components are copied in; you own the source. Requires Tailwind v4.
+One command makes a new Astro site with Apogee set up:
 
 ```sh
-npx @ava-ui/apogee init                 # tokens + config + setup steps
+npx @ava-ui/apogee create my-site
+cd my-site && npm run dev
+```
+
+It runs `create-astro` for the latest Astro and Tailwind, installs Lucide, adds
+the Apogee tokens to `src/styles/global.css` and writes a starter page with a
+Button. You need a Node version the latest Astro supports; if Tailwind can't be
+added, `create` stops and says what to run.
+
+## Existing project
+
+Add Tailwind v4 first (`npx astro add tailwind`), then:
+
+```sh
+npx @ava-ui/apogee init                 # tokens + config, added to your Tailwind stylesheet
 npx @ava-ui/apogee add button dialog    # copies components (+ their deps)
 npx @ava-ui/apogee list                 # all available components
 npx @ava-ui/apogee diff                 # your copies vs the package, line by line
@@ -30,17 +44,14 @@ npx @ava-ui/apogee update               # take package changes for files you hav
 ```
 
 `add` resolves dependencies for you and prints any npm packages to install.
-Files land in `src/components/apogee/` — yours to edit.
-
-Sections (Hero, Features, Pricing, Contact, the application set) are added the
-same way and land in `src/components/apogee/sections/`. See the **Sections**
-group in the sidebar; the showcase at `/showcase` composes them into whole pages.
+Files land in `src/components/apogee/`, yours to edit. Sections, blocks and
+whole pages are added the same way; see the **Sections** groups in the sidebar.
 
 ## Use
 
 ```astro
 ---
-import Button from '@/components/apogee/Button/Button.astro'
+import Button from '../components/apogee/Button/Button.astro'
 ---
 <Button>Get started</Button>
 ```

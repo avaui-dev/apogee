@@ -13,7 +13,8 @@ Components are copied into your project and you own the source. Requires
 Tailwind v4.
 
 ```sh
-npx @ava-ui/apogee init                 # design tokens + config + setup steps
+npx @ava-ui/apogee create my-site       # new Astro + Tailwind site with Apogee set up
+npx @ava-ui/apogee init                 # existing project: tokens + config, added to your stylesheet
 npx @ava-ui/apogee add button dialog    # copies components (+ their deps)
 npx @ava-ui/apogee list                 # all available components
 npx @ava-ui/apogee diff                 # your copies vs the package, line by line

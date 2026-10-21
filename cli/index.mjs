@@ -1,20 +1,21 @@
 #!/usr/bin/env node
 // Apogee CLI — copy components into your project (copy-in model).
-//   apogee init            scaffold tokens + config
+//   apogee create <dir>    new Astro + Tailwind site with Apogee set up
+//   apogee init            scaffold tokens + config, wire them into your stylesheet
 //   apogee add <names...>  copy components, sections, pages or blocks (+ their deps)
 //   apogee list            list available components
 //   apogee diff [names...] what changed between your copies and the package
 //   apogee update [names...] take package changes for files you haven't edited
 // Dependency-free: Node built-ins only.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, mkdtempSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, mkdtempSync, readdirSync } from 'node:fs'
 import { tmpdir, homedir } from 'node:os'
 import { randomUUID } from 'node:crypto'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve, join, relative } from 'node:path'
 import { parseArgs } from 'node:util'
-import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin, rendered, destOf, sha, fileStatus, telemetryOff, telemetryEvent } from './lib.mjs'
+import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin, rendered, destOf, sha, fileStatus, telemetryOff, telemetryEvent, wireStyles } from './lib.mjs'
 
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const registryDir = join(pkgRoot, 'registry')
@@ -92,6 +93,46 @@ async function track(command, props) {
 }
 
 const canonical = (input) => canonicalIn(index, input)
+
+// The page `create` leaves in src/pages/index.astro.
+const starter = (componentsDir, skin) => `---
+import '../styles/global.css'
+import SiteLayout from '../layouts/SiteLayout.astro'
+import Button from '../${componentsDir.replace(/^src\//, '')}/Button/Button.astro'
+---
+
+<SiteLayout title="My Apogee site"${skin ? ` data-skin="${skin}"` : ''}>
+  <main class="grid min-h-dvh place-content-center gap-6 px-gutter text-center">
+    <h1 class="text-4xl font-semibold">It works.</h1>
+    <p class="text-neutral-faded">Add more with <code>npx @ava-ui/apogee add &lt;name&gt;</code>.</p>
+    <Button href="https://apogee.avaui.dev/docs">Read the Apogee docs</Button>
+  </main>
+</SiteLayout>
+`
+
+function cmdCreate(dir, opts) {
+  if (!dir) die('name the folder: `apogee create my-site`.')
+  if (existsSync(dir)) die(`${bold(dir)} already exists.`)
+  const run = (cmd, args) => {
+    const r = spawnSync(cmd, args, { stdio: 'inherit', shell: process.platform === 'win32' })
+    if (r.status !== 0) die(`\`${cmd} ${args.join(' ')}\` failed.`)
+  }
+  // create-astro brings the latest Astro; --add tailwind wires the latest Tailwind in through Vite.
+  run('npm', ['create', 'astro@latest', dir, '--', '--template', 'minimal', '--add', 'tailwind', '--yes'])
+  process.chdir(dir)
+  // create-astro reports success even when `astro add` fails, e.g. on a Node version Astro doesn't support.
+  if (!existsSync('src/styles/global.css')) die(`Astro was set up, Tailwind wasn't. Check that your Node version meets Astro's, then in ${bold(dir)} run \`npx astro add tailwind\` and \`npx @ava-ui/apogee init\`.`)
+  run('npm', ['install', '@lucide/astro'])
+  say('')
+  // quiet: create already did the steps init and add would print.
+  cmdInit({ ...opts, quiet: true })
+  cmdAdd(['SiteLayout', 'Button'], { quiet: true })
+  writeFileSync('src/pages/index.astro', starter(opts.dir ?? DEFAULTS.componentsDir, opts.skin))
+  say(`\n${green('✓')} ${bold(dir)} is ready:`)
+  say(dim(`  cd ${dir} && npm run dev`))
+  return { skin: opts.skin ?? null }
+}
+
 const resolveDeps = (names) => resolveDepsIn(index, names)
 const copyInto = (relFile, destRoot, overwrite) => copyIntoFrom(registryDir, relFile, destRoot, overwrite)
 
@@ -121,24 +162,35 @@ function cmdInit(opts) {
     say(`${green('✓')} wrote ${bold(config.tokens)}`)
   }
 
+  let skinDest
   if (opts.skin) {
     try {
-      const skinDest = copySkin(registryDir, opts.skin, tokensDest)
+      skinDest = copySkin(registryDir, opts.skin, tokensDest)
       say(`${green('✓')} wrote ${bold(skinDest.replace(process.cwd() + '/', ''))}`)
     } catch (e) {
       die(e.message)
     }
   }
 
+  // The stylesheet that imports Tailwind (Astro's `astro add tailwind` makes src/styles/global.css).
+  const css = existsSync('src') && readdirSync('src', { recursive: true }).map((f) => join('src', f)).find((f) => f.endsWith('.css') && /@import\s+["']tailwindcss["']/.test(readFileSync(f, 'utf8')))
+  const from = (p) => {
+    const r = relative(dirname(resolve(css)), resolve(p))
+    return r.startsWith('.') ? r : `./${r}`
+  }
+  const wired = css && wireStyles(readFileSync(css, 'utf8'), { tokens: from(config.tokens), componentsDir: from(config.componentsDir), ...(skinDest && { skin: from(skinDest) }) })
+  if (wired) writeFileSync(css, wired)
+  if (css) say(`${green('✓')} ${wired ? 'added Apogee to' : 'Apogee already in'} ${bold(css)}`)
+
+  if (opts.quiet) return { skin: opts.skin ?? null }
   say(`\n${bold('Next steps')}`)
-  say(`  1. Install Tailwind v4 + Lucide:`)
-  say(dim(`     npm i -D tailwindcss @tailwindcss/vite @lucide/astro`))
-  say(`  2. In your global stylesheet, after Tailwind:`)
-  say(dim(`     @import "tailwindcss";`))
-  say(dim(`     @import "${config.tokens.replace(/^src\/styles\//, './')}";`))
-  if (opts.skin) say(dim(`     @import "${config.tokens.replace(/^src\/styles\//, './').replace(/\.css$/, '')}-skin-${opts.skin}.css"; /* then data-skin="${opts.skin}" on <html> */`))
-  say(dim(`     @source "./${config.componentsDir}";`))
-  say(`  3. Add components:`)
+  if (!css) {
+    say(`  1. Install Tailwind v4 + Lucide:`)
+    say(dim(`     npx astro add tailwind && npm i @lucide/astro`))
+    say(`  2. Run \`apogee init\` again to add Apogee to your stylesheet.`)
+  }
+  if (skinDest) say(dim(`  Put data-skin="${opts.skin}" on <html> to turn the skin on.`))
+  say(`  ${css ? '' : '3. '}Add components:`)
   say(dim(`     npx @ava-ui/apogee add button`))
   return { skin: opts.skin ?? null }
 }
@@ -180,7 +232,7 @@ function cmdAdd(names, opts) {
     say(`${yellow('•')} skipped ${skipped.length} existing file(s) — use --overwrite to replace:`)
     for (const f of skipped) say(dim(`  = ${f}`))
   }
-  if (npmDeps.size) {
+  if (npmDeps.size && !opts.quiet) {
     say(`\n${bold('Install peer packages:')}`)
     say(dim(`  npm i ${[...npmDeps].join(' ')}`))
   }
@@ -286,6 +338,7 @@ function help() {
   say(`${bold('apogee')} — copy Apogee components into your project
 
 ${bold('Usage')}
+  apogee create <dir> [--skin <name>]
   apogee init [--dir <path>] [--tokens <path>] [--skin <name>] [--force]
   apogee add <names...> [--overwrite]
   apogee list
@@ -293,6 +346,7 @@ ${bold('Usage')}
   apogee update [names...] [--overwrite]
 
 ${bold('Examples')}
+  apogee create my-site            ${dim('# new Astro + Tailwind site with Apogee set up')}
   apogee init
   apogee add button dialog data-grid
   apogee add combobox --overwrite
@@ -314,7 +368,7 @@ const { values, positionals } = parseArgs({
 })
 
 const [cmd, ...rest] = positionals
-const commands = { init: () => cmdInit(values), add: () => cmdAdd(rest, values), list: () => cmdList(), diff: () => cmdDiff(rest), update: () => cmdUpdate(rest, values) }
+const commands = { create: () => cmdCreate(rest[0], values), init: () => cmdInit(values), add: () => cmdAdd(rest, values), list: () => cmdList(), diff: () => cmdDiff(rest), update: () => cmdUpdate(rest, values) }
 if (values.help || !cmd) help()
 else if (!commands[cmd]) die(`unknown command: ${bold(cmd)}. Run \`apogee --help\`.`)
 else await track(cmd, commands[cmd]() ?? {})
