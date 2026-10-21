@@ -25,6 +25,10 @@ const links = [
     <nav aria-label="Project">
       <ul class="flex flex-wrap gap-x-5 gap-y-2">
         {links.map((l) => <li><Link href={l.href} color="neutral" underline="hover">{l.label}</Link></li>)}
+        {/* The live site's legal pages. /privacy exists only there, so these stay hidden unless its
+            Analytics script runs (apogee-site Analytics.astro un-hides [data-site-only]). */}
+        <li data-site-only hidden><Link href="/privacy" color="neutral" underline="hover">Privacy</Link></li>
+        <li data-site-only hidden><Link href="/privacy#cookies" color="neutral" underline="hover">Cookie settings</Link></li>
       </ul>
     </nav>
   </div>
