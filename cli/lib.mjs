@@ -104,5 +104,19 @@ export const wireStyles = (css, paths) => {
   const tw = css.match(/@import\s+["']tailwindcss["'];?/)
   if (!tw || css.includes(paths.tokens)) return null
   const lines = [`@import "${paths.tokens}";`, ...(paths.skin ? [`@import "${paths.skin}";`] : []), `@source "${paths.componentsDir}";`]
-  return css.replace(tw[0], `${tw[0]}\n${lines.join('\n')}`)
+  const out = css.replace(tw[0], `${tw[0]}\n${lines.join('\n')}`)
+  return out.endsWith('\n') ? out : `${out}\n`
+}
+
+// Does a Node version meet an engines range? Handles the forms npm packages use:
+// ">=a.b.c" and "^a.b.c", joined by "||". Anything else counts as met (unknown, so don't block).
+export const nodeSatisfies = (version, range) => {
+  const v = version.replace(/^v/, '').split('.').map(Number)
+  const cmp = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]
+  return range.split('||').some((part) => {
+    const m = part.trim().match(/^(>=|\^)\s*(\d+)\.(\d+)\.(\d+)$/)
+    if (!m) return true
+    const min = [Number(m[2]), Number(m[3]), Number(m[4])]
+    return cmp(v, min) >= 0 && (m[1] === '>=' || v[0] === min[0])
+  })
 }

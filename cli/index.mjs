@@ -15,7 +15,7 @@ import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve, join, relative } from 'node:path'
 import { parseArgs } from 'node:util'
-import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin, rendered, destOf, sha, fileStatus, telemetryOff, telemetryEvent, wireStyles } from './lib.mjs'
+import { canonical as canonicalIn, resolveDeps as resolveDepsIn, copyInto as copyIntoFrom, copySkin, rendered, destOf, sha, fileStatus, telemetryOff, telemetryEvent, wireStyles, nodeSatisfies } from './lib.mjs'
 
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const registryDir = join(pkgRoot, 'registry')
@@ -113,6 +113,9 @@ import Button from '../${componentsDir.replace(/^src\//, '')}/Button/Button.astr
 function cmdCreate(dir, opts) {
   if (!dir) die('name the folder: `apogee create my-site`.')
   if (existsSync(dir)) die(`${bold(dir)} already exists.`)
+  // Check Node against the latest Astro before making anything; offline, skip the check.
+  const engines = spawnSync('npm', ['view', 'astro@latest', 'engines.node'], { encoding: 'utf8', shell: process.platform === 'win32', timeout: 15000 }).stdout?.trim()
+  if (engines && !nodeSatisfies(process.version, engines)) die(`The latest Astro needs Node ${engines}; you have ${process.version.slice(1)}. Update Node (for example \`nvm install --lts\`), then run \`apogee create ${dir}\` again.`)
   const run = (cmd, args) => {
     const r = spawnSync(cmd, args, { stdio: 'inherit', shell: process.platform === 'win32' })
     if (r.status !== 0) die(`\`${cmd} ${args.join(' ')}\` failed.`)

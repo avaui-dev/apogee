@@ -6,7 +6,7 @@ import { join } from 'node:path'
 // The CLI runs below are tests, not usage: keep them out of telemetry.
 process.env.APOGEE_TELEMETRY = '0'
 
-import { canonical, resolveDeps, copyInto, copySkin, fileStatus, sha, telemetryOff, telemetryEvent, wireStyles } from './lib.mjs'
+import { canonical, resolveDeps, copyInto, copySkin, fileStatus, sha, telemetryOff, telemetryEvent, wireStyles, nodeSatisfies } from './lib.mjs'
 
 const index = {
   components: {
@@ -211,5 +211,15 @@ test('wireStyles adds the Apogee lines after the Tailwind import, once', () => {
   assert.equal(out, `@import "tailwindcss";\n@import "./apogee.css";\n@source "../components/apogee";\nbody { margin: 0 }\n`)
   assert.equal(wireStyles(out, paths), null)
   assert.equal(wireStyles('body {}', paths), null)
+  assert.equal(wireStyles('@import "tailwindcss";', paths), '@import "tailwindcss";\n@import "./apogee.css";\n@source "../components/apogee";\n') // ends with a line break
   assert.match(wireStyles(`@import 'tailwindcss'`, { ...paths, skin: './apogee-skin-x.css' }), /tailwindcss'\n@import "\.\/apogee\.css";\n@import "\.\/apogee-skin-x\.css";/)
+})
+
+test('nodeSatisfies reads the engines ranges Astro uses', () => {
+  assert.equal(nodeSatisfies('v22.22.3', '>=22.23.4'), false)
+  assert.equal(nodeSatisfies('22.23.4', '>=22.23.4'), true)
+  assert.equal(nodeSatisfies('24.1.0', '>=22.23.4'), true)
+  assert.equal(nodeSatisfies('20.19.1', '^20.19.1 || >=22.12.0'), true)
+  assert.equal(nodeSatisfies('21.0.0', '^20.19.1 || >=22.12.0'), false)
+  assert.equal(nodeSatisfies('18.0.0', 'something odd'), true)
 })

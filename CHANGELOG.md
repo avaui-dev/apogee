@@ -5,6 +5,13 @@ Format: [Keep a Changelog](https://keepachangelog.com); versioning: [SemVer](htt
 
 ## [Unreleased]
 
+## [0.9.1] — 2026-10-21
+
+### Fixed
+
+- **`apogee create`** checks your Node version against the latest Astro before it starts. On an older Node it stops with the version you need, and leaves no half-made folder (it used to set up Astro without Tailwind).
+- **`apogee init`** ends the stylesheet with a line break.
+
 ## [0.9.0] — 2026-10-21
 
 ### Added
