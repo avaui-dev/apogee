@@ -248,14 +248,20 @@ html {
   margin-top: -3rem;
   background: linear-gradient(transparent, var(--docs-nav-bg, var(--background-page)));
 }
+/* Longhands, not the `animation` shorthand: the CSS minifier folds a timeline into the shorthand,
+   which browsers reject, and the fades never run. */
 @supports (animation-timeline: scroll()) {
   .docs-nav-search::after {
-    animation: docs-fade-in linear both;
+    animation-name: docs-fade-in;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
     animation-timeline: scroll();
     animation-range: 0 3rem;
   }
   .docs-nav-end {
-    animation: docs-fade-out linear both;
+    animation-name: docs-fade-out;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
     animation-timeline: scroll();
     animation-range: calc(100% - 3rem) 100%;
   }
