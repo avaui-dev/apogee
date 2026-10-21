@@ -42,12 +42,14 @@ With AVA, Apogee is offered at scaffold time — no separate install.
 
 ## Status
 
-Early. The component set is being built out atom-by-atom (atoms → molecules →
-organisms → sections → patterns). Nothing here is stable yet.
+111 components, 23 sections, 503 blocks and 151 full pages. Pre-1.0: a minor
+release can change a component's props; the changelog says when.
 
 ## Docs
 
-[apogee.avaui.dev](https://apogee.avaui.dev) *(coming soon)*
+[apogee.avaui.dev](https://apogee.avaui.dev): every component, section and page, with live
+examples. Each page is also Markdown at its URL plus `.md`, and
+[llms.txt](https://apogee.avaui.dev/llms.txt) indexes them for AI tools.
 
 ## License
 
