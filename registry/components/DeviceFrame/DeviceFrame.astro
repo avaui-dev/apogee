@@ -25,7 +25,7 @@ interface Props extends HTMLAttributes<'figure'> {
   /** The screenshot. */ src?: ImageMetadata | string | undefined
   /** A dark-mode screenshot, shown when the page is dark. */ srcDark?: ImageMetadata | string | undefined
   /** What the screenshot shows; empty when it only decorates. @category content */ alt?: string
-  /** Text in the browser's address bar. @category content */ address?: string
+  /** Text in the browser's address bar; empty hides the address pill. @category content */ address?: string
   /** Screenshot size in pixels, for the space reserved before it loads. */ width?: number | undefined
   /** */ height?: number | undefined
   class?: string
@@ -110,7 +110,7 @@ const icon = device === 'phone' ? 'size-[4cqw]' : 'size-[1.25cqw]'
       <>
         <div class="relative flex h-[3.2cqw] items-center px-[0.9cqw]" aria-hidden="true">
           <span class="flex gap-[0.55cqw]"><span class="size-[0.8cqw] rounded-full bg-(--border-neutral)" /><span class="size-[0.8cqw] rounded-full bg-(--border-neutral)" /><span class="size-[0.8cqw] rounded-full bg-(--border-neutral)" /></span>
-          <span class="absolute start-1/2 flex h-[2cqw] max-w-[45%] -translate-x-1/2 items-center truncate rounded-full bg-page px-[1.6cqw] text-[clamp(0.375rem,1.1cqw,0.8125rem)] text-neutral-faded rtl:translate-x-1/2">{address}</span>
+          {address && <span class="absolute start-1/2 flex h-[2cqw] max-w-[45%] -translate-x-1/2 items-center truncate rounded-full bg-page px-[1.6cqw] text-[clamp(0.375rem,1.1cqw,0.8125rem)] text-neutral-faded rtl:translate-x-1/2">{address}</span>}
         </div>
         <div class="relative aspect-[16/10] overflow-hidden rounded-[0.9cqw] bg-page ring-1 ring-(--border-neutral-faded)">
           <slot>

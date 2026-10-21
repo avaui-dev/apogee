@@ -39,7 +39,7 @@ import shot from '../assets/app.png'
 | `src` | `ImageMetadata \| string` | — | The screenshot. Or put any content in the default slot. |
 | `srcDark` | `ImageMetadata \| string` | — | A dark-mode screenshot, shown when the page is dark. |
 | `alt` | `string` | `''` | What the screenshot shows; empty when it only decorates. |
-| `address` | `string` | `'app.example.com'` | The browser's address bar text. |
+| `address` | `string` | `'app.example.com'` | The browser's address bar text. `""` hides the address pill for a clean window. |
 | `width` / `height` | `number` | phone 786 × 1596, tablet 1180 × 796, browser 1440 × 900 | Screenshot size in pixels, for the space reserved before it loads. |
 | `class` | `string` | — | Size it with a width (`w-64`, `max-w-3xl`); everything else scales with it. |
 
@@ -68,6 +68,12 @@ Every `device`:
 
 <Preview block code={`<DeviceFrame device="tablet" src="/mockups/app-tablet-light.jpg" srcDark="/mockups/app-tablet-dark.jpg" alt="The dashboard on a tablet" />`}>
   <DeviceFrame device="tablet" src="/mockups/app-tablet-light.jpg" srcDark="/mockups/app-tablet-dark.jpg" alt="The dashboard on a tablet" />
+</Preview>
+
+A browser window without the address pill (`address=""`):
+
+<Preview block code={`<DeviceFrame device="browser" address="" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard in a browser" />`}>
+  <DeviceFrame device="browser" address="" src="/mockups/app-desktop-light.jpg" srcDark="/mockups/app-desktop-dark.jpg" alt="The dashboard in a browser" />
 </Preview>
 
 The same frames, smaller. Each scales as a whole:
