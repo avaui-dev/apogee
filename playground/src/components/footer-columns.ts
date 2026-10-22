@@ -13,7 +13,7 @@ export const footerColumns = [
     { label: 'Report an issue', href: 'https://github.com/avaui-dev/apogee/issues/new/choose' },
   ] },
   { heading: 'More', links: [
-    { label: 'AVA', href: 'https://avaui.dev' },
+    { label: 'AVA', href: 'https://avaui.dev/?utm_source=apogee&utm_medium=referral&utm_content=footer' },
     { label: 'Telemetry', href: '/docs/telemetry' },
     { label: 'License', href: 'https://github.com/avaui-dev/apogee/blob/main/LICENSE' },
   ] },

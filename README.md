@@ -3,7 +3,7 @@
 **The AVA design system for Astro.** Atomic components, sections, and patterns —
 native to Astro, minimal JS, accessible, ready to compose.
 
-Apogee ships as the default kit inside **[AVA](https://avaui.dev)** (Astro Visual
+Apogee ships as the default kit inside **[AVA](https://avaui.dev/?utm_source=apogee&utm_medium=readme)** (Astro Visual
 Admin) and stands alone as a package you can drop into any new or existing Astro
 project.
 
